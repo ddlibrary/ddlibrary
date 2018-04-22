@@ -1,6 +1,16 @@
 @extends('admin.layout')
 @section('admin.content')
-<?php $languages = array('en' => 'English', 'fa' => 'Farsi', 'ps' => "Pashto"); ?>
+<?php 
+$languages = array('en' => 'English', 'fa' => 'Farsi', 'ps' => "Pashto");
+$formats   = array(
+    'application/pdf' => 'PDF',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'Word 2016',
+    'application/msword' => 'Word 2003',
+    'text/plain' => 'Text',
+    'audio/mpeg' => 'Audio',
+    'video/mp4' => 'Video'
+)
+?>
 <div class="content-wrapper">
     <div class="container-fluid">
         <!-- Breadcrumbs-->
@@ -24,7 +34,6 @@
                                     <tr>
                                     <th>Gender</th>
                                     <th>TOTAL</th>
-                                    <th>Grand Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -32,7 +41,66 @@
                                 <tr>
                                     <td><strong>{{ $resource->gender }}</strong></td>
                                     <td><a href="{{ URL::to('admin/user/view/'.$resource->gender) }}">{{ $resource->total }}</a></td>
-                                    <td>{{  }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-lg-12">
+                    <!-- Example Bar Chart Card-->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-list"></i> Total Users by Roles
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                        <th>Role</th>
+                                        <th>TOTAL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($totalResourcesByRoles as $indexkey => $resource)
+                                    <tr>
+                                        <td><strong>{{ $resource->name }}</strong></td>
+                                        <td><a href="{{ URL::to('admin/user/view/'.$resource->name) }}">{{ $resource->total }}</a></td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Example Bar Chart Card-->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fa fa-list"></i> Total Users by Country
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                    <th>Country</th>
+                                    <th>TOTAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @foreach ($totalUsersByCountry as $indexkey => $resource)
+                                <tr>
+                                    <td><strong>{{ $resource->country }}</strong></td>
+                                    <td><a href="{{ URL::to('admin/user/view/'.$resource->country) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -198,7 +266,7 @@
                                 <tbody>
                                 @foreach ($totalResourcesByFormat as $indexkey => $resource)
                                 <tr>
-                                    <td><a href="resource/view/{{$resource->file_mime}}">{{ $resource->file_mime }}</a></td>
+                                    <td><a href="resource/view/{{ $resource->file_mime }}">{{ $formats[$resource->file_mime] }}</a></td>
                                     <td>{{ $languages[$resource->language] }}</td>
                                     <td><a href="{{ URL::to('admin/user/view/'.$resource->file_mime) }}">{{ $resource->total }}</a></td>
                                     </tr>

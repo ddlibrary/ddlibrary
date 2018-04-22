@@ -20,6 +20,8 @@ class ReportController extends Controller
         $totalResourcesByType       = $resourceModel->totalResourcesByType();
         $totalResourcesByFormat     = $resourceModel->totalResourcesByFormat();
         $totalUsersByGender         = $usersModel->totalUsersByGender();
+        $totalUsersByCountry        = $usersModel->totalUsersByCountry();
+        $totalResourcesByRoles      = $usersModel->totalResourcesByRoles();
 
         return view('admin.reports', compact(
             'totalResources',
@@ -27,7 +29,9 @@ class ReportController extends Controller
             'totalResourcesBySubject',
             'totalResourcesByLevel',
             'totalResourcesByType',
-            'totalResourcesByFormat'
+            'totalResourcesByFormat',
+            'totalUsersByCountry',
+            'totalResourcesByRoles'
         ));
     }
 }

@@ -49,7 +49,6 @@ class User extends Model
         return $records;
     }
 
-
     //Total users based on gender
     public function totalUsersByGender()
     {
@@ -58,6 +57,31 @@ class User extends Model
                     ->selectRaw('count(users.userid) as total')
                     ->join('users_profiles','users_profiles.userid','=','users.userid')
                     ->groupBy('users_profiles.gender')
+                    ->get();
+        return $records;   
+    }
+
+    //Total users based on country
+    public function totalUsersByCountry()
+    {
+        $records = DB::table('users_profiles')
+                    ->select('country')
+                    ->selectRaw('count(country) as total')
+                    ->groupBy('country')
+                    ->orderBy('total','DESC')
+                    ->get();
+        return $records;   
+    }
+
+    //Total users based on roles
+    public function totalResourcesByRoles()
+    {
+        $records = DB::table('roles')
+                    ->select('roles.name')
+                    ->selectRaw('count(roles.roleid) as total')
+                    ->join('users_roles','users_roles.roleid','=','roles.roleid')
+                    ->groupBy('roles.roleid', 'roles.name')
+                    ->orderBy('total','DESC')
                     ->get();
         return $records;   
     }

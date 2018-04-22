@@ -54,6 +54,7 @@ class Resource extends Model
                     ->join('resources_subject_areas','resources_subject_areas.resourceid','=','resources.resourceid')
                     ->groupBy('resources_subject_areas.subject_area', 'resources.language')
                     ->orderby('resources.language')
+                    ->orderBy('total','DESC')
                     ->get();
         return $records;   
     }
@@ -66,7 +67,8 @@ class Resource extends Model
                     ->selectRaw('count(resources.resourceid) as total')
                     ->join('resources_levels','resources_levels.resourceid','=','resources.resourceid')
                     ->groupBy('resources_levels.resource_level', 'resources.language')
-                    ->orderby('resources.language')
+                    ->orderBy('resources.language')
+                    ->orderBy('total','DESC')
                     ->get();
         return $records;   
     }
@@ -80,6 +82,7 @@ class Resource extends Model
                     ->join('resources_learning_resource_types','resources_learning_resource_types.resourceid','=','resources.resourceid')
                     ->groupBy('resources_learning_resource_types.learning_resource_type', 'resources.language')
                     ->orderby('resources.language')
+                    ->orderBy('total','DESC')
                     ->get();
         return $records;   
     }
@@ -93,6 +96,7 @@ class Resource extends Model
                     ->join('resources_attachments','resources_attachments.resourceid','=','resources.resourceid')
                     ->groupBy('resources_attachments.file_mime', 'resources.language')
                     ->orderby('resources.language')
+                    ->orderBy('total','DESC')
                     ->get();
         return $records;   
     }
