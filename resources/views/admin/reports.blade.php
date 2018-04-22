@@ -40,7 +40,7 @@ $formats   = array(
                                 @foreach ($totalUsersByGender as $indexkey => $resource)
                                 <tr>
                                     <td><strong>{{ $resource->gender }}</strong></td>
-                                    <td><a href="{{ URL::to('admin/user/view/'.$resource->gender) }}">{{ $resource->total }}</a></td>
+                                    <td><a href="{{ URL::to('admin/users/list/gender/'.$resource->gender) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -70,7 +70,7 @@ $formats   = array(
                                     @foreach ($totalResourcesByRoles as $indexkey => $resource)
                                     <tr>
                                         <td><strong>{{ $resource->name }}</strong></td>
-                                        <td><a href="{{ URL::to('admin/user/view/'.$resource->name) }}">{{ $resource->total }}</a></td>
+                                        <td><a href="{{ URL::to('admin/users/list/role/'.str_slug($resource->name)) }}">{{ $resource->total }}</a></td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -100,7 +100,7 @@ $formats   = array(
                                 @foreach ($totalUsersByCountry as $indexkey => $resource)
                                 <tr>
                                     <td><strong>{{ $resource->country }}</strong></td>
-                                    <td><a href="{{ URL::to('admin/user/view/'.$resource->country) }}">{{ $resource->total }}</a></td>
+                                    <td><a href="{{ URL::to('admin/users/list/country/'.str_slug($resource->country)) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -131,7 +131,7 @@ $formats   = array(
                                 @foreach ($totalResources as $indexkey => $resource)
                                 <tr>
                                     <td><strong>{{ $languages[$resource->language] }}</strong></td>
-                                    <td><a href="{{ URL::to('admin/user/view/'.$resource->language) }}">{{ $resource->total }}</a></td>
+                                    <td><a href="{{ URL::to('admin/resources/list/language/'.$resource->language) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -166,7 +166,7 @@ $formats   = array(
                                 <tr>
                                     <td><strong>{{ $resource->subject_area }}</strong></td>
                                     <td>{{ $languages[$resource->language] }}</td>
-                                    <td><a href="{{ URL::to('admin/user/view/'.$resource->subject_area) }}">{{ $resource->total }}</a></td>
+                                    <td><a href="{{ URL::to('admin/resources/list/subject_area/'.str_slug($resource->subject_area)) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -198,7 +198,7 @@ $formats   = array(
                                 <tr>
                                     <td><a href="resource/view/{{$resource->resource_level}}">{{ $resource->resource_level }}</a></td>
                                     <td>{{ $languages[$resource->language] }}</td>
-                                    <td><a href="{{ URL::to('admin/user/view/'.$resource->resource_level) }}">{{ $resource->total }}</a></td>
+                                    <td><a href="{{ URL::to('admin/resources/list/level/'.str_slug($resource->resource_level)) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -234,7 +234,7 @@ $formats   = array(
                             <tr>
                                 <td><a href="resource/view/{{$resource->learning_resource_type}}">{{ $resource->learning_resource_type }}</a></td>
                                 <td>{{ $languages[$resource->language] }}</td>
-                                <td><a href="{{ URL::to('admin/user/view/'.$resource->learning_resource_type) }}">{{ $resource->total }}</a></td>
+                                <td><a href="{{ URL::to('admin/resources/list/type/'.str_slug($resource->learning_resource_type)) }}">{{ $resource->total }}</a></td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -268,7 +268,7 @@ $formats   = array(
                                 <tr>
                                     <td><a href="resource/view/{{ $resource->file_mime }}">{{ $formats[$resource->file_mime] }}</a></td>
                                     <td>{{ $languages[$resource->language] }}</td>
-                                    <td><a href="{{ URL::to('admin/user/view/'.$resource->file_mime) }}">{{ $resource->total }}</a></td>
+                                    <td><a href="{{ URL::to('admin/resources/list/format/'.str_slug($resource->file_mime)) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>

@@ -22,4 +22,5 @@ Route::get('admin/users', 'UserController@index');
 
 Route::get('admin/resources', 'ResourceController@index');
 
-Route::get('admin/reports', 'ReportController@index');
+Route::get('admin/reports/ddl', 'ReportController@index');
+Route::get('admin/reports/ga', 'ReportController@gaReport');

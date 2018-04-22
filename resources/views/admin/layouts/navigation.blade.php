@@ -43,10 +43,18 @@
             </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
-            <a class="nav-link" href="{{ URL::to('admin/reports') }}">
-            <i class="fa fa-fw fa-link"></i>
-            <span class="nav-link-text">Report</span>
+            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseReports" data-parent="#exampleAccordion">
+                <i class="fa fa-fw fa-wrench"></i>
+                <span class="nav-link-text">Reports</span>
             </a>
+            <ul class="sidenav-second-level collapse" id="collapseReports">
+                <li>
+                    <a href="{{ URL::to('admin/reports/ddl') }}">DDL</a>
+                </li>
+                <li>
+                    <a href="{{ URL::to('admin/reports/ga') }}">GA</a>
+                </li>
+            </ul>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
             <a class="nav-link" href="{{ URL::to('admin/settings') }}">
