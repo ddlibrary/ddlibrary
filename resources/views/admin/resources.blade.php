@@ -42,12 +42,12 @@
             @foreach ($resources as $indexkey => $resource)
               <tr>
                 <td>{{ (($resources->currentPage() - 1) * 50)+$indexkey + 1 }}</td>
-                <td><a href="resource/view/{{$resource->resourceid}}">{{ $resource->title }}</a></td>
-                <td><a href="{{ URL::to('admin/user/view/'.$resource->userid) }}">{{ $resource->author }}</a></td>
+                <td><a href="resources/view/{{$resource->resourceid}}">{{ $resource->title }}</a></td>
+                <td><a href="{{ URL::to('admin/users/view/'.$resource->userid) }}">{{ $resource->author }}</a></td>
                 <td>{{ ($resource->status==0?"Not Published":"Published") }}</td>
                 <td>{{ Carbon\Carbon::createFromTimestamp($resource->updated) }}</td>
-                <td>{{ $resource->language }}</td>
-                <td><a href="resource/edit/{{$resource->resourceid}}">Edit</a></td>
+                <td>{{ fixLanguage($resource->language) }}</td>
+                <td><a href="resources/edit/{{$resource->resourceid}}">Edit</a></td>
               </tr>
               @endforeach
             </tbody>

@@ -12,4 +12,10 @@ class UserController extends Controller
         $users = User::users();
         return view('admin.users',compact('users'));
     }
+
+    public function viewUser($userId)
+    {
+        $user = User::users()->where('userid',$userId)->first();
+        return view('admin.users.view_user', compact('user'));
+    }
 }

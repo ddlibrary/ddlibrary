@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Resource;
 use App\User;
+use Analytics;
+use Spatie\Analytics\Period;
 
 class ReportController extends Controller
 {
@@ -32,6 +34,25 @@ class ReportController extends Controller
             'totalResourcesByFormat',
             'totalUsersByCountry',
             'totalResourcesByRoles'
+        ));
+    }
+
+    public function gaReport()
+    {
+        //retrieve visitors and pageview data for the current day and the last seven days
+        $totalVisitorsAndPageViews  = Analytics::fetchTotalVisitorsAndPageViews(Period::days(7));
+        $mostVisitedPages           = Analytics::fetchMostVisitedPages(Period::days(7), 10);
+        $topReferrers               = Analytics::fetchTopReferrers(Period::days(7), 10);
+        $userTypes                  = Analytics::fetchUserTypes(Period::days(7));
+        $topBrowsers                = Analytics::fetchTopBrowsers(Period::days(7), 10);
+        $topCountries                = Analytics::performQuery(Period::days(7), "ga:sessions");
+
+        return view('admin.reportsga', compact(
+            'totalVisitorsAndPageViews',
+            'mostVisitedPages',
+            'topReferrers',
+            'userTypes',
+            'topBrowsers'
         ));
     }
 }

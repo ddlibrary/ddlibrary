@@ -14,6 +14,28 @@ class Resource extends Model
                 'resources.resourceid',
                 'resources.language', 
                 'resources.title',
+                'resources.abstract',
+                'resources.userid',
+                'resources.creative_commons',
+                'users.name AS author',
+                'resources.status',
+                'resources.updated'
+            )
+            ->leftJoin('users', 'users.userid', '=', 'resources.userid')
+            ->orderBy('resources.created','desc')
+            ->get();
+
+        return $users;
+    }
+
+    public function paginateResources()
+    {
+        $users = DB::table('resources')
+            ->select(
+                'resources.resourceid',
+                'resources.language', 
+                'resources.title',
+                'resources.abstract',
                 'resources.userid',
                 'users.name AS author', 
                 'resources.status',
@@ -21,9 +43,18 @@ class Resource extends Model
             )
             ->join('users', 'users.userid', '=', 'resources.userid')
             ->orderBy('resources.created','desc')
-            ->paginate(50);
+            ->paginate(30);
 
         return $users;
+    }
+
+    public function resourceAttributes($resourceId, $tableName, $fieldName)
+    {
+        $records = DB::table($tableName)
+                ->select($fieldName)
+                ->where('resourceid',$resourceId)
+                ->get();
+        return $records;
     }
 
     public function totalResources()

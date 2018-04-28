@@ -1,24 +1,13 @@
 @extends('admin.layout')
 @section('admin.content')
-<?php 
-$languages = array('en' => 'English', 'fa' => 'Farsi', 'ps' => "Pashto");
-$formats   = array(
-    'application/pdf' => 'PDF',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'Word 2016',
-    'application/msword' => 'Word 2003',
-    'text/plain' => 'Text',
-    'audio/mpeg' => 'Audio',
-    'video/mp4' => 'Video'
-)
-?>
 <div class="content-wrapper">
     <div class="container-fluid">
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Dashboard</a>
+            <a href="#">Reports</a>
         </li>
-        <li class="breadcrumb-item active">My Dashboard</li>
+        <li class="breadcrumb-item active">DDL Reports</li>
         </ol>
         <div class="row">
             <div class="col-lg-12">
@@ -130,7 +119,7 @@ $formats   = array(
                                 <tbody>
                                 @foreach ($totalResources as $indexkey => $resource)
                                 <tr>
-                                    <td><strong>{{ $languages[$resource->language] }}</strong></td>
+                                    <td><strong>{{ fixLanguage($resource->language) }}</strong></td>
                                     <td><a href="{{ URL::to('admin/resources/list/language/'.$resource->language) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
@@ -165,7 +154,7 @@ $formats   = array(
                                 @foreach ($totalResourcesBySubject as $indexkey => $resource)
                                 <tr>
                                     <td><strong>{{ $resource->subject_area }}</strong></td>
-                                    <td>{{ $languages[$resource->language] }}</td>
+                                    <td>{{ fixLanguage($resource->language) }}</td>
                                     <td><a href="{{ URL::to('admin/resources/list/subject_area/'.str_slug($resource->subject_area)) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
@@ -197,7 +186,7 @@ $formats   = array(
                                 @foreach ($totalResourcesByLevel as $indexkey => $resource)
                                 <tr>
                                     <td><a href="resource/view/{{$resource->resource_level}}">{{ $resource->resource_level }}</a></td>
-                                    <td>{{ $languages[$resource->language] }}</td>
+                                    <td>{{ fixLanguage($resource->language) }}</td>
                                     <td><a href="{{ URL::to('admin/resources/list/level/'.str_slug($resource->resource_level)) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
@@ -233,7 +222,7 @@ $formats   = array(
                             @foreach ($totalResourcesByType as $indexkey => $resource)
                             <tr>
                                 <td><a href="resource/view/{{$resource->learning_resource_type}}">{{ $resource->learning_resource_type }}</a></td>
-                                <td>{{ $languages[$resource->language] }}</td>
+                                <td>{{ fixLanguage($resource->language) }}</td>
                                 <td><a href="{{ URL::to('admin/resources/list/type/'.str_slug($resource->learning_resource_type)) }}">{{ $resource->total }}</a></td>
                                 </tr>
                                 @endforeach
@@ -266,8 +255,8 @@ $formats   = array(
                                 <tbody>
                                 @foreach ($totalResourcesByFormat as $indexkey => $resource)
                                 <tr>
-                                    <td><a href="resource/view/{{ $resource->file_mime }}">{{ $formats[$resource->file_mime] }}</a></td>
-                                    <td>{{ $languages[$resource->language] }}</td>
+                                    <td><a href="resource/view/{{ $resource->file_mime }}">{{ giveMeFileFormat($resource->file_mime) }}</a></td>
+                                    <td>{{ fixLanguage($resource->language) }}</td>
                                     <td><a href="{{ URL::to('admin/resources/list/format/'.str_slug($resource->file_mime)) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
