@@ -58,13 +58,19 @@ if(! function_exists('giveMeCC')){
 if (! function_exists('checkAbstract')) {
     function checkAbstract($abstract)
     {
-        preg_match('/src="([^"]*)"/',$abstract,$matches);
-        if(count($matches)> 0){
-            $absStr = $matches[1];
-            $absArray = explode('/',$absStr);
-            $imageName = last($absArray);
-            $fixedImage = Storage::disk('public')->url($imageName);
-            $finalFixedStr = str_replace($absStr, $fixedImage, $abstract);
+        preg_match_all('/src="([^"]*)"/',$abstract,$matches);
+        if(count($matches[1])> 0){
+            $replaceMe = array();
+            $originalMe = array();
+            for($i=0; $i<count($matches[1]); $i++){
+                $absStr = $matches[1][$i];
+                $absArray = explode('/',$absStr);
+                $imageName = last($absArray);
+                $fixedImage = Storage::disk('public')->url($imageName);
+                array_push($replaceMe, $fixedImage);
+                array_push($originalMe, $absStr);
+            }
+            $finalFixedStr = str_replace($originalMe, $replaceMe, $abstract);
             return $finalFixedStr;
         }else{
             return $abstract;
