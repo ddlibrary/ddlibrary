@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('main.welcome');
-});
+Route::get('/', 'HomeController@index');
 
 
 Route::get('/admin', 'DashboardController@index');
@@ -28,3 +26,13 @@ Route::get('admin/resources/view/{resourceId}', 'ResourceController@viewResource
 
 Route::get('admin/reports/ddl', 'ReportController@index');
 Route::get('admin/reports/ga', 'ReportController@gaReport');
+Auth::routes();
+
+Route::get('/logout', function() {
+    Auth::logout();
+});
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
