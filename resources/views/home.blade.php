@@ -1,23 +1,15 @@
-@extends('layouts.app')
-
+@extends('layouts.main')
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
-                </div>
-            </div>
-        </div>
+<header class="header">
+    <img class="headerImg" src="{{ asset('storage/files/logo-dd.png') }}">
+    <div class="headerRight">
+        <i class="fas fa-home fa-lg icons"></i><span>Home</span>
+        <i class="fas fa-align-justify fa-lg icons"></i><span>Browse</span>
+        <i class="fas fa-language fa-lg icons"></i><span>Language</span>
+        <i class="fas fa-sign-in-alt fa-lg icons"></i><span>Sign In</span>
+        <i class="fas fa-save fa-lg icons"></i><span>Register</span>
     </div>
-</div>
+</header>
+<main>
+</main>
 @endsection

@@ -14,7 +14,7 @@
                 <!-- Example Bar Chart Card-->
                 <div class="card mb-3">
                     <div class="card-header">
-                        <i class="fa fa-list"></i> Total Visitors and Pageviews for Last 7 Days
+                        <i class="fa fa-list"></i> Total Visitors and Pageviews for Last 30 Days
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -47,7 +47,7 @@
                 <!-- Example Bar Chart Card-->
                 <div class="card mb-3">
                     <div class="card-header">
-                        <i class="fa fa-list"></i> Most Visited Pages for Last 7 Days
+                        <i class="fa fa-list"></i> Most Visited Pages for Last 30 Days
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -80,7 +80,7 @@
                 <!-- Example Bar Chart Card-->
                 <div class="card mb-3">
                     <div class="card-header">
-                        <i class="fa fa-list"></i> Top referrers for Last 7 Days
+                        <i class="fa fa-list"></i> Top referrers for Last 30 Days
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -111,7 +111,7 @@
                 <!-- Example Bar Chart Card-->
                 <div class="card mb-3">
                     <div class="card-header">
-                        <i class="fa fa-list"></i> Users (type) for Last 7 Days
+                        <i class="fa fa-list"></i> Users (type) for Last 30 Days
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -142,7 +142,7 @@
                 <!-- Example Bar Chart Card-->
                 <div class="card mb-3">
                     <div class="card-header">
-                        <i class="fa fa-list"></i> Top Browsers for Last 7 Days
+                        <i class="fa fa-list"></i> Top Browsers for Last 30 Days
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
