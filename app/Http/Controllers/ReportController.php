@@ -45,7 +45,7 @@ class ReportController extends Controller
         $topReferrers               = Analytics::fetchTopReferrers(Period::days(30), 10);
         $userTypes                  = Analytics::fetchUserTypes(Period::days(30));
         $topBrowsers                = Analytics::fetchTopBrowsers(Period::days(30), 10);
-        $topCountries                = Analytics::performQuery(Period::days(30), "ga:sessions");
+        $topCountries               = Analytics::performQuery(Period::days(30), "ga:sessions");
 
         return view('admin.reportsga', compact(
             'totalVisitorsAndPageViews',
