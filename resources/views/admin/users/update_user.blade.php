@@ -14,7 +14,7 @@
                 <!-- Example Bar Chart Card-->
                 <div class="card mb-3">
                     <div class="card-header">
-                        <i class="fa fa-list"></i> User details for <strong>{{ $user->name }}</strong>
+                        <i class="fa fa-list"></i> Update user details for <strong>{{ $user->name }}</strong>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -22,15 +22,20 @@
                                 <tbody>
                                 <tr>
                                     <td><strong>Username</strong></td>
-                                    <td>{{ $user->name }}</a></td>
+                                    <td><input type="text" name="name" class="form-control" value="{{ $user->name }}"></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Email</strong></td>
-                                    <td>{{ $user->email }}</a></td>
+                                    <td><input type="text" name="name" class="form-control" value="{{ $user->email }}"></a></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Status</strong></td>
-                                    <td>{{ ($user->status==0?"Not Active":"Active") }}</a></td>
+                                    <td>
+                                        <select name="status">
+                                            <option value="0" {{ ($user->status==1?"selected":"") }}>Active</option>
+                                            <option value="1" {{ ($user->status==0?"selected":"") }}>Not Active</option>
+                                        </select>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Created</strong></td>

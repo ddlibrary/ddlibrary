@@ -18,4 +18,10 @@ class UserController extends Controller
         $user = User::users()->where('userid',$userId)->first();
         return view('admin.users.view_user', compact('user'));
     }
+
+    public function updateUser($userId)
+    {
+        $user = User::users()->where('userid',$userId)->first();
+        return view('admin.users.update_user', compact('user'));    
+    }
 }

@@ -1,0 +1,29 @@
+h1 {
+    font-size: 36px;
+}
+h2 {
+    font-size: 22px;
+}
+h3 {
+    font-size: 18px;
+}
+hr {
+    margin-right: 10px;
+}
+a {
+    text-decoration: none;
+}
+a:hover, a:focus, a:active {
+    color: #da7437;
+    cursor: pointer;
+}
+
+input[type=button]:focus {
+    outline: 0;
+}
+input[type=button]:hover, input[type=button]:active  {
+    outline: 0;
+    color: white;
+    background-color: black;
+    cursor: pointer;
+}

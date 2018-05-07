@@ -52,42 +52,172 @@ End of CSS reset
 body{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
+body main section footer nav {
+    display: flex;
+}
 .header {
-    float: left;
-    position: fixed;
-    width: 100%;
-    height: 5rem;
+    display: flex;
+    flex-wrap: wrap;
     background-color: black;
     color: white;
 }
 .headerImg {
     padding: 10px;
 }
+.ddlLogo {
+    flex: 3;
+}
 .headerRight {
     float: right;
     padding: 30px;
 }
-.headerRight span {
-    padding-right: 10px;
+.headerRight a{
+    margin: 5px;
+}
+.headerRight i {
+    margin: 5px;
     font-size: 18px;
 }
-.headerRight i.icons {
-    padding-right: 5px;
+.headerRight a{
+    color: #ffffff;
 }
 .banner {
-    position: relative;
-    top: 5rem;
+    padding: 5px;
     text-align: center;
-    padding-top: 10px;
+    background: #eeeeee;
 }
-.banner h1 {
-    font-size: 2.5rem;
+.banner header {
+    margin: 5px 0px 30px 0px;
+}
+.formSearch {
+    padding: .2rem 0rem;
+    font-size: 1.25rem;
+    line-height: 0.5;
+    border-radius: .3rem;
+    width: 50%;
+    text-align: center;
+}
+.searchButton {
+    border: 1px solid transparent;
+    padding: .2rem 0.75rem;
+    font-size: 1.3rem;
+    border-radius: .25rem;
+    background-color: #ffa800;
+}
+.normalButton {
+    border: 1px solid transparent;
+    padding: .2rem 0.75rem;
+    font-size: 1.2rem;
+    border-radius: .25rem;
+    background-color: #dddddd;
+}
+.ddlButtons {
+    margin: 45px 0 15px 0;
+}
+.ddlTopNews {
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+    border-radius: .25rem;
+    background-color: #ffa800; 
+}
+.subjects{
+    padding: 5px;
+    margin: 5px;
+    background: #eeeeee;
+}
+.subjects article {
+    text-align: center;
+    margin: 15px;
+    padding: 15px;
+}
+.subjects i{
+    color: gray;
+}
+.subjects i:hover{
+    color: black;
+}
+.subjects article:first-child, .subjects article:last-child {
+    margin-top: 36px;
+}
+.collections{
+    padding: 5px;
+    margin: 5px;
+    background: #eeeeee;
+}
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.content article:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+.collections article {
+    text-align: center;
+    margin: 15px;
+    padding: 15px;
+}
+.collections i{
+    color: gray;
+}
+.collections i:hover{
+    color: black;
+}
+.collections article:first-child, .collections article:last-child {
+    margin-top: 36px;
+}
+.latestNews{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px;
+    margin: 5px;
+    background: #eeeeee;
+}
+.latestNewsDiv {
+    flex: 1;
+}
+.latestNewsDiv h2 {
+    padding-bottom: 5px;
+}
+.latestNewsContent {
+    padding-top: 5px;
+    padding-bottom: 15px;
+}
+.newsDescription {
+    font-style: italic;
+    font-size: 16px;
+}
+.ddlVideo {
+    flex: 1;
+}
+.ddlVideo h2 {
+    padding-bottom: 5px;
+}
+.ddlVideoContent {
+    height: 0;
+    position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+}
+.ddlVideoContent iframe {
+    position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 }
 footer {
-    position: fixed;
-    width: 100%;
+    flex-wrap: wrap;
     height: 5rem;
-    background-color: gray;
+    background-color: #eeeeee;
     color: black;
     bottom: 0;
+}
+footer nav{
+    padding-top: 30px;
+}
+footer nav a{
+    padding: 15px;
+    color: black;
 }

@@ -19,6 +19,7 @@ Route::get('/admin', 'DashboardController@index');
 //Users
 Route::get('admin/users', 'UserController@index');
 Route::get('admin/users/view/{userId}', 'UserController@viewUser');
+Route::get('admin/users/update/{userId}', 'UserController@updateUser');
 
 //Resources
 Route::get('admin/resources', 'ResourceController@index');
