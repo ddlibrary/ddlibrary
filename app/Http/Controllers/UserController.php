@@ -7,9 +7,13 @@ use App\User;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $users = User::users();
+        //if we have an API call
+        if( $request->is('api/*')){
+            return $users;
+        }
         return view('admin.users',compact('users'));
     }
 
