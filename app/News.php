@@ -14,4 +14,21 @@ class News extends Model
                     ->count();
         return $records;
     }
+
+    public function listNews()
+    {
+        $records = DB::table('news')
+                ->select(
+                    'newsid',
+                    'title',
+                    'summary',
+                    'body',
+                    'language',
+                    'created',
+                    'updated'
+                )
+                ->paginate(20);
+
+        return $records;
+    }
 }

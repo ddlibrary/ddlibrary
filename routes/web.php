@@ -27,6 +27,19 @@ Route::get('admin/resources/view/{resourceId}', 'ResourceController@viewResource
 
 Route::get('admin/reports/ddl', 'ReportController@index');
 Route::get('admin/reports/ga', 'ReportController@gaReport');
+
+//Pages
+Route::get('admin/pages','PageController@index');
+
+//News
+Route::get('admin/news','NewsController@index');
+
+//Menu
+Route::get('admin/menu','MenuController@index');
+
+//Menu
+Route::get('admin/settings','SettingController@index');
+
 Auth::routes();
 
 Route::get('/logout', function() {

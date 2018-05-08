@@ -14,4 +14,21 @@ class Page extends Model
                     ->count();
         return $records;
     }
+
+    public function listPages()
+    {
+        $records = DB::table('pages')
+                ->select(
+                    'pageid',
+                    'title',
+                    'summary',
+                    'body',
+                    'language',
+                    'created',
+                    'updated'
+                )
+                ->paginate(20);
+
+        return $records;
+    }
 }
