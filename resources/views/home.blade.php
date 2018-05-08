@@ -136,11 +136,11 @@
     </div>
     <div class="ddlVideo">
         <header>
-            <h2>DDL Video</h2>
+            <h2>CW4WAfghan Video</h2>
         </header>
         <hr>
         <article class="ddlVideoContent">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/bF5dpED9W64" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/Kl37icKnzd4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </article>
     </div>
 </section>
