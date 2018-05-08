@@ -8,6 +8,6 @@ class SettingController extends Controller
 {
     function index ()
     {
-        dd("welcome to Settings");
+        return view('admin.settings.settings_view');
     }
 }
