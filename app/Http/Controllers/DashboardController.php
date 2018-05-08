@@ -25,14 +25,20 @@ class DashboardController extends Controller
         //latest resources for the dashboard
         $latestResources    = $resourceModel->resources()->sortByDesc('created')->take(5);
         $totalNews          = $newsModel->totalNews();
+        //latest news for the dashboard
+        $latestNews         = $newsModel->listNews()->sortByDesc('created')->take(5);
         $totalPages         = $pagesModel->totalPages();
+        //latest pages for the dashboard
+        $latestPages        = $pagesModel->listPages()->sortByDesc('created')->take(5);
         return view('admin.main', compact(
             'totalUsers', 
             'latestUsers', 
             'totalResources', 
             'latestResources',
-            'totalNews', 
-            'totalPages'
+            'totalNews',
+            'latestNews',
+            'totalPages',
+            'latestPages'
         ));
     }
 }

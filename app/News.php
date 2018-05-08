@@ -15,7 +15,7 @@ class News extends Model
         return $records;
     }
 
-    public function listNews()
+    public function scopelistNews()
     {
         $records = DB::table('news')
                 ->select(

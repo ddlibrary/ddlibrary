@@ -15,7 +15,7 @@ class Page extends Model
         return $records;
     }
 
-    public function listPages()
+    public function scopelistPages()
     {
         $records = DB::table('pages')
                 ->select(

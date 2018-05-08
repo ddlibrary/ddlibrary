@@ -148,8 +148,28 @@
         <div class="card mb-3">
           <div class="card-header">
             <i class="fa fa-list"></i> Latest Pages</div>
-          <div class="card-body">
-          </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                  <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>TITLE</th>
+                        <th>CREATED</th>
+                        <th>UPDATED</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($latestPages as $indexkey => $page)
+                      <tr>
+                        <td><a href="admin/pages/view/{{$page->pageid}}">{{ $page->title }}</a></td>
+                        <td>{{ Carbon\Carbon::createFromTimestamp($page->created)->diffForHumans() }}</td>
+                        <td>{{ Carbon\Carbon::createFromTimestamp($page->updated)->diffForHumans() }}</td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+            </div>
         </div>
       </div>
       <div class="col-lg-6">
@@ -158,7 +178,27 @@
           <div class="card-header">
             <i class="fa fa-users"></i> Latest News
           </div>
-          <div class="card-body">
+            <div class="card-body">
+              <div class="table-responsive">
+                  <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>TITLE</th>
+                        <th>CREATED</th>
+                        <th>UPDATED</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($latestNews as $indexkey => $news)
+                      <tr>
+                        <td><a href="admin/news/view/{{$news->newsid}}">{{ $news->title }}</a></td>
+                        <td>{{ Carbon\Carbon::createFromTimestamp($news->created)->diffForHumans() }}</td>
+                        <td>{{ Carbon\Carbon::createFromTimestamp($news->updated)->diffForHumans() }}</td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
           </div>
         </div>
       </div>
