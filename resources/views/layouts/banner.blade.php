@@ -12,8 +12,8 @@
         <a href="{{ URL::to('/admin') }}"><i class="fas fa-user fa-lg icons"></i>Admin Panel</a>
         @endif
         @else
-        <a href=""><i class="fas fa-sign-in-alt fa-lg icons"></i>Sign In</a>
-        <a href="#"><i class="fas fa-save fa-lg icons"></i>Register</a>
+        <a href="{{ URL::to('/login') }}"><i class="fas fa-sign-in-alt fa-lg icons"></i>Sign In</a>
+        <a href="{{ URL::to('/register') }}"><i class="fas fa-save fa-lg icons"></i>Register</a>
         @endif
     </nav>
     </div>

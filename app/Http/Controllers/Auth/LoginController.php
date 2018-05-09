@@ -61,8 +61,20 @@ class LoginController extends Controller
         if($userPassword){
             if(checkUserPassword($credentials['password'], $userPassword->password)){
                 $user = new User();
-                $user->updateUser(array('password' => Hash::make($userPassword->password)), $credentials['email']);
-                return $this->sendLoginResponse($request);
+                if($user->updateUser(array('password' => Hash::make($credentials['password'])), $credentials['email'])){
+                    if($this->attemptLogin($request)){
+                        return $this->sendLoginResponse($request);
+                    }else{
+                        $this->incrementLoginAttempts($request);
+                        return $this->sendFailedLoginResponse($request);
+                    }
+                }else{
+                    // If the login attempt was unsuccessful we will increment the number of attempts
+                    // to login and redirect the user back to the login form. Of course, when this
+                    // user surpasses their maximum number of attempts they will get locked out.
+                    $this->incrementLoginAttempts($request);
+                    return $this->sendFailedLoginResponse($request);
+                }
             }else if ($this->attemptLogin($request)){
                 return $this->sendLoginResponse($request);     
             }else{
@@ -77,6 +89,7 @@ class LoginController extends Controller
 
     public function authenticated(Request $request, $user) 
     {
+        //return redirect('/home');
     }
 
     //Doesn't work here, but for future use

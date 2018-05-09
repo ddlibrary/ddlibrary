@@ -90,7 +90,7 @@ class User extends Model
 
     public function updateUser($newPassword, $email)
     {
-        DB::table('users')
+        return DB::table('users')
             ->where('email',$email)
             ->update($newPassword);
     }
