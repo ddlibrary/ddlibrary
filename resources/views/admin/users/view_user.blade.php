@@ -20,6 +20,15 @@
                         <div class="table-responsive">
                             <table class="table table-bordered" width="100%" cellspacing="0">
                                 <tbody>
+                                    <tr>
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" width="100%" cellspacing="0">
+                                <tbody>
                                 <tr>
                                     <td><strong>Username</strong></td>
                                     <td>{{ $user->name }}</a></td>

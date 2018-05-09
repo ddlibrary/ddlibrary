@@ -21,7 +21,7 @@ class Resource extends Model
                 'resources.status',
                 'resources.updated'
             )
-            ->leftJoin('users', 'users.userid', '=', 'resources.userid')
+            ->leftJoin('users', 'users.id', '=', 'resources.userid')
             ->orderBy('resources.created','desc')
             ->get();
 
@@ -41,7 +41,7 @@ class Resource extends Model
                 'resources.status',
                 'resources.updated'
             )
-            ->join('users', 'users.userid', '=', 'resources.userid')
+            ->join('users', 'users.id', '=', 'resources.userid')
             ->orderBy('resources.created','desc')
             ->paginate(30);
 

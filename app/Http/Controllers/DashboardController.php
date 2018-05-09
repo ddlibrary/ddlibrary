@@ -10,6 +10,16 @@ use App\News;
 
 class DashboardController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $usersModel         = new User();
@@ -19,7 +29,7 @@ class DashboardController extends Controller
         //total users in number for the dashboard
         $totalUsers         = $usersModel->totalUsers();
         //latest users for the dashboard
-        $latestUsers        = $usersModel->users()->sortByDesc('userid')->take(5);
+        $latestUsers        = $usersModel->users()->sortByDesc('id')->take(5);
         //total resources in number for the dashboard
         $totalResources     = $resourceModel->totalResources();
         //latest resources for the dashboard

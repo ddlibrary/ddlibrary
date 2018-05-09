@@ -14,20 +14,22 @@ class User extends Model
     {
         $users = DB::table('users')
             ->select(
-                'users.userid',
-                'users.name', 
+                'users.id',
+                'users.name',
+                'users.password', 
                 'users.email',
                 'users.status', 
                 'users.created',
                 'users.access',
                 DB::raw('group_concat(roles.name) AS all_roles'
             ))
-            ->join('users_roles', 'users.userid', '=', 'users_roles.userid')
+            ->join('users_roles', 'users.id', '=', 'users_roles.userid')
             ->join('roles', 'roles.roleid', '=', 'users_roles.roleid')
             ->orderBy('access','desc')
             ->groupBy(
-                'users.userid',
+                'users.id',
                 'users.name',
+                'users.password',
                 'users.access',
                 'users.email',
                 'users.status',
@@ -44,7 +46,7 @@ class User extends Model
     public function totalUsers()
     {
         $records = DB::table('users')
-                    ->selectRaw('count(users.userid) as totalUsers')
+                    ->selectRaw('count(users.id) as totalUsers')
                     ->count();
         return $records;
     }
@@ -54,8 +56,8 @@ class User extends Model
     {
         $records = DB::table('users')
                     ->select('users_profiles.gender')
-                    ->selectRaw('count(users.userid) as total')
-                    ->join('users_profiles','users_profiles.userid','=','users.userid')
+                    ->selectRaw('count(users.id) as total')
+                    ->join('users_profiles','users_profiles.userid','=','users.id')
                     ->groupBy('users_profiles.gender')
                     ->get();
         return $records;   
@@ -84,5 +86,12 @@ class User extends Model
                     ->orderBy('total','DESC')
                     ->get();
         return $records;   
+    }
+
+    public function updateUser($newPassword, $email)
+    {
+        DB::table('users')
+            ->where('email',$email)
+            ->update($newPassword);
     }
 }

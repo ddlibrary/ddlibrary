@@ -128,7 +128,7 @@
                   <tbody>
                   @foreach ($latestUsers as $indexkey => $user)
                     <tr>
-                      <td><a href="admin/users/view/{{$user->userid}}">{{ $user->name }}</a></td>
+                      <td><a href="admin/users/view/{{$user->id}}">{{ $user->name }}</a></td>
                       <td>{{ ($user->status==0?"Not Active":"Active") }}</td>
                       <td>{{ $user->all_roles }}</td>
                     </tr>

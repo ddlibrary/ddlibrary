@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration {
 			$table->boolean('status')->default(0)->index('status');
 			$table->string('language', 12)->default('');
 			$table->integer('login')->default(0)->index('login');
+			$table->string('remember_token',100)->nullable();
 			$table->integer('access')->default(0)->index('access');
 			$table->integer('created')->default(0)->index('created');
 			$table->integer('updated')->nullable()->index('updated');
