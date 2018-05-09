@@ -8,6 +8,9 @@
         <a href="#"><i class="fas fa-language fa-lg icons"></i>Language</a>
         @if (Auth::check())
         <a href="{{ URL::to('logout') }}"><i class="fas fa-sign-in-alt fa-lg icons"></i>Log Out</a>
+        @if (isAdmin())
+        <a href="{{ URL::to('/admin') }}"><i class="fas fa-user fa-lg icons"></i>Admin Panel</a>
+        @endif
         @else
         <a href=""><i class="fas fa-sign-in-alt fa-lg icons"></i>Sign In</a>
         <a href="#"><i class="fas fa-save fa-lg icons"></i>Register</a>

@@ -94,4 +94,13 @@ class User extends Model
             ->where('email',$email)
             ->update($newPassword);
     }
+
+    public function isAdministrator($userid)
+    {
+        return DB::table('users')
+            ->join('users_roles', 'users_roles.userid','=','users.id')
+            ->where('users.id',$userid)
+            ->where('users_roles.roleid', 5)
+            ->first();
+    }
 }
