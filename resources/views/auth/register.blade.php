@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-<section class="registration">
+<section class="ddl-forms">
     <header>
         <h1>Register an Account with DDL</h1>
     </header>

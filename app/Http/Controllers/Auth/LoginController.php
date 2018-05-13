@@ -56,7 +56,8 @@ class LoginController extends Controller
 
         $credentials = $request->only('email', 'password');
         //Checking if user exists
-        $userPassword = User::users()->where('email',$credentials['email'])->first();
+        $userInstance = new User();
+        $userPassword = $userInstance->oneUser("email", $credentials['email']);
 
         if($userPassword){
             if(checkUserPassword($credentials['password'], $userPassword->password)){
@@ -89,7 +90,7 @@ class LoginController extends Controller
 
     public function authenticated(Request $request, $user) 
     {
-        //return redirect('/home');
+        return redirect('/home');
     }
 
     //Doesn't work here, but for future use

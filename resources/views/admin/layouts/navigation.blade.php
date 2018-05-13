@@ -73,7 +73,7 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-                <i class="fa fa-fw fa-user"></i>Welcome, <strong>{{ Auth::user()->name }}</strong></a>   
+                <i class="fa fa-fw fa-user"></i>Welcome, <strong>{{ Auth::user()->username }}</strong></a>   
             </li>
             <li class="nav-item">
                 <a class="nav-link text-success" href="{{ URL::to('/') }}">

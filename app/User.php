@@ -41,6 +41,25 @@ class User extends Model
         return $users;
     }
 
+    public function oneUser($field, $value)
+    {
+        $user = DB::table('users')
+            ->select(
+                'users.id',
+                'users.username',
+                'users.password', 
+                'users.email',
+                'users.status', 
+                'users.created',
+                'users.access'
+            )
+            ->orderBy('access','desc')
+            ->where($field, $value)
+            ->first();
+
+        return $user;    
+    }
+
     /**
      * Get the total users available in the system
      */

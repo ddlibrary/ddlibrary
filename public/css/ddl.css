@@ -223,12 +223,12 @@ footer nav a{
 }
 
 /** Registration */
-.registration {
+.ddl-forms {
     display: flex;
     flex-wrap: wrap;
     padding: 1rem;
 }
-.registration header {
+.ddl-forms header {
     margin-bottom: 20px;
 }
 .content-body {
@@ -310,11 +310,11 @@ select.form-control:focus::-ms-value {
     width: 100%
 }
 
-.registration select {
+.ddl-forms select {
     width: 22rem;
 }
 
-.registration .description {
+.ddl-forms .description {
     line-height: 20px;
     font-size: .85em;
 }
@@ -329,4 +329,12 @@ select.form-control:focus::-ms-value {
 }
 .personal-information .left-side {
     flex: 1 1 55%;
+}
+
+.btnlink {
+    padding-top: 15px;
+}
+
+.btn-div {
+    margin-top: 15px;
 }
