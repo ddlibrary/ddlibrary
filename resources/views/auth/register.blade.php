@@ -1,77 +1,128 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
-
-                                @if ($errors->has('name'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<section class="registration">
+    <header>
+        <h1>Register an Account with DDL</h1>
+    </header>
+    <div class="content-body">
+        <form method="POST" action="{{ route('register') }}">
+        @csrf
+        <div class="form-item">
+            <label for="email"> 
+                <strong>Email</strong>
+                <span class="form-required" title="This field is required.">*</span>
+            </label>
+            <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="email" name="email" size="40" maxlength="40" type="email" value="{{ old('email') }}" required autofocus>
+            @if ($errors->has('email'))
+                <span class="invalid-feedback">
+                    <strong>{{ $errors->first('email') }}</strong>
+                </span><br>
+            @endif
+            <div class="description">
+                A valid e-mail address. All e-mails from the system will be sent to this address. The e-mail address is not made public and will only be used if you wish to receive a new password or wish to receive certain news or notifications by e-mail. 
+                If you do not have an email address, please enter this one: library@darakhtdanesh.org 
+                If you get an email address later, you can edit your profile and replace this field with your own email address.
             </div>
         </div>
+        <div class="form-item">
+            <label for="username"> 
+                <strong>Username</strong>
+                <span class="form-required" title="This field is required.">*</span>
+            </label>
+            <input class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" id="username" name="username" value="{{ old('username') }}" size="40" maxlength="40" type="text" required>
+            <div class="description">
+                Spaces are allowed; punctuation is not allowed except for periods, hyphens, apostrophes, and underscores.
+            </div>
+        </div>
+        <div class="form-item">
+            <label for="password"> 
+                <strong>Password</strong>
+                <span class="form-required" title="This field is required.">*</span>
+            </label>
+            <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" name="password" size="40" maxlength="40" type="password" required>
+            @if ($errors->has('password'))
+                <span class="invalid-feedback">
+                    <strong>{{ $errors->first('password') }}</strong>
+                </span>
+            @endif
+        </div>
+        <div class="personal-information">
+            <div class="right-side">
+                <div class="form-item">
+                    <label for="first_name"> 
+                        <strong>First Name</strong>
+                        <span class="form-required" title="This field is required.">*</span>
+                    </label>
+                    <input class="form-control" id="first_name" name="first_name"  value="{{ old('first_name') }}" size="40" maxlength="40" type="text" required>
+                </div>
+            </div>
+            <div class="left-side">
+                <div class="form-item">
+                    <label for="last_name"> 
+                        <strong>Last Name</strong>
+                        <span class="form-required" title="This field is required.">*</span>
+                    </label>
+                    <input class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" id="last_name" name="last_name"  value="{{ old('last_name') }}" size="40" maxlength="40" type="text" required>
+                </div>
+            </div>
+            <div class="right-side">
+                <div class="form-item">
+                    <label for="age"> 
+                        <strong>Age</strong>
+                    </label>
+                    <input class="form-control{{ $errors->has('age') ? ' is-invalid' : '' }}" id="age" name="age"  value="{{ old('age') }}" size="40" maxlength="40" type="text" required>
+                    @if ($errors->has('age'))
+                    <span class="invalid-feedback">
+                        <strong>{{ $errors->first('age') }}</strong>
+                    </span>
+                    @endif
+                </div>
+            </div>
+            <div class="left-side">
+                <div class="form-item">
+                    <label for="gender"> 
+                        <strong>Gender</strong>
+                        <span class="form-required" title="This field is required.">*</span>
+                    </label>
+                    <select class="form-control{{ $errors->has('gender') ? ' is-invalid' : '' }}" name="gender" id="gender" required>
+                        <option value="">- None -</option>
+                        <option {{ old('gender') == "Male" ? "selected" : "" }}>Male</option>
+                        <option {{ old('gender') == "Female" ? "selected" : "" }}>Female</option>
+                    </select>
+                </div>
+            </div>
+            <div class="right-side">
+                <div class="form-item">
+                    <label for="country"> 
+                        <strong>Country</strong>
+                        <span class="form-required" title="This field is required.">*</span>
+                    </label>
+                    <select class="form-control{{ $errors->has('country') ? ' is-invalid' : '' }}" name="country" id="country" required>
+                        <option value="">- None -</option>
+                        <option {{ old('country') == "Afghanistan" ? "selected" : "" }}>Afghanistan</option>
+                        <option {{ old('country') == "Canada" ? "selected" : "" }}>Canada</option>
+                    </select>
+                </div>
+            </div>
+            <div class="left-side">
+                <div class="form-item">
+                    <label for="city"> 
+                        <strong>City</strong>
+                        <span class="form-required" title="This field is required.">*</span>
+                    </label>
+                    <select class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}" name="city" id="city" required>
+                        <option value="">- None -</option>
+                        <option {{ old('city') == "Kabul" ? "selected" : "" }}>Kabul</option>
+                        <option {{ old('city') == "Vancouver" ? "selected" : "" }}>Vancouver</option>
+                    </select>
+                </div>
+            </div>
+            <div class="left-side">
+                <input class="form-control normalButton" type="submit" value="Submit">
+            </div>
+        </div>
+        </form>
     </div>
-</div>
+</section>
 @endsection

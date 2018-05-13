@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -49,9 +50,15 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'username' => 'required|string|max:255',
+            'password' => 'required|string|min:6',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'age' => 'required|integer|max:100',
+            'gender' => 'required',
+            'country' => 'required',
+            'city' => 'required'
         ]);
     }
 
@@ -63,10 +70,45 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        $user = new User();
+        $userId = $user->createUser($data);
+
+        if($userId){
+            if($user->createUserProfile($userId, $data)){
+                return $userId;
+            }
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        $userId = $this->create($request->all());
+
+        Auth::loginUsingId($userId, true);
+
+        return $this->registered($request, $userId)
+                        ?: redirect($this->redirectPath());
+    }
+
+    /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function registered(Request $request, $userId)
+    {
+        dd($user);
     }
 }

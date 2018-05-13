@@ -16,5 +16,4 @@
         <a href="{{ URL::to('/register') }}"><i class="fas fa-save fa-lg icons"></i>Register</a>
         @endif
     </nav>
-    </div>
 </header>

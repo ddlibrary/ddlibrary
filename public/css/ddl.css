@@ -221,3 +221,112 @@ footer nav a{
     padding: 15px;
     color: black;
 }
+
+/** Registration */
+.registration {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1rem;
+}
+.registration header {
+    margin-bottom: 20px;
+}
+.content-body {
+    width: 100%;
+}
+.form-item {
+    max-width: 100%;
+    margin-bottom: 15px;
+}
+.form-item label {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.form-control {
+    display: block;
+    padding: .375rem .75rem;
+    font-size: .9rem;
+    line-height: 1.6;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border-radius: .25rem;
+    -webkit-transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out, -webkit-box-shadow .15s ease-in-out
+}
+
+.form-control::-ms-expand {
+    background-color: transparent;
+    border: 0
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
+    box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25)
+}
+
+.form-control::-webkit-input-placeholder {
+    color: #6c757d;
+    opacity: 1
+}
+
+.form-control:-ms-input-placeholder,
+.form-control::-ms-input-placeholder {
+    color: #6c757d;
+    opacity: 1
+}
+
+.form-control::placeholder {
+    color: #6c757d;
+    opacity: 1
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: #e9ecef;
+    opacity: 1
+}
+
+select.form-control:not([size]):not([multiple]) {
+    height: calc(2.19rem + 2px)
+}
+
+select.form-control:focus::-ms-value {
+    color: #495057;
+    background-color: #fff
+}
+
+.form-control-file,
+.form-control-range {
+    display: block;
+    width: 100%
+}
+
+.registration select {
+    width: 22rem;
+}
+
+.registration .description {
+    line-height: 20px;
+    font-size: .85em;
+}
+
+.personal-information {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.personal-information .right-side {
+    flex: 1 1 45%;
+}
+.personal-information .left-side {
+    flex: 1 1 55%;
+}

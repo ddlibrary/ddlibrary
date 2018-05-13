@@ -1,4 +1,7 @@
 @extends('layouts.main')
+@section('search')
+    @include('layouts.search')
+@endsection
 @section('content')
 <section class="subjects">
     <header>

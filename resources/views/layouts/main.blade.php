@@ -11,7 +11,7 @@
 </head>
 <body>
     @include('layouts.banner')
-    @include('layouts.search')
+    @yield('search')
     <main>
             @yield('content')
     </main>

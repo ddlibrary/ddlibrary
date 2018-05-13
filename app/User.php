@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Model
 {
@@ -15,7 +16,7 @@ class User extends Model
         $users = DB::table('users')
             ->select(
                 'users.id',
-                'users.name',
+                'users.username',
                 'users.password', 
                 'users.email',
                 'users.status', 
@@ -28,7 +29,7 @@ class User extends Model
             ->orderBy('access','desc')
             ->groupBy(
                 'users.id',
-                'users.name',
+                'users.username',
                 'users.password',
                 'users.access',
                 'users.email',
@@ -102,5 +103,31 @@ class User extends Model
             ->where('users.id',$userid)
             ->where('users_roles.roleid', 5)
             ->first();
+    }
+
+    public function createUser($data)
+    {
+        return DB::table('users')->insertGetId([
+            'username'      => $data['username'],
+            'password'      => Hash::make($data['password']),
+            'email'         => $data['email'],
+            'created'       => \Carbon\Carbon::now()->timestamp,
+            'updated'       => \Carbon\Carbon::now()->timestamp
+        ]);
+    }
+
+    public function createUserProfile($userId, $data)
+    {
+        return DB::table('users_profiles')->insert([
+            'userid'        => $userId,
+            'first_name'    => $data['first_name'], 
+            'last_name'     => $data['last_name'],
+            'country'       => $data['country'],
+            'province'      => $data['city'],
+            'gender'        => $data['gender'],
+            'age'           => $data['age'],
+            'created'       => \Carbon\Carbon::now()->timestamp,
+            'updated'       => \Carbon\Carbon::now()->timestamp
+        ]);
     }
 }
