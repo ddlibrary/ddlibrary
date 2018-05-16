@@ -55,6 +55,10 @@ body{
 body main section footer nav {
     display: flex;
 }
+
+main {
+    
+}
 .header {
     display: flex;
     flex-wrap: wrap;
@@ -83,6 +87,7 @@ body main section footer nav {
 }
 .banner {
     padding: 5px;
+    margin: 5px;
     text-align: center;
     background: #eeeeee;
 }
@@ -145,7 +150,7 @@ body main section footer nav {
     margin: 5px;
     background: #eeeeee;
 }
-.content {
+.sectionContent {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -337,4 +342,15 @@ select.form-control:focus::-ms-value {
 
 .btn-div {
     margin-top: 15px;
+}
+
+.generalContent {
+    padding: 5px;
+    margin: 5px;
+}
+
+.generalContent ul {
+    display: block;
+    list-style-type: disc;
+    margin: 0 0 10px 25px;
 }

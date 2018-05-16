@@ -31,4 +31,22 @@ class Page extends Model
 
         return $records;
     }
+
+    public function onePage($pageId)
+    {
+        $record = DB::table('pages')
+                ->select(
+                    'pageid',
+                    'title',
+                    'summary',
+                    'body',
+                    'language',
+                    'created',
+                    'updated'
+                )
+                ->where('pageid',$pageId)
+                ->first();
+
+        return $record;    
+    }
 }

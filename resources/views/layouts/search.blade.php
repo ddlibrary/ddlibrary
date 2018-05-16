@@ -6,10 +6,10 @@
     <input type="button" class="searchButton" value="Search">
 
     <div class="ddlButtons">
-            <input type="button" class="normalButton" value="About DD Library"> 
-            <input type="button" class="normalButton" value="About Us"> 
-            <input type="button" class="normalButton" value="Donate"> 
-            <input type="button" class="normalButton" value="Help"> 
+    <input type="button" class="normalButton" value="About DD Library" onclick="location.href='{{ URL::to('pages/view/15') }}'"> 
+            <input type="button" class="normalButton" value="How to use the Library" onclick="location.href='{{ URL::to('pages/view/16') }}'"> 
+            <input type="button" class="normalButton" value="Support the Library" onclick="location.href='{{ URL::to('pages/view/21') }}'"> 
+            <input type="button" class="normalButton" value="Help" onclick="location.href='{{ URL::to('pages/view/20') }}'"> 
     </div>
 </section>
 <section class="ddlTopNews">

@@ -23,4 +23,11 @@ class PageController extends Controller
         $pages = $myPages->listPages();
         return view('admin.pages.pages_list', compact('pages'));
     }
+
+    function view($pageId)
+    {
+        $myPage = new Page();
+        $page = $myPage->onePage($pageId);
+        return view('pages.pages_view', compact('page'));
+    }
 }

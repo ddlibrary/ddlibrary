@@ -8,7 +8,7 @@
         <h2>Browse by Subjects</h2>
     </header>
     <hr>
-    <div class="content">
+    <div class="sectionContent">
         <article>
             <i class="fas fa-angle-double-left fa-3x"></i>
         </article>
@@ -57,7 +57,7 @@
         <h2>Browse by Collections</h2>
     </header>
     <hr>
-    <div class="content">
+    <div class="sectionContent">
         <article>
             <i class="fas fa-angle-double-left fa-3x"></i>
         </article>

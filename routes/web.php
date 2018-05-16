@@ -30,6 +30,8 @@ Route::get('admin/reports/ga', 'ReportController@gaReport');
 
 //Pages
 Route::get('admin/pages','PageController@index');
+Route::get('admin/pages/view/{pageId}','PageController@view');
+Route::get('pages/view/{pageId}','PageController@view');
 
 //News
 Route::get('admin/news','NewsController@index');

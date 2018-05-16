@@ -50,7 +50,7 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Abstract</strong></td>
-                                    <td colspan="3">{!! checkAbstract($resource->abstract) !!}</td>
+                                    <td colspan="3">{!! fixImage($resource->abstract) !!}</td>
                                 </tr>
                                 </tbody>
                             </table>
