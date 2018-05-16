@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\News;
 
 use Illuminate\Http\Request;
 
@@ -23,6 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        //latest news for the homepage
+        $latestNews         = News::listNews()->sortByDesc('created')->take(4);
+        return view('home', compact('latestNews'));
     }
 }

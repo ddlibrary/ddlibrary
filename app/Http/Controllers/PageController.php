@@ -14,11 +14,12 @@ class PageController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('admin');
+        
     }
     
     function index ()
     {
+        $this->middleware('admin');
         $myPages = new Page();
         $pages = $myPages->listPages();
         return view('admin.pages.pages_list', compact('pages'));

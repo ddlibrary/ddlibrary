@@ -14,13 +14,21 @@ class NewsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('admin');
+        
     }
     
     function index ()
     {
+        $this->middleware('admin');
         $myNews = new News();
         $newsRecords = $myNews->listNews();
         return view('admin.news.news_list', compact('newsRecords'));
+    }
+
+    function view($newsId)
+    {
+        $myNews = new News();
+        $news = $myNews->oneNews($newsId);
+        return view('news.news_view', compact('news'));
     }
 }

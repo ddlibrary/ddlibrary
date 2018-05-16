@@ -107,26 +107,12 @@
             <h2>Latest News</h2>
         </header>
         <hr>
+        @foreach($latestNews AS $news)
         <article class="latestNewsContent">
-            <h3>Translation Day in Kabul</h3>
-            <i class="newsDescription">April 29th, 2018</i>
+            <a href="{{ URL::to('news/view/'.$news->newsid) }}"><p>{{ $news->title }}</p></a>
+            <i class="newsDescription">{{ \Carbon\Carbon::parse(Carbon\Carbon::createFromTimestamp($news->created))->format('F dS, Y') }}</i>
         </article>
-        <article class="latestNewsContent">
-            <h3>DDL Director to Be a Judge With Story Shares</h3>
-            <i class="newsDescription">April 17th, 2018</i>
-        </article>
-        <article class="latestNewsContent">
-            <h3>DDL in Teacher Training Colleges</h3>
-            <i class="newsDescription">April 9th, 2018</i>
-        </article>
-        <article class="latestNewsContent">
-            <h3>DD Library Interviewed in New York Times</h3>
-            <i class="newsDescription">February 16th, 2018</i>
-        </article>
-        <article class="latestNewsContent">
-            <h3>Open Education Global</h3>
-            <i class="newsDescription">December 19th, 2017</i>
-        </article>
+        @endforeach
     </div>
     <div class="ddlVideo">
         <header>

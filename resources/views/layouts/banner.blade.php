@@ -1,6 +1,6 @@
 <header class="header">
     <div class="ddlLogo">
-        <img class="headerImg" src="{{ asset('storage/files/logo-dd.png') }}">
+        <a href="{{ URL::to('/') }}"><img class="headerImg" src="{{ asset('storage/files/logo-dd.png') }}"></a>
     </div>
     <nav class="headerRight">
         <a href="{{ URL::to('/') }}"><i class="fas fa-home fa-lg icons"></i>Home</a>

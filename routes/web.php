@@ -35,6 +35,8 @@ Route::get('pages/view/{pageId}','PageController@view');
 
 //News
 Route::get('admin/news','NewsController@index');
+Route::get('admin/news/view{newsId}','NewsController@view');
+Route::get('news/view/{newsId}','NewsController@view');
 
 //Menu
 Route::get('admin/menu','MenuController@index');

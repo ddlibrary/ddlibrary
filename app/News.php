@@ -31,4 +31,22 @@ class News extends Model
 
         return $records;
     }
+
+    public function oneNews($newsId)
+    {
+        $record = DB::table('news')
+                ->select(
+                    'newsid',
+                    'title',
+                    'summary',
+                    'body',
+                    'language',
+                    'created',
+                    'updated'
+                )
+                ->where('newsid',$newsId)
+                ->first();
+
+        return $record;
+    }
 }

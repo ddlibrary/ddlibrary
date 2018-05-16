@@ -57,7 +57,7 @@ body main section footer nav {
 }
 
 main {
-    
+    min-height: 600px; 
 }
 .header {
     display: flex;
