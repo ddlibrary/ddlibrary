@@ -15,11 +15,12 @@ class ResourceController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('admin');
+        
     }
     
     public function index()
     {
+        $this->middleware('admin');
         $myResources = new Resource();
         $resources = $myResources->paginateResources();
         return view('admin.resources',compact('resources'));
@@ -27,6 +28,7 @@ class ResourceController extends Controller
 
     public function viewResource($resourceId)
     {
+        $this->middleware('admin');
         $myResources = new Resource();
         $resource = Resource::resources()->where('resourceid',$resourceId)->first();
         $resourceLevels = $myResources->resourceAttributes($resourceId,'resources_levels','resource_level');
@@ -44,5 +46,13 @@ class ResourceController extends Controller
             'resourceLearningResourceTypes',
             'resourcePublishers'
         ));
+    }
+
+    public function list(Request $request)
+    {
+        $searchQuery = $request->input('search');
+        $myResources = new Resource();
+        $resources = $myResources->searchResources($searchQuery);
+        dd($resources);
     }
 }

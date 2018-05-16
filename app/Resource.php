@@ -131,4 +131,15 @@ class Resource extends Model
                     ->get();
         return $records;   
     }
+
+    public function searchResources($searchQuery)
+    {
+        $records = DB::table('resources')
+            ->select('*')
+            ->where('title','like','%'.$searchQuery.'%')
+            ->orwhere('abstract', 'like' , '%'.$searchQuery.'%')
+            ->get();
+
+        return $records;
+    }
 }

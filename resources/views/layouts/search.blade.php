@@ -2,8 +2,11 @@
     <header>
         <h1>Free and open educational resources for Afghanistan</h1>
     </header>
-    <input type="search" class="formSearch" placeholder="Search our library">
-    <input type="button" class="searchButton" value="Search">
+    <form method="POST" action="{{ route('resourceList') }}">
+        @csrf
+        <input type="search" name="search" class="formSearch" placeholder="Search our library">
+        <input type="submit" class="searchButton" value="Search">
+    </form>
 
     <div class="ddlButtons">
     <input type="button" class="normalButton" value="About DD Library" onclick="location.href='{{ URL::to('pages/view/15') }}'"> 
