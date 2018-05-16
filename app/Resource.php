@@ -17,7 +17,7 @@ class Resource extends Model
                 'resources.abstract',
                 'resources.userid',
                 'resources.creative_commons',
-                'users.name AS author',
+                'users.username AS author',
                 'resources.status',
                 'resources.updated'
             )
@@ -37,7 +37,7 @@ class Resource extends Model
                 'resources.title',
                 'resources.abstract',
                 'resources.userid',
-                'users.name AS author', 
+                'users.username AS author', 
                 'resources.status',
                 'resources.updated'
             )

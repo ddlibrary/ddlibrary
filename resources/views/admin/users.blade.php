@@ -42,7 +42,7 @@
             @foreach ($users as $indexkey => $user)
               <tr>
                 <td>{{ (($users->currentPage() - 1) * 50)+$indexkey + 1 }}</td>
-                <td><a href="users/view/{{$user->id}}">{{ $user->name }}</a><br>{{ $user->email }}</td>
+                <td><a href="users/view/{{$user->id}}">{{ $user->username }}</a><br>{{ $user->email }}</td>
                 <td>{{ ($user->status==0?"Not Active":"Active") }}</td>
                 <td>{{ $user->all_roles }}</td>
                 <td>{{ Carbon\Carbon::createFromTimestamp($user->created)->diffForHumans() }}</td>

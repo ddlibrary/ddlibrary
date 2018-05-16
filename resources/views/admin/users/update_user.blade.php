@@ -14,7 +14,7 @@
                 <!-- Example Bar Chart Card-->
                 <div class="card mb-3">
                     <div class="card-header">
-                        <i class="fa fa-list"></i> Update user details for <strong>{{ $user->name }}</strong>
+                        <i class="fa fa-list"></i> Update user details for <strong>{{ $user->username }}</strong>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -22,7 +22,7 @@
                                 <tbody>
                                 <tr>
                                     <td><strong>Username</strong></td>
-                                    <td><input type="text" name="name" class="form-control" value="{{ $user->name }}"></td>
+                                    <td><input type="text" name="name" class="form-control" value="{{ $user->username }}"></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Email</strong></td>
@@ -47,7 +47,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <input class="btn btn-outline-dark" type="button" onclick="location.href='{{ URL::to('admin/users/update/'.$user->userid) }}'" value="Update">
+                            <input class="btn btn-outline-dark" type="button" onclick="location.href='{{ URL::to('admin/users/update/'.$user->id) }}'" value="Update">
                         </div>
                     </div>
                 </div>
