@@ -53,6 +53,27 @@ class ResourceController extends Controller
         $searchQuery = $request->input('search');
         $myResources = new Resource();
         $resources = $myResources->searchResources($searchQuery);
-        dd($resources);
+        return view('resources.resources_list', compact('resources'));
+    }
+
+    public function viewPublicResource($resourceId)
+    {
+        $myResources = new Resource();
+        $resource = Resource::resources()->where('resourceid',$resourceId)->first();
+        $resourceLevels = $myResources->resourceAttributes($resourceId,'resources_levels','resource_level');
+        $resourceAuthors = $myResources->resourceAttributes($resourceId,'resources_authors','author_name');
+        $resourceAttachments = $myResources->resourceAttributes($resourceId,'resources_attachments','file_name'); 
+        $resourceSubjectAreas = $myResources->resourceAttributes($resourceId,'resources_subject_areas','subject_area');
+        $resourceLearningResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type');
+        $resourcePublishers = $myResources->resourceAttributes($resourceId,'resources_publishers','publisher_name');
+        return view('resources.resources_view', compact(
+            'resource',
+            'resourceLevels',
+            'resourceAuthors',
+            'resourceAttachments',
+            'resourceSubjectAreas',
+            'resourceLearningResourceTypes',
+            'resourcePublishers'
+        ));   
     }
 }

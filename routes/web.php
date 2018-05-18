@@ -25,6 +25,7 @@ Route::get('admin/users/update/{userId}', 'UserController@updateUser');
 Route::get('admin/resources', 'ResourceController@index');
 Route::get('admin/resources/view/{resourceId}', 'ResourceController@viewResource');
 Route::post('resources/list', 'ResourceController@list')->name('resourceList');
+Route::get('resources/view/{resourceId}', 'ResourceController@viewPublicResource');
 
 //Report
 Route::get('admin/reports/ddl', 'ReportController@index');

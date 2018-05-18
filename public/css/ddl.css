@@ -117,7 +117,7 @@ main {
     background-color: #dddddd;
 }
 .ddlButtons {
-    margin: 45px 0 15px 0;
+    margin: 25px 0 15px 0;
 }
 .ddlTopNews {
     padding: 5px;
@@ -353,4 +353,165 @@ select.form-control:focus::-ms-value {
     display: block;
     list-style-type: disc;
     margin: 0 0 10px 25px;
+}
+
+.resourceList {
+    display: flex;
+    padding: 5px;
+    margin: 5px;
+}
+
+.resourceList aside {
+    flex: 1 1 25%;
+    border-right: 1px solid #eee;
+}
+
+.resourceList .resourceInformationSection {
+    flex: 1 1 75%;
+    flex-wrap: wrap;
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+}
+
+.resourceList .resourceInformation {
+    flex-basis: auto;
+    padding: 5px;
+    margin: 5px;
+}
+.resourceList .resourceTitle {
+    border: 1px solid #eee;
+    width: 200px;
+    height: 50px;
+}
+.resourceList .resourceImg {
+    width: 200px;
+    height: 167px;
+}
+.resourceList .resourceDetails {
+    display: flex;
+    border: 1px solid #eee;   
+    width: 200px;
+}
+
+.resourceList .resourceDetails article {
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    margin: 2px;
+}
+
+.resourceList .resourceDetails span {
+    text-align: center;
+}
+
+.resourceList .resourceDetails i {
+    text-align: center; 
+}
+
+.resourceView {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px;
+    margin: 5px;
+}
+
+.resourceView aside {
+    flex: 1 1 24%;
+    border-right: 1px solid #eee;
+}
+
+.resourceView .resourceViewInformationSection {
+    flex: 1 1 75%;
+    padding-right: 5px;
+    margin-left: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.resourceView .resourceViewImg {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    width: 282px;
+    height: 254px;
+}
+
+.resourceView .resourceViewTitleBox {
+    border: 1px solid #eee;
+    padding: 5px;
+}
+
+.resourceViewTitleBox p {
+    min-height: 100px;
+}
+
+.resourceView .resourceViewDetails {
+    border: 1px solid #eee;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+.resourceView .downloadBox {
+    display: block;
+    text-align: center;
+    border: 1px solid #eee;
+    width: 271px;
+    margin: 0 auto;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.resourceView .downloadBox:hover {
+    background-color: #ffa800; 
+}
+
+.resourceView .ResourceSocialMedia{
+    margin-left: 35px;
+    margin-bottom: 20px;
+}
+
+.resourceView .ResourceViewRelatedItems {
+    width: 288px;
+    margin: 0 auto;  
+}
+
+.resourceView .ResourceRelatedItemsBox {
+    border: 1px solid #eee;
+    padding: 5px; 
+}
+
+.ResourceRelatedItemsBox span {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.resourceView .relatedItemsImg {
+    float: left;
+    margin-right: 5px;
+}
+
+.resourceView .ResourceViewComment {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid #eee;
+    padding: 5px;
+    margin: 5px;   
+    width: 100%;
+}
+
+.ResourceViewComment header {
+    flex: 1 1 25%;
+}
+
+.ResourceViewComment div {
+    flex: 1 1 75%;
+    text-align: right;
+}
+
+.ResourceViewComment article {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
 }

@@ -62,6 +62,7 @@ if (! function_exists('fixImage')) {
         if(count($matches[1])> 0){
             $replaceMe = array();
             $originalMe = array();
+            $folders = array('icons');
             for($i=0; $i<count($matches[1]); $i++){
                 $absStr = $matches[1][$i];
                 $absArray = explode('/',$absStr);
@@ -113,6 +114,22 @@ if (! function_exists('isAdmin')) {
             return TRUE;
         }else{
             return FALSE;
+        }
+    }
+}
+
+if(! function_exists('getImagefromResource')) {
+    function getImagefromResource($abstract)
+    {
+        preg_match('/src="([^"]*)"/',$abstract,$matches);
+        if(count($matches)> 0){
+            $absStr = $matches[1];
+            $absArray = explode('/',$absStr);
+            $imageName = last($absArray);
+            $fixedImage = Storage::disk('public')->url($imageName);
+            return $fixedImage;
+        }else{
+            return "http://via.placeholder.com/282x254";
         }
     }
 }
