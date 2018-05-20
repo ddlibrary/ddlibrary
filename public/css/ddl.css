@@ -136,15 +136,7 @@ main {
     margin: 15px;
     padding: 15px;
 }
-.subjects i{
-    color: gray;
-}
-.subjects i:hover{
-    color: black;
-}
-.subjects article:first-child, .subjects article:last-child {
-    margin-top: 36px;
-}
+
 .collections{
     padding: 5px;
     margin: 5px;
@@ -163,15 +155,6 @@ main {
     text-align: center;
     margin: 15px;
     padding: 15px;
-}
-.collections i{
-    color: gray;
-}
-.collections i:hover{
-    color: black;
-}
-.collections article:first-child, .collections article:last-child {
-    margin-top: 36px;
 }
 .latestNews{
     display: flex;
@@ -443,6 +426,10 @@ select.form-control:focus::-ms-value {
     padding: 5px;
 }
 
+.resourceViewTitleBox img:first-child {
+    display: none;
+}
+
 .resourceViewTitleBox p {
     min-height: 100px;
 }
@@ -478,11 +465,18 @@ select.form-control:focus::-ms-value {
 }
 
 .resourceView .ResourceRelatedItemsBox {
+    display: flex;
+    flex-wrap: wrap;
     border: 1px solid #eee;
     padding: 5px; 
 }
 
-.ResourceRelatedItemsBox span {
+.ResourceRelatedItemsBox .relatedItem {
+    padding: 5px;
+    margin: 5px;
+}
+
+.ResourceRelatedItemsBox .relatedItem span {
     overflow-wrap: break-word;
     word-wrap: break-word;
 }

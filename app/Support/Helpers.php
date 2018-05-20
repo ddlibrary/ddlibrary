@@ -56,7 +56,7 @@ if(! function_exists('giveMeCC')){
 //Abstracts in Drupal installation had /sites/default/files/learn-1044078_960_720_0.jpg type image links
 //In here, I am fixing that and applying Laravel's way of showing images
 if (! function_exists('fixImage')) {
-    function fixImage($abstract, $folder="")
+    function fixImage($abstract)
     {
         preg_match_all('/src="([^"]*)"/',$abstract,$matches);
         if(count($matches[1])> 0){
@@ -67,7 +67,8 @@ if (! function_exists('fixImage')) {
                 $absStr = $matches[1][$i];
                 $absArray = explode('/',$absStr);
                 $imageName = last($absArray);
-                $fixedImage = Storage::disk('public')->url(($folder?$folder."/":"").$imageName);
+                $fixedImage = Storage::disk('public')->url($imageName);
+
                 array_push($replaceMe, $fixedImage);
                 array_push($originalMe, $absStr);
             }
@@ -119,7 +120,7 @@ if (! function_exists('isAdmin')) {
 }
 
 if(! function_exists('getImagefromResource')) {
-    function getImagefromResource($abstract)
+    function getImagefromResource($abstract, $size='282x254')
     {
         preg_match('/src="([^"]*)"/',$abstract,$matches);
         if(count($matches)> 0){
@@ -129,7 +130,7 @@ if(! function_exists('getImagefromResource')) {
             $fixedImage = Storage::disk('public')->url($imageName);
             return $fixedImage;
         }else{
-            return "http://via.placeholder.com/282x254";
+            return "http://via.placeholder.com/".$size;
         }
     }
 }

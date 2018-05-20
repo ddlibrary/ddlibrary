@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Config;
 
 class Resource extends Model
 {
@@ -140,6 +141,46 @@ class Resource extends Model
             ->orwhere('abstract', 'like' , '%'.$searchQuery.'%')
             ->get();
 
+        return $records;
+    }
+
+    public function getRelatedResources($resourceId, $subjectAreas)
+    {
+        $ids = array();
+        foreach($subjectAreas AS $item)
+        {
+            array_push($ids, $item->subject_area);
+        }
+
+        $records = DB::table('resources')
+            ->select(
+                'resources.resourceid',
+                'resources.title',
+                'resources.abstract'
+                )
+            ->join('resources_subject_areas AS rsa','rsa.resourceid','=','resources.resourceid')
+            //not to include the record itself in the related items part
+            ->where('resources.resourceid','!=', $resourceId)
+            ->whereIn('rsa.subject_area',$ids)
+            ->limit(5)
+            ->get();
+
+        return $records;
+    }
+
+    public function subjectIconsAndTotal()
+    {
+        $records = DB::table('resources_subject_areas AS sarea')
+            ->select(
+                'sticons.file_name', 
+                'starea.name', 
+                DB::raw('count(sarea.subject_area) AS total')
+            )
+            ->join('static_subject_areas AS starea','starea.id', '=', 'sarea.subject_area')
+            ->join('static_subject_area_icons AS sticons','sticons.said','=','starea.id')
+            ->where('starea.language', Config::get('app.locale'))
+            ->groupBy('sarea.subject_area', 'sticons.file_name','starea.name')
+            ->get();
         return $records;
     }
 }

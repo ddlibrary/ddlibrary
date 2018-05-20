@@ -66,6 +66,8 @@ class ResourceController extends Controller
         $resourceSubjectAreas = $myResources->resourceAttributes($resourceId,'resources_subject_areas','subject_area');
         $resourceLearningResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type');
         $resourcePublishers = $myResources->resourceAttributes($resourceId,'resources_publishers','publisher_name');
+
+        $relatedItems = $myResources->getRelatedResources($resourceId, $resourceSubjectAreas);
         return view('resources.resources_view', compact(
             'resource',
             'resourceLevels',
@@ -73,7 +75,8 @@ class ResourceController extends Controller
             'resourceAttachments',
             'resourceSubjectAreas',
             'resourceLearningResourceTypes',
-            'resourcePublishers'
+            'resourcePublishers',
+            'relatedItems'
         ));   
     }
 }

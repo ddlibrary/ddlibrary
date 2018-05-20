@@ -9,47 +9,13 @@
     </header>
     <hr>
     <div class="sectionContent">
+        @foreach($subjectAreas as $subject)
         <article>
-            <i class="fas fa-angle-double-left fa-3x"></i>
+            <img src="{{ Storage::disk('public')->url($subject->file_name) }}">
+            <p>{{ $subject->name }}</p>
+            <p>{{ $subject->total }} Resources</p>
         </article>
-        <article>
-            <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
-            <p>Social Science</p>
-            <p>950 Resources</p>
-        </article>
-        <article>
-            <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
-            <p>Social Science</p>
-            <p>950 Resources</p>
-        </article>
-        <article>
-            <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
-            <p>Social Science</p>
-            <p>950 Resources</p>
-        </article>
-        <article>
-            <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
-            <p>Social Science</p>
-            <p>950 Resources</p>
-        </article>
-        <article>
-            <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
-            <p>Social Science</p>
-            <p>950 Resources</p>
-        </article>
-        <article>
-            <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
-            <p>Social Science</p>
-            <p>950 Resources</p>
-        </article>
-        <article>
-            <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
-            <p>Social Science</p>
-            <p>950 Resources</p>
-        </article>
-        <article>
-            <i class="fas fa-angle-double-right fa-3x"></i>
-        </article>
+        @endforeach
     </div>
 </section>
 <section class="collections">
@@ -59,9 +25,6 @@
     <hr>
     <div class="sectionContent">
         <article>
-            <i class="fas fa-angle-double-left fa-3x"></i>
-        </article>
-        <article>
             <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
             <p>Social Science</p>
             <p>950 Resources</p>
@@ -95,9 +58,6 @@
             <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
             <p>Social Science</p>
             <p>950 Resources</p>
-        </article>
-        <article>
-            <i class="fas fa-angle-double-right fa-3x"></i>
         </article>
     </div>
 </section>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\News;
+use App\Resource;
 
 use Illuminate\Http\Request;
 
@@ -24,8 +25,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $myResources = new Resource();
         //latest news for the homepage
         $latestNews         = News::listNews()->sortByDesc('created')->take(4);
-        return view('home', compact('latestNews'));
+        $subjectAreas = $myResources->subjectIconsAndTotal();
+
+        return view('home', compact('latestNews','subjectAreas'));
     }
 }

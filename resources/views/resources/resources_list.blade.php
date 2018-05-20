@@ -35,6 +35,7 @@
         </ul>
     </aside>
     <section class="resourceInformationSection">
+    @if (count($resources) > 0)
     @foreach ($resources AS $resource)
     <article class="resourceInformation">
         <img class="resourceImg" src="{{ getImagefromResource($resource->abstract) }}">
@@ -59,6 +60,9 @@
         </div>
     </article>
     @endforeach
+    @else
+    <h2>No records found!</h2>
+    @endif
     </section>
 </section>
 @endsection 

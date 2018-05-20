@@ -5,7 +5,7 @@
         <h1>{{ $news->title }}</h1>
     </header>
     <article>
-        {!! fixImage($news->body,"content-images") !!}
+        {!! fixImage($news->body) !!}
     </article>
 </section>
 @endsection 
