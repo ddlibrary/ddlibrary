@@ -50,15 +50,21 @@ class ResourceController extends Controller
 
     public function list(Request $request)
     {
-        if(session('search')){
-            $searchQuery = session('session');    
-        }else{
-            $searchQuery = $request->input('search');
-            session(['search' => $searchQuery]);
-        }
-
         $myResources = new Resource();
-        $resources = $myResources->searchResources($searchQuery);
+
+        $subjectArea = $request->only('subject_area');
+        if($subjectArea){
+            $resources = $myResources->paginateResourcesBySubjectArea($subjectArea['subject_area']);
+            $resources->appends(['subject_area' => $subjectArea['subject_area']])->links();
+        }else{
+            if(session('search')){
+                $searchQuery = session('session');    
+            }else{
+                $searchQuery = $request->input('search');
+                session(['search' => $searchQuery]);
+            }
+            $resources = $myResources->searchResources($searchQuery);
+        }
         return view('resources.resources_list', compact('resources'));
     }
 

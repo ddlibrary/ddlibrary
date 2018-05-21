@@ -10,7 +10,7 @@
     <hr>
     <div class="sectionContent">
         @foreach($subjectAreas as $subject)
-        <article class="homeSubjectAreas" onclick="location.href='{{ URL::to('resources/subject_area/'.$subject->subject_area) }}'">
+        <article class="homeSubjectAreas" onclick="location.href='{{ URL::to('resources/list?subject_area='.$subject->subject_area) }}'">
             <img src="{{ Storage::disk('public')->url($subject->file_name) }}">
             <p>{{ $subject->name }}</p>
             <p>{{ $subject->total }} Resources</p>
@@ -29,11 +29,11 @@
         if($item->url){
             $url = URL::to($item->url);
         }elseif($item->type_id){
-            $url = URL::to('resources/type_id='.$item->type_id);
+            $url = URL::to('resources/list?type_id='.$item->type_id);
         }elseif($item->subject_id){
-            $url = URL::to('resources/subject_id='.$item->subject_id);  
+            $url = URL::to('resources/list?subject_id='.$item->subject_id);  
         }elseif($item->level_id){
-            $url = URL::to('resources/level_id='.$item->level_id);    
+            $url = URL::to('resources/list?level_id='.$item->level_id);    
         }else{
             $url = URL::to('/');
         }

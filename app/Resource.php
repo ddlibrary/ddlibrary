@@ -93,6 +93,31 @@ class Resource extends Model
         return $records;   
     }
 
+    public function paginateResourcesBySubjectArea($subjectAreaId)
+    {
+        $subjectAreaId = $subjectAreaId;
+        $records = DB::table('resources')
+            ->select(
+                'resources.resourceid',
+                'resources.language', 
+                'resources.title',
+                'resources.abstract',
+                'resources.userid',
+                'users.username AS author', 
+                'resources.status',
+                'resources.updated'
+            )
+            ->join('users', 'users.id', '=', 'resources.userid')
+            ->join('resources_subject_areas', function ($join) use($subjectAreaId) {
+                $join->on('resources_subject_areas.resourceid', '=', 'resources.resourceid')
+                     ->where('resources_subject_areas.subject_area', '=', $subjectAreaId);
+            })
+            ->where('resources.language',Config::get('app.locale'))
+            ->paginate(30);
+
+        return $records;     
+    }
+
     //Total resources based on level
     public function totalResourcesByLevel()
     {
