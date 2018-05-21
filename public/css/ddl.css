@@ -147,6 +147,52 @@ main {
     flex-wrap: wrap;
     justify-content: center;
 }
+
+.sectionContent .homeSubjectAreas:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.resourcePagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: .25rem;
+    width: 100%
+}
+
+.resourcePagination ul {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.resourcePagination ul li {
+    display: list-item;
+    float: left;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.page-link:not(:disabled):not(.disabled) {
+    cursor: pointer;
+}
+
+.page-link {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
 .content article:hover {
     opacity: 0.5;
     cursor: pointer;
@@ -357,6 +403,11 @@ select.form-control:focus::-ms-value {
     display: flex;
 }
 
+.resourceInformationSection .resourceArticle:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
 .resourceList .resourceInformation {
     flex-basis: auto;
     padding: 5px;
@@ -484,6 +535,8 @@ select.form-control:focus::-ms-value {
 .resourceView .relatedItemsImg {
     float: left;
     margin-right: 5px;
+    width: 55px;
+    height: 50px;
 }
 
 .resourceView .ResourceViewComment {

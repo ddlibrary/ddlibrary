@@ -5,7 +5,7 @@
 @section('content')
 <section class="resourceList">
     <aside>
-        <h3>320 Results</h3>
+        <h3>{{ $resources->total() }} Results</h3>
         <h4>Subject</h4>
         <ul>
             <li><input type="checkbox">Applied Science</li>
@@ -37,13 +37,9 @@
     <section class="resourceInformationSection">
     @if (count($resources) > 0)
     @foreach ($resources AS $resource)
-    <article class="resourceInformation">
+    <article class="resourceArticle resourceInformation" onclick="location.href='{{ URL::to('resources/view/'.$resource->resourceid) }}'">
         <img class="resourceImg" src="{{ getImagefromResource($resource->abstract) }}">
-        <div class="resourceTitle">
-            <a href="{{ URL::to('resources/view/'.$resource->resourceid) }}">
-                {{ str_limit($resource->title, 55), ' (..)' }}
-            </a>
-        </div>
+        <div class="resourceTitle">{{ str_limit($resource->title, 55), ' (..)' }}</div>
         <div class="resourceDetails">
             <article>
                 <i class="far fa-file-audio"></i><span>Audio</span>
@@ -63,6 +59,9 @@
     @else
     <h2>No records found!</h2>
     @endif
+    <div class="resourcePagination">
+        {{ $resources->links() }}
+    </div>
     </section>
 </section>
 @endsection 

@@ -4,7 +4,7 @@
     </header>
     <form method="POST" action="{{ route('resourceList') }}">
         @csrf
-        <input type="search" name="search" class="formSearch" placeholder="Search our library">
+        <input type="search" name="search" class="formSearch" value="{{ session('search') }}" placeholder="Search our library">
         <input type="submit" class="searchButton" value="Search">
     </form>
 

@@ -23,13 +23,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $myResources = new Resource();
+        //setting the search session empty
+        $request->session()->forget('search');
         //latest news for the homepage
         $latestNews         = News::listNews()->sortByDesc('created')->take(4);
         $subjectAreas = $myResources->subjectIconsAndTotal();
-
-        return view('home', compact('latestNews','subjectAreas'));
+        $featured = $myResources->featuredCollections();
+        return view('home', compact('latestNews','subjectAreas','featured'));
     }
 }

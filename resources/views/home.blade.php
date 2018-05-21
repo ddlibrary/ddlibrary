@@ -10,7 +10,7 @@
     <hr>
     <div class="sectionContent">
         @foreach($subjectAreas as $subject)
-        <article>
+        <article class="homeSubjectAreas" onclick="location.href='{{ URL::to('resources/subject_area/'.$subject->subject_area) }}'">
             <img src="{{ Storage::disk('public')->url($subject->file_name) }}">
             <p>{{ $subject->name }}</p>
             <p>{{ $subject->total }} Resources</p>
@@ -24,41 +24,25 @@
     </header>
     <hr>
     <div class="sectionContent">
-        <article>
-            <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
-            <p>Social Science</p>
-            <p>950 Resources</p>
+        @foreach($featured AS $item)
+        <?php
+        if($item->url){
+            $url = URL::to($item->url);
+        }elseif($item->type_id){
+            $url = URL::to('resources/type_id='.$item->type_id);
+        }elseif($item->subject_id){
+            $url = URL::to('resources/subject_id='.$item->subject_id);  
+        }elseif($item->level_id){
+            $url = URL::to('resources/level_id='.$item->level_id);    
+        }else{
+            $url = URL::to('/');
+        }
+        ?>
+        <article class="homeSubjectAreas" onclick="location.href='{{ URL::to($url) }}'">
+            <img src="{{ Storage::disk('public')->url($item->icon) }}">
+            <p>{{ $item->name }}</p>
         </article>
-        <article>
-            <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
-            <p>Social Science</p>
-            <p>950 Resources</p>
-        </article>
-        <article>
-            <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
-            <p>Social Science</p>
-            <p>950 Resources</p>
-        </article>
-        <article>
-            <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
-            <p>Social Science</p>
-            <p>950 Resources</p>
-        </article>
-        <article>
-            <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
-            <p>Social Science</p>
-            <p>950 Resources</p>
-        </article>
-        <article>
-            <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
-            <p>Social Science</p>
-            <p>950 Resources</p>
-        </article>
-        <article>
-            <img src="{{ Storage::disk('public')->url('applied-sciences-icon-2.png') }}">
-            <p>Social Science</p>
-            <p>950 Resources</p>
-        </article>
+        @endforeach
     </div>
 </section>
 <section class="latestNews">

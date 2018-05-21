@@ -50,7 +50,13 @@ class ResourceController extends Controller
 
     public function list(Request $request)
     {
-        $searchQuery = $request->input('search');
+        if(session('search')){
+            $searchQuery = session('session');    
+        }else{
+            $searchQuery = $request->input('search');
+            session(['search' => $searchQuery]);
+        }
+
         $myResources = new Resource();
         $resources = $myResources->searchResources($searchQuery);
         return view('resources.resources_list', compact('resources'));
@@ -66,7 +72,6 @@ class ResourceController extends Controller
         $resourceSubjectAreas = $myResources->resourceAttributes($resourceId,'resources_subject_areas','subject_area');
         $resourceLearningResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type');
         $resourcePublishers = $myResources->resourceAttributes($resourceId,'resources_publishers','publisher_name');
-
         $relatedItems = $myResources->getRelatedResources($resourceId, $resourceSubjectAreas);
         return view('resources.resources_view', compact(
             'resource',
@@ -78,5 +83,13 @@ class ResourceController extends Controller
             'resourcePublishers',
             'relatedItems'
         ));   
+    }
+
+    public function latestResources()
+    {
+        $myResources = new Resource();
+        $resources = $myResources->paginateResources();
+
+        return view('resources.resources_list', compact('resources'));
     }
 }

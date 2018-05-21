@@ -23,6 +23,7 @@ class Resource extends Model
                 'resources.updated'
             )
             ->leftJoin('users', 'users.id', '=', 'resources.userid')
+            ->where('resources.language',Config::get('app.locale'))
             ->orderBy('resources.created','desc')
             ->get();
 
@@ -43,6 +44,7 @@ class Resource extends Model
                 'resources.updated'
             )
             ->join('users', 'users.id', '=', 'resources.userid')
+            ->where('resources.language',Config::get('app.locale'))
             ->orderBy('resources.created','desc')
             ->paginate(30);
 
@@ -139,7 +141,7 @@ class Resource extends Model
             ->select('*')
             ->where('title','like','%'.$searchQuery.'%')
             ->orwhere('abstract', 'like' , '%'.$searchQuery.'%')
-            ->get();
+            ->paginate(30);
 
         return $records;
     }
@@ -174,6 +176,7 @@ class Resource extends Model
             ->select(
                 'sticons.file_name', 
                 'starea.name', 
+                'sarea.subject_area',
                 DB::raw('count(sarea.subject_area) AS total')
             )
             ->join('static_subject_areas AS starea','starea.id', '=', 'sarea.subject_area')
@@ -181,6 +184,31 @@ class Resource extends Model
             ->where('starea.language', Config::get('app.locale'))
             ->groupBy('sarea.subject_area', 'sticons.file_name','starea.name')
             ->get();
+        return $records;
+    }
+
+    public function featuredCollections()
+    {
+        $records = DB::table('featured_collections AS fcid')
+            ->select(
+                'fcid.id', 
+                'fcid.name', 
+                'fcid.icon', 
+                'fcid.language', 
+                'fu.url', 
+                'frt.type_id', 
+                'frs.subject_id', 
+                'frls.level_id'
+            )
+            ->leftJoin('featured_resource_levels AS frl','frl.fcid', '=', 'fcid.id')
+            ->leftJoin('featured_urls AS fu','fu.fcid', '=' ,'fcid.id')
+            ->leftJoin('featured_resource_types AS frt','frt.fcid', '=', 'fcid.id')
+            ->leftJoin('featured_resource_subjects AS frs', 'frs.fcid', '=', 'fcid.id')
+            ->leftJoin('featured_resource_levels AS frls', 'frls.fcid', '=', 'fcid.id')
+            ->where('fcid.language',Config::get('app.locale'))
+            ->orderBy('fcid.id')
+            ->get();
+
         return $records;
     }
 }
