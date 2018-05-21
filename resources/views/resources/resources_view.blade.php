@@ -79,16 +79,5 @@
             <p>CC BY-NC / CC BY-NC-SA</p>
         </article>
     </section>
-    <section class="ResourceViewComment">
-        <header>
-            Comments
-        </header>
-        <div>Add Comment</div>
-        <article>
-            <p>Jamshid Hashimi</p>
-            <i>Feb 15, 2018</i>
-            <p>Brilliant resource, I really like it. It was really useful for me in my assignments.</p>
-        </article>
-    </section>
 </section>
 @endsection 
