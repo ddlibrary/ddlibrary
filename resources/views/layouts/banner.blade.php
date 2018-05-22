@@ -13,9 +13,13 @@
             <li class="dropDown">
                 <a href="#"><i class="fas fa-language fa-lg icons"></i>Language</a>
                 <ul class="dropDownContent">
-                    <li><a href="#">English</a></li>
-                    <li><a href="#">Farsi/Dari</a></li>
-                    <li><a href="#">Pashto</a></li>
+                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                        <li>
+                            <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                            {{ $properties['native'] }}
+                            </a>
+                        </li>
+                    @endforeach
                 </ul>
             </li>
             @if (Auth::check())
