@@ -6,6 +6,6 @@
         <a href="#">Contact</a>
         <a href="#">Statistics</a>
         <a href="#">Donate</a>
-        <a href="#">Partner</a>
+        <a href="#">Partners</a>
     </nav>
 </footer>

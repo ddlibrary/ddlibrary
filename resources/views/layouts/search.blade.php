@@ -5,7 +5,7 @@
     <form method="POST" action="{{ route('resourceList') }}">
         @csrf
         <input type="search" name="search" class="formSearch" value="{{ session('search') }}" placeholder="Search our library">
-        <input type="submit" class="searchButton" value="Search">
+        <input type="submit" class="searchButton" value="Go">
     </form>
 
     <div class="ddlButtons">
