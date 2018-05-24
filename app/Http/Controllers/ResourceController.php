@@ -31,17 +31,16 @@ class ResourceController extends Controller
         $this->middleware('admin');
         $myResources = new Resource();
         $resource = Resource::resources()->where('resourceid',$resourceId)->first();
-        $resourceLevels = $myResources->resourceAttributes($resourceId,'resources_levels','resource_level');
-        $resourceAuthors = $myResources->resourceAttributes($resourceId,'resources_authors','author_name');
-        $resourceAttachments = $myResources->resourceAttributes($resourceId,'resources_attachments','file_name'); 
-        $resourceSubjectAreas = $myResources->resourceAttributes($resourceId,'resources_subject_areas','subject_area');
-        $resourceLearningResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type');
-        $resourcePublishers = $myResources->resourceAttributes($resourceId,'resources_publishers','publisher_name');
+        $resourceLevels = $myResources->resourceAttributes($resourceId,'resources_levels','resource_level', 'static_levels');
+        $resourceAuthors = $myResources->resourceAttributes($resourceId,'resources_authors','author_name','static_authors');
+        //$resourceAttachments = $myResources->resourceAttributes($resourceId,'resources_attachments','file_name'); 
+        $resourceSubjectAreas = $myResources->resourceAttributes($resourceId,'resources_subject_areas','subject_area','static_subject_areas');
+        $resourceLearningResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type','static_learning_resource_types');
+        $resourcePublishers = $myResources->resourceAttributes($resourceId,'resources_publishers','publisher_name','static_publishers');
         return view('admin.resources.view_resource', compact(
             'resource',
             'resourceLevels',
             'resourceAuthors',
-            'resourceAttachments',
             'resourceSubjectAreas',
             'resourceLearningResourceTypes',
             'resourcePublishers'
@@ -52,50 +51,90 @@ class ResourceController extends Controller
     {
         $myResources = new Resource();
 
-        $subjectArea = $request->only('subject_area');
-        if($subjectArea){
-            $resources = $myResources->paginateResourcesBySubjectArea($subjectArea['subject_area']);
-            $resources->appends(['subject_area' => $subjectArea['subject_area']])->links();
-        }else{
-            if(session('search')){
-                $searchQuery = session('session');    
-            }else{
-                $searchQuery = $request->input('search');
-                session(['search' => $searchQuery]);
+        //Getting all whatever in the parameterBag
+        $everything = $request->all();
+        //A global query that attaches to the url
+        $queryTxt = '';
+
+        $subjectAreaIds = array();
+        $levelIds = array();
+        $typeIds = array();
+
+        //if subject_area exists in the request
+        if($request->filled('subject_area')){
+            for($i=0; $i<count($everything['subject_area']); $i++)
+            {
+                $queryTxt = $queryTxt.'subject_area='.$everything['subject_area'][$i].'&';
             }
-            $resources = $myResources->searchResources($searchQuery);
+            $subjectAreaIds = $everything['subject_area'];
         }
-        return view('resources.resources_list', compact('resources'));
+
+        //if level exists in the request
+        if($request->filled('level')){
+            for($i=0; $i<count($everything['level']); $i++)
+            {
+                $queryTxt = $queryTxt.'level='.$everything['level'][$i].'&';
+            }
+            $levelIds = $everything['level'];
+        }
+
+        //if type exists
+        if($request->filled('type')){
+            for($i=0; $i<count($everything['type']); $i++)
+            {
+                $queryTxt = $queryTxt.'type='.$everything['type'][$i].'&';
+            }
+            $typeIds = $everything['type'];
+        }
+
+        //to get rid of the final &
+        if($queryTxt){
+            $queryTxt = rtrim($queryTxt, '&');
+        }
+
+        $searchQuery = $request->input('search');
+
+        if($queryTxt){
+            $resources = $myResources->paginateResourcesBy($subjectAreaIds, $levelIds, $typeIds);
+            if(count($subjectAreaIds) > 0){
+                $resources->appends(['subject_area' => $subjectAreaIds])->links();
+            }elseif(count($levelIds) > 0){
+                $resources->appends(['level' => $levelIds])->links();    
+            }elseif(count($typeIds) > 0){
+                $resources->appends(['type' => $typeIds])->links(); 
+            }
+        }elseif($searchQuery){
+            $resources = $myResources->searchResources($searchQuery);
+            $resources->appends(['search' => $searchQuery])->links();
+            session(['search' => $searchQuery]);
+        }else{
+            $resources = $myResources->paginateResources();
+        }
+        $subjects = $myResources->resourceAttributesList('static_subject_areas');
+        $types = $myResources->resourceAttributesList('static_learning_resource_types');
+        $levels = $myResources->resourceAttributesList('static_levels');
+        return view('resources.resources_list', compact('resources','subjects','types','levels','subjectAreaIds','levelIds','typeIds'));
     }
 
     public function viewPublicResource($resourceId)
     {
         $myResources = new Resource();
         $resource = Resource::resources()->where('resourceid',$resourceId)->first();
-        $resourceLevels = $myResources->resourceAttributes($resourceId,'resources_levels','resource_level');
-        $resourceAuthors = $myResources->resourceAttributes($resourceId,'resources_authors','author_name');
-        $resourceAttachments = $myResources->resourceAttributes($resourceId,'resources_attachments','file_name'); 
-        $resourceSubjectAreas = $myResources->resourceAttributes($resourceId,'resources_subject_areas','subject_area');
-        $resourceLearningResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type');
-        $resourcePublishers = $myResources->resourceAttributes($resourceId,'resources_publishers','publisher_name');
+        $resourceLevels = $myResources->resourceAttributes($resourceId,'resources_levels','resource_level', 'static_levels');
+        $resourceAuthors = $myResources->resourceAttributes($resourceId,'resources_authors','author_name','static_authors');
+        //$resourceAttachments = $myResources->resourceAttributes($resourceId,'resources_attachments','file_name'); 
+        $resourceSubjectAreas = $myResources->resourceAttributes($resourceId,'resources_subject_areas','subject_area','static_subject_areas');
+        $resourceLearningResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type','static_learning_resource_types');
+        $resourcePublishers = $myResources->resourceAttributes($resourceId,'resources_publishers','publisher_name','static_publishers');
         $relatedItems = $myResources->getRelatedResources($resourceId, $resourceSubjectAreas);
         return view('resources.resources_view', compact(
             'resource',
             'resourceLevels',
             'resourceAuthors',
-            'resourceAttachments',
             'resourceSubjectAreas',
             'resourceLearningResourceTypes',
             'resourcePublishers',
             'relatedItems'
         ));   
-    }
-
-    public function latestResources()
-    {
-        $myResources = new Resource();
-        $resources = $myResources->paginateResources();
-
-        return view('resources.resources_list', compact('resources'));
     }
 }

@@ -11,7 +11,7 @@
                 <a href="{{ URL::to('resources') }}"><i class="fas fa-align-justify fa-lg icons"></i>Browse</a>
             </li>
             <li class="dropDown">
-                <a href="#"><i class="fas fa-language fa-lg icons"></i>Language</a>
+                <a href="#"><i class="fas fa-language fa-lg icons"></i>Language<i class="fas fa-sort-down fa-lg"></i></a>
                 <ul class="dropDownContent">
                     @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                         <li>

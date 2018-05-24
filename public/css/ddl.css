@@ -420,6 +420,10 @@ select.form-control:focus::-ms-value {
     border-right: 1px solid #eee;
 }
 
+aside .subSubjectShow {
+    display: block;
+}
+
 .resourceList .resourceInformationSection {
     flex: 1 1 75%;
     flex-wrap: wrap;

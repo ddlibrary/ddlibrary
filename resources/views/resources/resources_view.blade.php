@@ -47,19 +47,19 @@
         <article class="resourceViewDetails">
             <h2>Resource Level</h2>
             @foreach ($resourceLevels AS $level)
-            <p>{{ $level->resource_level }}</p>
+            <p>{{ $level->name }}</p>
             @endforeach
         </article>
         <article class="resourceViewDetails">
             <h2>Subject Area</h2>
             @foreach ($resourceSubjectAreas AS $subject)
-            <p>{{ $subject->subject_area }}</p>
+            <p>{{ $subject->name }}</p>
             @endforeach
         </article>
         <article class="resourceViewDetails">
             <h2>Learning Resource Type</h2>
             @foreach($resourceLearningResourceTypes AS $ltype)
-            <p>{{ $ltype->learning_resource_type }}</p>
+            <p>{{ $ltype->name }}</p>
             @endforeach
         </article>
         <article class="resourceViewDetails">

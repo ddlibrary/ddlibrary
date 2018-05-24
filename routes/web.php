@@ -37,7 +37,7 @@ function()
     Route::get('admin/resources/view/{resourceId}', 'ResourceController@viewResource');
     Route::any('resources/list', 'ResourceController@list')->name('resourceList');
     Route::get('resources/view/{resourceId}', 'ResourceController@viewPublicResource');
-    Route::get('resources', 'ResourceController@latestResources');
+    Route::get('resources', 'ResourceController@list');
 
     //Report
     Route::get('admin/reports/ddl', 'ReportController@index');

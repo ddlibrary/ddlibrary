@@ -51,11 +51,20 @@ class Resource extends Model
         return $users;
     }
 
-    public function resourceAttributes($resourceId, $tableName, $fieldName)
+    public function resourceAttributes($resourceId, $tableName, $fieldName, $staticTable)
     {
         $records = DB::table($tableName)
-                ->select($fieldName)
+                ->select($staticTable.'.name', $staticTable.'.id')
+                ->join($staticTable, $staticTable.'.id', '=', $tableName.'.'.$fieldName)
                 ->where('resourceid',$resourceId)
+                ->get();
+        return $records;
+    }
+
+    public function resourceAttributesList($tableName)
+    {
+        $records = DB::table($tableName)
+                ->where('language',Config::get('app.locale'))
                 ->get();
         return $records;
     }
@@ -83,19 +92,25 @@ class Resource extends Model
     public function totalResourcesBySubject()
     {
         $records = DB::table('resources')
-                    ->select('resources_subject_areas.subject_area', 'resources.language')
-                    ->selectRaw('count(resources.resourceid) as total')
+                    ->select(
+                        'static_subject_areas.name',
+                        'static_subject_areas.id',
+                        'resources.language',
+                        DB::raw('count(resources.resourceid) as total')
+                    )
                     ->join('resources_subject_areas','resources_subject_areas.resourceid','=','resources.resourceid')
-                    ->groupBy('resources_subject_areas.subject_area', 'resources.language')
+                    ->join('static_subject_areas','static_subject_areas.id','=','resources_subject_areas.subject_area')
+                    ->groupBy(
+                        'static_subject_areas.name', 
+                        'static_subject_areas.id', 
+                        'resources.language')
                     ->orderby('resources.language')
                     ->orderBy('total','DESC')
                     ->get();
         return $records;   
     }
 
-    public function paginateResourcesBySubjectArea($subjectAreaId)
-    {
-        $subjectAreaId = $subjectAreaId;
+    public function paginateResourcesBy($subjectAreaIds, $levelIds, $typeIds){
         $records = DB::table('resources')
             ->select(
                 'resources.resourceid',
@@ -108,24 +123,46 @@ class Resource extends Model
                 'resources.updated'
             )
             ->join('users', 'users.id', '=', 'resources.userid')
-            ->join('resources_subject_areas', function ($join) use($subjectAreaId) {
-                $join->on('resources_subject_areas.resourceid', '=', 'resources.resourceid')
-                     ->where('resources_subject_areas.subject_area', '=', $subjectAreaId);
+            ->when(count($subjectAreaIds) > 0, function($query) use($subjectAreaIds){
+                return $query->join('resources_subject_areas', function ($join) use($subjectAreaIds) {
+                    $join->on('resources_subject_areas.resourceid', '=', 'resources.resourceid')
+                        ->whereIn('resources_subject_areas.subject_area', $subjectAreaIds);
+                });
+            })
+            ->when(count($levelIds) > 0, function($query)  use($levelIds){
+                return $query->join('resources_levels', function ($join) use($levelIds) {
+                    $join->on('resources_levels.resourceid', '=', 'resources.resourceid')
+                        ->whereIn('resources_levels.resource_level', $levelIds);
+                });
+            })
+            ->when(count($typeIds) > 0, function($query)  use($typeIds){
+                return $query->join('resources_learning_resource_types', function ($join) use($typeIds) {
+                $join->on('resources_learning_resource_types.resourceid', '=', 'resources.resourceid')
+                        ->whereIn('resources_learning_resource_types.learning_resource_type', $typeIds);
+                });
             })
             ->where('resources.language',Config::get('app.locale'))
             ->paginate(30);
 
-        return $records;     
+        return $records;    
     }
 
     //Total resources based on level
     public function totalResourcesByLevel()
     {
         $records = DB::table('resources')
-                    ->select('resources_levels.resource_level', 'resources.language')
-                    ->selectRaw('count(resources.resourceid) as total')
+                    ->select(
+                        'static_levels.id', 
+                        'static_levels.name', 
+                        'resources.language',
+                        DB::Raw('count(resources.resourceid) as total')
+                    )
                     ->join('resources_levels','resources_levels.resourceid','=','resources.resourceid')
-                    ->groupBy('resources_levels.resource_level', 'resources.language')
+                    ->join('static_levels','static_levels.id','=','resources_levels.resource_level')
+                    ->groupBy(
+                        'static_levels.name', 
+                        'static_levels.id', 
+                        'resources.language')
                     ->orderBy('resources.language')
                     ->orderBy('total','DESC')
                     ->get();
@@ -136,10 +173,19 @@ class Resource extends Model
     public function totalResourcesByType()
     {
         $records = DB::table('resources')
-                    ->select('resources_learning_resource_types.learning_resource_type', 'resources.language')
-                    ->selectRaw('count(resources.resourceid) as total')
+                    ->select(
+                        'static_learning_resource_types.id',
+                        'static_learning_resource_types.name',
+                        'resources.language',
+                        DB::Raw('count(resources.resourceid) as total')
+                    )
                     ->join('resources_learning_resource_types','resources_learning_resource_types.resourceid','=','resources.resourceid')
-                    ->groupBy('resources_learning_resource_types.learning_resource_type', 'resources.language')
+                    ->join('static_learning_resource_types','static_learning_resource_types.id','=','resources_learning_resource_types.learning_resource_type')
+                    ->groupBy(
+                        'static_learning_resource_types.id',
+                        'static_learning_resource_types.name',
+                        'resources.language'
+                    )
                     ->orderby('resources.language')
                     ->orderBy('total','DESC')
                     ->get();
@@ -176,7 +222,7 @@ class Resource extends Model
         $ids = array();
         foreach($subjectAreas AS $item)
         {
-            array_push($ids, $item->subject_area);
+            array_push($ids, $item->id);
         }
 
         $records = DB::table('resources')

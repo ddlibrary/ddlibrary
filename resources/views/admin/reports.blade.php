@@ -153,9 +153,9 @@
                                 <tbody>
                                 @foreach ($totalResourcesBySubject as $indexkey => $resource)
                                 <tr>
-                                    <td><strong>{{ $resource->subject_area }}</strong></td>
+                                    <td><a href="resource/view/?subject_area={{$resource->id}}">{{ $resource->name }}</a></td>
                                     <td>{{ fixLanguage($resource->language) }}</td>
-                                    <td><a href="{{ URL::to('admin/resources/list/subject_area/'.str_slug($resource->subject_area)) }}">{{ $resource->total }}</a></td>
+                                    <td><a href="{{ URL::to('admin/resources/list/subject_area/'.str_slug($resource->name)) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -185,9 +185,9 @@
                                 <tbody>
                                 @foreach ($totalResourcesByLevel as $indexkey => $resource)
                                 <tr>
-                                    <td><a href="resource/view/{{$resource->resource_level}}">{{ $resource->resource_level }}</a></td>
+                                    <td><a href="resource/view/?level={{$resource->id}}">{{ $resource->name }}</a></td>
                                     <td>{{ fixLanguage($resource->language) }}</td>
-                                    <td><a href="{{ URL::to('admin/resources/list/level/'.str_slug($resource->resource_level)) }}">{{ $resource->total }}</a></td>
+                                    <td><a href="{{ URL::to('admin/resources/list/level/'.str_slug($resource->name)) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -221,9 +221,9 @@
                             <tbody>
                             @foreach ($totalResourcesByType as $indexkey => $resource)
                             <tr>
-                                <td><a href="resource/view/{{$resource->learning_resource_type}}">{{ $resource->learning_resource_type }}</a></td>
+                                <td><a href="resource/view/type={{$resource->name}}">{{ $resource->name }}</a></td>
                                 <td>{{ fixLanguage($resource->language) }}</td>
-                                <td><a href="{{ URL::to('admin/resources/list/type/'.str_slug($resource->learning_resource_type)) }}">{{ $resource->total }}</a></td>
+                                <td><a href="{{ URL::to('admin/resources/list/type/'.str_slug($resource->name)) }}">{{ $resource->total }}</a></td>
                                 </tr>
                                 @endforeach
                             </tbody>

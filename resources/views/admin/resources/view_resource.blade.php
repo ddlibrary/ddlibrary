@@ -28,15 +28,15 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Resource Level</strong></td>
-                                    <td> {{ unpackResourceObject($resourceLevels, 'resource_level') }}</td>
+                                    <td> {{ unpackResourceObject($resourceLevels, 'name') }}</td>
                                     <td><strong>Resource Level</strong></td>
-                                    <td> {{ unpackResourceObject($resourceSubjectAreas,'subject_area') }}</td>
+                                    <td> {{ unpackResourceObject($resourceSubjectAreas,'name') }}</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Learning Resource Type</strong></td>
-                                    <td> {{ unpackResourceObject($resourceLearningResourceTypes,'learning_resource_type') }}</td>
+                                    <td> {{ unpackResourceObject($resourceLearningResourceTypes,'name') }}</td>
                                     <td><strong>Publishers</strong></td>
-                                    <td> {{ unpackResourceObject($resourcePublishers,'publisher_name') }}</td>
+                                    <td> {{ unpackResourceObject($resourcePublishers,'name') }}</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Licence</strong></td>
