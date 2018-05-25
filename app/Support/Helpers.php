@@ -120,7 +120,7 @@ if (! function_exists('isAdmin')) {
 }
 
 if(! function_exists('getImagefromResource')) {
-    function getImagefromResource($abstract, $size='282x254')
+    function getImagefromResource($abstract)
     {
         preg_match('/src="([^"]*)"/',$abstract,$matches);
         if(count($matches)> 0){
@@ -130,7 +130,7 @@ if(! function_exists('getImagefromResource')) {
             $fixedImage = Storage::disk('public')->url($imageName);
             return $fixedImage;
         }else{
-            return "http://via.placeholder.com/".$size;
+            return Storage::disk('public')->url('logo.png');
         }
     }
 }

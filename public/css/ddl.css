@@ -453,6 +453,7 @@ aside .subSubjectShow {
 }
 .resourceList .resourceDetails {
     display: flex;
+    justify-content: space-around;
     border: 1px solid #eee;   
     width: 200px;
 }

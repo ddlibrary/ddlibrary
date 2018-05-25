@@ -68,13 +68,13 @@
                 <i class="far fa-file-audio"></i><span>Audio</span>
             </article>
             <article>
-                <i class="far fa-file-audio"></i><span>3999</span>
+                <i class="fas fa-eye"></i><span>3999</span>
             </article>
             <article>
-                <i class="far fa-file-audio"></i><span>26</span>
+                <i class="fas fa-star"></i><span>26</span>
             </article>
             <article>
-                <i class="far fa-file-audio"></i><span>4</span>
+                <i class="fas fa-comment"></i><span>4</span>
             </article>
         </div>
     </article>
