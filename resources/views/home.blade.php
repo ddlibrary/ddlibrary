@@ -53,7 +53,7 @@
         <hr>
         @foreach($latestNews AS $news)
         <article class="latestNewsContent">
-            <a href="{{ URL::to('news/view/'.$news->newsid) }}"><p>{{ $news->title }}</p></a>
+            <a href="{{ URL::to('news/view/'.$news->tnid) }}"><p>{{ $news->title }}</p></a>
             <i class="newsDescription">{{ \Carbon\Carbon::parse(Carbon\Carbon::createFromTimestamp($news->created))->format('F dS, Y') }}</i>
         </article>
         @endforeach

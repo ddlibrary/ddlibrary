@@ -521,18 +521,14 @@ aside .subSubjectShow {
     margin-top: 5px;
 }
 
-.resourceView .downloadBox {
-    display: block;
-    text-align: center;
-    border: 1px solid #eee;
-    width: 271px;
-    margin: 0 auto;
-    padding: 5px;
-    cursor: pointer;
+.resourceViewDetails .downloadBox {
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.resourceView .downloadBox:hover {
-    background-color: #ffa800; 
+.resourceViewDetails .downloadBox .downloadItem {
+    width: 50%;
+    margin: 1em 0 0.1em 0;
 }
 
 .resourceView .ResourceSocialMedia{

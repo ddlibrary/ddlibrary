@@ -10,7 +10,7 @@ class Resource extends Model
 {
     public function scopeResources()
     {
-        $users = DB::table('resources')
+        $resources = DB::table('resources')
             ->select(
                 'resources.resourceid',
                 'resources.language', 
@@ -26,8 +26,12 @@ class Resource extends Model
             ->where('resources.language',Config::get('app.locale'))
             ->orderBy('resources.created','desc')
             ->get();
-
-        return $users;
+        
+        if($resources){
+            return $resources;
+        }else{
+            return abort(404);
+        }
     }
 
     public function paginateResources()
@@ -245,7 +249,7 @@ class Resource extends Model
             ->whereIn('rsa.subject_area',$ids)
             ->limit(5)
             ->get();
-
+        
         return $records;
     }
 
@@ -288,6 +292,15 @@ class Resource extends Model
             ->orderBy('fcid.id')
             ->get();
 
+        return $records;
+    }
+
+    public function resourceAttachments($resourceId)
+    {
+        $records = DB::table('resources_attachments')
+            ->select('*')
+            ->where('resourceid', $resourceId)
+            ->get();
         return $records;
     }
 }

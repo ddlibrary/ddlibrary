@@ -25,15 +25,17 @@ class News extends Model
                     'summary',
                     'body',
                     'language',
+                    'tnid',
                     'created',
                     'updated'
                 )
+                ->where('language',Config::get('app.locale'))
                 ->paginate(20);
 
         return $records;
     }
 
-    public function oneNews($newsId)
+    public function oneNews($newsTnid)
     {
         $record = DB::table('news')
                 ->select(
@@ -42,13 +44,18 @@ class News extends Model
                     'summary',
                     'body',
                     'language',
+                    'tnid',
                     'created',
                     'updated'
                 )
-                ->where('newsid',$newsId)
-                //->where('language',Config::get('app.locale'))
+                ->where('tnid',$newsTnid)
+                ->where('language',Config::get('app.locale'))
                 ->first();
-        
-        return $record;
+
+        if($record){
+            return $record;
+        }else{
+            return abort(404);
+        }
     }
 }

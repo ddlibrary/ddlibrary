@@ -122,7 +122,7 @@ class ResourceController extends Controller
         $resource = Resource::resources()->where('resourceid',$resourceId)->first();
         $resourceLevels = $myResources->resourceAttributes($resourceId,'resources_levels','resource_level', 'static_levels');
         $resourceAuthors = $myResources->resourceAttributes($resourceId,'resources_authors','author_name','static_authors');
-        //$resourceAttachments = $myResources->resourceAttributes($resourceId,'resources_attachments','file_name'); 
+        $resourceAttachments = $myResources->resourceAttachments($resourceId); 
         $resourceSubjectAreas = $myResources->resourceAttributes($resourceId,'resources_subject_areas','subject_area','static_subject_areas');
         $resourceLearningResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type','static_learning_resource_types');
         $resourcePublishers = $myResources->resourceAttributes($resourceId,'resources_publishers','publisher_name','static_publishers');
@@ -134,6 +134,7 @@ class ResourceController extends Controller
             'resourceSubjectAreas',
             'resourceLearningResourceTypes',
             'resourcePublishers',
+            'resourceAttachments',
             'relatedItems'
         ));   
     }

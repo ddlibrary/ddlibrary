@@ -12,7 +12,7 @@
         <ul>
         @foreach($subjects AS $subject)
             @if($subject->parent == 0)
-                <li><input type="checkbox" name="subject_area[]" {{ (in_array($subject->id, $subjectAreaIds)?"checked":"")}} onchange="fnTest(this,'subSubject{{$subject->id}}');" value="{{ $subject->id }}">{{ $subject->name }} 
+                <li><input type="checkbox" name="subject_area[]" {{ (in_array($subject->id, $subjectAreaIds)?"checked":"")}} onchange="fnTest(this,'subSubject{{$subject->id}}');this.form.submit();" value="{{ $subject->id }}">{{ $subject->name }} 
                     <?php $subjectParent = $subjects->where('parent', $subject->id);?>
                     @if(count($subjectParent) > 0)
                         <i class="fas fa-plus fa-xs" onclick="javascript:showHide(this,'subSubject{{$subject->id}}')"></i>
@@ -20,7 +20,7 @@
                 @if(count($subjectParent) > 0)
                     <ul id="subSubject{{$subject->id}}" style="display:none;">
                         @foreach($subjectParent as $item)
-                            <li><input type="checkbox" class="child"  name="subject_area[]" {{ (in_array($item->id, $subjectAreaIds)?"checked":"")}} value="{{ $item->id }}">{{ $item->name }}</li>
+                            <li><input type="checkbox" class="child"  name="subject_area[]" onchange="this.form.submit()" {{ (in_array($item->id, $subjectAreaIds)?"checked":"")}} value="{{ $item->id }}">{{ $item->name }}</li>
                         @endforeach
                     </ul>
                 @endif
@@ -31,14 +31,14 @@
         <h4>Resource Types</h4>
         <ul>
             @foreach($types AS $type)
-                <li><input type="checkbox" name="type[]" value="{{ $type->id }}" {{ (in_array($type->id, $typeIds)?"checked":"")}}>{{ $type->name }}</li>
+                <li><input type="checkbox" name="type[]" value="{{ $type->id }}" onchange="this.form.submit()" {{ (in_array($type->id, $typeIds)?"checked":"")}}>{{ $type->name }}</li>
             @endforeach
         </ul>
         <h4>Resource Levels</h4>
         <ul>
             @foreach($levels AS $level)
                 @if($level->parent == 0)
-                    <li><input type="checkbox" name="level[]" {{ (in_array($level->id, $levelIds)?"checked":"")}} value="{{ $level->id }}" onchange="fnTest(this,'subLevel{{$level->id}}');">{{ $level->name }}
+                    <li><input type="checkbox" name="level[]" {{ (in_array($level->id, $levelIds)?"checked":"")}} value="{{ $level->id }}" onchange="fnTest(this,'subLevel{{$level->id}}');this.form.submit()">{{ $level->name }}
                         <?php $levelParent = $levels->where('parent', $level->id);?>
                         @if(count($levelParent) > 0)
                             <i class="fas fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$level->id}}')"></i>
@@ -46,7 +46,7 @@
                     @if(count($levelParent) > 0)
                         <ul id="subLevel{{$level->id}}" style="display:none;">
                             @foreach($levelParent as $item)
-                                <li><input type="checkbox" name="level[]" {{ (in_array($item->id, $levelIds)?"checked":"")}} class="child" value="{{ $item->id }}">{{ $item->name }}</li>
+                                <li><input type="checkbox" name="level[]" onchange="this.form.submit()" {{ (in_array($item->id, $levelIds)?"checked":"")}} class="child" value="{{ $item->id }}">{{ $item->name }}</li>
                             @endforeach
                         </ul>
                     @endif
@@ -54,7 +54,6 @@
                 @endif
             @endforeach
         </ul>
-        <input class="form-control normalButton" type="submit" value="Apply Filter">
         </form>
     </aside>
     <section class="resourceInformationSection">

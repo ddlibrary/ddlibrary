@@ -4,9 +4,9 @@
 @endsection
 @section('content')
 <section class="resourceView">
+    @if($resource)
     <aside>
         <img class="resourceViewImg" src="{{ getImagefromResource($resource->abstract, '282x254') }}">
-        <div class="downloadBox">Download</div>
         <div class="ResourceSocialMedia">
             <h3>Share</h3>
             <i class="fab fa-facebook fa-2x"></i>
@@ -78,6 +78,22 @@
             <h2>License By</h2>
             <p>CC BY-NC / CC BY-NC-SA</p>
         </article>
+        <article class="resourceViewDetails">
+            <h2>Download</h2>
+            <div class="downloadBox">
+            @if($resourceAttachments)
+            <span class="downloadItem">File Name</strong></span>
+            <span class="downloadItem"><strong>File Size</strong></span>
+            @foreach($resourceAttachments as $file)
+            <span class="downloadItem"><a href="{{ Storage::disk('private')->url($file->file_name) }}">{{ $file->file_name }}</a></span>
+            <span class="downloadItem">{{ $file->file_size/1024 }} KB</span>
+            @endforeach
+            @endif
+            </div>
+        </article>
+        @else
+        <h1>Resource not found or is not yet translated!</h1>
+        @endif
     </section>
 </section>
 @endsection 
