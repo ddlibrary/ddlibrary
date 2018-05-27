@@ -34,6 +34,27 @@ if(! function_exists('giveMeFileFormat')){
     }
 }
 
+if(! function_exists('giveMeResourceIcon')){
+    function giveMeResourceIcon($fileFormat)
+    {
+        $formats = array(
+            'application/pdf' => 'fas fa-file-pdf',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'far fa-file-word',
+            'application/msword' => 'far fa-file-word',
+            'text/plain' => 'fas fa-file-alt',
+            'audio/mpeg' => 'fas fa-file-audio',
+            'video/mp4' => 'fas fa-video'
+        );
+
+        if ( count($formats[$fileFormat]) > 0){
+            $theIcon = $formats[$fileFormat];
+            return $formats[$fileFormat];
+        }else{
+            return $formats['application/pdf'];
+        }
+    }
+}
+
 if(! function_exists('giveMeCC')){
     function giveMeCC($cc)
     {
@@ -130,7 +151,7 @@ if(! function_exists('getImagefromResource')) {
             $fixedImage = Storage::disk('public')->url($imageName);
             return $fixedImage;
         }else{
-            return Storage::disk('public')->url('logo.png');
+            return "https://dummyimage.com/250x200/eeeeee/000000.png&text=DDL+Resource";
         }
     }
 }

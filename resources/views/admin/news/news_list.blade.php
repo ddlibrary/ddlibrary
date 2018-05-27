@@ -40,7 +40,7 @@
             @foreach ($newsRecords as $indexkey => $news)
               <tr>
                 <td>{{ (($newsRecords->currentPage() - 1) * 20)+$indexkey + 1 }}</td>
-                <td><a href="news/view/{{$news->newsid}}">{{ $news->title }}</a></td>
+                <td><a href="{{ URL::to('/news/view/'.$news->newsid) }}">{{ $news->title }}</a></td>
                 <td>{{ fixLanguage($news->language) }}</td>
                 <td>{{ Carbon\Carbon::createFromTimestamp($news->created)->diffForHumans() }}</td>
                 <td>{{ Carbon\Carbon::createFromTimestamp($news->updated)->diffForHumans() }}</td>

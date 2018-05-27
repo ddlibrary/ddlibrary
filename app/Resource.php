@@ -40,10 +40,12 @@ class Resource extends Model
                 'resources.abstract',
                 'resources.userid',
                 'users.username AS author', 
+                'resources_attachments.file_mime',
                 'resources.status',
                 'resources.updated'
             )
             ->join('users', 'users.id', '=', 'resources.userid')
+            ->join('resources_attachments','resources_attachments.resourceid','=','resources.resourceid')
             ->where('resources.language',Config::get('app.locale'))
             ->orderBy('resources.created','desc')
             ->paginate(30);
@@ -118,11 +120,13 @@ class Resource extends Model
                 'resources.title',
                 'resources.abstract',
                 'resources.userid',
-                'users.username AS author', 
+                'users.username AS author',
+                'resources_attachments.file_mime',
                 'resources.status',
                 'resources.updated'
             )
             ->join('users', 'users.id', '=', 'resources.userid')
+            ->join('resources_attachments','resources_attachments.resourceid','=','resources.resourceid')
             ->when(count($subjectAreaIds) > 0, function($query) use($subjectAreaIds){
                 return $query->join('resources_subject_areas', function ($join) use($subjectAreaIds) {
                     $join->on('resources_subject_areas.resourceid', '=', 'resources.resourceid')
@@ -209,7 +213,11 @@ class Resource extends Model
     public function searchResources($searchQuery)
     {
         $records = DB::table('resources')
-            ->select('*')
+            ->select(
+                '*',
+                'resources_attachments.file_mime'
+            )
+            ->join('resources_attachments','resources_attachments.resourceid','=','resources.resourceid')
             ->where('title','like','%'.$searchQuery.'%')
             ->orwhere('abstract', 'like' , '%'.$searchQuery.'%')
             ->paginate(30);

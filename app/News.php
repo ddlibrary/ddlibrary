@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Config;
 
 class News extends Model
 {
@@ -45,8 +46,9 @@ class News extends Model
                     'updated'
                 )
                 ->where('newsid',$newsId)
+                //->where('language',Config::get('app.locale'))
                 ->first();
-
+        
         return $record;
     }
 }
