@@ -117,7 +117,7 @@ if (! function_exists('unpackResourceObject')) {
 if (! function_exists('checkUserPassword')) {
     function checkUserPassword($planePassword, $userPassword)
     {
-        include(app_path() . '/support/DrupalPasswordHasher.php');
+        //include(app_path() . '/support/DrupalPasswordHasher.php');
 
         if(user_check_password($planePassword, $userPassword)){
             return TRUE;
