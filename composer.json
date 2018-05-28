@@ -22,7 +22,8 @@
     },
     "autoload": {
         "files": [
-            "app/Support/Helpers.php"
+            "app/Support/Helpers.php",
+            "app/Support/DrupalPasswordHasher.php"
         ],
         "classmap": [
             "database/seeds",
