@@ -67,13 +67,13 @@
                 <i class="{{ giveMeResourceIcon($resource->file_mime) }}"></i><span>{{ giveMeFileFormat($resource->file_mime) }}</span>
             </article>
             <article>
-                <i class="fas fa-eye"></i><span>3999</span>
+                <i class="fas fa-eye"></i><span>0</span>
             </article>
             <article>
-                <i class="fas fa-star"></i><span>26</span>
+                <i class="fas fa-star"></i><span>0</span>
             </article>
             <article>
-                <i class="fas fa-comment"></i><span>4</span>
+                <i class="fas fa-comment"></i><span>0</span>
             </article>
         </div>
     </article>
