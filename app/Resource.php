@@ -43,13 +43,11 @@ class Resource extends Model
                 'resources.title',
                 'resources.abstract',
                 'resources.userid',
-                'users.username AS author', 
-                'resources_attachments.file_mime',
+                'users.username AS author',
                 'resources.status',
                 'resources.updated'
             )
             ->join('users', 'users.id', '=', 'resources.userid')
-            ->join('resources_attachments','resources_attachments.resourceid','=','resources.resourceid')
             ->where('resources.language',Config::get('app.locale'))
             ->orderBy('resources.created','desc')
             ->paginate(30);
@@ -125,12 +123,10 @@ class Resource extends Model
                 'resources.abstract',
                 'resources.userid',
                 'users.username AS author',
-                'resources_attachments.file_mime',
                 'resources.status',
                 'resources.updated'
             )
             ->join('users', 'users.id', '=', 'resources.userid')
-            ->join('resources_attachments','resources_attachments.resourceid','=','resources.resourceid')
             ->when(count($subjectAreaIds) > 0, function($query) use($subjectAreaIds){
                 return $query->join('resources_subject_areas', function ($join) use($subjectAreaIds) {
                     $join->on('resources_subject_areas.resourceid', '=', 'resources.resourceid')

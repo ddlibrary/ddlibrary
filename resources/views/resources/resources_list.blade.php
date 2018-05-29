@@ -64,9 +64,6 @@
         <div class="resourceTitle">{{ str_limit($resource->title, 55), ' (..)' }}</div>
         <div class="resourceDetails">
             <article>
-                <i class="{{ giveMeResourceIcon($resource->file_mime) }}"></i><span>{{ giveMeFileFormat($resource->file_mime) }}</span>
-            </article>
-            <article>
                 <i class="fas fa-eye"></i><span>0</span>
             </article>
             <article>
