@@ -509,6 +509,10 @@ aside .subSubjectShow {
     min-height: 100px;
 }
 
+.resourceViewTitleBox p:empty {
+    display: none;
+}
+
 .resourceView .resourceViewDetails {
     border: 1px solid #eee;
     padding: 5px;
