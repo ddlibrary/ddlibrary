@@ -3,6 +3,15 @@
         <a href="{{ URL::to('/') }}"><img class="headerImg" src="{{ asset('storage/files/logo-dd.png') }}"></a>
     </div>
     <nav class="headerRight">
+        <ul class="languageContent">
+            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                <li>
+                    <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                    {{ $properties['native'] }}
+                    </a>
+                </li>
+            @endforeach
+        </ul>
         <ul class="mainNavigation">
             <li>
                 <a href="{{ URL::to('/') }}"><i class="fas fa-home fa-lg icons"></i>Home</a>
@@ -11,16 +20,7 @@
                 <a href="{{ URL::to('resources') }}"><i class="fas fa-align-justify fa-lg icons"></i>Browse</a>
             </li>
             <li class="dropDown">
-                <a href="#"><i class="fas fa-language fa-lg icons"></i>Language<i class="fas fa-sort-down fa-lg"></i></a>
-                <ul class="dropDownContent">
-                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                        <li>
-                            <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                            {{ $properties['native'] }}
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
+                <a href="#"><i class="fas fa-upload fa-lg icons"></i>Upload A Resource</a>
             </li>
             @if (Auth::check())
             <li>

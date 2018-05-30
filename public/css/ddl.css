@@ -73,10 +73,10 @@ main {
 }
 .headerRight {
     float: right;
-    padding: 30px;
 }
 .headerRight .mainNavigation {
     display: flex;
+    padding: 30px;
 }
 .mainNavigation li a{
     margin: 5px;
@@ -90,25 +90,19 @@ main {
     color: #da7437;
     cursor: pointer;
 }
-.mainNavigation .dropDownContent {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+.headerRight .languageContent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    margin: 0 25px 0 34px;
+    margin-bottom: -23px;
 }
-.mainNavigation .dropDownContent {
-    background-color: black;    
+.headerRight .languageContent li {
+    margin-right: 10px;
+    font-size: 16px;
 }
-.mainNavigation .dropDownContent li a {
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;   
-}
-/* Show the dropdown menu on hover */
-.mainNavigation .dropDown:hover .dropDownContent {
-    display: block;
+.headerRight .languageContent li a {
+    color: #ffa800;
 }
 .banner {
     padding: 5px;
