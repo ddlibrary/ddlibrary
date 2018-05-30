@@ -547,20 +547,25 @@ aside .subSubjectShow {
 }
 
 .ResourceRelatedItemsBox .relatedItem {
-    padding: 5px;
-    margin: 5px;
+    padding: 2px;
+    margin: 2px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .ResourceRelatedItemsBox .relatedItem span {
     overflow-wrap: break-word;
     word-wrap: break-word;
+    padding: 2px;
+    margin: 2px;
+    flex: 3;
 }
 
 .resourceView .relatedItemsImg {
-    float: left;
     margin-right: 5px;
     width: 55px;
     height: 50px;
+    flex: 1;
 }
 
 .resourceView .ResourceViewComment {

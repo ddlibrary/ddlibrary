@@ -23,8 +23,8 @@
                 @foreach ($relatedItems AS $item)
                 <div class="relatedItem">
                     <img class="relatedItemsImg" src="{{ getImagefromResource($item->abstract,'55x50') }}">
-                    <span><a href="{{ URL::to('resources/view/'.$item->resourceid) }}">{{ $item->title }}</a></span><br>
-                    {!! str_limit(strip_tags($item->abstract), 25) !!}
+                    <span><a href="{{ URL::to('resources/view/'.$item->resourceid) }}">{{ $item->title }}</a><br/>
+                    {!! str_limit(strip_tags($item->abstract), 25) !!}</span>
                 </div>
                 @endforeach
             </div>
