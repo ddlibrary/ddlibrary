@@ -86,7 +86,7 @@
             <span class="downloadItem"><strong>File Size</strong></span>
             @foreach($resourceAttachments as $file)
             <span class="downloadItem"><a href="{{ Storage::disk('private')->url($file->file_name) }}">{{ $file->file_name }}</a></span>
-            <span class="downloadItem">{{ $file->file_size/1024 }} KB</span>
+            <span class="downloadItem">{{ formatBytes($file->file_size) }}</span>
             @endforeach
             @endif
             </div>
