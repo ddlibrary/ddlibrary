@@ -556,7 +556,6 @@ aside .subSubjectShow {
 .ResourceRelatedItemsBox .relatedItem span {
     overflow-wrap: break-word;
     word-wrap: break-word;
-    padding: 2px;
     margin: 2px;
     flex: 3;
 }
@@ -565,7 +564,6 @@ aside .subSubjectShow {
     margin-right: 5px;
     width: 55px;
     height: 50px;
-    flex: 1;
 }
 
 .resourceView .ResourceViewComment {
