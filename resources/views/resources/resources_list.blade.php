@@ -18,7 +18,7 @@
                         <i class="fas fa-plus fa-xs" onclick="javascript:showHide(this,'subSubject{{$subject->id}}')"></i>
                     @endif
                 @if(count($subjectParent) > 0)
-                    <ul id="subSubject{{$subject->id}}" style="display:none;">
+                    <ul id="subSubject{{$subject->id}}" class="subItem" style="display:none;">
                         @foreach($subjectParent as $item)
                             <li><input type="checkbox" class="child"  name="subject_area[]" onchange="this.form.submit()" {{ (in_array($item->id, $subjectAreaIds)?"checked":"")}} value="{{ $item->id }}">{{ $item->name }}</li>
                         @endforeach
@@ -44,9 +44,22 @@
                             <i class="fas fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$level->id}}')"></i>
                         @endif
                     @if(count($levelParent) > 0)
-                        <ul id="subLevel{{$level->id}}" style="display:none;">
+                        <ul id="subLevel{{$level->id}}" class="subItem" style="display:none;">
                             @foreach($levelParent as $item)
-                                <li><input type="checkbox" name="level[]" onchange="this.form.submit()" {{ (in_array($item->id, $levelIds)?"checked":"")}} class="child" value="{{ $item->id }}">{{ $item->name }}</li>
+                                <li><input type="checkbox" name="level[]" onchange="fnTest(this,'subLevel{{$item->id}}');this.form.submit()" {{ (in_array($item->id, $levelIds)?"checked":"")}} class="child" value="{{ $item->id }}">{{ $item->name }}
+                            
+                                <?php $levelItemParent = $levels->where('parent', $item->id);?>
+                                @if(count($levelItemParent) > 0)
+                                    <i class="fas fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$item->id}}')"></i>
+                                @endif
+                                @if(count($levelItemParent) > 0)
+                                    <ul id="subLevel{{$item->id}}" class="subItem" style="display:none;">
+                                        @foreach($levelItemParent as $itemLevel)
+                                            <li><input type="checkbox" name="level[]" onchange="this.form.submit()" {{ (in_array($itemLevel->id, $levelIds)?"checked":"")}} class="child" value="{{ $itemLevel->id }}">{{ $itemLevel->name }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                                </li>
                             @endforeach
                         </ul>
                     @endif

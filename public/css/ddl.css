@@ -414,6 +414,10 @@ select.form-control:focus::-ms-value {
     border-right: 1px solid #eee;
 }
 
+.subItem {
+    margin: 0 10px 0 10px;
+}
+
 aside .subSubjectShow {
     display: block;
 }
