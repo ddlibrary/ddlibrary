@@ -70,9 +70,13 @@
         </article>
         <article class="resourceViewDetails">
             <h2>Languages Available</h2>
-            <p>English</p>
-            <p>Farsi</p>
-            <p>Pashto</p>
+            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+            <p>
+                <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                    {{ $properties['native'] }}
+                </a>
+            </p>
+            @endforeach
         </article>
         <article class="resourceViewDetails">
             <h2>License By</h2>
