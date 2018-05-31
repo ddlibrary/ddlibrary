@@ -50,7 +50,7 @@ class Resource extends Model
             ->join('users', 'users.id', '=', 'resources.userid')
             ->where('resources.language',Config::get('app.locale'))
             ->orderBy('resources.created','desc')
-            ->paginate(30);
+            ->paginate(32);
 
         return $users;
     }
@@ -146,7 +146,7 @@ class Resource extends Model
                 });
             })
             ->where('resources.language',Config::get('app.locale'))
-            ->paginate(30);
+            ->paginate(32);
 
         return $records;    
     }

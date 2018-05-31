@@ -47,19 +47,19 @@
         <article class="resourceViewDetails">
             <h2>Resource Level</h2>
             @foreach ($resourceLevels AS $level)
-            <p>{{ $level->name }}</p>
+            <p><a href="{{ URL::to('resources/list?=&level[]='.$level->id) }}">{{ $level->name }}</a></p>
             @endforeach
         </article>
         <article class="resourceViewDetails">
             <h2>Subject Area</h2>
             @foreach ($resourceSubjectAreas AS $subject)
-            <p>{{ $subject->name }}</p>
+            <p><a href="{{ URL::to('resources/list?=&subject_area[]='.$subject->id) }}">{{ $subject->name }}</a></p>
             @endforeach
         </article>
         <article class="resourceViewDetails">
             <h2>Learning Resource Type</h2>
             @foreach($resourceLearningResourceTypes AS $ltype)
-            <p>{{ $ltype->name }}</p>
+            <p><a href="{{ URL::to('resources/list?=&type[]='.$ltype->id) }}">{{ $ltype->name }}</a></p>
             @endforeach
         </article>
         <article class="resourceViewDetails">
