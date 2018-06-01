@@ -29,6 +29,12 @@ class NewsController extends Controller
     {
         $myNews = new News();
         $news = $myNews->oneNews($newsId);
-        return view('news.news_view', compact('news'));
+        $translation_id = $news->translation_id;
+        if($translation_id){
+            $translations = $myNews->getNewsTranslations($translation_id);
+        }else{
+            $translations = array();
+        }
+        return view('news.news_view', compact('news','translations'));
     }
 }

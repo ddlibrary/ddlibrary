@@ -4,12 +4,38 @@
     </div>
     <nav class="headerRight">
         <ul class="languageContent">
+
             @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+            <?php
+            if(isset($translations)){
+                $id=0;
+                foreach($translations AS $tr){
+                    if($tr->language == $localeCode){
+                        $id = $tr->id;
+                    }
+                }
+            }
+            ?>
+            @if(isset($id) && !empty($id))
+            <?php 
+                $currentUrl = explode('/',url()->current());
+                $index = count($currentUrl) - 1;
+                $value = $currentUrl[$index];
+                $currentUrl[$index] = $id;
+                $newUrl = implode($currentUrl, '/');
+            ?>
+                <li>
+                    <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, $newUrl, [], true) }}">
+                    {{ $properties['native'] }}
+                    </a>
+                </li>
+            @else
                 <li>
                     <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
                     {{ $properties['native'] }}
                     </a>
                 </li>
+            @endif
             @endforeach
         </ul>
         <ul class="mainNavigation">

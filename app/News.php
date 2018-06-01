@@ -45,13 +45,29 @@ class News extends Model
                     'nwd.body',
                     'nwd.language',
                     'nwd.created',
-                    'nwd.updated'
+                    'nwd.updated',
+                    'nwt.translation_id'
                 )
                 ->join('news_data AS nwd', 'nwd.newsid','=','nw.newsid')
+                ->leftJoin('news_translations AS nwt', 'nwt.newsid','=','nw.newsid')
                 ->where('nw.newsid',$newsTnid)
                 ->where('nwd.language',Config::get('app.locale'))
                 ->first();
 
+        return $record;
+    }
+
+    public function getNewsTranslations($newsId)
+    {
+        $record = DB::table('news AS nw')
+            ->select(
+                'nw.newsid AS id',
+                'nwd.language'
+            )
+            ->leftJoin('news_data AS nwd','nwd.newsid','=','nw.newsid')
+            ->leftJoin('news_translations AS nwt','nwt.newsid','=','nw.newsid')
+            ->where('nwt.translation_id', $newsId)
+            ->get();
         return $record;
     }
 }
