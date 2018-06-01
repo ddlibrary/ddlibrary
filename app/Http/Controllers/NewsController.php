@@ -29,7 +29,7 @@ class NewsController extends Controller
     {
         $myNews = new News();
         $news = $myNews->oneNews($newsId);
-        $translation_id = $news->translation_id;
+        $translation_id = $news->tnid;
         if($translation_id){
             $translations = $myNews->getNewsTranslations($translation_id);
         }else{

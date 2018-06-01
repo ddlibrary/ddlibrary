@@ -5,25 +5,39 @@
     <nav class="headerRight">
         <ul class="languageContent">
 
-            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
             <?php
-            if(isset($translations)){
-                $id=0;
-                foreach($translations AS $tr){
-                    if($tr->language == $localeCode){
-                        $id = $tr->id;
+            $supportedLocals = array();
+            $newId = array();
+                foreach($app['config']->get('laravellocalization.localesOrder') as $localeCode)
+                {
+                    $supportedLocals[] = $localeCode;
+                }
+
+                if(isset($translations)){
+                    foreach($translations AS $tr){
+                        if(in_array($tr->language, $supportedLocals)){
+                            $newId[$tr->language] = $tr->id;
+                        }
                     }
                 }
-            }
             ?>
-            @if(isset($id) && !empty($id))
-            <?php 
-                $currentUrl = explode('/',url()->current());
-                $index = count($currentUrl) - 1;
-                $value = $currentUrl[$index];
-                $currentUrl[$index] = $id;
-                $newUrl = implode($currentUrl, '/');
-            ?>
+
+            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+            @if(request()->segment(2) == "" || request()->segment(2) == "resources")
+                <li>
+                    <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                    {{ $properties['native'] }}
+                    </a>
+                </li>
+
+            @elseif(isset($newId[$localeCode]) && count($newId) > 0)
+                <?php 
+                    $currentUrl = explode('/',url()->current());
+                    $index = count($currentUrl) - 1;
+                    $value = $currentUrl[$index];
+                    $currentUrl[$index] = $newId[$localeCode];
+                    $newUrl = implode($currentUrl, '/');
+                ?>
                 <li>
                     <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, $newUrl, [], true) }}">
                     {{ $properties['native'] }}
@@ -31,7 +45,7 @@
                 </li>
             @else
                 <li>
-                    <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                    <a rel="alternate" style="text-decoration: line-through;" hreflang="{{ $localeCode }}">
                     {{ $properties['native'] }}
                     </a>
                 </li>
