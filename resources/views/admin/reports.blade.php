@@ -153,7 +153,7 @@
                                 <tbody>
                                 @foreach ($totalResourcesBySubject as $indexkey => $resource)
                                 <tr>
-                                    <td><a href="resource/view/?subject_area={{$resource->id}}">{{ $resource->name }}</a></td>
+                                    <td><a href="resource/view/?subject_area={{$resource->tid}}">{{ $resource->name }}</a></td>
                                     <td>{{ fixLanguage($resource->language) }}</td>
                                     <td><a href="{{ URL::to('admin/resources/list/subject_area/'.str_slug($resource->name)) }}">{{ $resource->total }}</a></td>
                                     </tr>
@@ -185,7 +185,7 @@
                                 <tbody>
                                 @foreach ($totalResourcesByLevel as $indexkey => $resource)
                                 <tr>
-                                    <td><a href="resource/view/?level={{$resource->id}}">{{ $resource->name }}</a></td>
+                                    <td><a href="resource/view/?level={{$resource->tid}}">{{ $resource->name }}</a></td>
                                     <td>{{ fixLanguage($resource->language) }}</td>
                                     <td><a href="{{ URL::to('admin/resources/list/level/'.str_slug($resource->name)) }}">{{ $resource->total }}</a></td>
                                     </tr>

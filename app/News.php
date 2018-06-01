@@ -18,18 +18,18 @@ class News extends Model
 
     public function scopelistNews()
     {
-        $records = DB::table('news')
+        $records = DB::table('news AS nw')
                 ->select(
-                    'newsid',
-                    'title',
-                    'summary',
-                    'body',
-                    'language',
-                    'tnid',
-                    'created',
-                    'updated'
+                    'nw.newsid',
+                    'nwd.title',
+                    'nwd.summary',
+                    'nwd.body',
+                    'nwd.language',
+                    'nwd.created',
+                    'nwd.updated'
                 )
-                ->where('language',Config::get('app.locale'))
+                ->join('news_data AS nwd', 'nwd.newsid','=','nw.newsid')
+                ->where('nwd.language',Config::get('app.locale'))
                 ->paginate(20);
 
         return $records;
@@ -37,25 +37,21 @@ class News extends Model
 
     public function oneNews($newsTnid)
     {
-        $record = DB::table('news')
+        $record = DB::table('news AS nw')
                 ->select(
-                    'newsid',
-                    'title',
-                    'summary',
-                    'body',
-                    'language',
-                    'tnid',
-                    'created',
-                    'updated'
+                    'nw.newsid',
+                    'nwd.title',
+                    'nwd.summary',
+                    'nwd.body',
+                    'nwd.language',
+                    'nwd.created',
+                    'nwd.updated'
                 )
-                ->where('tnid',$newsTnid)
-                ->where('language',Config::get('app.locale'))
+                ->join('news_data AS nwd', 'nwd.newsid','=','nw.newsid')
+                ->where('nw.newsid',$newsTnid)
+                ->where('nwd.language',Config::get('app.locale'))
                 ->first();
 
-        if($record){
-            return $record;
-        }else{
-            return abort(404);
-        }
+        return $record;
     }
 }

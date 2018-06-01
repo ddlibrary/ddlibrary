@@ -110,9 +110,9 @@ class ResourceController extends Controller
         }else{
             $resources = $myResources->paginateResources();
         }
-        $subjects = $myResources->resourceAttributesList('static_subject_areas');
-        $types = $myResources->resourceAttributesList('static_learning_resource_types');
-        $levels = $myResources->resourceAttributesList('static_levels');
+        $subjects = $myResources->resourceAttributesList('taxonomy_term_data',8);
+        $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
+        $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
         return view('resources.resources_list', compact('resources','subjects','types','levels','subjectAreaIds','levelIds','typeIds'));
     }
 
@@ -120,12 +120,12 @@ class ResourceController extends Controller
     {
         $myResources = new Resource();
         $resource = Resource::resources()->where('resourceid',$resourceId)->first();
-        $resourceLevels = $myResources->resourceAttributes($resourceId,'resources_levels','resource_level', 'static_levels');
-        $resourceAuthors = $myResources->resourceAttributes($resourceId,'resources_authors','author_name','static_authors');
+        $resourceLevels = $myResources->resourceAttributes($resourceId,'resources_levels','resource_level_tid', 'taxonomy_term_data');
+        $resourceAuthors = $myResources->resourceAttributes($resourceId,'resources_authors','author_name_tid','taxonomy_term_data');
         $resourceAttachments = $myResources->resourceAttachments($resourceId); 
-        $resourceSubjectAreas = $myResources->resourceAttributes($resourceId,'resources_subject_areas','subject_area','static_subject_areas');
-        $resourceLearningResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type','static_learning_resource_types');
-        $resourcePublishers = $myResources->resourceAttributes($resourceId,'resources_publishers','publisher_name','static_publishers');
+        $resourceSubjectAreas = $myResources->resourceAttributes($resourceId,'resources_subject_areas','subject_area_tid','taxonomy_term_data');
+        $resourceLearningResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type_tid','taxonomy_term_data');
+        $resourcePublishers = $myResources->resourceAttributes($resourceId,'resources_publishers','publisher_name_tid','taxonomy_term_data');
         $relatedItems = $myResources->getRelatedResources($resourceId, $resourceSubjectAreas);
         return view('resources.resources_view', compact(
             'resource',
