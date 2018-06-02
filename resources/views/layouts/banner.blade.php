@@ -12,7 +12,7 @@
                 {
                     $supportedLocals[] = $localeCode;
                 }
-
+                
                 if(isset($translations)){
                     foreach($translations AS $tr){
                         if(in_array($tr->language, $supportedLocals)){
@@ -23,7 +23,7 @@
             ?>
 
             @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-            @if(request()->segment(2) == "" || request()->segment(2) == "resources")
+            @if(request()->segment(2) == "" || request()->segment(3) != "view")
                 <li>
                     <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
                     {{ $properties['native'] }}

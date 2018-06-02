@@ -127,6 +127,14 @@ class ResourceController extends Controller
         $resourceLearningResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type_tid','taxonomy_term_data');
         $resourcePublishers = $myResources->resourceAttributes($resourceId,'resources_publishers','publisher_name_tid','taxonomy_term_data');
         $relatedItems = $myResources->getRelatedResources($resourceId, $resourceSubjectAreas);
+
+        $translation_id = $resource->tnid;
+        if($translation_id){
+            $translations = $myResources->getResourceTranslations($translation_id);
+        }else{
+            $translations = array();
+        }
+
         return view('resources.resources_view', compact(
             'resource',
             'resourceLevels',
@@ -135,7 +143,8 @@ class ResourceController extends Controller
             'resourceLearningResourceTypes',
             'resourcePublishers',
             'resourceAttachments',
-            'relatedItems'
+            'relatedItems',
+            'translations'
         ));   
     }
 }

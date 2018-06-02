@@ -17,7 +17,7 @@ class Resource extends Model
                 'rd.title',
                 'rd.abstract',
                 'rd.userid',
-                //'resources.creative_commons',
+                'rd.tnid',
                 'users.username AS author',
                 'rd.status',
                 'rd.updated'
@@ -335,5 +335,18 @@ class Resource extends Model
             ->where('ra.resourceid', $resourceId)
             ->get();
         return $records;
+    }
+
+    public function getResourceTranslations($resourceId)
+    {
+        $record = DB::table('resources AS rs')
+            ->select(
+                'rs.resourceid AS id',
+                'rd.language'
+            )
+            ->leftJoin('resources_data AS rd','rd.resourceid','=','rs.resourceid')
+            ->where('rd.tnid', $resourceId)
+            ->get();
+        return $record;
     }
 }
