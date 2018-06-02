@@ -70,12 +70,45 @@
         </article>
         <article class="resourceViewDetails">
             <h2>Languages Available</h2>
+        
+            <?php
+            $supportedLocals = array();
+            $newId = array();
+                foreach($app['config']->get('laravellocalization.localesOrder') as $localeCode)
+                {
+                    $supportedLocals[] = $localeCode;
+                }
+                
+                if(isset($translations)){
+                    foreach($translations AS $tr){
+                        if(in_array($tr->language, $supportedLocals)){
+                            $newId[$tr->language] = $tr->id;
+                        }
+                    }
+                }
+            ?>
+
             @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-            <p>
-                <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+            @if(isset($newId[$localeCode]) && count($newId) > 0)
+                <?php 
+                    $currentUrl = explode('/',url()->current());
+                    $index = count($currentUrl) - 1;
+                    $value = $currentUrl[$index];
+                    $currentUrl[$index] = $newId[$localeCode];
+                    $newUrl = implode($currentUrl, '/');
+                ?>
+                <p>
+                    <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, $newUrl, [], true) }}">
                     {{ $properties['native'] }}
-                </a>
-            </p>
+                    </a>
+                </p>
+            @else
+                <p>
+                    <a rel="alternate" style="text-decoration: line-through;" hreflang="{{ $localeCode }}">
+                    {{ $properties['native'] }}
+                    </a>
+                </p>
+            @endif
             @endforeach
         </article>
         <article class="resourceViewDetails">
