@@ -35,3 +35,25 @@ function changeContent(DivContent, methodUrl, parameters)
         }
     });
 }
+
+function populate(element, targetId, targetContent)
+{
+    var selectedOption = element.options[element.selectedIndex].value;
+    var targetLocation = document.getElementById(targetId);
+    var cityContainer = document.getElementById('city-container');
+    var textInput = document.getElementById('text-city');
+
+    if(selectedOption == 2657 || selectedOption == 3110 || selectedOption == 3111){
+        textInput.style.display = 'none';
+        var i;
+        for (i = 0; i < targetContent.length; i++) {
+            var item = new Option(targetContent[i].name, targetContent[i].tid);
+            targetLocation.options.add(item);
+        }
+        targetLocation.style.display = 'block';
+    }else{
+        targetLocation.style.display = 'none';
+        textInput.style.display = 'block';
+        
+    }
+}

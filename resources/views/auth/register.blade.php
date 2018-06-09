@@ -71,7 +71,7 @@
                     <label for="age"> 
                         <strong>Age</strong>
                     </label>
-                    <input class="form-control{{ $errors->has('age') ? ' is-invalid' : '' }}" id="age" name="age"  value="{{ old('age') }}" size="40" maxlength="40" type="text" required>
+                    <input class="form-control{{ $errors->has('age') ? ' is-invalid' : '' }}" id="age" name="age"  value="{{ old('age') }}" size="40" maxlength="40" type="number" style="width: 327px;" required>
                     @if ($errors->has('age'))
                     <span class="invalid-feedback">
                         <strong>{{ $errors->first('age') }}</strong>
@@ -98,10 +98,11 @@
                         <strong>Country</strong>
                         <span class="form-required" title="This field is required.">*</span>
                     </label>
-                    <select class="form-control{{ $errors->has('country') ? ' is-invalid' : '' }}" name="country" id="country" required>
+                    <select class="form-control{{ $errors->has('country') ? ' is-invalid' : '' }}" name="country" id="country" onchange="javascript:populate(this,'city', {{ json_encode($provinces) }})" required>
                         <option value="">- None -</option>
-                        <option {{ old('country') == "Afghanistan" ? "selected" : "" }}>Afghanistan</option>
-                        <option {{ old('country') == "Canada" ? "selected" : "" }}>Canada</option>
+                        @foreach($countries AS $cn)
+                        <option value="{{ $cn->tid }}" {{ old('country') == $cn->name ? "selected" : "" }}>{{ $cn->name }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -109,13 +110,11 @@
                 <div class="form-item">
                     <label for="city"> 
                         <strong>City</strong>
-                        <span class="form-required" title="This field is required.">*</span>
                     </label>
                     <select class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}" name="city" id="city" required>
                         <option value="">- None -</option>
-                        <option {{ old('city') == "Kabul" ? "selected" : "" }}>Kabul</option>
-                        <option {{ old('city') == "Vancouver" ? "selected" : "" }}>Vancouver</option>
                     </select>
+                    <input type="text" class="form-control" name="city" id="text-city" size="40" maxlength="40" style="display:none;">
                 </div>
             </div>
             <div class="left-side">

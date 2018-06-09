@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Resource;
 
 class RegisterController extends Controller
 {
@@ -42,6 +43,19 @@ class RegisterController extends Controller
     }
 
     /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        $myResources = new Resource();
+        $countries = $myResources->resourceAttributesList('taxonomy_term_data',15);
+        $provinces = $myResources->resourceAttributesList('taxonomy_term_data',12)->all();
+        return view('auth.register', compact('countries','provinces'));
+    }
+
+    /**
      * Get a validator for an incoming registration request.
      *
      * @param  array  $data
@@ -57,8 +71,7 @@ class RegisterController extends Controller
             'last_name' => 'required|string|max:255',
             'age' => 'required|integer|max:100',
             'gender' => 'required',
-            'country' => 'required',
-            'city' => 'required'
+            'country' => 'required'
         ]);
     }
 
@@ -109,6 +122,6 @@ class RegisterController extends Controller
      */
     protected function registered(Request $request, $userId)
     {
-        dd($user);
+        
     }
 }
