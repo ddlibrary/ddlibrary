@@ -349,4 +349,9 @@ class Resource extends Model
             ->get();
         return $record;
     }
+
+    public function saveTheResource($resource=array())
+    {
+        return true;
+    }
 }

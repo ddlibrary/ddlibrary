@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{ asset('css/fontawesome-all.min.css') }}">
     <script src="{{ asset('js/ddl.js') }}"></script>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/10.0.1/classic/ckeditor.js"></script>
 </head>
 <body>
     @include('layouts.banner')

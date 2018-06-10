@@ -29,6 +29,14 @@ class PageController extends Controller
     {
         $myPage = new Page();
         $page = $myPage->onePage($pageId);
-        return view('pages.pages_view', compact('page'));
+
+        $translation_id = $page->tnid;
+        if($translation_id){
+            $translations = $myPage->getPageTranslations($translation_id);
+        }else{
+            $translations = array();
+        }
+
+        return view('pages.pages_view', compact('page','translations'));
     }
 }

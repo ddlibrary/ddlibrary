@@ -60,7 +60,7 @@
                 <a href="{{ URL::to('resources') }}"><i class="fas fa-align-justify fa-lg icons"></i>Browse</a>
             </li>
             <li class="dropDown">
-                <a href="#"><i class="fas fa-upload fa-lg icons"></i>Upload A Resource</a>
+                <a href="{{ URL::to('resources/add/step1') }}"><i class="fas fa-upload fa-lg icons"></i>Upload A Resource</a>
             </li>
             @if (Auth::check())
             <li>

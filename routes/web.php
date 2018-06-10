@@ -38,6 +38,12 @@ function()
     Route::any('resources/list', 'ResourceController@list')->name('resourceList');
     Route::get('resources/view/{resourceId}', 'ResourceController@viewPublicResource');
     Route::get('resources', 'ResourceController@list');
+    Route::get('resources/add/step1', 'ResourceController@createStepOne')->name('step1');;
+    Route::post('resources/add/step1', 'ResourceController@postStepOne');
+    Route::get('resources/add/step2', 'ResourceController@createStepTwo')->name('step2');;
+    Route::post('resources/add/step2', 'ResourceController@postStepTwo');
+    Route::get('resources/add/step3', 'ResourceController@createStepThree')->name('step3');;
+    Route::post('resources/add/step3', 'ResourceController@postStepThree');
 
     //Report
     Route::get('admin/reports/ddl', 'ReportController@index');

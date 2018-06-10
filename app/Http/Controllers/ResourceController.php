@@ -147,4 +147,95 @@ class ResourceController extends Controller
             'translations'
         ));   
     }
+
+    public function createStepOne(Request $request)
+    {
+        $resource = $request->session()->get('resource1');
+        return view('resources.resources_add_step1', compact('resource'));
+    }
+
+    public function postStepOne(Request $request)
+    {
+        $validatedData = $request->validate([
+            'title' => 'required|unique:resources_data',
+            'author' => 'required',
+            'publisher' => 'required',
+            'translator' => 'required',
+            'language' => 'required',
+            'abstract' => 'required',
+        ]);
+
+        $request->session()->put('resource1', $validatedData);
+
+        return redirect('/resources/add/step2');
+    }
+
+    public function createStepTwo(Request $request)
+    {
+        $resource = $request->session()->get('resource2');
+
+        $myResources = new Resource();
+
+        $subjects = $myResources->resourceAttributesList('taxonomy_term_data',8);
+        $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
+        $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
+
+        return view('resources.resources_add_step2', compact('resource','subjects','types','levels'));
+    }
+
+    public function postStepTwo(Request $request)
+    {
+        $resource = $request->session()->get('resource2');
+        $validatedData = $request->validate([
+            'attachments' => 'mimes:pdf,doc,docx',
+            'subject_areas' => 'required',
+            'keywords' => 'required',
+            'learning_resources_types' => 'required',
+            'educational_use' => 'required',
+            'level' => 'required',
+        ]);
+
+        if(!isset($resource['attachments'])){
+            $fileName = request()->attachments->getClientOriginalName();
+            $request->attachments->storeAs('attachments', $fileName);
+            $resource['attachments'] = $fileName;
+        }elseif(request()->attachments){
+            $resource = $validatedData;
+            $fileName = request()->attachments->getClientOriginalName();
+            $request->attachments->storeAs('attachments', $fileName);
+            $resource['attachments'] = $fileName;    
+        }
+        $request->session()->put('resource2', $resource);
+        return redirect('/resources/add/step3');
+    }
+
+    public function createStepThree(Request $request)
+    {
+        $resource = $request->session()->get('resource3');
+        return view('resources.resources_add_step3', compact('resource'));
+    }
+
+    /**
+     * Store resource
+     *
+     */
+    public function postStepThree(Request $request)
+    {
+        $validatedData = $request->validate([
+            'translation_rights' => 'integer',
+            'educational_resource' => 'integer',
+            'copyright_holder' => 'string',
+            'creative_commons' => 'integer',
+            'creative_commons_other' => 'integer'
+        ]);
+
+        $request->session()->put('resource3', $validatedData);
+
+        $resource1 = $request->session()->get('resource1');
+        $resource2 = $request->session()->get('resource2');
+        $resource3 = $request->session()->get('resource3');
+
+        $finalArray = array_merge($resource1, $resource2, $resource3);
+        dd($finalArray);
+    }
 }

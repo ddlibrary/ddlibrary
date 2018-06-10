@@ -593,3 +593,7 @@ aside .subSubjectShow {
     flex-direction: column;
     flex-wrap: wrap;
 }
+
+.ck-editor__editable {
+    min-height: 200px;
+}
