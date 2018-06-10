@@ -15,7 +15,6 @@ class ResourceController extends Controller
      */
     public function __construct()
     {
-        
     }
     
     public function index()
@@ -150,6 +149,7 @@ class ResourceController extends Controller
 
     public function createStepOne(Request $request)
     {
+        $this->middleware('auth');
         $resource = $request->session()->get('resource1');
         return view('resources.resources_add_step1', compact('resource'));
     }
