@@ -177,10 +177,21 @@ class ResourceController extends Controller
         $myResources = new Resource();
 
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data',8);
+        $keywords = $myResources->resourceAttributesList('taxonomy_term_data',23);
+        $learningResourceTypes = $myResources->resourceAttributesList('taxonomy_term_data',7);
+        $educationalUse = $myResources->resourceAttributesList('taxonomy_term_data',25);
         $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
         $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
 
-        return view('resources.resources_add_step2', compact('resource','subjects','types','levels'));
+        return view('resources.resources_add_step2', compact(
+            'resource',
+            'subjects',
+            'keywords',
+            'types',
+            'levels',
+            'learningResourceTypes',
+            'educationalUse'
+        ));
     }
 
     public function postStepTwo(Request $request)
@@ -237,5 +248,27 @@ class ResourceController extends Controller
 
         $finalArray = array_merge($resource1, $resource2, $resource3);
         dd($finalArray);
+    }
+
+    public function attributes($entity, Request $request)
+    {
+        $myResources = new Resource();
+        $keyword = $request->only('term');
+        if(!$keyword){
+            return;
+        }
+        if($entity == "authors"){
+            $records = $myResources->searchResourceAttributes($keyword['term'],'taxonomy_term_data', 24);
+            return response()->json($records->toArray());
+        }elseif($entity == "publishers"){
+            $records = $myResources->searchResourceAttributes($keyword['term'],'taxonomy_term_data', 9);
+            return response()->json($records->toArray());    
+        }elseif($entity == "translators"){
+            $records = $myResources->searchResourceAttributes($keyword['term'],'taxonomy_term_data', 22);
+            return response()->json($records->toArray());    
+        }elseif($entity == "keywords"){
+            $records = $myResources->searchResourceAttributes($keyword['term'],'taxonomy_term_data', 23);
+            return response()->json($records->toArray());    
+        }
     }
 }

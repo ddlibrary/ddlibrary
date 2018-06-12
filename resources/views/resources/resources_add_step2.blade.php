@@ -1,6 +1,13 @@
 @extends('layouts.main')
 
 @section('content')
+<script>
+    $(document).ready(function() {
+        $('#subject_areas').select2();
+        $('#learning_resources_types').select2();
+        $('#educational_use').select2();
+    });
+</script>
 <section class="ddl-forms">
     <header>
         <h1>Add a new Resource - Step 2</h1>
@@ -25,7 +32,18 @@
                 <strong>Subject Areas</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('subject_areas') ? ' is-invalid' : '' }}" id="subject_areas" name="subject_areas" size="40" maxlength="40" type="text" value="{{ @$resource['subject_areas'] }}" required>
+            <select class="form-control{{ $errors->has('subject_areas') ? ' is-invalid' : '' }}" id="subject_areas" name="subject_areas[]" required  multiple="multiple">
+                @foreach ($subjects AS $item)
+                    @if($item->parent == 0)
+                        <optgroup label="{{ $item->name }}">
+                    @else
+                    <option value="{{ $item->tid }}">{{ $item->name }}</option>
+                    @endif
+                    @if($item->parent == 0)
+                        </optgroup>    
+                    @endif
+                @endforeach
+            </select>
             @if ($errors->has('subject_areas'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('subject_areas') }}</strong>
@@ -37,7 +55,7 @@
                 <strong>Keywords</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('keywords') ? ' is-invalid' : '' }}" id="keywords" name="keywords" size="40" maxlength="40" type="text" value="{{ @$resource['keywords'] }}" required>
+            <input class="form-control{{ $errors->has('keywords') ? ' is-invalid' : '' }}" id="keywords" name="keywords" size="40" maxlength="40" type="text" value="{{ @$resource['keywords'] }}" onkeydown="javascript:bringMeAttr('keywords','{{ URL::to('resources/attributes/keywords') }}')" required>
             @if ($errors->has('keywords'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('keywords') }}</strong>
@@ -49,7 +67,11 @@
                 <strong>Learning Resources Types</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('learning_resources_types') ? ' is-invalid' : '' }}" id="learning_resources_types" name="learning_resources_types" size="40" maxlength="40" type="text" value="{{ @$resource['learning_resources_types'] }}" required>
+            <select class="form-control{{ $errors->has('learning_resources_types') ? ' is-invalid' : '' }}" id="learning_resources_types" name="learning_resources_types[]" required  multiple="multiple">
+                @foreach ($learningResourceTypes AS $item)
+                    <option value="{{ $item->tid }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
             @if ($errors->has('learning_resources_types'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('learning_resources_types') }}</strong>
@@ -61,7 +83,11 @@
                 <strong>Educational Use</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('educational_use') ? ' is-invalid' : '' }}" id="educational_use" name="educational_use" size="40" maxlength="40" type="text" value="{{ @$resource['educational_use'] }}" required>
+            <select class="form-control{{ $errors->has('educational_use') ? ' is-invalid' : '' }}" id="educational_use" name="educational_use[]" required  multiple="multiple">
+                @foreach ($educationalUse AS $item)
+                    <option value="{{ $item->tid }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
             @if ($errors->has('educational_use'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('educational_use') }}</strong>

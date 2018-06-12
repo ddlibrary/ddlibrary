@@ -227,3 +227,12 @@ input[type=button]:hover, input[type=submit]:hover, input[type=button]:active  {
     box-shadow: 0 0 0 .2rem rgba(220, 53, 69, .25)
 }
 /** Validation Ends */
+
+.ui-autocomplete-loading {
+    background: white url("../storage/files/ui-anim_basic_16x16.gif") right center no-repeat;
+}
+
+.select2-container--default .select2-results__group {
+    font-weight: bold;
+    background: #eee;
+}

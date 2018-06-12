@@ -44,6 +44,7 @@ function()
     Route::post('resources/add/step2', 'ResourceController@postStepTwo');
     Route::get('resources/add/step3', 'ResourceController@createStepThree')->name('step3')->middleware('auth');;
     Route::post('resources/add/step3', 'ResourceController@postStepThree');
+    Route::get('resources/attributes/{entity}', 'ResourceController@attributes');
 
     //Report
     Route::get('admin/reports/ddl', 'ReportController@index');

@@ -67,6 +67,16 @@ class Resource extends Model
         return $records;
     }
 
+    public function searchResourceAttributes($keyword, $staticTable, $vid)
+    {
+        $records = DB::table($staticTable)
+                ->select($staticTable.'.name AS value')
+                ->where($staticTable.'.name','like','%'.$keyword.'%')
+                ->where($staticTable.'.vid',$vid)
+                ->get();
+        return $records;
+    }
+
     public function resourceAttributesList($tableName, $vid)
     {
         $records = DB::table($tableName)

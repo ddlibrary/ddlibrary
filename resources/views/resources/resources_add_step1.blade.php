@@ -25,7 +25,7 @@
                 <strong>Author</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('author') ? ' is-invalid' : '' }}" id="author" name="author" size="40" maxlength="40" type="text" value="{{ @$resource['author'] }}" required>
+            <input class="form-control{{ $errors->has('author') ? ' is-invalid' : '' }}" id="author" name="author" size="40" maxlength="40" type="text" value="{{ @$resource['author'] }}" onkeydown="javascript:bringMeAttr('author','{{ URL::to('resources/attributes/authors') }}')" required>
             @if ($errors->has('author'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('author') }}</strong>
@@ -37,7 +37,7 @@
                 <strong>Publisher</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('publisher') ? ' is-invalid' : '' }}" id="publisher" name="publisher" size="40" maxlength="40" type="text" value="{{ @$resource['publisher'] }}" required>
+            <input class="form-control{{ $errors->has('publisher') ? ' is-invalid' : '' }}" id="publisher" name="publisher" size="40" maxlength="40" type="text" value="{{ @$resource['publisher'] }}" onkeydown="javascript:bringMeAttr('publisher','{{ URL::to('resources/attributes/publishers') }}')" required>
             @if ($errors->has('publisher'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('publisher') }}</strong>
@@ -49,7 +49,7 @@
                 <strong>Translator</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('translator') ? ' is-invalid' : '' }}" id="translator" name="translator" size="40" maxlength="40" type="text" value="{{ @$resource['translator'] }}" required>
+            <input class="form-control{{ $errors->has('translator') ? ' is-invalid' : '' }}" id="translator" name="translator" size="40" maxlength="40" type="text" value="{{ @$resource['translator'] }}" onkeydown="javascript:bringMeAttr('translator','{{ URL::to('resources/attributes/translators') }}')" required>
             @if ($errors->has('translator'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('translator') }}</strong>
