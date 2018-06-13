@@ -346,7 +346,7 @@ select.form-control:focus::-ms-value {
     border-right: 1px solid #eee;
 }
 
-.subItem {
+.sub-item {
     margin: 0 10px 0 10px;
 }
 

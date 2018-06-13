@@ -18,7 +18,7 @@
                         <i class="fas fa-plus js-fa-plus fa-xs" onclick="javascript:showHide(this,'js-sub-subject{{$subject->tid}}')"></i>
                     @endif
                 @if(count($subjectParent) > 0)
-                    <ul id="js-sub-subject{{$subject->tid}}" style="display:none;">
+                    <ul id="js-sub-subject{{$subject->tid}}" class="sub-item" style="display:none;">
                         @foreach($subjectParent as $item)
                             <li><input type="checkbox" class="js-child"  name="subject_area[]" onchange="this.form.submit()" {{ (in_array($item->tid, $subjectAreaIds)?"checked":"")}} value="{{ $item->tid }}">{{ $item->name }}</li>
                         @endforeach
@@ -44,7 +44,7 @@
                             <i class="fas fa-plus js-fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$level->tid}}')"></i>
                         @endif
                     @if(count($levelParent) > 0)
-                        <ul id="subLevel{{$level->tid}}" style="display:none;">
+                        <ul id="subLevel{{$level->tid}}" class="sub-item" style="display:none;">
                             @foreach($levelParent as $item)
                                 <li><input type="checkbox" name="level[]" onchange="fnTest(this,'subLevel{{$item->tid}}');this.form.submit()" {{ (in_array($item->tid, $levelIds)?"checked":"")}} class="child" value="{{ $item->tid }}">{{ $item->name }}
                             
@@ -53,7 +53,7 @@
                                     <i class="fas fa-plus js-fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$item->tid}}')"></i>
                                 @endif
                                 @if(count($levelItemParent) > 0)
-                                    <ul id="subLevel{{$item->tid}}" style="display:none;">
+                                    <ul id="subLevel{{$item->tid}}" class="sub-item" style="display:none;">
                                         @foreach($levelItemParent as $itemLevel)
                                             <li><input type="checkbox" name="level[]" onchange="this.form.submit()" {{ (in_array($itemLevel->tid, $levelIds)?"checked":"")}} class="child" value="{{ $itemLevel->tid }}">{{ $itemLevel->name }}</li>
                                         @endforeach
