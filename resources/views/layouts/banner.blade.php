@@ -1,10 +1,9 @@
 <header class="header">
-    <div class="ddlLogo">
-        <a href="{{ URL::to('/') }}"><img class="headerImg" src="{{ asset('storage/files/logo-dd.png') }}"></a>
+    <div class="ddl-logo">
+        <a href="{{ URL::to('/') }}"><img class="header-img" src="{{ asset('storage/files/logo-dd.png') }}"></a>
     </div>
-    <nav class="headerRight">
-        <ul class="languageContent">
-
+    <nav class="header-right">
+        <ul class="language-content">
             <?php
             $supportedLocals = array();
             $newId = array();
@@ -52,14 +51,14 @@
             @endif
             @endforeach
         </ul>
-        <ul class="mainNavigation">
+        <ul class="main-navigation">
             <li>
                 <a href="{{ URL::to('/') }}"><i class="fas fa-home fa-lg icons"></i>Home</a>
             </li>
             <li>
                 <a href="{{ URL::to('resources') }}"><i class="fas fa-align-justify fa-lg icons"></i>Browse</a>
             </li>
-            <li class="dropDown">
+            <li>
                 <a href="{{ URL::to('resources/add/step1') }}"><i class="fas fa-upload fa-lg icons"></i>Upload A Resource</a>
             </li>
             @if (Auth::check())

@@ -246,6 +246,10 @@ class ResourceController extends Controller
         $resource2 = $request->session()->get('resource2');
         $resource3 = $request->session()->get('resource3');
 
+        $request->session()->forget('resource1');
+        $request->session()->forget('resource2');
+        $request->session()->forget('resource3');
+
         $finalArray = array_merge($resource1, $resource2, $resource3);
         dd($finalArray);
     }

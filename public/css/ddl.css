@@ -1,56 +1,5 @@
-/* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
-
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-/**
-End of CSS reset
-*/
 body{
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font: 1.1em/1.375 sans-serif;
 }
 body main section footer nav {
     display: flex;
@@ -64,44 +13,39 @@ main {
     flex-wrap: wrap;
     background-color: black;
     color: white;
+    justify-content: space-between;
 }
-.headerImg {
+.header-img {
     padding: 10px;
 }
-.ddlLogo {
-    flex: 3;
-}
-.headerRight {
-    float: right;
-}
-.headerRight .mainNavigation {
+.header-right .main-navigation {
     display: flex;
     padding: 30px;
 }
-.mainNavigation li a{
+.main-navigation li a{
     margin: 5px;
     color: #ffffff;
 }
-.mainNavigation li i {
+.main-navigation li i {
     margin: 5px;
     font-size: 18px;
 }
-.mainNavigation a:hover, .mainNavigation a:active, .mainNavigation a:focus {
+.main-navigation a:hover, .main-navigation a:active, .main-navigation a:focus {
     color: #da7437;
     cursor: pointer;
 }
-.headerRight .languageContent {
+.header-right .language-content {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
     margin: 0 25px 0 34px;
     margin-bottom: -23px;
 }
-.headerRight .languageContent li {
+.header-right .language-content li {
     margin-right: 10px;
     font-size: 16px;
 }
-.headerRight .languageContent li a {
+.header-right .language-content li a {
     color: #ffa800;
 }
 .banner {
@@ -113,7 +57,7 @@ main {
 .banner header {
     margin: 5px 0px 30px 0px;
 }
-.formSearch {
+.form-search {
     padding: .2rem 0rem;
     font-size: 1.25rem;
     line-height: 0.5;
@@ -121,24 +65,24 @@ main {
     width: 50%;
     text-align: center;
 }
-.searchButton {
+.search-button {
     border: 1px solid transparent;
     padding: .2rem 0.75rem;
     font-size: 1.3rem;
     border-radius: .25rem;
     background-color: #ffa800;
 }
-.normalButton {
+.normal-button {
     border: 1px solid transparent;
     padding: .2rem 0.75rem;
     font-size: 1.2rem;
     border-radius: .25rem;
     background-color: #dddddd;
 }
-.ddlButtons {
+.ddl-buttons {
     margin: 25px 0 15px 0;
 }
-.ddlTopNews {
+.ddl-top-news {
     padding: 5px;
     margin: 5px;
     text-align: center;
@@ -161,18 +105,18 @@ main {
     margin: 5px;
     background: #eeeeee;
 }
-.sectionContent {
+.section-content {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 
-.sectionContent .homeSubjectAreas:hover {
+.section-content .home-subject-areas:hover {
     cursor: pointer;
     opacity: 0.5;
 }
 
-.resourcePagination {
+.resource-pagination {
     display: flex;
     padding-left: 0;
     list-style: none;
@@ -180,12 +124,12 @@ main {
     width: 100%
 }
 
-.resourcePagination ul {
+.resource-pagination ul {
     margin-top: 0;
     margin-bottom: 1rem;
 }
 
-.resourcePagination ul li {
+.resource-pagination ul li {
     display: list-item;
     float: left;
 }
@@ -221,44 +165,32 @@ main {
     margin: 15px;
     padding: 15px;
 }
-.latestNews{
+.latest-news{
     display: flex;
     flex-wrap: wrap;
     padding: 5px;
     margin: 5px;
     background: #eeeeee;
+    justify-content: space-between;
 }
-.latestNewsDiv {
-    flex: 1;
-}
-.latestNewsDiv h2 {
+.latest-news-div h2 {
     padding-bottom: 5px;
 }
-.latestNewsContent {
+.latest-news-content {
     padding-top: 5px;
     padding-bottom: 15px;
 }
-.newsDescription {
+.news-description {
     font-style: italic;
     font-size: 16px;
 }
-.ddlVideo {
-    flex: 1;
-}
-.ddlVideo h2 {
+.ddl-video h2 {
     padding-bottom: 5px;
 }
-.ddlVideoContent {
+.ddl-video-content {
     height: 0;
     position: relative;
 	padding-bottom: 56.25%; /* 16:9 */
-}
-.ddlVideoContent iframe {
-    position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
 }
 footer {
     flex-wrap: wrap;
@@ -392,24 +324,24 @@ select.form-control:focus::-ms-value {
     margin-top: 15px;
 }
 
-.generalContent {
+.general-content {
     padding: 5px;
     margin: 5px;
 }
 
-.generalContent ul {
+.general-content ul {
     display: block;
     list-style-type: disc;
     margin: 0 0 10px 25px;
 }
 
-.resourceList {
+.resource-list {
     display: flex;
     padding: 5px;
     margin: 5px;
 }
 
-.resourceList aside {
+.resource-list aside {
     flex: 1 1 25%;
     border-right: 1px solid #eee;
 }
@@ -418,11 +350,11 @@ select.form-control:focus::-ms-value {
     margin: 0 10px 0 10px;
 }
 
-aside .subSubjectShow {
+aside .sub-subject-show {
     display: block;
 }
 
-.resourceList .resourceInformationSection {
+.resource-list .resource-information-section {
     flex: 1 1 75%;
     flex-wrap: wrap;
     padding: 5px;
@@ -430,61 +362,61 @@ aside .subSubjectShow {
     display: flex;
 }
 
-.resourceInformationSection .resourceArticle:hover {
+.resource-information-section .resource-article:hover {
     cursor: pointer;
     opacity: 0.7;
 }
 
-.resourceList .resourceInformation {
+.resource-list .resource-information {
     flex-basis: auto;
     padding: 5px;
     margin: 5px;
 }
-.resourceList .resourceTitle {
+.resource-list .resource-title {
     border: 1px solid #eee;
     width: 200px;
     height: 50px;
 }
-.resourceList .resourceImg {
+.resource-list .resource-img {
     width: 200px;
     height: 167px;
 }
-.resourceList .resourceDetails {
+.resource-list .resource-details {
     display: flex;
     justify-content: space-around;
     border: 1px solid #eee;   
     width: 200px;
 }
 
-.resourceList .resourceDetails article {
+.resource-list .resource-details article {
     display: flex;
     flex-direction: column;
     padding: 2px;
     margin: 2px;
 }
 
-.resourceList .resourceDetails span {
+.resource-list .resource-details span {
     text-align: center;
 }
 
-.resourceList .resourceDetails i {
+.resource-list .resource-details i {
     text-align: center; 
 }
 
-.resourceView {
+.resource-view {
     display: flex;
     flex-wrap: wrap;
     padding: 5px;
     margin: 5px;
 }
 
-.resourceView aside {
-    flex: 1 1 24%;
+.resource-view aside {
+    flex: 1;
     border-right: 1px solid #eee;
 }
 
-.resourceView .resourceViewInformationSection {
-    flex: 1 1 75%;
+.resource-view .resource-view-information-section {
+    flex: 4;
     padding-right: 5px;
     margin-left: 5px;
     display: flex;
@@ -492,7 +424,7 @@ aside .subSubjectShow {
     flex-direction: column;
 }
 
-.resourceView .resourceViewImg {
+.resource-view .resource-view-img {
     display: block;
     margin-right: auto;
     margin-left: auto;
@@ -500,77 +432,75 @@ aside .subSubjectShow {
     height: 254px;
 }
 
-.resourceView .resourceViewTitleBox {
+.resource-view .resource-view-title-box {
     border: 1px solid #eee;
     padding: 5px;
 }
 
-.resourceViewTitleBox img:first-child {
+.resource-view-title-box img:first-child {
     display: none;
 }
 
-.resourceViewTitleBox p {
+.resource-view-title-box p {
     min-height: 100px;
 }
 
-.resourceViewTitleBox p:empty {
+.resource-view-title-box p:empty {
     display: none;
 }
 
-.resourceView .resourceViewDetails {
+.resource-view .resource-view-details {
     border: 1px solid #eee;
     padding: 5px;
     margin-top: 5px;
 }
 
-.resourceViewDetails .downloadBox {
+.resource-view-details .download-box {
     display: flex;
     flex-wrap: wrap;
 }
 
-.resourceViewDetails .downloadBox .downloadItem {
+.resource-view-details .download-box .download-item {
     width: 50%;
     margin: 1em 0 0.1em 0;
 }
 
-.resourceView .ResourceSocialMedia{
+.resource-view .resource-social-media{
     margin: 0 35px 0 35px;
     margin-bottom: 20px;
 }
 
-.resourceView .ResourceViewRelatedItems {
+.resource-view .resource-view-related-items {
     width: 288px;
     margin: 0 auto;  
 }
 
-.resourceView .ResourceRelatedItemsBox {
-    display: flex;
-    flex-wrap: wrap;
+.resource-view .resource-related-items-box {
     border: 1px solid #eee;
     padding: 5px; 
 }
 
-.ResourceRelatedItemsBox .relatedItem {
+.resource-related-items-box .related-item {
     padding: 2px;
     margin: 2px;
     display: flex;
     flex-wrap: wrap;
 }
 
-.ResourceRelatedItemsBox .relatedItem span {
+.resource-related-items-box .related-item span {
     overflow-wrap: break-word;
     word-wrap: break-word;
     margin: 2px;
     flex: 3;
 }
 
-.resourceView .relatedItemsImg {
+.resource-view .related-items-img {
     margin-right: 5px;
     width: 55px;
     height: 50px;
 }
 
-.resourceView .ResourceViewComment {
+.resource-view .resource-view-comment {
     display: flex;
     flex-wrap: wrap;
     border: 1px solid #eee;
@@ -579,16 +509,16 @@ aside .subSubjectShow {
     width: 100%;
 }
 
-.ResourceViewComment header {
+.resource-view-comment header {
     flex: 1 1 25%;
 }
 
-.ResourceViewComment div {
+.resource-view-comment div {
     flex: 1 1 75%;
     text-align: right;
 }
 
-.ResourceViewComment article {
+.resource-view-comment article {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;

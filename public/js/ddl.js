@@ -8,18 +8,18 @@ function showHide(itself, elementId)
         theElement.style.display = "none";
     }
 
-    if (itself.className.indexOf("fa-plus") == -1) {  
-        itself.className += " fa-plus";
+    if (itself.className.indexOf("js-fa-plus") == -1) {  
+        itself.className += " js-fa-plus";
     } else { 
-        itself.className = itself.className.replace(" fa-plus", " fa-minus");
+        itself.className = itself.className.replace(" js-fa-plus", " fa-minus");
     }
 }
 
 function fnTest(check, cchild){
     if($(check).is(':checked')){
-        $(check).siblings('#'.cchild).find('.child').prop("checked",true);
+        $(check).siblings('#'.cchild).find('.js-child').prop("checked",true);
     }else{
-        $(check).siblings('#'.cchild).find('.child').prop("checked",false);        
+        $(check).siblings('#'.cchild).find('.js-child').prop("checked",false);        
     }
 }
 
@@ -40,8 +40,7 @@ function populate(element, targetId, targetContent)
 {
     var selectedOption = element.options[element.selectedIndex].value;
     var targetLocation = document.getElementById(targetId);
-    var cityContainer = document.getElementById('city-container');
-    var textInput = document.getElementById('text-city');
+    var textInput = document.getElementById('js-text-city');
 
     if(selectedOption == 2657 || selectedOption == 3110 || selectedOption == 3111){
         textInput.style.display = 'none';

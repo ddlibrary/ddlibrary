@@ -8,9 +8,9 @@
         <h2>Browse by Subjects</h2>
     </header>
     <hr>
-    <div class="sectionContent">
+    <div class="section-content">
         @foreach($subjectAreas as $subject)
-        <article class="homeSubjectAreas" onclick="location.href='{{ URL::to('resources/list?=&subject_area[]='.$subject->subject_area) }}'">
+        <article class="home-subject-areas" onclick="location.href='{{ URL::to('resources/list?=&subject_area[]='.$subject->subject_area) }}'">
             <img src="{{ Storage::disk('public')->url($subject->file_name) }}">
             <p>{{ $subject->name }}</p>
             <p>{{ $subject->total }} Resources</p>
@@ -23,7 +23,7 @@
         <h2>Browse by Collections</h2>
     </header>
     <hr>
-    <div class="sectionContent">
+    <div class="section-content">
         @foreach($featured AS $item)
         <?php
         if($item->url){
@@ -45,34 +45,34 @@
         @endforeach
     </div>
 </section>
-<section class="latestNews">
-    <div class="latestNewsDiv">
+<section class="latest-news">
+    <div class="latest-news-div">
         <header>
             <h2>Latest News</h2>
         </header>
         <hr>
         @foreach($latestNews AS $news)
-        <article class="latestNewsContent">
+        <article class="latest-news-content">
             <a href="{{ URL::to('news/view/'.$news->newsid) }}"><p>{{ $news->title }}</p></a>
-            <i class="newsDescription">{{ \Carbon\Carbon::parse(Carbon\Carbon::createFromTimestamp($news->created))->format('F dS, Y') }}</i>
+            <i class="news-description">{{ \Carbon\Carbon::parse(Carbon\Carbon::createFromTimestamp($news->created))->format('F dS, Y') }}</i>
         </article>
         @endforeach
     </div>
-    <div class="ddlVideo">
+    <div class="ddl-video">
         <header>
             <h2>DDL Video</h2>
         </header>
         <hr>
-        <article class="ddlVideoContent">
+        <article class="ddl-video-content">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/bF5dpED9W64" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </article>
     </div>
-    <div class="ddlVideo">
+    <div class="ddl-video">
         <header>
             <h2>CW4WAfghan Video</h2>
         </header>
         <hr>
-        <article class="ddlVideoContent">
+        <article class="ddl-video-content">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/Kl37icKnzd4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </article>
     </div>

@@ -114,7 +114,7 @@
                     <select class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}" name="city" id="city" required>
                         <option value="">- None -</option>
                     </select>
-                    <input type="text" class="form-control" name="city" id="text-city" size="40" maxlength="40" style="display:none;">
+                    <input type="text" class="form-control" name="city" id="js-text-city" size="40" maxlength="40" style="display:none;">
                 </div>
             </div>
             <div class="left-side">
