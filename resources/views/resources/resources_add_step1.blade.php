@@ -76,7 +76,15 @@
                 <textarea class="form-control{{ $errors->has('abstract') ? ' is-invalid' : '' }}" name="abstract" style="height: 200px">{{ @$resource['abstract'] }}</textarea>
             </div>
             <script>
-                CKEDITOR.replace( 'abstract' );
+                var getUrl = window.location;
+                var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+                var options = {
+                    filebrowserImageBrowseUrl: baseUrl+'/laravel-filemanager?type=Images',
+                    filebrowserImageUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Images&_token=',
+                    filebrowserBrowseUrl: baseUrl+'/laravel-filemanager?type=Files',
+                    filebrowserUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Files&_token='
+                };
+                CKEDITOR.replace( 'abstract', options );
             </script>
             @if ($errors->has('abstract'))
                 <span class="invalid-feedback">
