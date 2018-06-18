@@ -47,7 +47,6 @@
         <div class="form-item">
             <label for="translator"> 
                 <strong>Translator</strong>
-                <span class="form-required" title="This field is required.">*</span>
             </label>
             <input class="form-control{{ $errors->has('translator') ? ' is-invalid' : '' }}" id="translator" name="translator" size="40" maxlength="40" type="text" value="{{ @$resource['translator'] }}" onkeydown="javascript:bringMeAttr('translator','{{ URL::to('resources/attributes/translators') }}')" required>
             @if ($errors->has('translator'))
@@ -73,13 +72,11 @@
                 <strong>Abstract</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <textarea class="form-control{{ $errors->has('abstract') ? ' is-invalid' : '' }}" id="editor" name="abstract" style="height: 200px">{{ @$resource['abstract'] }}</textarea>
+            <div id="editor">
+                <textarea class="form-control{{ $errors->has('abstract') ? ' is-invalid' : '' }}" name="abstract" style="height: 200px">{{ @$resource['abstract'] }}</textarea>
+            </div>
             <script>
-                ClassicEditor
-                    .create( document.querySelector( '#editor' ) )
-                    .catch( error => {
-                        console.error( error );
-                    } );
+                CKEDITOR.replace( 'abstract' );
             </script>
             @if ($errors->has('abstract'))
                 <span class="invalid-feedback">

@@ -160,7 +160,7 @@ class ResourceController extends Controller
             'title' => 'required|unique:resources_data',
             'author' => 'required',
             'publisher' => 'required',
-            'translator' => 'required',
+            'translator' => 'string',
             'language' => 'required',
             'abstract' => 'required',
         ]);
@@ -274,5 +274,12 @@ class ResourceController extends Controller
             $records = $myResources->searchResourceAttributes($keyword['term'],'taxonomy_term_data', 23);
             return response()->json($records->toArray());    
         }
+    }
+
+    public function uploadImage()
+    {
+        $path = $request->file('avatar')->store('avatars');
+
+        return $path;
     }
 }
