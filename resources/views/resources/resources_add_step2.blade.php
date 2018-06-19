@@ -18,9 +18,15 @@
         <div class="form-item">
             <label for="attachments"> 
                 <strong>Attachments</strong>
-                <span class="form-required" title="This field is required.">*</span>
             </label>
-        <input class="form-control{{ $errors->has('attachments') ? ' is-invalid' : '' }}" id="attachments" name="attachments" size="40" maxlength="40" type="file"><a href="{{ asset('storage/attachments/'.@$resource['attachments']) }}">{{@$resource['attachments']}}</a>
+        <input class="form-control{{ $errors->has('attachments') ? ' is-invalid' : '' }}" id="attachments" name="attachments[]" size="40" maxlength="40" type="file">
+            <button type='button' class="add_more">Add More Files</button>
+            @if(isset($resource['attachments']))
+            @foreach($resource['attachments'] as $attc)
+                <br><a href="{{ asset('/storage/attachments/'.$attc) }}">{{ $attc }}</a>
+            @endforeach
+            @endif
+
             @if ($errors->has('attachments'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('attachments') }}</strong>
@@ -44,6 +50,15 @@
                     @endif
                 @endforeach
             </select>
+
+            @if(isset($resource['subject_areas']))
+                @foreach($resource['subject_areas'] as $rs)
+                    <script>
+                        let rs = '{{ $rs }}';
+                        $('#subject_areas').val(rs);
+                    </script>
+                @endforeach
+            @endif
             @if ($errors->has('subject_areas'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('subject_areas') }}</strong>
@@ -72,6 +87,16 @@
                     <option value="{{ $item->tid }}">{{ $item->name }}</option>
                 @endforeach
             </select>
+
+            @if(isset($resource['learning_resources_types']))
+                @foreach($resource['learning_resources_types'] as $rt)
+                    <script>
+                        let rt = '{{ $rt }}';
+                        $('#learning_resources_types').val(rt);
+                    </script>
+                @endforeach
+            @endif
+
             @if ($errors->has('learning_resources_types'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('learning_resources_types') }}</strong>
@@ -88,6 +113,16 @@
                     <option value="{{ $item->tid }}">{{ $item->name }}</option>
                 @endforeach
             </select>
+
+            @if(isset($resource['educational_use']))
+                @foreach($resource['educational_use'] as $eu)
+                    <script>
+                        let eu = '{{ $eu }}';
+                        $('#educational_use').val(eu);
+                    </script>
+                @endforeach
+            @endif
+
             @if ($errors->has('educational_use'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('educational_use') }}</strong>

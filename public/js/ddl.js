@@ -1,3 +1,11 @@
+
+$(document).ready(function(){
+    $('.add_more').click(function(e){
+        e.preventDefault();
+        $(this).before("<br><input name='attachments[]' type='file'/>");
+    });
+});
+
 function showHide(itself, elementId)
 {
     var theElement = document.getElementById(elementId);

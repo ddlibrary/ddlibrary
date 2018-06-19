@@ -150,6 +150,7 @@ class ResourceController extends Controller
     public function createStepOne(Request $request)
     {
         $this->middleware('auth');
+        //$request->session()->flush();
         $resource = $request->session()->get('resource1');
         return view('resources.resources_add_step1', compact('resource'));
     }
@@ -160,7 +161,7 @@ class ResourceController extends Controller
             'title' => 'required|unique:resources_data',
             'author' => 'required',
             'publisher' => 'required',
-            'translator' => 'string',
+            'translator' => '',
             'language' => 'required',
             'abstract' => 'required',
         ]);
@@ -172,8 +173,14 @@ class ResourceController extends Controller
 
     public function createStepTwo(Request $request)
     {
-        $resource = $request->session()->get('resource2');
+        
+        $resource1 = $request->session()->get('resource1');
 
+        if(!$resource1){
+            return redirect('/resources/add/step1');
+        }
+
+        $resource = $request->session()->get('resource2');
         $myResources = new Resource();
 
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data',8);
@@ -197,8 +204,9 @@ class ResourceController extends Controller
     public function postStepTwo(Request $request)
     {
         $resource = $request->session()->get('resource2');
+
         $validatedData = $request->validate([
-            'attachments' => 'mimes:pdf,doc,docx',
+            'attachments.*' => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,doc,docx,pdf,tif,tiff',
             'subject_areas' => 'required',
             'keywords' => 'required',
             'learning_resources_types' => 'required',
@@ -206,22 +214,37 @@ class ResourceController extends Controller
             'level' => 'required',
         ]);
 
-        if(!isset($resource['attachments'])){
-            $fileName = request()->attachments->getClientOriginalName();
-            $request->attachments->storeAs('attachments', $fileName);
-            $resource['attachments'] = $fileName;
-        }elseif(request()->attachments){
-            $resource = $validatedData;
-            $fileName = request()->attachments->getClientOriginalName();
-            $request->attachments->storeAs('attachments', $fileName);
-            $resource['attachments'] = $fileName;    
+        if(isset($validatedData['attachments'])){
+            $i = 0;
+            foreach($validatedData['attachments'] as $attachments){
+                $fileName = $attachments->getClientOriginalName();
+                $attachments->storeAs('attachments', $fileName);
+                unset($validatedData['attachments'][$i]);
+                $validatedData['attachments'][] = $fileName;
+                $i++;
+            }
         }
-        $request->session()->put('resource2', $resource);
+
+        if(isset($resource['attachments'])){
+            foreach($resource['attachments'] as $attc){
+                $validatedData['attachments'][] = $attc;
+            }
+        }
+
+        //dd($validatedData);
+
+        $request->session()->put('resource2', $validatedData);
         return redirect('/resources/add/step3');
     }
 
     public function createStepThree(Request $request)
     {
+        $resource1 = $request->session()->get('resource1');
+        $resource2 = $request->session()->get('resource2');
+
+        if(!$resource1 || !$resource2){
+            return redirect('/resources/add/step1');
+        }
         $resource = $request->session()->get('resource3');
         return view('resources.resources_add_step3', compact('resource'));
     }
@@ -249,9 +272,10 @@ class ResourceController extends Controller
         $request->session()->forget('resource1');
         $request->session()->forget('resource2');
         $request->session()->forget('resource3');
+        $request->session()->save();
 
         $finalArray = array_merge($resource1, $resource2, $resource3);
-        dd($finalArray);
+        return dd($finalArray);
     }
 
     public function attributes($entity, Request $request)
