@@ -75,5 +75,4 @@ function()
     });
     Route::get('/home', 'HomeController@index')->name('home');
 });
-
 /** OTHER PAGES THAT SHOULD NOT BE LOCALIZED **/

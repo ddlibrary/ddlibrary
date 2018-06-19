@@ -37,7 +37,7 @@
                 <strong>Publisher</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('publisher') ? ' is-invalid' : '' }}" id="publisher" name="publisher" size="40" maxlength="40" type="text" value="{{ @$resource['publisher'] }}" onkeydown="javascript:bringMeAttr('publisher','{{ URL::to('resources/attributes/publishers') }}')" required>
+            <input class="form-control{{ $errors->has('publisher') ? ' is-invalid' : '' }}" id="publisher" name="publisher" size="40" maxlength="40" type="text" value="{{ old('publisher')?old('publisher'):@$resource['publisher'] }}" onkeydown="javascript:bringMeAttr('publisher','{{ URL::to('resources/attributes/publishers') }}')" required>
             @if ($errors->has('publisher'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('publisher') }}</strong>
@@ -48,7 +48,7 @@
             <label for="translator"> 
                 <strong>Translator</strong>
             </label>
-            <input class="form-control{{ $errors->has('translator') ? ' is-invalid' : '' }}" id="translator" name="translator" size="40" maxlength="40" type="text" value="{{ @$resource['translator'] }}" onkeydown="javascript:bringMeAttr('translator','{{ URL::to('resources/attributes/translators') }}')" required>
+            <input class="form-control{{ $errors->has('translator') ? ' is-invalid' : '' }}" id="translator" name="translator" size="40" maxlength="40" type="text" value="{{ @$resource['translator'] }}" onkeydown="javascript:bringMeAttr('translator','{{ URL::to('resources/attributes/translators') }}')">
             @if ($errors->has('translator'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('translator') }}</strong>
@@ -76,7 +76,15 @@
                 <textarea class="form-control{{ $errors->has('abstract') ? ' is-invalid' : '' }}" name="abstract" style="height: 200px">{{ @$resource['abstract'] }}</textarea>
             </div>
             <script>
-                CKEDITOR.replace( 'abstract' );
+                var getUrl = window.location;
+                var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+                var options = {
+                    filebrowserImageBrowseUrl: baseUrl+'/laravel-filemanager?type=Images',
+                    filebrowserImageUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Images&_token=',
+                    filebrowserBrowseUrl: baseUrl+'/laravel-filemanager?type=Files',
+                    filebrowserUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Files&_token='
+                };
+                CKEDITOR.replace( 'abstract', options );
             </script>
             @if ($errors->has('abstract'))
                 <span class="invalid-feedback">
