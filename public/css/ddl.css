@@ -1,5 +1,9 @@
 body{
-    font: 1.1em/1.375 sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333333;
+    background-color: #ffffff;
 }
 body main section footer nav {
     display: flex;
@@ -75,7 +79,7 @@ main {
 .normal-button {
     border: 1px solid transparent;
     padding: .2rem 0.75rem;
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     border-radius: .25rem;
     background-color: #dddddd;
 }
@@ -344,6 +348,10 @@ select.form-control:focus::-ms-value {
 .resource-list aside {
     flex: 1 1 25%;
     border-right: 1px solid #eee;
+}
+
+.resource-list ul li {
+    font-size: 12px;
 }
 
 .sub-item {

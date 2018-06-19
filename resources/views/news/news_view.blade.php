@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-<section class="generalContent">
+<section class="general-content">
     <header>
         <h1>{{ $news->title }}</h1>
     </header>
