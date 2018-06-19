@@ -365,8 +365,6 @@ aside .sub-subject-show {
 .resource-list .resource-information-section {
     flex: 1 1 75%;
     flex-wrap: wrap;
-    padding: 5px;
-    margin: 5px;
     display: flex;
 }
 
@@ -377,7 +375,6 @@ aside .sub-subject-show {
 
 .resource-list .resource-information {
     flex-basis: auto;
-    padding: 5px;
     margin: 5px;
 }
 .resource-list .resource-title {
