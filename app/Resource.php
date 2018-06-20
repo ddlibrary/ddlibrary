@@ -20,10 +20,12 @@ class Resource extends Model
                 'rd.tnid',
                 'users.username AS author',
                 'rd.status',
-                'rd.updated'
+                'rd.updated',
+                'rf.resourceid AS favorite'
             )
             ->join('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
             ->join('users', 'users.id', '=', 'rd.userid')
+            ->leftJoin('resources_favorites AS rf', 'rf.resourceid', '=', 'rd.resourceid')
             ->where('rd.language',Config::get('app.locale'))
             ->orderBy('rd.created','desc')
             ->get();
@@ -46,12 +48,25 @@ class Resource extends Model
                 'rd.userid',
                 'users.username AS author',
                 'rd.status',
-                'rd.updated'
+                'rd.updated',
+                DB::raw('count(rf.resourceid) as totalfavorite')
             )
             ->join('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
             ->join('users', 'users.id', '=', 'rd.userid')
+            ->leftJoin('resources_favorites AS rf', 'rf.resourceid', '=', 'rd.resourceid')
             ->where('rd.language',Config::get('app.locale'))
             ->orderBy('rd.created','desc')
+            ->groupBy(
+                'rs.resourceid',
+                'rd.created',
+                'rd.language', 
+                'rd.title',
+                'rd.abstract',
+                'rd.userid',
+                'users.username',
+                'rd.status',
+                'rd.updated'
+            )
             ->paginate(32);
 
         return $users;
@@ -145,10 +160,12 @@ class Resource extends Model
                 'rd.userid',
                 'users.username AS author',
                 'rd.status',
-                'rd.updated'
+                'rd.updated',
+                DB::raw('count(rf.resourceid) as totalfavorite')
             )
             ->join('resources_data AS rd','rd.resourceid','=','rs.resourceid')
             ->join('users', 'users.id', '=', 'rd.userid')
+            ->leftJoin('resources_favorites AS rf', 'rf.resourceid', '=', 'rd.resourceid')
             ->when(count($subjectAreaIds) > 0, function($query) use($subjectAreaIds){
                 return $query->join('resources_subject_areas AS rsa', function ($join) use($subjectAreaIds) {
                     $join->on('rsa.resourceid', '=', 'rs.resourceid')
@@ -168,6 +185,16 @@ class Resource extends Model
                 });
             })
             ->where('rd.language',Config::get('app.locale'))
+            ->groupBy(
+                'rs.resourceid',
+                'rd.language', 
+                'rd.title',
+                'rd.abstract',
+                'rd.userid',
+                'users.username',
+                'rd.status',
+                'rd.updated'
+            )
             ->paginate(32);
 
         return $records;    
@@ -248,13 +275,29 @@ class Resource extends Model
     {
         $records = DB::table('resources AS rs')
             ->select(
-                '*',
-                'ra.file_mime'
+                'rs.resourceid',
+                'rd.language', 
+                'rd.title',
+                'rd.abstract',
+                'rd.userid',
+                'rd.status',
+                'rd.updated',
+                DB::raw('count(rf.resourceid) as totalfavorite')
+                
             )
             ->join('resources_data AS rd','rd.resourceid','=','rs.resourceid')
-            ->join('resources_attachments AS ra','ra.resourceid','=','rs.resourceid')
+            ->leftJoin('resources_favorites AS rf', 'rf.resourceid', '=', 'rd.resourceid')
             ->where('rd.title','like','%'.$searchQuery.'%')
             ->orwhere('rd.abstract', 'like' , '%'.$searchQuery.'%')
+            ->groupBy(
+                'rs.resourceid',
+                'rd.language', 
+                'rd.title',
+                'rd.abstract',
+                'rd.userid',
+                'rd.status',
+                'rd.updated'
+            )
             ->paginate(30);
 
         return $records;
@@ -363,5 +406,33 @@ class Resource extends Model
     public function saveTheResource($resource=array())
     {
         return true;
+    }
+
+    public function insertFavorite($resourceId, $userId)
+    {
+        $record = DB::table('resources_favorites')
+            ->where('resourceid', $resourceId)
+            ->where('userid', $userId)
+            ->first();
+
+        if($record){
+            DB::table('resources_favorites')
+                ->where('resourceid', $resourceId)
+                ->where('userid', $userId)
+                ->delete();
+
+            return "deleted";
+        }else{
+            $record = DB::table('resources_favorites')->insertGetId([
+                'resourceId'    => $resourceId,
+                'userid'        => $userId,
+                'created'       => \Carbon\Carbon::now()->timestamp,
+                'updated'       => \Carbon\Carbon::now()->timestamp
+            ]);
+
+            if($record){
+                return "added";
+            }
+        }
     }
 }

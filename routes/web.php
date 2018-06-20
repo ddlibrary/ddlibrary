@@ -45,7 +45,6 @@ function()
     Route::get('resources/add/step3', 'ResourceController@createStepThree')->name('step3')->middleware('auth');;
     Route::post('resources/add/step3', 'ResourceController@postStepThree');
     Route::get('resources/attributes/{entity}', 'ResourceController@attributes');
-    Route::get('resources/upload', 'ResourceController@uploadImage');
 
     //Report
     Route::get('admin/reports/ddl', 'ReportController@index');
@@ -76,3 +75,4 @@ function()
     Route::get('/home', 'HomeController@index')->name('home');
 });
 /** OTHER PAGES THAT SHOULD NOT BE LOCALIZED **/
+Route::post('resources/favorite', 'ResourceController@resourceFavorite');

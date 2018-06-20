@@ -32,9 +32,16 @@
     </aside>
     <section class="resource-view-information-section">
         <article class="resource-view-title-box">
-            <header>
-                <h1>{{ $resource->title }}</h1>
-            </header>
+            <div class="resource-view-title">
+                <header>
+                    <h1>{{ $resource->title }}</h1>
+                </header>
+                <div class="resource-icons">
+                    <i class="fas fa-lg fa-star {{ $resource->favorite?"active":"" }}" id="resourceFavorite" onclick="favorite('resourceFavorite','{{ URL::to("resources/favorite/") }}','{{ $resource->resourceid }}','{{ Auth::id() }}')"></i>
+                    <i class="fas fa-lg fa-share-square"></i>
+                    <i class="fas fa-lg fa-flag"></i>
+                </div>
+            </div>
             <hr>
             {!! fixImage($resource->abstract) !!}
         </article>

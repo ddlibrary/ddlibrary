@@ -6,6 +6,26 @@ $(document).ready(function(){
     });
 });
 
+function favorite(elementId, baseUrl, resourceId, userId) 
+{
+    let csrf = $('meta[name="csrf-token"]').attr('content');
+    
+    $.ajax({
+        type: "POST",
+        url: baseUrl,
+        data: {resourceId : resourceId, userId : userId, _token : csrf }, // appears as $_GET['id'] @ your backend side
+        success: function(data) {
+            var obj = JSON.parse(data);
+            // data is ur summary
+            if(obj == "added"){
+                $('#'+elementId).addClass("active");  
+            }else if(obj == "deleted"){
+                $('#'+elementId).removeClass("active");     
+            }
+        }
+    });
+}
+
 function showHide(itself, elementId)
 {
     var theElement = document.getElementById(elementId);

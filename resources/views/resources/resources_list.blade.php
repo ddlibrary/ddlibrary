@@ -77,7 +77,7 @@
         <div class="resource-title">{{ str_limit($resource->title, 55), ' (..)' }}</div>
         <div class="resource-details">
             <article>
-                <i class="fas fa-eye"></i><span>0</span>
+                <i class="fas fa-eye"></i><span>{{ $resource->totalfavorite }}</span>
             </article>
             <article>
                 <i class="fas fa-star"></i><span>0</span>

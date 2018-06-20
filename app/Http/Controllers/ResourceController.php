@@ -300,10 +300,20 @@ class ResourceController extends Controller
         }
     }
 
-    public function uploadImage()
+    public function resourceFavorite(Request $request)
     {
-        $path = $request->file('avatar')->store('avatars');
+        $myResources = new Resource();
+        
+        $parameters = $request->only('resourceId', 'userId');
+        
+        $resourceId = $parameters['resourceId'];
+        $userId = $parameters['userId'];
 
-        return $path;
+        if(!$userId){
+            redirect('/login');
+        }
+
+        $result = $myResources->insertFavorite($resourceId, $userId);
+        echo json_encode($result);
     }
 }
