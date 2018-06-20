@@ -15,12 +15,15 @@ function favorite(elementId, baseUrl, resourceId, userId)
         url: baseUrl,
         data: {resourceId : resourceId, userId : userId, _token : csrf }, // appears as $_GET['id'] @ your backend side
         success: function(data) {
+            console.log(data);
             var obj = JSON.parse(data);
             // data is ur summary
             if(obj == "added"){
                 $('#'+elementId).addClass("active");  
             }else if(obj == "deleted"){
                 $('#'+elementId).removeClass("active");     
+            }else if(obj == "notloggedin"){
+                alert('Please login and try again.');
             }
         }
     });

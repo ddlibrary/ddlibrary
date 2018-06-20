@@ -20,9 +20,7 @@
                 </span><br>
             @endif
             <div class="description">
-                A valid e-mail address. All e-mails from the system will be sent to this address. The e-mail address is not made public and will only be used if you wish to receive a new password or wish to receive certain news or notifications by e-mail. 
-                If you do not have an email address, please enter this one: library@darakhtdanesh.org 
-                If you get an email address later, you can edit your profile and replace this field with your own email address.
+                    Please enter a valid e-mail address. All e-mails from the system will be sent to this address. The e-mail address is not made public and will only be used if you wish to receive a new password or if you agree to receive certain news or notifications by e-mail. If you do not have an email address, please enter this one: library@darakhtdanesh.org. If you get an email address later, you can edit your profile and replace this email with your own email address
             </div>
         </div>
         <div class="form-item">
@@ -109,7 +107,7 @@
             <div class="left-side">
                 <div class="form-item">
                     <label for="city"> 
-                        <strong>City</strong>
+                        <strong>Province</strong>
                     </label>
                     <select class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}" name="city" id="city" required>
                         <option value="">- None -</option>

@@ -310,10 +310,10 @@ class ResourceController extends Controller
         $userId = $parameters['userId'];
 
         if(!$userId){
-            redirect('/login');
+            return json_encode("notloggedin");
         }
 
         $result = $myResources->insertFavorite($resourceId, $userId);
-        echo json_encode($result);
+        return json_encode($result);
     }
 }

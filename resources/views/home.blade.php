@@ -5,7 +5,7 @@
 @section('content')
 <section class="subjects">
     <header>
-        <h2>Browse by Subjects</h2>
+        <h2>Browse by Subject</h2>
     </header>
     <hr>
     <div class="section-content">
@@ -20,7 +20,7 @@
 </section>
 <section class="collections">
     <header>
-        <h2>Browse by Collections</h2>
+        <h2>Browse by Collection</h2>
     </header>
     <hr>
     <div class="section-content">
@@ -65,15 +65,6 @@
         <hr>
         <article class="ddl-video-content">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/bF5dpED9W64" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </article>
-    </div>
-    <div class="ddl-video">
-        <header>
-            <h2>CW4WAfghan Video</h2>
-        </header>
-        <hr>
-        <article class="ddl-video-content">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/Kl37icKnzd4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </article>
     </div>
 </section>
