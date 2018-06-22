@@ -435,4 +435,18 @@ class Resource extends Model
             }
         }
     }
+
+    public function insertFlag($params)
+    {
+        $record = DB::table('resources_flags')->insertGetId([
+            'resourceId'    => $params['resourceid'],
+            'userid'        => $params['userid'],
+            'type'          => $params['type'],
+            'details'       => $params['details'],
+            'created'       => \Carbon\Carbon::now()->timestamp,
+            'updated'       => \Carbon\Carbon::now()->timestamp
+        ]);
+          
+        return $record;
+    }
 }

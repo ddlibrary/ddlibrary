@@ -4,6 +4,22 @@ $(document).ready(function(){
         e.preventDefault();
         $(this).before("<br><input name='attachments[]' type='file'/>");
     });
+
+    $('.fa-share-square').click(function(e){
+        $('#shareModal').show();
+    });
+
+    $('#share-close').click(function(e){
+        $('#shareModal').hide();
+    });
+
+    $('.fa-flag').click(function(e){
+        $('#flagModal').show();
+    });
+
+    $('#flag-close').click(function(e){
+        $('#flagModal').hide();
+    });
 });
 
 function favorite(elementId, baseUrl, resourceId, userId) 

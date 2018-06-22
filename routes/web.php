@@ -38,13 +38,14 @@ function()
     Route::any('resources/list', 'ResourceController@list')->name('resourceList');
     Route::get('resources/view/{resourceId}', 'ResourceController@viewPublicResource');
     Route::get('resources', 'ResourceController@list');
-    Route::get('resources/add/step1', 'ResourceController@createStepOne')->name('step1')->middleware('auth');;
+    Route::get('resources/add/step1', 'ResourceController@createStepOne')->name('step1')->middleware('auth');
     Route::post('resources/add/step1', 'ResourceController@postStepOne');
-    Route::get('resources/add/step2', 'ResourceController@createStepTwo')->name('step2')->middleware('auth');;
+    Route::get('resources/add/step2', 'ResourceController@createStepTwo')->name('step2')->middleware('auth');
     Route::post('resources/add/step2', 'ResourceController@postStepTwo');
-    Route::get('resources/add/step3', 'ResourceController@createStepThree')->name('step3')->middleware('auth');;
+    Route::get('resources/add/step3', 'ResourceController@createStepThree')->name('step3')->middleware('auth');
     Route::post('resources/add/step3', 'ResourceController@postStepThree');
     Route::get('resources/attributes/{entity}', 'ResourceController@attributes');
+    Route::post('resources/flag', 'ResourceController@flag')->name('flag');
 
     //Report
     Route::get('admin/reports/ddl', 'ReportController@index');

@@ -316,4 +316,22 @@ class ResourceController extends Controller
         $result = $myResources->insertFavorite($resourceId, $userId);
         return json_encode($result);
     }
+
+    public function flag(Request $request)
+    {
+        $myResources = new Resource();
+
+        $params = $request->only('resourceid', 'userid','type','details');
+        $userId = $params['userid'];
+        $resourceId = $params['resourceid'];
+
+        if(empty($userId)){
+            return redirect('login');
+        }
+
+        if($myResources->insertFlag($params)){
+            Session()->flash('msg', "Your flag report is now registered! We will get back to you as soon as possible!");
+            return redirect('resources/view/'.$resourceId);
+        }
+    }
 }
