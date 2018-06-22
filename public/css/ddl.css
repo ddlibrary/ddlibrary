@@ -495,12 +495,12 @@ aside .sub-subject-show {
 
 .resource-view .social-share{
     text-align: center;
-    margin: 5px;
-    padding: 5px;
+    padding: 30px;
 }
 
 .social-share i {
     cursor: pointer;
+    margin: 10px;
 }
 
 .social-share i:hover {
