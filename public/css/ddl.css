@@ -538,8 +538,6 @@ aside .sub-subject-show {
 }
 
 .resource-view .resource-view-comment {
-    display: flex;
-    flex-wrap: wrap;
     border: 1px solid #eee;
     padding: 5px;
     margin: 5px;   
@@ -547,18 +545,21 @@ aside .sub-subject-show {
 }
 
 .resource-view-comment header {
-    flex: 1 1 25%;
-}
-
-.resource-view-comment div {
-    flex: 1 1 75%;
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    background-color: #eee;
+    padding: 5px;
+    margin-bottom: 5px;
 }
 
 .resource-view-comment article {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+}
+
+.resource-view-comment strong {
+    font-weight: bold;
 }
 
 .ck-editor__editable {

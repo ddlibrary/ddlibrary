@@ -204,5 +204,39 @@
         <h1>Resource not found or is not yet translated!</h1>
         @endif
     </section>
+
+    <section class="resource-view-comment">
+        <header>
+            <h2>Comments</h2>
+            <h2>{{ count($comments) }} comment(s) so far</h2>
+        </header>
+        @foreach($comments AS $cm)
+        <div>
+            <strong>{{ $cm->username }}</strong>
+        </div>
+        <div>
+            {{ $cm->comment }}
+        </div>
+        <div>
+            {{ Carbon\Carbon::createFromTimestamp($cm->created)->diffForHumans() }}
+        </div>
+        <hr>
+        @endforeach
+        @if (Auth::check())
+        <form method="POST" action="{{ route('comment') }}">
+        @csrf
+            <article>
+                <textarea name="comment" cols="40" rows="10"></textarea>
+            </article>
+            <input type="hidden" value="{{ $resource->resourceid }}" name="resourceid">
+            <input type="hidden" value="{{ Auth::id() }}" name="userid">
+            <div class="left-side">
+                <input class="form-control normalButton" type="submit" value="Submit">
+            </div>
+        </form>
+        @else
+        <h2>Please <a href="{{ URL::to('login') }}">login</a> to add comment.</h2>
+        @endif
+    </section>
 </section>
 @endsection

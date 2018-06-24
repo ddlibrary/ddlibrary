@@ -449,4 +449,35 @@ class Resource extends Model
           
         return $record;
     }
+
+    public function insertComment($params)
+    {
+        $record = DB::table('resources_comments')->insertGetId([
+            'resourceId'    => $params['resourceid'],
+            'userid'        => $params['userid'],
+            'comment'       => $params['comment'],
+            'status'        => 0,
+            'created'       => \Carbon\Carbon::now()->timestamp,
+            'updated'       => \Carbon\Carbon::now()->timestamp
+        ]);
+          
+        return $record;
+    }
+
+    public function getComments($resourceId)
+    {
+        $record = DB::table('resources_comments AS rc')
+            ->select(
+                'rc.userid',
+                'users.username',
+                'rc.comment',
+                'rc.created'
+            )
+            ->join('users', 'users.id', '=', 'rc.userid')
+            ->where('rc.resourceid', $resourceId)
+            ->where('rc.status', 1)
+            ->get();
+
+        return $record;
+    }
 }

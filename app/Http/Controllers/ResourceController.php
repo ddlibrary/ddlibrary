@@ -126,6 +126,7 @@ class ResourceController extends Controller
         $resourceLearningResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type_tid','taxonomy_term_data');
         $resourcePublishers = $myResources->resourceAttributes($resourceId,'resources_publishers','publisher_name_tid','taxonomy_term_data');
         $relatedItems = $myResources->getRelatedResources($resourceId, $resourceSubjectAreas);
+        $comments = $myResources->getComments($resourceId);
 
         $translation_id = $resource->tnid;
         if($translation_id){
@@ -143,7 +144,8 @@ class ResourceController extends Controller
             'resourcePublishers',
             'resourceAttachments',
             'relatedItems',
-            'translations'
+            'translations',
+            'comments'
         ));   
     }
 
@@ -331,6 +333,24 @@ class ResourceController extends Controller
 
         if($myResources->insertFlag($params)){
             Session()->flash('msg', "Your flag report is now registered! We will get back to you as soon as possible!");
+            return redirect('resources/view/'.$resourceId);
+        }
+    }
+
+    public function comment(Request $request)
+    {
+        $myResources = new Resource();
+
+        $params = $request->only('resourceid', 'userid','comment');
+        $userId = $params['userid'];
+        $resourceId = $params['resourceid'];
+
+        if(empty($userId)){
+            return redirect('login');
+        }
+
+        if($myResources->insertComment($params)){
+            Session()->flash('msg', "Your comment is successfully registered. We will publish it after review.");
             return redirect('resources/view/'.$resourceId);
         }
     }

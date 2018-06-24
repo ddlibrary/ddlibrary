@@ -46,6 +46,7 @@ function()
     Route::post('resources/add/step3', 'ResourceController@postStepThree');
     Route::get('resources/attributes/{entity}', 'ResourceController@attributes');
     Route::post('resources/flag', 'ResourceController@flag')->name('flag');
+    Route::post('resources/comment', 'ResourceController@comment')->name('comment')->middleware('auth');
 
     //Report
     Route::get('admin/reports/ddl', 'ReportController@index');
