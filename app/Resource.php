@@ -49,11 +49,15 @@ class Resource extends Model
                 'users.username AS author',
                 'rd.status',
                 'rd.updated',
-                DB::raw('count(rf.resourceid) as totalfavorite')
+                DB::raw('count(rf.resourceid) as totalfavorite'),
+                DB::raw('count(rc.resourceid) as totalcomments'),
+                DB::raw('count(rv.resourceid) as totalviews')
             )
             ->join('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
             ->join('users', 'users.id', '=', 'rd.userid')
             ->leftJoin('resources_favorites AS rf', 'rf.resourceid', '=', 'rd.resourceid')
+            ->leftJoin('resources_comments AS rc', 'rc.resourceid', '=', 'rd.resourceid')
+            ->leftJoin('resources_views AS rv', 'rv.resourceid', '=', 'rd.resourceid')
             ->where('rd.language',Config::get('app.locale'))
             ->orderBy('rd.created','desc')
             ->groupBy(
@@ -161,11 +165,15 @@ class Resource extends Model
                 'users.username AS author',
                 'rd.status',
                 'rd.updated',
-                DB::raw('count(rf.resourceid) as totalfavorite')
+                DB::raw('count(rf.resourceid) as totalfavorite'),
+                DB::raw('count(rc.resourceid) as totalcomments'),
+                DB::raw('count(rv.resourceid) as totalviews')
             )
             ->join('resources_data AS rd','rd.resourceid','=','rs.resourceid')
             ->join('users', 'users.id', '=', 'rd.userid')
             ->leftJoin('resources_favorites AS rf', 'rf.resourceid', '=', 'rd.resourceid')
+            ->leftJoin('resources_comments AS rc', 'rc.resourceid', '=', 'rd.resourceid')
+            ->leftJoin('resources_views AS rv', 'rv.resourceid', '=', 'rd.resourceid')
             ->when(count($subjectAreaIds) > 0, function($query) use($subjectAreaIds){
                 return $query->join('resources_subject_areas AS rsa', function ($join) use($subjectAreaIds) {
                     $join->on('rsa.resourceid', '=', 'rs.resourceid')
@@ -282,11 +290,15 @@ class Resource extends Model
                 'rd.userid',
                 'rd.status',
                 'rd.updated',
-                DB::raw('count(rf.resourceid) as totalfavorite')
+                DB::raw('count(rf.resourceid) as totalfavorite'),
+                DB::raw('count(rc.resourceid) as totalcomments'),
+                DB::raw('count(rv.resourceid) as totalviews')
                 
             )
             ->join('resources_data AS rd','rd.resourceid','=','rs.resourceid')
             ->leftJoin('resources_favorites AS rf', 'rf.resourceid', '=', 'rd.resourceid')
+            ->leftJoin('resources_comments AS rc', 'rc.resourceid', '=', 'rd.resourceid')
+            ->leftJoin('resources_views AS rv', 'rv.resourceid', '=', 'rd.resourceid')
             ->where('rd.title','like','%'.$searchQuery.'%')
             ->orwhere('rd.abstract', 'like' , '%'.$searchQuery.'%')
             ->groupBy(
