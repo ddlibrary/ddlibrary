@@ -33,7 +33,7 @@
                     <h1>{{ $resource->title }}</h1>
                 </header>
                 <div class="resource-icons">
-                    <i class="fas fa-lg fa-star {{ $resource->favorite?"active":"" }}" id="resourceFavorite" onclick="favorite('resourceFavorite','{{ URL::to("resources/favorite/") }}','{{ $resource->resourceid }}','{{ Auth::id() }}')"></i>
+                    <i class="fas fa-lg fa-star {{ $favorite?"active":"" }}" id="resourceFavorite" onclick="favorite('resourceFavorite','{{ URL::to("resources/favorite/") }}','{{ $resource->resourceid }}','{{ Auth::id() }}')"></i>
                     <i class="fas fa-lg fa-share-square"></i>
                     <i class="fas fa-lg fa-flag"></i>
                 </div>

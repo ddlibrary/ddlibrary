@@ -127,6 +127,7 @@ class ResourceController extends Controller
         $resourcePublishers = $myResources->resourceAttributes($resourceId,'resources_publishers','publisher_name_tid','taxonomy_term_data');
         $relatedItems = $myResources->getRelatedResources($resourceId, $resourceSubjectAreas);
         $comments = $myResources->getComments($resourceId);
+        $favorite = $myResources->getFavorite($resourceId);
 
         $translation_id = $resource->tnid;
         if($translation_id){
@@ -145,7 +146,8 @@ class ResourceController extends Controller
             'resourceAttachments',
             'relatedItems',
             'translations',
-            'comments'
+            'comments',
+            'favorite'
         ));   
     }
 

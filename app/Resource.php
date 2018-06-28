@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Config;
 
 class Resource extends Model
@@ -20,12 +21,10 @@ class Resource extends Model
                 'rd.tnid',
                 'users.username AS author',
                 'rd.status',
-                'rd.updated',
-                'rf.resourceid AS favorite'
+                'rd.updated'
             )
             ->join('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
             ->join('users', 'users.id', '=', 'rd.userid')
-            ->leftJoin('resources_favorites AS rf', 'rf.resourceid', '=', 'rd.resourceid')
             ->where('rd.language',Config::get('app.locale'))
             ->orderBy('rd.created','desc')
             ->get();
@@ -490,6 +489,17 @@ class Resource extends Model
             ->where('rc.status', 1)
             ->get();
 
+        return $record;
+    }
+
+    public function getFavorite($resourceId)
+    {
+        $record = DB::table('resources_favorites AS rf')
+            ->select('rf.resourceid')
+            ->where('rf.userid', Auth::id())
+            ->where('rf.resourceid',$resourceId)
+            ->first();
+        
         return $record;
     }
 }
