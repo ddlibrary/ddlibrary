@@ -13,6 +13,10 @@ $(document).ready(function(){
         $('#shareModal').hide();
     });
 
+    $('#favorite-close').click(function(e){
+        $('#favoriteModal').hide();
+    });
+
     $('.fa-flag').click(function(e){
         $('#flagModal').show();
     });
@@ -39,7 +43,7 @@ function favorite(elementId, baseUrl, resourceId, userId)
             }else if(obj == "deleted"){
                 $('#'+elementId).removeClass("active");     
             }else if(obj == "notloggedin"){
-                alert('Please login and try again.');
+                $('#favoriteModal').show();
             }
         }
     });

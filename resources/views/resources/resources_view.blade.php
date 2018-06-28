@@ -60,6 +60,22 @@
                     </div>
                 </div>
 
+                <!-- The favorite Modal -->
+                <div id="favoriteModal" class="modal">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span class="close" id="favorite-close">&times;</span>
+                            <h2>Favorite this item</h2>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-body">
+                                <h2>In order to favorite a resource, you are required to <a href="{{ URL::to('login') }}">login</a>.</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- The Flag Modal -->
                 <div id="flagModal" class="modal">
                     <!-- Modal content -->
