@@ -83,16 +83,16 @@
         <nav class="latest-content">
             <ul>
                 <li>
-                    <a href="#">About DD Library</a>
+                    <a href="{{ URL::to('pages/view/16') }}">About DD Library</a>
                 </li>
                 <li>
-                    <a href="#">How to use the Library</a>
+                    <a href="{{ URL::to('pages/view/16') }}">How to use the Library</a>
                 </li>
                 <li>
-                    <a href="#">Support the Library</a>
+                    <a href="{{ URL::to('pages/view/21') }}">Support the Library</a>
                 </li>
                 <li>
-                    <a href="#">Help</a>
+                    <a href="{{ URL::to('pages/view/20') }}">Help</a>
                 </li>
                 <li>
                     <a href="#">Contact Us</a>

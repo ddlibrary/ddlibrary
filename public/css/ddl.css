@@ -56,11 +56,11 @@ main {
 }
 .banner {
     padding: 5px;
-    margin: 5px;
     max-width: 1170px;
     margin: 0 auto;
     text-align: center;
     background: #eeeeee;
+    margin-bottom: 2em;
 }
 .banner header {
     margin: 5px 0px 30px 0px;
@@ -86,9 +86,6 @@ main {
     font-size: 1rem;
     border-radius: .25em;
     background-color: #dddddd;
-}
-.top-pages {
-    margin: 1em 0 1em 0;
 }
 .ddl-top-news {
     padding: 5px;
