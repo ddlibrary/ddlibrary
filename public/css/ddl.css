@@ -1,16 +1,18 @@
 body{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.42857143;
     color: #333333;
-    background-color: #ffffff;
+    background-color: #eeeeee;
 }
 body main section footer nav {
     display: flex;
 }
 
 main {
-    min-height: 600px; 
+    max-width: 1170px;
+    margin: 0 auto;
+    margin-bottom: 2em;
 }
 .header {
     display: flex;
@@ -55,6 +57,8 @@ main {
 .banner {
     padding: 5px;
     margin: 5px;
+    max-width: 1170px;
+    margin: 0 auto;
     text-align: center;
     background: #eeeeee;
 }
@@ -78,41 +82,49 @@ main {
 }
 .normal-button {
     border: 1px solid transparent;
-    padding: .2rem 0.75rem;
-    font-size: 0.9rem;
-    border-radius: .25rem;
+    padding: 1em 1em;
+    font-size: 1rem;
+    border-radius: .25em;
     background-color: #dddddd;
 }
-.ddl-buttons {
-    margin: 25px 0 15px 0;
+.top-pages {
+    margin: 1em 0 1em 0;
 }
 .ddl-top-news {
     padding: 5px;
-    margin: 5px;
+    max-width: 1170px;
+    margin: 0 auto;
     text-align: center;
-    border-radius: .25rem;
     background-color: #ffa800; 
+    margin-bottom: 15px;
 }
-.subjects{
-    padding: 5px;
-    margin: 5px;
-    background: #eeeeee;
+.main-section{
+    box-sizing: border-box;
+    background: #ffffff;
+    border-radius: 5px;
 }
-.subjects article {
+.main-section header {
+    padding: 0 20px 20px;
+}
+.main-section article {
     text-align: center;
     margin: 15px;
     padding: 15px;
 }
 
-.collections{
-    padding: 5px;
-    margin: 5px;
-    background: #eeeeee;
-}
 .section-content {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+.section-content .home-subject-areas {
+    font-size: 0.85em;
+}
+
+.home-subject-areas .resource-count {
+    font-size: 0.75em;
+    font-style: italic;
 }
 
 .section-content .home-subject-areas:hover {
@@ -164,7 +176,7 @@ main {
     opacity: 0.5;
     cursor: pointer;
 }
-.collections article {
+.main-section article {
     text-align: center;
     margin: 15px;
     padding: 15px;
@@ -173,14 +185,14 @@ main {
     display: flex;
     flex-wrap: wrap;
     padding: 5px;
-    margin: 5px;
+    margin-top: 3em;
     background: #eeeeee;
-    justify-content: space-between;
+    justify-content: space-around;
 }
-.latest-news-div h2 {
+.latest-div h2 {
     padding-bottom: 5px;
 }
-.latest-news-content {
+.latest-content {
     padding-top: 5px;
     padding-bottom: 15px;
 }
@@ -188,27 +200,36 @@ main {
     font-style: italic;
     font-size: 16px;
 }
-.ddl-video h2 {
-    padding-bottom: 5px;
-}
-.ddl-video-content {
-    height: 0;
-    position: relative;
-	padding-bottom: 56.25%; /* 16:9 */
-}
 footer {
-    flex-wrap: wrap;
-    height: 5rem;
+    display: flex;
+    flex-wrap: wrap;  
     background-color: #eeeeee;
     color: black;
     bottom: 0;
+    justify-content: space-around;
 }
+.hr-class {
+    border: none;
+    border-top: 1px solid #bbbcae;
+    margin: 20px 0px;
+    max-width: 1170px;
+    margin: 0 auto;
+}
+
 footer nav{
-    padding-top: 30px;
+    padding-top: 1em;
 }
 footer nav a{
     padding: 15px;
     color: black;
+}
+
+footer div {
+    align-self: flex-end;
+}
+
+footer i:hover {
+    cursor: pointer;
 }
 
 /** Registration */
@@ -216,6 +237,7 @@ footer nav a{
     display: flex;
     flex-wrap: wrap;
     padding: 1rem;
+    background-color: white;
 }
 .ddl-forms header {
     margin-bottom: 20px;
@@ -343,6 +365,7 @@ select.form-control:focus::-ms-value {
     display: flex;
     padding: 5px;
     margin: 5px;
+    background-color: white;
 }
 
 .resource-list aside {
@@ -413,6 +436,7 @@ aside .sub-subject-show {
     flex-wrap: wrap;
     padding: 5px;
     margin: 5px;
+    background-color: white;
 }
 
 .resource-view aside {

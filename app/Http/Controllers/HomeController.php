@@ -32,6 +32,7 @@ class HomeController extends Controller
         $latestNews         = News::listNews()->sortByDesc('created')->take(4);
         $subjectAreas = $myResources->subjectIconsAndTotal();
         $featured = $myResources->featuredCollections();
-        return view('home', compact('latestNews','subjectAreas','featured'));
+        $latestResources = Resource::Resources()->sortByDesc('created')->take(4);
+        return view('home', compact('latestNews','subjectAreas','featured','latestResources'));
     }
 }

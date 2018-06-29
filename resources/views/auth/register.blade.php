@@ -116,7 +116,7 @@
                 </div>
             </div>
             <div class="left-side">
-                <input class="form-control normalButton" type="submit" value="Submit">
+                <input class="form-control" type="submit" value="Submit">
             </div>
         </div>
         </form>

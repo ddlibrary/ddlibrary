@@ -21,6 +21,7 @@ class Resource extends Model
                 'rd.tnid',
                 'users.username AS author',
                 'rd.status',
+                'rd.created',
                 'rd.updated'
             )
             ->join('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
@@ -300,6 +301,7 @@ class Resource extends Model
             ->leftJoin('resources_views AS rv', 'rv.resourceid', '=', 'rd.resourceid')
             ->where('rd.title','like','%'.$searchQuery.'%')
             ->orwhere('rd.abstract', 'like' , '%'.$searchQuery.'%')
+            ->where('rd.language', Config::get('app.locale'))
             ->groupBy(
                 'rs.resourceid',
                 'rd.language', 

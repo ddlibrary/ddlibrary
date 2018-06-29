@@ -8,15 +8,10 @@
         <input type="submit" class="search-button" value="Go">
     </form>
 
-    <div class="ddlButtons">
+    <div class="top-pages">
     <input type="button" class="normal-button" value="About DD Library" onclick="location.href='{{ URL::to('pages/view/15') }}'"> 
             <input type="button" class="normal-button" value="How to use the Library" onclick="location.href='{{ URL::to('pages/view/16') }}'"> 
             <input type="button" class="normal-button" value="Support the Library" onclick="location.href='{{ URL::to('pages/view/21') }}'"> 
             <input type="button" class="normal-button" value="Help" onclick="location.href='{{ URL::to('pages/view/20') }}'"> 
-    </div>
-</section>
-<section class="ddl-top-news">
-    <div>
-        <p>Want to support Open Library? Until April 30, We'll double your donation!</p>
     </div>
 </section>
