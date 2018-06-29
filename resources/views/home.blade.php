@@ -6,7 +6,7 @@
 <section class="main-section">
     <div class="ddl-top-news">
         <div>
-            <p>Want to support Open Library? Until April 30, We'll double your donation!</p>
+            <p>Help us get Afghan teacher colleges online: For a limited time your donation will be matched! <a href="https://www.crowdrise.com/o/en/campaign/helping-female-student-teachers-to-be-better-teachers-through-internet-access">Learn More</a></p>
         </div>
     </div>
     <header>

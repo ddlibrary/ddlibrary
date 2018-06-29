@@ -95,6 +95,10 @@ main {
     background-color: #ffa800; 
     margin-bottom: 15px;
 }
+
+.ddl-top-news a {
+    font-weight: bold;
+}
 .main-section{
     box-sizing: border-box;
     background: #ffffff;
