@@ -8,11 +8,14 @@ body{
 body main section footer nav {
     display: flex;
 }
-
+body {
+    flex-direction: column;
+  }
 main {
     max-width: 1170px;
     margin: 0 auto;
     margin-bottom: 2em;
+    min-height: 76vh;
 }
 .header {
     display: flex;
@@ -28,7 +31,7 @@ main {
     display: flex;
     padding: 30px;
 }
-.main-navigation li a{
+.main-navigation li a {
     margin: 5px;
     color: #ffffff;
 }
@@ -95,7 +98,6 @@ main {
     background-color: #ffa800; 
     margin-bottom: 15px;
 }
-
 .ddl-top-news a {
     font-weight: bold;
 }
@@ -112,27 +114,22 @@ main {
     margin: 15px;
     padding: 15px;
 }
-
 .section-content {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
-
 .section-content .home-subject-areas {
     font-size: 0.85em;
 }
-
 .home-subject-areas .resource-count {
     font-size: 0.75em;
     font-style: italic;
 }
-
 .section-content .home-subject-areas:hover {
     cursor: pointer;
     opacity: 0.5;
 }
-
 .resource-pagination {
     display: flex;
     padding-left: 0;
@@ -140,7 +137,6 @@ main {
     border-radius: .25rem;
     width: 100%
 }
-
 .resource-pagination ul {
     margin-top: 0;
     margin-bottom: 1rem;
@@ -150,18 +146,15 @@ main {
     display: list-item;
     float: left;
 }
-
 .page-item.active .page-link {
     z-index: 1;
     color: #fff;
     background-color: #007bff;
     border-color: #007bff;
 }
-
 .page-link:not(:disabled):not(.disabled) {
     cursor: pointer;
 }
-
 .page-link {
     position: relative;
     display: block;
@@ -172,7 +165,6 @@ main {
     background-color: #fff;
     border: 1px solid #dee2e6;
 }
-
 .content article:hover {
     opacity: 0.5;
     cursor: pointer;
@@ -205,9 +197,10 @@ footer {
     display: flex;
     flex-wrap: wrap;  
     background-color: #eeeeee;
+    height: 3em;
     color: black;
-    bottom: 0;
     justify-content: space-around;
+    flex-shrink: 0;
 }
 .hr-class {
     border: none;
@@ -216,7 +209,6 @@ footer {
     max-width: 1170px;
     margin: 0 auto;
 }
-
 footer nav{
     padding-top: 1em;
 }
@@ -224,11 +216,9 @@ footer nav a{
     padding: 15px;
     color: black;
 }
-
 footer div {
     align-self: flex-end;
 }
-
 footer i:hover {
     cursor: pointer;
 }
