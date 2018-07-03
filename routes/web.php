@@ -29,12 +29,11 @@ function()
 
     //Users
     Route::get('admin/users', 'UserController@index');
-    Route::get('admin/users/view/{userId}', 'UserController@viewUser');
+    Route::get('users/view/{userId}', 'UserController@viewUser');
     Route::get('admin/users/update/{userId}', 'UserController@updateUser');
 
     //Resources
     Route::get('admin/resources', 'ResourceController@index');
-    Route::get('admin/resources/view/{resourceId}', 'ResourceController@viewResource');
     Route::any('resources/list', 'ResourceController@list')->name('resourceList');
     Route::get('resources/view/{resourceId}', 'ResourceController@viewPublicResource');
     Route::get('resources', 'ResourceController@list');

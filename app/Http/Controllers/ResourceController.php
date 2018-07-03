@@ -25,27 +25,6 @@ class ResourceController extends Controller
         return view('admin.resources',compact('resources'));
     }
 
-    public function viewResource($resourceId)
-    {
-        $this->middleware('admin');
-        $myResources = new Resource();
-        $resource = Resource::resources()->where('resourceid',$resourceId)->first();
-        $resourceLevels = $myResources->resourceAttributes($resourceId,'resources_levels','resource_level', 'static_levels');
-        $resourceAuthors = $myResources->resourceAttributes($resourceId,'resources_authors','author_name','static_authors');
-        //$resourceAttachments = $myResources->resourceAttributes($resourceId,'resources_attachments','file_name'); 
-        $resourceSubjectAreas = $myResources->resourceAttributes($resourceId,'resources_subject_areas','subject_area','static_subject_areas');
-        $resourceLearningResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type','static_learning_resource_types');
-        $resourcePublishers = $myResources->resourceAttributes($resourceId,'resources_publishers','publisher_name','static_publishers');
-        return view('admin.resources.view_resource', compact(
-            'resource',
-            'resourceLevels',
-            'resourceAuthors',
-            'resourceSubjectAreas',
-            'resourceLearningResourceTypes',
-            'resourcePublishers'
-        ));
-    }
-
     public function list(Request $request)
     {
         $myResources = new Resource();

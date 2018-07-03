@@ -20,7 +20,7 @@
               <tr>
                 <th>NO</th>
                 <th>TITLE</th>
-                <th>AUTHOR</th>
+                <th>ADDED BY</th>
                 <th>PUBLISHED</th>
                 <th>UPDATED</th>
                 <th>LANGUAGE</th>
@@ -31,7 +31,7 @@
               <tr>
                 <th>NO</th>
                 <th>TITLE</th>
-                <th>AUTHOR</th>
+                <th>ADDED BY</th>
                 <th>PUBLISHED</th>
                 <th>UPDATED</th>
                 <th>LANGUAGE</th>
@@ -42,8 +42,8 @@
             @foreach ($resources as $indexkey => $resource)
               <tr>
                 <td>{{ (($resources->currentPage() - 1) * 50)+$indexkey + 1 }}</td>
-                <td><a href="resources/view/{{$resource->resourceid}}">{{ $resource->title }}</a></td>
-                <td><a href="{{ URL::to('admin/users/view/'.$resource->userid) }}">{{ $resource->author }}</a></td>
+                <td><a href="{{URL::to('resources/view/'.$resource->resourceid) }}">{{ $resource->title }}</a></td>
+                <td><a href="{{ URL::to('users/view/'.$resource->userid) }}">{{ $resource->author }}</a></td>
                 <td>{{ ($resource->status==0?"Not Published":"Published") }}</td>
                 <td>{{ Carbon\Carbon::createFromTimestamp($resource->updated) }}</td>
                 <td>{{ fixLanguage($resource->language) }}</td>

@@ -19,7 +19,7 @@ class Resource extends Model
                 'rd.abstract',
                 'rd.userid',
                 'rd.tnid',
-                'users.username AS author',
+                'users.username AS addedby',
                 'rd.status',
                 'rd.created',
                 'rd.updated'

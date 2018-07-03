@@ -22,6 +22,7 @@
                 @endforeach
             </div>
         </div>
+        <p>Added by: <a href="{{ URL::to('users/view/'.$resource->userid) }}">{{ $resource->addedby }}</a>
     </aside>
     <section class="resource-view-information-section">
         <article class="resource-view-title-box">
@@ -227,15 +228,17 @@
             <h2>{{ count($comments) }} comment(s) so far</h2>
         </header>
         @foreach($comments AS $cm)
-        <div>
-            <strong>{{ $cm->username }}</strong>
-        </div>
-        <div>
-            {{ $cm->comment }}
-        </div>
-        <div>
-            {{ Carbon\Carbon::createFromTimestamp($cm->created)->diffForHumans() }}
-        </div>
+        <article>
+            <div>
+                <strong>{{ $cm->username }}</strong>
+            </div>
+            <div>
+                {{ $cm->comment }}
+            </div>
+            <div>
+                {{ Carbon\Carbon::createFromTimestamp($cm->created)->diffForHumans() }}
+            </div>
+        </article>
         <hr>
         @endforeach
         @if (Auth::check())

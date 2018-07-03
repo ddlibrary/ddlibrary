@@ -33,7 +33,7 @@ class UserController extends Controller
     public function viewUser($userId)
     {
         $user = User::users()->where('id',$userId)->first();
-        return view('admin.users.view_user', compact('user'));
+        return view('users.view_user', compact('user'));
     }
 
     public function updateUser($userId)
