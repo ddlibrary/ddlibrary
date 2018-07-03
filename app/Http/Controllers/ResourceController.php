@@ -40,54 +40,21 @@ class ResourceController extends Controller
 
         //if subject_area exists in the request
         if($request->filled('subject_area')){
-            for($i=0; $i<count($everything['subject_area']); $i++)
-            {
-                $queryTxt = $queryTxt.'subject_area='.$everything['subject_area'][$i].'&';
-            }
             $subjectAreaIds = $everything['subject_area'];
         }
 
         //if level exists in the request
         if($request->filled('level')){
-            for($i=0; $i<count($everything['level']); $i++)
-            {
-                $queryTxt = $queryTxt.'level='.$everything['level'][$i].'&';
-            }
             $levelIds = $everything['level'];
         }
 
         //if type exists
         if($request->filled('type')){
-            for($i=0; $i<count($everything['type']); $i++)
-            {
-                $queryTxt = $queryTxt.'type='.$everything['type'][$i].'&';
-            }
             $typeIds = $everything['type'];
         }
 
-        //to get rid of the final &
-        if($queryTxt){
-            $queryTxt = rtrim($queryTxt, '&');
-        }
+        $resources = $myResources->paginateResourcesBy($request);
 
-        $searchQuery = $request->input('search');
-
-        if($queryTxt){
-            $resources = $myResources->paginateResourcesBy($subjectAreaIds, $levelIds, $typeIds);
-            if(count($subjectAreaIds) > 0){
-                $resources->appends(['subject_area' => $subjectAreaIds])->links();
-            }elseif(count($levelIds) > 0){
-                $resources->appends(['level' => $levelIds])->links();    
-            }elseif(count($typeIds) > 0){
-                $resources->appends(['type' => $typeIds])->links(); 
-            }
-        }elseif($searchQuery){
-            $resources = $myResources->searchResources($searchQuery);
-            $resources->appends(['search' => $searchQuery])->links();
-            session(['search' => $searchQuery]);
-        }else{
-            $resources = $myResources->paginateResources();
-        }
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data',8);
         $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
         $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);

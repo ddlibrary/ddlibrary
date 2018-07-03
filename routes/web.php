@@ -29,6 +29,8 @@ function()
 
     //Users
     Route::get('admin/users', 'UserController@index')->middleware('admin');
+    Route::post('admin/users', 'UserController@index')->name('user')->middleware('admin');
+    Route::get('admin/users/users-data', 'UserController@usersData')->middleware('admin');
     Route::get('users/view/{userId}', 'UserController@viewUser');
     Route::get('admin/users/update/{userId}', 'UserController@updateUser')->middleware('auth');
 
@@ -58,7 +60,6 @@ function()
 
     //News
     Route::get('admin/news','NewsController@index')->middleware('auth');
-    Route::get('admin/news/view{newsId}','NewsController@view')->middleware('auth');
     Route::get('news/view/{newsId}','NewsController@view');
 
     //Menu

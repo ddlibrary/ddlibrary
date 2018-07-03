@@ -48,28 +48,22 @@ class Resource extends Model
                 'rd.userid',
                 'users.username AS author',
                 'rd.status',
-                'rd.updated',
-                DB::raw('count(rf.resourceid) as totalfavorite'),
-                DB::raw('count(rc.resourceid) as totalcomments'),
-                DB::raw('count(rv.resourceid) as totalviews')
+                'rd.updated'
             )
             ->join('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
             ->join('users', 'users.id', '=', 'rd.userid')
-            ->leftJoin('resources_favorites AS rf', 'rf.resourceid', '=', 'rd.resourceid')
-            ->leftJoin('resources_comments AS rc', 'rc.resourceid', '=', 'rd.resourceid')
-            ->leftJoin('resources_views AS rv', 'rv.resourceid', '=', 'rd.resourceid')
             ->where('rd.language',Config::get('app.locale'))
             ->orderBy('rd.created','desc')
             ->groupBy(
                 'rs.resourceid',
-                'rd.created',
                 'rd.language', 
                 'rd.title',
                 'rd.abstract',
                 'rd.userid',
                 'users.username',
                 'rd.status',
-                'rd.updated'
+                'rd.updated',
+                'rd.created'
             )
             ->paginate(32);
 
@@ -154,7 +148,14 @@ class Resource extends Model
         return $records;   
     }
 
-    public function paginateResourcesBy($subjectAreaIds, $levelIds, $typeIds){
+    public function paginateResourcesBy($request){
+
+        $subjectAreaIds = $request['subject_area'];
+        $levelIds = $request['level'];
+        $typeIds = $request['type'];
+
+        $searchQuery = $request->input('search');
+
         $records = DB::table('resources AS rs')
             ->select(
                 'rs.resourceid',
@@ -188,9 +189,13 @@ class Resource extends Model
             })
             ->when(count($typeIds) > 0, function($query)  use($typeIds){
                 return $query->join('resources_learning_resource_types AS rlrt', function ($join) use($typeIds) {
-                $join->on('rlrt.resourceid', '=', 'rs.resourceid')
-                        ->whereIn('rlrt.learning_resource_type_tid', $typeIds);
-                });
+                    $join->on('rlrt.resourceid', '=', 'rs.resourceid')
+                            ->whereIn('rlrt.learning_resource_type_tid', $typeIds);
+                    });
+            })
+            ->when(count($searchQuery) > 0, function($query)  use($searchQuery){
+                return $query->where('rd.title','like','%'.$searchQuery.'%')
+                    ->orwhere('rd.abstract', 'like' , '%'.$searchQuery.'%');
             })
             ->where('rd.language',Config::get('app.locale'))
             ->groupBy(
@@ -311,7 +316,7 @@ class Resource extends Model
                 'rd.status',
                 'rd.updated'
             )
-            ->paginate(30);
+            ->paginate(32);
 
         return $records;
     }

@@ -11,7 +11,7 @@ class User extends Model
     /**
      * Get the list of users to display as a table in the admin/users
      */
-    public function scopeUsers()
+    public function scopeUsers($query)
     {
         $users = DB::table('users')
             ->select(
@@ -36,7 +36,39 @@ class User extends Model
                 'users.status',
                 'users.created'
             )
-            ->paginate(50);
+            ->paginate(10);
+
+        return $users;
+    }
+
+    /**
+     * Get the list of users to display as a table in the admin/users
+     */
+    public function filterUsers($requestArray)
+    {
+        $users = DB::table('users')
+            ->select(
+                'users.id',
+                'users.username',
+                'users.email',
+                'users.status', 
+                'users.created',
+                'users.access',
+                DB::raw('group_concat(roles.name) AS all_roles'
+            ))
+            ->join('users_roles', 'users.id', '=', 'users_roles.userid')
+            ->join('roles', 'roles.roleid', '=', 'users_roles.roleid')
+            ->where('users.username', 'like', '%'.$requestArray['username'].'%')
+            ->orderBy('access','desc')
+            ->groupBy(
+                'users.id',
+                'users.username',
+                'users.access',
+                'users.email',
+                'users.status',
+                'users.created'
+            )
+            ->paginate(10);
 
         return $users;
     }

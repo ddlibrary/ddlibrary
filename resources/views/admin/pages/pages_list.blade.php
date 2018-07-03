@@ -40,7 +40,7 @@
             @foreach ($pages as $indexkey => $page)
               <tr>
                 <td>{{ (($pages->currentPage() - 1) * 20)+$indexkey + 1 }}</td>
-                <td><a href="pages/view/{{$page->pageid}}">{{ $page->title }}</a></td>
+                <td><a href="{{ URL::to('pages/view/'.$page->pageid) }}">{{ $page->title }}</a></td>
                 <td>{{ $page->language }}</td>
                 <td>{{ Carbon\Carbon::createFromTimestamp($page->created)->diffForHumans() }}</td>
                 <td>{{ Carbon\Carbon::createFromTimestamp($page->updated)->diffForHumans() }}</td>

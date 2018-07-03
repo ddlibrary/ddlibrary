@@ -92,7 +92,7 @@
     <h2>No records found!</h2>
     @endif
     <div class="resource-pagination">
-        {{ $resources->links() }}
+        {{ $resources->appends(request()->input())->links() }}
     </div>
     </section>
 </section>
