@@ -37,7 +37,7 @@ main {
 }
 .main-navigation li i {
     margin: 5px;
-    font-size: 18px;
+    font-size: 1.125em;
 }
 .main-navigation a:hover, .main-navigation a:active, .main-navigation a:focus {
     color: #da7437;
@@ -52,7 +52,7 @@ main {
 }
 .header-right .language-content li {
     margin-right: 10px;
-    font-size: 16px;
+    font-size: 1em;
 }
 .header-right .language-content li a {
     color: #ffa800;
@@ -191,7 +191,7 @@ main {
 }
 .news-description {
     font-style: italic;
-    font-size: 16px;
+    font-size: 1em;
 }
 footer {
     display: flex;
@@ -366,7 +366,7 @@ select.form-control:focus::-ms-value {
 }
 
 .resource-list ul li {
-    font-size: 12px;
+    font-size: 0.750em;
 }
 
 .sub-item {
@@ -626,7 +626,7 @@ aside .sub-subject-show {
 /* The Close Button */
 .close {
     float: right;
-    font-size: 22px;
+    font-size: 1.375em;
     font-weight: bold;
 }
 

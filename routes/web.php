@@ -25,15 +25,15 @@ function()
     Route::get('/', 'HomeController@index');
 
 
-    Route::get('/admin', 'DashboardController@index');
+    Route::get('/admin', 'DashboardController@index')->middleware('auth');
 
     //Users
-    Route::get('admin/users', 'UserController@index');
+    Route::get('admin/users', 'UserController@index')->middleware('admin');
     Route::get('users/view/{userId}', 'UserController@viewUser');
-    Route::get('admin/users/update/{userId}', 'UserController@updateUser');
+    Route::get('admin/users/update/{userId}', 'UserController@updateUser')->middleware('auth');
 
     //Resources
-    Route::get('admin/resources', 'ResourceController@index');
+    Route::get('admin/resources', 'ResourceController@index')->middleware('auth');
     Route::any('resources/list', 'ResourceController@list')->name('resourceList');
     Route::get('resources/view/{resourceId}', 'ResourceController@viewPublicResource');
     Route::get('resources', 'ResourceController@list');
@@ -48,24 +48,24 @@ function()
     Route::post('resources/comment', 'ResourceController@comment')->name('comment')->middleware('auth');
 
     //Report
-    Route::get('admin/reports/ddl', 'ReportController@index');
-    Route::get('admin/reports/ga', 'ReportController@gaReport');
+    Route::get('admin/reports/ddl', 'ReportController@index')->middleware('auth');
+    Route::get('admin/reports/ga', 'ReportController@gaReport')->middleware('auth');
 
     //Pages
-    Route::get('admin/pages','PageController@index');
-    Route::get('admin/pages/view/{pageId}','PageController@view');
+    Route::get('admin/pages','PageController@index')->middleware('auth');
+    Route::get('admin/pages/view/{pageId}','PageController@view')->middleware('auth');
     Route::get('pages/view/{pageId}','PageController@view');
 
     //News
-    Route::get('admin/news','NewsController@index');
-    Route::get('admin/news/view{newsId}','NewsController@view');
+    Route::get('admin/news','NewsController@index')->middleware('auth');
+    Route::get('admin/news/view{newsId}','NewsController@view')->middleware('auth');
     Route::get('news/view/{newsId}','NewsController@view');
 
     //Menu
-    Route::get('admin/menu','MenuController@index');
+    Route::get('admin/menu','MenuController@index')->middleware('auth');
 
     //Menu
-    Route::get('admin/settings','SettingController@index');
+    Route::get('admin/settings','SettingController@index')->middleware('auth');
 
     Auth::routes();
 
