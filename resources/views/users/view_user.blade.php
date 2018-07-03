@@ -11,7 +11,11 @@
             </div>
             <div>
                 <span><strong>Email:</strong></span>
-                <span>{{ $user->email }}</a></span>
+                @if(Auth::id() == $user->id || isAdmin())
+                <span>{{ $user->email }}</a>(Only visible to you)</span>
+                @else
+                <span><i>(hidden)</i></span>
+                @endif
             </div>
             <div>
                 <span><strong>Status:</strong></span>

@@ -15,11 +15,13 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('admin');
+        
     }
     
     public function index(Request $request)
     {
+        $this->middleware('admin');
+
         $users = User::users();
         
         //if we have an API call
@@ -38,6 +40,7 @@ class UserController extends Controller
 
     public function updateUser($userId)
     {
+        $this->middleware('admin');
         $user = User::users()->where('id',$userId)->first();
         return view('admin.users.update_user', compact('user'));    
     }
