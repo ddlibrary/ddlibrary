@@ -25,6 +25,12 @@ p, li {
 .form-required {
     color: #f00;
 }
+.main-color {
+    color: #ffa800;
+}
+.strong-text {
+    font-weight: bold;
+}
 a:hover, a:focus, a:active {
     color: #da7437;
     cursor: pointer;

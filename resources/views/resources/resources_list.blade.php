@@ -5,36 +5,41 @@
 @section('content')
 <section class="resource-list">
     <aside>
-        <h3>{{ $resources->total() }} Results</h3>
+        <h3><span class="strong-text">{{ $resources->total() }}</span> Results</h3>
         <form method="POST" action="{{ route('resourceList') }}">
         @csrf
-        <h4>Resource Subject Areas</h4>
-        <ul>
-        @foreach($subjects AS $subject)
-            @if($subject->parent == 0)
-                <li><input type="checkbox" name="subject_area[]" {{ (in_array($subject->tid, $subjectAreaIds)?"checked":"")}} onchange="fnTest(this,'js-sub-subject{{$subject->tid}}');this.form.submit();" value="{{ $subject->tid }}">{{ $subject->name }} 
-                    <?php $subjectParent = $subjects->where('parent', $subject->tid);?>
+        <fieldset>
+            <legend>Resource Subject Areas</legend>
+            <ul>
+            @foreach($subjects AS $subject)
+                @if($subject->parent == 0)
+                    <li><input type="checkbox" name="subject_area[]" {{ (in_array($subject->tid, $subjectAreaIds)?"checked":"")}} onchange="fnTest(this,'js-sub-subject{{$subject->tid}}');this.form.submit();" value="{{ $subject->tid }}">{{ $subject->name }} 
+                        <?php $subjectParent = $subjects->where('parent', $subject->tid);?>
+                        @if(count($subjectParent) > 0)
+                            <i class="fas fa-plus js-fa-plus fa-xs" onclick="javascript:showHide(this,'js-sub-subject{{$subject->tid}}')"></i>
+                        @endif
                     @if(count($subjectParent) > 0)
-                        <i class="fas fa-plus js-fa-plus fa-xs" onclick="javascript:showHide(this,'js-sub-subject{{$subject->tid}}')"></i>
+                        <ul id="js-sub-subject{{$subject->tid}}" class="sub-item" style="display:none;">
+                            @foreach($subjectParent as $item)
+                                <li><input type="checkbox" class="js-child"  name="subject_area[]" onchange="this.form.submit()" {{ (in_array($item->tid, $subjectAreaIds)?"checked":"")}} value="{{ $item->tid }}">{{ $item->name }}</li>
+                            @endforeach
+                        </ul>
                     @endif
-                @if(count($subjectParent) > 0)
-                    <ul id="js-sub-subject{{$subject->tid}}" class="sub-item" style="display:none;">
-                        @foreach($subjectParent as $item)
-                            <li><input type="checkbox" class="js-child"  name="subject_area[]" onchange="this.form.submit()" {{ (in_array($item->tid, $subjectAreaIds)?"checked":"")}} value="{{ $item->tid }}">{{ $item->name }}</li>
-                        @endforeach
-                    </ul>
+                </li>
                 @endif
-            </li>
-            @endif
-        @endforeach
-        </ul>
-        <h4>Resource Types</h4>
-        <ul>
-            @foreach($types AS $type)
-                <li><input type="checkbox" name="type[]" value="{{ $type->tid }}" onchange="this.form.submit()" {{ (in_array($type->tid, $typeIds)?"checked":"")}}>{{ $type->name }}</li>
             @endforeach
-        </ul>
-        <h4>Resource Levels</h4>
+            </ul>
+        </fieldset>
+        <fieldset>
+            <legend>Resource Types</legend>
+            <ul>
+                @foreach($types AS $type)
+                    <li><input type="checkbox" name="type[]" value="{{ $type->tid }}" onchange="this.form.submit()" {{ (in_array($type->tid, $typeIds)?"checked":"")}}>{{ $type->name }}</li>
+                @endforeach
+            </ul>
+        </fieldset>
+        <fieldset>
+        <legend>Resource Levels</legend>
         <ul>
             @foreach($levels AS $level)
                 @if($level->parent == 0)
@@ -67,6 +72,7 @@
                 @endif
             @endforeach
         </ul>
+        </fieldset>
         </form>
     </aside>
     <section class="resource-information-section">

@@ -4,6 +4,9 @@
     </div>
     <nav class="header-right">
         <ul class="language-content">
+            <li>
+                Welcome, <a class="username" href="{{ URL::to('users/view/'.Auth::id()) }}"> {{ Auth::user()->username }}</a>
+            </li>
             <?php
             $supportedLocals = array();
             $newId = array();
@@ -64,9 +67,6 @@
             @if (Auth::check())
             <li>
                 <a href="{{ URL::to('logout') }}" ><i class="fas fa-sign-in-alt fa-lg icons"></i>Log Out</a>     
-            </li>
-            <li>
-                <a href="#"> {{ Auth::user()->username }}</a>
             </li>
             @if (isAdmin())
             <li>

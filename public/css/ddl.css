@@ -54,6 +54,11 @@ main {
     margin-right: 10px;
     font-size: 1rem;
 }
+
+.language-content .username {
+    color: #ffffff!important;
+    text-decoration: underline;
+}
 .header-right .language-content li a {
     color: #ffa800;
 }
@@ -365,6 +370,10 @@ select.form-control:focus::-ms-value {
     border-right: 1px solid #eee;
 }
 
+.resource-list fieldset {
+    margin-bottom: 1em;
+}
+
 .resource-list ul li {
     font-size: 0.75rem;
 }
@@ -466,6 +475,7 @@ aside .sub-subject-show {
 
 .resource-view .resource-icons {
     padding: 10px;
+    min-width: 7em;
 }
 
 .resource-view .resource-icons i {
