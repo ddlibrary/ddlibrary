@@ -92,22 +92,16 @@
                     <a href="{{ URL::to('pages/view/21') }}">Support the Library</a>
                 </li>
                 <li>
-                    <a href="{{ URL::to('pages/view/20') }}">Help</a>
+                    <a href="{{ URL::to('pages/view/35') }}">Disclaimer</a>
                 </li>
                 <li>
-                    <a href="#">Contact Us</a>
+                    <a href="{{ URL::to('pages/view/33') }}">Terms of Use</a>
                 </li>
                 <li>
-                    <a href="#">Disclaimer</a>
+                    <a href="{{ URL::to('pages/view/34') }}">Privacy Policy</a>
                 </li>
                 <li>
-                    <a href="#">Terms of Use</a>
-                </li>
-                <li>
-                    <a href="#">Privacy Policy</a>
-                </li>
-                <li>
-                    <a href="#">Links</a>
+                    <a href="{{ URL::to('pages/view/812') }}">Links</a>
                 </li>
             </ul>
         </nav>
