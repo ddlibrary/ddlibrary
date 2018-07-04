@@ -42,6 +42,18 @@
             <span class="nav-link-text">Menu</span>
             </a>
         </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
+            <a class="nav-link" href="{{ URL::to('admin/comments') }}">
+            <i class="fa fa-fw fa-comment"></i>
+            <span class="nav-link-text">Comments</span>
+            </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
+            <a class="nav-link" href="{{ URL::to('admin/flags') }}">
+            <i class="fa fa-fw fa-flag"></i>
+            <span class="nav-link-text">Flags</span>
+            </a>
+        </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
             <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseReports" data-parent="#exampleAccordion">
                 <i class="fa fa-fw fa-wrench"></i>

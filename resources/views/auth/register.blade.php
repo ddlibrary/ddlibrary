@@ -85,8 +85,8 @@
                     </label>
                     <select class="form-control{{ $errors->has('gender') ? ' is-invalid' : '' }}" name="gender" id="gender" required>
                         <option value="">- None -</option>
-                        <option {{ old('gender') == "Male" ? "selected" : "" }}>Male</option>
-                        <option {{ old('gender') == "Female" ? "selected" : "" }}>Female</option>
+                        <option value="Male" {{ old('gender') == "Male" ? "selected" : "" }}>Male</option>
+                        <option value="Female" {{ old('gender') == "Female" ? "selected" : "" }}>Female</option>
                     </select>
                 </div>
             </div>

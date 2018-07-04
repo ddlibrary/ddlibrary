@@ -68,6 +68,12 @@ function()
     //Menu
     Route::get('admin/settings','SettingController@index')->middleware('auth');
 
+    //Comments
+    Route::get('admin/comments','CommentController@index')->middleware('admin');
+
+    //Flags
+    Route::get('admin/flags','FlagController@index')->middleware('admin');
+
     Auth::routes();
 
     Route::get('/logout', function() {
