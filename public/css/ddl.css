@@ -396,6 +396,7 @@ aside .sub-subject-show {
     border: 1px solid #eee;
     width: 200px;
     height: 50px;
+    word-break: break-all;
 }
 .resource-list .resource-img {
     width: 200px;

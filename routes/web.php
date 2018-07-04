@@ -24,7 +24,6 @@ function()
 
     Route::get('/', 'HomeController@index');
 
-
     Route::get('/admin', 'DashboardController@index')->middleware('auth');
 
     //Users

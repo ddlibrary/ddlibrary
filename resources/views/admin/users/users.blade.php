@@ -22,31 +22,35 @@
             <tr>
               <td>Username</td>
               <td>
-                <input type="text" name="username">
+                <input class="form-control" type="text" name="username" value="{{ isset($filters['username'])?$filters['username']:"" }}">
               </td>
               <td>Email</td>
               <td>
-                <input type="email" name="email">
+                <input class="form-control" type="text" name="email" value="{{ isset($filters['email'])?$filters['email']:"" }}">
               </td>
-            </tr>
-            <tr>
+
                 <td>Active</td>
                 <td>
-                  <select name="status">
+                  <select class="form-control" name="status">
                     <option value="">Any</option>
-                    <option value="0">Yes</option>
-                    <option value="1">No</option>
+                    <option value="1" {{ (isset($filters['status']) && $filters['status'] == 1)?"selected":"" }}>Yes</option>
+                    <option value="0" {{ (isset($filters['status']) && $filters['status'] == 0)?"selected":"" }}>No</option>
                   </select>
                 </td>
                 <td>Role</td>
                 <td>
-                  <select name="status">
+                  <select class="form-control" name="role">
                     <option value="">Any</option>
+                    @foreach($roles as $role)
+                      <option value="{{ $role->roleid}}" {{ (isset($filters['role']) && $filters['role'] == $role->roleid)?"selected":"" }}>{{ $role->name }}</option>
+                    @endforeach
                   </select>
+                </td>
+                <td colspan="2">
+                    <input class="btn btn-primary float-right" type="submit" value="Filter">
                 </td>
             </tr>
           </table>
-          <input class="btn btn-primary" type="submit" value="Filter">
           </form>
         </div>
         <div class="table-responsive">

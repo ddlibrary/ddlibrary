@@ -22,25 +22,21 @@ class UserController extends Controller
     {
         $this->middleware('admin');
 
-        $users = new User();
+        $usersModel = new User();
 
-        if($request->all())
-        {
-            $username = $request->username;
-            $email = $request->email;
-            $status = $request->status;
-            $role = $request->role;
-            $users = $users->filterUsers($request);
-        }else{
-            $users = User::users();
-        }
+        $users = $usersModel->filterUsers($request->all());
+        $roles = $usersModel->rolesList();
+
+        $request->session()->put('filters', $request->all());
+
+        $filters = $request->session()->get('filters');
         
         //if we have an API call
         if( $request->is('api/*')){
             return $users;
         }
 
-        return view('admin.users.users',compact('users'));
+        return view('admin.users.users',compact('users','roles', 'filters'));
     }
 
     public function viewUser($userId)

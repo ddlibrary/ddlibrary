@@ -181,8 +181,6 @@ class ResourceController extends Controller
             }
         }
 
-        //dd($validatedData);
-
         $request->session()->put('resource2', $validatedData);
         return redirect('/resources/add/step3');
     }

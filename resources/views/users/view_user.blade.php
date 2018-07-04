@@ -6,6 +6,14 @@
         </header>
         <article>
             <div>
+                <span><strong>First Name:</strong></span>
+                <span>{{ $user->first_name }}</a></span>
+            </div>
+            <div>
+                <span><strong>Last Name:</strong></span>
+                <span>{{ $user->last_name }}</a></span>
+            </div>
+            <div>
                 <span><strong>Username:</strong></span>
                 <span>{{ $user->username }}</a></span>
             </div>

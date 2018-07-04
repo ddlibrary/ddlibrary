@@ -17,26 +17,31 @@ class User extends Model
             ->select(
                 'users.id',
                 'users.username',
-                'users.password', 
+                'users.password',
+                'up.first_name',
+                'up.last_name',
                 'users.email',
                 'users.status', 
                 'users.created',
                 'users.access',
                 DB::raw('group_concat(roles.name) AS all_roles'
             ))
-            ->join('users_roles', 'users.id', '=', 'users_roles.userid')
-            ->join('roles', 'roles.roleid', '=', 'users_roles.roleid')
+            ->LeftJoin('users_roles', 'users.id', '=', 'users_roles.userid')
+            ->LeftJoin('roles', 'roles.roleid', '=', 'users_roles.roleid')
+            ->LeftJoin('users_profiles AS up', 'up.userid', '=', 'users.id')
             ->orderBy('access','desc')
             ->groupBy(
                 'users.id',
                 'users.username',
                 'users.password',
+                'up.first_name',
+                'up.last_name',
                 'users.access',
                 'users.email',
                 'users.status',
                 'users.created'
             )
-            ->paginate(10);
+            ->get();
 
         return $users;
     }
@@ -56,9 +61,24 @@ class User extends Model
                 'users.access',
                 DB::raw('group_concat(roles.name) AS all_roles'
             ))
-            ->join('users_roles', 'users.id', '=', 'users_roles.userid')
-            ->join('roles', 'roles.roleid', '=', 'users_roles.roleid')
-            ->where('users.username', 'like', '%'.$requestArray['username'].'%')
+            ->LeftJoin('users_roles', 'users.id', '=', 'users_roles.userid')
+            ->LeftJoin('roles', 'roles.roleid', '=', 'users_roles.roleid')
+            ->when(!empty($requestArray['username']), function($query) use($requestArray){
+                return $query
+                    ->where('users.username', 'like', '%'.$requestArray['username'].'%');
+            })
+            ->when(!empty($requestArray['email']), function($query) use($requestArray){
+                return $query
+                    ->where('users.email', 'like', '%'.$requestArray['email'].'%');
+            })
+            ->when(isset($requestArray['status']), function($query) use($requestArray){
+                return $query
+                    ->where('users.status', $requestArray['status']);
+            })
+            ->when(isset($requestArray['role']), function($query) use($requestArray){
+                return $query
+                    ->where('roles.roleid', $requestArray['role']);
+            })  
             ->orderBy('access','desc')
             ->groupBy(
                 'users.id',
@@ -180,5 +200,16 @@ class User extends Model
             'created'       => \Carbon\Carbon::now()->timestamp,
             'updated'       => \Carbon\Carbon::now()->timestamp
         ]);
+    }
+
+    public function rolesList()
+    {
+        $records = DB::table('roles')
+                    ->select(
+                        'roleid',
+                        'name'
+                    )
+                    ->get();
+        return $records; 
     }
 }

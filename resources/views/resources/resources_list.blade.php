@@ -74,7 +74,7 @@
     @foreach ($resources AS $resource)
     <article class="resource-article resource-information" onclick="location.href='{{ URL::to('resources/view/'.$resource->resourceid) }}'">
         <img class="resource-img" src="{{ getImagefromResource($resource->abstract) }}">
-        <div class="resource-title">{{ str_limit($resource->title, 40), ' (..)' }}</div>
+        <div class="resource-title">{{ str_limit($resource->title, 50), ' (..)' }}</div>
         <div class="resource-details">
             <article>
                 <i class="fas fa-eye"></i><span>{{ $resource->totalviews }}</span>
