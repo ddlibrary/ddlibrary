@@ -17,12 +17,18 @@ class ResourceController extends Controller
     {
     }
     
-    public function index()
+    public function index(Request $request)
     {
         $this->middleware('admin');
         $myResources = new Resource();
-        $resources = $myResources->paginateResources();
-        return view('admin.resources',compact('resources'));
+
+        $resources = $myResources->filterResources($request->all());
+
+        $request->session()->put('filters', $request->all());
+
+        $filters = $request->session()->get('filters');
+
+        return view('admin.resources.resources',compact('resources','filters'));
     }
 
     public function list(Request $request)

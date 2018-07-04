@@ -4,9 +4,11 @@
     </div>
     <nav class="header-right">
         <ul class="language-content">
+            @if (Auth::check())
             <li>
                 Welcome, <a class="username" href="{{ URL::to('users/view/'.Auth::id()) }}"> {{ Auth::user()->username }}</a>
             </li>
+            @endif
             <?php
             $supportedLocals = array();
             $newId = array();

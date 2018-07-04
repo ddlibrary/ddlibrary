@@ -35,6 +35,7 @@ function()
 
     //Resources
     Route::get('admin/resources', 'ResourceController@index')->middleware('auth');
+    Route::post('admin/resources', 'ResourceController@index')->name('resources')->middleware('auth');
     Route::any('resources/list', 'ResourceController@list')->name('resourceList');
     Route::get('resources/view/{resourceId}', 'ResourceController@viewPublicResource');
     Route::get('resources', 'ResourceController@list');

@@ -37,6 +37,41 @@ class Resource extends Model
         }
     }
 
+    public function filterResources($requestArray)
+    {
+        $resources = DB::table('resources AS rs')
+            ->select(
+                'rs.resourceid',
+                'rd.language', 
+                'rd.title',
+                'rd.abstract',
+                'rd.userid',
+                'rd.tnid',
+                'users.username AS addedby',
+                'rd.status',
+                'rd.created',
+                'rd.updated'
+            )
+            ->join('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
+            ->join('users', 'users.id', '=', 'rd.userid')
+            ->when(!empty($requestArray['title']), function($query) use($requestArray){
+                return $query
+                    ->where('rd.title', 'like', '%'.$requestArray['title'].'%');
+            })
+            ->when(isset($requestArray['status']), function($query) use($requestArray){
+                return $query
+                    ->where('rd.status', $requestArray['status']);
+            })
+            ->when(isset($requestArray['language']), function($query) use($requestArray){
+                return $query
+                    ->where('rd.language', $requestArray['language']);
+            })
+            ->orderBy('rd.created','desc')
+            ->paginate(10);
+        
+        return $resources;
+    }
+
     public function paginateResources()
     {
         $users = DB::table('resources AS rs')
