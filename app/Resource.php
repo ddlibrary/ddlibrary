@@ -52,8 +52,12 @@ class Resource extends Model
                 'rd.created',
                 'rd.updated'
             )
-            ->join('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
-            ->join('users', 'users.id', '=', 'rd.userid')
+            ->LeftJoin('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
+            ->LeftJoin('users', 'users.id', '=', 'rd.userid')
+            ->LeftJoin('resources_subject_areas AS rsa', 'rsa.resourceid', '=', 'rs.resourceid')
+            ->LeftJoin('resources_levels AS rl', 'rl.resourceid', '=', 'rs.resourceid')
+            ->LeftJoin('resources_learning_resource_types AS rlrt', 'rlrt.resourceid', '=', 'rs.resourceid')
+            ->LeftJoin('resources_attachments AS ra','ra.resourceid','=','rs.resourceid')
             ->when(!empty($requestArray['title']), function($query) use($requestArray){
                 return $query
                     ->where('rd.title', 'like', '%'.$requestArray['title'].'%');
@@ -66,7 +70,35 @@ class Resource extends Model
                 return $query
                     ->where('rd.language', $requestArray['language']);
             })
+            ->when(isset($requestArray['subject_area']), function($query) use($requestArray){
+                return $query
+                    ->where('rsa.subject_area_tid', $requestArray['subject_area']);
+            })
+            ->when(isset($requestArray['level']), function($query) use($requestArray){
+                return $query
+                    ->where('rl.resource_level_tid', $requestArray['level']);
+            })
+            ->when(isset($requestArray['type']), function($query) use($requestArray){
+                return $query
+                    ->where('rlrt.learning_resource_type_tid', $requestArray['type']);
+            })
+            ->when(isset($requestArray['format']), function($query) use($requestArray){
+                return $query
+                    ->where('ra.file_mime', $requestArray['format']);
+            })
             ->orderBy('rd.created','desc')
+            ->groupBy(
+                'rs.resourceid',
+                'rd.language', 
+                'rd.title',
+                'rd.abstract',
+                'rd.userid',
+                'users.username',
+                'rd.status',
+                'rd.updated',
+                'newddl.rd.tnid',
+                'newddl.rd.created'
+            )
             ->paginate(10);
         
         return $resources;

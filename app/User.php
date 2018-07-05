@@ -84,7 +84,11 @@ class User extends Model
             ->when(isset($requestArray['gender']), function($query) use($requestArray){
                 return $query
                     ->where('up.gender', $requestArray['gender']);
-            })  
+            })
+            ->when(isset($requestArray['country']), function($query) use($requestArray){
+                return $query
+                    ->where('up.country', $requestArray['country']);
+            })
             ->orderBy('access','desc')
             ->groupBy(
                 'users.id',

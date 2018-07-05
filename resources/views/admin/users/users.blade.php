@@ -80,7 +80,7 @@
             <tbody>
             @foreach ($users as $indexkey => $user)
               <tr>
-                <td>{{ (($users->currentPage() - 1) * 50)+$indexkey + 1 }}</td>
+                <td>{{ (($users->currentPage() - 1) * 10)+$indexkey + 1 }}</td>
                 <td><a href="{{URL::to('users/view/'.$user->id) }}">{{ $user->username }}</a><br>{{ $user->email }}</td>
                 <td>{{ ($user->status==0?"Not Active":"Active") }}</td>
                 <td>{{ $user->all_roles }}</td>

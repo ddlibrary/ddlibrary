@@ -74,7 +74,7 @@
             <tbody>
             @foreach ($resources as $indexkey => $resource)
               <tr>
-                <td>{{ (($resources->currentPage() - 1) * 50)+$indexkey + 1 }}</td>
+                <td>{{ (($resources->currentPage() - 1) * 10)+$indexkey + 1 }}</td>
                 <td><a href="{{URL::to('resources/view/'.$resource->resourceid) }}">{{ $resource->title }}</a></td>
                 <td><a href="{{ URL::to('users/view/'.$resource->userid) }}">{{ $resource->addedby }}</a></td>
                 <td>{{ ($resource->status==0?"Not Published":"Published") }}</td>
@@ -86,7 +86,7 @@
             </tbody>
           </table>
         </div>
-        {{ $resources->links() }}
+        {{ $resources->appends(request()->input())->links() }}
       </div>
     </div>
   </div>

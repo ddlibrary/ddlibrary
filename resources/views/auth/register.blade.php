@@ -99,7 +99,7 @@
                     <select class="form-control{{ $errors->has('country') ? ' is-invalid' : '' }}" name="country" id="country" onchange="javascript:populate(this,'city', {{ json_encode($provinces) }})" required>
                         <option value="">- None -</option>
                         @foreach($countries AS $cn)
-                        <option value="{{ $cn->tid }}" {{ old('country') == $cn->name ? "selected" : "" }}>{{ $cn->name }}</option>
+                        <option value="{{ $cn->name }}" {{ old('country') == $cn->name ? "selected" : "" }}>{{ $cn->name }}</option>
                         @endforeach
                     </select>
                 </div>
