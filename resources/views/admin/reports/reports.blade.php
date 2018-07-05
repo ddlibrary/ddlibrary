@@ -29,7 +29,7 @@
                                 @foreach ($totalUsersByGender as $indexkey => $resource)
                                 <tr>
                                     <td><strong>{{ $resource->gender }}</strong></td>
-                                    <td><a href="{{ URL::to('admin/users/list/gender/'.$resource->gender) }}">{{ $resource->total }}</a></td>
+                                    <td><a href="{{ URL::to('admin/users?gender='.$resource->gender) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -59,7 +59,7 @@
                                     @foreach ($totalResourcesByRoles as $indexkey => $resource)
                                     <tr>
                                         <td><strong>{{ $resource->name }}</strong></td>
-                                        <td><a href="{{ URL::to('admin/users/list/role/'.str_slug($resource->name)) }}">{{ $resource->total }}</a></td>
+                                        <td><a href="{{ URL::to('admin/users?role='.$resource->roleid) }}">{{ $resource->total }}</a></td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -89,7 +89,7 @@
                                 @foreach ($totalUsersByCountry as $indexkey => $resource)
                                 <tr>
                                     <td><strong>{{ $resource->country }}</strong></td>
-                                    <td><a href="{{ URL::to('admin/users/list/country/'.str_slug($resource->country)) }}">{{ $resource->total }}</a></td>
+                                    <td><a href="{{ URL::to('admin/users?country='.$resource->country) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>

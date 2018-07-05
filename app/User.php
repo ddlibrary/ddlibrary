@@ -59,10 +59,12 @@ class User extends Model
                 'users.status', 
                 'users.created',
                 'users.access',
+                'up.gender',
                 DB::raw('group_concat(roles.name) AS all_roles'
             ))
             ->LeftJoin('users_roles', 'users.id', '=', 'users_roles.userid')
             ->LeftJoin('roles', 'roles.roleid', '=', 'users_roles.roleid')
+            ->LeftJoin('users_profiles AS up', 'up.userid', '=', 'users.id')
             ->when(!empty($requestArray['username']), function($query) use($requestArray){
                 return $query
                     ->where('users.username', 'like', '%'.$requestArray['username'].'%');
@@ -79,6 +81,10 @@ class User extends Model
                 return $query
                     ->where('roles.roleid', $requestArray['role']);
             })  
+            ->when(isset($requestArray['gender']), function($query) use($requestArray){
+                return $query
+                    ->where('up.gender', $requestArray['gender']);
+            })  
             ->orderBy('access','desc')
             ->groupBy(
                 'users.id',
@@ -86,6 +92,7 @@ class User extends Model
                 'users.access',
                 'users.email',
                 'users.status',
+                'up.gender',
                 'users.created'
             )
             ->paginate(10);
@@ -151,7 +158,7 @@ class User extends Model
     public function totalResourcesByRoles()
     {
         $records = DB::table('roles')
-                    ->select('roles.name')
+                    ->select('roles.name', 'roles.roleid')
                     ->selectRaw('count(roles.roleid) as total')
                     ->join('users_roles','users_roles.roleid','=','roles.roleid')
                     ->groupBy('roles.roleid', 'roles.name')

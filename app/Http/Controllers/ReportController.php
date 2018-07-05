@@ -35,7 +35,7 @@ class ReportController extends Controller
         $totalUsersByCountry        = $usersModel->totalUsersByCountry();
         $totalResourcesByRoles      = $usersModel->totalResourcesByRoles();
 
-        return view('admin.reports', compact(
+        return view('admin.reports.reports', compact(
             'totalResources',
             'totalUsersByGender',
             'totalResourcesBySubject',
@@ -57,7 +57,7 @@ class ReportController extends Controller
         $topBrowsers                = Analytics::fetchTopBrowsers(Period::days(30), 10);
         $topCountries               = Analytics::performQuery(Period::days(30), "ga:sessions");
 
-        return view('admin.reportsga', compact(
+        return view('admin.reports.reportsga', compact(
             'totalVisitorsAndPageViews',
             'mostVisitedPages',
             'topReferrers',
