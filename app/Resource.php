@@ -215,7 +215,8 @@ class Resource extends Model
         return $records;   
     }
 
-    public function paginateResourcesBy($request){
+    public function paginateResourcesBy($request)
+    {
 
         $subjectAreaIds = $request['subject_area'];
         $levelIds = $request['level'];
@@ -237,8 +238,8 @@ class Resource extends Model
                 DB::raw('count(rc.resourceid) as totalcomments'),
                 DB::raw('count(rv.resourceid) as totalviews')
             )
-            ->join('resources_data AS rd','rd.resourceid','=','rs.resourceid')
-            ->join('users', 'users.id', '=', 'rd.userid')
+            ->leftJoin('resources_data AS rd','rd.resourceid','=','rs.resourceid')
+            ->leftJoin('users', 'users.id', '=', 'rd.userid')
             ->leftJoin('resources_favorites AS rf', 'rf.resourceid', '=', 'rd.resourceid')
             ->leftJoin('resources_comments AS rc', 'rc.resourceid', '=', 'rd.resourceid')
             ->leftJoin('resources_views AS rv', 'rv.resourceid', '=', 'rd.resourceid')
@@ -575,5 +576,18 @@ class Resource extends Model
             ->first();
         
         return $record;
+    }
+
+    public function updateResourceCounter($data)
+    {
+        return DB::table('resources_views')->insertGetId([
+            'resourceid'        => $data['resourceid'],
+            'userid'            => $data['userid'],
+            'ip'                => $data['ip'],
+            'browser_name'      => $data['browser_name'],
+            'browser_version'   => $data['browser_version'],
+            'platform'          => $data['platform'],
+            'created'           => \Carbon\Carbon::now()->timestamp
+        ]);
     }
 }

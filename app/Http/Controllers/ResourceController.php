@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Resource;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ResourceController extends Controller
 {
@@ -37,8 +38,6 @@ class ResourceController extends Controller
 
         //Getting all whatever in the parameterBag
         $everything = $request->all();
-        //A global query that attaches to the url
-        $queryTxt = '';
 
         $subjectAreaIds = array();
         $levelIds = array();
@@ -64,10 +63,11 @@ class ResourceController extends Controller
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data',8);
         $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
         $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
+
         return view('resources.resources_list', compact('resources','subjects','types','levels','subjectAreaIds','levelIds','typeIds'));
     }
 
-    public function viewPublicResource($resourceId)
+    public function viewPublicResource(Request $request, $resourceId)
     {
         $myResources = new Resource();
         $resource = Resource::resources()->where('resourceid',$resourceId)->first();
@@ -87,6 +87,8 @@ class ResourceController extends Controller
         }else{
             $translations = array();
         }
+
+        $this->resourceViewCounter($request, $resourceId);
 
         return view('resources.resources_view', compact(
             'resource',
@@ -305,5 +307,22 @@ class ResourceController extends Controller
             Session()->flash('msg', "Your comment is successfully registered. We will publish it after review.");
             return redirect('resources/view/'.$resourceId);
         }
+    }
+
+    public function resourceViewCounter(Request $request, $resourceId)
+    {
+        $myResources = new Resource();
+
+        $userAgentParser = parse_user_agent($request);
+        $userAgent = array(
+            'resourceid'        => $resourceId,
+            'userid'            => Auth::id() ?: 0,
+            'ip'                => $request->ip(),
+            'browser_name'      => $userAgentParser['browser'],
+            'browser_version'   => $userAgentParser['version'],
+            'platform'          => $userAgentParser['platform']
+        );
+
+        $myResources->updateResourceCounter($userAgent);
     }
 }
