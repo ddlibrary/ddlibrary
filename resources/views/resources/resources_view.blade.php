@@ -201,7 +201,7 @@
             @endforeach
         </article>
         <article class="resource-view-details">
-            <h3>License By</h3>
+            <h3>License</h3>
             <p>CC BY-NC / CC BY-NC-SA</p>
         </article>
         <article class="resource-view-details">
