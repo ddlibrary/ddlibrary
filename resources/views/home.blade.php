@@ -15,11 +15,13 @@
     <hr>
     <div class="section-content">
         @foreach($subjectAreas as $subject)
-        <article class="home-subject-areas" onclick="location.href='{{ URL::to('resources/list?=&subject_area[]='.$subject->subject_area) }}'">
-            <img src="{{ Storage::disk('public')->url($subject->file_name) }}">
-            <p>{{ $subject->name }}</p>
-            <p class="resource-count">{{ $subject->total }} Resources</p>
-        </article>
+        <a href="{{ URL::to('resources/list?=&subject_area[]='.$subject->subject_area) }}">
+            <article class="home-subject-areas">
+                <img src="{{ Storage::disk('public')->url($subject->file_name) }}">
+                <p>{{ $subject->name }}</p>
+                <p class="resource-count">{{ $subject->total }} Resources</p>
+            </article>
+        </a>
         @endforeach
     </div>
 </section>
@@ -43,10 +45,12 @@
             $url = URL::to('/');
         }
         ?>
-        <article class="home-subject-areas" onclick="location.href='{{ URL::to($url) }}'">
-            <img src="{{ Storage::disk('public')->url($item->icon) }}">
-            <p>{{ $item->name }}</p>
-        </article>
+        <a href="{{ URL::to($url) }}">
+            <article class="home-subject-areas">
+                <img src="{{ Storage::disk('public')->url($item->icon) }}">
+                <p>{{ $item->name }}</p>
+            </article>
+        </a>
         @endforeach
     </div>
 </section>
