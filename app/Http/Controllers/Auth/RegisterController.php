@@ -107,7 +107,7 @@ class RegisterController extends Controller
 
         $userId = $this->create($request->all());
 
-        Auth::loginUsingId($userId, true);
+        Auth::loginUsingId($userId);
 
         return $this->registered($request, $userId)
                         ?: redirect($this->redirectPath());
