@@ -163,6 +163,7 @@ class Resource extends Model
                 ->join('taxonomy_term_hierarchy AS tth', 'tth.tid','=',$tableName.'.tid')
                 ->where('vid', $vid)
                 ->where('language',Config::get('app.locale'))
+                ->orderBy($tableName.'.tid')
                 ->get();
         return $records;
     }
