@@ -54,15 +54,15 @@ class LoginController extends Controller
             return $this->sendLockoutResponse($request);
         }
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('user-field', 'password');
         //Checking if user exists
         $userInstance = new User();
-        $userPassword = $userInstance->oneUser("email", $credentials['email']);
+        $userPassword = $userInstance->oneUser($credentials);
 
         if($userPassword){
             if(checkUserPassword($credentials['password'], $userPassword->password)){
                 $user = new User();
-                if($user->updateUser(array('password' => Hash::make($credentials['password'])), $credentials['email'])){
+                if($user->updateUser(array('password' => Hash::make($credentials['password'])), $credentials)){
                     if($this->attemptLogin($request)){
                         return $this->sendLoginResponse($request);
                     }else{
@@ -86,6 +86,53 @@ class LoginController extends Controller
                 return $this->sendFailedLoginResponse($request);
             }
         }
+    }
+
+    /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    protected function validateLogin(Request $request)
+    {
+        $this->validate($request, [
+            'user-field' => 'required|string',
+            'password' => 'required|string',
+        ]);
+    }
+
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        $requestArray = $request->only('user-field','password');
+        if(filter_var($requestArray['user-field'], FILTER_VALIDATE_EMAIL)){
+            $requestArray['email'] = $requestArray['user-field'];
+            unset($requestArray['user-field']);
+            return $requestArray;
+        }else{
+            $requestArray['username'] = $requestArray['user-field'];
+            unset($requestArray['user-field']);
+            return $requestArray;
+        }
+    }
+
+    /**
+     * Attempt to log the user into the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function attemptLogin(Request $request)
+    {
+        return $this->guard()->attempt(
+            $this->credentials($request), $request->filled('remember')
+        );
     }
 
     public function authenticated(Request $request, $user) 

@@ -104,7 +104,7 @@ class User extends Model
         return $users;
     }
 
-    public function oneUser($field, $value)
+    public function oneUser($credentials)
     {
         $user = DB::table('users')
             ->select(
@@ -116,8 +116,8 @@ class User extends Model
                 'users.created',
                 'users.access'
             )
-            ->orderBy('access','desc')
-            ->where($field, $value)
+            ->where('email', $credentials['user-field'])
+            ->orWhere('username', $credentials['user-field'])
             ->first();
 
         return $user;    
@@ -171,10 +171,11 @@ class User extends Model
         return $records;   
     }
 
-    public function updateUser($newPassword, $email)
+    public function updateUser($newPassword, $credentials)
     {
         return DB::table('users')
-            ->where('email',$email)
+            ->where('email',$credentials['user-field'])
+            ->orWhere('username',$credentials['user-field'])
             ->update($newPassword);
     }
 

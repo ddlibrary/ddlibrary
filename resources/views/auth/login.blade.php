@@ -9,14 +9,14 @@
         <form method="POST" action="{{ route('login') }}">
         @csrf
         <div class="form-item">
-            <label for="email"> 
-                <strong>Email</strong>
+            <label for="user-field"> 
+                <strong>Email or Username</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="email" name="email" size="40" maxlength="40" type="email" value="{{ old('email') }}" required autofocus>
-            @if ($errors->has('email'))
+            <input class="form-control{{ $errors->has('user-field') ? ' is-invalid' : '' }}" id="user-field" name="user-field" size="40" maxlength="40" type="text" value="{{ old('user-field') }}" required autofocus>
+            @if ($errors->has('user-field'))
                 <span class="invalid-feedback">
-                    <strong>{{ $errors->first('email') }}</strong>
+                    <strong>{{ $errors->first('user-field') }}</strong>
                 </span><br>
             @endif
         </div>
