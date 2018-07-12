@@ -76,6 +76,11 @@ function()
 
     Auth::routes();
 
+    //Adding old DDL routes
+    Route::get('user/register', 'Auth\RegisterController@showRegistrationForm');
+    Route::get('user', 'Auth\LoginController@showLoginForm');
+    Route::get('user/logout', 'Auth\LoginController@logout');
+
     Route::get('/logout', function() {
         Auth::logout();
         return redirect('/home');
