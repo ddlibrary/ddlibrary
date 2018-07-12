@@ -6,8 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class User extends Model
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable
 {
+    use Notifiable;
+    public $timestamps = false;
     /**
      * Get the list of users to display as a table in the admin/users
      */
