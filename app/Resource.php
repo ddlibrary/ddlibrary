@@ -223,7 +223,11 @@ class Resource extends Model
         $levelIds = $request['level'];
         $typeIds = $request['type'];
 
-        $searchQuery = $request->input('search');
+        if($sessionQuery = session('search')){
+            $searchQuery = $sessionQuery;
+        }else{
+            $searchQuery = $request->input('search');
+        }
 
         $records = DB::table('resources AS rs')
             ->select(
@@ -351,43 +355,6 @@ class Resource extends Model
             ->orderBy('total','DESC')
             ->get();
         return $records;   
-    }
-
-    public function searchResources($searchQuery)
-    {
-        $records = DB::table('resources AS rs')
-            ->select(
-                'rs.resourceid',
-                'rd.language', 
-                'rd.title',
-                'rd.abstract',
-                'rd.userid',
-                'rd.status',
-                'rd.updated',
-                DB::raw('count(rf.resourceid) as totalfavorite'),
-                DB::raw('count(rc.resourceid) as totalcomments'),
-                DB::raw('count(rv.resourceid) as totalviews')
-                
-            )
-            ->join('resources_data AS rd','rd.resourceid','=','rs.resourceid')
-            ->leftJoin('resources_favorites AS rf', 'rf.resourceid', '=', 'rd.resourceid')
-            ->leftJoin('resources_comments AS rc', 'rc.resourceid', '=', 'rd.resourceid')
-            ->leftJoin('resources_views AS rv', 'rv.resourceid', '=', 'rd.resourceid')
-            ->where('rd.title','like','%'.$searchQuery.'%')
-            ->orwhere('rd.abstract', 'like' , '%'.$searchQuery.'%')
-            ->where('rd.language', Config::get('app.locale'))
-            ->groupBy(
-                'rs.resourceid',
-                'rd.language', 
-                'rd.title',
-                'rd.abstract',
-                'rd.userid',
-                'rd.status',
-                'rd.updated'
-            )
-            ->paginate(32);
-
-        return $records;
     }
 
     public function getRelatedResources($resourceId, $subjectAreas)

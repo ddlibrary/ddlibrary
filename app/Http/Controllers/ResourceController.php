@@ -39,6 +39,10 @@ class ResourceController extends Controller
         //Getting all whatever in the parameterBag
         $everything = $request->all();
 
+        if(isset($everything['search'])){
+            session(['search' => $everything['search']]);
+        }
+
         $subjectAreaIds = array();
         $levelIds = array();
         $typeIds = array();
