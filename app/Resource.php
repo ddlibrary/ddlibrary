@@ -27,6 +27,7 @@ class Resource extends Model
             ->join('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
             ->join('users', 'users.id', '=', 'rd.userid')
             ->where('rd.language',Config::get('app.locale'))
+            ->where('rd.status', 1)
             ->orderBy('rd.created','desc')
             ->get();
         
@@ -375,6 +376,7 @@ class Resource extends Model
             ->join('resources_subject_areas AS rsa','rsa.resourceid','=','rs.resourceid')
             //not to include the record itself in the related items part
             ->where('rs.resourceid','!=', $resourceId)
+            ->where('rd.status', 1)
             ->whereIn('rsa.subject_area_tid',$ids)
             ->limit(5)
             ->get();
