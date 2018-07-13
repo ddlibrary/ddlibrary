@@ -183,7 +183,7 @@ class ResourceController extends Controller
                 $fileSize = $attachments->getClientSize();
                 $fileName = $attachments->getClientOriginalName();
                 //$attachments->storeAs($fileName,'private');
-                Storage::disk('public')->put($fileName, file_get_contents($attachments));
+                Storage::disk('private')->put($fileName, file_get_contents($attachments));
                 unset($validatedData['attachments'][$i]);
                 $validatedData['attachments'][$i]['name'] = $fileName;
                 $validatedData['attachments'][$i]['size'] = $fileSize;
