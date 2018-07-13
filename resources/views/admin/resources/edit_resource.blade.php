@@ -40,7 +40,7 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Licence</strong></td>
-                                    <td> {{ giveMeCC($resource->creative_commons) }}</td>
+                                    <td> {{ $resource->creative_commons }}</td>
                                     <td><strong>Author</strong></td>
                                     <td>{{ $resource->author }}</a></td>
                                 </tr>

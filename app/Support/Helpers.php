@@ -55,25 +55,6 @@ if(! function_exists('giveMeResourceIcon')){
     }
 }
 
-if(! function_exists('giveMeCC')){
-    function giveMeCC($cc)
-    {
-        $ccTypes = array(
-            0 => 'None',
-            1 => 'CC BY-SA',
-            2 => 'CC BY-NC-SA',
-            3 => 'CC BY-NC-ND',
-            4 => 'Public Domain'
-        );
-
-        if ( count($ccTypes[$cc]) > 0){
-            return $ccTypes[$cc];
-        }else{
-            return "No CC License Found";
-        }
-    }
-}
-
 //Abstracts in Drupal installation had /sites/default/files/learn-1044078_960_720_0.jpg type image links
 //In here, I am fixing that and applying Laravel's way of showing images
 if (! function_exists('fixImage')) {
