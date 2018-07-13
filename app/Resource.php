@@ -121,6 +121,7 @@ class Resource extends Model
             ->join('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
             ->join('users', 'users.id', '=', 'rd.userid')
             ->where('rd.language',Config::get('app.locale'))
+            ->where('rd.status', 1)
             ->orderBy('rd.created','desc')
             ->groupBy(
                 'rs.resourceid',
@@ -272,6 +273,7 @@ class Resource extends Model
                     ->orwhere('rd.abstract', 'like' , '%'.$searchQuery.'%');
             })
             ->where('rd.language',Config::get('app.locale'))
+            ->where('rd.status', 1)
             ->groupBy(
                 'rs.resourceid',
                 'rd.language', 
