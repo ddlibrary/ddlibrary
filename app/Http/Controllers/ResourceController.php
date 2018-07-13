@@ -112,7 +112,6 @@ class ResourceController extends Controller
     public function createStepOne(Request $request)
     {
         $this->middleware('auth');
-        //$request->session()->flush();
         $resource = $request->session()->get('resource1');
         return view('resources.resources_add_step1', compact('resource'));
     }
@@ -120,12 +119,12 @@ class ResourceController extends Controller
     public function postStepOne(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|unique:resources_data',
-            'author' => 'string|nullable',
-            'publisher' => 'string|nullable',
-            'translator' => 'string|nullable',
-            'language' => 'required',
-            'abstract' => 'required',
+            'title'         => 'required|unique:resources_data',
+            'author'        => 'string|nullable',
+            'publisher'     => 'string|nullable',
+            'translator'    => 'string|nullable',
+            'language'      => 'required',
+            'abstract'      => 'required',
         ]);
 
         $request->session()->put('resource1', $validatedData);
