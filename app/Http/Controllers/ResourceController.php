@@ -121,9 +121,9 @@ class ResourceController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|unique:resources_data',
-            'author' => 'required',
-            'publisher' => 'required',
-            'translator' => '',
+            'author' => 'string|nullable',
+            'publisher' => 'string|nullable',
+            'translator' => 'string|nullable',
             'language' => 'required',
             'abstract' => 'required',
         ]);
@@ -168,28 +168,35 @@ class ResourceController extends Controller
         $resource = $request->session()->get('resource2');
 
         $validatedData = $request->validate([
-            'attachments.*' => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,doc,docx,pdf,tif,tiff',
-            'subject_areas' => 'required',
-            'keywords' => 'required',
-            'learning_resources_types' => 'required',
-            'educational_use' => 'required',
-            'level' => 'required',
+            'attachments.*'             => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,doc,docx,pdf,tif,tiff',
+            'subject_areas'             => 'required',
+            'keywords'                  => 'required',
+            'learning_resources_types'  => 'required',
+            'educational_use'           => 'required',
+            'level'                     => 'required',
         ]);
 
         if(isset($validatedData['attachments'])){
             $i = 0;
             foreach($validatedData['attachments'] as $attachments){
+                $fileMime = $attachments->getMimeType();
+                $fileSize = $attachments->getClientSize();
                 $fileName = $attachments->getClientOriginalName();
-                $attachments->storeAs('attachments', $fileName);
+                //$attachments->storeAs($fileName,'private');
+                Storage::disk('public')->put($fileName, file_get_contents($attachments));
                 unset($validatedData['attachments'][$i]);
-                $validatedData['attachments'][] = $fileName;
+                $validatedData['attachments'][$i]['name'] = $fileName;
+                $validatedData['attachments'][$i]['size'] = $fileSize;
+                $validatedData['attachments'][$i]['mime'] = $fileMime;
                 $i++;
             }
         }
 
         if(isset($resource['attachments'])){
-            foreach($resource['attachments'] as $attc){
-                $validatedData['attachments'][] = $attc;
+            for($i=0; $i<count($resource['attachments']); $i++){
+                $validatedData['attachments'][$i]['name'] = $resource['attachments'][$i]['name'];
+                $validatedData['attachments'][$i]['size'] = $resource['attachments'][$i]['size'];
+                $validatedData['attachments'][$i]['mime'] = $resource['attachments'][$i]['mime'];
             }
         }
 
@@ -205,8 +212,15 @@ class ResourceController extends Controller
         if(!$resource1 || !$resource2){
             return redirect('/resources/add/step1');
         }
+
         $resource = $request->session()->get('resource3');
-        return view('resources.resources_add_step3', compact('resource'));
+
+        $myResources = new Resource();
+
+        $creativeCommons        = $myResources->resourceAttributesList('taxonomy_term_data', 10);
+        $creativeCommonsOther   = $myResources->resourceAttributesList('taxonomy_term_data', 27);
+
+        return view('resources.resources_add_step3', compact('resource', 'creativeCommons', 'creativeCommonsOther'));
     }
 
     /**
@@ -216,11 +230,11 @@ class ResourceController extends Controller
     public function postStepThree(Request $request)
     {
         $validatedData = $request->validate([
-            'translation_rights' => 'integer',
-            'educational_resource' => 'integer',
-            'copyright_holder' => 'string',
-            'creative_commons' => 'integer',
-            'creative_commons_other' => 'integer'
+            'translation_rights'        => 'integer',
+            'educational_resource'      => 'integer',
+            'copyright_holder'          => 'string',
+            'creative_commons'          => 'integer',
+            'creative_commons_other'    => 'integer'
         ]);
 
         $request->session()->put('resource3', $validatedData);
@@ -235,7 +249,11 @@ class ResourceController extends Controller
         $request->session()->save();
 
         $finalArray = array_merge($resource1, $resource2, $resource3);
-        return dd($finalArray);
+
+        $myResources = new Resource();
+
+        $insertAttachment = $myResources->insertResources($finalArray);
+        return redirect('/home');
     }
 
     public function attributes($entity, Request $request)

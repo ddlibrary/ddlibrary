@@ -23,9 +23,8 @@
         <div class="form-item">
             <label for="author"> 
                 <strong>Author</strong>
-                <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('author') ? ' is-invalid' : '' }}" id="author" name="author" size="40" maxlength="40" type="text" value="{{ @$resource['author'] }}" onkeydown="javascript:bringMeAttr('author','{{ URL::to('resources/attributes/authors') }}')" required>
+            <input class="form-control{{ $errors->has('author') ? ' is-invalid' : '' }}" id="author" name="author" size="40" maxlength="40" type="text" value="{{ @$resource['author'] }}" onkeydown="javascript:bringMeAttr('author','{{ URL::to('resources/attributes/authors') }}')">
             @if ($errors->has('author'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('author') }}</strong>
@@ -35,9 +34,8 @@
         <div class="form-item">
             <label for="publisher"> 
                 <strong>Publisher</strong>
-                <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('publisher') ? ' is-invalid' : '' }}" id="publisher" name="publisher" size="40" maxlength="40" type="text" value="{{ old('publisher')?old('publisher'):@$resource['publisher'] }}" onkeydown="javascript:bringMeAttr('publisher','{{ URL::to('resources/attributes/publishers') }}')" required>
+            <input class="form-control{{ $errors->has('publisher') ? ' is-invalid' : '' }}" id="publisher" name="publisher" size="40" maxlength="40" type="text" value="{{ old('publisher')?old('publisher'):@$resource['publisher'] }}" onkeydown="javascript:bringMeAttr('publisher','{{ URL::to('resources/attributes/publishers') }}')">
             @if ($errors->has('publisher'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('publisher') }}</strong>
@@ -63,7 +61,7 @@
             <select class="form-control{{ $errors->has('language') ? ' is-invalid' : '' }}" name="language" id="language" required>
                 <option value="">- None -</option>
                 @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                <option value="{{ $properties['native'] }}" {{ @$resource['language'] == $properties['native'] ? "selected" : "" }}>{{ $properties['native'] }}</option>
+                <option value="{{ $localeCode }}" {{ @$resource['language'] == $properties['native'] ? "selected" : "" }}>{{ $properties['native'] }}</option>
                 @endforeach
             </select>
         </div>

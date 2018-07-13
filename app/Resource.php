@@ -558,4 +558,168 @@ class Resource extends Model
             'created'           => \Carbon\Carbon::now()->timestamp
         ]);
     }
+
+    public function insertResources($arr)
+    {
+        //Main 
+        $resourceId = DB::table('resources')->insertGetId([
+            'created'           => \Carbon\Carbon::now()->timestamp
+        ]);
+
+        //Resource Data
+        DB::table('resources_data')->insert([
+            'resourceid'        => $resourceId,
+            'title'             => $arr['title'],
+            'abstract'          => $arr['abstract'],
+            'language'          => $arr['language'],
+            'userid'            => Auth::id(),
+            'status'            => 0,
+            'tnid'              => $resourceId,
+            'created'           => \Carbon\Carbon::now()->timestamp
+        ]);
+
+        //Resource attachments
+        for($i=0; $i<count($arr['attachments']); $i++){
+            DB::table('resources_attachments')->insertGetId([
+                'resourceid'        => $resourceId,
+                'file_name'         => $arr['attachments'][$i]['name'],
+                'file_mime'         => $arr['attachments'][$i]['mime'],
+                'file_size'         => $arr['attachments'][$i]['size']
+            ]);
+        }
+
+        //Author
+        $authorId = DB::table('taxonomy_term_data')->insertGetId([
+            'vid'       => 24,
+            'name'      => $arr['author'],
+            'language'  => $arr['language']
+        ]);
+
+        DB::table('resources_authors')->insert([
+            'resourceid'            => $resourceId,
+            'author_name_tid'       => $authorId
+        ]);
+
+        //Publisher
+        $publisherId = DB::table('taxonomy_term_data')->insertGetId([
+            'vid'       => 9,
+            'name'      => $arr['publisher'],
+            'language'  => $arr['language']
+        ]);
+
+        DB::table('resources_publishers')->insert([
+            'resourceid'          => $resourceId,
+            'publisher_name_tid'  => $publisherId
+        ]);
+
+        //Translator
+        $translatorId = DB::table('taxonomy_term_data')->insertGetId([
+            'vid'       => 22,
+            'name'      => $arr['translator'],
+            'language'  => $arr['language']
+        ]);
+
+        DB::table('resources_translators')->insert([
+            'resourceid'            => $resourceId,
+            'translator_name_tid'   => $translatorId
+        ]);
+
+        //Copyright holder
+        $copyrightHolderId = DB::table('taxonomy_term_data')->insertGetId([
+            'vid'       => 26,
+            'name'      => $arr['copyright_holder'],
+            'language'  => $arr['language']
+        ]);
+
+        DB::table('resources_copyright_holders')->insert([
+            'resourceid'         => $resourceId,
+            'copyright_holder'   => $copyrightHolderId
+        ]);
+
+        //Creative commons
+        $creativeCommonsId = DB::table('taxonomy_term_data')->insertGetId([
+            'vid'       => 10,
+            'name'      => $arr['creative_commons'],
+            'language'  => $arr['language']
+        ]);
+
+        DB::table('resources_creative_commons')->insert([
+            'resourceid'         => $resourceId,
+            'creative_commons'   => $creativeCommonsId
+        ]);
+
+        //Creative commons other
+        $creativeCommonsOtherId =DB::table('taxonomy_term_data')->insertGetId([
+            'vid'       => 27,
+            'name'      => $arr['creative_commons_other'],
+            'language'  => $arr['language']
+        ]);
+
+        DB::table('resources_creative_commons')->insert([
+            'resourceid'         => $resourceId,
+            'creative_commons'   => $creativeCommonsOtherId
+        ]);
+
+        //Creative commons other
+        $keywordsId =DB::table('taxonomy_term_data')->insertGetId([
+            'vid'       => 23,
+            'name'      => $arr['keywords'],
+            'language'  => $arr['language']
+        ]);
+
+        DB::table('resources_keywords')->insert([
+            'resourceid'    => $resourceId,
+            'keyword'       => $keywordsId
+        ]);
+
+        //Resource Subjects
+        foreach($arr['subject_areas'] AS $sa){
+            DB::table('resources_subject_areas')->insert([
+                'resourceid'        => $resourceId,
+                'subject_area_tid'  => $sa
+            ]);
+        }
+
+        //Learn resource types
+        foreach($arr['learning_resources_types'] AS $ltype){
+            DB::table('resources_learning_resource_types')->insert([
+                'resourceid'        => $resourceId,
+                'learning_resource_type_tid'  => $ltype
+            ]);
+        }
+
+        //Educational use
+        foreach($arr['educational_use'] AS $eduse){
+            DB::table('resources_educational_uses')->insert([
+                'resourceid'        => $resourceId,
+                'educational_use'  => $eduse
+            ]);
+        }
+
+        //Resource levels
+        foreach($arr['level'] AS $level){
+            DB::table('resources_levels')->insert([
+                'resourceid'            => $resourceId,
+                'resource_level_tid'    => $level
+            ]);
+        }
+
+        //Translation rights
+        DB::table('resources_translation_rights')->insert([
+            'resourceid'           => $resourceId,
+            'translation_right'    => $arr['translation_rights']
+        ]);
+
+        //Educational resource
+        DB::table('resources_educational_resources')->insert([
+            'resourceid'           => $resourceId,
+            'educational_resource' => $arr['educational_resource']
+        ]);
+
+        //Creative commons
+        DB::table('resources_creative_commons')->insert([
+            'resourceid'            => $resourceId,
+            'creative_commons'      => $arr['creative_commons']
+        ]);
+    }
 }

@@ -53,10 +53,9 @@
             <label for="creative_commons"> 
                 <strong>If there is no Creative Commons License on the resource, select one of these</strong>
             </label>
-            <input type="radio" value="1" name="creative_commons">CC BY / CC BY-SA <br>
-            <input type="radio" value="2" name="creative_commons">CC BY-NC / CC BY-NC-SA <br>
-            <input type="radio" value="3" name="creative_commons">CC 0 / public domain <br>
-            <input type="radio" value="4" name="creative_commons">CC BY-ND / CC BY-NC-ND
+            @foreach($creativeCommons AS $cc)
+            <input type="radio" value="{{ $cc->tid }}" name="creative_commons">{{ $cc->name }}<br>
+            @endforeach
             <div class="description">
                     Unsure of which option to select? Click here for guidance on licensing this resource.
             </div>
@@ -65,15 +64,9 @@
             <label for="creative_commons_other"> 
                 <strong>If there is no Creative Commons License on the resource, select one these:</strong>
             </label>
-            <input type="radio" value="1" name="creative_commons_other">N/A <br>
-            <input type="radio" value="2" name="creative_commons_other">Copyrighted (Link Only) <br>
-            <input type="radio" value="3"  name="creative_commons_other">Other <br>
-            <input type="radio" value="4"  name="creative_commons_other">Permission pending <br>
-            <input type="radio" value="5"  name="creative_commons_other">Reproduced with permission <br>
-            <input type="radio" value="6"  name="creative_commons_other">Reproduced with permission - reproduction is allowed, translation is restricted <br>
-            <input type="radio" value="7"  name="creative_commons_other">Reproduced with permission - reproduction is restricted <br>
-            <input type="radio" value="8"  name="creative_commons_other">Reproduced with permission - translation is allowed <br>
-            <input type="radio" value="9"  name="creative_commons_other">Unknown<br>
+            @foreach($creativeCommonsOther AS $other)
+            <input type="radio" value="{{ $other->tid }}" name="creative_commons_other">{{ $other->name }}<br>
+            @endforeach
         </div>
         <div style="display:flex;">
             <input style="margin-right: 10px;" class="form-control normalButton" type="button" value="Previous" onclick="location.href='{{ URL::to('resources/add/step2') }}'">

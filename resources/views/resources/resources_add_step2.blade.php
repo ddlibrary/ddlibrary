@@ -22,9 +22,9 @@
         <input class="form-control{{ $errors->has('attachments') ? ' is-invalid' : '' }}" id="attachments" name="attachments[]" size="40" maxlength="40" type="file">
             <button type='button' class="add_more">Add More Files</button>
             @if(isset($resource['attachments']))
-            @foreach($resource['attachments'] as $attc)
-                <br><a href="{{ asset('/storage/attachments/'.$attc) }}">{{ $attc }}</a>
-            @endforeach
+            @for($i=0; $i<count($resource['attachments']); $i++)
+                <br><a href="{{ asset('/storage/attachments/'.$resource['attachments'][$i]['name']) }}">{{ $resource['attachments'][$i]['name'] }}</a>
+            @endfor
             @endif
 
             @if ($errors->has('attachments'))
