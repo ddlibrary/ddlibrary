@@ -79,12 +79,13 @@ function()
     //Adding old DDL routes
     Route::get('/user/register', 'Auth\RegisterController@showRegistrationForm');
     Route::get('/user', 'Auth\LoginController@showLoginForm');
-    Route::get('/access-library', 'Auth\LoginController@showLoginForm');
+    Route::get('/access-library', 'ResourceController@createStepOne')->name('step1')->middleware('auth');
     Route::get('/user/logout', 'Auth\LoginController@logout');
+    Route::get('/password', 'Auth\ForgotPasswordController@showLinkRequestForm');
     Route::get('/volunteer', function() {
         return redirect('pages/view/1532');
     });
-    
+
     Route::get('/support-library', function() {
         return redirect('pages/view/21');
     });
