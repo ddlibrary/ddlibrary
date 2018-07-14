@@ -4,7 +4,7 @@
         <a href="{{ URL::to('/') }}">Home</a>
         <a href="{{ URL::to('pages/view/16') }}">About</a>
         <a href="{{ URL::to('pages/view/20') }}">Help</a>
-        <a href="#">Contact</a>
+        <a href="{{ URL::to('/contact-us') }}">Contact</a>
         <a href="#">Statistics</a>
         <a href="{{ URL::to('pages/view/21') }}">Support the Library</a>
         <a href="#">Partners</a>

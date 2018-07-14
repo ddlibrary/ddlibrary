@@ -325,7 +325,7 @@ class ResourceController extends Controller
         }
 
         if($myResources->insertComment($params)){
-            Session()->flash('msg', "Your comment is successfully registered. We will publish it after review.");
+            Session()->flash('success', "Your comment is successfully registered. We will publish it after review.");
             return redirect('resources/view/'.$resourceId);
         }
     }

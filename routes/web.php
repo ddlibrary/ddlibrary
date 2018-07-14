@@ -49,6 +49,10 @@ function()
     Route::post('resources/flag', 'ResourceController@flag')->name('flag');
     Route::post('resources/comment', 'ResourceController@comment')->name('comment')->middleware('auth');
 
+    //Contact 
+    Route::get('contact-us', 'ContactController@create');
+    Route::post('contact-us', 'ContactController@store')->name('contact');
+
     //Report
     Route::get('admin/reports/ddl', 'ReportController@index')->middleware('auth');
     Route::get('admin/reports/ga', 'ReportController@gaReport')->middleware('auth');

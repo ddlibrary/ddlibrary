@@ -26,9 +26,7 @@
     </aside>
     <section class="resource-view-information-section">
         <article class="resource-view-title-box">
-            <div class="form-required">
-                {!! Session::get("msg") !!}
-            </div>
+            @include('layouts.messages')
             <div class="resource-view-title">
                 <header>
                     <h1>{{ $resource->title }}</h1>
