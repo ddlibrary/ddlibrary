@@ -80,6 +80,9 @@ function()
     Route::get('user/register', 'Auth\RegisterController@showRegistrationForm');
     Route::get('user', 'Auth\LoginController@showLoginForm');
     Route::get('user/logout', 'Auth\LoginController@logout');
+    Route::get('/volunteer', function() {
+        return redirect('pages/view/1532');
+    });
 
     Route::get('/logout', function() {
         Auth::logout();

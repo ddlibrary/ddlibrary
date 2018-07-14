@@ -60,11 +60,14 @@ if(! function_exists('giveMeResourceIcon')){
 if (! function_exists('fixImage')) {
     function fixImage($abstract)
     {
+		//To replace hardcoded url to dynamic base_url
+		$abstract = str_replace('http://www.darakhtdanesh.org/', URL::to('/').'/', $abstract);
+
         preg_match_all('/src="([^"]*)"/',$abstract,$matches);
         if(count($matches[1])> 0){
             $replaceMe = array();
             $originalMe = array();
-            $folders = array('icons');
+
             for($i=0; $i<count($matches[1]); $i++){
                 $absStr = $matches[1][$i];
                 $absArray = explode('/',$absStr);
@@ -74,7 +77,7 @@ if (! function_exists('fixImage')) {
                 array_push($replaceMe, $fixedImage);
                 array_push($originalMe, $absStr);
             }
-            $finalFixedStr = str_replace($originalMe, $replaceMe, $abstract);
+			$finalFixedStr = str_replace($originalMe, $replaceMe, $abstract);
             return $finalFixedStr;
         }else{
             return $abstract;
