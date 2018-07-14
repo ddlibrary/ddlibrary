@@ -81,7 +81,7 @@ function()
     Route::get('/user', 'Auth\LoginController@showLoginForm');
     Route::get('/access-library', 'ResourceController@createStepOne')->name('step1')->middleware('auth');
     Route::get('/user/logout', 'Auth\LoginController@logout');
-    Route::get('/password', 'Auth\ForgotPasswordController@showLinkRequestForm');
+    Route::get('/user/password', 'Auth\ForgotPasswordController@showLinkRequestForm');
     Route::get('/volunteer', function() {
         return redirect('pages/view/1532');
     });
