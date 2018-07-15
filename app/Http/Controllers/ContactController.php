@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contact;
+use App\Setting;
 use Illuminate\Http\Request;
 use App\Mail\ContactPage;
 
@@ -52,7 +53,7 @@ class ContactController extends Controller
 
         $contact->save();
 
-        \Mail::to("jamshid@darakhtdanesh.org")->send(new ContactPage($contact));
+        \Mail::to(Setting::find(1)->website_email)->send(new ContactPage($contact));
 
         return redirect('/contact-us')->with('success', 'We received your message and will contact you back soon!');
     }

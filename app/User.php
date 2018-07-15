@@ -12,7 +12,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
-    public $timestamps = false;
+    const CREATED_AT = 'created';
+    const UPDATED_AT = 'updated';
     /**
      * Get the list of users to display as a table in the admin/users
      */

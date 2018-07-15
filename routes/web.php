@@ -69,8 +69,9 @@ function()
     //Menu
     Route::get('admin/menu','MenuController@index')->middleware('auth');
 
-    //Menu
-    Route::get('admin/settings','SettingController@index')->middleware('auth');
+    //Settings
+    Route::get('admin/settings','SettingController@edit')->middleware('auth');
+    Route::post('admin/settings', 'SettingController@update')->name('settings');
 
     //Comments
     Route::get('admin/comments','CommentController@index')->middleware('admin');
