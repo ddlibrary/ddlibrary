@@ -38,6 +38,33 @@ class Resource extends Model
         }
     }
 
+    public function getResources($resourceId, $step)
+    {
+        if($step == "step1"){
+            return  DB::table('resources AS rs')
+            ->select(
+                'rs.resourceid',
+                'rd.language', 
+                'rd.title',
+                'rd.abstract',
+                'ttda.name AS author',
+                'ttdp.name AS publisher',
+                'ttdt.name AS translator'
+            )
+            ->leftJoin('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
+            ->leftJoin('resources_authors AS ra', 'ra.resourceid', '=', 'rs.resourceid')
+            ->leftJoin('resources_publishers AS rp', 'rp.resourceid', '=', 'rs.resourceid')
+            ->leftJoin('resources_translators AS rt', 'rt.resourceid', '=', 'rs.resourceid')
+            ->leftJoin('taxonomy_term_data AS ttda', 'ttda.tid', '=', 'ra.author_name_tid')
+            ->leftJoin('taxonomy_term_data AS ttdp', 'ttdp.tid', '=', 'rp.publisher_name_tid')
+            ->leftJoin('taxonomy_term_data AS ttdt', 'ttdt.tid', '=', 'rt.translator_name_tid')
+            ->where('rd.language',Config::get('app.locale'))
+            ->where('rs.resourceid', $resourceId)
+            ->orderBy('rd.created','desc')
+            ->first();   
+        }
+    }
+
     public function filterResources($requestArray)
     {
         $resources = DB::table('resources AS rs')

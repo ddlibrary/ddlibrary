@@ -49,6 +49,13 @@ function()
     Route::post('resources/flag', 'ResourceController@flag')->name('flag');
     Route::post('resources/comment', 'ResourceController@comment')->name('comment')->middleware('auth');
 
+    Route::get('resources/edit/step1/{resourceId}', 'ResourceController@createStepOneEdit')->name('edit1')->middleware('auth');
+    Route::post('resources/edit/step1/{resourceId}', 'ResourceController@postStepOneEdit');
+    Route::get('resources/edit/step2/{resourceId}', 'ResourceController@createStepTwoEdit')->name('edit2')->middleware('auth');
+    Route::post('resources/edit/step2/{resourceId}', 'ResourceController@postStepTwoEdit');
+    Route::get('resources/edit/step3/{resourceId}', 'ResourceController@createStepThreeEdit')->name('edit3')->middleware('auth');
+    Route::post('resources/edit/step3/{resourceId}', 'ResourceController@postStepThreeEdit');
+
     //Contact 
     Route::get('contact-us', 'ContactController@create');
     Route::post('contact-us', 'ContactController@store')->name('contact');

@@ -33,7 +33,7 @@
                 </header>
                 <div class="resource-icons">
                     @if (isAdmin())
-                    <a href="{{ URL::to('resources/edit/'.$resource->resourceid) }}">Edit</a>
+                    <a href="{{ route('edit1', $resource->resourceid) }}">Edit</a>
                     @endif
                     <i class="fas fa-lg fa-star {{ $favorite?"active":"" }}" id="resourceFavorite" onclick="favorite('resourceFavorite','{{ URL::to("resources/favorite/") }}','{{ $resource->resourceid }}','{{ Auth::id() }}')"></i>
                     <i class="fas fa-lg fa-share-square"></i>
