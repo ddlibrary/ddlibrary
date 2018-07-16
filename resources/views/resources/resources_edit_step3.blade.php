@@ -68,6 +68,13 @@
             <input type="radio" value="{{ $other->tid }}" name="creative_commons_other">{{ $other->name }}<br>
             @endforeach
         </div>
+        <div class="form-item">
+            <label for="published"> 
+                <strong>Published?</strong>
+            </label>
+            <input type="radio" name="published" {{ ($resource['status'] == 0)?"checked":""}} value="0"> No
+            <input type="radio" name="published" {{ ($resource['status'] == 1)?"checked":""}} value="1"> Yes
+        </div>
         <div style="display:flex;">
             <input style="margin-right: 10px;" class="form-control normalButton" type="button" value="Previous" onclick="location.href='{{ route('edit2', $resource['resourceid']) }}'">
             <input class="form-control normalButton" type="submit" value="Submit">

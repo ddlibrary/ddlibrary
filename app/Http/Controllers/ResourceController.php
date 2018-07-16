@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Resource;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Session;
 
 class ResourceController extends Controller
 {
@@ -85,11 +86,13 @@ class ResourceController extends Controller
         $comments = $myResources->getComments($resourceId);
         $favorite = $myResources->getFavorite($resourceId);
 
-        $translation_id = $resource->tnid;
-        if($translation_id){
-            $translations = $myResources->getResourceTranslations($translation_id);
-        }else{
-            $translations = array();
+        if($resource){
+            $translation_id = $resource->tnid;
+            if($translation_id){
+                $translations = $myResources->getResourceTranslations($translation_id);
+            }else{
+                $translations = array();
+            }
         }
 
         $this->resourceViewCounter($request, $resourceId);
@@ -139,43 +142,15 @@ class ResourceController extends Controller
         if(!$resource1){
             return redirect('/resources/add/step1');
         }
+        
+        $resource = $request->session()->get('resource2');
+
+        $resourceSubjectAreas = json_encode($resource['subject_areas'], JSON_NUMERIC_CHECK);
+        $resourceLearningResourceTypes = json_encode($resource['learning_resources_types'], JSON_NUMERIC_CHECK);
+        $EditEducationalUse = json_encode($resource['educational_use'], JSON_NUMERIC_CHECK);
+        //$resourceKeywords = json_encode($resource['keywords']);
 
         $myResources = new Resource();
-        $resourceSubjectAreas = array();
-        $resourceLearningResourceTypes = array();
-        $EditEducationalUse = array();
-        $resourceAttachments = array();
-
-        if(session('edit')){
-            $resourceId = session('edit');
-            $dataResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type_tid','taxonomy_term_data');
-            $dataSubjects = $myResources->resourceAttributes($resourceId,'resources_subject_areas','subject_area_tid','taxonomy_term_data');
-            $dataEducationalUse = $myResources->resourceAttributes($resourceId,'resources_educational_uses','educational_use','taxonomy_term_data');
-            $resourceAttachments = $myResources->resourceAttachments($resourceId);
-
-            foreach($dataSubjects AS $item)
-            {
-                array_push($resourceSubjectAreas, $item->tid);
-            }
-
-            foreach($dataResourceTypes AS $item)
-            {
-                array_push($resourceLearningResourceTypes, $item->tid);
-            }
-
-            foreach($dataEducationalUse AS $item)
-            {
-                array_push($EditEducationalUse, $item->tid);
-            }
-
-            $resourceSubjectAreas = json_encode($resourceSubjectAreas);
-            $resourceLearningResourceTypes = json_encode($resourceLearningResourceTypes);
-            $EditEducationalUse = json_encode($EditEducationalUse);
-            $resource['attachments'] = $resourceAttachments->toArray();
-            //dd($resource['attachments']);
-        }else{
-            $resource = $request->session()->get('resource2');
-        }
 
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data',8);
         $keywords = $myResources->resourceAttributesList('taxonomy_term_data',23);
@@ -212,26 +187,28 @@ class ResourceController extends Controller
         ]);
 
         if(isset($validatedData['attachments'])){
-            $i = 0;
             foreach($validatedData['attachments'] as $attachments){
                 $fileMime = $attachments->getMimeType();
                 $fileSize = $attachments->getClientSize();
                 $fileName = $attachments->getClientOriginalName();
                 //$attachments->storeAs($fileName,'private');
                 Storage::disk('private')->put($fileName, file_get_contents($attachments));
-                unset($validatedData['attachments'][$i]);
-                $validatedData['attachments'][$i]['name'] = $fileName;
-                $validatedData['attachments'][$i]['size'] = $fileSize;
-                $validatedData['attachments'][$i]['mime'] = $fileMime;
-                $i++;
+                $validatedData['attc'][] = array(
+                    'file_name' => $fileName,
+                    'file_size' => $fileSize,
+                    'file_mime' => $fileMime
+                );
             }
+            unset($validatedData['attachments']);
         }
 
-        if(isset($resource['attachments'])){
-            for($i=0; $i<count($resource['attachments']); $i++){
-                $validatedData['attachments'][$i]['name'] = $resource['attachments'][$i]['name'];
-                $validatedData['attachments'][$i]['size'] = $resource['attachments'][$i]['size'];
-                $validatedData['attachments'][$i]['mime'] = $resource['attachments'][$i]['mime'];
+        if(isset($resource['attc'])){
+            for($i=0; $i<count($resource['attc']); $i++){
+                $validatedData['attc'][] = array(
+                    'file_name' => $resource['attc'][$i]['file_name'],
+                    'file_size' => $resource['attc'][$i]['file_size'],
+                    'file_mime' => $resource['attc'][$i]['file_mime'],
+                );
             }
         }
 
@@ -287,7 +264,7 @@ class ResourceController extends Controller
 
         $myResources = new Resource();
 
-        $insertAttachment = $myResources->insertResources($finalArray);
+        $insertAttachment = $myResources->insertResources(0, $finalArray);
         return redirect('/home');
     }
 
@@ -390,9 +367,9 @@ class ResourceController extends Controller
         $resource = $request->session()->get('resource1');
 
         if($resource){
-            $resource = (object) $resource;
+            $resource = $resource;
         }else{
-            $resource = $myResources->getResources($resourceId, 'step1');
+            $resource = (array) $myResources->getResources($resourceId, 'step1');
         }
         return view('resources.resources_edit_step1', compact('resource'));
     }
@@ -409,7 +386,7 @@ class ResourceController extends Controller
         ]);
 
         $validatedData['resourceid'] = $resourceId;
-
+        $validatedData['status'] = $request->input('status');
         $request->session()->put('resource1', $validatedData);
 
         return redirect('/resources/edit/step2/'.$resourceId);
@@ -423,41 +400,96 @@ class ResourceController extends Controller
             return redirect('/resources/edit/step1');
         }
 
-        $resource = $request->session()->get('resource2');
-        
         $myResources = new Resource();
 
         $resourceSubjectAreas = array(); 
         $resourceLearningResourceTypes = array(); 
         $EditEducationalUse = array();
+        $resourceLevels = array();
+        $resourceKeywords = array();
+        $resourceAttachments = array();
 
-        $dataResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type_tid','taxonomy_term_data');
-        $dataSubjects = $myResources->resourceAttributes($resourceId,'resources_subject_areas','subject_area_tid','taxonomy_term_data');
-        $dataEducationalUse = $myResources->resourceAttributes($resourceId,'resources_educational_uses','educational_use','taxonomy_term_data');
-        $resourceAttachments = $myResources->resourceAttachments($resourceId)->toArray();
+        $resource = $request->session()->get('resource2');
 
-        array_push($resource['attachments'], $resourceAttachments);
-
-        dd($resource);
-
-        foreach($dataSubjects AS $item)
-        {
-            array_push($resourceSubjectAreas, $item->tid);
+        if(isset($resource['subject_areas'])){
+            $resourceSubjectAreas = $resource['subject_areas'];    
+        }else{
+            $dataSubjects = $myResources->resourceAttributes($resourceId,'resources_subject_areas','subject_area_tid','taxonomy_term_data');
+            foreach($dataSubjects AS $item)
+            {
+                array_push($resourceSubjectAreas, $item->tid);
+            }
         }
 
-        foreach($dataResourceTypes AS $item)
-        {
-            array_push($resourceLearningResourceTypes, $item->tid);
+        if(isset($resource['learning_resources_types'])){
+            $resourceLearningResourceTypes = $resource['learning_resources_types'];    
+        }else{
+            $dataResourceTypes = $myResources->resourceAttributes($resourceId,'resources_learning_resource_types','learning_resource_type_tid','taxonomy_term_data');
+            foreach($dataResourceTypes AS $item)
+            {
+                array_push($resourceLearningResourceTypes, $item->tid);
+            }
         }
 
-        foreach($dataEducationalUse AS $item)
-        {
-            array_push($EditEducationalUse, $item->tid);
+        if($resource && isset($resource['keywords'])){
+            $resourceKeywords = $resource['keywords'];    
+        }else{
+            $dataKeywords = $myResources->resourceAttributes($resourceId,'resources_keywords','keyword', 'taxonomy_term_data');
+            foreach($dataKeywords AS $item)
+            {
+                array_push($resourceKeywords, $item->tid);
+            }
         }
 
-        $resourceSubjectAreas = json_encode($resourceSubjectAreas);
-        $resourceLearningResourceTypes = json_encode($resourceLearningResourceTypes);
-        $EditEducationalUse = json_encode($EditEducationalUse);
+        if(isset($resource['educational_use'])){
+            $EditEducationalUse = $resource['educational_use'];    
+        }else{
+            $dataEducationalUse = $myResources->resourceAttributes($resourceId,'resources_educational_uses','educational_use','taxonomy_term_data');
+            foreach($dataEducationalUse AS $item)
+            {
+                array_push($EditEducationalUse, $item->tid);
+            }
+        }
+
+        if(isset($resource['level'])){
+            $resourceLevels = $resource['level'];    
+        }else{
+            $dataLevels = $myResources->resourceAttributes($resourceId,'resources_levels','resource_level_tid', 'taxonomy_term_data');
+            foreach($dataLevels AS $item)
+            {
+                array_push($resourceLevels, $item->tid);
+            }
+        }
+
+        if($resource){
+            if(isset($resource['attc'])){
+                foreach($resource['attc'] as $item) {
+                    $resourceAttachments[] = array(
+                        'file_name' => $item['file_name'],
+                        'file_size' => $item['file_size'],
+                        'file_mime' => $item['file_mime']
+                    );
+                }
+            }
+        }
+
+        $dataAttachments = $myResources->resourceAttachments($resourceId)->toArray();
+        foreach($dataAttachments AS $item){
+            $resourceAttachments[] = array(
+                'file_name' => $item->file_name,
+                'file_size' => $item->file_size,
+                'file_mime' => $item->file_mime
+            );
+        }
+
+        $resource['attc'] = $resourceAttachments;
+        $request->session()->put('resource2', $resource);
+        $request->session()->save();
+
+        $resourceSubjectAreas = json_encode($resourceSubjectAreas, JSON_NUMERIC_CHECK);
+        $resourceLearningResourceTypes = json_encode($resourceLearningResourceTypes, JSON_NUMERIC_CHECK);
+        $resourceKeywords = json_encode($resourceKeywords, JSON_NUMERIC_CHECK);
+        $EditEducationalUse = json_encode($EditEducationalUse, JSON_NUMERIC_CHECK);
 
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data',8);
         $keywords = $myResources->resourceAttributesList('taxonomy_term_data',23);
@@ -478,50 +510,53 @@ class ResourceController extends Controller
             'resourceSubjectAreas',
             'resourceLearningResourceTypes',
             'EditEducationalUse',
-            'resourceAttachments'
+            'resourceAttachments',
+            'resourceLevels',
+            'resourceKeywords'
         ));
     }
 
     public function postStepTwoEdit($resourceId, Request $request)
     {
-        $resource = (object) $request->session()->get('resource2');
-
+        $resource = $request->session()->get('resource2');
         $validatedData = $request->validate([
             'attachments.*'             => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,doc,docx,pdf,tif,tiff',
             'subject_areas'             => 'required',
-            'keywords'                  => 'required',
+            'keywords'                  => 'string|nullable',
             'learning_resources_types'  => 'required',
             'educational_use'           => 'required',
-            'level'                     => 'required',
+            'level'                     => 'required'
         ]);
 
         if(isset($validatedData['attachments'])){
-            $i = 0;
             foreach($validatedData['attachments'] as $attachments){
                 $fileMime = $attachments->getMimeType();
                 $fileSize = $attachments->getClientSize();
                 $fileName = $attachments->getClientOriginalName();
                 //$attachments->storeAs($fileName,'private');
+                unset($validatedData['attachments']);
                 Storage::disk('private')->put($fileName, file_get_contents($attachments));
-                unset($validatedData['attachments'][$i]);
-                $validatedData['attachments'][$i]['file_name'] = $fileName;
-                $validatedData['attachments'][$i]['file_size'] = $fileSize;
-                $validatedData['attachments'][$i]['file_mime'] = $fileMime;
-                $i++;
+                $validatedData['attc'][] = array(
+                    'file_name' => $fileName,
+                    'file_size' => $fileSize,
+                    'file_mime' => $fileMime
+                );
             }
         }
 
-        if(isset($resource->attachments)){
-            for($i=0; $i<count($resource->attachments); $i++){
-                $validatedData['attachments'][$i]['file_name'] = $resource->attachments[$i]['file_name'];
-                $validatedData['attachments'][$i]['file_size'] = $resource->attachments[$i]['file_size'];
-                $validatedData['attachments'][$i]['file_mime'] = $resource->attachments[$i]['file_mime'];
+        if(isset($resource['attc'])){
+            for($i=0; $i<count($resource['attc']); $i++){
+                $validatedData['attc'][] = array(
+                    'file_name' => $resource['attc'][$i]['file_name'],
+                    'file_size' => $resource['attc'][$i]['file_size'],
+                    'file_mime' => $resource['attc'][$i]['file_mime'],
+                ); 
             }
         }
 
         $validatedData['resourceid'] = $resourceId;
-
         $request->session()->put('resource2', $validatedData);
+        $request->session()->save();
         return redirect('/resources/edit/step3/'.$resourceId);
     }
 
@@ -542,6 +577,7 @@ class ResourceController extends Controller
         $creativeCommonsOther   = $myResources->resourceAttributesList('taxonomy_term_data', 27);
 
         $resource['resourceid'] = $resourceId;
+        $resource['status'] = $resource1['status'];
 
         return view('resources.resources_edit_step3', compact('resource', 'creativeCommons', 'creativeCommonsOther'));
     }
@@ -550,7 +586,7 @@ class ResourceController extends Controller
      * Store resource
      *
      */
-    public function postStepThreeEdit(Request $request)
+    public function postStepThreeEdit($resourceId, Request $request)
     {
         $validatedData = $request->validate([
             'translation_rights'        => 'integer',
@@ -565,6 +601,7 @@ class ResourceController extends Controller
         $resource1 = $request->session()->get('resource1');
         $resource2 = $request->session()->get('resource2');
         $resource3 = $request->session()->get('resource3');
+        $resource3['published'] = $request->input('published');
 
         $request->session()->forget('resource1');
         $request->session()->forget('resource2');
@@ -574,8 +611,12 @@ class ResourceController extends Controller
         $finalArray = array_merge($resource1, $resource2, $resource3);
 
         $myResources = new Resource();
-dd($finalArray);
-        $insertAttachment = $myResources->insertResources($finalArray);
-        return redirect('/home');
+
+        $deleteResource = $myResources->deleteResources($resourceId);
+
+        if($deleteResource){
+            $insertAttachment = $myResources->insertResources($resourceId, $finalArray);
+            return redirect('/home');
+        }
     }
 }

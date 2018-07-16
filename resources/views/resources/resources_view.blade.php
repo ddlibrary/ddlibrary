@@ -218,9 +218,6 @@
             @endif
             </div>
         </article>
-        @else
-        <h1>Resource not found or is not yet translated!</h1>
-        @endif
     </section>
 
     <section class="resource-view-comment">
@@ -258,5 +255,8 @@
         <h2>Please <a href="{{ URL::to('login') }}">login</a> to add comment.</h2>
         @endif
     </section>
+    @else
+        <h1>Resource not found or is not yet translated!</h1>
+        @endif
 </section>
 @endsection

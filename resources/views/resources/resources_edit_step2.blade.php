@@ -6,17 +6,19 @@
         $('#subject_areas').select2();
         $('#learning_resources_types').select2();
         $('#educational_use').select2();
-        //$("#keywords").select2({
-        //    tags: true
-        //});
+        $("#keywords").select2({
+            tags: true
+        });
 
         $('#subject_areas').val({{ $resourceSubjectAreas }});
         $('#learning_resources_types').val({{ $resourceLearningResourceTypes }});
         $('#educational_use').val({{ $EditEducationalUse }});
+        //$('#keywords').val({{ $resourceKeywords }});
 
         $('#subject_areas').trigger('change'); // Notify any JS components that the value changed
         $('#learning_resources_types').trigger('change'); // Notify any JS components that the value changed
         $('#educational_use').trigger('change'); // Notify any JS components that the value changed
+        //$('#keywords').trigger('change'); // Notify any JS components that the value changed
     });
 </script>
 <section class="ddl-forms">
@@ -32,9 +34,11 @@
             </label>
         <input class="form-control{{ $errors->has('attachments') ? ' is-invalid' : '' }}" id="attachments" name="attachments[]" size="40" maxlength="40" type="file">
             <button type='button' class="add_more">Add More Files</button>
-            @if(isset($resource->attachments))
-            @foreach($resource->attachments AS $item)
-                <br><a href="{{ asset('/storage/attachments/'.$item->file_name) }}">{{ $item->file_name }}</a>
+            @if(isset($resourceAttachments))
+            <?php  $i = 0; ?>
+            @foreach($resourceAttachments as $item)
+                <br><a href="{{ asset('/storage/attachments/'.$item['file_name']) }}">{{ $item['file_name'] }}</a>
+                <?php  $i++; ?>
             @endforeach
             @endif
 
@@ -64,14 +68,10 @@
         <div class="form-item">
             <label for="keywords"> 
                 <strong>Keywords</strong>
-                <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('keywords') ? ' is-invalid' : '' }}" id="keywords" name="keywords" size="40" maxlength="40" type="text" value="{{ @$resource['keywords'] }}" onkeydown="javascript:bringMeAttr('keywords','{{ URL::to('resources/attributes/keywords') }}')" required>
-            @if ($errors->has('keywords'))
-                <span class="invalid-feedback">
-                    <strong>{{ $errors->first('keywords') }}</strong>
-                </span><br>
-            @endif
+            <select class="form-control{{ $errors->has('subject_areas') ? ' is-invalid' : '' }}" id="keywords" name="keywords[]"  multiple="multiple">
+                    <option value=""></option>
+            </select>
         </div>
         <div class="form-item">
             <label for="learning_resources_types"> 
@@ -101,15 +101,6 @@
                 @endforeach
             </select>
 
-            @if(isset($resource['educational_use']))
-                @foreach($resource['educational_use'] as $eu)
-                    <script>
-                        let eu = '{{ $eu }}';
-                        $('#educational_use').val(eu);
-                    </script>
-                @endforeach
-            @endif
-
             @if ($errors->has('educational_use'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('educational_use') }}</strong>
@@ -130,7 +121,7 @@
             ?>
             @foreach($levels AS $level)
                 @if($level->parent == 0)
-                    <li><input type="checkbox" name="level[]" {{ in_array($level->tid, @$resource['level'] ) ? "checked" : ""}} value="{{ $level->tid }}" onchange="fnTest(this,'subLevel{{$level->tid}}');">{{ $level->name }}
+                    <li><input type="checkbox" name="level[]" {{ in_array($level->tid, $resourceLevels) ? "checked" : ""}} value="{{ $level->tid }}" onchange="fnTest(this,'subLevel{{$level->tid}}');">{{ $level->name }}
                         <?php $levelParent = $levels->where('parent', $level->tid);?>
                         @if(count($levelParent) > 0)
                             <i class="fas fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$level->tid}}')"></i>
@@ -138,7 +129,7 @@
                     @if(count($levelParent) > 0)
                         <ul id="subLevel{{$level->tid}}" class="subItem" style="display:none;">
                             @foreach($levelParent as $item)
-                                <li><input type="checkbox" name="level[]" onchange="fnTest(this,'subLevel{{$item->tid}}');" {{ in_array($item->tid, @$resource['level']) ?"checked":""}} class="child" value="{{ $item->tid }}">{{ $item->name }}
+                                <li><input type="checkbox" name="level[]" onchange="fnTest(this,'subLevel{{$item->tid}}');" {{ in_array($item->tid, $resourceLevels) ?"checked":""}} class="child" value="{{ $item->tid }}">{{ $item->name }}
                             
                                 <?php $levelItemParent = $levels->where('parent', $item->tid);?>
                                 @if(count($levelItemParent) > 0)
@@ -147,7 +138,7 @@
                                 @if(count($levelItemParent) > 0)
                                     <ul id="subLevel{{$item->tid}}" class="subItem" style="display:none;">
                                         @foreach($levelItemParent as $itemLevel)
-                                            <li><input type="checkbox" name="level[]" {{ in_array($itemLevel->tid, @$resource['level']) ?"checked":""}} class="child" value="{{ $itemLevel->tid }}">{{ $itemLevel->name }}</li>
+                                            <li><input type="checkbox" name="level[]" {{ in_array($itemLevel->tid, $resourceLevels) ?"checked":""}} class="child" value="{{ $itemLevel->tid }}">{{ $itemLevel->name }}</li>
                                         @endforeach
                                     </ul>
                                 @endif

@@ -6,6 +6,15 @@
         $('#subject_areas').select2();
         $('#learning_resources_types').select2();
         $('#educational_use').select2();
+
+        $('#subject_areas').val({{ $resourceSubjectAreas }});
+        $('#learning_resources_types').val({{ $resourceLearningResourceTypes }});
+        $('#educational_use').val({{ $EditEducationalUse }});
+
+        $('#subject_areas').trigger('change'); // Notify any JS components that the value changed
+        $('#learning_resources_types').trigger('change'); // Notify any JS components that the value changed
+        $('#educational_use').trigger('change'); // Notify any JS components that the value changed
+        
     });
 </script>
 <section class="ddl-forms">
@@ -21,10 +30,10 @@
             </label>
         <input class="form-control{{ $errors->has('attachments') ? ' is-invalid' : '' }}" id="attachments" name="attachments[]" size="40" maxlength="40" type="file">
             <button type='button' class="add_more">Add More Files</button>
-            @if(isset($resource['attachments']))
-            @for($i=0; $i<count($resource['attachments']); $i++)
-                <br><a href="{{ asset('/storage/attachments/'.$resource['attachments'][$i]['name']) }}">{{ $resource['attachments'][$i]['name'] }}</a>
-            @endfor
+            @if(isset($resource['attc']))
+            @foreach($resource['attc'] as $item)
+                <br><a href="{{ asset('/storage/attachments/'.$item['file_name']) }}">{{ $item['file_name'] }}</a>
+            @endforeach
             @endif
 
             @if ($errors->has('attachments'))
@@ -51,14 +60,6 @@
                 @endforeach
             </select>
 
-            @if(isset($resource['subject_areas']))
-                @foreach($resource['subject_areas'] as $rs)
-                    <script>
-                        let rs = '{{ $rs }}';
-                        $('#subject_areas').val(rs);
-                    </script>
-                @endforeach
-            @endif
             @if ($errors->has('subject_areas'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('subject_areas') }}</strong>
@@ -87,15 +88,6 @@
                     <option value="{{ $item->tid }}">{{ $item->name }}</option>
                 @endforeach
             </select>
-
-            @if(isset($resource['learning_resources_types']))
-                @foreach($resource['learning_resources_types'] as $rt)
-                    <script>
-                        let rt = '{{ $rt }}';
-                        $('#learning_resources_types').val(rt);
-                    </script>
-                @endforeach
-            @endif
 
             @if ($errors->has('learning_resources_types'))
                 <span class="invalid-feedback">

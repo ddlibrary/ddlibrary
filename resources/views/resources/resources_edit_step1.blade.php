@@ -6,14 +6,14 @@
         <h1>Add a new Resource - Step 1</h1>
     </header>
     <div class="content-body">
-        <form method="POST" action="{{ route('edit1', $resource->resourceid) }}">
+        <form method="POST" action="{{ route('edit1', $resource['resourceid']) }}">
         @csrf
         <div class="form-item">
             <label for="title"> 
                 <strong>Title</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="title" name="title" size="40" maxlength="40" type="text" value="{{ $resource->title }}" required autofocus>
+            <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="title" name="title" size="40" maxlength="40" type="text" value="{{ $resource['title'] }}" required autofocus>
             @if ($errors->has('title'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('title') }}</strong>
@@ -24,7 +24,7 @@
             <label for="author"> 
                 <strong>Author</strong>
             </label>
-            <input class="form-control{{ $errors->has('author') ? ' is-invalid' : '' }}" id="author" name="author" size="40" maxlength="40" type="text" value="{{ $resource->author }}" onkeydown="javascript:bringMeAttr('author','{{ URL::to('resources/attributes/authors') }}')">
+            <input class="form-control{{ $errors->has('author') ? ' is-invalid' : '' }}" id="author" name="author" size="40" maxlength="40" type="text" value="{{ $resource['author'] }}" onkeydown="javascript:bringMeAttr('author','{{ URL::to('resources/attributes/authors') }}')">
             @if ($errors->has('author'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('author') }}</strong>
@@ -35,7 +35,7 @@
             <label for="publisher"> 
                 <strong>Publisher</strong>
             </label>
-            <input class="form-control{{ $errors->has('publisher') ? ' is-invalid' : '' }}" id="publisher" name="publisher" size="40" maxlength="40" type="text" value="{{ old('publisher')?old('publisher'):$resource->publisher }}" onkeydown="javascript:bringMeAttr('publisher','{{ URL::to('resources/attributes/publishers') }}')">
+            <input class="form-control{{ $errors->has('publisher') ? ' is-invalid' : '' }}" id="publisher" name="publisher" size="40" maxlength="40" type="text" value="{{ old('publisher')?old('publisher'):$resource['publisher'] }}" onkeydown="javascript:bringMeAttr('publisher','{{ URL::to('resources/attributes/publishers') }}')">
             @if ($errors->has('publisher'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('publisher') }}</strong>
@@ -46,7 +46,7 @@
             <label for="translator"> 
                 <strong>Translator</strong>
             </label>
-            <input class="form-control{{ $errors->has('translator') ? ' is-invalid' : '' }}" id="translator" name="translator" size="40" maxlength="40" type="text" value="{{ $resource->translator }}" onkeydown="javascript:bringMeAttr('translator','{{ URL::to('resources/attributes/translators') }}')">
+            <input class="form-control{{ $errors->has('translator') ? ' is-invalid' : '' }}" id="translator" name="translator" size="40" maxlength="40" type="text" value="{{ $resource['translator'] }}" onkeydown="javascript:bringMeAttr('translator','{{ URL::to('resources/attributes/translators') }}')">
             @if ($errors->has('translator'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('translator') }}</strong>
@@ -61,7 +61,7 @@
             <select class="form-control{{ $errors->has('language') ? ' is-invalid' : '' }}" name="language" id="language" required>
                 <option value="">- None -</option>
                 @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                <option value="{{ $localeCode }}" {{ $resource->language == $localeCode ? "selected" : "" }}>{{ $properties['native'] }}</option>
+                <option value="{{ $localeCode }}" {{ $resource['language'] == $localeCode ? "selected" : "" }}>{{ $properties['native'] }}</option>
                 @endforeach
             </select>
         </div>
@@ -71,7 +71,7 @@
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <div id="editor">
-                <textarea class="form-control{{ $errors->has('abstract') ? ' is-invalid' : '' }}" name="abstract" style="height: 200px">{{ $resource->abstract }}</textarea>
+                <textarea class="form-control{{ $errors->has('abstract') ? ' is-invalid' : '' }}" name="abstract" style="height: 200px">{{ $resource['abstract'] }}</textarea>
             </div>
             <script>
                 var getUrl = window.location;
@@ -91,6 +91,7 @@
             @endif
         </div>
         <div class="left-side">
+            <input type="hidden" name="status" value="{{ $resource['status'] }}">
             <input class="form-control normalButton" type="submit" value="Next">
         </div>
         </form>
