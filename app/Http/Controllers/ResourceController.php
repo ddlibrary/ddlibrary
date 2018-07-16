@@ -574,7 +574,7 @@ class ResourceController extends Controller
         $finalArray = array_merge($resource1, $resource2, $resource3);
 
         $myResources = new Resource();
-
+dd($finalArray);
         $insertAttachment = $myResources->insertResources($finalArray);
         return redirect('/home');
     }
