@@ -34,9 +34,9 @@
             </label>
         <input class="form-control{{ $errors->has('attachments') ? ' is-invalid' : '' }}" id="attachments" name="attachments[]" size="40" maxlength="40" type="file">
             <button type='button' class="add_more">Add More Files</button>
-            @if(isset($resourceAttachments))
+            @if(isset($resource['attc']))
             <?php  $i = 0; ?>
-            @foreach($resourceAttachments as $item)
+            @foreach($resource['attc'] as $item)
                 <br><a href="{{ asset('/storage/attachments/'.$item['file_name']) }}">{{ $item['file_name'] }}</a>
                 <?php  $i++; ?>
             @endforeach

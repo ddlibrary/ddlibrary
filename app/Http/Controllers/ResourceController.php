@@ -461,30 +461,27 @@ class ResourceController extends Controller
             }
         }
 
-        if($resource){
-            if(isset($resource['attc'])){
-                foreach($resource['attc'] as $item) {
-                    $resourceAttachments[] = array(
-                        'file_name' => $item['file_name'],
-                        'file_size' => $item['file_size'],
-                        'file_mime' => $item['file_mime']
-                    );
-                }
+        if(isset($resource['attc'])){
+            foreach($resource['attc'] as $item) {
+                $resourceAttachments[] = array(
+                    'file_name' => $item['file_name'],
+                    'file_size' => $item['file_size'],
+                    'file_mime' => $item['file_mime']
+                );
             }
+        }else{
+            $dataAttachments = $myResources->resourceAttachments($resourceId)->toArray();
+            foreach($dataAttachments AS $item){
+                $resourceAttachments[] = array(
+                    'file_name' => $item->file_name,
+                    'file_size' => $item->file_size,
+                    'file_mime' => $item->file_mime
+                );
+            }
+            $resource['attc'] = $resourceAttachments;
+            $request->session()->put('resource2', $resource);
+            $request->session()->save();
         }
-
-        $dataAttachments = $myResources->resourceAttachments($resourceId)->toArray();
-        foreach($dataAttachments AS $item){
-            $resourceAttachments[] = array(
-                'file_name' => $item->file_name,
-                'file_size' => $item->file_size,
-                'file_mime' => $item->file_mime
-            );
-        }
-
-        $resource['attc'] = $resourceAttachments;
-        $request->session()->put('resource2', $resource);
-        $request->session()->save();
 
         $resourceSubjectAreas = json_encode($resourceSubjectAreas, JSON_NUMERIC_CHECK);
         $resourceLearningResourceTypes = json_encode($resourceLearningResourceTypes, JSON_NUMERIC_CHECK);
