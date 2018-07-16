@@ -30,7 +30,7 @@ class News extends Model
                 )
                 ->join('news_data AS nwd', 'nwd.newsid','=','nw.newsid')
                 ->where('nwd.language',Config::get('app.locale'))
-                ->paginate(20);
+                ->get();
 
         return $records;
     }

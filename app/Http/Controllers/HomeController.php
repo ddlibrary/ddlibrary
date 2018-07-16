@@ -29,7 +29,7 @@ class HomeController extends Controller
         //setting the search session empty
         $request->session()->forget('search');
         //latest news for the homepage
-        $latestNews         = News::listNews()->sortByDesc('created')->take(4);
+        $latestNews         = News::listNews()->sortByDesc('newsid')->take(4);
         $subjectAreas = $myResources->subjectIconsAndTotal();
         $featured = $myResources->featuredCollections();
         $latestResources = Resource::Resources()->sortByDesc('created')->take(4);
