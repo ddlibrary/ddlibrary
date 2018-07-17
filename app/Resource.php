@@ -600,7 +600,8 @@ class Resource extends Model
             //Main 
             DB::table('resources')->insert([
                 'resourceid'        => $resourceId,
-                'created'           => \Carbon\Carbon::now()->timestamp
+                'created'           => $arr['resource_created'],
+                'updated'           => \Carbon\Carbon::now()->timestamp
             ]);
             $resourceId = $resourceId;
         }else{
@@ -619,7 +620,8 @@ class Resource extends Model
             'userid'            => Auth::id(),
             'status'            => isset($arr['published'])?$arr['published']:0,
             'tnid'              => $resourceId,
-            'created'           => \Carbon\Carbon::now()->timestamp
+            'created'           => isset($arr['resource_created'])?$arr['resource_created']:\Carbon\Carbon::now()->timestamp,
+            'updated'           => \Carbon\Carbon::now()->timestamp
         ]);
 
         //Resource attachments
@@ -789,8 +791,14 @@ class Resource extends Model
 
     public function deleteResources($resourceId)
     {
-        return DB::table('resources')
+        $created = DB::table('resources')
+            ->select('created')
+            ->first();
+        
+        DB::table('resources')
         ->where('resourceid', $resourceId)
         ->delete();
+
+        return $created->created;
     }
 }

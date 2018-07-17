@@ -612,6 +612,7 @@ class ResourceController extends Controller
         $deleteResource = $myResources->deleteResources($resourceId);
 
         if($deleteResource){
+            $finalArray['resource_created'] = $deleteResource;
             $insertAttachment = $myResources->insertResources($resourceId, $finalArray);
             return redirect('/home');
         }
