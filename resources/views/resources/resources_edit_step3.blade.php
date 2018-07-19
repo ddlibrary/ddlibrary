@@ -63,7 +63,7 @@
         <div class="form-item">
             <h3>Select one of these</h3>
             <label for="creative_commons"> 
-                <strong>If there is no Creative Commons License on the resource, select one of these</strong>
+                <strong>If there is Creative Commons License on the resource, select one of these</strong>
             </label>
             @foreach($creativeCommons AS $cc)
             <?php
@@ -73,7 +73,7 @@
                     $cc_common = 0;
                 }
             ?>
-            <input type="radio" value="{{ $cc->id }}" name="creative_commons" {{ $cc_common == $cc->id?"checked":"" }}{{ $cc->name }}<br>
+            <input type="radio" value="{{ $cc->id }}" name="creative_commons" {{ $cc_common == $cc->id?"checked":"" }}>{{ $cc->name }}<br>
             @endforeach
             <div class="description">
                     Unsure of which option to select? Click here for guidance on licensing this resource.
