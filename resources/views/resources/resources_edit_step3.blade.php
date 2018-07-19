@@ -66,7 +66,14 @@
                 <strong>If there is no Creative Commons License on the resource, select one of these</strong>
             </label>
             @foreach($creativeCommons AS $cc)
-            <input type="radio" value="{{ $cc->id }}" name="creative_commons" @if(count($dbRecords->CreativeCommons)) {{ $dbRecords->CreativeCommons->creative_commons == $cc->id?"checked":"" }} @endif>{{ $cc->name }}<br>
+            <?php
+                if(count($dbRecords->CreativeCommons)){
+                    $cc_common = $dbRecords->CreativeCommons->creative_commons;
+                }else{
+                    $cc_common = 0;
+                }
+            ?>
+            <input type="radio" value="{{ $cc->id }}" name="creative_commons" {{ $cc_common == $cc->id?"checked":"" }}{{ $cc->name }}<br>
             @endforeach
             <div class="description">
                     Unsure of which option to select? Click here for guidance on licensing this resource.
