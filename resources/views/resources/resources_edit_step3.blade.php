@@ -73,7 +73,7 @@
                     $cc_common = 0;
                 }
             ?>
-            <input type="radio" value="{{ $cc->id }}" name="creative_commons" {{ $cc_common == $cc->id?"checked":"" }}>{{ $cc->name }}<br>
+            <input type="radio" value="{{ $cc->id }}" name="creative_commons" {{ $cc_common == $cc->name?"checked":"" }}>{{ $cc->name }}<br>
             @endforeach
             <div class="description">
                     Unsure of which option to select? Click here for guidance on licensing this resource.
