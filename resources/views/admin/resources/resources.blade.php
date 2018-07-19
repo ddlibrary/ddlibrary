@@ -74,13 +74,13 @@
             <tbody>
             @foreach ($resources as $indexkey => $resource)
               <tr>
-                <td>{{ (($resources->currentPage() - 1) * 10)+$indexkey + 1 }}</td>
-                <td><a href="{{URL::to('resources/view/'.$resource->resourceid) }}">{{ $resource->title }}</a></td>
-                <td><a href="{{ URL::to('users/view/'.$resource->userid) }}">{{ $resource->addedby }}</a></td>
+                <td>{{ (($resources->currentPage() - 1) * $resources->perPage())+$indexkey + 1 }}</td>
+                <td><a href="{{URL::to('resources/view/'.$resource->id) }}">{{ $resource->title }}</a></td>
+                <td><a href="{{ URL::to('users/view/'.$resource->user_id) }}">{{ $resource->addedby }}</a></td>
                 <td>{{ ($resource->status==0?"Not Published":"Published") }}</td>
-                <td>{{ Carbon\Carbon::createFromTimestamp($resource->updated) }}</td>
+                <td>{{ Carbon\Carbon::createFromTimestamp($resource->updated_at) }}</td>
                 <td>{{ fixLanguage($resource->language) }}</td>
-                <td><a href="resources/edit/{{$resource->resourceid}}">Edit</a></td>
+                <td><a href="resources/edit/{{$resource->id}}">Edit</a></td>
               </tr>
               @endforeach
             </tbody>

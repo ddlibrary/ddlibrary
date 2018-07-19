@@ -10,9 +10,9 @@
         @csrf
         <div class="form-item">
             <label for="translation_rights"> 
-                <strong>1. Translation Rights</strong>
+                <h2>1. Translation Rights</h2>
             </label>
-            <input type="checkbox" value="1" name="translation_rights"> 
+            <input type="checkbox" value="1" name="translation_rights" {{ count($dbRecords->TranslationRights)?"checked":"" }}> 
             I am providing a new translation. I have selected the license that appears on the original resource.
             If this is not translation, please skip this question and go to #2.
             @if ($errors->has('translation_rights'))
@@ -23,9 +23,9 @@
         </div>
         <div class="form-item">
             <label for="educational_resource"> 
-                <strong>2. Educational Resource</strong>
+                <h2>2. Educational Resource</h2>
             </label>
-            <input type="checkbox" value="1" name="educational_resource"> 
+            <input type="checkbox" value="1" name="educational_resource" {{ count($dbRecords->EducationalResources)?"checked":""  }}> 
             I am submitting a resource to DDL that is already published. I have selected the license that is on the original resource.
             If you are the original author, please skip this question and go to #3.
             @if ($errors->has('educational_resource'))
@@ -35,10 +35,22 @@
             @endif
         </div>
         <div class="form-item">
+                <label for="iam_author"> 
+                    <h2>3. I am the author</h2>
+                </label>
+                <input type="checkbox" value="1" name="iam_author" {{ (count($dbRecords->IamAuthors) && $dbRecords->IamAuthors->iam_author==1)?"checked":""}}> 
+                I am the author and I am submitting my resource to DDL. I am selecting a creative commons license for my resource below.
+                @if ($errors->has('iam_author'))
+                    <span class="invalid-feedback">
+                        <strong>{{ $errors->first('iam_author') }}</strong>
+                    </span><br>
+                @endif
+            </div>
+        <div class="form-item">
             <label for="copyright_holder"> 
                 <strong>License/Copyright Holder</strong>
             </label>
-            <input class="form-control{{ $errors->has('copyright_holder') ? ' is-invalid' : '' }}" id="copyright_holder" name="copyright_holder" size="40" maxlength="40" type="text" value="{{ @$resource['copyright_holder'] }}">
+            <input class="form-control{{ $errors->has('copyright_holder') ? ' is-invalid' : '' }}" id="copyright_holder" name="copyright_holder" size="40" maxlength="40" type="text" value="{{ $dbRecords->CopyrightHolder->copyright_holder }}">
             <div class="description">
                 Please enter the name of the person or organization owning or managing rights over the resource.
             </div>
@@ -54,7 +66,7 @@
                 <strong>If there is no Creative Commons License on the resource, select one of these</strong>
             </label>
             @foreach($creativeCommons AS $cc)
-            <input type="radio" value="{{ $cc->tid }}" name="creative_commons">{{ $cc->name }}<br>
+            <input type="radio" value="{{ $cc->id }}" name="creative_commons" @if(count($dbRecords->CreativeCommons)) {{ $dbRecords->CreativeCommons->creative_commons == $cc->id?"checked":"" }} @endif>{{ $cc->name }}<br>
             @endforeach
             <div class="description">
                     Unsure of which option to select? Click here for guidance on licensing this resource.
@@ -65,7 +77,7 @@
                 <strong>If there is no Creative Commons License on the resource, select one these:</strong>
             </label>
             @foreach($creativeCommonsOther AS $other)
-            <input type="radio" value="{{ $other->tid }}" name="creative_commons_other">{{ $other->name }}<br>
+            <input type="radio" value="{{ $other->id }}" name="creative_commons_other" @if(count($dbRecords->SharePermissions)) {{ $dbRecords->SharePermissions->share_permission == $other->id?"checked":"" }} @endif>{{ $other->name }}<br>
             @endforeach
         </div>
         <div class="form-item">

@@ -4,6 +4,7 @@
 @endsection
 @section('content')
 <section class="main-section">
+    @include('layouts.messages')
     <div class="ddl-top-news">
         <div>
             <p>Help us get Afghan teacher colleges online: For a limited time your donation will be matched! <a href="https://www.crowdrise.com/o/en/campaign/helping-female-student-teachers-to-be-better-teachers-through-internet-access">Learn More</a></p>
@@ -62,8 +63,8 @@
         <hr>
         @foreach($latestNews AS $news)
         <article class="latest-content">
-            <a href="{{ URL::to('news/view/'.$news->newsid) }}"><p>{{ $news->title }}</p></a>
-            <i class="news-description">{{ \Carbon\Carbon::parse(Carbon\Carbon::createFromTimestamp($news->created))->format('F dS, Y') }}</i>
+            <a href="{{ URL::to('news/view/'.$news->id) }}"><p>{{ $news->title }}</p></a>
+            <i class="news-description">{{ $news->created_at->diffForHumans() }}</i>
         </article>
         @endforeach
     </div>
@@ -74,8 +75,8 @@
         <hr>
         @foreach($latestResources AS $resource)
         <article class="latest-content">
-            <a href="{{ URL::to('resources/view/'.$resource->resourceid) }}"><p>{{ $resource->title }}</p></a>
-            <i class="news-description">{{ \Carbon\Carbon::parse(Carbon\Carbon::createFromTimestamp($resource->created))->format('F dS, Y') }}</i>
+            <a href="{{ URL::to('resources/view/'.$resource->id) }}"><p>{{ $resource->title }}</p></a>
+            <i class="news-description">{{ $resource->created_at->diffForHumans()  }}</i>
         </article>
         @endforeach
     </div>

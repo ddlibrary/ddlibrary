@@ -22,24 +22,20 @@ class DashboardController extends Controller
     
     public function index()
     {
-        $usersModel         = new User();
-        $resourceModel      = new Resource();
-        $pagesModel         = new Page();
-        $newsModel          = new News();
         //total users in number for the dashboard
-        $totalUsers         = $usersModel->totalUsers();
+        $totalUsers         = User::count();
         //latest users for the dashboard
-        $latestUsers        = $usersModel->users()->sortByDesc('id')->take(5);
+        $latestUsers        = User::orderBy('id','desc')->take(5)->get();
         //total resources in number for the dashboard
-        $totalResources     = $resourceModel->totalResources();
+        $totalResources     = Resource::count();
         //latest resources for the dashboard
-        $latestResources    = $resourceModel->resources()->sortByDesc('created')->take(5);
-        $totalNews          = $newsModel->totalNews();
+        $latestResources    = Resource::orderBy('id','desc')->take(5)->get();
+        $totalNews          = News::count();
         //latest news for the dashboard
-        $latestNews         = $newsModel->listNews()->sortByDesc('created')->take(5);
-        $totalPages         = $pagesModel->totalPages();
+        $latestNews         = News::orderBy('id','desc')->take(5)->get();
+        $totalPages         = Page::count();
         //latest pages for the dashboard
-        $latestPages        = $pagesModel->listPages()->sortByDesc('created')->take(5);
+        $latestPages        = Page::orderBy('id','desc')->take(5)->get();
         return view('admin.main', compact(
             'totalUsers', 
             'latestUsers', 

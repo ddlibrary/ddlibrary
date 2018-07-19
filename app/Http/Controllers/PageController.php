@@ -20,19 +20,17 @@ class PageController extends Controller
     function index ()
     {
         $this->middleware('admin');
-        $myPages = new Page();
-        $pages = $myPages->listPages();
+        $pages = Page::paginate(10);
         return view('admin.pages.pages_list', compact('pages'));
     }
 
     function view($pageId)
     {
-        $myPage = new Page();
-        $page = $myPage->onePage($pageId);
+        $page = Page::find($pageId);
 
         $translation_id = $page->tnid;
         if($translation_id){
-            $translations = $myPage->getPageTranslations($translation_id);
+            $translations = Page::where('tnid'.$translation_id);
         }else{
             $translations = array();
         }

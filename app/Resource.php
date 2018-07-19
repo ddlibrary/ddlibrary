@@ -9,36 +9,104 @@ use Config;
 
 class Resource extends Model
 {
-    public function scopeResources()
+    public function levels()
     {
-        $resources = DB::table('resources AS rs')
-            ->select(
-                'rs.resourceid',
-                'rd.language', 
-                'rd.title',
-                'rd.abstract',
-                'rd.userid',
-                'rd.tnid',
-                'users.username AS addedby',
-                'rd.status',
-                'rd.created',
-                'rd.updated'
-            )
-            ->join('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
-            ->join('users', 'users.id', '=', 'rd.userid')
-            ->where('rd.language',Config::get('app.locale'))
-            ->when(!isAdmin(), function($query){
-                return $query
-                    ->where('rd.status', 1);
-            })
-            ->orderBy('rd.created','desc')
-            ->get();
-        
-        if($resources){
-            return $resources;
-        }else{
-            return abort(404);
-        }
+        return $this->belongsToMany(TaxonomyTerm::class, 'resource_levels', 'resource_id', 'tid');
+    }
+    
+    public function IamAuthors()
+    {
+        return $this->HasOne(ResourceIamAuthor::class);
+    }
+
+    public function keywords()
+    {
+        return $this->hasMany(ResourceKeyword::class);
+    }
+
+    public function LearningResourceTypes()
+    {
+        return $this->belongsToMany(TaxonomyTerm::class, 'resource_learning_resource_types', 'resource_id', 'tid');
+    }
+
+    public function publishers()
+    {
+        return $this->belongsToMany(TaxonomyTerm::class, 'resource_publishers', 'resource_id', 'tid');
+    }
+
+    public function SharePermissions()
+    {
+        return $this->hasOne(ResourceSharePermission::class);
+    }
+
+    public function subjects()
+    {
+        return $this->belongsToMany(TaxonomyTerm::class, 'resource_subject_areas', 'resource_id', 'tid');
+    }
+
+    public function subjectsIcons()
+    {
+        return $this->belongsToMany(StaticSubjectIcons::class, 'resource_subject_areas', 'resource_id', 'tid');
+    }
+
+    public function TranslationRights()
+    {
+        return $this->hasOne(ResourceTranslationRight::class);
+    }
+
+    public function views()
+    {
+        return $this->hasMany(ResourceView::class);
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(ResourceAttachment::class);
+    }
+
+    public function authors()
+    {
+        return $this->belongsToMany(TaxonomyTerm::class, 'resource_authors', 'resource_id', 'tid');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(ResourceComment::class);
+    }
+
+    public function CopyrightHolder()
+    {
+        return $this->hasOne(ResourceCopyrightHolder::class);
+    }
+
+    public function CreativeCommons()
+    {
+        return $this->belongsToMany(TaxonomyTerm::class, 'resource_creative_commons', 'resource_id', 'creative_commons');
+    }
+
+    public function EducationalResources()
+    {
+        return $this->hasMany(ResourceEducationalResource::class);
+    }
+
+    public function favorites()
+    {
+        return $this->belongsToMany(User::class, 'resource_favorites', 'resource_id', 'user_id');
+    }
+
+    public function flags()
+    {
+        return $this->hasMany(ResourceFlag::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
+    public function scopePublished($query)
+    {
+        return $query->where('status',1);
     }
 
     public function getResources($resourceId, $step)
@@ -46,25 +114,24 @@ class Resource extends Model
         if($step == "step1"){
             return  DB::table('resources AS rs')
             ->select(
-                'rs.resourceid',
-                'rd.language', 
-                'rd.status',
-                'rd.title',
-                'rd.abstract',
+                'rs.id',
+                'rs.language', 
+                'rs.status',
+                'rs.title',
+                'rs.abstract',
                 'ttda.name AS author',
                 'ttdp.name AS publisher',
                 'ttdt.name AS translator'
             )
-            ->leftJoin('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
-            ->leftJoin('resources_authors AS ra', 'ra.resourceid', '=', 'rs.resourceid')
-            ->leftJoin('resources_publishers AS rp', 'rp.resourceid', '=', 'rs.resourceid')
-            ->leftJoin('resources_translators AS rt', 'rt.resourceid', '=', 'rs.resourceid')
-            ->leftJoin('taxonomy_term_data AS ttda', 'ttda.tid', '=', 'ra.author_name_tid')
-            ->leftJoin('taxonomy_term_data AS ttdp', 'ttdp.tid', '=', 'rp.publisher_name_tid')
-            ->leftJoin('taxonomy_term_data AS ttdt', 'ttdt.tid', '=', 'rt.translator_name_tid')
-            ->where('rd.language',Config::get('app.locale'))
-            ->where('rs.resourceid', $resourceId)
-            ->orderBy('rd.created','desc')
+            ->leftJoin('resource_authors AS ra', 'ra.resource_id', '=', 'rs.id')
+            ->leftJoin('resource_publishers AS rp', 'rp.resource_id', '=', 'rs.id')
+            ->leftJoin('resource_translators AS rt', 'rt.resource_id', '=', 'rs.id')
+            ->leftJoin('taxonomy_term_data AS ttda', 'ttda.id', '=', 'ra.tid')
+            ->leftJoin('taxonomy_term_data AS ttdp', 'ttdp.id', '=', 'rp.tid')
+            ->leftJoin('taxonomy_term_data AS ttdt', 'ttdt.id', '=', 'rt.tid')
+            ->where('rs.language',Config::get('app.locale'))
+            ->where('rs.id', $resourceId)
+            ->orderBy('rs.created_at','desc')
             ->first();   
         }
     }
@@ -73,63 +140,62 @@ class Resource extends Model
     {
         $resources = DB::table('resources AS rs')
             ->select(
-                'rs.resourceid',
-                'rd.language', 
-                'rd.title',
-                'rd.abstract',
-                'rd.userid',
-                'rd.tnid',
+                'rs.id',
+                'rs.language', 
+                'rs.title',
+                'rs.abstract',
+                'rs.user_id',
+                'rs.tnid',
                 'users.username AS addedby',
-                'rd.status',
-                'rd.created',
-                'rd.updated'
+                'rs.status',
+                'rs.created_at',
+                'rs.updated_at'
             )
-            ->LeftJoin('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
-            ->LeftJoin('users', 'users.id', '=', 'rd.userid')
-            ->LeftJoin('resources_subject_areas AS rsa', 'rsa.resourceid', '=', 'rs.resourceid')
-            ->LeftJoin('resources_levels AS rl', 'rl.resourceid', '=', 'rs.resourceid')
-            ->LeftJoin('resources_learning_resource_types AS rlrt', 'rlrt.resourceid', '=', 'rs.resourceid')
-            ->LeftJoin('resources_attachments AS ra','ra.resourceid','=','rs.resourceid')
+            ->LeftJoin('users', 'users.id', '=', 'rs.user_id')
+            ->LeftJoin('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
+            ->LeftJoin('resource_levels AS rl', 'rl.resource_id', '=', 'rs.id')
+            ->LeftJoin('resource_learning_resource_types AS rlrt', 'rlrt.resource_id', '=', 'rs.id')
+            ->LeftJoin('resource_attachments AS ra','ra.resource_id','=','rs.id')
             ->when(!empty($requestArray['title']), function($query) use($requestArray){
                 return $query
-                    ->where('rd.title', 'like', '%'.$requestArray['title'].'%');
+                    ->where('rs.title', 'like', '%'.$requestArray['title'].'%');
             })
             ->when(isset($requestArray['status']), function($query) use($requestArray){
                 return $query
-                    ->where('rd.status', $requestArray['status']);
+                    ->where('rs.status', $requestArray['status']);
             })
             ->when(isset($requestArray['language']), function($query) use($requestArray){
                 return $query
-                    ->where('rd.language', $requestArray['language']);
+                    ->where('rs.language', $requestArray['language']);
             })
             ->when(isset($requestArray['subject_area']), function($query) use($requestArray){
                 return $query
-                    ->where('rsa.subject_area_tid', $requestArray['subject_area']);
+                    ->where('rsa.tid', $requestArray['subject_area']);
             })
             ->when(isset($requestArray['level']), function($query) use($requestArray){
                 return $query
-                    ->where('rl.resource_level_tid', $requestArray['level']);
+                    ->where('rl.tid', $requestArray['level']);
             })
             ->when(isset($requestArray['type']), function($query) use($requestArray){
                 return $query
-                    ->where('rlrt.learning_resource_type_tid', $requestArray['type']);
+                    ->where('rlrt.tid', $requestArray['type']);
             })
             ->when(isset($requestArray['format']), function($query) use($requestArray){
                 return $query
                     ->where('ra.file_mime', $requestArray['format']);
             })
-            ->orderBy('rd.created','desc')
+            ->orderBy('rs.created_at','desc')
             ->groupBy(
-                'rs.resourceid',
-                'rd.language', 
-                'rd.title',
-                'rd.abstract',
-                'rd.userid',
+                'rs.id',
+                'rs.language', 
+                'rs.title',
+                'rs.abstract',
+                'rs.user_id',
                 'users.username',
-                'rd.status',
-                'rd.updated',
-                'newddl.rd.tnid',
-                'newddl.rd.created'
+                'rs.status',
+                'rs.updated_at',
+                'rs.tnid',
+                'rs.created_at'
             )
             ->paginate(10);
         
@@ -140,30 +206,29 @@ class Resource extends Model
     {
         $users = DB::table('resources AS rs')
             ->select(
-                'rs.resourceid',
-                'rd.language', 
-                'rd.title',
-                'rd.abstract',
-                'rd.userid',
+                'rs.id',
+                'rs.language', 
+                'rs.title',
+                'rs.abstract',
+                'rs.user_id',
                 'users.username AS author',
-                'rd.status',
-                'rd.updated'
+                'rs.status',
+                'rs.updated_at'
             )
-            ->join('resources_data AS rd', 'rs.resourceid','=','rd.resourceid')
-            ->join('users', 'users.id', '=', 'rd.userid')
-            ->where('rd.language',Config::get('app.locale'))
-            ->where('rd.status', 1)
-            ->orderBy('rd.created','desc')
+            ->join('users', 'users.id', '=', 'rs.user_id')
+            ->where('rs.language',Config::get('app.locale'))
+            ->where('rs.status', 1)
+            ->orderBy('rs.created','desc')
             ->groupBy(
-                'rs.resourceid',
-                'rd.language', 
-                'rd.title',
-                'rd.abstract',
-                'rd.userid',
+                'rs.id',
+                'rs.language', 
+                'rs.title',
+                'rs.abstract',
+                'rs.user_id',
                 'users.username',
-                'rd.status',
-                'rd.updated',
-                'rd.created'
+                'rs.status',
+                'rs.updated_at',
+                'rs.created_at'
             )
             ->paginate(32);
 
@@ -173,9 +238,9 @@ class Resource extends Model
     public function resourceAttributes($resourceId, $tableName, $fieldName, $staticTable)
     {
         $records = DB::table($tableName)
-                ->select($staticTable.'.name', $staticTable.'.tid')
-                ->join($staticTable, $staticTable.'.tid', '=', $tableName.'.'.$fieldName)
-                ->where('resourceid',$resourceId)
+                ->select($staticTable.'.name', $staticTable.'.id')
+                ->join($staticTable, $staticTable.'.id', '=', $tableName.'.'.$fieldName)
+                ->where('resource_id',$resourceId)
                 ->get();
         return $records;
     }
@@ -193,19 +258,11 @@ class Resource extends Model
     public function resourceAttributesList($tableName, $vid)
     {
         $records = DB::table($tableName)
-                ->join('taxonomy_term_hierarchy AS tth', 'tth.tid','=',$tableName.'.tid')
+                ->join('taxonomy_term_hierarchy AS tth', 'tth.tid','=',$tableName.'.id')
                 ->where('vid', $vid)
                 ->where('language',Config::get('app.locale'))
-                ->orderBy($tableName.'.tid')
+                ->orderBy($tableName.'.id')
                 ->get();
-        return $records;
-    }
-
-    public function totalResources()
-    {
-        $records = DB::table('resources AS rs')
-                    ->selectRaw('rs.resourceid as totalResources')
-                    ->count();
         return $records;
     }
 
@@ -214,11 +271,10 @@ class Resource extends Model
     {
         $records = DB::table('resources AS rs')
                     ->select(
-                        'rd.language',
-                        DB::raw('count(rs.resourceid) as total')
+                        'rs.language',
+                        DB::raw('count(rs.id) as total')
                     )
-                    ->join('resources_data AS rd', 'rd.resourceid','=','rs.resourceid')
-                    ->groupBy('rd.language')
+                    ->groupBy('rs.language')
                     ->get();
         return $records;   
     }
@@ -229,21 +285,20 @@ class Resource extends Model
         $records = DB::table('resources AS rs')
                     ->select(
                         'ttd.name',
-                        'ttd.tid',
-                        'rd.language',
-                        DB::raw('count(rs.resourceid) as total')
+                        'ttd.id',
+                        'rs.language',
+                        DB::raw('count(rs.id) as total')
                     )
-                    ->join('resources_data AS rd','rd.resourceid','=','rs.resourceid')
-                    ->join('resources_subject_areas AS rsa','rsa.resourceid','=','rs.resourceid')
+                    ->join('resource_subject_areas AS rsa','rsa.resource_id','=','rs.id')
                     ->join('taxonomy_term_data AS ttd', function($join){
-                        $join->on('ttd.tid','=','rsa.subject_area_tid')
+                        $join->on('ttd.id','=','rsa.tid')
                             ->where('ttd.vid', 8);
                     })
                     ->groupBy(
                         'ttd.name', 
-                        'ttd.tid', 
-                        'rd.language')
-                    ->orderby('rd.language')
+                        'ttd.id', 
+                        'rs.language')
+                    ->orderby('rs.language')
                     ->orderBy('total','DESC')
                     ->get();
         return $records;   
@@ -251,7 +306,6 @@ class Resource extends Model
 
     public function paginateResourcesBy($request)
     {
-
         $subjectAreaIds = $request['subject_area'];
         $levelIds = $request['level'];
         $typeIds = $request['type'];
@@ -264,56 +318,55 @@ class Resource extends Model
 
         $records = DB::table('resources AS rs')
             ->select(
-                'rs.resourceid',
-                'rd.language', 
-                'rd.title',
-                'rd.abstract',
-                'rd.userid',
+                'rs.id',
+                'rs.language', 
+                'rs.title',
+                'rs.abstract',
+                'rs.user_id',
                 'users.username AS author',
-                'rd.status',
-                'rd.updated',
-                DB::raw('count(rf.resourceid) as totalfavorite'),
-                DB::raw('count(rc.resourceid) as totalcomments'),
-                DB::raw('count(rv.resourceid) as totalviews')
+                'rs.status',
+                'rs.updated_at',
+                DB::raw('count(rf.resource_id) as totalfavorite'),
+                DB::raw('count(rc.resource_id) as totalcomments'),
+                DB::raw('count(rv.resource_id) as totalviews')
             )
-            ->leftJoin('resources_data AS rd','rd.resourceid','=','rs.resourceid')
-            ->leftJoin('users', 'users.id', '=', 'rd.userid')
-            ->leftJoin('resources_favorites AS rf', 'rf.resourceid', '=', 'rd.resourceid')
-            ->leftJoin('resources_comments AS rc', 'rc.resourceid', '=', 'rd.resourceid')
-            ->leftJoin('resources_views AS rv', 'rv.resourceid', '=', 'rd.resourceid')
+            ->leftJoin('users', 'users.id', '=', 'rs.user_id')
+            ->leftJoin('resource_favorites AS rf', 'rf.resource_id', '=', 'rs.id')
+            ->leftJoin('resource_comments AS rc', 'rc.resource_id', '=', 'rs.id')
+            ->leftJoin('resource_views AS rv', 'rv.resource_id', '=', 'rs.id')
             ->when(count($subjectAreaIds) > 0, function($query) use($subjectAreaIds){
-                return $query->join('resources_subject_areas AS rsa', function ($join) use($subjectAreaIds) {
-                    $join->on('rsa.resourceid', '=', 'rs.resourceid')
-                        ->whereIn('rsa.subject_area_tid', $subjectAreaIds);
+                return $query->join('resource_subject_areas AS rsa', function ($join) use($subjectAreaIds) {
+                    $join->on('rsa.resource_id', '=', 'rs.id')
+                        ->whereIn('rsa.tid', $subjectAreaIds);
                 });
             })
             ->when(count($levelIds) > 0, function($query)  use($levelIds){
-                return $query->join('resources_levels AS rl', function ($join) use($levelIds) {
-                    $join->on('rl.resourceid', '=', 'rs.resourceid')
-                        ->whereIn('rl.resource_level_tid', $levelIds);
+                return $query->join('resource_levels AS rl', function ($join) use($levelIds) {
+                    $join->on('rl.resource_id', '=', 'rs.id')
+                        ->whereIn('rl.tid', $levelIds);
                 });
             })
             ->when(count($typeIds) > 0, function($query)  use($typeIds){
-                return $query->join('resources_learning_resource_types AS rlrt', function ($join) use($typeIds) {
-                    $join->on('rlrt.resourceid', '=', 'rs.resourceid')
-                            ->whereIn('rlrt.learning_resource_type_tid', $typeIds);
+                return $query->join('resource_learning_resource_types AS rlrt', function ($join) use($typeIds) {
+                    $join->on('rlrt.resource_id', '=', 'rs.id')
+                            ->whereIn('rlrt.tid', $typeIds);
                     });
             })
             ->when(count($searchQuery) > 0, function($query)  use($searchQuery){
-                return $query->where('rd.title','like','%'.$searchQuery.'%')
-                    ->orwhere('rd.abstract', 'like' , '%'.$searchQuery.'%');
+                return $query->where('rs.title','like','%'.$searchQuery.'%')
+                    ->orwhere('rs.abstract', 'like' , '%'.$searchQuery.'%');
             })
-            ->where('rd.language',Config::get('app.locale'))
-            ->where('rd.status', 1)
+            ->where('rs.language',Config::get('app.locale'))
+            ->where('rs.status', 1)
             ->groupBy(
-                'rs.resourceid',
-                'rd.language', 
-                'rd.title',
-                'rd.abstract',
-                'rd.userid',
+                'rs.id',
+                'rs.language', 
+                'rs.title',
+                'rs.abstract',
+                'rs.user_id',
                 'users.username',
-                'rd.status',
-                'rd.updated'
+                'rs.status',
+                'rs.updated_at'
             )
             ->paginate(32);
 
@@ -325,22 +378,21 @@ class Resource extends Model
     {
         $records = DB::table('resources AS rs')
             ->select(
-                'ttd.tid', 
+                'ttd.id', 
                 'ttd.name', 
-                'rd.language',
-                DB::Raw('count(rs.resourceid) as total')
+                'rs.language',
+                DB::Raw('count(rs.id) as total')
             )
-            ->join('resources_data AS rd','rd.resourceid','=','rs.resourceid')
-            ->join('resources_levels AS rl','rl.resourceid','=','rs.resourceid')
+            ->join('resource_levels AS rl','rl.resource_id','=','rs.id')
             ->join('taxonomy_term_data AS ttd', function($join){
-                $join->on('ttd.tid','=','rl.resource_level_tid')
+                $join->on('ttd.id','=','rl.tid')
                     ->where('ttd.vid', 13);
             })
             ->groupBy(
                 'ttd.name', 
-                'ttd.tid', 
-                'rd.language')
-            ->orderBy('rd.language')
+                'ttd.id', 
+                'rs.language')
+            ->orderBy('rs.language')
             ->orderBy('total','DESC')
             ->get();
         return $records;   
@@ -351,23 +403,22 @@ class Resource extends Model
     {
         $records = DB::table('resources AS rs')
             ->select(
-                'ttd.tid',
+                'ttd.id',
                 'ttd.name',
-                'rd.language',
-                DB::Raw('count(rs.resourceid) as total')
+                'rs.language',
+                DB::Raw('count(rs.id) as total')
             )
-            ->join('resources_data AS rd','rd.resourceid','=','rs.resourceid')
-            ->join('resources_learning_resource_types AS rlrt','rlrt.resourceid','=','rs.resourceid')
+            ->join('resource_learning_resource_types AS rlrt','rlrt.resource_id','=','rs.id')
             ->join('taxonomy_term_data AS ttd', function($join){
-                $join->on('ttd.tid','=','rlrt.learning_resource_type_tid')
+                $join->on('ttd.id','=','rlrt.tid')
                     ->where('ttd.vid', 7);
             })
             ->groupBy(
-                'ttd.tid',
+                'ttd.id',
                 'ttd.name',
-                'rd.language'
+                'rs.language'
             )
-            ->orderby('rd.language')
+            ->orderby('rs.language')
             ->orderBy('total','DESC')
             ->get();
         return $records;   
@@ -379,13 +430,12 @@ class Resource extends Model
         $records = DB::table('resources AS rs')
             ->select(
                 'ra.file_mime', 
-                'rd.language',
-                DB::raw('count(rs.resourceid) as total')
+                'rs.language',
+                DB::raw('count(rs.id) as total')
             )
-            ->join('resources_data AS rd','rd.resourceid','=','rs.resourceid')
-            ->join('resources_attachments AS ra','ra.resourceid','=','rs.resourceid')
-            ->groupBy('ra.file_mime', 'rd.language')
-            ->orderby('rd.language')
+            ->join('resource_attachments AS ra','ra.resource_id','=','rs.id')
+            ->groupBy('ra.file_mime', 'rs.language')
+            ->orderby('rs.language')
             ->orderBy('total','DESC')
             ->get();
         return $records;   
@@ -396,21 +446,20 @@ class Resource extends Model
         $ids = array();
         foreach($subjectAreas AS $item)
         {
-            array_push($ids, $item->tid);
+            array_push($ids, $item->id);
         }
 
         $records = DB::table('resources AS rs')
             ->select(
-                'rs.resourceid',
-                'rd.title',
-                'rd.abstract'
+                'rs.id',
+                'rs.title',
+                'rs.abstract'
             )
-            ->join('resources_data AS rd','rd.resourceid','=','rs.resourceid')
-            ->join('resources_subject_areas AS rsa','rsa.resourceid','=','rs.resourceid')
+            ->join('resource_subject_areas AS rsa','rsa.resource_id','=','rs.id')
             //not to include the record itself in the related items part
-            ->where('rs.resourceid','!=', $resourceId)
-            ->where('rd.status', 1)
-            ->whereIn('rsa.subject_area_tid',$ids)
+            ->where('rs.id','!=', $resourceId)
+            ->where('rs.status', 1)
+            ->whereIn('rsa.tid',$ids)
             ->limit(5)
             ->get();
         
@@ -419,21 +468,21 @@ class Resource extends Model
 
     public function subjectIconsAndTotal()
     {
-        $records = DB::table('resources_subject_areas AS sarea')
+        $records = DB::table('resource_subject_areas AS sarea')
             ->select(
                 'sticons.file_name', 
                 'ttd.name', 
-                'sarea.subject_area_tid AS subject_area',
-                DB::raw('count(sarea.subject_area_tid) AS total')
+                'sarea.tid AS subject_area',
+                DB::raw('count(sarea.tid) AS total')
             )
             ->leftJoin('taxonomy_term_data AS ttd', function($join){
-                $join->on('ttd.tid', '=', 'sarea.subject_area_tid')
+                $join->on('ttd.id', '=', 'sarea.tid')
                     ->where('ttd.vid', 8);
             })
-            ->join('static_subject_area_icons AS sticons','sticons.said','=','ttd.tid')
+            ->join('static_subject_area_icons AS sticons','sticons.tid','=','ttd.id')
             ->where('ttd.language', Config::get('app.locale'))
             ->groupBy(
-                'sarea.subject_area_tid', 
+                'sarea.tid', 
                 'sticons.file_name',
                 'ttd.name'
             )
@@ -455,7 +504,7 @@ class Resource extends Model
                 'frls.level_id'
             )
             ->leftJoin('taxonomy_term_data AS ttd', function($join){
-                $join->on('ttd.tid', '=', 'fcid.name_tid')
+                $join->on('ttd.id', '=', 'fcid.name_tid')
                     ->where('ttd.vid', 21);
             })
             ->leftJoin('featured_resource_levels AS frl','frl.fcid', '=', 'fcid.id')
@@ -472,9 +521,9 @@ class Resource extends Model
 
     public function resourceAttachments($resourceId)
     {
-        $records = DB::table('resources_attachments AS ra')
+        $records = DB::table('resource_attachments AS ra')
             ->select('*')
-            ->where('ra.resourceid', $resourceId)
+            ->where('ra.resource_id', $resourceId)
             ->get();
         return $records;
     }
@@ -483,11 +532,10 @@ class Resource extends Model
     {
         $record = DB::table('resources AS rs')
             ->select(
-                'rs.resourceid AS id',
-                'rd.language'
+                'rs.id',
+                'rs.language'
             )
-            ->leftJoin('resources_data AS rd','rd.resourceid','=','rs.resourceid')
-            ->where('rd.tnid', $resourceId)
+            ->where('rs.tnid', $resourceId)
             ->get();
         return $record;
     }
@@ -499,24 +547,24 @@ class Resource extends Model
 
     public function insertFavorite($resourceId, $userId)
     {
-        $record = DB::table('resources_favorites')
-            ->where('resourceid', $resourceId)
-            ->where('userid', $userId)
+        $record = DB::table('resource_favorites')
+            ->where('resource_id', $resourceId)
+            ->where('user_id', $userId)
             ->first();
 
         if($record){
-            DB::table('resources_favorites')
-                ->where('resourceid', $resourceId)
-                ->where('userid', $userId)
+            DB::table('resource_favorites')
+                ->where('resource_id', $resourceId)
+                ->where('user_id', $userId)
                 ->delete();
 
             return "deleted";
         }else{
-            $record = DB::table('resources_favorites')->insertGetId([
-                'resourceId'    => $resourceId,
-                'userid'        => $userId,
-                'created'       => \Carbon\Carbon::now()->timestamp,
-                'updated'       => \Carbon\Carbon::now()->timestamp
+            $record = DB::table('resource_favorites')->insertGetId([
+                'resource_id'    => $resourceId,
+                'user_id'        => $userId,
+                'created_at'       => \Carbon\Carbon::now(),
+                'updated_at'       => \Carbon\Carbon::now()
             ]);
 
             if($record){
@@ -527,13 +575,13 @@ class Resource extends Model
 
     public function insertFlag($params)
     {
-        $record = DB::table('resources_flags')->insertGetId([
-            'resourceId'    => $params['resourceid'],
-            'userid'        => $params['userid'],
+        $record = DB::table('resource_flags')->insertGetId([
+            'resource_id'    => $params['resource_id'],
+            'user_id'        => $params['userid'],
             'type'          => $params['type'],
             'details'       => $params['details'],
-            'created'       => \Carbon\Carbon::now()->timestamp,
-            'updated'       => \Carbon\Carbon::now()->timestamp
+            'created_at'       => \Carbon\Carbon::now(),
+            'updated_at'       => \Carbon\Carbon::now()
         ]);
           
         return $record;
@@ -541,56 +589,28 @@ class Resource extends Model
 
     public function insertComment($params)
     {
-        $record = DB::table('resources_comments')->insertGetId([
-            'resourceId'    => $params['resourceid'],
-            'userid'        => $params['userid'],
+        $record = DB::table('resource_comments')->insertGetId([
+            'resource_id'    => $params['resource_id'],
+            'user_id'        => $params['userid'],
             'comment'       => $params['comment'],
             'status'        => 0,
-            'created'       => \Carbon\Carbon::now()->timestamp,
-            'updated'       => \Carbon\Carbon::now()->timestamp
+            'created'       => \Carbon\Carbon::now(),
+            'updated'       => \Carbon\Carbon::now()
         ]);
           
         return $record;
     }
 
-    public function getComments($resourceId)
-    {
-        $record = DB::table('resources_comments AS rc')
-            ->select(
-                'rc.userid',
-                'users.username',
-                'rc.comment',
-                'rc.created'
-            )
-            ->join('users', 'users.id', '=', 'rc.userid')
-            ->where('rc.resourceid', $resourceId)
-            ->where('rc.status', 1)
-            ->get();
-
-        return $record;
-    }
-
-    public function getFavorite($resourceId)
-    {
-        $record = DB::table('resources_favorites AS rf')
-            ->select('rf.resourceid')
-            ->where('rf.userid', Auth::id())
-            ->where('rf.resourceid',$resourceId)
-            ->first();
-        
-        return $record;
-    }
-
     public function updateResourceCounter($data)
     {
-        return DB::table('resources_views')->insertGetId([
-            'resourceid'        => $data['resourceid'],
-            'userid'            => $data['userid'],
+        return DB::table('resource_views')->insertGetId([
+            'resource_id'       => $data['resource_id'],
+            'user_id'            => $data['userid'],
             'ip'                => $data['ip'],
             'browser_name'      => $data['browser_name'],
             'browser_version'   => $data['browser_version'],
             'platform'          => $data['platform'],
-            'created'           => \Carbon\Carbon::now()->timestamp
+            'created_at'           => \Carbon\Carbon::now()->timestamp
         ]);
     }
 

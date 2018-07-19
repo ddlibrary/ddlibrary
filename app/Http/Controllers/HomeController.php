@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\News;
 use App\Resource;
+use Config;
 
 use Illuminate\Http\Request;
 
@@ -25,14 +26,14 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $myResources = new Resource();
+        $resources = new Resource();
         //setting the search session empty
         $request->session()->forget('search');
         //latest news for the homepage
-        $latestNews         = News::listNews()->sortByDesc('newsid')->take(4);
-        $subjectAreas = $myResources->subjectIconsAndTotal();
-        $featured = $myResources->featuredCollections();
-        $latestResources = Resource::Resources()->sortByDesc('created')->take(4);
+        $latestNews         = News::where('language',Config::get('app.locale'))->orderBy('id','desc')->take(4)->get();
+        $subjectAreas       = $resources->subjectIconsAndTotal();
+        $featured           = $resources->featuredCollections();
+        $latestResources    = Resource::published()->where('language',Config::get('app.locale'))->orderBy('id','desc')->take(4)->get();
         return view('home', compact('latestNews','subjectAreas','featured','latestResources'));
     }
 }

@@ -42,7 +42,7 @@
                   <select class="form-control" name="role">
                     <option value="">Any</option>
                     @foreach($roles as $role)
-                      <option value="{{ $role->roleid}}" {{ (isset($filters['role']) && $filters['role'] == $role->roleid)?"selected":"" }}>{{ $role->name }}</option>
+                      <option value="{{ $role->id}}" {{ (isset($filters['role']) && $filters['role'] == $role->id)?"selected":"" }}>{{ $role->name }}</option>
                     @endforeach
                   </select>
                 </td>
@@ -80,12 +80,12 @@
             <tbody>
             @foreach ($users as $indexkey => $user)
               <tr>
-                <td>{{ (($users->currentPage() - 1) * 10)+$indexkey + 1 }}</td>
+                <td>{{ (($users->currentPage() - 1) * $users->perPage())+$indexkey + 1 }}</td>
                 <td><a href="{{URL::to('users/view/'.$user->id) }}">{{ $user->username }}</a><br>{{ $user->email }}</td>
                 <td>{{ ($user->status==0?"Not Active":"Active") }}</td>
                 <td>{{ $user->all_roles }}</td>
-                <td>{{ Carbon\Carbon::createFromTimestamp($user->created)->diffForHumans() }}</td>
-                <td>{{ Carbon\Carbon::createFromTimestamp($user->access)->diffForHumans() }}</td>
+                <td>{{ Carbon\Carbon::createFromTimestamp($user->created_at)->diffForHumans() }}</td>
+                <td>{{ Carbon\Carbon::createFromTimestamp($user->accessed_at)->diffForHumans() }}</td>
                 <td><a href="users/edit/{{$user->id}}">Edit</a></td>
               </tr>
               @endforeach

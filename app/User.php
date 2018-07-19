@@ -12,8 +12,19 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
-    const CREATED_AT = 'created';
-    const UPDATED_AT = 'updated';
+
+    public function resource()
+    {
+        return $this->hasMany(Resource::class);
+    }
+
+    /**
+     * The roles that belong to the user.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
+    }
     /**
      * Get the list of users to display as a table in the admin/users
      */
@@ -28,24 +39,24 @@ class User extends Authenticatable
                 'up.last_name',
                 'users.email',
                 'users.status', 
-                'users.created',
-                'users.access',
+                'users.created_at',
+                'users.accessed_at',
                 DB::raw('group_concat(roles.name) AS all_roles'
             ))
-            ->LeftJoin('users_roles', 'users.id', '=', 'users_roles.userid')
-            ->LeftJoin('roles', 'roles.roleid', '=', 'users_roles.roleid')
-            ->LeftJoin('users_profiles AS up', 'up.userid', '=', 'users.id')
-            ->orderBy('access','desc')
+            ->LeftJoin('user_roles', 'users.id', '=', 'user_roles.user_id')
+            ->LeftJoin('roles', 'roles.id', '=', 'user_roles.role_id')
+            ->LeftJoin('user_profiles AS up', 'up.user_id', '=', 'users.id')
+            ->orderBy('accessed_at','desc')
             ->groupBy(
                 'users.id',
                 'users.username',
                 'users.password',
                 'up.first_name',
                 'up.last_name',
-                'users.access',
+                'users.accessed_at',
                 'users.email',
                 'users.status',
-                'users.created'
+                'users.created_at'
             )
             ->get();
 
@@ -63,14 +74,14 @@ class User extends Authenticatable
                 'users.username',
                 'users.email',
                 'users.status', 
-                'users.created',
-                'users.access',
+                'users.created_at',
+                'users.accessed_at',
                 'up.gender',
                 DB::raw('group_concat(roles.name) AS all_roles'
             ))
-            ->LeftJoin('users_roles', 'users.id', '=', 'users_roles.userid')
-            ->LeftJoin('roles', 'roles.roleid', '=', 'users_roles.roleid')
-            ->LeftJoin('users_profiles AS up', 'up.userid', '=', 'users.id')
+            ->LeftJoin('user_roles', 'users.id', '=', 'user_roles.user_id')
+            ->LeftJoin('roles', 'roles.id', '=', 'user_roles.role_id')
+            ->LeftJoin('user_profiles AS up', 'up.user_id', '=', 'users.id')
             ->when(!empty($requestArray['username']), function($query) use($requestArray){
                 return $query
                     ->where('users.username', 'like', '%'.$requestArray['username'].'%');
@@ -85,7 +96,7 @@ class User extends Authenticatable
             })
             ->when(isset($requestArray['role']), function($query) use($requestArray){
                 return $query
-                    ->where('roles.roleid', $requestArray['role']);
+                    ->where('roles.id', $requestArray['role']);
             })  
             ->when(isset($requestArray['gender']), function($query) use($requestArray){
                 return $query
@@ -95,15 +106,15 @@ class User extends Authenticatable
                 return $query
                     ->where('up.country', $requestArray['country']);
             })
-            ->orderBy('access','desc')
+            ->orderBy('accessed_at','desc')
             ->groupBy(
                 'users.id',
                 'users.username',
-                'users.access',
+                'users.accessed_at',
                 'users.email',
                 'users.status',
                 'up.gender',
-                'users.created'
+                'users.created_at'
             )
             ->paginate(10);
 
@@ -119,8 +130,8 @@ class User extends Authenticatable
                 'users.password', 
                 'users.email',
                 'users.status', 
-                'users.created',
-                'users.access'
+                'users.created_at',
+                'users.accessed_at'
             )
             ->where('email', $credentials['user-field'])
             ->orWhere('username', $credentials['user-field'])
@@ -129,25 +140,14 @@ class User extends Authenticatable
         return $user;    
     }
 
-    /**
-     * Get the total users available in the system
-     */
-    public function totalUsers()
-    {
-        $records = DB::table('users')
-                    ->selectRaw('count(users.id) as totalUsers')
-                    ->count();
-        return $records;
-    }
-
     //Total users based on gender
     public function totalUsersByGender()
     {
         $records = DB::table('users')
-                    ->select('users_profiles.gender')
+                    ->select('user_profiles.gender')
                     ->selectRaw('count(users.id) as total')
-                    ->join('users_profiles','users_profiles.userid','=','users.id')
-                    ->groupBy('users_profiles.gender')
+                    ->join('user_profiles','user_profiles.user_id','=','users.id')
+                    ->groupBy('user_profiles.gender')
                     ->get();
         return $records;   
     }
@@ -155,7 +155,7 @@ class User extends Authenticatable
     //Total users based on country
     public function totalUsersByCountry()
     {
-        $records = DB::table('users_profiles')
+        $records = DB::table('user_profiles')
                     ->select('country')
                     ->selectRaw('count(country) as total')
                     ->groupBy('country')
@@ -168,10 +168,10 @@ class User extends Authenticatable
     public function totalResourcesByRoles()
     {
         $records = DB::table('roles')
-                    ->select('roles.name', 'roles.roleid')
-                    ->selectRaw('count(roles.roleid) as total')
-                    ->join('users_roles','users_roles.roleid','=','roles.roleid')
-                    ->groupBy('roles.roleid', 'roles.name')
+                    ->select('roles.name', 'roles.id')
+                    ->selectRaw('count(roles.id) as total')
+                    ->join('user_roles','user_roles.role_id','=','roles.id')
+                    ->groupBy('roles.id', 'roles.name')
                     ->orderBy('total','DESC')
                     ->get();
         return $records;   
@@ -188,9 +188,9 @@ class User extends Authenticatable
     public function isAdministrator($userid)
     {
         return DB::table('users')
-            ->join('users_roles', 'users_roles.userid','=','users.id')
+            ->join('user_roles', 'user_roles.user_id','=','users.id')
             ->where('users.id',$userid)
-            ->where('users_roles.roleid', 5)
+            ->where('user_roles.role_id', 5)
             ->first();
     }
 
@@ -224,7 +224,7 @@ class User extends Authenticatable
     {
         $records = DB::table('roles')
                     ->select(
-                        'roleid',
+                        'id',
                         'name'
                     )
                     ->get();

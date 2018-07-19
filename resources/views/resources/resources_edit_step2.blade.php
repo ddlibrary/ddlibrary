@@ -6,19 +6,14 @@
         $('#subject_areas').select2();
         $('#learning_resources_types').select2();
         $('#educational_use').select2();
-        $("#keywords").select2({
-            tags: true
-        });
 
         $('#subject_areas').val({{ $resourceSubjectAreas }});
         $('#learning_resources_types').val({{ $resourceLearningResourceTypes }});
         $('#educational_use').val({{ $EditEducationalUse }});
-        //$('#keywords').val({{ $resourceKeywords }});
 
         $('#subject_areas').trigger('change'); // Notify any JS components that the value changed
         $('#learning_resources_types').trigger('change'); // Notify any JS components that the value changed
         $('#educational_use').trigger('change'); // Notify any JS components that the value changed
-        //$('#keywords').trigger('change'); // Notify any JS components that the value changed
     });
 </script>
 <section class="ddl-forms">
@@ -66,13 +61,16 @@
             @endif
         </div>
         <div class="form-item">
-            <label for="keywords"> 
-                <strong>Keywords</strong>
-            </label>
-            <select class="form-control{{ $errors->has('subject_areas') ? ' is-invalid' : '' }}" id="keywords" name="keywords[]"  multiple="multiple">
-                    <option value=""></option>
-            </select>
-        </div>
+                <label for="keywords"> 
+                    <strong>Keywords</strong>
+                </label>
+                <input class="form-control{{ $errors->has('keywords') ? ' is-invalid' : '' }}" id="keywords" name="keywords" size="40" maxlength="40" type="text" value="{{ isset($resourceKeywords)?$resourceKeywords:"" }}" onkeydown="javascript:bringMeAttr('keywords','{{ URL::to('resources/attributes/keywords') }}')">
+                @if ($errors->has('keywords'))
+                    <span class="invalid-feedback">
+                        <strong>{{ $errors->first('keywords') }}</strong>
+                    </span><br>
+                @endif
+            </div>
         <div class="form-item">
             <label for="learning_resources_types"> 
                 <strong>Learning Resources Types</strong>

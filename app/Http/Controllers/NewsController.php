@@ -20,18 +20,18 @@ class NewsController extends Controller
     function index ()
     {
         $this->middleware('admin');
-        $myNews = new News();
-        $newsRecords = $myNews->listNews();
+        $newsRecords = News::paginate(10);
         return view('admin.news.news_list', compact('newsRecords'));
     }
 
     function view($newsId)
     {
         $myNews = new News();
-        $news = $myNews->oneNews($newsId);
+
+        $news = News::find($newsId);
         $translation_id = $news->tnid;
         if($translation_id){
-            $translations = $myNews->getNewsTranslations($translation_id);
+            $translations = News::where('tnid',$translation_id)->get();
         }else{
             $translations = array();
         }

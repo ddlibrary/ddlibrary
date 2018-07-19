@@ -59,7 +59,7 @@
                                     @foreach ($totalResourcesByRoles as $indexkey => $resource)
                                     <tr>
                                         <td><strong>{{ $resource->name }}</strong></td>
-                                        <td><a href="{{ URL::to('admin/users?role='.$resource->roleid) }}">{{ $resource->total }}</a></td>
+                                        <td><a href="{{ URL::to('admin/users?role='.$resource->id) }}">{{ $resource->total }}</a></td>
                                         </tr>
                                         @endforeach
                                     </tbody>

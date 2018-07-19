@@ -16,13 +16,13 @@
                 @foreach ($relatedItems AS $item)
                 <div class="related-item">
                     <img class="related-items-img" src="{{ getImagefromResource($item->abstract,'55x50') }}">
-                    <span><a href="{{ URL::to('resources/view/'.$item->resourceid) }}">{{ $item->title }}</a><br/>
+                    <span><a href="{{ URL::to('resources/view/'.$item->id) }}">{{ $item->title }}</a><br/>
                     {!! str_limit(strip_tags($item->abstract), 25) !!}</span>
                 </div>
                 @endforeach
             </div>
         </div>
-        <p>Added by: <a href="{{ URL::to('users/view/'.$resource->userid) }}">{{ $resource->addedby }}</a>
+        <p>Added by: <a href="{{ URL::to('users/view/'.$resource->user_id) }}">{{ $resource->user->username }}</a>
     </aside>
     <section class="resource-view-information-section">
         <article class="resource-view-title-box">
@@ -33,9 +33,9 @@
                 </header>
                 <div class="resource-icons">
                     @if (isAdmin())
-                    <a href="{{ route('edit1', $resource->resourceid) }}">Edit</a>
+                    <a href="{{ route('edit1', $resource->id) }}">Edit</a>
                     @endif
-                    <i class="fas fa-lg fa-star {{ $favorite?"active":"" }}" id="resourceFavorite" onclick="favorite('resourceFavorite','{{ URL::to("resources/favorite/") }}','{{ $resource->resourceid }}','{{ Auth::id() }}')"></i>
+                    <i class="fas fa-lg fa-star {{ count($resource->favorites)?"active":"" }}" id="resourceFavorite" onclick="favorite('resourceFavorite','{{ URL::to("resources/favorite/") }}','{{ $resource->id }}','{{ Auth::id() }}')"></i>
                     <i class="fas fa-lg fa-share-square"></i>
                     <i class="fas fa-lg fa-flag"></i>
                 </div>
@@ -112,7 +112,7 @@
                                                 </label>
                                                 <textarea name="details" class="form-control" cols="40" rows="5" required></textarea>
                                             </div>
-                                            <input type="hidden" value="{{ $resource->resourceid }}" name="resourceid">
+                                            <input type="hidden" value="{{ $resource->id }}" name="resource_id">
                                             <input type="hidden" value="{{ Auth::id() }}" name="userid">
                                             <div class="left-side">
                                                 <input class="form-control normalButton" type="submit" value="Submit">
@@ -130,31 +130,31 @@
         </article>
         <article class="resource-view-details">
             <h3>Authors</h3>
-            @foreach ($resourceAuthors AS $author)
+            @foreach ($resource->authors AS $author)
             <p>{{ $author->name }}</p>
             @endforeach
         </article>
         <article class="resource-view-details">
             <h3>Resource Level</h3>
-            @foreach ($resourceLevels AS $level)
+            @foreach ($resource->levels AS $level)
             <p><a href="{{ URL::to('resources/list?=&level[]='.$level->tid) }}">{{ $level->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
             <h3>Subject Area</h3>
-            @foreach ($resourceSubjectAreas AS $subject)
+            @foreach ($resource->subjects AS $subject)
             <p><a href="{{ URL::to('resources/list?=&subject_area[]='.$subject->tid) }}">{{ $subject->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
             <h3>Learning Resource Type</h3>
-            @foreach($resourceLearningResourceTypes AS $ltype)
+            @foreach($resource->LearningResourceTypes AS $ltype)
             <p><a href="{{ URL::to('resources/list?=&type[]='.$ltype->tid) }}">{{ $ltype->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
             <h3>Publisher</h3>
-            @foreach($resourcePublishers AS $publisher)
+            @foreach($resource->publishers AS $publisher)
             <p>{{ $publisher->name }}</p>
             @endforeach
         </article>
@@ -203,15 +203,15 @@
         </article>
         <article class="resource-view-details">
             <h3>License</h3>
-            <p>CC BY-NC / CC BY-NC-SA</p>
+            <p>{{ count($resource->CreativeCommons)?$resource->CreativeCommons[0]->name:"" }}</p>
         </article>
         <article class="resource-view-details">
             <h3>Download</h3>
             <div class="download-box">
-            @if($resourceAttachments)
+            @if($resource->attachments)
             <span class="download-item">File Name</strong></span>
             <span class="download-item"><strong>File Size</strong></span>
-            @foreach($resourceAttachments as $file)
+            @foreach($resource->attachments as $file)
             <span class="download-item"><a href="{{ Storage::disk('private')->url($file->file_name) }}">{{ $file->file_name }}</a></span>
             <span class="download-item">{{ formatBytes($file->file_size) }}</span>
             @endforeach
@@ -223,9 +223,9 @@
     <section class="resource-view-comment">
         <header>
             <h2>Comments</h2>
-            <h2>{{ count($comments) }} comment(s) so far</h2>
+            <h2>{{ count($resource->comments) }} comment(s) so far</h2>
         </header>
-        @foreach($comments AS $cm)
+        @foreach($resource->comments AS $cm)
         <article>
             <div>
                 <strong>{{ $cm->username }}</strong>
@@ -245,7 +245,7 @@
             <article>
                 <textarea name="comment" cols="40" rows="10"></textarea>
             </article>
-            <input type="hidden" value="{{ $resource->resourceid }}" name="resourceid">
+            <input type="hidden" value="{{ $resource->id }}" name="resource_id">
             <input type="hidden" value="{{ Auth::id() }}" name="userid">
             <div class="left-side">
                 <input class="form-control normalButton" type="submit" value="Submit">

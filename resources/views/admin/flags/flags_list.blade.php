@@ -46,11 +46,11 @@
             @foreach ($flags as $indexkey => $flag)
               <tr>
                 <td>{{ (($flags->currentPage() - 1) * 20)+$indexkey + 1 }}</td>
-                <td><a href="{{ URL::to('resources/view/'.$flag->resourceid) }}">{{ $flag->title }}</a></td>
-                <td><a href="{{ URL::to('users/view/'.$flag->userid) }}">{{ $flag->username }}</a></td>
+                <td><a href="{{ URL::to('resources/view/'.$flag->resource_id) }}">{{ $flag->resource->title }}</a></td>
+                <td><a href="{{ URL::to('users/view/'.$flag->user_id) }}">{{ $flag->user->username }}</a></td>
                 <td>{{ $flagTypes[$flag->type] }}</td>
                 <td>{{ $flag->details }}</td>
-                <td>{{ Carbon\Carbon::createFromTimestamp($flag->created)->diffForHumans() }}</td>
+                <td>{{ $flag->created_at->diffForHumans() }}</td>
               </tr>
               @endforeach
             </tbody>

@@ -98,8 +98,8 @@
                   <tbody>
                   @foreach ($latestResources as $indexkey => $resource)
                   <tr>
-                      <td><a href="{{ URL::to('resources/view/'.$resource->resourceid) }}">{{ $resource->title }}</a></td>
-                      <td><a href="{{ URL::to('users/view/'.$resource->userid) }}">{{ $resource->addedby }}</a></td>
+                      <td><a href="{{ URL::to('resources/view/'.$resource->id) }}">{{ $resource->title }}</a></td>
+                      <td><a href="{{ URL::to('users/view/'.$resource->user_id) }}">{{ $resource->user->username }}</a></td>
                       <td>{{ ($resource->status==0?"Not Published":"Published") }}</td>
                     </tr>
                     @endforeach
@@ -130,7 +130,11 @@
                     <tr>
                       <td><a href="{{ URL::to('users/view/'.$user->id) }}">{{ $user->username }}</a></td>
                       <td>{{ ($user->status==0?"Not Active":"Active") }}</td>
-                      <td>{{ $user->all_roles }}</td>
+                      <td>
+                        @foreach($user->roles AS $role)
+                        {{ $role->name }}
+                        @endforeach
+                      </td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -161,9 +165,9 @@
                     <tbody>
                     @foreach ($latestPages as $indexkey => $page)
                       <tr>
-                        <td><a href="admin/pages/view/{{$page->pageid}}">{{ $page->title }}</a></td>
-                        <td>{{ Carbon\Carbon::createFromTimestamp($page->created)->diffForHumans() }}</td>
-                        <td>{{ Carbon\Carbon::createFromTimestamp($page->updated)->diffForHumans() }}</td>
+                        <td><a href="{{ URL::to('pages/view/'.$page->id) }}">{{ $page->title }}</a></td>
+                        <td>{{ $page->created_at->diffForHumans() }}</td>
+                        <td>{{ $page->updated_at->diffForHumans() }}</td>
                       </tr>
                       @endforeach
                     </tbody>
@@ -191,9 +195,9 @@
                     <tbody>
                     @foreach ($latestNews as $indexkey => $news)
                       <tr>
-                        <td><a href="admin/news/view/{{$news->newsid}}">{{ $news->title }}</a></td>
-                        <td>{{ Carbon\Carbon::createFromTimestamp($news->created)->diffForHumans() }}</td>
-                        <td>{{ Carbon\Carbon::createFromTimestamp($news->updated)->diffForHumans() }}</td>
+                        <td><a href="{{ URL::to('news/view/'.$news->id) }}">{{ $news->title }}</a></td>
+                        <td>{{ $news->created_at->diffForHumans() }}</td>
+                        <td>{{ $news->updated_at->diffForHumans() }}</td>
                       </tr>
                       @endforeach
                     </tbody>

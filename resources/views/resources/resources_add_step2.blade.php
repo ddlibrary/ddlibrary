@@ -69,9 +69,8 @@
         <div class="form-item">
             <label for="keywords"> 
                 <strong>Keywords</strong>
-                <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('keywords') ? ' is-invalid' : '' }}" id="keywords" name="keywords" size="40" maxlength="40" type="text" value="{{ @$resource['keywords'] }}" onkeydown="javascript:bringMeAttr('keywords','{{ URL::to('resources/attributes/keywords') }}')" required>
+            <input class="form-control{{ $errors->has('keywords') ? ' is-invalid' : '' }}" id="keywords" name="keywords" size="40" maxlength="40" type="text" value="{{ isset($resource['keywords'])?$resource['keywords']:"" }}" onkeydown="javascript:bringMeAttr('keywords','{{ URL::to('resources/attributes/keywords') }}')">
             @if ($errors->has('keywords'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('keywords') }}</strong>

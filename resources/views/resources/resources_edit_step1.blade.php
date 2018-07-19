@@ -6,7 +6,7 @@
         <h1>Add a new Resource - Step 1</h1>
     </header>
     <div class="content-body">
-        <form method="POST" action="{{ route('edit1', $resource['resourceid']) }}">
+        <form method="POST" action="{{ route('edit1', $resource['id']) }}">
         @csrf
         <div class="form-item">
             <label for="title"> 
