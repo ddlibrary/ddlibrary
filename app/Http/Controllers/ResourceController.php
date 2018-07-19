@@ -658,7 +658,7 @@ class ResourceController extends Controller
 
         $resourceSubjectAreas = json_encode($resourceSubjectAreas, JSON_NUMERIC_CHECK);
         $resourceLearningResourceTypes = json_encode($resourceLearningResourceTypes, JSON_NUMERIC_CHECK);
-        $resourceKeywords = implode(',',$resourceKeywords);
+        $resourceKeywords = count($resourceKeywords)?implode(',',$resourceKeywords):"";
         $EditEducationalUse = json_encode($EditEducationalUse, JSON_NUMERIC_CHECK);
 
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data',8);
