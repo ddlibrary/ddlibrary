@@ -2,6 +2,25 @@
     <div class="ddl-logo">
         <a href="{{ URL::to('/') }}"><img class="header-img" src="{{ asset('storage/files/logo-dd.png') }}"></a>
     </div>
+    <i class="fas fa-align-justify fa-3x icons" id="toggle" onclick="openNav()"></i>
+
+    <div id="myNav" class="overlay">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div class="overlay-content">
+            <a href="{{ URL::to('/') }}">Home</a>
+            <a href="{{ URL::to('resources') }}">Browse</a>
+            <a href="{{ URL::to('resources/add/step1') }}">Upload a Resource</a>
+            @if (Auth::check())
+            <a href="{{ URL::to('logout') }}">Log Out</a>
+            @if (isAdmin())
+            <a href="{{ URL::to('/admin') }}">Admin Panel</a>
+            @endif
+            @else
+            <a href="{{ URL::to('/login') }}">Sign In</a>
+            <a href="{{ URL::to('/register') }}">Register</a>
+            @endif
+        </div>
+    </div>
     <nav class="header-right">
         <ul class="language-content">
             @if (Auth::check())
