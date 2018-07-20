@@ -400,11 +400,13 @@ select.form-control:focus::-ms-value {
     padding: 5px;
     margin: 5px;
     background-color: white;
+    border-radius: .1rem;
+    -webkit-border-radius: .1rem;
+    -moz-border-radius: .1rem;
 }
 
 .resource-list aside {
     flex: 1 1 25%;
-    border-right: 1px solid #eee;
 }
 
 .resource-list fieldset {
@@ -412,9 +414,7 @@ select.form-control:focus::-ms-value {
 }
 
 .resource-list h3 {
-    margin-top: 0;
-    margin-right: -20px;
-    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 /* Style the buttons that are used to open and close the accordion panel */
@@ -428,6 +428,9 @@ select.form-control:focus::-ms-value {
     outline: none;
     transition: 0.4s;
     box-sizing: border-box;
+    border-radius: .1rem;
+    -webkit-border-radius: .1rem;
+    -moz-border-radius: .1rem;
 }
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
@@ -496,6 +499,9 @@ aside .sub-subject-show {
 .resource-list .resource-img {
     width: 200px;
     height: 167px;
+    border-radius: .1rem;
+    -webkit-border-radius: .1rem;
+    -moz-border-radius: .1rem;
 }
 .resource-list .resource-details {
     display: flex;
