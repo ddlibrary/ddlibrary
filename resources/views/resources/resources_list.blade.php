@@ -45,30 +45,30 @@
         </form>
     </aside>
     <section class="resource-information-section">
-    @if (count($resources) > 0)
-    @foreach ($resources AS $resource)
-    <article class="resource-article resource-information" onclick="location.href='{{ URL::to('resources/view/'.$resource->id) }}'">
-        <img class="resource-img" src="{{ getImagefromResource($resource->abstract) }}">
-        <div class="resource-title">{{ str_limit($resource->title, 50), ' (..)' }}</div>
-        <div class="resource-details">
-            <article>
-                <i class="fas fa-eye"></i><span>{{ $resource->totalviews }}</span>
-            </article>
-            <article>
-                <i class="fas fa-star"></i><span>{{ $resource->totalfavorite }}</span>
-            </article>
-            <article>
-                <i class="fas fa-comment"></i><span>{{ $resource->totalcomments }}</span>
-            </article>
+        @if (count($resources) > 0)
+        @foreach ($resources AS $resource)
+        <article class="resource-article resource-information" onclick="location.href='{{ URL::to('resources/view/'.$resource->id) }}'">
+            <img class="resource-img" src="{{ getImagefromResource($resource->abstract) }}">
+            <div class="resource-title">{{ str_limit($resource->title, 50), ' (..)' }}</div>
+            <div class="resource-details">
+                <article>
+                    <i class="fas fa-eye"></i><span>{{ $resource->totalviews }}</span>
+                </article>
+                <article>
+                    <i class="fas fa-star"></i><span>{{ $resource->totalfavorite }}</span>
+                </article>
+                <article>
+                    <i class="fas fa-comment"></i><span>{{ $resource->totalcomments }}</span>
+                </article>
+            </div>
+        </article>
+        @endforeach
+        @else
+        <h2>No records found!</h2>
+        @endif
+        <div class="resource-pagination">
+            {{ $resources->appends(request()->input())->links() }}
         </div>
-    </article>
-    @endforeach
-    @else
-    <h2>No records found!</h2>
-    @endif
-    <div class="resource-pagination">
-        {{ $resources->appends(request()->input())->links() }}
-    </div>
     </section>
 </section>
 @endsection

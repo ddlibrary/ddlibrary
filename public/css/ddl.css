@@ -178,7 +178,8 @@ input[type=search] {
 }
 .resource-pagination ul {
     margin-top: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 1em;
+    margin-top: 1em;
 }
 
 .resource-pagination ul li {
@@ -430,26 +431,26 @@ select.form-control:focus::-ms-value {
 }
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-.active, .accordion:hover {
+.resource-list .accordion .active, .resource-list .accordion:hover {
     background-color: #ccc;
 }
 
 /* Style the accordion panel. Note: hidden by default */
-.panel{
+.resource-list .panel{
     background-color: white;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
 }
 
-.accordion:after {
+.resource-list .accordion:after {
     content: '\02795'; /* Unicode character for "plus" sign (+) */
     font-size: 13px;
     color: #777;
     margin-left: 5px;
 }
 
-.active:after {
+.resource-list .accordion .active:after {
     content: "\2796"; /* Unicode character for "minus" sign (-) */
 }
 
@@ -459,6 +460,8 @@ select.form-control:focus::-ms-value {
 
 .resource-list ul li span{
     padding: .3em;
+    width: 2em;
+    text-align: center;
 }
 
 .sub-item {
