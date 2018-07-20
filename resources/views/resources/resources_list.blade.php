@@ -9,66 +9,35 @@
         <form method="POST" action="{{ route('resourceList') }}">
         @csrf
         <fieldset>
-            <legend>Resource Subject Areas</legend>
-            <ul>
+            <legend class="accordion" id="resource-subjects">Resource Subject Areas</legend>
+            <ul class="panel">
             @foreach($subjects AS $subject)
                 @if($subject->parent == 0)
-                    <li><input type="checkbox" name="subject_area[]" {{ (in_array($subject->tid, $subjectAreaIds)?"checked":"")}} onchange="fnTest(this,'js-sub-subject{{$subject->tid}}');this.form.submit();" value="{{ $subject->tid }}">{{ $subject->name }} 
-                        <?php $subjectParent = $subjects->where('parent', $subject->tid);?>
-                        @if(count($subjectParent) > 0)
-                            <i class="fas fa-plus js-fa-plus fa-xs" onclick="javascript:showHide(this,'js-sub-subject{{$subject->tid}}')"></i>
-                        @endif
-                    @if(count($subjectParent) > 0)
-                        <ul id="js-sub-subject{{$subject->tid}}" class="sub-item" style="display:none;">
-                            @foreach($subjectParent as $item)
-                                <li><input type="checkbox" class="js-child"  name="subject_area[]" onchange="this.form.submit()" {{ (in_array($item->tid, $subjectAreaIds)?"checked":"")}} value="{{ $item->tid }}">{{ $item->name }}</li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </li>
+                    <li>
+                        <input type="checkbox" name="subject_area[]" {{ (in_array($subject->tid, $subjectAreaIds)?"checked":"")}} onchange="fnTest(this,'js-sub-subject{{$subject->tid}}');this.form.submit();" value="{{ $subject->tid }}"><span>{{ ucwords(strtolower($subject->name)) }}</span>
+                    </li>
                 @endif
             @endforeach
             </ul>
         </fieldset>
         <fieldset>
-            <legend>Resource Types</legend>
-            <ul>
+            <legend class="accordion">Resource Types</legend>
+            <ul class="panel">
                 @foreach($types AS $type)
-                    <li><input type="checkbox" name="type[]" value="{{ $type->tid }}" onchange="this.form.submit()" {{ (in_array($type->tid, $typeIds)?"checked":"")}}>{{ $type->name }}</li>
+                    <li>
+                        <input type="checkbox" name="type[]" value="{{ $type->tid }}" onchange="this.form.submit()" {{ (in_array($type->tid, $typeIds)?"checked":"")}}><span>{{ $type->name }}</span>
+                    </li>
                 @endforeach
             </ul>
         </fieldset>
         <fieldset>
-        <legend>Resource Levels</legend>
-        <ul>
+        <legend class="accordion">Resource Levels</legend>
+        <ul class="panel">
             @foreach($levels AS $level)
                 @if($level->parent == 0)
-                    <li><input type="checkbox" name="level[]" {{ (in_array($level->tid, $levelIds)?"checked":"")}} value="{{ $level->tid }}" onchange="fnTest(this,'subLevel{{$level->tid}}');this.form.submit()">{{ $level->name }}
-                        <?php $levelParent = $levels->where('parent', $level->tid);?>
-                        @if(count($levelParent) > 0)
-                            <i class="fas fa-plus js-fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$level->tid}}')"></i>
-                        @endif
-                    @if(count($levelParent) > 0)
-                        <ul id="subLevel{{$level->tid}}" class="sub-item" style="display:none;">
-                            @foreach($levelParent as $item)
-                                <li><input type="checkbox" name="level[]" onchange="fnTest(this,'subLevel{{$item->tid}}');this.form.submit()" {{ (in_array($item->tid, $levelIds)?"checked":"")}} class="child" value="{{ $item->tid }}">{{ $item->name }}
-                            
-                                <?php $levelItemParent = $levels->where('parent', $item->tid);?>
-                                @if(count($levelItemParent) > 0)
-                                    <i class="fas fa-plus js-fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$item->tid}}')"></i>
-                                @endif
-                                @if(count($levelItemParent) > 0)
-                                    <ul id="subLevel{{$item->tid}}" class="sub-item" style="display:none;">
-                                        @foreach($levelItemParent as $itemLevel)
-                                            <li><input type="checkbox" name="level[]" onchange="this.form.submit()" {{ (in_array($itemLevel->tid, $levelIds)?"checked":"")}} class="child" value="{{ $itemLevel->tid }}">{{ $itemLevel->name }}</li>
-                                        @endforeach
-                                    </ul>
-                                @endif
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </li>
+                    <li>
+                        <input type="checkbox" name="level[]" {{ (in_array($level->tid, $levelIds)?"checked":"")}} value="{{ $level->tid }}" onchange="fnTest(this,'subLevel{{$level->tid}}');this.form.submit()"><span>{{ $level->name }}</span>
+                    </li>
                 @endif
             @endforeach
         </ul>
@@ -102,4 +71,4 @@
     </div>
     </section>
 </section>
-@endsection 
+@endsection

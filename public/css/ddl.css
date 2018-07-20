@@ -410,8 +410,55 @@ select.form-control:focus::-ms-value {
     margin-bottom: 1em;
 }
 
+.resource-list h3 {
+    margin-top: 0;
+    margin-right: -20px;
+    padding-top: 5px;
+}
+
+/* Style the buttons that are used to open and close the accordion panel */
+.resource-list .accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    box-sizing: border-box;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .accordion:hover {
+    background-color: #ccc;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.panel{
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+.accordion:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: #777;
+    margin-left: 5px;
+}
+
+.active:after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
 .resource-list ul li {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.resource-list ul li span{
+    padding: .3em;
 }
 
 .sub-item {
