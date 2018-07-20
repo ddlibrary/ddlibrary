@@ -720,6 +720,20 @@ aside .sub-subject-show {
 }
 
 @media only screen and (max-width: 900px) {
+    .latest-div, .useful-links {
+        width: 90%;
+        padding-top: 1em;
+    }
+}
+@media only screen and (max-width: 760px) {
+    footer nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media only screen and (max-width: 900px) {
     header #toggle {
         display: block;
         padding: 0.4em;
