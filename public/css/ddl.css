@@ -84,16 +84,40 @@ header #toggle {
     font-size: 1.25rem;
     line-height: 0.5;
     border-radius: .3rem;
+    -webkit-border-radius: .3rem;
+    -moz-border-radius: .3rem;
     width: 50%;
     text-align: center;
+    margin: 0 auto;
 }
 .search-button {
     border: 1px solid transparent;
-    padding: .2rem 0.75rem;
+    padding: .23rem 0.75rem;
     font-size: 1.3rem;
+    line-height: 1.4;
+    border: 1px solid #ccc;
     border-radius: .25rem;
+    -webkit-border-radius: .25rem;
+    -moze-border-radius: .25rem;
     background-color: #ffa800;
+    vertical-align: bottom;
 }
+
+input[type=search] {
+    -moz-appearance:none;
+    -webkit-appearance:none;
+ }
+
+.banner .form-control {
+    display: inline;
+}
+
+.banner .form-control:focus {
+    border-color: #ffa800;
+    -webkit-box-shadow: 0 0 0 0;
+    box-shadow: 0 0 0 0;
+}
+
 .normal-button {
     border: 1px solid transparent;
     padding: 1em 1em;
@@ -116,6 +140,8 @@ header #toggle {
     box-sizing: border-box;
     background: #ffffff;
     border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
 }
 .main-section header {
     padding: 0 20px 20px;
@@ -146,6 +172,8 @@ header #toggle {
     padding-left: 0;
     list-style: none;
     border-radius: .25rem;
+    -webkit-border-radius: .25rem;
+    -moz-border-radius: .25rem;
     width: 100%
 }
 .resource-pagination ul {
@@ -267,6 +295,8 @@ footer i:hover, footer i:active, footer i:focus {
     background-clip: padding-box;
     border: 1px solid #ccc;
     border-radius: .25rem;
+    -webkit-border-radius: .25rem;
+    -moz-border-radius: .25rem;
     -webkit-transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
     transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
