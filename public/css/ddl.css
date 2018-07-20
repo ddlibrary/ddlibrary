@@ -729,6 +729,11 @@ aside .sub-subject-show {
     footer div {
         padding-bottom: 1em;
     }
+
+    footer div i{
+        padding: 0.5em;
+    }
+
     footer nav {
         display: flex;
         flex-wrap: wrap;
