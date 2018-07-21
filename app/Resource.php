@@ -81,7 +81,7 @@ class Resource extends Model
 
     public function CreativeCommons()
     {
-        return $this->belongsToMany(TaxonomyTerm::class, 'resource_creative_commons', 'resource_id', 'creative_commons');
+        return $this->belongsToMany(TaxonomyTerm::class, 'resource_creative_commons', 'resource_id', 'tid');
     }
 
     public function EducationalResources()
@@ -106,7 +106,7 @@ class Resource extends Model
     
     public function scopePublished($query)
     {
-        return $query->where('status',1);
+        return $query->where('status', 1);
     }
 
     public function getResources($resourceId, $step)
@@ -479,8 +479,10 @@ class Resource extends Model
                 $join->on('ttd.id', '=', 'sarea.tid')
                     ->where('ttd.vid', 8);
             })
+            ->leftJoin('taxonomy_term_hierarchy as tth', 'tth.parent', '=', 'ttd.id')
             ->join('static_subject_area_icons AS sticons','sticons.tid','=','ttd.id')
             ->where('ttd.language', Config::get('app.locale'))
+            ->orderBy('total', 'desc')
             ->groupBy(
                 'sarea.tid', 
                 'sticons.file_name',
@@ -540,67 +542,6 @@ class Resource extends Model
         return $record;
     }
 
-    public function saveTheResource($resource=array())
-    {
-        return true;
-    }
-
-    public function insertFavorite($resourceId, $userId)
-    {
-        $record = DB::table('resource_favorites')
-            ->where('resource_id', $resourceId)
-            ->where('user_id', $userId)
-            ->first();
-
-        if($record){
-            DB::table('resource_favorites')
-                ->where('resource_id', $resourceId)
-                ->where('user_id', $userId)
-                ->delete();
-
-            return "deleted";
-        }else{
-            $record = DB::table('resource_favorites')->insertGetId([
-                'resource_id'    => $resourceId,
-                'user_id'        => $userId,
-                'created_at'       => \Carbon\Carbon::now(),
-                'updated_at'       => \Carbon\Carbon::now()
-            ]);
-
-            if($record){
-                return "added";
-            }
-        }
-    }
-
-    public function insertFlag($params)
-    {
-        $record = DB::table('resource_flags')->insertGetId([
-            'resource_id'    => $params['resource_id'],
-            'user_id'        => $params['userid'],
-            'type'          => $params['type'],
-            'details'       => $params['details'],
-            'created_at'       => \Carbon\Carbon::now(),
-            'updated_at'       => \Carbon\Carbon::now()
-        ]);
-          
-        return $record;
-    }
-
-    public function insertComment($params)
-    {
-        $record = DB::table('resource_comments')->insertGetId([
-            'resource_id'    => $params['resource_id'],
-            'user_id'        => $params['userid'],
-            'comment'       => $params['comment'],
-            'status'        => 0,
-            'created'       => \Carbon\Carbon::now(),
-            'updated'       => \Carbon\Carbon::now()
-        ]);
-          
-        return $record;
-    }
-
     public function updateResourceCounter($data)
     {
         return DB::table('resource_views')->insertGetId([
@@ -612,213 +553,5 @@ class Resource extends Model
             'platform'          => $data['platform'],
             'created_at'           => \Carbon\Carbon::now()->timestamp
         ]);
-    }
-
-    public function insertResources($resourceId, $arr)
-    {
-        if($resourceId){
-            //Main 
-            DB::table('resources')->insert([
-                'resourceid'        => $resourceId,
-                'created'           => $arr['resource_created'],
-                'updated'           => \Carbon\Carbon::now()->timestamp
-            ]);
-            $resourceId = $resourceId;
-        }else{
-            //Main 
-            $resourceId = DB::table('resources')->insertGetId([
-                'created'           => \Carbon\Carbon::now()->timestamp
-            ]);
-        }
-
-        //Resource Data
-        DB::table('resources_data')->insert([
-            'resourceid'        => $resourceId,
-            'title'             => $arr['title'],
-            'abstract'          => $arr['abstract'],
-            'language'          => $arr['language'],
-            'userid'            => Auth::id(),
-            'status'            => isset($arr['published'])?$arr['published']:0,
-            'tnid'              => $resourceId,
-            'created'           => isset($arr['resource_created'])?$arr['resource_created']:\Carbon\Carbon::now()->timestamp,
-            'updated'           => \Carbon\Carbon::now()->timestamp
-        ]);
-
-        //Resource attachments
-        for($i=0; $i<count($arr['attc']); $i++){
-            DB::table('resources_attachments')->insertGetId([
-                'resourceid'        => $resourceId,
-                'file_name'         => $arr['attc'][$i]['file_name'],
-                'file_mime'         => $arr['attc'][$i]['file_mime'],
-                'file_size'         => $arr['attc'][$i]['file_size']
-            ]);
-        }
-
-        //Author
-        if(isset($arr['author'])){
-            $authorId = DB::table('taxonomy_term_data')->insertGetId([
-                'vid'       => 24,
-                'name'      => $arr['author'],
-                'language'  => $arr['language']
-            ]);
-
-            DB::table('resources_authors')->insert([
-                'resourceid'            => $resourceId,
-                'author_name_tid'       => $authorId
-            ]);
-        }
-
-        //Publisher
-        if(isset($arr['publisher'])){
-            $publisherId = DB::table('taxonomy_term_data')->insertGetId([
-                'vid'       => 9,
-                'name'      => $arr['publisher'],
-                'language'  => $arr['language']
-            ]);
-
-            DB::table('resources_publishers')->insert([
-                'resourceid'          => $resourceId,
-                'publisher_name_tid'  => $publisherId
-            ]);
-        }
-
-        //Translator
-        if(isset($arr['translator'])){
-            $translatorId = DB::table('taxonomy_term_data')->insertGetId([
-                'vid'       => 22,
-                'name'      => $arr['translator'],
-                'language'  => $arr['language']
-            ]);
-
-            DB::table('resources_translators')->insert([
-                'resourceid'            => $resourceId,
-                'translator_name_tid'   => $translatorId
-            ]);
-        }
-
-        //Copyright holder
-        if(isset($arr['copyright_holder'])){
-            $copyrightHolderId = DB::table('taxonomy_term_data')->insertGetId([
-                'vid'       => 26,
-                'name'      => $arr['copyright_holder'],
-                'language'  => $arr['language']
-            ]);
-
-            DB::table('resources_copyright_holders')->insert([
-                'resourceid'         => $resourceId,
-                'copyright_holder'   => $copyrightHolderId
-            ]);
-        }
-
-        //Creative commons
-        if(isset($arr['creative_commons'])){
-            $creativeCommonsId = DB::table('taxonomy_term_data')->insertGetId([
-                'vid'       => 10,
-                'name'      => $arr['creative_commons'],
-                'language'  => $arr['language']
-            ]);
-
-            DB::table('resources_creative_commons')->insert([
-                'resourceid'         => $resourceId,
-                'creative_commons'   => $creativeCommonsId
-            ]);
-        }
-
-        //Creative commons other
-        if(isset($arr['creative_commons_other'])){
-            $creativeCommonsOtherId =DB::table('taxonomy_term_data')->insertGetId([
-                'vid'       => 27,
-                'name'      => $arr['creative_commons_other'],
-                'language'  => $arr['language']
-            ]);
-
-            DB::table('resources_creative_commons')->insert([
-                'resourceid'         => $resourceId,
-                'creative_commons'   => $creativeCommonsOtherId
-            ]);
-        }
-
-        //Keywords
-        if(isset($arr['keywords'])){
-            $keywordsId =DB::table('taxonomy_term_data')->insertGetId([
-                'vid'       => 23,
-                'name'      => $arr['keywords'],
-                'language'  => $arr['language']
-            ]);
-
-            DB::table('resources_keywords')->insert([
-                'resourceid'    => $resourceId,
-                'keyword'       => $keywordsId
-            ]);
-        }
-
-        //Resource Subjects
-        foreach($arr['subject_areas'] AS $sa){
-            DB::table('resources_subject_areas')->insert([
-                'resourceid'        => $resourceId,
-                'subject_area_tid'  => $sa
-            ]);
-        }
-
-        //Learn resource types
-        foreach($arr['learning_resources_types'] AS $ltype){
-            DB::table('resources_learning_resource_types')->insert([
-                'resourceid'        => $resourceId,
-                'learning_resource_type_tid'  => $ltype
-            ]);
-        }
-
-        //Educational use
-        foreach($arr['educational_use'] AS $eduse){
-            DB::table('resources_educational_uses')->insert([
-                'resourceid'        => $resourceId,
-                'educational_use'  => $eduse
-            ]);
-        }
-
-        //Resource levels
-        foreach($arr['level'] AS $level){
-            DB::table('resources_levels')->insert([
-                'resourceid'            => $resourceId,
-                'resource_level_tid'    => $level
-            ]);
-        }
-
-        //Translation rights
-        if(isset($arr['translation_rights'])){
-            DB::table('resources_translation_rights')->insert([
-                'resourceid'           => $resourceId,
-                'translation_right'    => $arr['translation_rights']
-            ]);
-        }
-
-        //Educational resource
-        if(isset($arr['educational_resource'])){
-            DB::table('resources_educational_resources')->insert([
-                'resourceid'           => $resourceId,
-                'educational_resource' => $arr['educational_resource']
-            ]);
-        }
-
-        //Creative commons
-        if(isset($arr['creative_commons'])){
-            DB::table('resources_creative_commons')->insert([
-                'resourceid'            => $resourceId,
-                'creative_commons'      => $arr['creative_commons']
-            ]);
-        }
-    }
-
-    public function deleteResources($resourceId)
-    {
-        $created = DB::table('resources')
-            ->select('created')
-            ->first();
-        
-        DB::table('resources')
-        ->where('resourceid', $resourceId)
-        ->delete();
-
-        return $created->created;
     }
 }

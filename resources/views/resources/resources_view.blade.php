@@ -223,18 +223,18 @@
     <section class="resource-view-comment">
         <header>
             <h2>Comments</h2>
-            <h2>{{ count($resource->comments) }} comment(s) so far</h2>
+            <h2>{{ count($comments) }} comment(s) so far</h2>
         </header>
-        @foreach($resource->comments AS $cm)
+        @foreach($comments AS $cm)
         <article>
             <div>
-                <strong>{{ $cm->username }}</strong>
+                <strong>{{ $cm->user->username }}</strong>
             </div>
             <div>
                 {{ $cm->comment }}
             </div>
             <div>
-                {{ Carbon\Carbon::createFromTimestamp($cm->created)->diffForHumans() }}
+                {{ $cm->created_at->diffForHumans() }}
             </div>
         </article>
         <hr>

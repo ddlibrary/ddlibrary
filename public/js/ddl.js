@@ -54,7 +54,6 @@ function closeNav() {
 function favorite(elementId, baseUrl, resourceId, userId) 
 {
     let csrf = $('meta[name="csrf-token"]').attr('content');
-    
     $.ajax({
         type: "POST",
         url: baseUrl,

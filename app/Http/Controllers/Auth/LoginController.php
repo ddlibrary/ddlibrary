@@ -137,8 +137,7 @@ class LoginController extends Controller
 
     public function authenticated(Request $request, $user) 
     {
-        //return redirect()->intended('home');
-        return redirect('home');
+        return redirect()->intended('home');
     }
 
     //Doesn't work here, but for future use

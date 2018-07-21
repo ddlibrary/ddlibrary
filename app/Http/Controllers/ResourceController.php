@@ -21,6 +21,10 @@ use App\ResourcePublisher;
 use App\ResourceTranslator;
 use App\ResourceIamAuthor;
 
+use App\ResourceComment;
+use App\ResourceFlag;
+use App\ResourceFavorite;
+
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Session;
@@ -96,7 +100,7 @@ class ResourceController extends Controller
         $resource = Resource::findOrFail($resourceId);
 
         $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
-
+        $comments = ResourceComment::published()->get();
         if($resource){
             $translation_id = $resource->tnid;
             if($translation_id){
@@ -111,6 +115,7 @@ class ResourceController extends Controller
         return view('resources.resources_view', compact(
             'resource',
             'relatedItems',
+            'comments',
             'translations'
         ));   
     }
@@ -468,53 +473,69 @@ class ResourceController extends Controller
     {
         $myResources = new Resource();
         
-        $parameters = $request->only('resourceId', 'userId');
-        
-        $resourceId = $parameters['resourceId'];
-        $userId = $parameters['userId'];
+        $resourceId = $request->input('resourceId');
+        $userId = $request->input('userId');
 
         if(!$userId){
             return json_encode("notloggedin");
         }
 
-        $result = $myResources->insertFavorite($resourceId, $userId);
-        return json_encode($result);
+        $favorite = resourceFavorite::where('resource_id', $resourceId)->first();
+
+        if(count($favorite)){
+            $favorite->delete();
+            return json_encode("deleted");
+        }else{
+            $favorite = new ResourceFavorite;
+            $favorite->resource_id = $resourceId;
+            $favorite->user_id = $userId;
+            $favorite->save();
+
+            return json_encode("added");
+        }
     }
 
     public function flag(Request $request)
     {
         $myResources = new Resource();
 
-        $params = $request->only('resource_id', 'userid','type','details');
-        $userId = $params['userid'];
-        $resourceId = $params['resource_id'];
+        $userId = $request->input('userid');
+        $resourceId = $request->input('resource_id');
 
         if(empty($userId)){
             return redirect('login');
         }
 
-        if($myResources->insertFlag($params)){
-            Session()->flash('msg', "Your flag report is now registered! We will get back to you as soon as possible!");
-            return redirect('resources/view/'.$resourceId)->with('success','We received your report. Thank you.');
-        }
+        $flag = new ResourceFlag;
+        $flag->resource_id = $resourceId;
+        $flag->user_id = $userId;
+        $flag->type = $request->input('type');
+        $flag->details = $request->input('details');
+        $flag->save();
+
+        return redirect('resources/view/'.$resourceId)
+            ->with('success', 'Your flag report is now registered! We will get back to you as soon as possible!');
     }
 
     public function comment(Request $request)
     {
         $myResources = new Resource();
 
-        $params = $request->only('resource_id', 'userid','comment');
-        $userId = $params['userid'];
-        $resourceId = $params['resource_id'];
+        $userId = $request->input('userid');
+        $resourceId = $request->input('resource_id');
 
         if(empty($userId)){
             return redirect('login');
         }
 
-        if($myResources->insertComment($params)){
-            Session()->flash('success', "Your comment is successfully registered. We will publish it after review.");
-            return redirect('resources/view/'.$resourceId);
-        }
+        $comment = new ResourceComment;
+        $comment->resource_id = $resourceId;
+        $comment->user_id = $userId;
+        $comment->comment = $request->input('comment');
+        $comment->save();
+        
+        return redirect('resources/view/'.$resourceId)
+            ->with('success', 'Your comment is successfully registered. We will publish it after review.');
     }
 
     public function resourceViewCounter(Request $request, $resourceId)
