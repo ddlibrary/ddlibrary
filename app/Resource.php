@@ -257,11 +257,16 @@ class Resource extends Model
 
     public function resourceAttributesList($tableName, $vid)
     {
-        $records = DB::table($tableName)
-                ->join('taxonomy_term_hierarchy AS tth', 'tth.tid','=',$tableName.'.id')
+        $records = DB::table($tableName.' AS ttd')
+                ->select(
+                    'ttd.id',
+                    'ttd.name',
+                    'tth.parent'
+                )
+                ->leftJoin('taxonomy_term_hierarchy AS tth', 'tth.tid','=','ttd.id')
                 ->where('vid', $vid)
                 ->where('language',Config::get('app.locale'))
-                ->orderBy($tableName.'.id')
+                ->orderBy('ttd.weight')
                 ->get();
         return $records;
     }
@@ -479,7 +484,6 @@ class Resource extends Model
                 $join->on('ttd.id', '=', 'sarea.tid')
                     ->where('ttd.vid', 8);
             })
-            ->leftJoin('taxonomy_term_hierarchy as tth', 'tth.parent', '=', 'ttd.id')
             ->join('static_subject_area_icons AS sticons','sticons.tid','=','ttd.id')
             ->where('ttd.language', Config::get('app.locale'))
             ->orderBy('total', 'desc')

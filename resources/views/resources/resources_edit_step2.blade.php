@@ -21,7 +21,7 @@
         <h1>Add a new Resource - Step 2</h1>
     </header>
     <div class="content-body">
-        <form method="POST" action="{{ route('edit2', $resource["resourceid"]) }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('edit2', $resource["id"]) }}" enctype="multipart/form-data">
         @csrf
         <div class="form-item">
             <label for="attachments"> 
@@ -50,7 +50,7 @@
             </label>
             <select class="form-control{{ $errors->has('subject_areas') ? ' is-invalid' : '' }}" id="subject_areas" name="subject_areas[]" required  multiple="multiple">
                 @foreach ($subjects AS $item)
-                    <option value="{{ $item->tid }}">{{ $item->name }}</option>
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
                 @endforeach
             </select>
 
@@ -78,7 +78,7 @@
             </label>
             <select class="form-control{{ $errors->has('learning_resources_types') ? ' is-invalid' : '' }}" id="learning_resources_types" name="learning_resources_types[]" required  multiple="multiple">
                 @foreach ($learningResourceTypes AS $item)
-                    <option value="{{ $item->tid }}">{{ $item->name }}</option>
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
                 @endforeach
             </select>
 
@@ -95,7 +95,7 @@
             </label>
             <select class="form-control{{ $errors->has('educational_use') ? ' is-invalid' : '' }}" id="educational_use" name="educational_use[]" required  multiple="multiple">
                 @foreach ($educationalUse AS $item)
-                    <option value="{{ $item->tid }}">{{ $item->name }}</option>
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
                 @endforeach
             </select>
 
@@ -119,24 +119,24 @@
             ?>
             @foreach($levels AS $level)
                 @if($level->parent == 0)
-                    <li><input type="checkbox" name="level[]" {{ in_array($level->tid, $resourceLevels) ? "checked" : ""}} value="{{ $level->tid }}" onchange="fnTest(this,'subLevel{{$level->tid}}');">{{ $level->name }}
-                        <?php $levelParent = $levels->where('parent', $level->tid);?>
+                    <li><input type="checkbox" name="level[]" {{ in_array($level->id, $resourceLevels) ? "checked" : ""}} value="{{ $level->id }}" onchange="fnTest(this,'subLevel{{$level->id}}');">{{ $level->name }}
+                        <?php $levelParent = $levels->where('parent', $level->id);?>
                         @if(count($levelParent) > 0)
-                            <i class="fas fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$level->tid}}')"></i>
+                            <i class="fas fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$level->id}}')"></i>
                         @endif
                     @if(count($levelParent) > 0)
-                        <ul id="subLevel{{$level->tid}}" class="subItem" style="display:none;">
+                        <ul id="subLevel{{$level->id}}" class="subItem" style="display:none;">
                             @foreach($levelParent as $item)
-                                <li><input type="checkbox" name="level[]" onchange="fnTest(this,'subLevel{{$item->tid}}');" {{ in_array($item->tid, $resourceLevels) ?"checked":""}} class="child" value="{{ $item->tid }}">{{ $item->name }}
+                                <li><input type="checkbox" name="level[]" onchange="fnTest(this,'subLevel{{$item->id}}');" {{ in_array($item->id, $resourceLevels) ?"checked":""}} class="child" value="{{ $item->id }}">{{ $item->name }}
                             
-                                <?php $levelItemParent = $levels->where('parent', $item->tid);?>
+                                <?php $levelItemParent = $levels->where('parent', $item->id);?>
                                 @if(count($levelItemParent) > 0)
-                                    <i class="fas fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$item->tid}}')"></i>
+                                    <i class="fas fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$item->id}}')"></i>
                                 @endif
                                 @if(count($levelItemParent) > 0)
-                                    <ul id="subLevel{{$item->tid}}" class="subItem" style="display:none;">
+                                    <ul id="subLevel{{$item->id}}" class="subItem" style="display:none;">
                                         @foreach($levelItemParent as $itemLevel)
-                                            <li><input type="checkbox" name="level[]" {{ in_array($itemLevel->tid, $resourceLevels) ?"checked":""}} class="child" value="{{ $itemLevel->tid }}">{{ $itemLevel->name }}</li>
+                                            <li><input type="checkbox" name="level[]" {{ in_array($itemLevel->id, $resourceLevels) ?"checked":""}} class="child" value="{{ $itemLevel->id }}">{{ $itemLevel->name }}</li>
                                         @endforeach
                                     </ul>
                                 @endif
@@ -150,7 +150,7 @@
             </ul>
         </div>
         <div style="display:flex;">
-            <input style="margin-right: 10px;" class="form-control normalButton" type="button" value="Previous" onclick="location.href='{{ route('edit1', $resource["resourceid"]) }}'">
+            <input style="margin-right: 10px;" class="form-control normalButton" type="button" value="Previous" onclick="location.href='{{ route('edit1', $resource["id"]) }}'">
             <input class="form-control normalButton" type="submit" value="Next">
         </div>
         </form>

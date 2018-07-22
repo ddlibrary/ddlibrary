@@ -25,6 +25,8 @@ use App\ResourceComment;
 use App\ResourceFlag;
 use App\ResourceFavorite;
 
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Session;
@@ -238,7 +240,7 @@ class ResourceController extends Controller
         $myResources = new Resource();
 
         $creativeCommons        = $myResources->resourceAttributesList('taxonomy_term_data', 10);
-        $creativeCommonsOther   = $myResources->resourceAttributesList('taxonomy_term_data', 27);
+        $creativeCommonsOther   = $myResources->resourceAttributesList('taxonomy_term_data', 26);
 
         return view('resources.resources_add_step3', compact('resource', 'creativeCommons', 'creativeCommonsOther'));
     }
@@ -252,7 +254,7 @@ class ResourceController extends Controller
         $validatedData = $request->validate([
             'translation_rights'        => 'integer',
             'educational_resource'      => 'integer',
-            'copyright_holder'          => 'string',
+            'copyright_holder'          => 'string|nullable',
             'iam_author'                => 'integer',
             'creative_commons'          => 'integer',
             'creative_commons_other'    => 'integer'
@@ -267,184 +269,189 @@ class ResourceController extends Controller
         $request->session()->forget('resource1');
         $request->session()->forget('resource2');
         $request->session()->forget('resource3');
-        //$request->session()->save();
+        $request->session()->save();
 
         $finalArray = array_merge($resource1, $resource2, $resource3);
 
-        $myResources = new Resource();
+        $result = DB::transaction(function () use($finalArray) {
+            $myResources = new Resource();
 
-        $myResources->title = $finalArray['title'];
-        $myResources->abstract = $finalArray['abstract'];
-        $myResources->language = $finalArray['language'];
-        $myResources->user_id = Auth::id();
-        $myResources->status = 0;
-        //inserting to resource table
-        $myResources->save();
+            $myResources->title = $finalArray['title'];
+            $myResources->abstract = $finalArray['abstract'];
+            $myResources->language = $finalArray['language'];
+            $myResources->user_id = Auth::id();
+            $myResources->status = 0;
+            //inserting to resource table
+            $myResources->save();
 
-        $myResources = Resource::find($myResources->id);
-        $myResources->tnid = $myResources->id;
-        //updating resource table with tnid
-        $myResources->save();
+            $myResources = Resource::find($myResources->id);
+            $myResources->tnid = $myResources->id;
+            //updating resource table with tnid
+            $myResources->save();
 
-        if(isset($finalArray['attc'])){
-            foreach($finalArray['attc'] as $attc){
-                $myAttachments = new ResourceAttachment();
-                $myAttachments->resource_id = $myResources->id;
-                $myAttachments->file_name = $attc['file_name'];
-                $myAttachments->file_mime = $attc['file_mime'];
-                $myAttachments->file_size = $attc['file_size'];
-                $myAttachments->save();
+            if(isset($finalArray['attc'])){
+                foreach($finalArray['attc'] as $attc){
+                    $myAttachments = new ResourceAttachment();
+                    $myAttachments->resource_id = $myResources->id;
+                    $myAttachments->file_name = $attc['file_name'];
+                    $myAttachments->file_mime = $attc['file_mime'];
+                    $myAttachments->file_size = $attc['file_size'];
+                    $myAttachments->save();
+                }
             }
-        }
 
-        //Inserting Subject Areas
-        foreach($finalArray['subject_areas'] as $subject){
-            $mySubjects = new ResourceSubjectArea();
-            $mySubjects->resource_id = $myResources->id;
-            $mySubjects->tid = $subject;
-            $mySubjects->save();
-        }
+            //Inserting Subject Areas
+            foreach($finalArray['subject_areas'] as $subject){
+                $mySubjects = new ResourceSubjectArea();
+                $mySubjects->resource_id = $myResources->id;
+                $mySubjects->tid = $subject;
+                $mySubjects->save();
+            }
 
-        //Inserting Keywords
-        $keywords = trim($finalArray['keywords'], ",");
-        $keywords = explode(',',$keywords);
-        foreach($keywords as $kw){
-            $myTaxonomy = new TaxonomyTerm();
-            $myTaxonomy->vid = 23;
-            $myTaxonomy->name = $kw;
-            $myTaxonomy->language = $finalArray['language'];
-            $myTaxonomy->save();
-
-            $myKeywords = new ResourceKeyword();
-            $myKeywords->resource_id = $myResources->id;
-            $myKeywords->tid = $myTaxonomy->id;
-            $myKeywords->save();
-        }
-
-        //Inserting Authors
-        if(isset($finalArray['author'])){
-            $authors = trim($finalArray['author'], ",");
-            $authors = explode(',',$authors);
-            foreach($authors as $author){
+            //Inserting Keywords
+            $keywords = trim($finalArray['keywords'], ",");
+            $keywords = explode(',',$keywords);
+            foreach($keywords as $kw){
                 $myTaxonomy = new TaxonomyTerm();
-                $myTaxonomy->vid = 24;
-                $myTaxonomy->name = $author;
+                $myTaxonomy->vid = 23;
+                $myTaxonomy->name = trim($kw);
                 $myTaxonomy->language = $finalArray['language'];
                 $myTaxonomy->save();
 
-                $myAuthor = new ResourceAuthor();
-                $myAuthor->resource_id = $myResources->id;
-                $myAuthor->tid = $myTaxonomy->id;
-                $myAuthor->save();
+                $myKeywords = new ResourceKeyword();
+                $myKeywords->resource_id = $myResources->id;
+                $myKeywords->tid = $myTaxonomy->id;
+                $myKeywords->save();
             }
-        }
 
-        //Inserting Publishers
-        if(isset($finalArray['publisher'])){
-            $myTaxonomy = new TaxonomyTerm();
-            $myTaxonomy->vid = 9;
-            $myTaxonomy->name = $finalArray['publisher'];
-            $myTaxonomy->language = $finalArray['language'];
-            $myTaxonomy->save();
+            //Inserting Authors
+            if(isset($finalArray['author'])){
+                $authors = trim($finalArray['author'], ",");
+                $authors = explode(',',$authors);
+                foreach($authors as $author){
+                    $myTaxonomy = new TaxonomyTerm();
+                    $myTaxonomy->vid = 24;
+                    $myTaxonomy->name = $author;
+                    $myTaxonomy->language = $finalArray['language'];
+                    $myTaxonomy->save();
 
-            $myPublisher = new ResourcePublisher();
-            $myPublisher->resource_id = $myResources->id;
-            $myPublisher->tid = $myTaxonomy->id;
-            $myPublisher->save();
-        }
+                    $myAuthor = new ResourceAuthor();
+                    $myAuthor->resource_id = $myResources->id;
+                    $myAuthor->tid = $myTaxonomy->id;
+                    $myAuthor->save();
+                }
+            }
 
-        //Inserting Translators
-        if(isset($finalArray['translator'])){
-            $translators = trim($finalArray['translator'], ",");
-            $translators = explode(',',$translators);
-            foreach($translators as $translator){
+            //Inserting Publishers
+            if(isset($finalArray['publisher'])){
                 $myTaxonomy = new TaxonomyTerm();
-                $myTaxonomy->vid = 24;
-                $myTaxonomy->name = $translator;
+                $myTaxonomy->vid = 9;
+                $myTaxonomy->name = $finalArray['publisher'];
                 $myTaxonomy->language = $finalArray['language'];
                 $myTaxonomy->save();
 
-                $myTranslator = new ResourceTranslator();
-                $myTranslator->resource_id = $myResources->id;
-                $myTranslator->tid = $myTaxonomy->id;
-                $myTranslator->save();
+                $myPublisher = new ResourcePublisher();
+                $myPublisher->resource_id = $myResources->id;
+                $myPublisher->tid = $myTaxonomy->id;
+                $myPublisher->save();
             }
-        }
 
-        //Inserting Learning Resource Types
-        foreach($finalArray['learning_resources_types'] as $ltype){
-            $myLearningType = new ResourceLearningResourceType();
-            $myLearningType->resource_id = $myResources->id;
-            $myLearningType->tid = $ltype;
-            $myLearningType->save();
-        }
+            //Inserting Translators
+            if(isset($finalArray['translator'])){
+                $translators = trim($finalArray['translator'], ",");
+                $translators = explode(',',$translators);
+                foreach($translators as $translator){
+                    $myTaxonomy = new TaxonomyTerm();
+                    $myTaxonomy->vid = 24;
+                    $myTaxonomy->name = $translator;
+                    $myTaxonomy->language = $finalArray['language'];
+                    $myTaxonomy->save();
 
-        //Inserting Educational Use
-        foreach($finalArray['educational_use'] as $edus){
-            $myEdu = new ResourceEducationalUse();
-            $myEdu->resource_id = $myResources->id;
-            $myEdu->educational_use = $edus;
-            $myEdu->save();
-        }
+                    $myTranslator = new ResourceTranslator();
+                    $myTranslator->resource_id = $myResources->id;
+                    $myTranslator->tid = $myTaxonomy->id;
+                    $myTranslator->save();
+                }
+            }
 
-        //Inserting Resource Levels
-        foreach($finalArray['level'] as $level){
-            $myLevel = new ResourceLevel();
-            $myLevel->resource_id = $myResources->id;
-            $myLevel->tid = $level;
-            $myLevel->save();
-        }
+            //Inserting Learning Resource Types
+            foreach($finalArray['learning_resources_types'] as $ltype){
+                $myLearningType = new ResourceLearningResourceType();
+                $myLearningType->resource_id = $myResources->id;
+                $myLearningType->tid = $ltype;
+                $myLearningType->save();
+            }
 
-        //Inserting Translation Rights
-        if(isset($finalArray['translation_rights'])){
-            $myTranslationRight = new ResourceTranslationRight();
-            $myTranslationRight->resource_id = $myResources->id;
-            $myTranslationRight->translation_right = $finalArray['translation_rights'];
-            $myTranslationRight->save();
-        }
+            //Inserting Educational Use
+            foreach($finalArray['educational_use'] as $edus){
+                $myEdu = new ResourceEducationalUse();
+                $myEdu->resource_id = $myResources->id;
+                $myEdu->tid = $edus;
+                $myEdu->save();
+            }
 
-        //Inserting Educational Resource
-        if(isset($finalArray['educational_resource'])){
-            $myEduResource = new ResourceEducationalResource();
-            $myEduResource->resource_id = $myResources->id;
-            $myEduResource->educational_resource = $finalArray['educational_resource'];
-            $myEduResource->save();
-        }
+            //Inserting Resource Levels
+            foreach($finalArray['level'] as $level){
+                $myLevel = new ResourceLevel();
+                $myLevel->resource_id = $myResources->id;
+                $myLevel->tid = $level;
+                $myLevel->save();
+            }
 
-        //Inserting ResourceIamAuthor
-        if(isset($finalArray['iam_author'])){
-            $myIamAuthor = new ResourceIamAuthor();
-            $myIamAuthor->resource_id = $myResources->id;
-            $myIamAuthor->iam_author = $finalArray['iam_author'];
-            $myIamAuthor->save();
-        }
+            //Inserting Translation Rights
+            if(isset($finalArray['translation_rights'])){
+                $myTranslationRight = new ResourceTranslationRight();
+                $myTranslationRight->resource_id = $myResources->id;
+                $myTranslationRight->value = $finalArray['translation_rights'];
+                $myTranslationRight->save();
+            }
 
-        //Inserting Copyright Holder
-        if(isset($finalArray['copyright_holder'])){
-            $myCopyrightHolder = new ResourceCopyrightHolder();
-            $myCopyrightHolder->resource_id = $myResources->id;
-            $myCopyrightHolder->copyright_holder = $finalArray['copyright_holder'];
-            $myCopyrightHolder->save();
-        }
+            //Inserting Educational Resource
+            if(isset($finalArray['educational_resource'])){
+                $myEduResource = new ResourceEducationalResource();
+                $myEduResource->resource_id = $myResources->id;
+                $myEduResource->value = $finalArray['educational_resource'];
+                $myEduResource->save();
+            }
 
-        //Inserting Creative Commons
-        if(isset($finalArray['creative_commons'])){
-            $myCC = new ResourceCreativeCommon();
-            $myCC->resource_id = $myResources->id;
-            $myCC->creative_commons = $finalArray['creative_commons'];
-            $myCC->save();
-        }
+            //Inserting ResourceIamAuthor
+            if(isset($finalArray['iam_author'])){
+                $myIamAuthor = new ResourceIamAuthor();
+                $myIamAuthor->resource_id = $myResources->id;
+                $myIamAuthor->value = $finalArray['iam_author'];
+                $myIamAuthor->save();
+            }
 
-        //Inserting Sharing Permission
-        if(isset($finalArray['creative_commons_other'])){
-            $mySharePermit = new ResourceSharePermission();
-            $mySharePermit->resource_id = $myResources->id;
-            $mySharePermit->share_permission = $finalArray['creative_commons_other'];
-            $mySharePermit->save();
-        }
+            //Inserting Copyright Holder
+            if(isset($finalArray['copyright_holder'])){
+                $myCopyrightHolder = new ResourceCopyrightHolder();
+                $myCopyrightHolder->resource_id = $myResources->id;
+                $myCopyrightHolder->value = $finalArray['copyright_holder'];
+                $myCopyrightHolder->save();
+            }
 
-        //$insertAttachment = $myResources->insertResources(0, $finalArray);
-        return redirect('/home')->with('success','Resource successfully added! It will be published after review.');
+            //Inserting Creative Commons
+            if(isset($finalArray['creative_commons'])){
+                $myCC = new ResourceCreativeCommon();
+                $myCC->resource_id = $myResources->id;
+                $myCC->tid = $finalArray['creative_commons'];
+                $myCC->save();
+            }
+
+            //Inserting Sharing Permission
+            if(isset($finalArray['creative_commons_other'])){
+                $mySharePermit = new ResourceSharePermission();
+                $mySharePermit->resource_id = $myResources->id;
+                $mySharePermit->tid = $finalArray['creative_commons_other'];
+                $mySharePermit->save();
+            }
+
+            return true;
+        });
+
+        if($result){
+            return redirect('/home')->with('success','Resource successfully added! It will be published after review.');
+        }
     }
 
     public function attributes($entity, Request $request)
@@ -579,7 +586,7 @@ class ResourceController extends Controller
             'abstract'      => 'required',
         ]);
 
-        $validatedData['resourceid'] = $resourceId;
+        $validatedData['id'] = $resourceId;
         $validatedData['status'] = $request->input('status');
         $request->session()->put('resource1', $validatedData);
 
@@ -626,7 +633,7 @@ class ResourceController extends Controller
         }
 
         if($resource && isset($resource['keywords'])){
-            $resourceKeywords = $resource['keywords'];    
+            $resourceKeywords = explode(',',$resource['keywords']);
         }else{
             $dataKeywords = $myResources->resourceAttributes($resourceId,'resource_keywords','tid', 'taxonomy_term_data');
             foreach($dataKeywords AS $item)
@@ -638,7 +645,7 @@ class ResourceController extends Controller
         if(isset($resource['educational_use'])){
             $EditEducationalUse = $resource['educational_use'];    
         }else{
-            $dataEducationalUse = $myResources->resourceAttributes($resourceId,'resource_educational_uses','educational_use','taxonomy_term_data');
+            $dataEducationalUse = $myResources->resourceAttributes($resourceId,'resource_educational_uses','tid','taxonomy_term_data');
             foreach($dataEducationalUse AS $item)
             {
                 array_push($EditEducationalUse, $item->id);
@@ -688,7 +695,7 @@ class ResourceController extends Controller
         $educationalUse = $myResources->resourceAttributesList('taxonomy_term_data',25);
         $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
         $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
-        $resource['resourceid'] = $resourceId;
+        $resource['id'] = $resourceId;
 
         return view('resources.resources_edit_step2', compact(
             'resource',
@@ -767,9 +774,9 @@ class ResourceController extends Controller
         $myResources = new Resource();
 
         $creativeCommons        = $myResources->resourceAttributesList('taxonomy_term_data', 10);
-        $creativeCommonsOther   = $myResources->resourceAttributesList('taxonomy_term_data', 27);
+        $creativeCommonsOther   = $myResources->resourceAttributesList('taxonomy_term_data', 26);
 
-        $resource['resourceid'] = $resourceId;
+        $resource['id'] = $resourceId;
         $resource['status'] = $resource1['status'];
 
         return view('resources.resources_edit_step3', compact('dbRecords', 'resource', 'creativeCommons', 'creativeCommonsOther'));
@@ -785,7 +792,7 @@ class ResourceController extends Controller
             'translation_rights'        => 'integer',
             'educational_resource'      => 'integer',
             'iam_author'                => 'integer',
-            'copyright_holder'          => 'string',
+            'copyright_holder'          => 'string|nullable',
             'creative_commons'          => 'integer',
             'creative_commons_other'    => 'integer'
         ]);
@@ -804,288 +811,267 @@ class ResourceController extends Controller
 
         $finalArray = array_merge($resource1, $resource2, $resource3);
 
-        $myResources = Resource::find($resourceId);
+        $result = DB::transaction(function () use($resourceId, $finalArray) {
+            $myResources = Resource::find($resourceId);
 
-        $myResources->title = $finalArray['title'];
-        $myResources->abstract = $finalArray['abstract'];
-        $myResources->language = $finalArray['language'];
-        $myResources->status = $finalArray['status'];
-        //inserting to resource table
-        $myResources->save();
+            $myResources->title = $finalArray['title'];
+            $myResources->abstract = $finalArray['abstract'];
+            $myResources->language = $finalArray['language'];
+            $myResources->status = $finalArray['status'];
+            //inserting to resource table
+            $myResources->save();
 
 
-        //Updating Attachments
-        if(isset($finalArray['attc'])){
-            ResourceAttachment::where('resource_id', $resourceId)->delete();
-            foreach($finalArray['attc'] as $attc){
-                $myAttachments = new ResourceAttachment();
-                $myAttachments->resource_id = $resourceId;
-                $myAttachments->file_name = $attc['file_name'];
-                $myAttachments->file_mime = $attc['file_mime'];
-                $myAttachments->file_size = $attc['file_size'];
-                $myAttachments->save();
+            //Updating Attachments
+            if(isset($finalArray['attc'])){
+                ResourceAttachment::where('resource_id', $resourceId)->delete();
+                foreach($finalArray['attc'] as $attc){
+                    $myAttachments = new ResourceAttachment();
+                    $myAttachments->resource_id = $resourceId;
+                    $myAttachments->file_name = $attc['file_name'];
+                    $myAttachments->file_mime = $attc['file_mime'];
+                    $myAttachments->file_size = $attc['file_size'];
+                    $myAttachments->save();
+                }
             }
-        }
 
-        //Deleting Subject Areas
-        $theSubjects = ResourceSubjectArea::where('resource_id', $resourceId);
-        foreach($theSubjects AS $kw)
-        {
-            TaxonomyTerm::where('id', $theSubjects->tid)->delete();
-        }
+            //Deleting Subject Areas
+            $theSubjects = ResourceSubjectArea::where('resource_id', $resourceId);
+            $theSubjects->delete();
 
-        $theSubjects->delete();
+            //Inserting Subject Areas
+            foreach($finalArray['subject_areas'] as $subject){
+                $mySubjects = new ResourceSubjectArea();
+                $mySubjects->resource_id = $myResources->id;
+                $mySubjects->tid = $subject;
+                $mySubjects->save();
+            }
 
-        //Inserting Subject Areas
-        foreach($finalArray['subject_areas'] as $subject){
-            $mySubjects = new ResourceSubjectArea();
-            $mySubjects->resource_id = $myResources->id;
-            $mySubjects->tid = $subject;
-            $mySubjects->save();
-        }
-
-        //Updating Keywords
-        $theKeyword = ResourceKeyword::where('resource_id', $resourceId);
-        foreach($theKeyword AS $kw)
-        {
-            TaxonomyTerm::where('id', $kw->tid)->delete();
-        }
-
-        $theKeyword->delete();
-
-        $keywords = trim($finalArray['keywords'], ",");
-        $keywords = explode(',',$keywords);
-        foreach($keywords as $kw){
-            $myTaxonomy = new TaxonomyTerm();
-            $myTaxonomy->vid = 23;
-            $myTaxonomy->name = $kw;
-            $myTaxonomy->language = $finalArray['language'];
-            $myTaxonomy->save();
-
-            $myKeywords = new ResourceKeyword();
-            $myKeywords->resource_id = $myResources->id;
-            $myKeywords->tid = $myTaxonomy->id;
-            $myKeywords->save();
-        }
-
-
-        //Deleting Authors
-        $theAuthors = ResourceAuthor::where('resource_id', $resourceId);
-        foreach($theAuthors AS $author)
-        {
-            TaxonomyTerm::where('id', $author->tid)->delete();
-        }
-
-        $theAuthors->delete();
-
-        //Inserting Authors
-        $authors = trim($finalArray['author'], ",");
-        $authors = explode(',',$authors);
-        foreach($authors as $author){
-            $myTaxonomy = new TaxonomyTerm();
-            $myTaxonomy->vid = 24;
-            $myTaxonomy->name = $author;
-            $myTaxonomy->language = $finalArray['language'];
-            $myTaxonomy->save();
-
-            $myAuthor = new ResourceAuthor();
-            $myAuthor->resource_id = $resourceId;
-            $myAuthor->tid = $myTaxonomy->id;
-            $myAuthor->save();
-        }
-
-
-        //Deleting Publishers
-        $thePublisher = ResourcePublisher::where('resource_id', $resourceId)->first();
-        if(count($thePublisher)){
-            TaxonomyTerm::where('id', $thePublisher->tid)->delete();
-            $thePublisher->delete();
-        }
-
-        //Inserting Publisher
-        if($finalArray['publisher']){
-            $myTaxonomy = new TaxonomyTerm();
-            $myTaxonomy->vid = 9;
-            $myTaxonomy->name = $finalArray['publisher'];
-            $myTaxonomy->language = $finalArray['language'];
-            $myTaxonomy->save();
-
-            $myPublisher = new ResourcePublisher();
-            $myPublisher->resource_id = $resourceId;
-            $myPublisher->tid = $myTaxonomy->id;
-            $myPublisher->save();
-        }
-
-        //Deleting Authors
-        $theTranslator = ResourceTranslator::where('resource_id', $resourceId);
-        if(count($theTranslator)){
-            foreach($theTranslator AS $trans)
+            //Updating Keywords
+            $theKeyword = ResourceKeyword::where('resource_id', $resourceId);
+            foreach($theKeyword AS $kw)
             {
-                TaxonomyTerm::where('id', $trans->tid)->delete();
+                TaxonomyTerm::where('id', $kw->tid)->delete();
             }
-            $theTranslator->delete();
-        }
 
-        //Inserting Translators
-        if(isset($finalArray['translator'])){
-            $translators = trim($finalArray['translator'], ",");
-            $translators = explode(',',$translators);
-            foreach($translators as $translator){
+            $theKeyword->delete();
+
+            $keywords = trim($finalArray['keywords'], ",");
+            $keywords = explode(',',$keywords);
+            foreach($keywords as $kw){
                 $myTaxonomy = new TaxonomyTerm();
-                $myTaxonomy->vid = 24;
-                $myTaxonomy->name = $translator;
+                $myTaxonomy->vid = 23;
+                $myTaxonomy->name = trim($kw);
                 $myTaxonomy->language = $finalArray['language'];
                 $myTaxonomy->save();
 
-                $myTranslator = new ResourceTranslator();
-                $myTranslator->resource_id = $resourceId;
-                $myTranslator->tid = $myTaxonomy->id;
-                $myTranslator->save();
+                $myKeywords = new ResourceKeyword();
+                $myKeywords->resource_id = $myResources->id;
+                $myKeywords->tid = $myTaxonomy->id;
+                $myKeywords->save();
             }
-        }
 
-        //Deleting Learning Resource Types
-        $theLearningResourceType = ResourceLearningResourceType::where('resource_id', $resourceId);
-        foreach($theLearningResourceType AS $ltype)
-        {
-            TaxonomyTerm::where('id', $ltype->tid)->delete();
-        }
-        $theLearningResourceType->delete();
 
-        //Inserting Learning Resource Types
-        foreach($finalArray['learning_resources_types'] as $ltype){
-            $myLearningType = new ResourceLearningResourceType();
-            $myLearningType->resource_id = $resourceId;
-            $myLearningType->tid = $ltype;
-            $myLearningType->save();
-        }
+            //Deleting Authors
+            $theAuthors = ResourceAuthor::where('resource_id', $resourceId);
+            foreach($theAuthors AS $author)
+            {
+                TaxonomyTerm::where('id', $author->tid)->delete();
+            }
 
-        //Deleting Educational Use
-        $theEduUse = ResourceEducationalUse::where('resource_id', $resourceId);
-        foreach($theEduUse AS $edu)
-        {
-            TaxonomyTerm::where('id', $edu->tid)->delete();
-        }
-        $theEduUse->delete();
+            $theAuthors->delete();
 
-        //Inserting Educational Use
-        foreach($finalArray['educational_use'] as $edus){
-            $myEdu = new ResourceEducationalUse();
-            $myEdu->resource_id = $resourceId;
-            $myEdu->educational_use = $edus;
-            $myEdu->save();
-        }
+            //Inserting Authors
+            $authors = trim($finalArray['author'], ",");
+            $authors = explode(',',$authors);
+            foreach($authors as $author){
+                $myTaxonomy = new TaxonomyTerm();
+                $myTaxonomy->vid = 24;
+                $myTaxonomy->name = $author;
+                $myTaxonomy->language = $finalArray['language'];
+                $myTaxonomy->save();
 
-        //Deleting Levels
-        $theLevels = ResourceLevel::where('resource_id', $resourceId);
-        foreach($theLevels AS $level)
-        {
-            TaxonomyTerm::where('id', $level->tid)->delete();
-        }
-        $theLevels->delete();
+                $myAuthor = new ResourceAuthor();
+                $myAuthor->resource_id = $resourceId;
+                $myAuthor->tid = $myTaxonomy->id;
+                $myAuthor->save();
+            }
 
-        //Inserting Resource Levels
-        foreach($finalArray['level'] as $level){
-            $myLevel = new ResourceLevel();
-            $myLevel->resource_id = $resourceId;
-            $myLevel->tid = $level;
-            $myLevel->save();
-        }
 
-        //Deleting Translation Rights
-        $theTransRight = ResourceTranslationRight::where('resource_id', $resourceId)->first();
-        if(count($theTransRight)){
-            TaxonomyTerm::where('id', $theTransRight->tid)->delete();
-            $theTransRight->delete();
-        }
+            //Deleting Publishers
+            $thePublisher = ResourcePublisher::where('resource_id', $resourceId)->first();
+            if(count($thePublisher)){
+                TaxonomyTerm::where('id', $thePublisher->tid)->delete();
+                $thePublisher->delete();
+            }
 
-        if(isset($finalArray['translation_rights'])){
-            //Inserting Translation Rights
-            $myTranslationRight = new ResourceTranslationRight();
-            $myTranslationRight->resource_id = $resourceId;
-            $myTranslationRight->translation_right = $finalArray['translation_rights'];
-            $myTranslationRight->save();
-        }
+            //Inserting Publisher
+            if($finalArray['publisher']){
+                $myTaxonomy = new TaxonomyTerm();
+                $myTaxonomy->vid = 9;
+                $myTaxonomy->name = $finalArray['publisher'];
+                $myTaxonomy->language = $finalArray['language'];
+                $myTaxonomy->save();
 
-        //Deleting Educational Resource
-        if(isset($finalArray['educational_resource'])){
+                $myPublisher = new ResourcePublisher();
+                $myPublisher->resource_id = $resourceId;
+                $myPublisher->tid = $myTaxonomy->id;
+                $myPublisher->save();
+            }
+
+            //Deleting Authors
+            $theTranslator = ResourceTranslator::where('resource_id', $resourceId);
+            if(count($theTranslator)){
+                foreach($theTranslator AS $trans)
+                {
+                    TaxonomyTerm::where('id', $trans->tid)->delete();
+                }
+                $theTranslator->delete();
+            }
+
+            //Inserting Translators
+            if(isset($finalArray['translator'])){
+                $translators = trim($finalArray['translator'], ",");
+                $translators = explode(',',$translators);
+                foreach($translators as $translator){
+                    $myTaxonomy = new TaxonomyTerm();
+                    $myTaxonomy->vid = 24;
+                    $myTaxonomy->name = $translator;
+                    $myTaxonomy->language = $finalArray['language'];
+                    $myTaxonomy->save();
+
+                    $myTranslator = new ResourceTranslator();
+                    $myTranslator->resource_id = $resourceId;
+                    $myTranslator->tid = $myTaxonomy->id;
+                    $myTranslator->save();
+                }
+            }
+
+            //Deleting Learning Resource Types
+            $theLearningResourceType = ResourceLearningResourceType::where('resource_id', $resourceId);
+            $theLearningResourceType->delete();
+
+            //Inserting Learning Resource Types
+            foreach($finalArray['learning_resources_types'] as $ltype){
+                $myLearningType = new ResourceLearningResourceType();
+                $myLearningType->resource_id = $resourceId;
+                $myLearningType->tid = $ltype;
+                $myLearningType->save();
+            }
+
+            //Deleting Educational Use
+            $theEduUse = ResourceEducationalUse::where('resource_id', $resourceId);
+            $theEduUse->delete();
+
+            //Inserting Educational Use
+            foreach($finalArray['educational_use'] as $edus){
+                $myEdu = new ResourceEducationalUse();
+                $myEdu->resource_id = $resourceId;
+                $myEdu->tid = $edus;
+                $myEdu->save();
+            }
+
+            //Deleting Levels
+            $theLevels = ResourceLevel::where('resource_id', $resourceId);
+            $theLevels->delete();
+
+            //Inserting Resource Levels
+            foreach($finalArray['level'] as $level){
+                $myLevel = new ResourceLevel();
+                $myLevel->resource_id = $resourceId;
+                $myLevel->tid = $level;
+                $myLevel->save();
+            }
+
+            //Deleting Translation Rights
+            $theTransRight = ResourceTranslationRight::where('resource_id', $resourceId)->first();
+            if(count($theTransRight)){
+                $theTransRight->delete();
+            }
+
+            if(isset($finalArray['translation_rights'])){
+                //Inserting Translation Rights
+                $myTranslationRight = new ResourceTranslationRight();
+                $myTranslationRight->resource_id = $resourceId;
+                $myTranslationRight->value = $finalArray['translation_rights'];
+                $myTranslationRight->save();
+            }
+
+            //Deleting Educational Resource
             $theEduResource = ResourceEducationalResource::where('resource_id', $resourceId)->first();
             if(count($theEduResource)){
-                TaxonomyTerm::where('id', $theEduResource->tid)->delete();
                 $theEduResource->delete();
             }
-        }
 
-        if(isset($finalArray['educational_resource'])){
-            //Inserting Educational Resource
-            $myEduResource = new ResourceEducationalResource();
-            $myEduResource->resource_id = $resourceId;
-            $myEduResource->educational_resource = $finalArray['educational_resource'];
-            $myEduResource->save();
-        }
+            if(isset($finalArray['educational_resource'])){
+                //Inserting Educational Resource
+                $myEduResource = new ResourceEducationalResource();
+                $myEduResource->resource_id = $resourceId;
+                $myEduResource->value = $finalArray['educational_resource'];
+                $myEduResource->save();
+            }
 
-        //Deleting I am author
-        if(isset($finalArray['iam_author'])){
+            //Deleting I am author
             $theIamAuthor = ResourceIamAuthor::where('resource_id', $resourceId)->first();
             if(count($theIamAuthor)){
                 //Deleting I am author
                 $theIamAuthor->delete();
             }
-        }
 
-        if(isset($finalArray['iam_author'])){
-            //Inserting i am author
-            $myIamAuthor = new ResourceIamAuthor();
-            $myIamAuthor->resource_id = $resourceId;
-            $myIamAuthor->iam_author = $finalArray['iam_author'];
-            $myIamAuthor->save();
-        }
+            if(isset($finalArray['iam_author'])){
+                //Inserting i am author
+                $myIamAuthor = new ResourceIamAuthor();
+                $myIamAuthor->resource_id = $resourceId;
+                $myIamAuthor->value = $finalArray['iam_author'];
+                $myIamAuthor->save();
+            }
 
-        //Deleting Copyright Holder
-        $theCopyrightHolder = ResourceCopyrightHolder::where('resource_id', $resourceId)->first();
-        if(count($theCopyrightHolder)){
-            TaxonomyTerm::where('id', $theCopyrightHolder->tid)->delete();
-            $theCopyrightHolder->delete();
-        }
+            //Deleting Copyright Holder
+            $theCopyrightHolder = ResourceCopyrightHolder::where('resource_id', $resourceId)->first();
+            if(count($theCopyrightHolder)){
+                $theCopyrightHolder->delete();
+            }
 
-        if(isset($finalArray['copyright_holder'])){
-            //Inserting Copyright Holder
-            $myCopyrightHolder = new ResourceCopyrightHolder();
-            $myCopyrightHolder->resource_id = $resourceId;
-            $myCopyrightHolder->copyright_holder = $finalArray['copyright_holder'];
-            $myCopyrightHolder->save();
-        }
+            if(isset($finalArray['copyright_holder'])){
+                //Inserting Copyright Holder
+                $myCopyrightHolder = new ResourceCopyrightHolder();
+                $myCopyrightHolder->resource_id = $resourceId;
+                $myCopyrightHolder->value = $finalArray['copyright_holder'];
+                $myCopyrightHolder->save();
+            }
 
-        //Deleting Creative Commons
-        $theCC = ResourceCreativeCommon::where('resource_id', $resourceId)->first();
-        if(count($theCC)){
-            TaxonomyTerm::where('id', $theCC->tid)->delete();
-            $theCC->delete();
-        }
+            //Deleting Creative Commons
+            $theCC = ResourceCreativeCommon::where('resource_id', $resourceId)->first();
+            if(count($theCC)){
+                $theCC->delete();
+            }
 
-        if(isset($finalArray['creative_commons'])){
-            //Inserting Creative Commons
-            $myCC = new ResourceCreativeCommon();
-            $myCC->resource_id = $resourceId;
-            $myCC->creative_commons = $finalArray['creative_commons'];
-            $myCC->save();
-        }
+            if(isset($finalArray['creative_commons'])){
+                //Inserting Creative Commons
+                $myCC = new ResourceCreativeCommon();
+                $myCC->resource_id = $resourceId;
+                $myCC->tid = $finalArray['creative_commons'];
+                $myCC->save();
+            }
 
-        //Deleting Creative Commons
-        $theCCOther = ResourceSharePermission::where('resource_id', $resourceId)->first();
-        if(count($theCCOther)){
-            TaxonomyTerm::where('id', $theCCOther->tid)->delete();
-            $theCCOther->delete();
-        }
+            //Deleting Creative Commons
+            $theCCOther = ResourceSharePermission::where('resource_id', $resourceId)->first();
+            if(count($theCCOther)){
+                $theCCOther->delete();
+            }
 
-        if(isset($finalArray['creative_commons_other'])){
-            //Inserting Sharing Permission
-            $mySharePermit = new ResourceSharePermission();
-            $mySharePermit->resource_id = $resourceId;
-            $mySharePermit->share_permission = $finalArray['creative_commons_other'];
-            $mySharePermit->save();
-        }
+            if(isset($finalArray['creative_commons_other'])){
+                //Inserting Sharing Permission
+                $mySharePermit = new ResourceSharePermission();
+                $mySharePermit->resource_id = $resourceId;
+                $mySharePermit->tid = $finalArray['creative_commons_other'];
+                $mySharePermit->save();
+            }
+            return true;
+        });
 
-        return redirect('/resources/view/'.$resourceId)->with('success','Resource updated successfully');
+        if($result){
+            return redirect('/resources/view/'.$resourceId)->with('success','Resource updated successfully');
+        }
     }
 }

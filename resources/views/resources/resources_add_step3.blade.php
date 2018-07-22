@@ -69,7 +69,7 @@
             <input type="radio" value="{{ $cc->id }}" name="creative_commons">{{ $cc->name }}<br>
             @endforeach
             <div class="description">
-                    Unsure of which option to select? Click here for guidance on licensing this resource.
+                    Unsure of which option to select? Click <a href="{{ URL::to('/pages/view/2252') }}">here</a> for guidance on licensing this resource.
             </div>
         </div>
         <div class="form-item">

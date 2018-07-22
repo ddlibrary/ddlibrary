@@ -6,7 +6,7 @@
         <h1>Add a new Resource - Step 3</h1>
     </header>
     <div class="content-body">
-        <form method="POST" action="{{ route('edit3', $resource['resourceid']) }}">
+        <form method="POST" action="{{ route('edit3', $resource['id']) }}">
         @csrf
         <div class="form-item">
             <label for="translation_rights"> 
@@ -38,7 +38,7 @@
                 <label for="iam_author"> 
                     <h2>3. I am the author</h2>
                 </label>
-                <input type="checkbox" value="1" name="iam_author" {{ (count($dbRecords->IamAuthors) && $dbRecords->IamAuthors->iam_author==1)?"checked":""}}> 
+                <input type="checkbox" value="1" name="iam_author" {{ count($dbRecords->IamAuthors)?"checked":"" }}> 
                 I am the author and I am submitting my resource to DDL. I am selecting a creative commons license for my resource below.
                 @if ($errors->has('iam_author'))
                     <span class="invalid-feedback">
@@ -50,7 +50,7 @@
             <label for="copyright_holder"> 
                 <strong>License/Copyright Holder</strong>
             </label>
-            <input class="form-control{{ $errors->has('copyright_holder') ? ' is-invalid' : '' }}" id="copyright_holder" name="copyright_holder" size="40" maxlength="40" type="text" value="{{ $dbRecords->CopyrightHolder->copyright_holder }}">
+            <input class="form-control{{ $errors->has('copyright_holder') ? ' is-invalid' : '' }}" id="copyright_holder" name="copyright_holder" size="40" maxlength="40" type="text" value="{{ count($dbRecords->CopyrightHolder)?$dbRecords->CopyrightHolder->value:"" }}">
             <div class="description">
                 Please enter the name of the person or organization owning or managing rights over the resource.
             </div>
@@ -70,10 +70,10 @@
                 if(count($dbRecords->CreativeCommons)){
                     $cc_common = $dbRecords->CreativeCommons[0]->name;
                 }else{
-                    $cc_common = 0;
+                    $cc_common = "";
                 }
             ?>
-            <input type="radio" value="{{ $cc->id }}" name="creative_commons" {{ $cc_common == $cc->name?"checked":"" }}>{{ $cc->name }}<br>
+            <input type="radio" value="{{ $cc->id }}" name="creative_commons" {{ ($cc_common == $cc->name)?"checked":"" }}>{{ $cc->name }}<br>
             @endforeach
             <div class="description">
                     Unsure of which option to select? Click here for guidance on licensing this resource.
@@ -84,7 +84,7 @@
                 <strong>If there is no Creative Commons License on the resource, select one these:</strong>
             </label>
             @foreach($creativeCommonsOther AS $other)
-            <input type="radio" value="{{ $other->id }}" name="creative_commons_other" @if(count($dbRecords->SharePermissions)) {{ $dbRecords->SharePermissions->share_permission == $other->id?"checked":"" }} @endif>{{ $other->name }}<br>
+            <input type="radio" value="{{ $other->id }}" name="creative_commons_other" @if(count($dbRecords->SharePermissions)) {{ $dbRecords->SharePermissions->tid == $other->id?"checked":"" }} @endif>{{ $other->name }}<br>
             @endforeach
         </div>
         <div class="form-item">
@@ -95,7 +95,7 @@
             <input type="radio" name="published" {{ ($resource['status'] == 1)?"checked":""}} value="1"> Yes
         </div>
         <div style="display:flex;">
-            <input style="margin-right: 10px;" class="form-control normalButton" type="button" value="Previous" onclick="location.href='{{ route('edit2', $resource['resourceid']) }}'">
+            <input style="margin-right: 10px;" class="form-control normalButton" type="button" value="Previous" onclick="location.href='{{ route('edit2', $resource['id']) }}'">
             <input class="form-control normalButton" type="submit" value="Submit">
         </div>
         </form>

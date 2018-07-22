@@ -51,11 +51,11 @@
                 @foreach ($subjects AS $item)
                     @if($item->parent == 0)
                         <optgroup label="{{ $item->name }}">
-                    @else
-                    <option value="{{ $item->tid }}">{{ $item->name }}</option>
-                    @endif
-                    @if($item->parent == 0)
-                        </optgroup>    
+                            <?php $parentItems = $subjects->where('parent', $item->id); ?>
+                            @foreach($parentItems as $pitem)
+                                <option value="{{ $pitem->id }}">{{ $pitem->name }}</option>
+                            @endforeach      
+                        </optgroup>
                     @endif
                 @endforeach
             </select>
@@ -84,7 +84,7 @@
             </label>
             <select class="form-control{{ $errors->has('learning_resources_types') ? ' is-invalid' : '' }}" id="learning_resources_types" name="learning_resources_types[]" required  multiple="multiple">
                 @foreach ($learningResourceTypes AS $item)
-                    <option value="{{ $item->tid }}">{{ $item->name }}</option>
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
                 @endforeach
             </select>
 
@@ -101,18 +101,9 @@
             </label>
             <select class="form-control{{ $errors->has('educational_use') ? ' is-invalid' : '' }}" id="educational_use" name="educational_use[]" required  multiple="multiple">
                 @foreach ($educationalUse AS $item)
-                    <option value="{{ $item->tid }}">{{ $item->name }}</option>
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
                 @endforeach
             </select>
-
-            @if(isset($resource['educational_use']))
-                @foreach($resource['educational_use'] as $eu)
-                    <script>
-                        let eu = '{{ $eu }}';
-                        $('#educational_use').val(eu);
-                    </script>
-                @endforeach
-            @endif
 
             @if ($errors->has('educational_use'))
                 <span class="invalid-feedback">
@@ -134,24 +125,24 @@
             ?>
             @foreach($levels AS $level)
                 @if($level->parent == 0)
-                    <li><input type="checkbox" name="level[]" {{ in_array($level->tid, @$resource['level'] ) ? "checked" : ""}} value="{{ $level->tid }}" onchange="fnTest(this,'subLevel{{$level->tid}}');">{{ $level->name }}
-                        <?php $levelParent = $levels->where('parent', $level->tid);?>
+                    <li><input type="checkbox" name="level[]" {{ in_array($level->id, @$resource['level'] ) ? "checked" : ""}} value="{{ $level->id }}" onchange="fnTest(this,'subLevel{{$level->id}}');">{{ $level->name }}
+                        <?php $levelParent = $levels->where('parent', $level->id);?>
                         @if(count($levelParent) > 0)
-                            <i class="fas fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$level->tid}}')"></i>
+                            <i class="fas fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$level->id}}')"></i>
                         @endif
                     @if(count($levelParent) > 0)
-                        <ul id="subLevel{{$level->tid}}" class="subItem" style="display:none;">
+                        <ul id="subLevel{{$level->id}}" class="subItem" style="display:none;">
                             @foreach($levelParent as $item)
-                                <li><input type="checkbox" name="level[]" onchange="fnTest(this,'subLevel{{$item->tid}}');" {{ in_array($item->tid, @$resource['level']) ?"checked":""}} class="child" value="{{ $item->tid }}">{{ $item->name }}
+                                <li><input type="checkbox" name="level[]" onchange="fnTest(this,'subLevel{{$item->id}}');" {{ in_array($item->id, @$resource['level']) ?"checked":""}} class="js-child" value="{{ $item->id }}">{{ $item->name }}
                             
-                                <?php $levelItemParent = $levels->where('parent', $item->tid);?>
+                                <?php $levelItemParent = $levels->where('parent', $item->id);?>
                                 @if(count($levelItemParent) > 0)
-                                    <i class="fas fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$item->tid}}')"></i>
+                                    <i class="fas fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$item->id}}')"></i>
                                 @endif
                                 @if(count($levelItemParent) > 0)
-                                    <ul id="subLevel{{$item->tid}}" class="subItem" style="display:none;">
+                                    <ul id="subLevel{{$item->id}}" class="subItem" style="display:none;">
                                         @foreach($levelItemParent as $itemLevel)
-                                            <li><input type="checkbox" name="level[]" {{ in_array($itemLevel->tid, @$resource['level']) ?"checked":""}} class="child" value="{{ $itemLevel->tid }}">{{ $itemLevel->name }}</li>
+                                            <li><input type="checkbox" name="level[]" {{ in_array($itemLevel->id, @$resource['level']) ?"checked":""}} class="js-child" value="{{ $itemLevel->id }}">{{ $itemLevel->name }}</li>
                                         @endforeach
                                     </ul>
                                 @endif
