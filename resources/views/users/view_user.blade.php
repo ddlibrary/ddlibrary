@@ -31,11 +31,11 @@
             </div>
             <div>
                 <span><strong>Created:</strong></span>
-                <span>{{ Carbon\Carbon::createFromTimestamp($user->created)->diffForHumans() }}</a></span>
+                <span>{{ $user->created_at }}</a></span>
             </div>
             <div>
                 <span><strong>Access:</strong></span>
-                <span>{{ Carbon\Carbon::createFromTimestamp($user->access)->diffForHumans() }}</a></span>
+                <span>{{ $user->accessed_at }}</a></span>
             </div>
         </article>
 </section>
