@@ -155,7 +155,7 @@
                                 <tr>
                                     <td>{{ $resource->name }}</td>
                                     <td>{{ fixLanguage($resource->language) }}</td>
-                                    <td><a href="{{ URL::to('admin/resources?language='.$resource->language.'&subject_area='.$resource->tid) }}">{{ $resource->total }}</a></td>
+                                    <td><a href="{{ URL::to('admin/resources?language='.$resource->language.'&subject_area='.$resource->id) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -187,7 +187,7 @@
                                 <tr>
                                     <td>{{ $resource->name }}</td>
                                     <td>{{ fixLanguage($resource->language) }}</td>
-                                    <td><a href="{{ URL::to('admin/resources?language='.$resource->language.'&level='.$resource->tid ) }}">{{ $resource->total }}</a></td>
+                                    <td><a href="{{ URL::to('admin/resources?language='.$resource->language.'&level='.$resource->id ) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -223,7 +223,7 @@
                             <tr>
                                 <td>{{ $resource->name }}</td>
                                 <td>{{ fixLanguage($resource->language) }}</td>
-                                <td><a href="{{ URL::to('admin/resources?language='.$resource->language.'&type='.$resource->tid) }}">{{ $resource->total }}</a></td>
+                                <td><a href="{{ URL::to('admin/resources?language='.$resource->language.'&type='.$resource->id) }}">{{ $resource->total }}</a></td>
                                 </tr>
                                 @endforeach
                             </tbody>

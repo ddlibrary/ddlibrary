@@ -78,7 +78,7 @@
                 <td><a href="{{URL::to('resources/view/'.$resource->id) }}">{{ $resource->title }}</a></td>
                 <td><a href="{{ URL::to('users/view/'.$resource->user_id) }}">{{ $resource->addedby }}</a></td>
                 <td>{{ ($resource->status==0?"Not Published":"Published") }}</td>
-                <td>{{ Carbon\Carbon::createFromTimestamp($resource->updated_at) }}</td>
+                <td>{{ $resource->updated_at }}</td>
                 <td>{{ fixLanguage($resource->language) }}</td>
                 <td><a href="resources/edit/{{$resource->id}}">Edit</a></td>
               </tr>
