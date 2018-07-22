@@ -14,7 +14,7 @@
             @foreach($subjects AS $subject)
                 @if($subject->parent == 0)
                     <li>
-                        <input type="checkbox" name="subject_area[]" {{ (in_array($subject->tid, $subjectAreaIds)?"checked":"")}} onchange="fnTest(this,'js-sub-subject{{$subject->tid}}');this.form.submit();" value="{{ $subject->tid }}"><span>{{ ucwords(strtolower($subject->name)) }}</span>
+                        <input type="checkbox" name="subject_area[]" {{ (in_array($subject->id, $subjectAreaIds)?"checked":"")}} onchange="fnTest(this,'js-sub-subject{{$subject->id}}');this.form.submit();" value="{{ $subject->id }}"><span>{{ ucwords(strtolower($subject->name)) }}</span>
                     </li>
                 @endif
             @endforeach
@@ -25,7 +25,7 @@
             <ul class="panel">
                 @foreach($types AS $type)
                     <li>
-                        <input type="checkbox" name="type[]" value="{{ $type->tid }}" onchange="this.form.submit()" {{ (in_array($type->tid, $typeIds)?"checked":"")}}><span>{{ $type->name }}</span>
+                        <input type="checkbox" name="type[]" value="{{ $type->id }}" onchange="this.form.submit()" {{ (in_array($type->id, $typeIds)?"checked":"")}}><span>{{ $type->name }}</span>
                     </li>
                 @endforeach
             </ul>
@@ -36,7 +36,7 @@
             @foreach($levels AS $level)
                 @if($level->parent == 0)
                     <li>
-                        <input type="checkbox" name="level[]" {{ (in_array($level->tid, $levelIds)?"checked":"")}} value="{{ $level->tid }}" onchange="fnTest(this,'subLevel{{$level->tid}}');this.form.submit()"><span>{{ $level->name }}</span>
+                        <input type="checkbox" name="level[]" {{ (in_array($level->id, $levelIds)?"checked":"")}} value="{{ $level->id }}" onchange="fnTest(this,'subLevel{{$level->id}}');this.form.submit()"><span>{{ $level->name }}</span>
                     </li>
                 @endif
             @endforeach
