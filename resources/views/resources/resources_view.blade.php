@@ -16,7 +16,7 @@
                 @foreach ($relatedItems AS $item)
                 <div class="related-item">
                     <img class="related-items-img" src="{{ getImagefromResource($item->abstract,'55x50') }}">
-                    <span><a href="{{ URL::to('resources/view/'.$item->id) }}">{{ $item->title }}</a><br/>
+                    <span><a href="{{ URL::to('resource/'.$item->id) }}">{{ $item->title }}</a><br/>
                     {!! str_limit(strip_tags($item->abstract), 25) !!}</span>
                 </div>
                 @endforeach
