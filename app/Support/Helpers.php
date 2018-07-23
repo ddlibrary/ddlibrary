@@ -87,6 +87,24 @@ if (! function_exists('fixImage')) {
     }
 }
 
+if(! function_exists('getImagefromResource')) {
+    function getImagefromResource($abstract)
+    {
+        preg_match('/src="([^"]*)"/',$abstract,$matches);
+        if(count($matches)> 0){
+			$absStr = $matches[1];
+			if(strpos($absStr, 'youtube') == false){
+				$absArray = explode('/',$absStr);
+				$imageName = last($absArray);
+				$fixedImage = Storage::disk('public')->url($imageName);
+				return $fixedImage;
+			}
+        }else{
+            return "https://dummyimage.com/250x200/eeeeee/000000.png&text=DDL+Resource";
+        }
+    }
+}
+
 if (! function_exists('unpackResourceObject')) {
     function unpackResourceObject($resourceObject, $field)
     {
@@ -122,22 +140,6 @@ if (! function_exists('isAdmin')) {
             return TRUE;
         }else{
             return FALSE;
-        }
-    }
-}
-
-if(! function_exists('getImagefromResource')) {
-    function getImagefromResource($abstract)
-    {
-        preg_match('/src="([^"]*)"/',$abstract,$matches);
-        if(count($matches)> 0){
-            $absStr = $matches[1];
-            $absArray = explode('/',$absStr);
-            $imageName = last($absArray);
-            $fixedImage = Storage::disk('public')->url($imageName);
-            return $fixedImage;
-        }else{
-            return "https://dummyimage.com/250x200/eeeeee/000000.png&text=DDL+Resource";
         }
     }
 }
