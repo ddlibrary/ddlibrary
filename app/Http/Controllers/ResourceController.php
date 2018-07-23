@@ -817,7 +817,7 @@ class ResourceController extends Controller
             $myResources->title = $finalArray['title'];
             $myResources->abstract = $finalArray['abstract'];
             $myResources->language = $finalArray['language'];
-            $myResources->status = $finalArray['status'];
+            $myResources->status = $finalArray['published'];
             //inserting to resource table
             $myResources->save();
 
