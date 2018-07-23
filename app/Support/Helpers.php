@@ -98,6 +98,8 @@ if(! function_exists('getImagefromResource')) {
 				$imageName = last($absArray);
 				$fixedImage = Storage::disk('public')->url($imageName);
 				return $fixedImage;
+			}else{
+				return "https://dummyimage.com/250x200/eeeeee/000000.png&text=DDL+Resource";
 			}
         }else{
             return "https://dummyimage.com/250x200/eeeeee/000000.png&text=DDL+Resource";
