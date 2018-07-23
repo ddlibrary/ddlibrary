@@ -520,7 +520,7 @@ class ResourceController extends Controller
         $flag->details = $request->input('details');
         $flag->save();
 
-        return redirect('resources/view/'.$resourceId)
+        return redirect('resource/'.$resourceId)
             ->with('success', 'Your flag report is now registered! We will get back to you as soon as possible!');
     }
 
@@ -541,7 +541,7 @@ class ResourceController extends Controller
         $comment->comment = $request->input('comment');
         $comment->save();
         
-        return redirect('resources/view/'.$resourceId)
+        return redirect('resource/'.$resourceId)
             ->with('success', 'Your comment is successfully registered. We will publish it after review.');
     }
 
@@ -1071,7 +1071,7 @@ class ResourceController extends Controller
         });
 
         if($result){
-            return redirect('/resources/view/'.$resourceId)->with('success','Resource updated successfully');
+            return redirect('/resource/'.$resourceId)->with('success','Resource updated successfully');
         }
     }
 }
