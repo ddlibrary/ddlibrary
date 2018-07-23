@@ -3,14 +3,14 @@
 @section('content')
 <section class="ddl-forms login">
     <header>
-        <h1>Login with your DDL account</h1>
+        <h1>@lang('Login with your DDL account')</h1>
     </header>
     <div class="content-body">
         <form method="POST" action="{{ route('login') }}">
         @csrf
         <div class="form-item">
             <label for="user-field"> 
-                <strong>Email or Username</strong>
+                <strong>@lang('Email or Username')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <input class="form-control{{ $errors->has('user-field') ? ' is-invalid' : '' }}" id="user-field" name="user-field" size="40" maxlength="40" type="text" value="{{ old('user-field') }}" required autofocus>
@@ -23,7 +23,7 @@
 
         <div class="form-item">
             <label for="password"> 
-                <strong>Password</strong>
+                <strong>@lang('Password')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" name="password" size="40" maxlength="40" type="password" required>
@@ -41,7 +41,7 @@
 
         <div class="form-item">
                 <div class="left-side">
-                    <input class="form-control normalButton" type="submit" value="Submit">
+                    <input class="form-control normalButton" type="submit" value="@lang('Submit')">
                 </div>
 
                 <div class="btn-div">

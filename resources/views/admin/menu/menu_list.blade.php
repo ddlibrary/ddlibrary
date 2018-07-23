@@ -20,6 +20,7 @@
               <tr>
                 <th>NO</th>
                 <th>PARENT</th>
+                <th>LOCATION</th>
                 <th>TITLE</th>
                 <th>WEIGHT</th>
                 <th>LANGUAGE</th>
@@ -30,6 +31,7 @@
               <tr>
                 <th>NO</th>
                 <th>PARENT</th>
+                <th>LOCATION</th>
                 <th>TITLE</th>
                 <th>WEIGHT</th>
                 <th>LANGUAGE</th>
@@ -39,12 +41,13 @@
             <tbody>
             @foreach ($menuRecords as $indexkey => $menu)
               <tr>
-                <td>{{ (($menuRecords->currentPage() - 1) * 20)+$indexkey + 1 }}</td>
+                <td>{{ (($menuRecords->currentPage() - 1) * $menuRecords->perPage())+$indexkey + 1 }}</td>
                 <td>{{ $menu->parent }}</td>
-                <td><a href="menu/view/{{$menu->menuid}}">{{ $menu->title }}</a></td>
+                <td>{{ $menu->location }}</td>
+                <td><a href="menu/view/{{$menu->id}}">{{ $menu->title }}</a></td>
                 <td>{{ $menu->weight }}</td>
                 <td>{{ fixLanguage($menu->language) }}</td>
-                <td><a href="menu/edit/{{$menu->menuid}}">Edit</a></td>
+                <td><a href="menu/edit/{{$menu->id}}">Edit</a></td>
               </tr>
               @endforeach
             </tbody>

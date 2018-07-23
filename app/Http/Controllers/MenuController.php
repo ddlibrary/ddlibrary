@@ -19,8 +19,7 @@ class MenuController extends Controller
     
     function index ()
     {
-        $myMenu = new Menu();
-        $menuRecords = $myMenu->Menu();
+        $menuRecords = Menu::paginate(10);
         return view('admin.menu.menu_list', compact('menuRecords'));
     }
 }

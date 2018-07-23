@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\News;
 use App\Resource;
+use App\Menu;
 use Config;
 
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ class HomeController extends Controller
         $subjectAreas       = $resources->subjectIconsAndTotal();
         $featured           = $resources->featuredCollections();
         $latestResources    = Resource::published()->where('language',Config::get('app.locale'))->orderBy('id','desc')->take(4)->get();
+        \Carbon\Carbon::setLocale(app()->getLocale());
         return view('home', compact('latestNews','subjectAreas','featured','latestResources'));
     }
 }

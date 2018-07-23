@@ -19,17 +19,18 @@
 </script>
 <section class="ddl-forms">
     <header>
-        <h1>Add a new Resource - Step 2</h1>
+        <h1>@lang('Add a new Resource - Step 2')</h1>
     </header>
     <div class="content-body">
+        @include('layouts.messages')
         <form method="POST" action="{{ route('step2') }}" enctype="multipart/form-data">
         @csrf
         <div class="form-item">
             <label for="attachments"> 
-                <strong>Attachments</strong>
+                <strong>@lang('Attachments')</strong>
             </label>
         <input class="form-control{{ $errors->has('attachments') ? ' is-invalid' : '' }}" id="attachments" name="attachments[]" size="40" maxlength="40" type="file">
-            <button type='button' class="add_more">Add More Files</button>
+            <button type='button' class="add_more">@lang('Add More Files')</button>
             @if(isset($resource['attc']))
             @foreach($resource['attc'] as $item)
                 <br><a href="{{ asset('/storage/attachments/'.$item['file_name']) }}">{{ $item['file_name'] }}</a>
@@ -44,7 +45,7 @@
         </div>
         <div class="form-item">
             <label for="subject_areas"> 
-                <strong>Subject Areas</strong>
+                <strong>@lang('Subject Areas')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <select class="form-control{{ $errors->has('subject_areas') ? ' is-invalid' : '' }}" id="subject_areas" name="subject_areas[]" required  multiple="multiple">
@@ -68,7 +69,7 @@
         </div>
         <div class="form-item">
             <label for="keywords"> 
-                <strong>Keywords</strong>
+                <strong>@lang('Keywords')</strong>
             </label>
             <input class="form-control{{ $errors->has('keywords') ? ' is-invalid' : '' }}" id="keywords" name="keywords" size="40" maxlength="40" type="text" value="{{ isset($resource['keywords'])?$resource['keywords']:"" }}" onkeydown="javascript:bringMeAttr('keywords','{{ URL::to('resources/attributes/keywords') }}')">
             @if ($errors->has('keywords'))
@@ -79,7 +80,7 @@
         </div>
         <div class="form-item">
             <label for="learning_resources_types"> 
-                <strong>Learning Resources Types</strong>
+                <strong>@lang('Learning Resources Types')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <select class="form-control{{ $errors->has('learning_resources_types') ? ' is-invalid' : '' }}" id="learning_resources_types" name="learning_resources_types[]" required  multiple="multiple">
@@ -96,7 +97,7 @@
         </div>
         <div class="form-item">
             <label for="educational_use"> 
-                <strong>Educational Use</strong>
+                <strong>@lang('Educational Use')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <select class="form-control{{ $errors->has('educational_use') ? ' is-invalid' : '' }}" id="educational_use" name="educational_use[]" required  multiple="multiple">
@@ -114,7 +115,7 @@
 
         <div class="form-item">
             <label for="resource_levels"> 
-                <strong>Resource Levels</strong>
+                <strong>@lang('Resource Levels')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <ul>
@@ -156,8 +157,8 @@
             </ul>
         </div>
         <div style="display:flex;">
-            <input style="margin-right: 10px;" class="form-control normalButton" type="button" value="Previous" onclick="location.href='{{ URL::to('resources/add/step1') }}'">
-            <input class="form-control normalButton" type="submit" value="Next">
+            <input style="margin-right: 10px;" class="form-control normalButton" type="button" value="@lang('Previous')" onclick="location.href='{{ URL::to('resources/add/step1') }}'">
+            <input class="form-control normalButton" type="submit" value="@lang('Next')">
         </div>
         </form>
     </div>

@@ -37,7 +37,7 @@ function()
     Route::get('admin/resources', 'ResourceController@index')->middleware('auth');
     Route::post('admin/resources', 'ResourceController@index')->name('resources')->middleware('auth');
     Route::any('resources/list', 'ResourceController@list')->name('resourceList');
-    Route::get('resources/view/{resourceId}', 'ResourceController@viewPublicResource');
+    Route::get('resource/{resourceId}', 'ResourceController@viewPublicResource');
     Route::get('resources', 'ResourceController@list');
     Route::get('resources/add/step1', 'ResourceController@createStepOne')->name('step1')->middleware('auth');
     Route::post('resources/add/step1', 'ResourceController@postStepOne');
@@ -67,11 +67,11 @@ function()
     //Pages
     Route::get('admin/pages','PageController@index')->middleware('auth');
     Route::get('admin/pages/view/{pageId}','PageController@view')->middleware('auth');
-    Route::get('pages/view/{pageId}','PageController@view');
+    Route::get('page/{pageId}','PageController@view');
 
     //News
     Route::get('admin/news','NewsController@index')->middleware('auth');
-    Route::get('news/view/{newsId}','NewsController@view');
+    Route::get('news/{newsId}','NewsController@view');
 
     //Menu
     Route::get('admin/menu','MenuController@index')->middleware('auth');
@@ -94,14 +94,16 @@ function()
     Route::get('/access-library', 'ResourceController@createStepOne')->middleware('auth');
     Route::get('/node/add', 'ResourceController@createStepOne')->middleware('auth');
     Route::get('/node/add/resourcefile', 'ResourceController@createStepOne')->middleware('auth');
+    Route::get('/add/resourcefile', 'ResourceController@createStepOne')->middleware('auth');
+    Route::get('/node/{resourceId}', 'ResourceController@viewPublicResource');
     Route::get('/user/logout', 'Auth\LoginController@logout');
     Route::get('/user/password', 'Auth\ForgotPasswordController@showLinkRequestForm');
     Route::get('/volunteer', function() {
-        return redirect('pages/view/1532');
+        return redirect('page/1532');
     });
 
     Route::get('/support-library', function() {
-        return redirect('pages/view/21');
+        return redirect('page/21');
     });
 
     Route::get('/logout', function() {

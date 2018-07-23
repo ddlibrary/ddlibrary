@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Resource;
+use App\UserProfile;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
@@ -69,9 +71,10 @@ class RegisterController extends Controller
             'password' => 'required|string|min:6',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'age' => 'required|integer|max:100',
+            'phone' => 'required|max:20',
             'gender' => 'required',
-            'country' => 'required'
+            'country' => 'required',
+            'city' => 'nullable'
         ]);
     }
 
@@ -81,18 +84,33 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function create($data)
     {
         $user = new User();
-        $userId = $user->createUser($data);
+        $user->username = $data['username'];
+        $user->password = Hash::make($data['password']);
+        $user->email = $data['email'];
+        $user->save();
 
-        if($userId){
-            if($user->createUserProfile($userId, $data)){
-                return $userId;
-            }
+        if(isset($data['city'])){
+            $city = $data['city'];
+        }elseif(isset($data['city_other'])){
+            $city = $data['city_other'];
+        }else{
+            $city = NULL;
         }
 
-        return FALSE;
+        $userProfile = new UserProfile();
+        $userProfile->user_id       = $user->id;
+        $userProfile->first_name    = $data['first_name'];
+        $userProfile->last_name     = $data['last_name'];
+        $userProfile->country       = $data['country'];
+        $userProfile->city          = $city;
+        $userProfile->gender        = $data['gender'];
+        $userProfile->phone         = $data['phone'];
+        $userProfile->save();
+
+        return $user->id;
     }
 
     /**

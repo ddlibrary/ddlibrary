@@ -10,7 +10,7 @@
 
         <div class="resource-view-related-items">
             <header>
-                <h2>Related Items</h2>
+                <h2>@lang('Related Items')</h2>
             </header>
             <div class="resource-related-items-box">
                 @foreach ($relatedItems AS $item)
@@ -22,7 +22,7 @@
                 @endforeach
             </div>
         </div>
-        <p>Added by: <a href="{{ URL::to('users/view/'.$resource->user_id) }}">{{ $resource->user->username }}</a>
+        <p>@lang('Added by'): <a href="{{ URL::to('users/view/'.$resource->user_id) }}">{{ $resource->user->username }}</a>
     </aside>
     <section class="resource-view-information-section">
         <article class="resource-view-title-box">
@@ -33,7 +33,7 @@
                 </header>
                 <div class="resource-icons">
                     @if (isAdmin())
-                    <a href="{{ route('edit1', $resource->id) }}">Edit</a>
+                    <a href="{{ route('edit1', $resource->id) }}">@lang('Edit')</a>
                     @endif
                     <i class="fas fa-lg fa-star {{ count($resource->favorites)?"active":"" }}" id="resourceFavorite" onclick="favorite('resourceFavorite','{{ URL::to("resources/favorite/") }}','{{ $resource->id }}','{{ Auth::id() }}')"></i>
                     <i class="fas fa-lg fa-share-square"></i>
@@ -46,7 +46,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <span class="close" id="share-close">&times;</span>
-                            <h2>Share this item</h2>
+                            <h2>@lang('Share this item')</h2>
                         </div>
                         <div class="modal-body">
                             <div class="modal-body">
@@ -68,11 +68,11 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <span class="close" id="favorite-close">&times;</span>
-                            <h2>Favorite this item</h2>
+                            <h2>@lang('Favorite this item')</h2>
                         </div>
                         <div class="modal-body">
                             <div class="modal-body">
-                                <h2>In order to favorite a resource, you are required to <a href="{{ URL::to('login') }}">login</a>.</h2>
+                                <h2>@lang('In order to favorite a resource, you are required to') <a href="{{ URL::to('login') }}">@lang('login')</a>.</h2>
                             </div>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <span class="close" id="flag-close">&times;</span>
-                            <h2>Flag this item</h2>
+                            <h2>@lang('Flag this item')</h2>
                         </div>
                         <div class="modal-body">
                             <div class="modal-body">
@@ -94,20 +94,20 @@
                                         @csrf
                                             <div class="form-item">
                                                 <label for="type"> 
-                                                    <strong>Type</strong>
+                                                    <strong>@lang('Type')</strong>
                                                     <span class="form-required" title="This field is required.">*</span>
                                                 </label>
                                                 <select name="type" class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}" required>
-                                                    <option value="">- None -</option>
-                                                    <option value="1">Graphic Violence</option>
-                                                    <option value="2">Graphic Sexual Content</option>
-                                                    <option value="3">Spam, Scam or Fraud</option>
-                                                    <option value="4">Broken or Empty Data</option>
+                                                    <option value="">- @lang('None') -</option>
+                                                    <option value="1">@lang('Graphic Violence')</option>
+                                                    <option value="2">@lang('Graphic Sexual Content')</option>
+                                                    <option value="3">@lang('Spam, Scam or Fraud')</option>
+                                                    <option value="4">@lang('Broken or Empty Data')</option>
                                                 </select>
                                             </div>
                                             <div class="form-item">
                                                 <label for="details"> 
-                                                    <strong>Details</strong>
+                                                    <strong>@lang('Details')</strong>
                                                     <span class="form-required" title="This field is required.">*</span>
                                                 </label>
                                                 <textarea name="details" class="form-control" cols="40" rows="5" required></textarea>
@@ -115,7 +115,7 @@
                                             <input type="hidden" value="{{ $resource->id }}" name="resource_id">
                                             <input type="hidden" value="{{ Auth::id() }}" name="userid">
                                             <div class="left-side">
-                                                <input class="form-control normalButton" type="submit" value="Submit">
+                                                <input class="form-control normalButton" type="submit" value="@lang('Submit')">
                                             </div>
                                         </form>
                                     </div>
@@ -129,37 +129,37 @@
             {!! fixImage($resource->abstract) !!}
         </article>
         <article class="resource-view-details">
-            <h3>Authors</h3>
+            <h3>@lang('Author')</h3>
             @foreach ($resource->authors AS $author)
             <p>{{ $author->name }}</p>
             @endforeach
         </article>
         <article class="resource-view-details">
-            <h3>Resource Level</h3>
+            <h3>@lang('Resource Level')</h3>
             @foreach ($resource->levels AS $level)
             <p><a href="{{ URL::to('resources/list?=&level[]='.$level->tid) }}">{{ $level->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
-            <h3>Subject Area</h3>
+            <h3>@lang('Subject Area')</h3>
             @foreach ($resource->subjects AS $subject)
             <p><a href="{{ URL::to('resources/list?=&subject_area[]='.$subject->tid) }}">{{ $subject->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
-            <h3>Learning Resource Type</h3>
+            <h3>@lang('Learning Resource Type')</h3>
             @foreach($resource->LearningResourceTypes AS $ltype)
             <p><a href="{{ URL::to('resources/list?=&type[]='.$ltype->tid) }}">{{ $ltype->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
-            <h3>Publisher</h3>
+            <h3>@lang('Publisher')</h3>
             @foreach($resource->publishers AS $publisher)
             <p>{{ $publisher->name }}</p>
             @endforeach
         </article>
         <article class="resource-view-details">
-            <h3>Languages Available</h3>
+            <h3>@lang('Languages Available')</h3>
         
             <?php
             $supportedLocals = array();
@@ -202,15 +202,15 @@
             @endforeach
         </article>
         <article class="resource-view-details">
-            <h3>License</h3>
+            <h3>@lang('License')</h3>
             <p>{{ count($resource->CreativeCommons)?$resource->CreativeCommons[0]->name:"" }}</p>
         </article>
         <article class="resource-view-details">
-            <h3>Download</h3>
+            <h3>@lang('Download')</h3>
             <div class="download-box">
             @if($resource->attachments)
-            <span class="download-item">File Name</strong></span>
-            <span class="download-item"><strong>File Size</strong></span>
+            <span class="download-item">@lang('File Name')</strong></span>
+            <span class="download-item"><strong>@lang('File Size')</strong></span>
             @foreach($resource->attachments as $file)
             <span class="download-item"><a href="{{ Storage::disk('private')->url($file->file_name) }}">{{ $file->file_name }}</a></span>
             <span class="download-item">{{ formatBytes($file->file_size) }}</span>
@@ -222,8 +222,8 @@
 
     <section class="resource-view-comment">
         <header>
-            <h2>Comments</h2>
-            <h2>{{ count($comments) }} comment(s) so far</h2>
+            <h2>@lang('Comments')</h2>
+            <h2>{{ count($comments) }} @lang('comment(s) so far')</h2>
         </header>
         @foreach($comments AS $cm)
         <article>
@@ -252,11 +252,11 @@
             </div>
         </form>
         @else
-        <h2>Please <a href="{{ URL::to('login') }}">login</a> to add comment.</h2>
+        <h2>@lang('Please') <a href="{{ URL::to('login') }}">@lang('login')</a> @lang('to add comment').</h2>
         @endif
     </section>
     @else
-        <h1>Resource not found or is not yet translated!</h1>
+        <h1>@lang('Resource not found or is not yet translated!')</h1>
         @endif
 </section>
 @endsection

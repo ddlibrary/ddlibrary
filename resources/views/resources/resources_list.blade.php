@@ -5,11 +5,11 @@
 @section('content')
 <section class="resource-list">
     <aside>
-        <h3><span class="strong-text">{{ $resources->total() }}</span> Results</h3>
+        <h3><span class="strong-text">{{ $resources->total() }}</span> @lang('Results')</h3>
         <form method="POST" action="{{ route('resourceList') }}">
         @csrf
         <fieldset>
-            <legend class="accordion" id="resource-subjects">Resource Subject Areas</legend>
+            <legend class="accordion" id="resource-subjects">@lang('Resource Subject Areas')</legend>
             <ul class="panel">
             @foreach($subjects AS $subject)
                 @if($subject->parent == 0)
@@ -21,7 +21,7 @@
             </ul>
         </fieldset>
         <fieldset>
-            <legend class="accordion">Resource Types</legend>
+            <legend class="accordion">@lang('Resource Types')</legend>
             <ul class="panel">
                 @foreach($types AS $type)
                     <li>
@@ -31,7 +31,7 @@
             </ul>
         </fieldset>
         <fieldset>
-        <legend class="accordion">Resource Levels</legend>
+        <legend class="accordion">@lang('Resource Levels')</legend>
         <ul class="panel">
             @foreach($levels AS $level)
                 @if($level->parent == 0)
@@ -47,7 +47,7 @@
     <section class="resource-information-section">
         @if (count($resources) > 0)
         @foreach ($resources AS $resource)
-        <article class="resource-article resource-information" onclick="location.href='{{ URL::to('resources/view/'.$resource->id) }}'">
+        <article class="resource-article resource-information" onclick="location.href='{{ URL::to('resource/'.$resource->id) }}'">
             <img class="resource-img" src="{{ getImagefromResource($resource->abstract) }}">
             <div class="resource-title">{{ str_limit($resource->title, 50), ' (..)' }}</div>
             <div class="resource-details">
@@ -64,7 +64,7 @@
         </article>
         @endforeach
         @else
-        <h2>No records found!</h2>
+        <h2>@lang('No records found!')</h2>
         @endif
         <div class="resource-pagination">
             {{ $resources->appends(request()->input())->links() }}

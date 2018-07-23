@@ -69,13 +69,15 @@ if (! function_exists('fixImage')) {
             $originalMe = array();
 
             for($i=0; $i<count($matches[1]); $i++){
-                $absStr = $matches[1][$i];
-                $absArray = explode('/',$absStr);
-                $imageName = last($absArray);
-                $fixedImage = Storage::disk('public')->url($imageName);
+				$absStr = $matches[1][$i];
+				if(strpos($absStr, 'youtube') == false){
+					$absArray = explode('/',$absStr);
+					$imageName = last($absArray);
+					$fixedImage = Storage::disk('public')->url($imageName);
 
-                array_push($replaceMe, $fixedImage);
-                array_push($originalMe, $absStr);
+					array_push($replaceMe, $fixedImage);
+					array_push($originalMe, $absStr);
+				}
             }
 			$finalFixedStr = str_replace($originalMe, $replaceMe, $abstract);
             return $finalFixedStr;

@@ -30,7 +30,7 @@ class PageController extends Controller
 
         $translation_id = $page->tnid;
         if($translation_id){
-            $translations = Page::where('tnid'.$translation_id);
+            $translations = Page::where('tnid',$translation_id)->get();
         }else{
             $translations = array();
         }

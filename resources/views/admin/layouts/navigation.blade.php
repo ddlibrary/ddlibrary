@@ -43,6 +43,12 @@
             </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
+            <a class="nav-link" href="{{ URL::to('#') }}">
+            <i class="fa fa-fw fa-sitemap"></i>
+            <span class="nav-link-text">Taxonomy</span>
+            </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
             <a class="nav-link" href="{{ URL::to('admin/comments') }}">
             <i class="fa fa-fw fa-comment"></i>
             <span class="nav-link-text">Comments</span>

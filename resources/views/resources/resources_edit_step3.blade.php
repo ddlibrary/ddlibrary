@@ -6,6 +6,7 @@
         <h1>Add a new Resource - Step 3</h1>
     </header>
     <div class="content-body">
+        @include('layouts.messages')
         <form method="POST" action="{{ route('edit3', $resource['id']) }}">
         @csrf
         <div class="form-item">

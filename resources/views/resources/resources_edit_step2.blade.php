@@ -21,6 +21,7 @@
         <h1>Add a new Resource - Step 2</h1>
     </header>
     <div class="content-body">
+        @include('layouts.messages')
         <form method="POST" action="{{ route('edit2', $resource["id"]) }}" enctype="multipart/form-data">
         @csrf
         <div class="form-item">

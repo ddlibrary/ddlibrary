@@ -1,13 +1,9 @@
 <hr class="hr-class">
 <footer>
     <nav>
-        <a href="{{ URL::to('/') }}">Home</a>
-        <a href="{{ URL::to('pages/view/16') }}">About</a>
-        <a href="{{ URL::to('pages/view/20') }}">Help</a>
-        <a href="{{ URL::to('/contact-us') }}">Contact</a>
-        <a href="#">Statistics</a>
-        <a href="{{ URL::to('pages/view/21') }}">Support the Library</a>
-        <a href="#">Partners</a>
+        @foreach ($menu->where('location', 'footer-menu')->where('language', app()->getLocale()) as $fmenu)
+            <a href="{{ URL::to($fmenu->path) }}">{{ $fmenu->title }}</a>
+        @endforeach
     </nav>
     <div>
         <i class="fab fa-twitter fa-2x" title="DDL Twitter Account" onclick="window.location.href='https://twitter.com/AfghanOERs'"></i>

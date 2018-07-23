@@ -25,7 +25,7 @@
         <ul class="language-content">
             @if (Auth::check())
             <li>
-                Welcome, <a class="username" href="{{ URL::to('users/view/'.Auth::id()) }}"> {{ Auth::user()->username }}</a>
+                @lang('Welcome'): <a class="username" href="{{ URL::to('users/view/'.Auth::id()) }}"> {{ Auth::user()->username }}</a>
             </li>
             @endif
             <?php
@@ -46,7 +46,7 @@
             ?>
 
             @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-            @if(request()->segment(2) == "" || request()->segment(3) != "view")
+            @if(request()->segment(2) == "" || (request()->segment(2) != "resource" && request()->segment(2) != "page" && request()->segment(2) != "news"))
                 <li>
                     <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
                     {{ $properties['native'] }}
@@ -76,30 +76,33 @@
             @endforeach
         </ul>
         <ul class="main-navigation">
+            <?php
+            $classNames = array(
+                125 => 'fa-home',
+                566 => 'fa-align-justify',
+                131 => 'fa-upload'
+            );
+            ?>
+            @foreach ($menu->where('location', 'top-menu')->where('language', app()->getLocale()) as $tmenu)
             <li>
-                <a href="{{ URL::to('/') }}"><i class="fas fa-home fa-lg icons"></i>Home</a>
+                <a href="{{ URL::to($tmenu->path) }}"><i class="fas {{ $classNames[$tmenu->tnid]}} fa-lg icons"></i>{{ $tmenu->title }}</a>
             </li>
-            <li>
-                <a href="{{ URL::to('resources') }}"><i class="fas fa-align-justify fa-lg icons"></i>Browse</a>
-            </li>
-            <li>
-                <a href="{{ URL::to('resources/add/step1') }}"><i class="fas fa-upload fa-lg icons"></i>Upload A Resource</a>
-            </li>
+            @endforeach
             @if (Auth::check())
             <li>
-                <a href="{{ URL::to('logout') }}" ><i class="fas fa-sign-in-alt fa-lg icons"></i>Log Out</a>     
+                <a href="{{ URL::to('logout') }}" ><i class="fas fa-sign-in-alt fa-lg icons"></i>@lang('Log Out')</a>     
             </li>
             @if (isAdmin())
             <li>
-                <a href="{{ URL::to('/admin') }}"><i class="fas fa-user fa-lg icons"></i>Admin Panel</a>
+                <a href="{{ URL::to('/admin') }}"><i class="fas fa-user fa-lg icons"></i>@lang('Admin Panel')</a>
             </li>
             @endif
             @else
             <li>
-                <a href="{{ URL::to('/login') }}"><i class="fas fa-sign-in-alt fa-lg icons"></i>Sign In</a>
+                <a href="{{ URL::to('/login') }}"><i class="fas fa-sign-in-alt fa-lg icons"></i>@lang('Sign In')</a>
             </li>
             <li>
-                <a href="{{ URL::to('/register') }}"><i class="fas fa-save fa-lg icons"></i>Register</a>
+                <a href="{{ URL::to('/register') }}"><i class="fas fa-save fa-lg icons"></i>@lang('Register')</a>
             </li>
             @endif
         </ul>

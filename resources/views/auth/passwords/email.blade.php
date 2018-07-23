@@ -3,7 +3,7 @@
 @section('content')
 <section class="ddl-forms">
     <header>
-        <h1>Reset Password</h1>
+        <h1>@lang('Reset Password')</h1>
     </header>
     <div class="content-body">
         <div class="card-body">

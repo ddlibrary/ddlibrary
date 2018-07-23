@@ -194,32 +194,6 @@ class User extends Authenticatable
             ->first();
     }
 
-    public function createUser($data)
-    {
-        return DB::table('users')->insertGetId([
-            'username'      => $data['username'],
-            'password'      => Hash::make($data['password']),
-            'email'         => $data['email'],
-            'created'       => \Carbon\Carbon::now()->timestamp,
-            'updated'       => \Carbon\Carbon::now()->timestamp
-        ]);
-    }
-
-    public function createUserProfile($userId, $data)
-    {
-        return DB::table('users_profiles')->insert([
-            'userid'        => $userId,
-            'first_name'    => $data['first_name'], 
-            'last_name'     => $data['last_name'],
-            'country'       => $data['country'],
-            'province'      => $data['city'],
-            'gender'        => $data['gender'],
-            'age'           => $data['age'],
-            'created'       => \Carbon\Carbon::now()->timestamp,
-            'updated'       => \Carbon\Carbon::now()->timestamp
-        ]);
-    }
-
     public function rolesList()
     {
         $records = DB::table('roles')

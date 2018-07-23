@@ -216,7 +216,7 @@ class Resource extends Model
                 'rs.updated_at'
             )
             ->join('users', 'users.id', '=', 'rs.user_id')
-            ->where('rs.language',Config::get('app.locale'))
+            ->where('rs.language', Config::get('app.locale'))
             ->where('rs.status', 1)
             ->orderBy('rs.created','desc')
             ->groupBy(
@@ -363,6 +363,7 @@ class Resource extends Model
             })
             ->where('rs.language',Config::get('app.locale'))
             ->where('rs.status', 1)
+            ->orderBy('rs.created_at','desc')
             ->groupBy(
                 'rs.id',
                 'rs.language', 
@@ -371,7 +372,8 @@ class Resource extends Model
                 'rs.user_id',
                 'users.username',
                 'rs.status',
-                'rs.updated_at'
+                'rs.updated_at',
+                'rs.created_at'
             )
             ->paginate(32);
 

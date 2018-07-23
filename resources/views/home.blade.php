@@ -7,11 +7,11 @@
     @include('layouts.messages')
     <div class="ddl-top-news">
         <div>
-            <p>Help us get Afghan teacher colleges online: For a limited time your donation will be matched! <a href="https://www.crowdrise.com/o/en/campaign/helping-female-student-teachers-to-be-better-teachers-through-internet-access">Learn More</a></p>
+            <p>@lang('Help us get Afghan teacher colleges online: For a limited time your donation will be matched!') <a href="https://www.crowdrise.com/o/en/campaign/helping-female-student-teachers-to-be-better-teachers-through-internet-access">@lang('Learn More')</a></p>
         </div>
     </div>
     <header>
-        <h2>Browse by Subject</h2>
+        <h2>@lang('Explore our subjects')</h2>
     </header>
     <hr>
     <div class="section-content">
@@ -20,7 +20,7 @@
             <article class="home-subject-areas">
                 <img src="{{ Storage::disk('public')->url($subject->file_name) }}">
                 <p>{{ $subject->name }}</p>
-                <p class="resource-count">{{ $subject->total }} Resources</p>
+                <p class="resource-count">{{ $subject->total }} @lang('Resources')</p>
             </article>
         </a>
         @endforeach
@@ -28,7 +28,7 @@
 </section>
 <section class="main-section">
     <header>
-        <h2>Browse by Collection</h2>
+        <h2>@lang('Featured Resource Collections')</h2>
     </header>
     <hr>
     <div class="section-content">
@@ -58,56 +58,40 @@
 <section class="latest-news">
     <div class="latest-div">
         <header>
-            <h2>Latest News</h2>
+            <h2>@lang('Latest News')</h2>
         </header>
         <hr>
         @foreach($latestNews AS $news)
         <article class="latest-content">
-            <a href="{{ URL::to('news/view/'.$news->id) }}"><p>{{ $news->title }}</p></a>
+            <a href="{{ URL::to('news/'.$news->id) }}"><p>{{ $news->title }}</p></a>
             <i class="news-description">{{ $news->created_at->diffForHumans() }}</i>
         </article>
         @endforeach
     </div>
     <div class="latest-div">
         <header>
-            <h2>Latest Resources</h2>
+            <h2>@lang('Latest Resources')</h2>
         </header>
         <hr>
         @foreach($latestResources AS $resource)
         <article class="latest-content">
-            <a href="{{ URL::to('resources/view/'.$resource->id) }}"><p>{{ $resource->title }}</p></a>
-            <i class="news-description">{{ $resource->created_at->diffForHumans()  }}</i>
+            <a href="{{ URL::to('resource/'.$resource->id) }}"><p>{{ $resource->title }}</p></a>
+            <i class="news-description">{{ __($resource->created_at->diffForHumans())  }}</i>
         </article>
         @endforeach
     </div>
     <div class="useful-links">
         <header>
-            <h2>Useful Links</h2>
+            <h2>@lang('Useful Links')</h2>
         </header>
         <hr>
         <nav class="latest-content">
             <ul>
+                @foreach ($menu->where('location', 'bottom-menu')->where('language', app()->getLocale()) as $bmenu)
                 <li>
-                    <a href="{{ URL::to('pages/view/16') }}">About DD Library</a>
+                    <a href="{{ URL::to($bmenu->path) }}">{{ $bmenu->title }}</a>
                 </li>
-                <li>
-                    <a href="{{ URL::to('pages/view/16') }}">How to use the Library</a>
-                </li>
-                <li>
-                    <a href="{{ URL::to('pages/view/21') }}">Support the Library</a>
-                </li>
-                <li>
-                    <a href="{{ URL::to('pages/view/35') }}">Disclaimer</a>
-                </li>
-                <li>
-                    <a href="{{ URL::to('pages/view/33') }}">Terms of Use</a>
-                </li>
-                <li>
-                    <a href="{{ URL::to('pages/view/34') }}">Privacy Policy</a>
-                </li>
-                <li>
-                    <a href="{{ URL::to('pages/view/812') }}">Links</a>
-                </li>
+                @endforeach
             </ul>
         </nav>
     </div>
