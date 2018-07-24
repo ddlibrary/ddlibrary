@@ -1,5 +1,5 @@
 @extends('layouts.main')
-
+{!! NoCaptcha::renderJs() !!}
 @section('content')
 <section class="ddl-forms">
     <header>
@@ -65,7 +65,7 @@
             @endif
         </div>
         <div class="form-item">
-            {!! app('captcha')->display(); !!}
+            {!! NoCaptcha::display() !!}
         </div>
         <div class="left-side">
             <input class="form-control normalButton" type="submit" value="Send">
