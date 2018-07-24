@@ -868,4 +868,8 @@ aside .sub-subject-show {
         font-size: 1em;
         width: 100%;
     }
+
+    .resource-list aside {
+        flex: 100%;
+    }
 }
