@@ -58,7 +58,7 @@ return [
         'private' => [
             'driver' => 'local',
             'root' => storage_path('app/private/resources'),
-            'url' => env('APP_URL').'/storage/resources',
+            'url' => base_path().'/storage/private/resources',
             'visibility' => 'private',
         ],
 
