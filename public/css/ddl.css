@@ -851,4 +851,8 @@ aside .sub-subject-show {
     .resource-view .resource-icons {
         display: none;
     }
+
+    .resource-view .resource-view-related-items {
+        width: 100%;
+    }
 }
