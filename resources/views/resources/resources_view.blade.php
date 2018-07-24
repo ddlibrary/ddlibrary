@@ -212,10 +212,10 @@
             <div class="download-box">
             @if($resource->attachments)
             <span class="download-item">@lang('File Name')</strong></span>
-            <span class="download-item"><strong>@lang('File Size')</strong></span>
+            <span class="download-item item-mobile"><strong>@lang('File Size')</strong></span>
             @foreach($resource->attachments as $file)
             <span class="download-item"><a href="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}">{{ $file->file_name }}</a></span>
-            <span class="download-item">{{ formatBytes($file->file_size) }}</span>
+            <span class="download-item item-mobile">{{ formatBytes($file->file_size) }}</span>
             @endforeach
             @endif
             </div>

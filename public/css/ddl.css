@@ -855,4 +855,17 @@ aside .sub-subject-show {
     .resource-view .resource-view-related-items {
         width: 100%;
     }
+
+    .download-box .item-mobile {
+        display: none;
+    }
+
+    .resource-view-details .download-box .download-item {
+        width: 100%;
+    }
+
+    .resource-view-comment h2 {
+        font-size: 1em;
+        width: 100%;
+    }
 }
