@@ -41,9 +41,9 @@
               <tr>
                 <td>{{ (($pages->currentPage() - 1) * $pages->perPage())+$indexkey + 1 }}</td>
                 <td><a href="{{ URL::to('pages/view/'.$page->pageid) }}">{{ $page->title }}</a></td>
-                <td>{{ $page->language }}</td>
-                <td>{{ Carbon\Carbon::createFromTimestamp($page->created)->diffForHumans() }}</td>
-                <td>{{ Carbon\Carbon::createFromTimestamp($page->updated)->diffForHumans() }}</td>
+                <td>{{ fixLanguage($page->language) }}</td>
+                <td>{{ $page->created_at->diffForHumans() }}</td>
+                <td>{{ $page->updated_at->diffForHumans() }}</td>
                 <td><a href="pages/edit/{{$page->pageid}}">Edit</a></td>
               </tr>
               @endforeach

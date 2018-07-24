@@ -20,7 +20,7 @@ class PageController extends Controller
     function index ()
     {
         $this->middleware('admin');
-        $pages = Page::paginate(10);
+        $pages = Page::orderBy('id','desc')->paginate(10);
         return view('admin.pages.pages_list', compact('pages'));
     }
 
