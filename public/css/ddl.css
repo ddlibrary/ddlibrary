@@ -847,4 +847,8 @@ aside .sub-subject-show {
     header nav {
         display: none;
     }
+
+    .resource-view .resource-icons {
+        display: none;
+    }
 }
