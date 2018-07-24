@@ -65,7 +65,7 @@
             @endif
         </div>
         <div class="form-item">
-            {!! NoCaptcha::display() !!}
+            {!! app('captcha')->display(); !!}
         </div>
         <div class="left-side">
             <input class="form-control normalButton" type="submit" value="Send">
