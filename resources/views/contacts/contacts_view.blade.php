@@ -7,6 +7,11 @@
     </header>
     <div class="content-body">
         @include('layouts.messages')
+        @if ($errors->has('g-recaptcha-response'))
+            <span class="help-block">
+                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+            </span>
+        @endif
         <form method="POST" action="{{ route('contact') }}">
         @csrf
         <div class="form-item">
@@ -58,6 +63,9 @@
                     <strong>{{ $errors->first('message') }}</strong>
                 </span><br>
             @endif
+        </div>
+        <div class="form-item">
+            {!! NoCaptcha::display() !!}
         </div>
         <div class="left-side">
             <input class="form-control normalButton" type="submit" value="Send">

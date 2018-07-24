@@ -41,7 +41,8 @@ class ContactController extends Controller
             'name'      => 'required',
             'email'     => 'required',
             'subject'   => 'required',
-            'message'   => 'required'
+            'message'   => 'required',
+            'g-recaptcha-response' => 'required|captcha'
         ]);
 
         //Saving contact info to the database
