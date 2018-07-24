@@ -20,7 +20,7 @@ class NewsController extends Controller
     function index ()
     {
         $this->middleware('admin');
-        $newsRecords = News::paginate(10);
+        $newsRecords = News::orderBy('id','desc')->paginate(10);
         return view('admin.news.news_list', compact('newsRecords'));
     }
 

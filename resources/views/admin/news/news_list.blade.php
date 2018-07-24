@@ -42,9 +42,9 @@
                 <td>{{ (($newsRecords->currentPage() - 1) * $newsRecords->perPage())+$indexkey + 1 }}</td>
                 <td><a href="{{ URL::to('/news/view/'.$news->newsid) }}">{{ $news->title }}</a></td>
                 <td>{{ fixLanguage($news->language) }}</td>
-                <td>{{ Carbon\Carbon::createFromTimestamp($news->created)->diffForHumans() }}</td>
-                <td>{{ Carbon\Carbon::createFromTimestamp($news->updated)->diffForHumans() }}</td>
-                <td><a href="news/edit/{{$news->newsid}}">Edit</a></td>
+                <td>{{ $news->created_at->diffForHumans() }}</td>
+                <td>{{ $news->updated_at->diffForHumans() }}</td>
+                <td><a href="news/edit/{{ $news->newsid }}">Edit</a></td>
               </tr>
               @endforeach
             </tbody>
