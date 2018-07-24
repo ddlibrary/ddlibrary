@@ -552,12 +552,12 @@ class Resource extends Model
     {
         return DB::table('resource_views')->insertGetId([
             'resource_id'       => $data['resource_id'],
-            'user_id'            => $data['userid'],
+            'user_id'           => $data['userid'],
             'ip'                => $data['ip'],
             'browser_name'      => $data['browser_name'],
             'browser_version'   => $data['browser_version'],
             'platform'          => $data['platform'],
-            'created_at'           => \Carbon\Carbon::now()->timestamp
+            'created_at'        => \Carbon\Carbon::now()
         ]);
     }
 }
