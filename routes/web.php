@@ -114,3 +114,4 @@ function()
 });
 /** OTHER PAGES THAT SHOULD NOT BE LOCALIZED **/
 Route::post('resources/favorite', 'ResourceController@resourceFavorite');
+Route::get('/storage/{file_name}', 'FileController')->where(['file_name' => '.*']);
