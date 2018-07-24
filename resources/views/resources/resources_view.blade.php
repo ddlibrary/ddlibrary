@@ -22,7 +22,9 @@
                 @endforeach
             </div>
         </div>
+        @if (isAdmin())
         <p>@lang('Added by'): <a href="{{ URL::to('users/view/'.$resource->user_id) }}">{{ $resource->user->username }}</a>
+        @endif
     </aside>
     <section class="resource-view-information-section">
         <article class="resource-view-title-box">
