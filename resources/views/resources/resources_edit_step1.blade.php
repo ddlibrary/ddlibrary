@@ -72,7 +72,7 @@
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <div id="editor">
-                <textarea class="form-control{{ $errors->has('abstract') ? ' is-invalid' : '' }}" name="abstract" style="height: 200px">{{ $resource['abstract'] }}</textarea>
+                <textarea class="form-control{{ $errors->has('abstract') ? ' is-invalid' : '' }}" name="abstract" style="height: 200px">{{ fixImage($resource['abstract']) }}</textarea>
             </div>
             <script>
                 var getUrl = window.location;
@@ -83,6 +83,7 @@
                     filebrowserBrowseUrl: baseUrl+'/laravel-filemanager?type=Files',
                     filebrowserUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Files&_token='
                 };
+                CKEDITOR.config.contentsLangDirection = '{{ $resource["language"] != "en"?"rtl":"ltr"}}';
                 CKEDITOR.replace( 'abstract', options );
             </script>
             @if ($errors->has('abstract'))

@@ -24,18 +24,18 @@ function()
 
     Route::get('/', 'HomeController@index');
 
-    Route::get('/admin', 'DashboardController@index')->middleware('auth');
+    Route::get('/admin', 'DashboardController@index')->middleware('admin');
 
     //Users
     Route::get('admin/users', 'UserController@index')->middleware('admin');
     Route::post('admin/users', 'UserController@index')->name('user')->middleware('admin');
     Route::get('admin/users/users-data', 'UserController@usersData')->middleware('admin');
-    Route::get('users/view/{userId}', 'UserController@viewUser');
-    Route::get('admin/users/update/{userId}', 'UserController@updateUser')->middleware('auth');
+    Route::get('user/{userId}', 'UserController@viewUser');
+    Route::get('admin/user/edit/{userId}', 'UserController@updateUser')->middleware('admin');
 
     //Resources
     Route::get('admin/resources', 'ResourceController@index')->middleware('auth');
-    Route::post('admin/resources', 'ResourceController@index')->name('resources')->middleware('auth');
+    Route::post('admin/resources', 'ResourceController@index')->name('resources')->middleware('admin');
     Route::any('resources/list', 'ResourceController@list')->name('resourceList');
     Route::get('resource/{resourceId}', 'ResourceController@viewPublicResource');
     Route::get('resources', 'ResourceController@list');
@@ -49,38 +49,40 @@ function()
     Route::post('resources/flag', 'ResourceController@flag')->name('flag');
     Route::post('resources/comment', 'ResourceController@comment')->name('comment')->middleware('auth');
 
-    Route::get('resources/edit/step1/{resourceId}', 'ResourceController@createStepOneEdit')->name('edit1')->middleware('auth');
-    Route::post('resources/edit/step1/{resourceId}', 'ResourceController@postStepOneEdit');
-    Route::get('resources/edit/step2/{resourceId}', 'ResourceController@createStepTwoEdit')->name('edit2')->middleware('auth');
-    Route::post('resources/edit/step2/{resourceId}', 'ResourceController@postStepTwoEdit');
-    Route::get('resources/edit/step3/{resourceId}', 'ResourceController@createStepThreeEdit')->name('edit3')->middleware('auth');
-    Route::post('resources/edit/step3/{resourceId}', 'ResourceController@postStepThreeEdit');
+    Route::get('resources/edit/step1/{resourceId}', 'ResourceController@createStepOneEdit')->name('edit1')->middleware('admin');
+    Route::post('resources/edit/step1/{resourceId}', 'ResourceController@postStepOneEdit')->middleware('admin');
+    Route::get('resources/edit/step2/{resourceId}', 'ResourceController@createStepTwoEdit')->name('edit2')->middleware('admin');
+    Route::post('resources/edit/step2/{resourceId}', 'ResourceController@postStepTwoEdit')->middleware('admin');
+    Route::get('resources/edit/step3/{resourceId}', 'ResourceController@createStepThreeEdit')->name('edit3')->middleware('admin');
+    Route::post('resources/edit/step3/{resourceId}', 'ResourceController@postStepThreeEdit')->middleware('admin');
 
     //Contact 
     Route::get('contact-us', 'ContactController@create');
     Route::post('contact-us', 'ContactController@store')->name('contact');
 
     //Report
-    Route::get('admin/reports/ddl', 'ReportController@index')->middleware('auth');
-    Route::get('admin/reports/ga', 'ReportController@gaReport')->middleware('auth');
+    Route::get('admin/reports/ddl', 'ReportController@index')->middleware('admin');
+    Route::get('admin/reports/ga', 'ReportController@gaReport')->middleware('admin');
 
     //Pages
-    Route::get('admin/pages','PageController@index')->middleware('auth');
-    Route::get('admin/pages/view/{pageId}','PageController@view')->middleware('auth');
+    Route::get('admin/pages','PageController@index')->middleware('admin');
+    Route::get('admin/pages/view/{pageId}','PageController@view')->middleware('admin');
     Route::get('page/{pageId}','PageController@view');
     Route::get('/about-education-afghanistan', function() {
         return redirect('page/22');
     });
 
     //News
-    Route::get('admin/news','NewsController@index')->middleware('auth');
+    Route::get('admin/news','NewsController@index')->middleware('admin');
     Route::get('news/{newsId}','NewsController@view');
+    Route::get('news/edit/{newsId}','NewsController@edit')->middleware('admin');
+    Route::post('news/update/{newsId}','NewsController@update')->name('update_news')->middleware('admin');
 
     //Menu
-    Route::get('admin/menu','MenuController@index')->middleware('auth');
+    Route::get('admin/menu','MenuController@index')->middleware('admin');
 
     //Settings
-    Route::get('admin/settings','SettingController@edit')->middleware('auth');
+    Route::get('admin/settings','SettingController@edit')->middleware('admin');
     Route::post('admin/settings', 'SettingController@update')->name('settings');
 
     //Comments

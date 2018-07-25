@@ -99,7 +99,7 @@
                   @foreach ($latestResources as $indexkey => $resource)
                   <tr>
                       <td><a href="{{ URL::to('resource/'.$resource->id) }}">{{ $resource->title }}</a></td>
-                      <td><a href="{{ URL::to('users/view/'.$resource->user_id) }}">{{ $resource->user->username }}</a></td>
+                      <td><a href="{{ URL::to('user/'.$resource->user_id) }}">{{ $resource->user->username }}</a></td>
                       <td>{{ ($resource->status==0?"Not Published":"Published") }}</td>
                     </tr>
                     @endforeach
@@ -128,7 +128,7 @@
                   <tbody>
                   @foreach ($latestUsers as $indexkey => $user)
                     <tr>
-                      <td><a href="{{ URL::to('users/view/'.$user->id) }}">{{ $user->username }}</a></td>
+                      <td><a href="{{ URL::to('user/'.$user->id) }}">{{ $user->username }}</a></td>
                       <td>{{ ($user->status==0?"Not Active":"Active") }}</td>
                       <td>
                         @foreach($user->roles AS $role)

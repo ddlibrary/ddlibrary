@@ -83,6 +83,7 @@
                     filebrowserBrowseUrl: baseUrl+'/laravel-filemanager?type=Files',
                     filebrowserUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Files&_token='
                 };
+                CKEDITOR.config.contentsLangDirection = '{{ app()->getLocale() != "en"?"rtl":"ltr"}}';
                 CKEDITOR.replace( 'abstract', options );
             </script>
             @if ($errors->has('abstract'))

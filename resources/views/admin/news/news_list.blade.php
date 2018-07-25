@@ -40,11 +40,11 @@
             @foreach ($newsRecords as $indexkey => $news)
               <tr>
                 <td>{{ (($newsRecords->currentPage() - 1) * $newsRecords->perPage())+$indexkey + 1 }}</td>
-                <td><a href="{{ URL::to('/news/view/'.$news->newsid) }}">{{ $news->title }}</a></td>
+                <td><a href="{{ URL::to('/news/'.$news->id) }}">{{ $news->title }}</a></td>
                 <td>{{ fixLanguage($news->language) }}</td>
                 <td>{{ $news->created_at->diffForHumans() }}</td>
                 <td>{{ $news->updated_at->diffForHumans() }}</td>
-                <td><a href="news/edit/{{ $news->newsid }}">Edit</a></td>
+                <td><a href="{{ URL::to('news/edit/'.$news->id) }}">Edit</a></td>
               </tr>
               @endforeach
             </tbody>
