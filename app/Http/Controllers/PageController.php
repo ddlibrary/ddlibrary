@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Page;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
@@ -36,5 +37,66 @@ class PageController extends Controller
         }
 
         return view('pages.pages_view', compact('page','translations'));
+    }
+
+    public function create()
+    {
+        return view('pages.page_create');
+    }
+
+    public function store(Request $request, Page $page)
+    {
+        $this->validate($request, [
+            'title'      => 'required',
+            'language'   => 'required',
+            'summary'    => 'required',
+            'body'       => 'required',
+            'published'  => 'integer'
+        ]);
+
+        $page->title = $request->input('title');
+        $page->summary = $request->input('summary');
+        $page->body = $request->input('body');
+        $page->language = $request->input('language');
+        $page->user_id = Auth::id();
+        $page->status = $request->input('published');
+        //inserting
+        $page->save();
+
+        $page = Page::find($page->id);
+        $page->tnid = $page->id;
+        //updating with tnid
+        $page->save();
+
+        return redirect('page/'.$page->id)->with('success', 'Item successfully created!');
+    }
+
+    public function edit(Page $page, $id)
+    {
+        $page = $page->find($id);
+        return view('pages.page_edit', compact('page'));
+    }
+
+    public function update(Request $request, Page $page, $id)
+    {
+        $this->validate($request, [
+            'title'      => 'required',
+            'language'   => 'required',
+            'summary'    => 'required',
+            'body'       => 'required',
+            'published'  => 'integer'
+        ]);
+
+        $page = Page::find($id);
+        $page->title = $request->input('title');
+        $page->summary = $request->input('summary');
+        $page->body = $request->input('body');
+        $page->language = $request->input('language');
+        $page->user_id = Auth::id();
+        $page->status = $request->input('published');
+        //inserting
+        $page->save();
+
+        return redirect('page/'.$id)->with('success', 'Item successfully updated!');
     }
 }

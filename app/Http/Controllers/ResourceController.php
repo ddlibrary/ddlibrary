@@ -45,6 +45,13 @@ class ResourceController extends Controller
     public function index(Request $request)
     {
         $this->middleware('admin');
+
+        //setting the search session empty
+        $request->session()->forget('resource1');
+        $request->session()->forget('resource2');
+        $request->session()->forget('resource3');
+        $request->session()->save();
+
         $myResources = new Resource();
 
         $resources = $myResources->filterResources($request->all());
@@ -611,10 +618,10 @@ class ResourceController extends Controller
         $myResources = new Resource();
 
         $resource = $request->session()->get('resource1');
-        if($resource){
+        if(count($resource)){
             $resource = $resource;
         }else{
-            $resource = (array) $myResources->getResources($resourceId, 'step1');
+            $resource = (array) $myResources->getResources($resourceId);
         }
         return view('resources.resources_edit_step1', compact('resource'));
     }

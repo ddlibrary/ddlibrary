@@ -84,8 +84,8 @@
                 <td><a href="{{URL::to('user/'.$user->id) }}">{{ $user->username }}</a><br>{{ $user->email }}</td>
                 <td>{{ ($user->status==0?"Not Active":"Active") }}</td>
                 <td>{{ $user->all_roles }}</td>
-                <td>{{ $user->created_at }}</td>
-                <td>{{ $user->accessed_at }}</td>
+                <td>{{ \Carbon\Carbon::parse($user->created_at)->diffForHumans() }}</td>
+                <td>{{ \Carbon\Carbon::parse($user->accessed_at)->diffForHumans() }}</td>
                 <td><a href="users/edit/{{$user->id}}">Edit</a></td>
               </tr>
               @endforeach

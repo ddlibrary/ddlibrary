@@ -15,6 +15,7 @@
         <i class="fa fa-table"></i> All Pages</div>
       <div class="card-body">
         <div class="table-responsive">
+            <a href="{{ URL::to('page/create') }}"><button class="btn btn-primary">Create New</button></a>
           <table class="table table-bordered" width="100%" cellspacing="0">
             <thead>
               <tr>
@@ -40,11 +41,11 @@
             @foreach ($pages as $indexkey => $page)
               <tr>
                 <td>{{ (($pages->currentPage() - 1) * $pages->perPage())+$indexkey + 1 }}</td>
-                <td><a href="{{ URL::to('pages/view/'.$page->pageid) }}">{{ $page->title }}</a></td>
+                <td><a href="{{ URL::to('page/'.$page->id) }}">{{ $page->title }}</a></td>
                 <td>{{ fixLanguage($page->language) }}</td>
                 <td>{{ $page->created_at->diffForHumans() }}</td>
                 <td>{{ $page->updated_at->diffForHumans() }}</td>
-                <td><a href="pages/edit/{{$page->pageid}}">Edit</a></td>
+                <td><a href="page/edit/{{$page->id}}">Edit</a></td>
               </tr>
               @endforeach
             </tbody>

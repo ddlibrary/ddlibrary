@@ -41,10 +41,10 @@ class NewsController extends Controller
 
     public function create()
     {
-
+        return view('news.news_create');
     }
 
-    public function store()
+    public function store(Request $request, News $news)
     {
         $this->validate($request, [
             'title'      => 'required',
@@ -54,7 +54,6 @@ class NewsController extends Controller
             'published'  => 'integer'
         ]);
 
-        $news = News::find($news->id);
         $news->title = $request->input('title');
         $news->summary = $request->input('summary');
         $news->body = $request->input('body');
@@ -68,6 +67,8 @@ class NewsController extends Controller
         $news->tnid = $news->id;
         //updating with tnid
         $news->save();
+
+        return redirect('news/'.$news->id)->with('success', 'Item successfully created!');
     }
 
     public function edit(News $news, $id)

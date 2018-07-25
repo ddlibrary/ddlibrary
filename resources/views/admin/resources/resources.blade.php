@@ -80,7 +80,7 @@
                 <td>{{ ($resource->status==0?"Not Published":"Published") }}</td>
                 <td>{{ $resource->updated_at }}</td>
                 <td>{{ fixLanguage($resource->language) }}</td>
-                <td><a href="resources/edit/{{$resource->id}}">Edit</a></td>
+                <td><a href="{{ URL::to('resources/edit/step1/'.$resource->id) }}">Edit</a></td>
               </tr>
               @endforeach
             </tbody>

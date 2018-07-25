@@ -15,6 +15,7 @@
         <i class="fa fa-table"></i> All News</div>
       <div class="card-body">
         <div class="table-responsive">
+          <a href="{{ URL::to('news/create') }}"><button class="btn btn-primary">Create New</button></a>
           <table class="table table-bordered" width="100%" cellspacing="0">
             <thead>
               <tr>

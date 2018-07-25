@@ -14,7 +14,7 @@
                 <strong>@lang('Title')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="title" name="title" size="40" maxlength="40" type="text" value="{{ @$resource['title'] }}" required autofocus>
+            <input class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" id="title" name="title" size="40" type="text" value="{{ @$resource['title'] }}" required autofocus>
             @if ($errors->has('title'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('title') }}</strong>

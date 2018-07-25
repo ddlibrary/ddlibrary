@@ -30,7 +30,7 @@ function()
     Route::get('admin/users', 'UserController@index')->middleware('admin');
     Route::post('admin/users', 'UserController@index')->name('user')->middleware('admin');
     Route::get('admin/users/users-data', 'UserController@usersData')->middleware('admin');
-    Route::get('user/{userId}', 'UserController@viewUser');
+    Route::get('user/{userId}', 'UserController@viewUser')->where('userId', '[0-9]+');
     Route::get('admin/user/edit/{userId}', 'UserController@updateUser')->middleware('admin');
 
     //Resources
@@ -67,16 +67,22 @@ function()
     //Pages
     Route::get('admin/pages','PageController@index')->middleware('admin');
     Route::get('admin/pages/view/{pageId}','PageController@view')->middleware('admin');
-    Route::get('page/{pageId}','PageController@view');
+    Route::get('page/{pageId}','PageController@view')->where('pageId', '[0-9]+');
     Route::get('/about-education-afghanistan', function() {
         return redirect('page/22');
     });
+    Route::get('page/edit/{pageId}','PageController@edit')->middleware('admin');
+    Route::post('page/update/{pageId}','PageController@update')->name('update_page')->middleware('admin');
+    Route::get('page/create','PageController@create')->middleware('admin');
+    Route::post('page/store','PageController@store')->name('add_page')->middleware('admin');
 
     //News
     Route::get('admin/news','NewsController@index')->middleware('admin');
-    Route::get('news/{newsId}','NewsController@view');
+    Route::get('news/{newsId}','NewsController@view')->where('newsId', '[0-9]+');
     Route::get('news/edit/{newsId}','NewsController@edit')->middleware('admin');
     Route::post('news/update/{newsId}','NewsController@update')->name('update_news')->middleware('admin');
+    Route::get('news/create','NewsController@create')->middleware('admin');
+    Route::post('news/store','NewsController@store')->name('add_news')->middleware('admin');
 
     //Menu
     Route::get('admin/menu','MenuController@index')->middleware('admin');

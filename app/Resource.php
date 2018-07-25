@@ -109,31 +109,28 @@ class Resource extends Model
         return $query->where('status', 1);
     }
 
-    public function getResources($resourceId, $step)
+    public function getResources($resourceId)
     {
-        if($step == "step1"){
-            return  DB::table('resources AS rs')
-            ->select(
-                'rs.id',
-                'rs.language', 
-                'rs.status',
-                'rs.title',
-                'rs.abstract',
-                'ttda.name AS author',
-                'ttdp.name AS publisher',
-                'ttdt.name AS translator'
-            )
-            ->leftJoin('resource_authors AS ra', 'ra.resource_id', '=', 'rs.id')
-            ->leftJoin('resource_publishers AS rp', 'rp.resource_id', '=', 'rs.id')
-            ->leftJoin('resource_translators AS rt', 'rt.resource_id', '=', 'rs.id')
-            ->leftJoin('taxonomy_term_data AS ttda', 'ttda.id', '=', 'ra.tid')
-            ->leftJoin('taxonomy_term_data AS ttdp', 'ttdp.id', '=', 'rp.tid')
-            ->leftJoin('taxonomy_term_data AS ttdt', 'ttdt.id', '=', 'rt.tid')
-            ->where('rs.language',Config::get('app.locale'))
-            ->where('rs.id', $resourceId)
-            ->orderBy('rs.created_at','desc')
-            ->first();   
-        }
+        return  DB::table('resources AS rs')
+        ->select(
+            'rs.id',
+            'rs.language', 
+            'rs.status',
+            'rs.title',
+            'rs.abstract',
+            'ttda.name AS author',
+            'ttdp.name AS publisher',
+            'ttdt.name AS translator'
+        )
+        ->leftJoin('resource_authors AS ra', 'ra.resource_id', '=', 'rs.id')
+        ->leftJoin('resource_publishers AS rp', 'rp.resource_id', '=', 'rs.id')
+        ->leftJoin('resource_translators AS rt', 'rt.resource_id', '=', 'rs.id')
+        ->leftJoin('taxonomy_term_data AS ttda', 'ttda.id', '=', 'ra.tid')
+        ->leftJoin('taxonomy_term_data AS ttdp', 'ttdp.id', '=', 'rp.tid')
+        ->leftJoin('taxonomy_term_data AS ttdt', 'ttdt.id', '=', 'rt.tid')
+        ->where('rs.id', $resourceId)
+        ->orderBy('rs.created_at','desc')
+        ->first();   
     }
 
     public function filterResources($requestArray)
