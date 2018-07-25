@@ -3,7 +3,7 @@
 @section('content')
 <section class="ddl-forms">
     <header>
-        <h1>Contac Us</h1>
+        <h1>@lang('Contac Us')</h1>
     </header>
     <div class="content-body">
         @include('layouts.messages')
@@ -16,7 +16,7 @@
         @csrf
         <div class="form-item">
             <label for="name"> 
-                <strong>Full Name</strong>
+                <strong>@lang('Full Name')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <input class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" id="name" name="name" size="40" maxlength="40" type="text" value="{{ old('name') }}" required autofocus>
@@ -28,7 +28,7 @@
         </div>
         <div class="form-item">
             <label for="email"> 
-                <strong>Email</strong>
+                <strong>@lang('Email')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="email" name="email" size="40" maxlength="40" type="email" value="{{ old('email') }}" required>
@@ -40,7 +40,7 @@
         </div>
         <div class="form-item">
             <label for="subject"> 
-                <strong>Subject</strong>
+                <strong>@lang('Subject')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <input class="form-control{{ $errors->has('subject') ? ' is-invalid' : '' }}" id="subject" name="subject" size="40" maxlength="40" type="text" value="{{ old('subject') }}" required>
@@ -52,7 +52,7 @@
         </div>
         <div class="form-item">
             <label for="message"> 
-                <strong>Message</strong>
+                <strong>@lang('Message')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <div id="editor">
@@ -68,7 +68,7 @@
             {!! NoCaptcha::display() !!}
         </div>
         <div class="left-side">
-            <input class="form-control normalButton" type="submit" value="Send">
+            <input class="form-control normalButton" type="submit" value="@lang('Send')">
         </div>
         </form>
     </div>
