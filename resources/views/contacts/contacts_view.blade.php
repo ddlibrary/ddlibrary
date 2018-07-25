@@ -3,7 +3,7 @@
 @section('content')
 <section class="ddl-forms">
     <header>
-        <h1>@lang('Contac Us')</h1>
+        <h1>@lang('Contact Us')</h1>
     </header>
     <div class="content-body">
         @include('layouts.messages')
