@@ -895,29 +895,33 @@ class ResourceController extends Controller
             $theKeyword = ResourceKeyword::where('resource_id', $resourceId);
             $theKeyword->delete();
 
-            $keywords = trim($finalArray['keywords'], ",");
-            $keywords = explode(',',$keywords);
-            foreach($keywords as $kw){
-                $theTaxonomy = TaxonomyTerm::where('name', trim($kw))
-                                            ->where('vid', 23)
-                                            ->first();
+            if(isset($finalArray['keywords'])){
+                $keywords = trim($finalArray['keywords'], ",");
+                $keywords = explode(',',$keywords);
+                if(count($keywords) > 0){
+                    foreach($keywords as $kw){
+                        $theTaxonomy = TaxonomyTerm::where('name', trim($kw))
+                                                    ->where('vid', 23)
+                                                    ->first();
 
-                if(count($theTaxonomy)){
-                    $myKeywords = new ResourceKeyword();
-                    $myKeywords->resource_id = $myResources->id;
-                    $myKeywords->tid = $theTaxonomy->id;
-                    $myKeywords->save();
-                }else{
-                    $myTaxonomy = new TaxonomyTerm();
-                    $myTaxonomy->vid = 23;
-                    $myTaxonomy->name = trim($kw);
-                    $myTaxonomy->language = $finalArray['language'];
-                    $myTaxonomy->save();
+                        if(count($theTaxonomy)){
+                            $myKeywords = new ResourceKeyword();
+                            $myKeywords->resource_id = $myResources->id;
+                            $myKeywords->tid = $theTaxonomy->id;
+                            $myKeywords->save();
+                        }else{
+                            $myTaxonomy = new TaxonomyTerm();
+                            $myTaxonomy->vid = 23;
+                            $myTaxonomy->name = trim($kw);
+                            $myTaxonomy->language = $finalArray['language'];
+                            $myTaxonomy->save();
 
-                    $myKeywords = new ResourceKeyword();
-                    $myKeywords->resource_id = $myResources->id;
-                    $myKeywords->tid = $myTaxonomy->id;
-                    $myKeywords->save();
+                            $myKeywords = new ResourceKeyword();
+                            $myKeywords->resource_id = $myResources->id;
+                            $myKeywords->tid = $myTaxonomy->id;
+                            $myKeywords->save();
+                        }
+                    }
                 }
             }
 
