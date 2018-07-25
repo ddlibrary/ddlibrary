@@ -73,7 +73,11 @@ if (! function_exists('fixImage')) {
 				if(strpos($absStr, 'youtube') == false && strpos($absStr, 'google') == false){
 					$absArray = explode('/',$absStr);
 					$imageName = last($absArray);
-					$fixedImage = Storage::disk('public')->url($imageName);
+					if(Storage::disk('public')->exists($imageName)){
+						$fixedImage = Storage::disk('public')->url($imageName);
+					}else{
+						$fixedImage = "";
+					}
 
 					array_push($replaceMe, $fixedImage);
 					array_push($originalMe, $absStr);
@@ -96,7 +100,11 @@ if(! function_exists('getImagefromResource')) {
 			if(strpos($absStr, 'youtube') == false){
 				$absArray = explode('/',$absStr);
 				$imageName = last($absArray);
-				$fixedImage = Storage::disk('public')->url($imageName);
+				if(Storage::disk('public')->exists($imageName)){
+					$fixedImage = Storage::disk('public')->url($imageName);
+				}else{
+					return "https://dummyimage.com/250x200/eeeeee/000000.png&text=DDL+Resource";	
+				}
 				return $fixedImage;
 			}else{
 				return "https://dummyimage.com/250x200/eeeeee/000000.png&text=DDL+Resource";
