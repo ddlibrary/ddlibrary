@@ -76,8 +76,7 @@
             </div>
             <script>
                 var getUrl = window.location;
-                var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-                console.log(baseUrl);
+                var baseUrl = <?php echo json_encode(URL::to('/')); ?>;
                 var options = {
                     filebrowserImageBrowseUrl: baseUrl+'/laravel-filemanager?type=Images',
                     filebrowserImageUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Images&_token=',
