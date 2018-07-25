@@ -59,7 +59,7 @@ return [
 
     // The default display type for items.
     // Supported: "grid", "list"
-    'images_startup_view' => 'grid',
+    'images_startup_view' => 'list',
     'files_startup_view' => 'list',
 
     /*
