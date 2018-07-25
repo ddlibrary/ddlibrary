@@ -82,9 +82,9 @@
             @endforeach
         </div>
         <div style="display:flex;">
-            <input style="margin-right: 10px;" class="form-control normalButton" type="button" value="@lang('Previous')" onclick="location.href='{{ URL::to('resources/add/step2') }}'">
+            <input style="margin-{{ (app()->getLocale()=="en")?"right":"left" }}: 10px;" class="form-control normalButton" type="button" value="@lang('Previous')" onclick="location.href='{{ URL::to('resources/add/step2') }}'">
             <input class="form-control normalButton" type="submit" value="@lang('Submit')" onclick="this.style.display='none';document.getElementById('wait').style.display='block'" ondblclick="this.style.display='display';document.getElementById('wait').style.display='block'">
-            <input type="button" class="form-control" id="wait" value="Please wait.." style="color:red;display:none" disabled>
+            <input type="button" class="form-control" id="wait" value="@lang('Please wait..')" style="color:red;display:none" disabled>
         </div>
         </form>
     </div>
