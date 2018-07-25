@@ -312,16 +312,26 @@ class ResourceController extends Controller
             $keywords = trim($finalArray['keywords'], ",");
             $keywords = explode(',',$keywords);
             foreach($keywords as $kw){
-                $myTaxonomy = new TaxonomyTerm();
-                $myTaxonomy->vid = 23;
-                $myTaxonomy->name = trim($kw);
-                $myTaxonomy->language = $finalArray['language'];
-                $myTaxonomy->save();
+                $theTaxonomy = TaxonomyTerm::where('name', trim($kw))
+                                            ->where('vid', 23)
+                                            ->first();
+                if(count($theTaxonomy)){
+                    $myKeywords = new ResourceKeyword();
+                    $myKeywords->resource_id = $myResources->id;
+                    $myKeywords->tid = $theTaxonomy->id;
+                    $myKeywords->save();
+                }else{
+                    $myTaxonomy = new TaxonomyTerm();
+                    $myTaxonomy->vid = 23;
+                    $myTaxonomy->name = trim($kw);
+                    $myTaxonomy->language = $finalArray['language'];
+                    $myTaxonomy->save();
 
-                $myKeywords = new ResourceKeyword();
-                $myKeywords->resource_id = $myResources->id;
-                $myKeywords->tid = $myTaxonomy->id;
-                $myKeywords->save();
+                    $myKeywords = new ResourceKeyword();
+                    $myKeywords->resource_id = $myResources->id;
+                    $myKeywords->tid = $myTaxonomy->id;
+                    $myKeywords->save();
+                }
             }
 
             //Inserting Authors
@@ -329,31 +339,54 @@ class ResourceController extends Controller
                 $authors = trim($finalArray['author'], ",");
                 $authors = explode(',',$authors);
                 foreach($authors as $author){
-                    $myTaxonomy = new TaxonomyTerm();
-                    $myTaxonomy->vid = 24;
-                    $myTaxonomy->name = $author;
-                    $myTaxonomy->language = $finalArray['language'];
-                    $myTaxonomy->save();
+                    $theTaxonomy = TaxonomyTerm::where('name', $author)
+                                                ->where('vid', 24)
+                                                ->first();
 
-                    $myAuthor = new ResourceAuthor();
-                    $myAuthor->resource_id = $myResources->id;
-                    $myAuthor->tid = $myTaxonomy->id;
-                    $myAuthor->save();
+                    if(count($theTaxonomy)){
+                        $myAuthor = new ResourceAuthor();
+                        $myAuthor->resource_id = $myResources->id;
+                        $myAuthor->tid = $theTaxonomy->id;
+                        $myAuthor->save();
+                    }else{
+                        $myTaxonomy = new TaxonomyTerm();
+                        $myTaxonomy->vid = 24;
+                        $myTaxonomy->name = $author;
+                        $myTaxonomy->language = $finalArray['language'];
+                        $myTaxonomy->save();
+
+                        $myAuthor = new ResourceAuthor();
+                        $myAuthor->resource_id = $myResources->id;
+                        $myAuthor->tid = $myTaxonomy->id;
+                        $myAuthor->save();   
+                    }
                 }
             }
 
             //Inserting Publishers
             if(isset($finalArray['publisher'])){
-                $myTaxonomy = new TaxonomyTerm();
-                $myTaxonomy->vid = 9;
-                $myTaxonomy->name = $finalArray['publisher'];
-                $myTaxonomy->language = $finalArray['language'];
-                $myTaxonomy->save();
+                $publisherName = trim($finalArray['publisher'],",");
+                $theTaxonomy = TaxonomyTerm::where('name', $publisherName)
+                                            ->where('vid', 9)
+                                            ->first();
 
-                $myPublisher = new ResourcePublisher();
-                $myPublisher->resource_id = $myResources->id;
-                $myPublisher->tid = $myTaxonomy->id;
-                $myPublisher->save();
+                if(count($theTaxonomy)){
+                    $myPublisher = new ResourcePublisher();
+                    $myPublisher->resource_id = $myResources->id;
+                    $myPublisher->tid = $theTaxonomy->id;
+                    $myPublisher->save();
+                }else{
+                    $myTaxonomy = new TaxonomyTerm();
+                    $myTaxonomy->vid = 9;
+                    $myTaxonomy->name = $publisherName;
+                    $myTaxonomy->language = $finalArray['language'];
+                    $myTaxonomy->save();
+
+                    $myPublisher = new ResourcePublisher();
+                    $myPublisher->resource_id = $myResources->id;
+                    $myPublisher->tid = $myTaxonomy->id;
+                    $myPublisher->save();
+                }
             }
 
             //Inserting Translators
@@ -361,16 +394,27 @@ class ResourceController extends Controller
                 $translators = trim($finalArray['translator'], ",");
                 $translators = explode(',',$translators);
                 foreach($translators as $translator){
-                    $myTaxonomy = new TaxonomyTerm();
-                    $myTaxonomy->vid = 24;
-                    $myTaxonomy->name = $translator;
-                    $myTaxonomy->language = $finalArray['language'];
-                    $myTaxonomy->save();
+                    $theTaxonomy = TaxonomyTerm::where('name', $translator)
+                                                ->where('vid', 24)
+                                                ->first();
 
-                    $myTranslator = new ResourceTranslator();
-                    $myTranslator->resource_id = $myResources->id;
-                    $myTranslator->tid = $myTaxonomy->id;
-                    $myTranslator->save();
+                    if(count($theTaxonomy)){
+                        $myTranslator = new ResourceTranslator();
+                        $myTranslator->resource_id = $myResources->id;
+                        $myTranslator->tid = $theTaxonomy->id;
+                        $myTranslator->save();
+                    }else{
+                        $myTaxonomy = new TaxonomyTerm();
+                        $myTaxonomy->vid = 24;
+                        $myTaxonomy->name = $translator;
+                        $myTaxonomy->language = $finalArray['language'];
+                        $myTaxonomy->save();
+
+                        $myTranslator = new ResourceTranslator();
+                        $myTranslator->resource_id = $myResources->id;
+                        $myTranslator->tid = $myTaxonomy->id;
+                        $myTranslator->save();
+                    }
                 }
             }
 
@@ -847,103 +891,127 @@ class ResourceController extends Controller
                 $mySubjects->save();
             }
 
-            //Updating Keywords
+            //Delete Keywords
             $theKeyword = ResourceKeyword::where('resource_id', $resourceId);
-            foreach($theKeyword AS $kw)
-            {
-                TaxonomyTerm::where('id', $kw->tid)->delete();
-            }
-
             $theKeyword->delete();
 
             $keywords = trim($finalArray['keywords'], ",");
             $keywords = explode(',',$keywords);
             foreach($keywords as $kw){
-                $myTaxonomy = new TaxonomyTerm();
-                $myTaxonomy->vid = 23;
-                $myTaxonomy->name = trim($kw);
-                $myTaxonomy->language = $finalArray['language'];
-                $myTaxonomy->save();
+                $theTaxonomy = TaxonomyTerm::where('name', trim($kw))
+                                            ->where('vid', 23)
+                                            ->first();
 
-                $myKeywords = new ResourceKeyword();
-                $myKeywords->resource_id = $myResources->id;
-                $myKeywords->tid = $myTaxonomy->id;
-                $myKeywords->save();
+                if(count($theTaxonomy)){
+                    $myKeywords = new ResourceKeyword();
+                    $myKeywords->resource_id = $myResources->id;
+                    $myKeywords->tid = $theTaxonomy->id;
+                    $myKeywords->save();
+                }else{
+                    $myTaxonomy = new TaxonomyTerm();
+                    $myTaxonomy->vid = 23;
+                    $myTaxonomy->name = trim($kw);
+                    $myTaxonomy->language = $finalArray['language'];
+                    $myTaxonomy->save();
+
+                    $myKeywords = new ResourceKeyword();
+                    $myKeywords->resource_id = $myResources->id;
+                    $myKeywords->tid = $myTaxonomy->id;
+                    $myKeywords->save();
+                }
             }
-
 
             //Deleting Authors
             $theAuthors = ResourceAuthor::where('resource_id', $resourceId);
-            foreach($theAuthors AS $author)
-            {
-                TaxonomyTerm::where('id', $author->tid)->delete();
-            }
-
             $theAuthors->delete();
 
             //Inserting Authors
             $authors = trim($finalArray['author'], ",");
             $authors = explode(',',$authors);
             foreach($authors as $author){
-                $myTaxonomy = new TaxonomyTerm();
-                $myTaxonomy->vid = 24;
-                $myTaxonomy->name = $author;
-                $myTaxonomy->language = $finalArray['language'];
-                $myTaxonomy->save();
+                $theTaxonomy = TaxonomyTerm::where('name', $author)
+                                            ->where('vid', 24)
+                                            ->first();
 
-                $myAuthor = new ResourceAuthor();
-                $myAuthor->resource_id = $resourceId;
-                $myAuthor->tid = $myTaxonomy->id;
-                $myAuthor->save();
+                if(count($theTaxonomy)){
+                    $myAuthor = new ResourceAuthor();
+                    $myAuthor->resource_id = $resourceId;
+                    $myAuthor->tid = $theTaxonomy->id;
+                    $myAuthor->save();
+                }else{
+                    $myTaxonomy = new TaxonomyTerm();
+                    $myTaxonomy->vid = 24;
+                    $myTaxonomy->name = $author;
+                    $myTaxonomy->language = $finalArray['language'];
+                    $myTaxonomy->save();
+
+                    $myAuthor = new ResourceAuthor();
+                    $myAuthor->resource_id = $resourceId;
+                    $myAuthor->tid = $myTaxonomy->id;
+                    $myAuthor->save();
+                }
             }
-
 
             //Deleting Publishers
             $thePublisher = ResourcePublisher::where('resource_id', $resourceId)->first();
-            if(count($thePublisher)){
-                TaxonomyTerm::where('id', $thePublisher->tid)->delete();
-                $thePublisher->delete();
-            }
+            $thePublisher->delete();
 
             //Inserting Publisher
-            if($finalArray['publisher']){
-                $myTaxonomy = new TaxonomyTerm();
-                $myTaxonomy->vid = 9;
-                $myTaxonomy->name = $finalArray['publisher'];
-                $myTaxonomy->language = $finalArray['language'];
-                $myTaxonomy->save();
+            if(isset($finalArray['publisher'])){
+                $publisherName = trim($finalArray['publisher'],",");
+                $theTaxonomy = TaxonomyTerm::where('name', $publisherName)
+                                            ->where('vid', 9)
+                                            ->first();
 
-                $myPublisher = new ResourcePublisher();
-                $myPublisher->resource_id = $resourceId;
-                $myPublisher->tid = $myTaxonomy->id;
-                $myPublisher->save();
-            }
+                if(count($theTaxonomy)){
+                    $myPublisher = new ResourcePublisher();
+                    $myPublisher->resource_id = $resourceId;
+                    $myPublisher->tid = $theTaxonomy->id;
+                    $myPublisher->save();
+                }else{
+                    $myTaxonomy = new TaxonomyTerm();
+                    $myTaxonomy->vid = 9;
+                    $myTaxonomy->name = $publisherName;
+                    $myTaxonomy->language = $finalArray['language'];
+                    $myTaxonomy->save();
 
-            //Deleting Authors
-            $theTranslator = ResourceTranslator::where('resource_id', $resourceId);
-            if(count($theTranslator)){
-                foreach($theTranslator AS $trans)
-                {
-                    TaxonomyTerm::where('id', $trans->tid)->delete();
+                    $myPublisher = new ResourcePublisher();
+                    $myPublisher->resource_id = $resourceId;
+                    $myPublisher->tid = $myTaxonomy->id;
+                    $myPublisher->save();
                 }
-                $theTranslator->delete();
             }
+
+            //Deleting Translators
+            $theTranslator = ResourceTranslator::where('resource_id', $resourceId);
+            $theTranslator->delete();
 
             //Inserting Translators
             if(isset($finalArray['translator'])){
                 $translators = trim($finalArray['translator'], ",");
                 $translators = explode(',',$translators);
                 foreach($translators as $translator){
-                    $myTaxonomy = new TaxonomyTerm();
-                    $myTaxonomy->vid = 24;
-                    $myTaxonomy->name = $translator;
-                    $myTaxonomy->language = $finalArray['language'];
-                    $myTaxonomy->save();
+                    $theTaxonomy = TaxonomyTerm::where('name', $translator)
+                                                ->where('vid', 24)
+                                                ->first();
 
-                    $myTranslator = new ResourceTranslator();
-                    $myTranslator->resource_id = $resourceId;
-                    $myTranslator->tid = $myTaxonomy->id;
-                    $myTranslator->save();
+                    if(count($theTaxonomy)){
+                        $myTranslator = new ResourceTranslator();
+                        $myTranslator->resource_id = $resourceId;
+                        $myTranslator->tid = $theTaxonomy->id;
+                        $myTranslator->save();
+                    }else{
+                        $myTaxonomy = new TaxonomyTerm();
+                        $myTaxonomy->vid = 24;
+                        $myTaxonomy->name = $translator;
+                        $myTaxonomy->language = $finalArray['language'];
+                        $myTaxonomy->save();
+
+                        $myTranslator = new ResourceTranslator();
+                        $myTranslator->resource_id = $resourceId;
+                        $myTranslator->tid = $myTaxonomy->id;
+                        $myTranslator->save();
+                    }
                 }
             }
 
