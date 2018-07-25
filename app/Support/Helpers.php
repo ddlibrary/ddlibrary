@@ -70,7 +70,7 @@ if (! function_exists('fixImage')) {
 
             for($i=0; $i<count($matches[1]); $i++){
 				$absStr = $matches[1][$i];
-				if(strpos($absStr, 'youtube') == false){
+				if(strpos($absStr, 'youtube') == false && strpos($absStr, 'google') == false){
 					$absArray = explode('/',$absStr);
 					$imageName = last($absArray);
 					$fixedImage = Storage::disk('public')->url($imageName);
