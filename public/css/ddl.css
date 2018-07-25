@@ -589,7 +589,7 @@ aside .sub-subject-show {
 }
 
 .resource-view-title-box p {
-    min-height: 100px;
+    /*min-height: 100px;*/
 }
 
 .resource-view-title-box p:empty {
