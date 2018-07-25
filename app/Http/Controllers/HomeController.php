@@ -30,6 +30,11 @@ class HomeController extends Controller
         $resources = new Resource();
         //setting the search session empty
         $request->session()->forget('search');
+        $request->session()->forget('resource1');
+        $request->session()->forget('resource2');
+        $request->session()->forget('resource3');
+        $request->session()->save();
+        
         //latest news for the homepage
         $latestNews         = News::where('language',Config::get('app.locale'))->orderBy('id','desc')->take(4)->get();
         $subjectAreas       = $resources->subjectIconsAndTotal();
