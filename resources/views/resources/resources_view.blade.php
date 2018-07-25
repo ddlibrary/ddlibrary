@@ -139,19 +139,19 @@
         <article class="resource-view-details">
             <h3>@lang('Resource Level')</h3>
             @foreach ($resource->levels AS $level)
-            <p><a href="{{ URL::to('resources/list?=&level[]='.$level->tid) }}">{{ $level->name }}</a></p>
+            <p><a href="{{ URL::to('resources/list?=&level[]='.$level->id) }}">{{ $level->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
             <h3>@lang('Subject Area')</h3>
             @foreach ($resource->subjects AS $subject)
-            <p><a href="{{ URL::to('resources/list?=&subject_area[]='.$subject->tid) }}">{{ $subject->name }}</a></p>
+            <p><a href="{{ URL::to('resources/list?=&subject_area[]='.$subject->id) }}">{{ $subject->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
             <h3>@lang('Learning Resource Type')</h3>
             @foreach($resource->LearningResourceTypes AS $ltype)
-            <p><a href="{{ URL::to('resources/list?=&type[]='.$ltype->tid) }}">{{ $ltype->name }}</a></p>
+            <p><a href="{{ URL::to('resources/list?=&type[]='.$ltype->id) }}">{{ $ltype->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
