@@ -68,6 +68,9 @@ function()
     Route::get('admin/pages','PageController@index')->middleware('auth');
     Route::get('admin/pages/view/{pageId}','PageController@view')->middleware('auth');
     Route::get('page/{pageId}','PageController@view');
+    Route::get('/about-education-afghanistan', function() {
+        return redirect('page/22');
+    });
 
     //News
     Route::get('admin/news','NewsController@index')->middleware('auth');
