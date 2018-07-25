@@ -358,8 +358,14 @@ class Resource extends Model
                     });
             })
             ->when(count($searchQuery) > 0, function($query)  use($searchQuery){
-                return $query->where('rs.title','like','%'.$searchQuery.'%')
-                    ->orwhere('rs.abstract', 'like' , '%'.$searchQuery.'%');
+                return $query->leftJoin('resource_authors AS ra','ra.resource_id','=','rs.id')
+                    ->leftJoin('resource_publishers AS rp','rp.resource_id','=','rs.id')
+                    ->leftJoin('taxonomy_term_data AS ttd','ttd.id','=','ra.tid')
+                    ->leftJoin('taxonomy_term_data AS ttdp','ttdp.id','=','rp.tid')
+                    ->where('rs.title','like','%'.$searchQuery.'%')
+                    ->orwhere('rs.abstract', 'like' , '%'.$searchQuery.'%')
+                    ->orwhere('ttd.name', 'like' , '%'.$searchQuery.'%')
+                    ->orwhere('ttdp.name', 'like' , '%'.$searchQuery.'%');
             })
             ->where('rs.language',Config::get('app.locale'))
             ->where('rs.status', 1)
