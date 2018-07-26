@@ -479,7 +479,6 @@ aside .sub-subject-show {
     flex: 1 1 75%;
     flex-wrap: wrap;
     display: flex;
-    justify-content: space-evenly;
 }
 
 .resource-information-section .resource-article:hover {
@@ -494,7 +493,6 @@ aside .sub-subject-show {
 .resource-list .resource-title {
     border: 1px solid #eee;
     width: 200px;
-    height: 50px;
     word-break: break-word;
     padding: 0.2em;
     box-sizing: border-box;
@@ -890,7 +888,6 @@ aside .sub-subject-show {
 
     .resource-list .resource-title {
         width: 170px;
-        height: 50px;
     }
 
     .resource-list .resource-details {
