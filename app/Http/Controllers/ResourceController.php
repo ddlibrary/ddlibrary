@@ -111,7 +111,7 @@ class ResourceController extends Controller
         //setting the search session empty
         session()->forget(['resource1','resource2','resource3','search']);
         session()->save();
-        
+
         $myResources = new Resource();
 
         $resource = Resource::findOrFail($resourceId);
@@ -896,7 +896,9 @@ class ResourceController extends Controller
 
             //Deleting Subject Areas
             $theSubjects = ResourceSubjectArea::where('resource_id', $resourceId);
-            $theSubjects->delete();
+            if(count($theSubjects)){
+                $theSubjects->delete();
+            }
 
             //Inserting Subject Areas
             foreach($finalArray['subject_areas'] as $subject){
@@ -908,7 +910,9 @@ class ResourceController extends Controller
 
             //Delete Keywords
             $theKeyword = ResourceKeyword::where('resource_id', $resourceId);
-            $theKeyword->delete();
+            if(count($theKeyword)){
+                $theKeyword->delete();
+            }
 
             if(isset($finalArray['keywords'])){
                 $keywords = trim($finalArray['keywords'], ",");
@@ -942,7 +946,9 @@ class ResourceController extends Controller
 
             //Deleting Authors
             $theAuthors = ResourceAuthor::where('resource_id', $resourceId);
-            $theAuthors->delete();
+            if(count($theAuthors)){
+                $theAuthors->delete();
+            }
 
             //Inserting Authors
             $authors = trim($finalArray['author'], ",");
@@ -972,8 +978,10 @@ class ResourceController extends Controller
             }
 
             //Deleting Publishers
-            $thePublisher = ResourcePublisher::where('resource_id', $resourceId)->first();
-            $thePublisher->delete();
+            $thePublisher = ResourcePublisher::where('resource_id', $resourceId);
+            if(count($thePublisher)){
+                $thePublisher->delete();
+            }
 
             //Inserting Publisher
             if(isset($finalArray['publisher'])){
@@ -1003,7 +1011,9 @@ class ResourceController extends Controller
 
             //Deleting Translators
             $theTranslator = ResourceTranslator::where('resource_id', $resourceId);
-            $theTranslator->delete();
+            if(count($theTranslator)){
+                $theTranslator->delete();
+            }
 
             //Inserting Translators
             if(isset($finalArray['translator'])){
@@ -1036,7 +1046,9 @@ class ResourceController extends Controller
 
             //Deleting Learning Resource Types
             $theLearningResourceType = ResourceLearningResourceType::where('resource_id', $resourceId);
-            $theLearningResourceType->delete();
+            if(count($theLearningResourceType)){
+                $theLearningResourceType->delete();
+            }
 
             //Inserting Learning Resource Types
             foreach($finalArray['learning_resources_types'] as $ltype){
@@ -1048,7 +1060,9 @@ class ResourceController extends Controller
 
             //Deleting Educational Use
             $theEduUse = ResourceEducationalUse::where('resource_id', $resourceId);
-            $theEduUse->delete();
+            if(count($theEduUse)){
+                $theEduUse->delete();
+            }
 
             //Inserting Educational Use
             foreach($finalArray['educational_use'] as $edus){
@@ -1060,7 +1074,9 @@ class ResourceController extends Controller
 
             //Deleting Levels
             $theLevels = ResourceLevel::where('resource_id', $resourceId);
-            $theLevels->delete();
+            if(count($theLevels)){
+                $theLevels->delete();
+            }
 
             //Inserting Resource Levels
             foreach($finalArray['level'] as $level){
@@ -1071,7 +1087,7 @@ class ResourceController extends Controller
             }
 
             //Deleting Translation Rights
-            $theTransRight = ResourceTranslationRight::where('resource_id', $resourceId)->first();
+            $theTransRight = ResourceTranslationRight::where('resource_id', $resourceId);
             if(count($theTransRight)){
                 $theTransRight->delete();
             }
@@ -1085,7 +1101,7 @@ class ResourceController extends Controller
             }
 
             //Deleting Educational Resource
-            $theEduResource = ResourceEducationalResource::where('resource_id', $resourceId)->first();
+            $theEduResource = ResourceEducationalResource::where('resource_id', $resourceId);
             if(count($theEduResource)){
                 $theEduResource->delete();
             }
@@ -1099,7 +1115,7 @@ class ResourceController extends Controller
             }
 
             //Deleting I am author
-            $theIamAuthor = ResourceIamAuthor::where('resource_id', $resourceId)->first();
+            $theIamAuthor = ResourceIamAuthor::where('resource_id', $resourceId);
             if(count($theIamAuthor)){
                 //Deleting I am author
                 $theIamAuthor->delete();
@@ -1114,7 +1130,7 @@ class ResourceController extends Controller
             }
 
             //Deleting Copyright Holder
-            $theCopyrightHolder = ResourceCopyrightHolder::where('resource_id', $resourceId)->first();
+            $theCopyrightHolder = ResourceCopyrightHolder::where('resource_id', $resourceId);
             if(count($theCopyrightHolder)){
                 $theCopyrightHolder->delete();
             }
@@ -1128,7 +1144,7 @@ class ResourceController extends Controller
             }
 
             //Deleting Creative Commons
-            $theCC = ResourceCreativeCommon::where('resource_id', $resourceId)->first();
+            $theCC = ResourceCreativeCommon::where('resource_id', $resourceId);
             if(count($theCC)){
                 $theCC->delete();
             }
@@ -1142,7 +1158,7 @@ class ResourceController extends Controller
             }
 
             //Deleting Creative Commons
-            $theCCOther = ResourceSharePermission::where('resource_id', $resourceId)->first();
+            $theCCOther = ResourceSharePermission::where('resource_id', $resourceId);
             if(count($theCCOther)){
                 $theCCOther->delete();
             }
