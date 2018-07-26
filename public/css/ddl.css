@@ -523,10 +523,12 @@ aside .sub-subject-show {
 
 .resource-list .resource-details span {
     text-align: center;
+    color: #888;
 }
 
 .resource-list .resource-details i {
     text-align: center; 
+    color: #888;
 }
 
 .resource-view {
