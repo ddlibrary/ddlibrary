@@ -23,7 +23,7 @@
             </div>
         </div>
         @if (isAdmin())
-        <p>@lang('Added by'): <a href="{{ URL::to('user/'.$resource->user_id) }}">{{ $resource->user->username }}</a>
+        <p>@lang('Added by'): <a href="{{ URL::to('user/'.isset($resource->user)?$resource->user->id:"") }}">{{ isset($resource->user)?$resource->user->username:"" }}</a>
         @endif
     </aside>
     <section class="resource-view-information-section">

@@ -27,6 +27,10 @@ class NewsController extends Controller
 
     public function view($newsId)
     {
+        //setting the search session empty
+        session()->forget(['resource1','resource2','resource3','search']);
+        session()->save();
+
         $myNews = new News();
 
         $news = News::find($newsId);
@@ -41,6 +45,10 @@ class NewsController extends Controller
 
     public function create()
     {
+        //setting the search session empty
+        session()->forget(['resource1','resource2','resource3','search']);
+        session()->save();
+        
         return view('news.news_create');
     }
 

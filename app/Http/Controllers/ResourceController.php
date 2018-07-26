@@ -65,6 +65,10 @@ class ResourceController extends Controller
 
     public function list(Request $request)
     {
+        //setting the search session empty
+        session()->forget(['resource1','resource2','resource3','search']);
+        session()->save();
+        
         $myResources = new Resource();
 
         //Getting all whatever in the parameterBag

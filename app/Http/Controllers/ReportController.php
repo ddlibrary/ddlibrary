@@ -22,6 +22,10 @@ class ReportController extends Controller
     
     public function index()
     {
+        //setting the search session empty
+        session()->forget(['resource1','resource2','resource3','search']);
+        session()->save();
+        
         $resourceModel  = new Resource();
         $usersModel     = new User();
 
