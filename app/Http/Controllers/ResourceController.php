@@ -203,7 +203,7 @@ class ResourceController extends Controller
         $resource = $request->session()->get('resource2');
 
         $validatedData = $request->validate([
-            'attachments.*'             => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,doc,docx,pdf,tif,tiff',
+            'attachments.*'             => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mp3,mp4,ppt,pptx,doc,docx,pdf,tif,tiff',
             'subject_areas'             => 'required',
             'keywords'                  => 'string|nullable',
             'learning_resources_types'  => 'required',
@@ -777,7 +777,7 @@ class ResourceController extends Controller
     {
         $resource = $request->session()->get('resource2');
         $validatedData = $request->validate([
-            'attachments.*'             => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,doc,docx,pdf,tif,tiff',
+            'attachments.*'             => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mp3,mp4,ppt,pptx,doc,docx,pdf,tif,tiff',
             'subject_areas'             => 'required',
             'keywords'                  => 'string|nullable',
             'learning_resources_types'  => 'required',
