@@ -108,6 +108,10 @@ class ResourceController extends Controller
 
     public function viewPublicResource(Request $request, $resourceId)
     {
+        //setting the search session empty
+        session()->forget(['resource1','resource2','resource3','search']);
+        session()->save();
+        
         $myResources = new Resource();
 
         $resource = Resource::findOrFail($resourceId);
@@ -1156,5 +1160,25 @@ class ResourceController extends Controller
         if($result){
             return redirect('/resource/'.$resourceId)->with('success','Resource updated successfully');
         }
+    }
+
+    public function deleteFile($resourceId, $fileName)
+    {   
+        Storage::disk('private')->delete($fileName);
+        ResourceAttachment::where('resource_id', $resourceId)->where('file_name', $fileName)->delete();
+        Session::flash('success', "file successfully deleted!");
+        $resource2 = session('resource2');
+        $resource2Attc = $resource2['attc'];
+
+        if($resource2Attc){
+            for($i=0; $i<count($resource2Attc); $i++){
+                if($resource2Attc[$i]['file_name'] == $fileName){
+                    unset($resource2Attc[$i]);
+                }
+            }
+            $resource2['attc'] = array_values($resource2Attc);
+            session()->put('resource2', $resource2);
+        }
+        return back();
     }
 }

@@ -56,6 +56,9 @@ function()
     Route::get('resources/edit/step3/{resourceId}', 'ResourceController@createStepThreeEdit')->name('edit3')->middleware('admin');
     Route::post('resources/edit/step3/{resourceId}', 'ResourceController@postStepThreeEdit')->middleware('admin');
 
+    //delete file
+    Route::get('delete/file/{resourceId}/{fileName}', 'ResourceController@deleteFile')->name('delete-file')->middleware('admin');
+
     //Contact 
     Route::get('contact-us', 'ContactController@create');
     Route::post('contact-us', 'ContactController@store')->name('contact');

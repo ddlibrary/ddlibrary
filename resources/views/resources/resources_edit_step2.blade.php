@@ -34,6 +34,9 @@
             <?php  $i = 0; ?>
             @foreach($resource['attc'] as $item)
                 <br><a href="{{ asset('/storage/attachments/'.$item['file_name']) }}">{{ $item['file_name'] }}</a>
+                @if (isAdmin())
+                <a style="color:red;" href="{{ route('delete-file', ['fileName' => $item['file_name'], 'resourceId' => $resource['id']]) }}">Delete</a>
+                @endif
                 <?php  $i++; ?>
             @endforeach
             @endif
