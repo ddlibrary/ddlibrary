@@ -151,7 +151,7 @@
             </ul>
         </div>
         <div style="display:flex;">
-            <input style="margin-right: 10px;" class="form-control normalButton" type="button" value="@lang('Previous')" onclick="location.href='{{ route('edit1', $resource["id"]) }}'">
+            <input style="margin-{{ (app()->getLocale()=="en")?"right":"left" }}: 10px;" class="form-control normalButton" type="button" value="@lang('Previous')" onclick="location.href='{{ route('edit1', $resource["id"]) }}'">
             <input class="form-control normalButton" type="submit" value="@lang('Next')">
         </div>
         </form>

@@ -281,7 +281,7 @@ footer i:hover, footer i:active, footer i:focus {
     max-width: 100%;
     margin-bottom: 15px;
 }
-.form-item label {
+.form-item label:first-child {
     display: block;
     margin-bottom: 4px;
 }

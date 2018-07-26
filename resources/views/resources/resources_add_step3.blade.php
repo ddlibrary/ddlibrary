@@ -67,7 +67,9 @@
                 <strong>@lang('If there is Creative Commons License on the resource, select one of these')</strong>
             </label>
             @foreach($creativeCommons AS $cc)
-            <input type="radio" value="{{ $cc->id }}" name="creative_commons">{{ $cc->name }}<br>
+                @if(in_array($cc->tnid, array(535, 536, 537, 159)))
+                    <input type="radio" value="{{ $cc->id }}" name="creative_commons">{{ $cc->name }}<br>
+                @endif
             @endforeach
             <div class="description">
                 @lang('Unsure of which option to select?') @lang('Click') <a href="{{ URL::to('/pages/view/2252') }}">@lang('here')</a> @lang('for guidance on licensing this resource.')
@@ -77,8 +79,10 @@
             <label for="creative_commons_other"> 
                 <strong>@lang('If there is no Creative Commons License on the resource, select one these:')</strong>
             </label>
-            @foreach($creativeCommonsOther AS $other)
-            <input type="radio" value="{{ $other->id }}" name="creative_commons_other">{{ $other->name }}<br>
+            @foreach($creativeCommons AS $other)
+                @if(!in_array($other->tnid, array(535, 536, 537, 159)))
+                    <input type="radio" value="{{ $other->id }}" name="creative_commons_other">{{ $other->name }}<br>
+                @endif
             @endforeach
         </div>
         <div style="display:flex;">
