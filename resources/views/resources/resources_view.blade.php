@@ -35,7 +35,7 @@
                 </header>
                 <div class="resource-icons">
                     @if (isAdmin())
-                    <a href="{{ route('edit1', $resource->id) }}">@lang('Edit')</a>
+                    <a href="{{ URL::to($resource->language.'/resources/edit/step1/'.$resource->id) }}">@lang('Edit')</a>
                     @endif
                     <i class="fas fa-lg fa-star {{ count($resource->favorites)?"active":"" }}" id="resourceFavorite" onclick="favorite('resourceFavorite','{{ URL::to("resources/favorite/") }}','{{ $resource->id }}','{{ Auth::id() }}')"></i>
                     <i class="fas fa-lg fa-share-square"></i>
