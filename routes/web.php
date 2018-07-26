@@ -30,7 +30,7 @@ function()
     Route::get('admin/users', 'UserController@index')->middleware('admin');
     Route::post('admin/users', 'UserController@index')->name('user')->middleware('admin');
     Route::get('admin/users/users-data', 'UserController@usersData')->middleware('admin');
-    Route::get('user/{userId}', 'UserController@viewUser')->where('userId', '[0-9]+');
+    Route::get('user/{userId}', 'UserController@viewUser')->where('userId', '[0-9]+')->name('user-view');
     Route::get('admin/user/edit/{userId}', 'UserController@updateUser')->middleware('admin');
 
     //Resources
