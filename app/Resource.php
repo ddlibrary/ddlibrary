@@ -258,7 +258,8 @@ class Resource extends Model
                 ->select(
                     'ttd.id',
                     'ttd.name',
-                    'tth.parent'
+                    'tth.parent',
+                    'ttd.tnid'
                 )
                 ->leftJoin('taxonomy_term_hierarchy AS tth', 'tth.tid','=','ttd.id')
                 ->where('vid', $vid)

@@ -99,4 +99,10 @@ class NewsController extends Controller
 
         return redirect('news/'.$id)->with('success', 'Item successfully updated!');
     }
+
+    public function translate(News $news, $id)
+    {   
+        $news = $news->where('tnid', $id)->get();
+        return view('news.news_translate', compact('news'));    
+    }
 }

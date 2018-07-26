@@ -74,7 +74,9 @@
                     $cc_common = "";
                 }
             ?>
+            @if(in_array($cc->tnid, array(535, 536, 537, 159)))
             <input type="radio" value="{{ $cc->id }}" name="creative_commons" {{ ($cc_common == $cc->name)?"checked":"" }}>{{ $cc->name }}<br>
+            @endif
             @endforeach
             <div class="description">
                 @lang('Unsure of which option to select?') @lang('Click here') @lang('for guidance on licensing this resource.')
@@ -84,8 +86,10 @@
             <label for="creative_commons_other"> 
                 <strong>@lang('If there is no Creative Commons License on the resource, select one these:')</strong>
             </label>
-            @foreach($creativeCommonsOther AS $other)
+            @foreach($creativeCommons AS $other)
+            @if(!in_array($other->tnid, array(535, 536, 537, 159)))
             <input type="radio" value="{{ $other->id }}" name="creative_commons_other" @if(count($dbRecords->SharePermissions)) {{ $dbRecords->SharePermissions->tid == $other->id?"checked":"" }} @endif>{{ $other->name }}<br>
+            @endif
             @endforeach
         </div>
         <div class="form-item">

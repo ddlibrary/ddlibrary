@@ -802,6 +802,14 @@ aside .sub-subject-show {
     font-size: 60px;
 }
 
+.translate div:first-child {
+    font-weight: bold;
+}
+
+.translate div span {
+    padding: 1em;
+}
+
 @media screen and (max-height: 450px) {
   .overlay a {font-size: 20px}
   .overlay .closebtn {

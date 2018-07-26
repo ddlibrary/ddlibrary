@@ -83,6 +83,7 @@ function()
     Route::post('news/update/{newsId}','NewsController@update')->name('update_news')->middleware('admin');
     Route::get('news/create','NewsController@create')->middleware('admin');
     Route::post('news/store','NewsController@store')->name('add_news')->middleware('admin');
+    Route::get('news/translate/{newsId}','NewsController@translate')->middleware('admin');
 
     //Menu
     Route::get('admin/menu','MenuController@index')->middleware('admin');
