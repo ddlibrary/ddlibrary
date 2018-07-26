@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
+use App\User;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,8 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('admin/users', 'UserController@index');
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
+Route::get('usersss', function() {
+    // If the Content-Type and Accept headers are set to 'application/json', 
+    // this will return a JSON structure. This will be cleaned up later.
+    return User::all();
 });
+
+Route::get('userrr/{id}', function($id) {
+    return User::find($id);
+});
+

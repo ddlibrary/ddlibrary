@@ -30,11 +30,6 @@ class UserController extends Controller
         $request->session()->put('filters', $request->all());
 
         $filters = $request->session()->get('filters');
-        
-        //if we have an API call
-        if( $request->is('api/*')){
-            return $users;
-        }
 
         return view('admin.users.users',compact('users','roles', 'filters'));
     }

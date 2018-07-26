@@ -45,9 +45,14 @@
                 </div>
 
                 <div class="btn-div">
-                <a href="{{ route('password.request') }}">
-                    {{ __('Forgot Your Password?') }}
-                </a>
+                    <a href="{{ route('password.request') }}">
+                        {{ __('Forgot Your Password?') }}
+                    </a>
+                </div>
+                <div class="btn-div">
+                    <a href="{{ route('register') }}">
+                        @lang('Register an Account with DDL')
+                    </a>
                 </div>
             </div>
         </div>
