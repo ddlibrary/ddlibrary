@@ -5,28 +5,23 @@
     <header>
         <h1>Available Translations</h1>
     </header>
-    <article class="translate">
-        <div class="translate-head">
-            <span>Title</span>
-            <span>Language</span>
-            <span>Action</span>
-        </div>
+    <table class="translate">
         @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
             <?php $item = $news->firstWhere('language',$localeCode);?>
             @if(count($item))
-            <div>
-                <span>{{ $item->title }}</span>
-                <span>{{ fixLanguage($item->language) }}</span>
-                <a href="{{ URL::to($item->language.'/news/'.$item->id) }}">View</a>
-            </div>
+            <tr>
+                <td>{{ $item->title }}</td>
+                <td>{{ fixLanguage($item->language) }}</td>
+                <td><a href="{{ URL::to($item->language.'/news/'.$item->id) }}">View</a></td>
+            </tr>
             @else
-                <div>
-                    <span>{{ $news_self->title }}</span>
-                    <span>{{ fixLanguage($localeCode) }}</span>
-                    <span><a href="{{ URL::to($localeCode.'/news/add/translate/'.$news_self->id.'/'.$localeCode) }}">Add</a></span>
-                </div>
+                <tr>
+                    <td>{{ $news_self->title }}</td>
+                    <td>{{ fixLanguage($localeCode) }}</td>
+                    <td><a href="{{ URL::to($localeCode.'/news/add/translate/'.$news_self->id.'/'.$localeCode) }}">Add</a></td>
+                </tr>
             @endif
         @endforeach
-    </article>
+    </table>
 </section>
 @endsection 

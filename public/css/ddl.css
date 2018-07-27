@@ -817,6 +817,17 @@ aside .sub-subject-show {
     color:#ffa800
 }
 
+.translate {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+
+.translate th {
+    font-weight: bold;
+}
+
 .translate .translate-head {
     font-weight: bold;
 }
