@@ -30,6 +30,7 @@ strong {
 }
 p, li {
     line-height: 1.5;
+    margin-bottom: 1em;
 }
 .form-required {
     color: #f00;
