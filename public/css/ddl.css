@@ -600,7 +600,7 @@ aside .sub-subject-show {
 }
 
 .resource-view-title-box p {
-    /*min-height: 100px;*/
+    margin-bottom: 1em;
 }
 
 .resource-view-title-box p:empty {
