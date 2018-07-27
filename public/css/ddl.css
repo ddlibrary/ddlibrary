@@ -228,6 +228,7 @@ input[type=search] {
 .latest-content {
     padding-top: 5px;
     padding-bottom: 15px;
+    width: 350px;
 }
 .news-description {
     font-style: italic;
