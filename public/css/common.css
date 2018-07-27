@@ -28,7 +28,11 @@ a {
 strong {
     font-weight: 600;
 }
-p, li {
+p {
+    line-height: 1.5;
+}
+
+li {
     line-height: 1.5;
 }
 .form-required {

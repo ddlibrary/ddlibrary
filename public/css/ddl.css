@@ -392,6 +392,8 @@ select.form-control:focus::-ms-value {
 
 .general-content p {
     margin-bottom: 1em;
+    font-size: 1rem;
+    color: #333333;
 }
 
 .general-content ul {
@@ -601,6 +603,7 @@ aside .sub-subject-show {
 
 .resource-view-title-box p {
     margin-bottom: 1em;
+    color: #333333;
 }
 
 .resource-view-title-box p:empty {
