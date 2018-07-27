@@ -247,7 +247,7 @@
         <form method="POST" action="{{ route('comment') }}">
         @csrf
             <article>
-                <textarea name="comment" cols="40" rows="10"></textarea>
+                <textarea name="comment" cols="40" rows="10" required></textarea>
             </article>
             <input type="hidden" value="{{ $resource->id }}" name="resource_id">
             <input type="hidden" value="{{ Auth::id() }}" name="userid">
