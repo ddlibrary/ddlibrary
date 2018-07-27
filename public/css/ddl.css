@@ -803,6 +803,16 @@ aside .sub-subject-show {
     font-size: 60px;
 }
 
+.overlay .language-container {
+    margin-bottom: 1em;
+}
+
+.overlay .language-container a {
+    display: inline;
+    font-size: 1rem; 
+    color:#ffa800
+}
+
 .translate .translate-head {
     font-weight: bold;
 }

@@ -7,6 +7,13 @@
     <div id="myNav" class="overlay">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <div class="overlay-content">
+            <div class="language-container">
+            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                <a rel="alternate" href="{{ URL::to('/'.$localeCode) }}" hreflang="{{ $localeCode }}">
+                {{ $properties['native'] }}
+                </a>
+            @endforeach
+            </div>
             <a href="{{ URL::to('/') }}">Home</a>
             <a href="{{ URL::to('resources') }}">Browse</a>
             <a href="{{ URL::to('resources/add/step1') }}">Upload a Resource</a>
