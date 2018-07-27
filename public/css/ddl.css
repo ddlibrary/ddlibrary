@@ -818,6 +818,8 @@ aside .sub-subject-show {
 }
 
 .translate {
+    border-collapse: inherit;
+    border-spacing: 1em;
     width: 100%;
     max-width: 100%;
     margin-bottom: 1rem;
