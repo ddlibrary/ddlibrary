@@ -216,12 +216,14 @@
             @foreach($resource->attachments as $file)
             <span class="download-item"><a href="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}">{{ $file->file_name }}</a></span>
             <span class="download-item item-mobile">{{ formatBytes($file->file_size) }}</span>
+            @if($file->file_mime=="application/pdf")
+            <object data="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}" type="application/pdf" width="100%" height="500"></object>
+            @endif
             @endforeach
             @endif
             </div>
         </article>
     </section>
-
     <section class="resource-view-comment">
         <header>
             <h2>@lang('Comments')</h2>

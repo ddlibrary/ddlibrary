@@ -825,6 +825,10 @@ aside .sub-subject-show {
     padding: 1em;
 }
 
+viewer-pdf-toolbar {
+    display: none!important;
+}
+
 @media screen and (max-height: 450px) {
   .overlay a {font-size: 20px}
   .overlay .closebtn {
