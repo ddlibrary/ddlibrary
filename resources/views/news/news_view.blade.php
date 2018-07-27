@@ -10,7 +10,7 @@
     </article>
     @if (isAdmin())
     <a href="{{ URL::to('news/edit/'.$news->id) }}">Edit</a>
-    <a href="{{ URL::to('news/translate/'.$news->id) }}">Translate</a>
+    <a href="{{ URL::to('news/translate/'.$news->id.'/'.$news->tnid) }}">Translate</a>
     @endif
 </section>
 @endsection 

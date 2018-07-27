@@ -76,7 +76,7 @@
         @foreach($latestResources AS $resource)
         <article class="latest-content">
             <a href="{{ URL::to('resource/'.$resource->id) }}"><p>{{ $resource->title }}</p></a>
-            <i class="news-description">{{ __($resource->created_at->diffForHumans())  }}</i>
+            <i class="news-description">{{ __($resource->updated_at->diffForHumans())  }}</i>
         </article>
         @endforeach
     </div>

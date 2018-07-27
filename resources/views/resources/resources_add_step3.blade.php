@@ -66,6 +66,7 @@
             <label for="creative_commons"> 
                 <strong>@lang('If there is Creative Commons License on the resource, select one of these')</strong>
             </label>
+            <br>
             @foreach($creativeCommons AS $cc)
                 @if(in_array($cc->tnid, array(535, 536, 537, 159)))
                     <input type="radio" value="{{ $cc->id }}" name="creative_commons">{{ $cc->name }}<br>

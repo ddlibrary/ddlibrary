@@ -802,7 +802,7 @@ aside .sub-subject-show {
     font-size: 60px;
 }
 
-.translate div:first-child {
+.translate .translate-head {
     font-weight: bold;
 }
 

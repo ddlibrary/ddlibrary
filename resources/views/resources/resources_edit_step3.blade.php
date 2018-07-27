@@ -66,6 +66,7 @@
             <label for="creative_commons"> 
                 <strong>@lang('If there is Creative Commons License on the resource, select one of these')</strong>
             </label>
+            <br>
             @foreach($creativeCommons AS $cc)
             <?php
                 if(count($dbRecords->CreativeCommons)){

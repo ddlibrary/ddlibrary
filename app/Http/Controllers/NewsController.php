@@ -108,9 +108,38 @@ class NewsController extends Controller
         return redirect('news/'.$id)->with('success', 'Item successfully updated!');
     }
 
-    public function translate(News $news, $id)
+    public function translate(News $news, $id, $tnid)
     {   
-        $news = $news->where('tnid', $id)->get();
-        return view('news.news_translate', compact('news'));    
+        $news = $news->where('tnid', $tnid)->get();
+        $news_self = $news->find($id);
+        return view('news.news_translate', compact('news', 'news_self'));    
+    }
+
+    public function addTranslate($tnid, $lang)
+    {
+        return view('news.news_add_translate', compact('tnid', 'lang'));   
+    }
+
+    public function addPostTranslate(Request $request, News $news, $tnid, $lang)
+    {
+        $this->validate($request, [
+            'title'      => 'required',
+            'language'   => 'nullable',
+            'summary'    => 'required',
+            'body'       => 'required',
+            'published'  => 'integer'
+        ]);
+
+        $news->title = $request->input('title');
+        $news->summary = $request->input('summary');
+        $news->body = $request->input('body');
+        $news->language = $lang;
+        $news->user_id = Auth::id();
+        $news->tnid = $tnid;
+        $news->status = $request->input('published');
+        //inserting
+        $news->save();
+
+        return redirect('news/'.$news->id)->with('success', 'Item successfully updated!');    
     }
 }
