@@ -59,7 +59,7 @@ return [
 
     // The default display type for items.
     // Supported: "grid", "list"
-    'images_startup_view' => 'grid',
+    'images_startup_view' => 'list',
     'files_startup_view' => 'list',
 
     /*
@@ -96,7 +96,7 @@ return [
     ],
 
     // If true, image thumbnails would be created during upload
-    'should_create_thumbnails' => true,
+    'should_create_thumbnails' => false,
 
     // Create thumbnails automatically only for listed types.
     'raster_mimetypes' => [
