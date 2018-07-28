@@ -174,12 +174,14 @@ input[type=search] {
     border-radius: .25rem;
     -webkit-border-radius: .25rem;
     -moz-border-radius: .25rem;
-    width: 100%
+    width: 100%;
+    justify-content: center;
 }
 .resource-pagination ul {
     margin-top: 0;
     margin-bottom: 1em;
     margin-top: 1em;
+    display: flex;
 }
 
 .resource-pagination ul li {
@@ -189,8 +191,8 @@ input[type=search] {
 .page-item.active .page-link {
     z-index: 1;
     color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #ffa800;
+    border-color: #ffa800;
 }
 .page-link:not(:disabled):not(.disabled) {
     cursor: pointer;
@@ -201,7 +203,7 @@ input[type=search] {
     padding: .5rem .75rem;
     margin-left: -1px;
     line-height: 1.25;
-    color: #007bff;
+    color: #888;
     background-color: #fff;
     border: 1px solid #dee2e6;
 }
