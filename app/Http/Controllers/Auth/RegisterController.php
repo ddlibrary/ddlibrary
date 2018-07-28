@@ -74,7 +74,8 @@ class RegisterController extends Controller
             'phone' => 'required|max:20',
             'gender' => 'required',
             'country' => 'required',
-            'city' => 'nullable'
+            'city' => 'nullable',
+            'g-recaptcha-response' => 'required|captcha'
         ]);
     }
 
