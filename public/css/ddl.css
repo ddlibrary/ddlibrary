@@ -469,8 +469,6 @@ select.form-control:focus::-ms-value {
 }
 
 .resource-list ul li span{
-    padding: .3em;
-    width: 2em;
     text-align: center;
 }
 
