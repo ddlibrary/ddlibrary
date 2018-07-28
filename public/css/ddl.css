@@ -938,4 +938,12 @@ viewer-pdf-toolbar {
     .resource-list .resource-details {
         width: 170px;
     }
+
+    .resource-pagination ul li:nth-last-child(6),
+    .resource-pagination ul li:nth-last-child(5),
+    .resource-pagination ul li:nth-last-child(4), 
+    .resource-pagination ul li:nth-last-child(3), 
+    .resource-pagination ul li:nth-last-child(2) {
+        display: none;
+    }
 }
