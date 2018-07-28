@@ -1,5 +1,5 @@
 @extends('layouts.main')
-
+{!! NoCaptcha::renderJs() !!}
 @section('content')
 <section class="ddl-forms">
     <header>
@@ -114,6 +114,11 @@
                         <option value="">- @lang('None') -</option>
                     </select>
                     <input type="text" class="form-control" name="city_other" id="js-text-city" size="40" maxlength="40" style="display:none;">
+                </div>
+            </div>
+            <div class="left-side">
+                <div class="form-item">
+                    {!! NoCaptcha::display() !!}
                 </div>
             </div>
             <div class="left-side">
