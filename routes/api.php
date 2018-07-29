@@ -12,18 +12,18 @@ use App\User;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+if (env('APP_ENV') !== 'production') {
+	Route::get('usersss', function() {
+	    // If the Content-Type and Accept headers are set to 'application/json', 
+	    // this will return a JSON structure. This will be cleaned up later.
+	    $users = User::all();
 
-Route::get('usersss', function() {
-    // If the Content-Type and Accept headers are set to 'application/json', 
-    // this will return a JSON structure. This will be cleaned up later.
-    $users = User::all();
-    
-    return response()->json($users);
-});
+	    return response()->json($users);
+	});
 
-Route::get('userrr/{id}', function($id) {
-    $user = User::find($id);
+	Route::get('userrr/{id}', function($id) {
+	    $user = User::find($id);
 
-    return response()->json($user);
-});
-
+	    return response()->json($user);
+	});
+}
