@@ -16,10 +16,14 @@ use App\User;
 Route::get('usersss', function() {
     // If the Content-Type and Accept headers are set to 'application/json', 
     // this will return a JSON structure. This will be cleaned up later.
-    return User::all();
+    $users = User::all();
+    
+    return response()->json($users);
 });
 
 Route::get('userrr/{id}', function($id) {
-    return User::find($id);
+    $user = User::find($id);
+
+    return response()->json($user);
 });
 
