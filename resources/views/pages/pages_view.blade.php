@@ -9,6 +9,7 @@
     </article>
     @if (isAdmin())
     <a href="{{ URL::to('page/edit/'.$page->id) }}">Edit</a>
+    <a href="{{ URL::to('page/translate/'.$page->id.'/'.$page->tnid) }}">Translate</a>
     @endif
 </section>
 @endsection 

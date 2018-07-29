@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Resource;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,6 +20,14 @@ if (env('APP_ENV') !== 'production') {
 	    $users = User::all();
 
 	    return response()->json($users);
+	});
+
+	Route::get('resources', function() {
+	    // If the Content-Type and Accept headers are set to 'application/json', 
+	    // this will return a JSON structure. This will be cleaned up later.
+	    $resources = Resource::where('language','fa')->where('status', 1)->orderBy('id','desc')->get();
+
+	    return response()->json($resources);
 	});
 
 	Route::get('userrr/{id}', function($id) {

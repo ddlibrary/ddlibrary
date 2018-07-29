@@ -107,4 +107,39 @@ class PageController extends Controller
 
         return redirect('page/'.$id)->with('success', 'Item successfully updated!');
     }
+
+    public function translate(Page $page, $id, $tnid)
+    {   
+        $page = $page->where('tnid', $tnid)->get();
+        $page_self = $page->find($id);
+        return view('pages.page_translate', compact('page', 'page_self'));    
+    }
+
+    public function addTranslate($tnid, $lang)
+    {
+        return view('pages.page_add_translate', compact('tnid', 'lang'));   
+    }
+
+    public function addPostTranslate(Request $request, Page $page, $tnid, $lang)
+    {
+        $this->validate($request, [
+            'title'      => 'required',
+            'language'   => 'nullable',
+            'summary'    => 'required',
+            'body'       => 'required',
+            'published'  => 'integer'
+        ]);
+
+        $page->title = $request->input('title');
+        $page->summary = $request->input('summary');
+        $page->body = $request->input('body');
+        $page->language = $lang;
+        $page->user_id = Auth::id();
+        $page->tnid = $tnid;
+        $page->status = $request->input('published');
+        //inserting
+        $page->save();
+
+        return redirect('page/'.$page->id)->with('success', 'Item successfully updated!');    
+    }
 }

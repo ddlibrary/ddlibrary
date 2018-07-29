@@ -82,6 +82,9 @@ function()
     Route::post('page/update/{pageId}','PageController@update')->name('update_page')->middleware('admin');
     Route::get('page/create','PageController@create')->middleware('admin');
     Route::post('page/store','PageController@store')->name('add_page')->middleware('admin');
+    Route::get('page/translate/{pageId}/{pageTnid}','PageController@translate')->middleware('admin');
+    Route::get('page/add/translate/{pageId}/{lang}','PageController@addTranslate')->middleware('admin');
+    Route::post('page/add/translate/{pageId}/{lang}','PageController@addPostTranslate')->name('add_page_translate')->middleware('admin');
 
     //News
     Route::get('admin/news','NewsController@index')->middleware('admin');
