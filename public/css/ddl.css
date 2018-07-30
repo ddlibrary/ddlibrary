@@ -224,9 +224,6 @@ input[type=search] {
     background: #eeeeee;
     justify-content: space-around;
 }
-.latest-div h2 {
-    padding-bottom: 5px;
-}
 .latest-content {
     padding-top: 5px;
     padding-bottom: 15px;
@@ -854,13 +851,6 @@ viewer-pdf-toolbar {
   }
 }
 
-@media only screen and (max-width: 900px) {
-    .latest-div, .useful-links {
-        width: 90%;
-        padding-top: 1em;
-    }
-}
-
 @media only screen and (max-width: 530px) {
     .section-content a {
         width: 50%;
@@ -884,10 +874,16 @@ viewer-pdf-toolbar {
 }
 
 @media only screen and (max-width: 900px) {
+    .latest-div, .useful-links {
+        width: 90%;
+        padding-top: 1em;
+    }
+
     header #toggle {
         display: block;
         padding: 0.4em;
     }
+    
     header #toggle:hover {
         color: orange;
         cursor: pointer;
