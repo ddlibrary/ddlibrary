@@ -84,6 +84,7 @@
                     filebrowserUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Files&_token='
                 };
                 CKEDITOR.config.contentsLangDirection = '{{ $resource["language"] != "en"?"rtl":"ltr"}}';
+                CKEDITOR.config.filebrowserUploadMethod = 'form';
                 CKEDITOR.replace( 'abstract', options );
             </script>
             @if ($errors->has('abstract'))
