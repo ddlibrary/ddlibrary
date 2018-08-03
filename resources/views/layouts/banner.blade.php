@@ -1,3 +1,6 @@
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/fontawesome-all.min.css') }}">
+@endpush
 <header class="header">
     <div class="ddl-logo">
         <a href="{{ URL::to('/') }}"><img class="header-img" src="{{ asset('storage/files/logo-dd.png') }}"></a>

@@ -1,5 +1,8 @@
 @extends('layouts.main')
-
+@push('scripts')
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/config.js') }}"></script>
+@endpush
 @section('content')
 <section class="ddl-forms">
     <header>

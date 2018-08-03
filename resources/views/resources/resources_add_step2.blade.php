@@ -1,22 +1,11 @@
 @extends('layouts.main')
 
 @section('content')
-<script>
-    $(document).ready(function() {
-        $('#subject_areas').select2();
-        $('#learning_resources_types').select2();
-        $('#educational_use').select2();
 
-        $('#subject_areas').val({{ $resourceSubjectAreas }});
-        $('#learning_resources_types').val({{ $resourceLearningResourceTypes }});
-        $('#educational_use').val({{ $EditEducationalUse }});
+@push('styles')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+@endpush
 
-        $('#subject_areas').trigger('change'); // Notify any JS components that the value changed
-        $('#learning_resources_types').trigger('change'); // Notify any JS components that the value changed
-        $('#educational_use').trigger('change'); // Notify any JS components that the value changed
-        
-    });
-</script>
 <section class="ddl-forms">
     <header>
         <h1>@lang('Add a new Resource - Step 2')</h1>
@@ -163,4 +152,26 @@
         </form>
     </div>
 </section>
+@push('scripts')
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('js/ddl.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#subject_areas').select2();
+        $('#learning_resources_types').select2();
+        $('#educational_use').select2();
+
+        $('#subject_areas').val({{ $resourceSubjectAreas }});
+        $('#learning_resources_types').val({{ $resourceLearningResourceTypes }});
+        $('#educational_use').val({{ $EditEducationalUse }});
+
+        $('#subject_areas').trigger('change'); // Notify any JS components that the value changed
+        $('#learning_resources_types').trigger('change'); // Notify any JS components that the value changed
+        $('#educational_use').trigger('change'); // Notify any JS components that the value changed
+        
+    });
+</script>
+@endpush
 @endsection

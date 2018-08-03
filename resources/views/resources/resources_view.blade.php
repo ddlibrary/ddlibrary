@@ -1,4 +1,7 @@
 @extends('layouts.main')
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/fontawesome-all.min.css') }}">
+@endpush
 @section('search')
     @include('layouts.search')
 @endsection
@@ -263,4 +266,8 @@
         <h1>@lang('Resource not found or is not yet translated!')</h1>
         @endif
 </section>
+@push('scripts')
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/ddl.js') }}"></script>
+@endpush
 @endsection
