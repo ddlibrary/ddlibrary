@@ -1,47 +1,49 @@
 
-$(document).ready(function(){
-    $('.add_more').click(function(e){
-        e.preventDefault();
-        $(this).before("<br><input name='attachments[]' type='file'/>");
-    });
-
-    $('.fa-share-square').click(function(e){
-        $('#shareModal').show();
-    });
-
-    $('#share-close').click(function(e){
-        $('#shareModal').hide();
-    });
-
-    $('#favorite-close').click(function(e){
-        $('#favoriteModal').hide();
-    });
-
-    $('.fa-flag').click(function(e){
-        $('#flagModal').show();
-    });
-
-    $('#flag-close').click(function(e){
-        $('#flagModal').hide();
-    });
-
-    var acc = document.getElementsByClassName("accordion");
-    var i;
-
-    for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var panel = this.nextElementSibling;
-
-        if (panel.style.maxHeight){
-            panel.style.maxHeight = null;
-        } else {
-            panel.style.maxHeight = panel.scrollHeight + "px";
-        } 
+if(window.jQuery){
+    $(document).ready(function(){
+        $('.add_more').click(function(e){
+            e.preventDefault();
+            $(this).before("<br><input name='attachments[]' type='file'/>");
         });
-    }
-    $('#resource-subjects').trigger('click');
-});
+
+        $('.fa-share-square').click(function(e){
+            $('#shareModal').show();
+        });
+
+        $('#share-close').click(function(e){
+            $('#shareModal').hide();
+        });
+
+        $('#favorite-close').click(function(e){
+            $('#favoriteModal').hide();
+        });
+
+        $('.fa-flag').click(function(e){
+            $('#flagModal').show();
+        });
+
+        $('#flag-close').click(function(e){
+            $('#flagModal').hide();
+        });
+
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+
+            if (panel.style.maxHeight){
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            } 
+            });
+        }
+        $('#resource-subjects').trigger('click');
+    });
+}
 
 function openNav() {
     document.getElementById("myNav").style.width = "100%";
