@@ -4,7 +4,9 @@
     </header>
     <form method="POST" action="{{ route('resourceList') }}">
         @csrf
-        <input type="search" name="search" class="form-search form-control" value="{{ session('search') }}" placeholder="@lang('Search our library')" autofocus>
+        <label for="search">
+            <input type="search" name="search" class="form-search form-control" value="{{ session('search') }}" placeholder="@lang('Search our library')" autofocus>
+        </label>
         <input type="submit" class="search-button" value="@lang('Go')">
     </form>
 </section>
