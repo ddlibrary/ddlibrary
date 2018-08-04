@@ -18,7 +18,7 @@
         @foreach($subjectAreas as $subject)
         <a href="{{ URL::to('resources/list?=&subject_area[]='.$subject->subject_area) }}">
             <article class="home-subject-areas">
-                <img src="{{ Storage::disk('public')->url($subject->file_name) }}">
+                <img src="{{ Storage::disk('public')->url($subject->file_name) }}" alt="Subject Area Icon">
                 <p>{{ $subject->name }}</p>
                 <p class="resource-count">{{ $subject->total }} @lang('Resources')</p>
             </article>
@@ -48,7 +48,7 @@
         ?>
         <a href="{{ URL::to($url) }}">
             <article class="home-subject-areas">
-                <img src="{{ Storage::disk('public')->url($item->icon) }}">
+                <img src="{{ Storage::disk('public')->url($item->icon) }}" alt="{{ $item->name }}">
                 <p>{{ $item->name }}</p>
             </article>
         </a>

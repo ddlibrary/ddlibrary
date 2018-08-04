@@ -9,7 +9,7 @@
 <section class="resource-view">
     @if($resource)
     <aside>
-        <img class="resource-view-img" src="{{ getImagefromResource($resource->abstract, '282x254') }}">
+        <img class="resource-view-img" src="{{ getImagefromResource($resource->abstract, '282x254') }}" alt="Resource Main Image">
 
         <div class="resource-view-related-items">
             <header>
@@ -18,7 +18,7 @@
             <div class="resource-related-items-box">
                 @foreach ($relatedItems AS $item)
                 <div class="related-item">
-                    <img class="related-items-img" src="{{ getImagefromResource($item->abstract,'55x50') }}">
+                    <img class="related-items-img" src="{{ getImagefromResource($item->abstract,'55x50') }}" alt="Resource Image">
                     <span><a href="{{ URL::to('resource/'.$item->id) }}">{{ $item->title }}</a><br/>
                     {!! str_limit(strip_tags($item->abstract), 25) !!}</span>
                 </div>

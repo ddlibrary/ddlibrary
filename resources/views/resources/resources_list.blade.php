@@ -48,7 +48,7 @@
         @if (count($resources) > 0)
         @foreach ($resources AS $resource)
         <article class="resource-article resource-information" onclick="location.href='{{ URL::to('resource/'.$resource->id) }}'">
-            <img class="resource-img" src="{{ getImagefromResource($resource->abstract) }}">
+            <img class="resource-img" src="{{ getImagefromResource($resource->abstract) }}" alt="Resource Image">
             <div class="resource-title">{{ $resource->title }}</div>
             <div class="resource-details">
                 <article>

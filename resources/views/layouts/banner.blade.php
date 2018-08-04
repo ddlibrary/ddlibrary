@@ -1,6 +1,6 @@
 <header class="header">
     <div class="ddl-logo">
-        <a href="{{ URL::to('/') }}"><img class="header-img" src="{{ asset('storage/files/logo-dd.png') }}"></a>
+        <a href="{{ URL::to('/') }}"><img class="header-img" src="{{ asset('storage/files/logo-dd.png') }}" alt="Website Logo"></a>
     </div>
     <i class="fas fa-align-justify fa-3x icons" id="toggle" onclick="openNav()"></i>
 
