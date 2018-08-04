@@ -87,7 +87,6 @@
 </section>
 @push('scripts')
     <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/ddl.js') }}"></script>
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('ckeditor/config.js') }}"></script>
 

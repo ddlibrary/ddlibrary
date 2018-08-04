@@ -34,5 +34,6 @@
     @include('layouts.footer')
     <!-- Optional JavaScript -->
     @stack('scripts')
+    <script async src="{{ asset('js/ddl.js') }}"></script>
 </body>
 </html>
