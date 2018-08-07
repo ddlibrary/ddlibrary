@@ -2,7 +2,7 @@
 @section('content')
 <section class="general-content">
         <header>
-            <h1>@lang('Users Details for') <strong>{{ $user->username }}</h1>
+            <h1>@lang('Users Details for') <strong>{{ $user->username }}</strong></h1>
         </header>
         <article>
             <div>
