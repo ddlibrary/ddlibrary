@@ -32,7 +32,7 @@
         <ul class="language-content">
             @if (Auth::check())
             <li>
-                @lang('Welcome'): <a class="username" href="{{ URL::to('users/view/'.Auth::id()) }}"> {{ Auth::user()->username }}</a>
+                @lang('Welcome'): <a class="username" href="{{ URL::to('user/'.Auth::id()) }}"> {{ Auth::user()->username }}</a>
             </li>
             @endif
             <?php
