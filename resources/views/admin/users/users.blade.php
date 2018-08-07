@@ -54,6 +54,7 @@
           </form>
         </div>
         <div class="table-responsive">
+            <span>Total: <strong>{{ $users->total() }}</strong></span>
           <table class="table table-bordered" width="100%" cellspacing="0">
             <thead>
               <tr>

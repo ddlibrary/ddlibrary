@@ -15,7 +15,8 @@
         <i class="fa fa-table"></i> All News</div>
       <div class="card-body">
         <div class="table-responsive">
-          <a href="{{ URL::to('news/create') }}"><button class="btn btn-primary">Create New</button></a>
+          <a href="{{ URL::to('news/create') }}"><button class="btn btn-primary pull-right">Create New</button></a>
+          <span class="pull-left">Total: <strong>{{ $newsRecords->total() }}</strong></span>
           <table class="table table-bordered" width="100%" cellspacing="0">
             <thead>
               <tr>
