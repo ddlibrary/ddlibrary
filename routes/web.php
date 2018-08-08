@@ -99,6 +99,7 @@ function()
 
     //Menu
     Route::get('admin/menu','MenuController@index')->middleware('admin');
+    Route::get('admin/menu/edit/{menuId}','MenuController@edit')->middleware('admin');
 
     //Settings
     Route::get('admin/settings','SettingController@edit')->middleware('admin');
@@ -109,6 +110,18 @@ function()
 
     //Flags
     Route::get('admin/flags','FlagController@index')->middleware('admin');
+
+    //Taxonomy
+    Route::get('admin/taxonomy','TaxonomyController@index')->name('taxonomylist')->middleware('admin');
+    Route::post('admin/taxonomy','TaxonomyController@index')->name('taxonomylist')->middleware('admin');
+    Route::get('admin/taxonomy/edit/{tid}','TaxonomyController@edit')->name('taxonomyedit')->middleware('admin');
+    Route::post('admin/taxonomy/edit/{tid}','TaxonomyController@update')->name('taxonomyedit')->middleware('admin');
+    Route::get('admin/taxonomy/translate/{tid}','TaxonomyController@translate')->middleware('admin');
+    Route::get('admin/taxonomy/create','TaxonomyController@create')->name('taxonomycreate')->middleware('admin');
+    Route::post('admin/taxonomy/store','TaxonomyController@store')->name('taxonomystore')->middleware('admin');
+    Route::get('admin/taxonomy/create-translate/{tnid}/{lang}','TaxonomyController@createTranslate')->name('taxonomytranslatecreate')->middleware('admin');
+    Route::post('admin/taxonomy/store-translate/{tnid}','TaxonomyController@storeTranslate')->name('taxonomytranslatestore')->middleware('admin');
+    
 
     Auth::routes();
 

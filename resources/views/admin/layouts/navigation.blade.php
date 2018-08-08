@@ -43,7 +43,7 @@
             </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
-            <a class="nav-link" href="{{ URL::to('#') }}">
+            <a class="nav-link" href="{{ URL::to('admin/taxonomy') }}">
             <i class="fa fa-fw fa-sitemap"></i>
             <span class="nav-link-text">Taxonomy</span>
             </a>
