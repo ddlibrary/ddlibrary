@@ -8,13 +8,13 @@
     <?php $thumb_src = $item->thumb; ?>
     <?php $item_path = $item->is_file ? $item->url : $item->path; ?>
 
-    <div class="square clickable {{ $item->is_file ? '' : 'folder-item' }}" data-id="{{ $item_path }}"
-           @if($item->is_file && $thumb_src) onclick="useFile('{{ $item_path }}', '{{ $item->updated }}')"
-           @elseif($item->is_file) onclick="download('{{ $item_name }}')" @endif >
+    <div class="square clickable" data-id="{{ $item_path }}"
+           @if($thumb_src) onclick="useFile('{{ $item_path }}', '{{ $item->updated }}')"
+           @else onclick="download('{{ $item_name }}')" @endif >
       @if($thumb_src)
       <img src="{{ $thumb_src }}">
       @else
-      <i class="fa {{ $item->icon }} fa-5x"></i>
+      <i class="fa fa-image fa-5x"></i>
       @endif
     </div>
 
