@@ -31,7 +31,9 @@
                 </div>
 
                 <div class="form-item">
-                    <input type="submit" class="form-control" value="{{ __('Send Password Reset Link') }}">
+                    <input type="submit" class="form-control" value="{{ __('Send Password Reset Link') }}" onclick="this.style.display='none';document.getElementById('wait').style.display='block'" ondblclick="this.style.display='display';document.getElementById('wait').style.display='block'">
+
+                    <input type="button" class="form-control" id="wait" value="@lang('Please wait..')" style="color:red;display:none" disabled>
                 </div>
             </form>
         </div>
