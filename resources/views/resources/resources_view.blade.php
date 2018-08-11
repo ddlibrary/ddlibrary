@@ -259,7 +259,7 @@
             </div>
         </form>
         @else
-        <h2>@lang('Please') <a href="{{ URL::to('login') }}">@lang('login')</a> @lang('to add comment').</h2>
+        <h2>@lang('Please login to add comment.')</h2>
         @endif
     </section>
     @else
