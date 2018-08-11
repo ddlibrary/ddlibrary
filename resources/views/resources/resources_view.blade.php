@@ -8,27 +8,6 @@
 @section('content')
 <section class="resource-view">
     @if($resource)
-    <aside>
-        <img class="resource-view-img" src="{{ getImagefromResource($resource->abstract, '282x254') }}" alt="Resource Main Image">
-
-        <div class="resource-view-related-items">
-            <header>
-                <h2>@lang('Related Items')</h2>
-            </header>
-            <div class="resource-related-items-box">
-                @foreach ($relatedItems AS $item)
-                <div class="related-item">
-                    <img class="related-items-img" src="{{ getImagefromResource($item->abstract,'55x50') }}" alt="Resource Image">
-                    <span><a href="{{ URL::to('resource/'.$item->id) }}">{{ $item->title }}</a><br/>
-                    {!! str_limit(strip_tags($item->abstract), 25) !!}</span>
-                </div>
-                @endforeach
-            </div>
-        </div>
-        @if (isAdmin())
-        <p>@lang('Added by'): <a href="{{ route('user-view',isset($resource->user)?$resource->user->id:"") }}">{{ isset($resource->user)?$resource->user->username:"" }}</a>
-        @endif
-    </aside>
     <section class="resource-view-information-section">
         <article class="resource-view-title-box">
             @include('layouts.messages')
@@ -227,6 +206,27 @@
             </div>
         </article>
     </section>
+    <aside>
+        <img class="resource-view-img" src="{{ getImagefromResource($resource->abstract, '282x254') }}" alt="Resource Main Image">
+
+        <div class="resource-view-related-items">
+            <header>
+                <h2>@lang('Related Items')</h2>
+            </header>
+            <div class="resource-related-items-box">
+                @foreach ($relatedItems AS $item)
+                <div class="related-item">
+                    <img class="related-items-img" src="{{ getImagefromResource($item->abstract,'55x50') }}" alt="Resource Image">
+                    <span><a href="{{ URL::to('resource/'.$item->id) }}">{{ $item->title }}</a><br/>
+                    {!! str_limit(strip_tags($item->abstract), 25) !!}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @if (isAdmin())
+        <p>@lang('Added by'): <a href="{{ route('user-view',isset($resource->user)?$resource->user->id:"") }}">{{ isset($resource->user)?$resource->user->username:"" }}</a>
+        @endif
+    </aside>
     <section class="resource-view-comment">
         <header>
             <h2>@lang('Comments')</h2>
