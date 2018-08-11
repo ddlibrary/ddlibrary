@@ -912,6 +912,10 @@ viewer-pdf-toolbar {
         flex: 100%;
     }
 
+    .resource-view aside img {
+        display: none;
+    }
+
     .resource-view-comment h2 {
         font-size: 1em;
         width: 100%;
