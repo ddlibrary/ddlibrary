@@ -913,6 +913,10 @@ viewer-pdf-toolbar {
     }
 
     .resource-view .resource-view-img {
+        display: none!important;
+    }
+
+    .download-box object {
         display: none;
     }
 
