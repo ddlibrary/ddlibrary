@@ -912,7 +912,7 @@ viewer-pdf-toolbar {
         flex: 100%;
     }
 
-    .resource-view aside img {
+    .resource-view .resource-view-img {
         display: none;
     }
 
