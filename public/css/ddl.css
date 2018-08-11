@@ -545,7 +545,6 @@ aside .sub-subject-show {
 
 .resource-view aside {
     flex: 1;
-    border-right: 1px solid #eee;
 }
 
 .resource-view .resource-view-information-section {
@@ -907,6 +906,10 @@ viewer-pdf-toolbar {
 
     .resource-view-details .download-box .download-item {
         width: 100%;
+    }
+
+    .resource-view .resource-view-information-section {
+        flex: 100%;
     }
 
     .resource-view-comment h2 {
