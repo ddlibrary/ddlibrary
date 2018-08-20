@@ -19,9 +19,9 @@
                     @if (isAdmin())
                     <a href="{{ URL::to($resource->language.'/resources/edit/step1/'.$resource->id) }}">@lang('Edit')</a>
                     @endif
-                    <i class="fas fa-lg fa-star {{ count($resource->favorites)?"active":"" }}" id="resourceFavorite" onclick="favorite('resourceFavorite','{{ URL::to("resources/favorite/") }}','{{ $resource->id }}','{{ Auth::id() }}')"></i>
-                    <i class="fas fa-lg fa-share-square"></i>
-                    <i class="fas fa-lg fa-flag"></i>
+                    <i class="fas fa-lg fa-star {{ count($resource->favorites)?"active":"" }}" title="@lang('Favorite this resource')" id="resourceFavorite" onclick="favorite('resourceFavorite','{{ URL::to("resources/favorite/") }}','{{ $resource->id }}','{{ Auth::id() }}')"></i>
+                    <i class="fas fa-lg fa-share-square"  title="@lang('Share this resource')"></i>
+                    <i class="fas fa-lg fa-flag" title="@lang('Flag this resource')"></i>
                 </div>
 
                 <!-- The Share Modal -->
