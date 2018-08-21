@@ -139,7 +139,7 @@
         <article class="resource-view-details">
             <h3>@lang('Publisher')</h3>
             @foreach($resource->publishers AS $publisher)
-            <p>{{ $publisher->name }}</p>
+            <p><a href="{{ URL::to('resources/list?=&publisher='.$publisher->id) }}">{{ $publisher->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">

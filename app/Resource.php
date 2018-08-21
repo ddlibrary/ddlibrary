@@ -366,6 +366,10 @@ class Resource extends Model
                     ->orwhere('ttd.name', 'like' , '%'.$searchQuery.'%')
                     ->orwhere('ttdp.name', 'like' , '%'.$searchQuery.'%');
             })
+            ->when($request->filled('publisher'), function($query) use($request){
+                return $query->leftJoin('resource_publishers AS rpub','rpub.resource_id','=','rs.id')
+                    ->where('rpub.tid', $request['publisher']);
+            })
             ->where('rs.language',Config::get('app.locale'))
             ->where('rs.status', 1)
             ->orderBy('rs.created_at','desc')
