@@ -131,9 +131,9 @@
                       <td><a href="{{ URL::to('user/'.$user->id) }}">{{ $user->username }}</a></td>
                       <td>{{ ($user->status==0?"Not Active":"Active") }}</td>
                       <td>
-                        @foreach($user->roles AS $role)
-                        {{ $role->name }}
-                        @endforeach
+                        @if(count($user->role))
+                        {{ $user->role->role->name }}
+                        @endif
                       </td>
                     </tr>
                     @endforeach

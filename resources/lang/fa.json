@@ -63,6 +63,8 @@
     "Last Name":"تخلص",
     "Telephone Number":"نمبر تیلفون",
     "Gender":"جنسیت",
+    "Male": "مرد",
+    "Female": "زن",
     "Country":"کشور",
     "City":"شهر",
     "A valid e-mail address. All e-mails from the system will be sent to this address. The e-mail address is not made public and will only be used if you wish to receive a new password or wish to receive certain news or notifications by e-mail.": "تمام نامه‌های الکترونیکی سیستم به این نشانی فرستاده خواهند شد.این نشانی برای سایر کاربران نمایش داده نخواهد شد و تنها برای مواردی مانند درخواست گذرواژه جدید یا دریافت آگاه‌سازی‌های سیستم از طریق پست الکترونیک استفاده خواهد شد.",

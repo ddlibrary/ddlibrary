@@ -86,8 +86,8 @@
                     </label>
                     <select class="form-control{{ $errors->has('gender') ? ' is-invalid' : '' }}" name="gender" id="gender" required>
                         <option value="">- @lang('None') -</option>
-                        <option value="Male" {{ old('gender') == "Male" ? "selected" : "" }}>Male</option>
-                        <option value="Female" {{ old('gender') == "Female" ? "selected" : "" }}>Female</option>
+                        <option value="Male" {{ old('gender') == "Male" ? "selected" : "" }}>@lang('Male')</option>
+                        <option value="Female" {{ old('gender') == "Female" ? "selected" : "" }}>@lang('Female')</option>
                     </select>
                 </div>
             </div>
@@ -100,7 +100,7 @@
                     <select class="form-control{{ $errors->has('country') ? ' is-invalid' : '' }}" name="country" id="country" onchange="javascript:populate(this,'city', {{ json_encode($provinces) }})" required>
                         <option value="">- @lang('None') -</option>
                         @foreach($countries AS $cn)
-                        <option value="{{ $cn->name }}" {{ old('country') == $cn->name ? "selected" : "" }}>{{ $cn->name }}</option>
+                        <option value="{{ $cn->id }}" {{ old('country') == $cn->id ? "selected" : "" }}>{{ $cn->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -122,7 +122,7 @@
                 </div>
             </div>
             <div class="left-side">
-                <input class="form-control" type="submit" value="Submit">
+                <input class="form-control" type="submit" value="@lang('Submit')">
             </div>
         </div>
         </form>

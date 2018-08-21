@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Resource;
 use App\UserProfile;
+use App\UserRole;
 use Illuminate\Support\Facades\Hash;
+use Config;
 
 class RegisterController extends Controller
 {
@@ -91,6 +93,9 @@ class RegisterController extends Controller
         $user->username = $data['username'];
         $user->password = Hash::make($data['password']);
         $user->email = $data['email'];
+        $user->status = 1;
+        $user->accessed_at = \Carbon\Carbon::now();
+        $user->language = Config::get('app.locale');
         $user->save();
 
         if(isset($data['city'])){
@@ -110,6 +115,11 @@ class RegisterController extends Controller
         $userProfile->gender        = $data['gender'];
         $userProfile->phone         = $data['phone'];
         $userProfile->save();
+
+        $userRole = new UserRole;
+        $userRole->user_id = $user->id;
+        $userRole->role_id = 6; //library user from roles table
+        $userRole->save();
 
         return $user->id;
     }

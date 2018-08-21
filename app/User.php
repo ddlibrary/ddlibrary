@@ -21,9 +21,16 @@ class User extends Authenticatable
     /**
      * The roles that belong to the user.
      */
-    public function roles()
+    public function role()
     {
-        return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
+        return $this->hasOne(UserRole::class);
+    }
+    /**
+     * The user's profile
+     */
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
     }
     /**
      * Get the list of users to display as a table in the admin/users
@@ -77,8 +84,8 @@ class User extends Authenticatable
                 'users.created_at',
                 'users.accessed_at',
                 'up.gender',
-                DB::raw('group_concat(roles.name) AS all_roles'
-            ))
+                'roles.name AS all_roles'
+            )
             ->LeftJoin('user_roles', 'users.id', '=', 'user_roles.user_id')
             ->LeftJoin('roles', 'roles.id', '=', 'user_roles.role_id')
             ->LeftJoin('user_profiles AS up', 'up.user_id', '=', 'users.id')
@@ -114,7 +121,8 @@ class User extends Authenticatable
                 'users.email',
                 'users.status',
                 'up.gender',
-                'users.created_at'
+                'users.created_at',
+                'roles.name'
             )
             ->paginate(10);
 
@@ -155,11 +163,18 @@ class User extends Authenticatable
     //Total users based on country
     public function totalUsersByCountry()
     {
-        $records = DB::table('user_profiles')
-                    ->select('country')
-                    ->selectRaw('count(country) as total')
-                    ->groupBy('country')
-                    ->orderBy('total','DESC')
+        $records = DB::table('user_profiles AS up')
+                    ->select(
+                        'up.country AS id',
+                        'ttd.name AS country',
+                        DB::raw('count(up.country) as total')
+                    )
+                    ->leftJoin('taxonomy_term_data AS ttd','ttd.id','=','up.country')
+                    ->groupBy(
+                        'up.country', 
+                        'ttd.name'
+                    )
+                    ->orderBy('name')
                     ->get();
         return $records;   
     }
@@ -194,14 +209,21 @@ class User extends Authenticatable
             ->first();
     }
 
-    public function rolesList()
+    public function isNormalUser($userid)
     {
-        $records = DB::table('roles')
-                    ->select(
-                        'id',
-                        'name'
-                    )
-                    ->get();
-        return $records; 
+        return DB::table('users')
+            ->join('user_roles', 'user_roles.user_id','=','users.id')
+            ->where('users.id',$userid)
+            ->where('user_roles.role_id', 2)
+            ->first();
+    }
+
+    public function isLibraryManager($userid)
+    {
+        return DB::table('users')
+            ->join('user_roles', 'user_roles.user_id','=','users.id')
+            ->where('users.id',$userid)
+            ->where('user_roles.role_id', 3)
+            ->first();
     }
 }

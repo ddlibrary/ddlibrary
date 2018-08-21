@@ -137,6 +137,9 @@ class LoginController extends Controller
 
     public function authenticated(Request $request, $user) 
     {
+        $theUser = User::find(Auth::id());
+        $theUser->accessed_at = \Carbon\Carbon::now();
+        $theUser->save();
         return redirect()->intended('home');
     }
 

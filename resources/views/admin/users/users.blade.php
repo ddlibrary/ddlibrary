@@ -87,7 +87,7 @@
                 <td>{{ $user->all_roles }}</td>
                 <td>{{ \Carbon\Carbon::parse($user->created_at)->diffForHumans() }}</td>
                 <td>{{ \Carbon\Carbon::parse($user->accessed_at)->diffForHumans() }}</td>
-                <td><a href="users/edit/{{$user->id}}">Edit</a></td>
+                <td><a href="user/edit/{{$user->id}}">Edit</a></td>
               </tr>
               @endforeach
             </tbody>

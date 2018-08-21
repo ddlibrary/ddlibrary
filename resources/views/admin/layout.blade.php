@@ -56,6 +56,8 @@
     <script src="{{ URL::to('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <!-- Custom scripts for all pages-->
     <script src="{{ URL::to('js/sb-admin.min.js') }}"></script>
+    <!-- Optional JavaScript -->
+    @stack('scripts')
   </div>
 </body>
 

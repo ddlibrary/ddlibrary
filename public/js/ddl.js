@@ -119,11 +119,11 @@ function populate(element, targetId, targetContent)
     var targetLocation = document.getElementById(targetId);
     var textInput = document.getElementById('js-text-city');
 
-    if(selectedOption == "Afghanistan" || selectedOption == "افغانستان"){
+    if(selectedOption == 2657 || selectedOption == 3110 || selectedOption == 3111 ){
         textInput.style.display = 'none';
         var i;
         for (i = 0; i < targetContent.length; i++) {
-            var item = new Option(targetContent[i].name, targetContent[i].name);
+            var item = new Option(targetContent[i].name, targetContent[i].id);
             targetLocation.options.add(item);
         }
         targetLocation.style.display = 'block';

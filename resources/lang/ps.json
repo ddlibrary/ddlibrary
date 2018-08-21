@@ -63,6 +63,8 @@
     "Last Name":"تخلص",
     "Telephone Number":"د ټلیفون شمیره",
     "Gender":"جنسیت",
+    "Male": "نارينه",
+    "Female": "ښځه",
     "Country":"کشور",
     "City":"شهر",
     "A valid e-mail address. All e-mails from the system will be sent to this address. The e-mail address is not made public and will only be used if you wish to receive a new password or wish to receive certain news or notifications by e-mail.": "یو باورې برښنالیک آدرس. د سیستم څخه به ټول بریښنالیکونه په همدې آدرس لیږل کیږې. دغه برښنالیک آدرس به له خلکو سره نه شریکږې او هغه وخت به کارول کیږې کله چې تاسو نوې رمز غوښتنه وکړۍ او یا بعضې معلومات د برښنالیک له لارې ترلاسه کړۍ.",
