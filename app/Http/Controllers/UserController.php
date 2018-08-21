@@ -79,6 +79,14 @@ class UserController extends Controller
             'city'          => 'nullable',
         ]);
 
+        if($request->filled('city')){
+            $city = $request->input('city');
+        }elseif($request->filled('city_other')){
+            $city = $request->input('city_other');
+        }else{
+            $city = NULL;
+        }
+
         //Saving contact info to the database
         $user = User::find($userId);
         $user->username = $request->input('username');
@@ -94,7 +102,7 @@ class UserController extends Controller
         $userProfile->last_name = $request->input('last_name');
         $userProfile->gender = $request->input('gender');
         $userProfile->country = $request->input('country');
-        $userProfile->city = $request->input('city');
+        $userProfile->city = $city;
         $userProfile->phone = $request->input('phone');
         $userProfile->save();
 

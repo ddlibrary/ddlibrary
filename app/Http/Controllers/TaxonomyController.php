@@ -10,6 +10,8 @@ class TaxonomyController extends Controller
 {
     public function index(Request $request)
     {
+        $this->middleware('admin');
+        
         $terms = TaxonomyTerm::orderBy('vid','desc')->orderBy('weight')
         ->name(request('term'))
         ->vocabulary(request('vocabulary'))
