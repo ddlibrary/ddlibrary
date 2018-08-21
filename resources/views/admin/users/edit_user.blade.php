@@ -145,6 +145,10 @@
 <!-- /.content-wrapper-->
 @push('scripts')
     <script src="{{ asset('js/ddl.js') }}"></script>
-    <script>$('#country').trigger('change');</script> 
+    <script>
+        $(document).ready(function(){
+            $('#country').trigger('change');
+        });
+    </script> 
 @endpush
 @endsection
