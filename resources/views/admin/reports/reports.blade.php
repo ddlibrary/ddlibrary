@@ -89,7 +89,7 @@
                                 @foreach ($totalUsersByCountry as $indexkey => $resource)
                                 <tr>
                                     <td><strong>{{ $resource->country }}</strong></td>
-                                    <td><a href="{{ URL::to('admin/users?country='.$resource->country) }}">{{ $resource->total }}</a></td>
+                                    <td><a href="{{ URL::to('admin/users?country='.$resource->id) }}">{{ $resource->total }}</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
