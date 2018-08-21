@@ -264,7 +264,8 @@ class Resource extends Model
                 ->leftJoin('taxonomy_term_hierarchy AS tth', 'tth.tid','=','ttd.id')
                 ->where('vid', $vid)
                 ->where('language',Config::get('app.locale'))
-                ->orderBy('ttd.weight')
+                ->orderBy('ttd.name')
+                ->orderBy('ttd.weight', 'desc')
                 ->get();
         return $records;
     }
