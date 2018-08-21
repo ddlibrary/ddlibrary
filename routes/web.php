@@ -101,6 +101,7 @@ function()
     //Menu
     Route::get('admin/menu','MenuController@index')->middleware('admin');
     Route::get('admin/menu/edit/{menuId}','MenuController@edit')->middleware('admin');
+    Route::post('admin/menu/update/{menuId}','MenuController@update')->name('update_menu')->middleware('admin');
 
     //Settings
     Route::get('admin/settings','SettingController@edit')->middleware('admin');
