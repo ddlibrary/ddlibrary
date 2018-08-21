@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Resource;
+use App\UserProfile;
+use App\Role;
+use App\UserRole;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -25,7 +30,7 @@ class UserController extends Controller
         $usersModel = new User();
 
         $users = $usersModel->filterUsers($request->all());
-        $roles = $usersModel->rolesList();
+        $roles = Role::all();
 
         $request->session()->put('filters', $request->all());
 
@@ -40,10 +45,69 @@ class UserController extends Controller
         return view('users.view_user', compact('user'));
     }
 
-    public function updateUser($userId)
+    public function edit($userId)
     {
         $this->middleware('admin');
-        $user = User::users()->where('id',$userId)->first();
-        return view('admin.users.update_user', compact('user'));    
+        $myResources = new Resource();
+        $user = User::where('id',$userId)->first();
+        $countries = $myResources->resourceAttributesList('taxonomy_term_data',15);
+        $provinces = $myResources->resourceAttributesList('taxonomy_term_data',12);
+        $userRoles = UserRole::where('user_id', $userId)->get();
+        $roles = Role::all();
+        return view('admin.users.edit_user', compact(
+            'user',
+            'countries',
+            'provinces',
+            'userRoles',
+            'roles'
+        ));    
+    }
+
+    public function update(Request $request, $userId)
+    {
+        $this->validate($request, [
+            'username'      => 'required',
+            'password'      => 'nullable',
+            'email'         => 'required',
+            'status'        => 'required',
+            'first_name'    => 'required',
+            'last_name'     => 'required',
+            'gender'        => 'required',
+            'role'          => 'required',
+            'phone'         => 'required',
+            'country'       => 'required',
+            'city'          => 'nullable',
+        ]);
+
+        //Saving contact info to the database
+        $user = User::find($userId);
+        $user->username = $request->input('username');
+        if($request->filled('password')){
+            $user->password = Hash::make($request->input('password'));
+        }
+        $user->email = $request->input('email');
+        $user->status = $request->input('status');
+        $user->save();
+
+        $userProfile = UserProfile::where('user_id',$userId)->first();
+        $userProfile->first_name = $request->input('first_name');
+        $userProfile->last_name = $request->input('last_name');
+        $userProfile->gender = $request->input('gender');
+        $userProfile->country = $request->input('country');
+        $userProfile->city = $request->input('city');
+        $userProfile->phone = $request->input('phone');
+        $userProfile->save();
+
+        $userRole = UserRole::where('user_id', $userId)->first();
+        if(count($userRole) == 0){
+            $userRole = new UserRole();
+            $userRole->user_id = $userId;
+        }else{
+            $userRole = $userRole;
+        }
+        $userRole->role_id = $request->input('role');
+        $userRole->save();
+
+        return redirect('/admin/user/edit/'.$userId)->with('success', 'User details updated successfully!');   
     }
 }
