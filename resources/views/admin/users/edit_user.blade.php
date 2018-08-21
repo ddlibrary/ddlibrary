@@ -105,7 +105,7 @@
                                     <td>
                                         <select name="country" id="country" onchange="javascript:populate(this,'city', {{ json_encode($provinces) }})" required>
                                             @foreach($countries AS $cn)
-                                            <option value="{{ $cn->id }}" {{ ($user->profile->country==$cn->id?"selected":"") }}>{{ $cn->name }}</option>
+                                            <option value="{{ $cn->tnid }}" {{ ($user->profile->country==$cn->tnid?"selected":"") }}>{{ $cn->name }}</option>
                                             @endforeach
                                         </select>
                                     </td>
@@ -116,7 +116,7 @@
                                         <select name="city" id="city">
                                             <option value=""> - None -</option>
                                             @foreach($provinces AS $pn)
-                                            <option value="{{ $pn->id }}" {{ ($user->profile->city==$pn->id?"selected":"") }}>{{ $pn->name }}</option>
+                                            <option value="{{ $pn->tnid }}" {{ ($user->profile->city==$pn->tnid?"selected":"") }}>{{ $pn->name }}</option>
                                             @endforeach
                                         </select>
                                     <input type="text" class="form-control" name="city_other" id="js-text-city" size="40" maxlength="40" value="{{ $user->profile->city }}" style="display:none;">

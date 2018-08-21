@@ -166,15 +166,12 @@ class User extends Authenticatable
         $records = DB::table('user_profiles AS up')
                     ->select(
                         'up.country AS id',
-                        'ttd.name AS country',
                         DB::raw('count(up.country) as total')
                     )
-                    ->leftJoin('taxonomy_term_data AS ttd','ttd.id','=','up.country')
                     ->groupBy(
-                        'up.country', 
-                        'ttd.name'
+                        'up.country'
                     )
-                    ->orderBy('name')
+                    ->orderBy('id')
                     ->get();
         return $records;   
     }
