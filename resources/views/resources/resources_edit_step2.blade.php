@@ -145,7 +145,8 @@
         </div>
         <div style="display:flex;">
             <input style="margin-{{ (app()->getLocale()=="en")?"right":"left" }}: 10px;" class="form-control normalButton" type="button" value="@lang('Previous')" onclick="location.href='{{ route('edit1', $resource["id"]) }}'">
-            <input class="form-control normalButton" type="submit" value="@lang('Next')">
+            <input class="form-control normalButton" type="submit" value="@lang('Next')" onclick="this.style.display='none';document.getElementById('wait').style.display='block'" ondblclick="this.style.display='display';document.getElementById('wait').style.display='block'">
+            <input type="button" class="form-control" id="wait" value="@lang('Please wait..')" style="color:red;display:none" disabled>
         </div>
         </form>
     </div>
