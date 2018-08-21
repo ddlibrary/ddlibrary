@@ -48,8 +48,8 @@ class User extends Authenticatable
                 'users.status', 
                 'users.created_at',
                 'users.accessed_at',
-                DB::raw('group_concat(roles.name) AS all_roles'
-            ))
+                'roles.name AS all_roles'
+            )
             ->LeftJoin('user_roles', 'users.id', '=', 'user_roles.user_id')
             ->LeftJoin('roles', 'roles.id', '=', 'user_roles.role_id')
             ->LeftJoin('user_profiles AS up', 'up.user_id', '=', 'users.id')

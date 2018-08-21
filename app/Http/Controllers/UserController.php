@@ -106,13 +106,11 @@ class UserController extends Controller
         $userProfile->phone = $request->input('phone');
         $userProfile->save();
 
-        $userRole = UserRole::where('user_id', $userId)->first();
-        if(count($userRole) == 0){
-            $userRole = new UserRole();
-            $userRole->user_id = $userId;
-        }else{
-            $userRole = $userRole;
-        }
+        $userRole = UserRole::where('user_id', $userId);
+        $userRole->delete();
+
+        $userRole = new UserRole();
+        $userRole->user_id = $userId;
         $userRole->role_id = $request->input('role');
         $userRole->save();
 
