@@ -2,12 +2,9 @@
 if (! function_exists('fixLanguage')) {
     function fixLanguage($lang)
     {
-        if($lang == "en"){
-            return "English";
-        }elseif($lang == "fa"){
-            return "Farsi";
-        }elseif($lang == "ps"){
-            return "Pashto";
+		$locals = \LaravelLocalization::getSupportedLocales();
+        if($locals[$lang]){
+            return $locals[$lang]['name'];
         }else{
             return "No language";
         }
