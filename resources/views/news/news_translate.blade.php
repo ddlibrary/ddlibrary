@@ -17,7 +17,7 @@
             @else
                 <tr>
                     <td>{{ $news_self->title }}</td>
-                    <td>{{ fixLanguage($localeCode) }}</td>
+                    <td>{{ $properties['name'] }}</td>
                     <td><a href="{{ URL::to($localeCode.'/news/add/translate/'.$news_self->tnid.'/'.$localeCode) }}">Add</a></td>
                 </tr>
             @endif

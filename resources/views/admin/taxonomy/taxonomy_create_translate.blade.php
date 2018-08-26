@@ -48,9 +48,9 @@
                 <td>
                     <select class="form-control" name="language" required disabled>
                         <option value="">Any</option>
-                        <option value="en" {{ (old('language') == "en" || $lang == "en")?"selected":"" }}>English</option>
-                        <option value="fa" {{ (old('language') == "fa" || $lang == "fa")?"selected":"" }}>Farsi/Dari</option>
-                        <option value="ps" {{ (old('language') == "ps" || $lang == "ps")?"selected":"" }}>Pashto</option>
+                        @foreach(LaravelLocalization::getSupportedLocales() as $localcode => $properties)
+                        <option value="{{ $localcode }}" {{ (old('language') == $localcode || $lang == $localcode)?"selected":"" }}>{{ $properties['name'] }}</option>
+                        @endforeach
                     </select>
                     <input type="hidden" name="language" value="{{ $lang }}">
                 </td>

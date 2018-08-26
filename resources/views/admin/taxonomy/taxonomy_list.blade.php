@@ -37,9 +37,9 @@
                 <td>
                   <select class="form-control" name="language">
                     <option value="">Any</option>
-                    <option value="en" {{ (isset($filters['language']) && $filters['language'] == "en")?"selected":"" }}>English</option>
-                    <option value="fa" {{ (isset($filters['language']) && $filters['language'] == "fa")?"selected":"" }}>Farsi/Dari</option>
-                    <option value="ps" {{ (isset($filters['language']) && $filters['language'] == "ps")?"selected":"" }}>Pashto</option>
+                    @foreach(LaravelLocalization::getSupportedLocales() as $localcode => $properties)
+                    <option value="{{ $localcode }}" {{ (isset($filters['language']) && $filters['language'] == $localcode)?"selected":"" }}>{{ $properties['name'] }}</option>
+                    @endforeach
                   </select>
                 </td>
                 <td colspan="2">
