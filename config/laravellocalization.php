@@ -242,6 +242,7 @@ return [
         'fa'          => ['name' => 'Persian',                'script' => 'Arab', 'native' => 'فارسی', 'regional' => 'fa_IR'],
         //'pa-Arab'     => ['name' => 'Punjabi (Arabic)',       'script' => 'Arab', 'native' => 'پنجاب', 'regional' => 'pa_IN'],
         'ps'          => ['name' => 'Pashto',                 'script' => 'Arab', 'native' => 'پښتو', 'regional' => 'ps_AF'],
+        'mj'          => ['name' => 'Munji',                'script' => 'Arab', 'native' => 'منجی', 'regional' => 'fa_IR'],
         //'ks'          => ['name' => 'Kashmiri (Arabic)',      'script' => 'Arab', 'native' => 'کأشُر', 'regional' => 'ks_IN'],
         //'ku'          => ['name' => 'Kurdish',                'script' => 'Arab', 'native' => 'کوردی', 'regional' => 'ku_TR'],
         //'dv'          => ['name' => 'Divehi',                 'script' => 'Thaa', 'native' => 'ދިވެހިބަސް', 'regional' => 'dv_MV'],
@@ -312,6 +313,6 @@ return [
     // If you want to display the locales in particular order in the language selector you should write the order here. 
     //CAUTION: Please consider using the appropriate locale code otherwise it will not work
     //Example: 'localesOrder' => ['es','en'],
-    'localesOrder' => ['en', 'fa', 'ps'],
+    'localesOrder' => ['en', 'fa', 'ps', 'mj'],
 
 ];
