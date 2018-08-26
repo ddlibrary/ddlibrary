@@ -3,7 +3,7 @@ if (! function_exists('fixLanguage')) {
     function fixLanguage($lang)
     {
 		$locals = \LaravelLocalization::getSupportedLocales();
-        if($locals[$lang]){
+        if(isset($locals[$lang])){
             return $locals[$lang]['name'];
         }else{
             return "No language";
