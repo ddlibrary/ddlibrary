@@ -15,6 +15,14 @@ class LibraryManager
      */
     public function handle($request, Closure $next)
     {
+        if (Auth::guard($guard)->check()) {
+            if(!isLibraryManager()){
+                return redirect('/home');
+            }
+        }else{
+            return redirect('/login');
+        }
+
         return $next($request);
     }
 }

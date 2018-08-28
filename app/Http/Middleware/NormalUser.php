@@ -15,6 +15,14 @@ class NormalUser
      */
     public function handle($request, Closure $next)
     {
+        if (Auth::guard($guard)->check()) {
+            if(!isNormalUser()){
+                return redirect('/home');
+            }
+        }else{
+            return redirect('/login');
+        }
+
         return $next($request);
     }
 }
