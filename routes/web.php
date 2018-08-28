@@ -125,6 +125,10 @@ function()
     Route::post('admin/taxonomy/store-translate/{tnid}','TaxonomyController@storeTranslate')->name('taxonomytranslatestore')->middleware('admin');
     
 
+    //Sync
+    Route::get('/admin/sync', 'SyncController@index');
+    Route::get('/admin/run_sync', 'SyncController@SyncIt');
+
     Auth::routes();
 
     //Adding old DDL routes
