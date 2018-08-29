@@ -5,6 +5,9 @@
 @section('description')
 {{ trim(strip_tags(fixImage($news->summary))) }}
 @endsection
+@section('page_image')
+{{ asset('storage/files/logo-dd.png') }}
+@endsection
 @section('content')
 <section class="general-content">
     @include('layouts.messages')

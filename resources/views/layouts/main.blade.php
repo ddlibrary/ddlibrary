@@ -7,6 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="@yield('description')">
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" value="@yield('description')">
+
+    <!-- Open Graph data -->
+    <meta property="og:title" content="@yield('title')" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="{{ URL::current() }}" />
+    <meta property="og:image" content="@yield('page_image')" />
+    <meta property="og:description" content="@yield('description')" />
+
     <link rel="stylesheet" href="{{ asset('css/reset.css') }}">
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ddl.css') }}">

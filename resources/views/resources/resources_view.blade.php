@@ -5,6 +5,9 @@
 @section('description')
 {{ trim(strip_tags(fixImage($resource->abstract))) }}
 @endsection
+@section('page_image')
+{{ getImagefromResource($resource->abstract, '282x254') }}
+@endsection
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/fontawesome-all.min.css') }}">
 @endpush
