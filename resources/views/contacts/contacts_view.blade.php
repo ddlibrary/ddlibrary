@@ -5,6 +5,9 @@
 @section('description')
 @lang('Free and open educational resources for Afghanistan')
 @endsection
+@section('page_image')
+{{ asset('storage/files/logo-dd.png') }}
+@endsection
 {!! NoCaptcha::renderJs() !!}
 @section('content')
 <section class="ddl-forms">
