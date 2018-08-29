@@ -1,4 +1,10 @@
 @extends('layouts.main')
+@section('title')
+@lang('Contact Us')
+@endsection
+@section('description')
+@lang('Free and open educational resources for Afghanistan')
+@endsection
 {!! NoCaptcha::renderJs() !!}
 @section('content')
 <section class="ddl-forms">

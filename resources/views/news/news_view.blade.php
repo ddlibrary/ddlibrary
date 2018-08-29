@@ -1,4 +1,10 @@
 @extends('layouts.main')
+@section('title')
+{{ trim(strip_tags($news->title)) }}
+@endsection
+@section('description')
+{{ trim(strip_tags(fixImage($news->summary))) }}
+@endsection
 @section('content')
 <section class="general-content">
     @include('layouts.messages')

@@ -1,4 +1,10 @@
 @extends('layouts.main')
+@section('title')
+@lang('Darakht-e Danish Online Library')
+@endsection
+@section('description')
+@lang('Free and open educational resources for Afghanistan')
+@endsection
 @section('search')
     @include('layouts.search')
 @endsection

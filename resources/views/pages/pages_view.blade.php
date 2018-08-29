@@ -1,4 +1,10 @@
 @extends('layouts.main')
+@section('title')
+{{ trim(strip_tags($page->title)) }}
+@endsection
+@section('description')
+{{ trim(strip_tags(fixImage($page->summary))) }}
+@endsection
 @section('content')
 <section class="general-content">
     <header>

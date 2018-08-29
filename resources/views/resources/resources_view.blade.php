@@ -1,4 +1,10 @@
 @extends('layouts.main')
+@section('title')
+{{ trim(strip_tags($resource->title)) }}
+@endsection
+@section('description')
+{{ trim(strip_tags(fixImage($resource->abstract))) }}
+@endsection
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/fontawesome-all.min.css') }}">
 @endpush
