@@ -3,7 +3,7 @@
 @lang('Darakht-e Danish Online Library')
 @endsection
 @section('description')
-@lang('Free and open educational resources for Afghanistan')
+@lang('The Darakht-e Danesh Online Library for Educators is a repository of open educational resources for teachers, teacher trainers, school administrators, literacy workers and others involved in furthering education in Afghanistan.')
 @endsection
 @section('page_image')
 {{ asset('storage/files/logo-dd.png') }}
