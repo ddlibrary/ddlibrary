@@ -17,6 +17,8 @@
     <meta property="og:image" content="@yield('page_image')" />
     <meta property="og:description" content="@yield('description')" />
 
+    <link rel="shortcut icon" href="{{ asset('storage/files/favicon.ico') }}">
+
     <link rel="stylesheet" href="{{ asset('css/reset.css') }}">
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ddl.css') }}">
