@@ -56,21 +56,23 @@
     <section class="resource-information-section">
         @if (count($resources) > 0)
         @foreach ($resources AS $resource)
-        <article class="resource-article resource-information" onclick="location.href='{{ URL::to('resource/'.$resource->id) }}'">
-            <img class="resource-img" src="{{ getImagefromResource($resource->abstract) }}" alt="Resource Image">
-            <div class="resource-title">{{ $resource->title }}</div>
-            <div class="resource-details">
-                <article>
-                    <i class="fas fa-eye"></i><span>{{ $resource->totalviews }}</span>
-                </article>
-                <article>
-                    <i class="fas fa-star"></i><span>{{ $resource->totalfavorite }}</span>
-                </article>
-                <article>
-                    <i class="fas fa-comment"></i><span>{{ $resource->totalcomments }}</span>
-                </article>
-            </div>
-        </article>
+        <a href="{{ URL::to('resource/'.$resource->id) }}">
+            <article class="resource-article resource-information">
+                <img class="resource-img" src="{{ getImagefromResource($resource->abstract) }}" alt="Resource Image">
+                <div class="resource-title">{{ $resource->title }}</div>
+                <div class="resource-details">
+                    <article>
+                        <i class="fas fa-eye"></i><span>{{ $resource->totalviews }}</span>
+                    </article>
+                    <article>
+                        <i class="fas fa-star"></i><span>{{ $resource->totalfavorite }}</span>
+                    </article>
+                    <article>
+                        <i class="fas fa-comment"></i><span>{{ $resource->totalcomments }}</span>
+                    </article>
+                </div>
+            </article>
+        </a>
         @endforeach
         @else
         <h2>@lang('No records found!')</h2>
