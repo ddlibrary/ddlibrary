@@ -27,8 +27,7 @@ class ContactController extends Controller
     public function create()
     {
         //setting the search session empty
-        session()->forget(['resource1','resource2','resource3','search']);
-        session()->save();
+        DDLClearSession();
         return view('contacts.contacts_view');
     }
 

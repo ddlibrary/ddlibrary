@@ -379,3 +379,19 @@ function parse_user_agent( $u_agent = null ) {
 
 	return array( 'platform' => $platform ?: null, 'browser' => $browser ?: null, 'version' => $version ?: null );
 }
+
+if(! function_exists('DDLClearSession')){
+	function DDLClearSession()
+	{
+		//setting the search session empty
+		if(
+			session()->has('resource1') || 
+			session()->has('resource2') || 
+			session()->has('resource3') ||
+			session()->has('search')
+		){
+			session()->forget(['resource1','resource2','resource3','search']);
+			session()->save();
+		}
+	}
+}

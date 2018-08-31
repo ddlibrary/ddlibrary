@@ -28,8 +28,7 @@ class PageController extends Controller
     function view($pageId)
     {
         //setting the search session empty
-        session()->forget(['resource1','resource2','resource3','search']);
-        session()->save();
+        DDLClearSession();
         
         $page = Page::find($pageId);
 
@@ -46,8 +45,7 @@ class PageController extends Controller
     public function create()
     {
         //setting the search session empty
-        session()->forget(['resource1','resource2','resource3','search']);
-        session()->save();
+        DDLClearSession();
 
         return view('pages.page_create');
     }

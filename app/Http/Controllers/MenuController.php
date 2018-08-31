@@ -20,8 +20,7 @@ class MenuController extends Controller
     function index ()
     {
         //setting the search session empty
-        session()->forget(['resource1','resource2','resource3','search']);
-        session()->save();
+        DDLClearSession();
         
         $menuRecords = Menu::paginate(10);
         return view('admin.menu.menu_list', compact('menuRecords'));

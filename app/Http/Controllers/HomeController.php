@@ -27,10 +27,10 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $resources = new Resource();
         //setting the search session empty
-        session()->forget(['resource1','resource2','resource3','search']);
-        session()->save();
+        DDLClearSession();
+        
+        $resources = new Resource();
         
         //latest news for the homepage
         $latestNews         = News::where('language',Config::get('app.locale'))->orderBy('id','desc')->take(4)->get();

@@ -22,8 +22,7 @@ class DashboardController extends Controller
     
     public function index()
     {
-        session()->forget(['resource1','resource2','resource3','search']);
-        session()->save();
+        DDLClearSession();
         
         //total users in number for the dashboard
         $totalUsers         = User::count();

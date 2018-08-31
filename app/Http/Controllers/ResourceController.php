@@ -47,10 +47,7 @@ class ResourceController extends Controller
         $this->middleware('admin');
 
         //setting the search session empty
-        $request->session()->forget('resource1');
-        $request->session()->forget('resource2');
-        $request->session()->forget('resource3');
-        $request->session()->save();
+        DDLClearSession();
 
         $myResources = new Resource();
 
@@ -66,8 +63,7 @@ class ResourceController extends Controller
     public function list(Request $request)
     {
         //setting the search session empty
-        session()->forget(['resource1','resource2','resource3','search']);
-        session()->save();
+        DDLClearSession();
         
         $myResources = new Resource();
 
@@ -109,9 +105,8 @@ class ResourceController extends Controller
     public function viewPublicResource(Request $request, $resourceId)
     {
         //setting the search session empty
-        session()->forget(['resource1','resource2','resource3','search']);
-        session()->save();
-
+        DDLClearSession();
+        
         $myResources = new Resource();
 
         $resource = Resource::findOrFail($resourceId);

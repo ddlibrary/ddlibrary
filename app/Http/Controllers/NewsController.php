@@ -28,8 +28,7 @@ class NewsController extends Controller
     public function view($newsId)
     {
         //setting the search session empty
-        session()->forget(['resource1','resource2','resource3','search']);
-        session()->save();
+        DDLClearSession();
 
         $myNews = new News();
 
@@ -46,8 +45,7 @@ class NewsController extends Controller
     public function create()
     {
         //setting the search session empty
-        session()->forget(['resource1','resource2','resource3','search']);
-        session()->save();
+        DDLClearSession();
         
         return view('news.news_create');
     }
