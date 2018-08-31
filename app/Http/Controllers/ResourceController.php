@@ -123,7 +123,7 @@ class ResourceController extends Controller
         }
 
         $this->resourceViewCounter($request, $resourceId);
-
+        \Carbon\Carbon::setLocale(app()->getLocale());
         return view('resources.resources_view', compact(
             'resource',
             'relatedItems',
