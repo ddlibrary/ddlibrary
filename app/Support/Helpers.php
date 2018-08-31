@@ -100,14 +100,14 @@ if(! function_exists('getImagefromResource')) {
 				if(Storage::disk('public')->exists($imageName)){
 					$fixedImage = Storage::disk('public')->url($imageName);
 				}else{
-					return "https://dummyimage.com/250x200/eeeeee/000000.png&text=DDL+Resource";	
+					return asset('storage/files/placeholder_image.png');	
 				}
 				return $fixedImage;
 			}else{
-				return "https://dummyimage.com/250x200/eeeeee/000000.png&text=DDL+Resource";
+				return asset('storage/files/placeholder_image.png');
 			}
         }else{
-            return "https://dummyimage.com/250x200/eeeeee/000000.png&text=DDL+Resource";
+            return asset('storage/files/placeholder_image.png');
         }
     }
 }
