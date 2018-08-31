@@ -339,10 +339,10 @@ class Resource extends Model
             ->leftJoin('resource_comments AS rc', 'rc.resource_id', '=', 'rs.id')
             ->leftJoin('resource_views AS rv', 'rv.resource_id', '=', 'rs.id')
             ->when(count($subjectAreaIds) > 0, function($query) use($subjectAreaIds){
-                return $query->join('resource_subject_areas AS rsa', function ($join) use($subjectAreaIds) {
-                    $join->on('rsa.resource_id', '=', 'rs.id')
-                        ->whereIn('rsa.tid', $subjectAreaIds);
-                });
+                return $query->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
+                        ->join('taxonomy_term_hierarchy AS tth','tth.tid','=','rsa.tid')
+                        ->whereIn('tth.parent', $subjectAreaIds)
+                        ->groupBy('tth.tid');
             })
             ->when(count($levelIds) > 0, function($query)  use($levelIds){
                 return $query->join('resource_levels AS rl', function ($join) use($levelIds) {
@@ -487,9 +487,9 @@ class Resource extends Model
         $records = DB::table('resource_subject_areas AS sarea')
             ->select(
                 'sticons.file_name', 
-                'ttd.name', 
-                'sarea.tid AS subject_area',
-                DB::raw('count(sarea.tid) AS total')
+                'ttd.name',
+                'ttd.id',
+                'sarea.tid AS subject_area'
             )
             ->leftJoin('taxonomy_term_data AS ttd', function($join){
                 $join->on('ttd.id', '=', 'sarea.tid')
@@ -497,14 +497,26 @@ class Resource extends Model
             })
             ->join('static_subject_area_icons AS sticons','sticons.tid','=','ttd.id')
             ->where('ttd.language', Config::get('app.locale'))
-            ->orderBy('total', 'desc')
             ->groupBy(
                 'sarea.tid', 
                 'sticons.file_name',
-                'ttd.name'
+                'ttd.name',
+                'ttd.id'
             )
             ->get();
         return $records;
+    }
+
+    public static function countSubjectAreas($sId)
+    {
+        return DB::table('resource_subject_areas AS rsa')
+            ->select(DB::raw('count(rsa.tid) AS total'))
+            ->join('resources AS rs','rs.id','=','rsa.resource_id')
+            ->join('taxonomy_term_hierarchy AS tth','tth.tid','=','rsa.tid')
+            ->where('tth.parent',$sId)
+            ->where('rs.status',1)
+            ->where('rs.language',Config::get('app.locale'))
+            ->first();
     }
 
     public function featuredCollections()

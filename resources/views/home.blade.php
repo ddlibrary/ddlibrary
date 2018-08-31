@@ -29,7 +29,7 @@
             <article class="home-subject-areas">
                 <img src="{{ Storage::disk('public')->url($subject->file_name) }}" alt="Subject Area Icon">
                 <p>{{ $subject->name }}</p>
-                <p class="resource-count">{{ $subject->total }} @lang('Resources')</p>
+                <p class="resource-count">{{ App\Resource::countSubjectAreas($subject->id)->total }} @lang('Resources')</p>
             </article>
         </a>
         @endforeach
