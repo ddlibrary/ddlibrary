@@ -44,7 +44,7 @@
                 <td><a href="{{ URL::to('users/view/'.$comment->user_id) }}">{{ $comment->user->username }}</a></td>
                 <td>{{ $comment->comment }}</td>
                 <td>{{ ($comment->status==0?"Not Published":"Published") }}</td>
-                <td>{{ Carbon\Carbon::createFromTimestamp($comment->created)->diffForHumans() }}</td>
+                <td>{{ $comment->created_at->diffForHumans() }}</td>
               </tr>
               @endforeach
             </tbody>
