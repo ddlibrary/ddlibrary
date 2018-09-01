@@ -56,7 +56,9 @@ class ContactController extends Controller
 
         $contact->save();
 
-        \Mail::to(Setting::find(1)->website_email)->send(new ContactPage($contact));
+        if(env('SEND_EMAIL') == 'yes'){
+            \Mail::to(Setting::find(1)->website_email)->send(new ContactPage($contact));
+        }
 
         return redirect('/contact-us')->with('success', 'We received your message and will contact you back soon!');
     }
