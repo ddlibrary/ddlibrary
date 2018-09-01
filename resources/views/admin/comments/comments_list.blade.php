@@ -43,7 +43,7 @@
                 <td><a href="{{ URL::to('resource/'.$comment->resource_id) }}">{{ $comment->resource->title }}</a></td>
                 <td><a href="{{ URL::to('user/'.$comment->user_id) }}">{{ $comment->user->username }}</a></td>
                 <td>{{ $comment->comment }}</td>
-                <td>{{ ($comment->status==0?"Not Published":"Published") }}</td>
+                <td><a href="{{ URL::to('admin/comments/published/'.$comment->id) }}">{{ ($comment->status==0?"Not Published":"Published") }}</a></td>
                 <td>{{ $comment->created_at->diffForHumans() }}</td>
               </tr>
               @endforeach

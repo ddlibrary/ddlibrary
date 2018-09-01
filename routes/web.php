@@ -110,6 +110,7 @@ function()
 
     //Comments
     Route::get('admin/comments','CommentController@index')->middleware('admin');
+    Route::get('admin/comments/published/{commentId}', 'CommentController@published');
 
     //Flags
     Route::get('admin/flags','FlagController@index')->middleware('admin');
