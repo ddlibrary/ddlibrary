@@ -112,7 +112,7 @@ class ResourceController extends Controller
         $resource = Resource::findOrFail($resourceId);
 
         $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
-        $comments = ResourceComment::published()->get();
+        $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
         if($resource){
             $translation_id = $resource->tnid;
             if($translation_id){
@@ -619,7 +619,7 @@ class ResourceController extends Controller
     public function createStepOneEdit($resourceId, Request $request)
     {
         $this->middleware('admin');
-        
+
         $myResources = new Resource();
 
         $resource = $request->session()->get('resource1');
