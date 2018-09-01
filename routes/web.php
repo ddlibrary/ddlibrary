@@ -53,6 +53,7 @@ function()
     Route::get('resources/attributes/{entity}', 'ResourceController@attributes');
     Route::post('resources/flag', 'ResourceController@flag')->name('flag');
     Route::post('resources/comment', 'ResourceController@comment')->name('comment')->middleware('auth');
+    Route::get('admin/resource/published/{resourceId}', 'ResourceController@published');
 
     Route::get('resources/edit/step1/{resourceId}', 'ResourceController@createStepOneEdit')->name('edit1')->middleware('admin');
     Route::post('resources/edit/step1/{resourceId}', 'ResourceController@postStepOneEdit')->middleware('admin');

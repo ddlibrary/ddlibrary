@@ -618,6 +618,8 @@ class ResourceController extends Controller
 
     public function createStepOneEdit($resourceId, Request $request)
     {
+        $this->middleware('admin');
+        
         $myResources = new Resource();
 
         $resource = $request->session()->get('resource1');
@@ -631,6 +633,8 @@ class ResourceController extends Controller
 
     public function postStepOneEdit($resourceId, Request $request)
     {
+        $this->middleware('admin');
+
         $validatedData = $request->validate([
             'title'         => 'required',
             'author'        => 'string|nullable',
@@ -649,6 +653,8 @@ class ResourceController extends Controller
 
     public function createStepTwoEdit($resourceId, Request $request)
     {
+        $this->middleware('admin');
+
         $resource1 = $request->session()->get('resource1');
 
         if(!$resource1){
@@ -770,6 +776,8 @@ class ResourceController extends Controller
 
     public function postStepTwoEdit($resourceId, Request $request)
     {
+        $this->middleware('admin');
+
         $resource = $request->session()->get('resource2');
         $validatedData = $request->validate([
             'attachments.*'             => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff',
@@ -814,6 +822,8 @@ class ResourceController extends Controller
 
     public function createStepThreeEdit($resourceId, Request $request)
     {
+        $this->middleware('admin');
+
         $resource1 = $request->session()->get('resource1');
         $resource2 = $request->session()->get('resource2');
 
@@ -842,6 +852,8 @@ class ResourceController extends Controller
      */
     public function postStepThreeEdit($resourceId, Request $request)
     {
+        $this->middleware('admin');
+
         $validatedData = $request->validate([
             'translation_rights'        => 'integer',
             'educational_resource'      => 'integer',
@@ -1175,6 +1187,8 @@ class ResourceController extends Controller
 
     public function deleteFile($resourceId, $fileName)
     {   
+        $this->middleware('admin');
+
         Storage::disk('private')->delete($fileName);
         ResourceAttachment::where('resource_id', $resourceId)->where('file_name', $fileName)->delete();
         Session::flash('success', "file successfully deleted!");
@@ -1190,6 +1204,22 @@ class ResourceController extends Controller
             $resource2['attc'] = array_values($resource2Attc);
             session()->put('resource2', $resource2);
         }
+        return back();
+    }
+
+    public function published($resourceId)
+    {
+        $this->middleware('admin');
+
+        $rs = Resource::find($resourceId);
+        if($rs->status == 1){
+            $rs->status = 0;
+            $rs->save();
+        }else{
+            $rs->status = 1;
+            $rs->save();   
+        }
+
         return back();
     }
 }
