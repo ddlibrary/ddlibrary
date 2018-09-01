@@ -63,7 +63,8 @@ class User extends Authenticatable
                 'users.accessed_at',
                 'users.email',
                 'users.status',
-                'users.created_at'
+                'users.created_at',
+                'roles.name'
             )
             ->get();
 
