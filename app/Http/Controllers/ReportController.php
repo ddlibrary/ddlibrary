@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Resource;
 use App\User;
+use App\DownloadCount;
+use App\ResourceView;
 use Analytics;
 use Spatie\Analytics\Period;
 
@@ -27,6 +29,9 @@ class ReportController extends Controller
         
         $resourceModel  = new Resource();
         $usersModel     = new User();
+        $downloadModel  = new DownloadCount();
+
+        $downloadCount = $downloadModel->getCount();
 
         //total resources by language
         $totalResources             = $resourceModel->totalResourcesByLanguage();
@@ -46,7 +51,8 @@ class ReportController extends Controller
             'totalResourcesByType',
             'totalResourcesByFormat',
             'totalUsersByCountry',
-            'totalResourcesByRoles'
+            'totalResourcesByRoles',
+            'downloadCount'
         ));
     }
 
