@@ -40,8 +40,8 @@
             @foreach ($comments as $indexkey => $comment)
               <tr>
                 <td>{{ (($comments->currentPage() - 1) * 20)+$indexkey + 1 }}</td>
-                <td><a href="{{ URL::to('resources/view/'.$comment->resource_id) }}">{{ $comment->resource->title }}</a></td>
-                <td><a href="{{ URL::to('users/view/'.$comment->user_id) }}">{{ $comment->user->username }}</a></td>
+                <td><a href="{{ URL::to('resource/'.$comment->resource_id) }}">{{ $comment->resource->title }}</a></td>
+                <td><a href="{{ URL::to('user/'.$comment->user_id) }}">{{ $comment->user->username }}</a></td>
                 <td>{{ $comment->comment }}</td>
                 <td>{{ ($comment->status==0?"Not Published":"Published") }}</td>
                 <td>{{ $comment->created_at->diffForHumans() }}</td>
