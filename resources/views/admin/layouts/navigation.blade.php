@@ -12,16 +12,27 @@
             <span class="nav-link-text">Dashboard</span>
             </a>
         </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseResources" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">Resources</span>
+            </a>
+            <ul class="sidenav-second-level collapse" id="collapseResources">
+                <li>
+                    <a href="{{ URL::to('admin/resources') }}">Resources</a>
+                </li>
+                <li>
+                    <a href="{{ URL::to('admin/comments') }}">Comments</a>
+                </li>
+                <li>
+                    <a href="{{ URL::to('admin/flags') }}">Flags</a>
+                </li>
+            </ul>
+        </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
             <a class="nav-link" href="{{ URL::to('admin/users') }}">
             <i class="fa fa-fw fa-users"></i>
             <span class="nav-link-text">Users</span>
-            </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-            <a class="nav-link" href="{{ URL::to('admin/resources') }}">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">Resources</span>
             </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
@@ -34,30 +45,6 @@
             <a class="nav-link" href="{{ URL::to('admin/news') }}">
             <i class="fa fa-fw fa-file"></i>
             <span class="nav-link-text">News</span>
-            </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
-            <a class="nav-link" href="{{ URL::to('admin/menu') }}">
-            <i class="fa fa-fw fa-sitemap"></i>
-            <span class="nav-link-text">Menu</span>
-            </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
-            <a class="nav-link" href="{{ URL::to('admin/taxonomy') }}">
-            <i class="fa fa-fw fa-sitemap"></i>
-            <span class="nav-link-text">Taxonomy</span>
-            </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
-            <a class="nav-link" href="{{ URL::to('admin/comments') }}">
-            <i class="fa fa-fw fa-comment"></i>
-            <span class="nav-link-text">Comments</span>
-            </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
-            <a class="nav-link" href="{{ URL::to('admin/flags') }}">
-            <i class="fa fa-fw fa-flag"></i>
-            <span class="nav-link-text">Flags</span>
             </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
@@ -75,10 +62,21 @@
             </ul>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
-            <a class="nav-link" href="{{ URL::to('admin/settings') }}">
+            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseSettings" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-link"></i>
             <span class="nav-link-text">Settings</span>
             </a>
+            <ul class="sidenav-second-level collapse" id="collapseSettings">
+                <li>
+                    <a href="{{ URL::to('admin/menu') }}">Menu</a>
+                </li>
+                <li>
+                    <a href="{{ URL::to('admin/taxonomy') }}">Taxonomy</a>
+                </li>
+                <li>
+                    <a href="{{ URL::to('admin/settings') }}">Configurations</a>
+                </li>
+            </ul>
         </li>
         </ul>
         <ul class="navbar-nav sidenav-toggler">
