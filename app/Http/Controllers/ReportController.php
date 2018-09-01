@@ -30,8 +30,10 @@ class ReportController extends Controller
         $resourceModel  = new Resource();
         $usersModel     = new User();
         $downloadModel  = new DownloadCount();
+        $viewModel      = new ResourceView();
 
-        $downloadCount = $downloadModel->getCount();
+        $downloadCount  = $downloadModel->getCount();
+        $viewCount      = $viewModel->getCount();
 
         //total resources by language
         $totalResources             = $resourceModel->totalResourcesByLanguage();
@@ -52,7 +54,8 @@ class ReportController extends Controller
             'totalResourcesByFormat',
             'totalUsersByCountry',
             'totalResourcesByRoles',
-            'downloadCount'
+            'downloadCount',
+            'viewCount'
         ));
     }
 

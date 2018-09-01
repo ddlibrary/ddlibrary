@@ -14,7 +14,7 @@ class DownloadCount extends Model
                 'dc.resource_id',
                 'rs.title',
                 'rs.language',
-                DB::raw('count(resource_id) AS total')
+                DB::raw('count(dc.resource_id) AS total')
             )
             ->leftJoin('resources AS rs', 'rs.id', '=', 'dc.resource_id')
             ->where('dc.created_at', '>', \Carbon\Carbon::now()->subDays(30))
