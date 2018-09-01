@@ -98,7 +98,7 @@
                   <tbody>
                   @foreach ($latestResources as $indexkey => $resource)
                   <tr>
-                      <td><a href="{{ URL::to('resource/'.$resource->id) }}">{{ $resource->title }}</a></td>
+                      <td><a href="{{ URL::to($resource->language.'/'.'resource/'.$resource->id) }}">{{ $resource->title }}</a></td>
                       <td><a href="{{ URL::to('user/'.$resource->user_id) }}">{{ $resource->user->username }}</a></td>
                       <td>{{ ($resource->status==0?"Not Published":"Published") }}</td>
                     </tr>
@@ -165,7 +165,7 @@
                     <tbody>
                     @foreach ($latestPages as $indexkey => $page)
                       <tr>
-                        <td><a href="{{ URL::to('pages/view/'.$page->id) }}">{{ $page->title }}</a></td>
+                        <td><a href="{{ URL::to($page->language.'/'.'page/'.$page->id) }}">{{ $page->title }}</a></td>
                         <td>{{ $page->created_at->diffForHumans() }}</td>
                         <td>{{ $page->updated_at->diffForHumans() }}</td>
                       </tr>
@@ -195,7 +195,7 @@
                     <tbody>
                     @foreach ($latestNews as $indexkey => $news)
                       <tr>
-                        <td><a href="{{ URL::to('news/view/'.$news->id) }}">{{ $news->title }}</a></td>
+                        <td><a href="{{ URL::to($news->language.'/'.'news/'.$news->id) }}">{{ $news->title }}</a></td>
                         <td>{{ $news->created_at->diffForHumans() }}</td>
                         <td>{{ $news->updated_at->diffForHumans() }}</td>
                       </tr>

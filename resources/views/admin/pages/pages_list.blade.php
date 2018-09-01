@@ -42,7 +42,7 @@
             @foreach ($pages as $indexkey => $page)
               <tr>
                 <td>{{ (($pages->currentPage() - 1) * $pages->perPage())+$indexkey + 1 }}</td>
-                <td><a href="{{ URL::to('page/'.$page->id) }}">{{ $page->title }}</a></td>
+                <td><a href="{{ URL::to($page->language.'/'.'page/'.$page->id) }}">{{ $page->title }}</a></td>
                 <td>{{ fixLanguage($page->language) }}</td>
                 <td>{{ $page->created_at->diffForHumans() }}</td>
                 <td>{{ $page->updated_at->diffForHumans() }}</td>
