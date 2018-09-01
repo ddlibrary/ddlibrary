@@ -125,11 +125,13 @@
                     <input type="text" class="form-control" name="city_other" id="js-text-city" size="40" maxlength="40" style="display:none;">
                 </div>
             </div>
+            @if(env('CAPTCHA') == 'yes')
             <div class="left-side">
                 <div class="form-item">
                     {!! NoCaptcha::display() !!}
                 </div>
             </div>
+            @endif
             <div class="left-side">
                 <input class="form-control" type="submit" value="@lang('Submit')">
             </div>

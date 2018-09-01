@@ -73,9 +73,11 @@
                 </span><br>
             @endif
         </div>
+        @if(env('CAPTCHA') == 'yes')
         <div class="form-item">
             {!! NoCaptcha::display() !!}
         </div>
+        @endif
         <div class="left-side">
             <input class="form-control normalButton" type="submit" value="@lang('Send')">
         </div>
