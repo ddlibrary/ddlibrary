@@ -44,7 +44,7 @@
                 <!-- Example Bar Chart Card-->
                 <div class="card mb-3">
                     <div class="card-header">
-                        <i class="fa fa-list"></i> Top Downloaded Resources
+                        <i class="fa fa-list"></i> Top Downloaded Resources in the last 30 days
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
