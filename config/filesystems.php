@@ -62,6 +62,13 @@ return [
             'visibility' => 'private',
         ],
 
+        'videos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/videos'),
+            'url' => base_path().'/storage/app/public/videos',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

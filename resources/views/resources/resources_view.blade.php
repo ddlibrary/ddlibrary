@@ -3,7 +3,7 @@
 {{ trim(strip_tags($resource->title)) }}
 @endsection
 @section('description')
-{{ trim(strip_tags(fixImage($resource->abstract))) }}
+{{ trim(strip_tags(fixImage($resource->abstract, $resource->id))) }}
 @endsection
 @section('page_image')
 {{ getImagefromResource($resource->abstract, '282x254') }}
@@ -119,7 +119,7 @@
                 </div>
             </div>
             <hr>
-            {!! fixImage($resource->abstract) !!}
+            {!! fixImage($resource->abstract, $resource->id) !!}
         </article>
         <article class="resource-view-details">
             <h3>@lang('Author')</h3>

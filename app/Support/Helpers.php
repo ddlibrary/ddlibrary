@@ -55,10 +55,22 @@ if(! function_exists('giveMeResourceIcon')){
 //Abstracts in Drupal installation had /sites/default/files/learn-1044078_960_720_0.jpg type image links
 //In here, I am fixing that and applying Laravel's way of showing images
 if (! function_exists('fixImage')) {
-    function fixImage($abstract)
+    function fixImage($abstract, $resource_id)
     {
 		//To replace hardcoded url to dynamic base_url
 		$abstract = str_replace('http://www.darakhtdanesh.org/', URL::to('/').'/', $abstract);
+		
+		if(env('DDL_LITE') == 'yes'){
+			if(strpos($abstract, '<div class="media_embed"') == true || strpos($abstract, '<div class="embeddedContent') == true){
+				$abstract = preg_replace('#<div class="media_embed" height="315px" width="560px">(.*?)</div>#', '', $abstract);
+				$abstract = $abstract . "
+				<video width='560' height='315' controls>
+				<source src='".URL::to('/storage/videos/'.$resource_id.".mp4")."' type='video/mp4'>
+				Your browser does not support the video tag.
+				</video>
+				";
+			}
+		}
 
         preg_match_all('/src="([^"]*)"/',$abstract,$matches);
         if(count($matches[1])> 0){

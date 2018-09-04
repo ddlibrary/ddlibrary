@@ -52,7 +52,7 @@
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <div id="editor">
-                <textarea class="form-control{{ $errors->has('body') ? ' is-invalid' : '' }}" name="body" style="height: 200px">{{ fixImage($news->body) }}</textarea>
+                <textarea class="form-control{{ $errors->has('body') ? ' is-invalid' : '' }}" name="body" style="height: 200px">{{ fixImage($news->body, $news->id) }}</textarea>
             </div>
             @if ($errors->has('body'))
                 <span class="invalid-feedback">
