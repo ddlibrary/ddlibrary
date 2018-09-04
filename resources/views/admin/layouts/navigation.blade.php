@@ -12,6 +12,7 @@
             <span class="nav-link-text">Dashboard</span>
             </a>
         </li>
+        @if(env('DDL_LITE')=='no')
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
             <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseResources" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-table"></i>
@@ -78,6 +79,7 @@
                 </li>
             </ul>
         </li>
+        @endif
         </ul>
         <ul class="navbar-nav sidenav-toggler">
         <li class="nav-item">

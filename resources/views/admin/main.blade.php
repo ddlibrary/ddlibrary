@@ -9,6 +9,7 @@
       </li>
       <li class="breadcrumb-item active">My Dashboard</li>
     </ol>
+    @if(env('DDL_LITE')=='no')
     <!-- Icon Cards-->
     <div class="row">
       <div class="col-xl-3 col-sm-6 mb-3">
@@ -76,6 +77,7 @@
         </div>
       </div>
     </div>
+    @endif
     <!-- End Statistics -->
     <!-- Start latest resources and users section -->
     <div class="row">
