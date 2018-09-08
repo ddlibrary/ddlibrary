@@ -14,17 +14,17 @@
                 </a>
             @endforeach
             </div>
-            <a href="{{ URL::to('/') }}">Home</a>
-            <a href="{{ URL::to('resources') }}">Browse</a>
-            <a href="{{ URL::to('resources/add/step1') }}">Upload a Resource</a>
+            <a href="{{ URL::to('/') }}">@lang('Home')</a>
+            <a href="{{ URL::to('resources') }}">@lang('Browse')</a>
+            <a href="{{ URL::to('resources/add/step1') }}">@lang('Upload a Resource')</a>
             @if (Auth::check())
-            <a href="{{ URL::to('logout') }}">Log Out</a>
+            <a href="{{ URL::to('logout') }}">@lang('Log Out')</a>
             @if (isAdmin())
-            <a href="{{ URL::to('/admin') }}">Admin Panel</a>
+            <a href="{{ URL::to('/admin') }}">@lang('Admin Panel')</a>
             @endif
             @else
-            <a href="{{ URL::to('/login') }}">Sign In</a>
-            <a href="{{ URL::to('/register') }}">Register</a>
+            <a href="{{ URL::to('/login') }}">@lang('Sign In')</a>
+            <a href="{{ URL::to('/register') }}">@lang('Register')</a>
             @endif
         </div>
     </div>
