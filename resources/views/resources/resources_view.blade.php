@@ -3,7 +3,7 @@
 {{ trim(strip_tags($resource->title)) }}
 @endsection
 @section('description')
-{{ trim(strip_tags(fixImage($resource->abstract, $resource->id))) }}
+{{ substr(trim(strip_tags(fixImage($resource->abstract, $resource->id))), 0, 300) }}
 @endsection
 @section('page_image')
 {{ getImagefromResource($resource->abstract, '282x254') }}
