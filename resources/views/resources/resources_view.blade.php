@@ -278,9 +278,4 @@
 @push('scripts')
     <script src="{{ asset('js/jquery.min.js') }}"></script>
 @endpush
-@if(env('APP_ENV') === 'production')
-<script>
-    mixpanel.track("Resource View");
-</script>
-@endif
 @endsection
