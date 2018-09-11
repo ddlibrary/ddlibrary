@@ -22,7 +22,7 @@
             @include('layouts.messages')
             <div class="resource-view-title">
                 <header>
-                    <h1>{{ $resource->title }}</h1>
+                    <h2>{{ $resource->title }}</h2>
                 </header>
                 <div class="resource-icons">
                     @if (isAdmin())
