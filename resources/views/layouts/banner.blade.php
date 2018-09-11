@@ -92,7 +92,7 @@
             ?>
             @foreach ($menu->where('location', 'top-menu')->where('language', app()->getLocale()) as $tmenu)
             <li>
-                <a href="{{ URL::to($tmenu->path) }}"><i class="fas {{ $classNames[$tmenu->tnid]}} fa-lg icons" title="{{ $tmenu->title }}"></i>{{ $tmenu->title }}</a>
+                <a href="{{ URL::to($tmenu->path) }}" title="{{ $tmenu->title }}"><i class="fas {{ $classNames[$tmenu->tnid]}} fa-lg icons"></i>{{ $tmenu->title }}</a>
             </li>
             @endforeach
             @if (Auth::check())
