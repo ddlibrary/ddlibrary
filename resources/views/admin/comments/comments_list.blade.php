@@ -5,7 +5,7 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="{{ URL::to('admin') }}">Dashboard</a>
+        <a href="{{ URL::to('admin') }}" title="Dashboard">Dashboard</a>
       </li>
       <li class="breadcrumb-item active">Comments</li>
     </ol>
@@ -40,10 +40,10 @@
             @foreach ($comments as $indexkey => $comment)
               <tr>
                 <td>{{ (($comments->currentPage() - 1) * 20)+$indexkey + 1 }}</td>
-                <td><a href="{{ URL::to('resource/'.$comment->resource_id) }}">{{ $comment->resource->title }}</a></td>
-                <td><a href="{{ URL::to('user/'.$comment->user_id) }}">{{ $comment->user->username }}</a></td>
+                <td><a href="{{ URL::to('resource/'.$comment->resource_id) }}" title="Resource Title">{{ $comment->resource->title }}</a></td>
+                <td><a href="{{ URL::to('user/'.$comment->user_id) }}" title="User">{{ $comment->user->username }}</a></td>
                 <td>{{ $comment->comment }}</td>
-                <td><a href="{{ URL::to('admin/comments/published/'.$comment->id) }}">{{ ($comment->status==0?"Not Published":"Published") }}</a></td>
+                <td><a href="{{ URL::to('admin/comments/published/'.$comment->id) }}" title="Status">{{ ($comment->status==0?"Not Published":"Published") }}</a></td>
                 <td>{{ $comment->created_at->diffForHumans() }}</td>
               </tr>
               @endforeach

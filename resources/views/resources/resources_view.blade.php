@@ -65,7 +65,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="modal-body">
-                                <h2>@lang('In order to favorite a resource, you are required to') <a href="{{ URL::to('login') }}">@lang('login')</a>.</h2>
+                                <h2>@lang('In order to favorite a resource, you are required to') <a href="{{ URL::to('login') }}" title="@lang('login')">@lang('login')</a>.</h2>
                             </div>
                         </div>
                     </div>
@@ -130,25 +130,25 @@
         <article class="resource-view-details">
             <h3>@lang('Resource Level')</h3>
             @foreach ($resource->levels AS $level)
-            <p><a href="{{ URL::to('resources/list?=&level[]='.$level->id) }}">{{ $level->name }}</a></p>
+            <p><a href="{{ URL::to('resources/list?=&level[]='.$level->id) }}" title="{{ $level->name }}">{{ $level->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
             <h3>@lang('Subject Area')</h3>
             @foreach ($resource->subjects AS $subject)
-            <p><a href="{{ URL::to('resources/list?=&subject_area[]='.$subject->id) }}">{{ $subject->name }}</a></p>
+            <p><a href="{{ URL::to('resources/list?=&subject_area[]='.$subject->id) }}" title="{{ $subject->name }}">{{ $subject->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
             <h3>@lang('Learning Resource Type')</h3>
             @foreach($resource->LearningResourceTypes AS $ltype)
-            <p><a href="{{ URL::to('resources/list?=&type[]='.$ltype->id) }}">{{ $ltype->name }}</a></p>
+            <p><a href="{{ URL::to('resources/list?=&type[]='.$ltype->id) }}" title="{{ $ltype->name }}">{{ $ltype->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
             <h3>@lang('Publisher')</h3>
             @foreach($resource->publishers AS $publisher)
-            <p><a href="{{ URL::to('resources/list?=&publisher='.$publisher->id) }}">{{ $publisher->name }}</a></p>
+            <p><a href="{{ URL::to('resources/list?=&publisher='.$publisher->id) }}" title="{{ $publisher->name }}">{{ $publisher->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
@@ -181,13 +181,13 @@
                     $newUrl = implode($currentUrl, '/');
                 ?>
                 <p>
-                    <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, $newUrl, [], true) }}">
+                    <a rel="alternate" title="language" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, $newUrl, [], true) }}">
                     {{ $properties['native'] }}
                     </a>
                 </p>
             @else
                 <p>
-                    <a rel="alternate" style="text-decoration: line-through;" hreflang="{{ $localeCode }}">
+                    <a rel="alternate" title="language" style="text-decoration: line-through;" hreflang="{{ $localeCode }}">
                     {{ $properties['native'] }}
                     </a>
                 </p>
@@ -205,7 +205,7 @@
             <span class="download-item">@lang('File Name')</strong></span>
             <span class="download-item item-mobile"><strong>@lang('File Size')</strong></span>
             @foreach($resource->attachments as $file)
-            <span class="download-item"><a href="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}">{{ $file->file_name }}</a></span>
+            <span class="download-item"><a title="File Name" href="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}">{{ $file->file_name }}</a></span>
             <span class="download-item item-mobile">{{ formatBytes($file->file_size) }}</span>
             @if($file->file_mime=="application/pdf")
             <object data="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}" type="application/pdf" width="100%" height="500"></object>
@@ -226,7 +226,7 @@
                 @foreach ($relatedItems AS $item)
                 <div class="related-item">
                     <img class="related-items-img" src="{{ getImagefromResource($item->abstract,'55x50') }}" alt="Resource Image">
-                    <span><a href="{{ URL::to('resource/'.$item->id) }}">{{ $item->title }}</a><br/>
+                    <span><a title="Resource Title" href="{{ URL::to('resource/'.$item->id) }}">{{ $item->title }}</a><br/>
                     {!! str_limit(strip_tags($item->abstract), 25) !!}</span>
                 </div>
                 @endforeach

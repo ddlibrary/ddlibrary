@@ -2,7 +2,7 @@
 <footer>
     <nav>
         @foreach ($menu->where('location', 'footer-menu')->where('language', app()->getLocale()) as $fmenu)
-            <a href="{{ URL::to($fmenu->path) }}">{{ $fmenu->title }}</a>
+            <a href="{{ URL::to($fmenu->path) }}" title="{{ $fmenu->title }}">{{ $fmenu->title }}</a>
         @endforeach
     </nav>
     <div>

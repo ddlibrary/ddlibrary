@@ -16,7 +16,7 @@
     @include('layouts.messages')
     <div class="ddl-top-news">
         <div>
-            <p>@lang('Help us get Afghan teacher colleges online: For a limited time your donation will be matched!') <a href="https://www.crowdrise.com/o/en/campaign/helping-female-student-teachers-to-be-better-teachers-through-internet-access">@lang('Learn More')</a></p>
+            <p>@lang('Help us get Afghan teacher colleges online: For a limited time your donation will be matched!') <a href="https://www.crowdrise.com/o/en/campaign/helping-female-student-teachers-to-be-better-teachers-through-internet-access" title="Donate">@lang('Learn More')</a></p>
         </div>
     </div>
     <header>
@@ -25,7 +25,7 @@
     <hr>
     <div class="section-content">
         @foreach($subjectAreas as $subject)
-        <a href="{{ URL::to('resources/list?=&subject_area[]='.$subject->subject_area) }}">
+        <a href="{{ URL::to('resources/list?=&subject_area[]='.$subject->subject_area) }}" title="{{ $subject->name }}">
             <article class="home-subject-areas">
                 <img src="{{ Storage::disk('public')->url($subject->file_name) }}" alt="Subject Area Icon">
                 <p>{{ $subject->name }}</p>
@@ -55,7 +55,7 @@
             $url = URL::to('/');
         }
         ?>
-        <a href="{{ URL::to($url) }}">
+        <a href="{{ URL::to($url) }}" title="{{ $item->name }}">
             <article class="home-subject-areas">
                 <img src="{{ Storage::disk('public')->url($item->icon) }}" alt="{{ $item->name }}">
                 <p>{{ $item->name }}</p>
@@ -72,7 +72,7 @@
         <hr>
         @foreach($latestNews AS $news)
         <article class="latest-content">
-            <a href="{{ URL::to('news/'.$news->id) }}"><p>{{ $news->title }}</p></a>
+            <a href="{{ URL::to('news/'.$news->id) }}" title="{{ $news->title }}"><p>{{ $news->title }}</p></a>
             <i class="news-description">{{ $news->created_at->diffForHumans() }}</i>
         </article>
         @endforeach
@@ -84,7 +84,7 @@
         <hr>
         @foreach($latestResources AS $resource)
         <article class="latest-content">
-            <a href="{{ URL::to('resource/'.$resource->id) }}"><p>{{ $resource->title }}</p></a>
+            <a href="{{ URL::to('resource/'.$resource->id) }}" title="{{ $resource->title }}"><p>{{ $resource->title }}</p></a>
             <i class="news-description">{{ __($resource->updated_at->diffForHumans())  }}</i>
         </article>
         @endforeach
@@ -98,7 +98,7 @@
             <ul>
                 @foreach ($menu->where('location', 'bottom-menu')->where('language', app()->getLocale()) as $bmenu)
                 <li>
-                    <a href="{{ URL::to($bmenu->path) }}">{{ $bmenu->title }}</a>
+                    <a href="{{ URL::to($bmenu->path) }}" title="{{ $bmenu->title }}">{{ $bmenu->title }}</a>
                 </li>
                 @endforeach
             </ul>
