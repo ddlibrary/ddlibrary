@@ -14,8 +14,7 @@ class DownloadController extends Controller
             $from = request('date_from');
             $to = request('date_to');
             $records = DownloadCount::orderBy('id','desc')->whereBetween('created_at', [$from, $to])->paginate(10);
-            $input = $request->input();
-            $records->appends($input);
+            $records->appends(request()->except(['page','_token']));
         }else{
             $records = DownloadCount::orderBy('id','desc')->paginate(10);
         }
