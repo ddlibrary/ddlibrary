@@ -16,7 +16,32 @@ class ContactController extends Controller
      */
     public function index()
     {
-        //
+        $this->middleware('admin');
+        
+        $records = Contact::orderBy('id','desc')->paginate(10);
+        return view('admin.contacts.contact_list', compact('records'));
+    }
+
+    public function read($id)
+    {
+        $contact = Contact::find($id);
+        if($contact->read == 0){
+            $contact->read = 1;
+            $contact->save();
+            return back()->with('success', 'You marked the message as read!');
+        }else{
+            $contact->read = 0;
+            $contact->save();   
+            return back()->with('success', 'You marked the message as unread!');
+        }
+    }
+
+    public function delete($id)
+    {
+        $contact = Contact::find($id);
+        $contact->delete();
+
+        return back()->with('error', 'You deleted the record!');
     }
 
     /**

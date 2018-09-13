@@ -68,6 +68,9 @@ function()
     //Contact 
     Route::get('contact-us', 'ContactController@create');
     Route::post('contact-us', 'ContactController@store')->name('contact');
+    Route::get('admin/contacts', 'ContactController@index')->middleware('admin');
+    Route::get('admin/contacts/read/{id}', 'ContactController@read')->middleware('admin');
+    Route::get('admin/contacts/delete/{id}', 'ContactController@delete')->middleware('admin');
 
     //Report
     Route::get('admin/reports/ddl', 'ReportController@index')->middleware('admin');

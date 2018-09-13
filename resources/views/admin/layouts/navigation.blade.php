@@ -72,6 +72,9 @@
             </a>
             <ul class="sidenav-second-level collapse" id="collapseSettings">
                 <li>
+                    <a href="{{ URL::to('admin/contacts') }}">Contacts</a>
+                </li>
+                <li>
                     <a href="{{ URL::to('admin/menu') }}">Menu</a>
                 </li>
                 <li>
