@@ -171,7 +171,7 @@ if (! function_exists('isAdmin')) {
     {
         $user = factory(App\User::class)->make();
 
-        if($user->isAdministrator(Auth::id())){
+        if(count($user->isAdministrator(Auth::id()))){
             return TRUE;
         }else{
             return FALSE;
@@ -184,7 +184,7 @@ if (! function_exists('isNormalUser')) {
     {
         $user = factory(App\User::class)->make();
 
-        if($user->isNormalUser(Auth::id())){
+        if(count($user->isNormalUser(Auth::id()))){
             return TRUE;
         }else{
             return FALSE;
@@ -197,7 +197,7 @@ if (! function_exists('isLibraryManager')) {
     {
         $user = factory(App\User::class)->make();
 
-        if($user->isLibraryManager(Auth::id())){
+        if(count($user->isLibraryManager(Auth::id()))){
             return TRUE;
         }else{
             return FALSE;
