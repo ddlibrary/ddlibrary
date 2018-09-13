@@ -25,12 +25,12 @@ class ContactController extends Controller
     public function read($id)
     {
         $contact = Contact::find($id);
-        if($contact->read == 0){
-            $contact->read = 1;
+        if($contact->isread == 0){
+            $contact->isread = 1;
             $contact->save();
             return back()->with('success', 'You marked the message as read!');
         }else{
-            $contact->read = 0;
+            $contact->isread = 0;
             $contact->save();   
             return back()->with('success', 'You marked the message as unread!');
         }
