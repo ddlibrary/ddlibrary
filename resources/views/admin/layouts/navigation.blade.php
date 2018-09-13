@@ -55,6 +55,9 @@
             </a>
             <ul class="sidenav-second-level collapse" id="collapseReports">
                 <li>
+                    <a href="{{ URL::to('admin/reports/downloads') }}">Downloads</a>
+                </li>
+                <li>
                     <a href="{{ URL::to('admin/reports/ddl') }}">DDL</a>
                 </li>
                 <li>

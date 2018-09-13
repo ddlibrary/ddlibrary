@@ -23,4 +23,19 @@ class DownloadCount extends Model
             ->limit(10)
             ->get();
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function resource()
+    {
+        return $this->belongsTo(Resource::class);
+    }
+
+    public function file()
+    {
+        return $this->belongsTo(resourceAttachment::class);
+    }
 }

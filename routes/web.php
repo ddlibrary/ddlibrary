@@ -72,6 +72,9 @@ function()
     //Report
     Route::get('admin/reports/ddl', 'ReportController@index')->middleware('admin');
     Route::get('admin/reports/ga', 'ReportController@gaReport')->middleware('admin');
+    //Downloads
+    Route::get('admin/reports/downloads','DownloadController@index')->middleware('admin');
+    Route::post('admin/reports/downloads','DownloadController@index')->name('downloads')->middleware('admin');
 
     //Pages
     Route::get('admin/pages','PageController@index')->middleware('admin');
@@ -125,7 +128,6 @@ function()
     Route::post('admin/taxonomy/store','TaxonomyController@store')->name('taxonomystore')->middleware('admin');
     Route::get('admin/taxonomy/create-translate/{tnid}/{lang}','TaxonomyController@createTranslate')->name('taxonomytranslatecreate')->middleware('admin');
     Route::post('admin/taxonomy/store-translate/{tnid}','TaxonomyController@storeTranslate')->name('taxonomytranslatestore')->middleware('admin');
-    
 
     //Sync
     Route::get('/admin/sync', 'SyncController@index');
