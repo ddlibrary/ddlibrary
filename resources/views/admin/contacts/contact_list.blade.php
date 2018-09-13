@@ -44,7 +44,7 @@
             @foreach ($records as $indexkey => $record)
               <tr>
                 <td>{{ (($records->currentPage() - 1) * $records->perPage())+$indexkey + 1 }}</td>
-                @if($record->read)
+                @if($record->isread)
                 <td>{{ $record->name }}</td>
                 @else
                 <td><strong>{{ $record->name }}</strong></td>
