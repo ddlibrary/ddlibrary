@@ -28,7 +28,7 @@
     <script>
         console.log('{{ env("APP_ENV") }}');
     </script>
-    @if(env('APP_ENV') === 'production')
+    @if(config('APP_ENV') === 'production')
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-6207513-43"></script>
     <script>
