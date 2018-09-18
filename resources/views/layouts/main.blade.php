@@ -26,9 +26,9 @@
     @stack('styles')
 
     <script>
-        console.log('{{ env("APP_ENV") }}');
+        console.log('{{ App::environment("production") }}');
     </script>
-    @if(App::environment('local') === 'production')
+    @if(App::environment('production'))
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-6207513-43"></script>
     <script>
