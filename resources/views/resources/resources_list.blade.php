@@ -12,18 +12,49 @@
     @include('layouts.search')
 @endsection
 @section('content')
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script>
+    $( document ).ready(function() {
+        $('#resource-list').hide();
+        $.ajax({
+            url: "{{ url()->full() }}",
+            success: function(html){
+                $('#content-loading').hide();
+                $('#resource-list').show();
+
+                $("#resource-list").append(html);
+                var acc = document.getElementsByClassName("accordion");
+                var i;
+
+                for (i = 0; i < acc.length; i++) {
+                    acc[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var panel = this.nextElementSibling;
+
+                    if (panel.style.maxHeight){
+                        panel.style.maxHeight = null;
+                    } else {
+                        panel.style.maxHeight = panel.scrollHeight + "px";
+                    } 
+                    });
+                }
+                $('#resource-subjects').trigger('click');
+            }
+        });
+    });
+</script>
+
 <section class="resource-list">
     <aside>
-        <h3><span class="strong-text">{{ $resources->total() }}</span> @lang('Results')</h3>
-        <form method="POST" action="{{ route('resourceList') }}">
-        @csrf
+        <form method="POST" id="side-form" action="{{ route('resourceList') }}">
+            <input class="form-control normalButton" style="display:none;" id="side-submit" type="submit" value="@lang('filter')">
         <fieldset>
             <legend class="accordion" id="resource-subjects">@lang('Resource Subject Areas')</legend>
             <ul class="panel">
             @foreach($subjects AS $subject)
                 @if($subject->parent == 0)
                     <li>
-                        <input type="checkbox" name="subject_area[]" {{ (in_array($subject->id, $subjectAreaIds)?"checked":"")}} onchange="fnTest(this,'js-sub-subject{{$subject->id}}');this.form.submit();" value="{{ $subject->id }}"><span>{{ ucwords(strtolower($subject->name)) }}</span>
+                        <input type="checkbox" name="subject_area[]" value="{{ $subject->id }}"><span>{{ ucwords(strtolower($subject->name)) }}</span>
                     </li>
                 @endif
             @endforeach
@@ -34,7 +65,7 @@
             <ul class="panel">
                 @foreach($types AS $type)
                     <li>
-                        <input type="checkbox" name="type[]" value="{{ $type->id }}" onchange="this.form.submit()" {{ (in_array($type->id, $typeIds)?"checked":"")}}><span>{{ $type->name }}</span>
+                        <input type="checkbox" name="type[]" value="{{ $type->id }}"><span>{{ $type->name }}</span>
                     </li>
                 @endforeach
             </ul>
@@ -45,7 +76,7 @@
             @foreach($levels AS $level)
                 @if($level->parent == 0)
                     <li>
-                        <input type="checkbox" name="level[]" {{ (in_array($level->id, $levelIds)?"checked":"")}} value="{{ $level->id }}" onchange="fnTest(this,'subLevel{{$level->id}}');this.form.submit()"><span>{{ $level->name }}</span>
+                        <input type="checkbox" name="level[]" value="{{ $level->id }}"><span>{{ $level->name }}</span>
                     </li>
                 @endif
             @endforeach
@@ -53,33 +84,11 @@
         </fieldset>
         </form>
     </aside>
-    <section class="resource-information-section">
-        @if (count($resources) > 0)
-        @foreach ($resources AS $resource)
-        <a href="{{ URL::to('resource/'.$resource->id) }}" title="{{ $resource->title }}">
-            <article class="resource-article resource-information">
-                <img class="resource-img" src="{{ getImagefromResource($resource->abstract) }}" alt="Resource Image">
-                <div class="resource-title">{{ $resource->title }}</div>
-                <div class="resource-details">
-                    <article>
-                        <i class="fas fa-eye"></i><span>{{ $resource->totalviews }}</span>
-                    </article>
-                    <article>
-                        <i class="fas fa-star"></i><span>{{ $resource->totalfavorite }}</span>
-                    </article>
-                    <article>
-                        <i class="fas fa-comment"></i><span>{{ $resource->totalcomments }}</span>
-                    </article>
-                </div>
-            </article>
-        </a>
-        @endforeach
-        @else
-        <h2>@lang('No records found!')</h2>
-        @endif
-        <div class="resource-pagination">
-            {{ $resources->appends(request()->input())->links() }}
-        </div>
+    <section class="resource-information-section" id="resource-list">
+    </section>
+
+    <section class="resource-information-section" id="content-loading">
+        <img class="loading" src="{{ asset('storage/files/loading.svg') }}">
     </section>
 </section>
 @push('scripts')

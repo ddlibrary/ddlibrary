@@ -99,7 +99,11 @@ class ResourceController extends Controller
         $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
         $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
 
-        return view('resources.resources_list', compact('resources','subjects','types','levels','subjectAreaIds','levelIds','typeIds'));
+        if($request->ajax()){
+            return view('resources.resources_list_content', compact('resources','subjectAreaIds','levelIds','typeIds'))->render();
+        }
+        
+        return view('resources.resources_list', compact('subjects','types','levels'));
     }
 
     public function viewPublicResource(Request $request, $resourceId)

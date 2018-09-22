@@ -16,6 +16,7 @@
     <meta property="og:url" content="{{ URL::current() }}" />
     <meta property="og:image" content="@yield('page_image')" />
     <meta property="og:description" content="@yield('description')" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="shortcut icon" href="{{ asset('storage/files/favicon.ico') }}">
 

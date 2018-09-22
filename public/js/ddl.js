@@ -26,22 +26,9 @@ if(window.jQuery){
             $('#flagModal').hide();
         });
 
-        var acc = document.getElementsByClassName("accordion");
-        var i;
-
-        for (i = 0; i < acc.length; i++) {
-            acc[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var panel = this.nextElementSibling;
-
-            if (panel.style.maxHeight){
-                panel.style.maxHeight = null;
-            } else {
-                panel.style.maxHeight = panel.scrollHeight + "px";
-            } 
-            });
-        }
-        $('#resource-subjects').trigger('click');
+        $('input[type="checkbox"]').click(function(e){
+            $('#side-submit').show();
+        });
     });
 }
 
