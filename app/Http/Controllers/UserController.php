@@ -14,15 +14,10 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * Showing the list of users in the admin panel
      *
-     * @return void
-     */
-    public function __construct()
-    {
-        
-    }
-    
+     * @return \Illuminate\Http\Response
+     */   
     public function index(Request $request)
     {
         $this->middleware('admin');
@@ -39,12 +34,22 @@ class UserController extends Controller
         return view('admin.users.users',compact('users','roles', 'filters'));
     }
 
+    /**
+     * View a single user
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function viewUser($userId)
     {
         $user = User::users()->where('id',$userId)->first();
         return view('users.view_user', compact('user'));
     }
 
+    /**
+     * Edit a user details
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function edit($userId)
     {
         $this->middleware('admin');
@@ -63,6 +68,11 @@ class UserController extends Controller
         ));    
     }
 
+    /**
+     * Edit a user details
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $userId)
     {
         $this->validate($request, [
