@@ -182,6 +182,7 @@ input[type=search] {
     margin-bottom: 1em;
     margin-top: 1em;
     display: flex;
+    list-style: none!important;
 }
 
 .resource-pagination ul li {
@@ -844,6 +845,24 @@ aside .sub-subject-show {
 viewer-pdf-toolbar {
     display: none!important;
 }
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+th {
+    font-weight: bold;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
 
 @media screen and (max-height: 450px) {
   .overlay a {font-size: 20px}

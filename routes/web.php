@@ -136,6 +136,10 @@ function()
     Route::get('/admin/sync', 'SyncController@index');
     Route::get('/admin/run_sync', 'SyncController@SyncIt');
 
+    //Glossary
+    Route::get('/glossary','GlossaryController@index');
+    Route::post('/glossary','GlossaryController@index')->name('glossary');
+
     Auth::routes();
 
     //Adding old DDL routes
