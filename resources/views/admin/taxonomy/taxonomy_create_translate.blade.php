@@ -40,7 +40,7 @@
               <tr>
                 <td>Weight</td>
                 <td>
-                    <input class="form-control" type="text" value="{{ old('weight') }}" name="weight" required>
+                    <input class="form-control" type="text" value="{{ $weight }}" name="weight" required>
                 </td>
               </tr>
               <tr>

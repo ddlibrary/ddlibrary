@@ -109,7 +109,8 @@ class TaxonomyController extends Controller
     {
         $vocabulary = TaxonomyVocabulary::all();
         $vid = TaxonomyTerm::where('tnid',$tnid)->first()->vid;
-        return view('admin.taxonomy.taxonomy_create_translate',compact('vocabulary','tnid','lang', 'vid'));
+        $weight = TaxonomyTerm::where('tnid', $tnid)->first()->weight;
+        return view('admin.taxonomy.taxonomy_create_translate',compact('vocabulary','tnid','lang', 'vid', 'weight'));
     }
 
     public function storeTranslate(Request $request, $tnid)
