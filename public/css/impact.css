@@ -1,0 +1,55 @@
+svg {
+    display: block;
+    margin: 0 auto;
+}
+
+#Nangarhar,
+#Parvan,
+#Kandahar,
+#Balkh,
+#Herat,
+#Bamyan {
+    fill: red;
+}
+
+#Kabul,
+#Panjshir,
+#Badakhshan,
+#Khost,
+#Takhar,
+#Faryab,
+
+#Laghman {
+    fill: #ffa800;
+}
+
+#Parvan:hover,
+#Kabul:hover,
+#Panjshir:hover,
+#Badakhshan:hover,
+#Khost:hover,
+#Herat:hover,
+#Kandahar:hover,
+#Balkh:hover,
+#Laghman:hover,
+#Faryab:hover,
+#Bamyan:hover,
+#Nangarhar:hover,
+#Takhar:hover { 
+  opacity: 0.5;
+}
+
+.stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 5em;
+}
+
+.stats i {
+    color: #ec7e3b;
+}
+
+.stats article {
+    text-align: center;
+}

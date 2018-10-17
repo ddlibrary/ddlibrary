@@ -140,6 +140,9 @@ function()
     Route::get('/glossary','GlossaryController@index');
     Route::post('/glossary','GlossaryController@index')->name('glossary');
 
+    //Impact Page
+    Route::get('/impact','ImpactController@index');
+
     Auth::routes();
 
     //Adding old DDL routes
