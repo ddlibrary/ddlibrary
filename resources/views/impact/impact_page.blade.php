@@ -58,22 +58,27 @@ DDL Glossary
         <article>
             <i class="fas fa-align-justify fa-3x"></i>
             <h2><em>{{ $totalResources }}</em></h2>
-            <h2>Resources</h2>
+            <h3>Resources</h3>
+        </article>
+        <article>
+            <i class="fas fa-book fa-3x"></i>
+            <h2><em>{{ $totalSubjects }}</em></h2>
+            <h3>Subjects</h3>
         </article>
         <article>
             <i class="fas fa-eye fa-3x"></i>
             <h2><em>{{ $monthlyViews }}</em></h2>
-            <h2>Monthly Views</h2>
+            <h3>Monthly Views</h3>
         </article>
         <article>
             <i class="fas fa-map-marker-alt fa-3x"></i>
             <h2><em>15</em></h2>
-            <h2>Provinces Covered</h2>
+            <h3>Provinces Covered</h3>
         </article>
         <article>
             <i class="fas fa-desktop fa-3x"></i>
             <h2><em>47</em></h2>
-            <h2>DDL Demos Delivered</h2>
+            <h3>DDL Demos Delivered</h3>
         </article>
     </div>
 </section>
