@@ -3,10 +3,10 @@
 <link rel="stylesheet" href="{{ asset('css/impact.css') }}">
 @endpush
 @section('title')
-DDL Glossary
+DDL Impact
 @endsection
 @section('description')
-DDL Glossary
+DDL Impact
 @endsection
 @section('page_image')
 {{ asset('storage/files/logo-dd.png') }}
