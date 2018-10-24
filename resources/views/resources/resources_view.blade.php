@@ -235,6 +235,9 @@
         @if (isAdmin())
         <p>@lang('Added by'): <a href="{{ route('user-view',isset($resource->user)?$resource->user->id:"") }}">{{ isset($resource->user)?$resource->user->username:"" }}</a>
         @endif
+        <div>
+            <a href="{{ URL::to('/glossary') }}">DDL Glossary</a>
+        </div>
     </aside>
     <section class="resource-view-comment">
         <header>
