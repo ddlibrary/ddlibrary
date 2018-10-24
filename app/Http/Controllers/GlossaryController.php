@@ -14,13 +14,16 @@ class GlossaryController extends Controller
      */
     public function index(Request $request)
     {
-        //dd($request);
-        if($request->has('text') && !empty(request('text'))){
+        if($request->filled('text')){
             $glossary = Glossary::orderBy('id','desc')    
             ->orWhere('name_en',request('text'))
             ->orWhere('name_fa',request('text'))
             ->orWhere('name_ps',request('text'))
             ->paginate(15);
+        }elseif($request->filled('subject') && !$request->filled('text')){
+            $glossary = Glossary::orderBy('id','desc')
+            ->where('subject', request('subject'))
+            ->paginate(15);    
         }else{
             $glossary = Glossary::orderBy('id','desc')->paginate(15);
         }

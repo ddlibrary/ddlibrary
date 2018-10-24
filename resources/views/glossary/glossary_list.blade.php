@@ -18,6 +18,15 @@ DDL Glossary
             <td style="width:5%">
                 <input class="form-control" type="text" name="text" id="text" value="{{ isset($filters['text'])?$filters['text']:"" }}">
             </td>
+            <td style="width:5%">Subject</td>
+            <td style="width:5%">
+                <select name="subject" class="form-control">
+                    <option value="">Any</option>
+                    <option value="physics" {{ (isset($filters['subject']) && $filters['subject'] == "physics")?"selected":"" }}>Physics</option>
+                    <option value="math" {{ (isset($filters['subject']) && $filters['subject'] == "math")?"selected":"" }}>Math</option>
+                    <option value="chemistry" {{ (isset($filters['subject']) && $filters['subject'] == "chemistry")?"selected":"" }}>Chemistry</option>
+                </select>
+            </td>
             <td>
                 <input class="form-control" type="submit" value="Filter">
             </td>
@@ -31,9 +40,6 @@ DDL Glossary
             <th>Name Farsi</th>
             <th>Name Pashto</th>
             <th>Subject</th>
-            @if (isAdmin())
-            <th>Operations</th>
-            @endif
         </tr>
         @foreach($glossary as $indexkey => $item)
         <tr>
@@ -52,12 +58,6 @@ DDL Glossary
         <td>
             {{ $item->subject }}
         </td>
-        @if (isAdmin())
-        <td>
-            <a href="{{ URL::to('page/edit/'.$item->id) }}">Edit</a>
-            <a href="{{ URL::to('page/translate/'.$item->id.'/'.$item->tnid) }}">Translate</a>
-        </td>
-        @endif
     </tr>
     @endforeach
     </table>
