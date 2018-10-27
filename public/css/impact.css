@@ -39,6 +39,24 @@ svg {
   opacity: 0.5;
 }
 
+.legends {
+    position: absolute;
+    top: 31rem;
+    right: 15rem;
+}
+
+.map-yellow {
+    padding: 1px 25px;
+    width: 10px;
+    background-color: #ffa800;
+}
+
+.map-red {
+    padding: 1px 25px;
+    width: 10px;
+    background-color: red;
+}
+
 .stats {
     display: flex;
     flex-wrap: wrap;
@@ -52,4 +70,12 @@ svg {
 
 .stats article {
     text-align: center;
+}
+
+.stats article h2 em {
+    font-style: italic;
+}
+
+.stats article h3 {
+    width: 10rem;
 }
