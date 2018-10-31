@@ -18,25 +18,31 @@ svg {
 #Khost,
 #Takhar,
 #Faryab,
-
 #Laghman {
     fill: #ffa800;
 }
 
-#Parvan:hover,
-#Kabul:hover,
-#Panjshir:hover,
-#Badakhshan:hover,
-#Khost:hover,
-#Herat:hover,
-#Kandahar:hover,
-#Balkh:hover,
-#Laghman:hover,
-#Faryab:hover,
-#Bamyan:hover,
-#Nangarhar:hover,
-#Takhar:hover { 
-  opacity: 0.5;
+#Parvan:hover .label,
+#Kabul:hover .label,
+#Panjshir:hover .label,
+#Badakhshan:hover .label,
+#Khost:hover .label,
+#Herat:hover .label,
+#Kandahar:hover .label,
+#Balkh:hover .label,
+#Laghman:hover .label,
+#Faryab:hover .label,
+#Bamyan:hover .label,
+#Nangarhar:hover .label,
+#Takhar:hover .label { 
+  display: block;
+}
+
+.label {
+    display: none;
+    fill: #000000;
+    stroke: none;
+    font-size: 14px;
 }
 
 .legends {
