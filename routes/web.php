@@ -143,6 +143,13 @@ function()
     //Impact Page
     Route::get('/impact','ImpactController@index');
 
+    //Survey Page
+    Route::get('/survey','SurveyController@index');
+
+    //Analytics
+    Route::get('/admin/analytics','AnalyticsController@index')->middleware('admin');
+    Route::post('/admin/analytics','AnalyticsController@show')->name('analytics')->middleware('admin');
+
     Auth::routes();
 
     //Adding old DDL routes
