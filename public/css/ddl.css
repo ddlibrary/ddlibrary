@@ -167,6 +167,9 @@ input[type=search] {
     cursor: pointer;
     opacity: 0.5;
 }
+.home-subject-areas p {
+    margin-top: 1em;
+}
 .resource-pagination {
     display: flex;
     padding-left: 0;

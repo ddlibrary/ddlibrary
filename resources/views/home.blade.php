@@ -57,7 +57,7 @@
         ?>
         <a href="{{ URL::to($url) }}" title="{{ $item->name }}">
             <article class="home-subject-areas">
-                <img src="{{ Storage::disk('public')->url($item->icon) }}" alt="{{ $item->name }}">
+                <i class="{{ $item->icon }} fa-5x" style="color: #ffa300"></i>
                 <p>{{ $item->name }}</p>
             </article>
         </a>
