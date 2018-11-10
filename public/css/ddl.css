@@ -865,6 +865,10 @@ th, td {
     padding: 8px;
 }
 
+.glossary .form-control {
+    display: inline;
+}
+
 tr:nth-child(even){background-color: #f2f2f2}
 
 @media screen and (max-height: 450px) {

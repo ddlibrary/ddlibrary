@@ -12,7 +12,7 @@ DDL Glossary
 <section class="general-content">
 <form method="POST" action="{{ route('glossary') }}" id="gform">
     @csrf
-    <table>
+    <table class="glossary">
         <tr>
             <td style="width:5%">Text</td>
             <td style="width:5%">
@@ -36,9 +36,9 @@ DDL Glossary
     <table>
         <tr>
             <th>NO</th>
-            <th>Name English</th>
-            <th>Name Farsi</th>
-            <th>Name Pashto</th>
+            <th>English Name</th>
+            <th>Farsi Name</th>
+            <th>Pashto Name</th>
             <th>Subject</th>
         </tr>
         @foreach($glossary as $indexkey => $item)
