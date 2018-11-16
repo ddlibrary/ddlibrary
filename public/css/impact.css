@@ -38,6 +38,14 @@ svg {
   display: block;
 }
 
+#Takhar:hover .label {
+    transform: rotate(80deg);
+}
+
+#Badakhshan:hover .label {
+    transform: rotate(80deg);
+}
+
 .label {
     display: none;
     fill: #000000;
@@ -45,10 +53,22 @@ svg {
     font-size: 14px;
 }
 
+.map-area svg {
+    width: 100%;
+}
+
+.map-area {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.map-area .map {
+    flex: 2;
+}
+
 .legends {
-    position: absolute;
-    top: 31rem;
-    right: 15rem;
+    flex: 1;
 }
 
 .map-yellow {
