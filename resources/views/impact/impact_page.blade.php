@@ -113,7 +113,7 @@ DDL Impact
         <article>
             <i class="fas fa-eye fa-3x"></i>
             <h2><em>{{ $monthlyViews }}</em></h2>
-            <h3>Monthly Views</h3>
+            <h3>Views - Last 30 Days</h3>
         </article>
         <article>
             <i class="fas fa-map-marker-alt fa-3x"></i>
