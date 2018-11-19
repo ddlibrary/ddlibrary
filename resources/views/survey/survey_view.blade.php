@@ -5,7 +5,7 @@
         <h2>@lang('DDL Survey')</h2>
     </div>
     <div class="modal-body">
-        <div class="modal-body">
+        <div class="modal-body" id="modal-body">
             <h2>{{ $surveyQuestions->text }} </h2>
             <form method="POST">
             @foreach($surveyQuestionOptions as $item)
@@ -33,6 +33,7 @@ if(window.jQuery){
                 success: function (data) {
                     if(data){
                         console.log("success!");
+                        $("#modal-body").html("Thanks for you answer!");
                     }else{
                         console.log("failure!");
                     }
