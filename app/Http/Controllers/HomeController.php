@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use App\News;
 use App\Resource;
 use App\Menu;
+use App\Survey;
+use App\SurveyQuestion;
+use App\SurveyQuestionOption;
 use Config;
 
 use Illuminate\Http\Request;
@@ -38,6 +41,17 @@ class HomeController extends Controller
         $featured           = $resources->featuredCollections();
         $latestResources    = Resource::published()->where('language',Config::get('app.locale'))->orderBy('id','desc')->take(4)->get();
         \Carbon\Carbon::setLocale(app()->getLocale());
-        return view('home', compact('latestNews','subjectAreas','featured','latestResources'));
+        $surveys = Survey::find(1);
+        $surveyQuestions = SurveyQuestion::where('survey_id', 1)->first();
+        $surveyQuestionOptions = SurveyQuestionOption::where('question_id', 1)->get();
+        return view('home', compact(
+            'latestNews',
+            'subjectAreas',
+            'featured',
+            'latestResources',
+            'surveys',
+            'surveyQuestions',
+            'surveyQuestionOptions'
+        ));
     }
 }

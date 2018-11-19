@@ -26,6 +26,10 @@ if(window.jQuery){
             $('#flagModal').hide();
         });
 
+        $('#survey-close').click(function(e){
+            $('#surveyModal').hide();
+        });
+
         $('input[type="checkbox"]').click(function(e){
             $('#side-submit').show();
         });

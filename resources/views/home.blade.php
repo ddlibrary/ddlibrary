@@ -105,4 +105,21 @@
         </nav>
     </div>
 </section>
+
+<!-- The Survey Modal -->
+<div id="surveyModal" class="modal">
+    @include('survey/survey_view');
+</div>
+
+<script>
+    setTimeout(function () {
+        var cookieValue = Cookies.get('ddl');;
+        if(cookieValue !== "survey"){
+            $('#surveyModal').show();
+
+            Cookies.set('ddl', 'survey', { expires: 7, path: '/' });
+        }
+    }, 7000);
+</script>
+
 @endsection

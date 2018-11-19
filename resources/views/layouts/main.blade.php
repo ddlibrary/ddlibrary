@@ -41,6 +41,11 @@
     </script>
     @endif
 
+    <script>
+        setTimeout(function () {
+            console.log('Hi');
+        }, 7000);
+    </script>
 </head>
 <body>
     @include('layouts.banner')

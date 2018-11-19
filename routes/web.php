@@ -145,6 +145,7 @@ function()
 
     //Survey Page
     Route::get('/survey','SurveyController@index');
+    Route::post('/survey/store','SurveyController@storeSurvey')->name('survey');
 
     //Analytics
     Route::get('/admin/analytics','AnalyticsController@index')->middleware('admin');
