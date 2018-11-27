@@ -33,7 +33,7 @@ if(window.jQuery){
                 success: function (data) {
                     if(data){
                         console.log("success!");
-                        $("#modal-body").html("Thanks for you answer!");
+                        $("#modal-body").html("Thank you for completing the survey!");
                     }else{
                         console.log("failure!");
                     }
