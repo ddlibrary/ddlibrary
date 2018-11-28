@@ -20,7 +20,8 @@ if(! function_exists('giveMeFileFormat')){
             'application/msword' => 'Word 2003',
             'text/plain' => 'Text',
             'audio/mpeg' => 'Audio',
-            'video/mp4' => 'Video'
+			'video/mp4' => 'Video',
+			'image/jpeg' => 'Image'
         );
 
         if ( count($formats[$fileFormat]) > 0){
