@@ -28,7 +28,7 @@ function()
 
     Route::get('/', 'HomeController@index');
 
-    Route::get('/admin', 'DashboardController@index');
+    Route::get('/admin', 'DashboardController@index')->middleware('admin');
 
     //Users
     Route::get('admin/users', 'UserController@index')->middleware('admin');
