@@ -36,6 +36,22 @@
             <span class="nav-link-text">Users</span>
             </a>
         </li>
+
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
+            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseSettings" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-list"></i>
+            <span class="nav-link-text">Surveys</span>
+            </a>
+            <ul class="sidenav-second-level collapse" id="collapseSettings">
+                <li>
+                    <a href="{{ URL::to('admin/survey_answers') }}">Survey Answers</a>
+                </li>
+                <li>
+                    <a href="{{ URL::to('admin/menu') }}">Survey Questions</a>
+                </li>
+            </ul>
+        </li>
+
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
             <a class="nav-link" href="{{ URL::to('admin/pages') }}">
             <i class="fa fa-fw fa-wrench"></i>

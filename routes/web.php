@@ -28,7 +28,7 @@ function()
 
     Route::get('/', 'HomeController@index');
 
-    Route::get('/admin', 'DashboardController@index')->middleware('admin');
+    Route::get('/admin', 'DashboardController@index');
 
     //Users
     Route::get('admin/users', 'UserController@index')->middleware('admin');
@@ -146,6 +146,9 @@ function()
     //Survey Page
     Route::get('/survey','SurveyController@index');
     Route::post('/survey/store','SurveyController@storeSurvey')->name('survey');
+
+    //admin, survey
+    Route::get('admin/survey_answers','SurveyAnswerController@index');
 
     //Analytics
     Route::get('/admin/analytics','AnalyticsController@index')->middleware('admin');
