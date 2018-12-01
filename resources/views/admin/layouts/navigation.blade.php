@@ -38,16 +38,16 @@
         </li>
 
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
-            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseSettings" data-parent="#exampleAccordion">
+            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseServeys" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-list"></i>
             <span class="nav-link-text">Surveys</span>
             </a>
-            <ul class="sidenav-second-level collapse" id="collapseSettings">
+            <ul class="sidenav-second-level collapse" id="collapseServeys">
                 <li>
                     <a href="{{ URL::to('admin/survey_questions') }}">Survey Result</a>
                 </li>
                 <li>
-                    <a href="{{ URL::to('admin/survey_questions') }}">Survey Settings</a>
+                    <a href="{{ URL::to('admin/survey_time') }}">Survey Pop Up Time</a>
                 </li>
             </ul>
         </li>

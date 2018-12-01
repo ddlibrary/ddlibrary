@@ -65,7 +65,7 @@
                   <tr>
                     <td>{{ $survey_question-> text }}</td>
                     <td>{{\App\Survey::find($survey_question->survey_id)->name }}</td>
-                    <td><a href="survey_question/answers/{{$survey_question->id}}" class="btn btn-success">View Answers</a></td>
+                    <td><a href="survey_question/answers/{{$survey_question->id}}" class="badge badge-success">View Answers</a></td>
                   </tr>
                 @endforeach
               </tbody>

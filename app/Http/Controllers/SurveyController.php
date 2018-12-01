@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Survey;
 use App\SurveyQuestion;
 use App\SurveyAnswer;
+use App\SurveyModalTime;
 
 class SurveyController extends Controller
 {
@@ -27,5 +28,11 @@ class SurveyController extends Controller
         $surveyAnswer->ip = \Request::ip();
         $surveyAnswer->save();
         echo true;   
+    }
+
+    public function getPopUpTime()
+    {
+        $survey_modal_time = SurveyModalTime::all();
+        return view('admin.surveys.survey_modal_time', compact('survey_modal_time'));
     }
 }
