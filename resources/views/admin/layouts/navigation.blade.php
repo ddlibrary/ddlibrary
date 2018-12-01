@@ -44,10 +44,10 @@
             </a>
             <ul class="sidenav-second-level collapse" id="collapseSettings">
                 <li>
-                    <a href="{{ URL::to('admin/survey_answers') }}">Survey Answers</a>
+                    <a href="{{ URL::to('admin/survey_questions') }}">Survey Result</a>
                 </li>
                 <li>
-                    <a href="{{ URL::to('admin/menu') }}">Survey Questions</a>
+                    <a href="{{ URL::to('admin/survey_questions') }}">Survey Settings</a>
                 </li>
             </ul>
         </li>

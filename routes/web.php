@@ -22,7 +22,7 @@ Route::group(
     'prefix' => LaravelLocalization::setLocale(),
     'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
 ],
-function()
+    function()
 {
     /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
 
@@ -148,7 +148,8 @@ function()
     Route::post('/survey/store','SurveyController@storeSurvey')->name('survey');
 
     //admin, survey
-    Route::get('admin/survey_answers','SurveyAnswerController@index');
+    Route::get('admin/survey_questions','SurveyQuestionController@index');
+    Route::get('admin/survey_question/answers/{id}','SurveyQuestionController@viewAnswers');
 
     //Analytics
     Route::get('/admin/analytics','AnalyticsController@index')->middleware('admin');
