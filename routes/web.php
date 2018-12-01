@@ -150,6 +150,7 @@ Route::group(
     //admin, survey
     Route::get('admin/survey_questions','SurveyQuestionController@index');
     Route::get('admin/survey_question/answers/{id}','SurveyQuestionController@viewAnswers');
+    Route::get('admin/survey_time','SurveyController@getPopUpTime');
 
     //Analytics
     Route::get('/admin/analytics','AnalyticsController@index')->middleware('admin');

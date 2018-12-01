@@ -20,7 +20,7 @@
         </div>
 
         <div class="card-body">
-          <h5>{{ $question->text }}</h5>
+          <h3 class="badge badge-primary">Question: {{ $question->text }}</h3>
 
           <table class="table table-bordered" width="100%" cellspacing="0">
               <thead>
