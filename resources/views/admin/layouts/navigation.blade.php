@@ -46,8 +46,16 @@
                 <li>
                     <a href="{{ URL::to('admin/survey_questions') }}">Survey Result</a>
                 </li>
+            </ul>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
+            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseSurveySettings" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-wrench"></i>
+            <span class="nav-link-text">Survey Settings</span>
+            </a>
+            <ul class="sidenav-second-level collapse" id="collapseSurveySettings">
                 <li>
-                    <a href="{{ URL::to('admin/survey_time') }}">Survey Pop Up Time</a>
+                    <a href="{{ URL::to('admin/survey_time') }}">Setting Up Time</a>
                 </li>
             </ul>
         </li>

@@ -151,6 +151,10 @@ Route::group(
     Route::get('admin/survey_questions','SurveyQuestionController@index');
     Route::get('admin/survey_question/answers/{id}','SurveyQuestionController@viewAnswers');
     Route::get('admin/survey_time','SurveyController@getPopUpTime');
+    Route::get('admin/edit_survey_modal_time','SurveyController@editSurveyModalTime');
+    Route::post('admin/update_survey_modal_time/{id}','SurveyController@updateSurveyModalTime')->name('update_survey_modal_time');
+    Route::get('admin/create_survey_modal_time','SurveyController@createSurveyModalTime');
+    Route::post('admin/store_survey_modal_time','SurveyController@storeSurveyModalTime')->name('store_survey_modal_time');
 
     //Analytics
     Route::get('/admin/analytics','AnalyticsController@index')->middleware('admin');

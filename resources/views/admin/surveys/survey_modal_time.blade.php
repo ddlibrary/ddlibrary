@@ -16,24 +16,22 @@
       <div class="card mb-3">
 
         <div class="card-header">
-          <i class="fa fa-table"></i> Pop Up Time
+          <i class="fa fa-table"></i> Current Pop Up Time
         </div>
-
-        @if(isset($survey_modal_time))
-          <a href="{{ URL::to('page/create') }}"><button class="btn btn-success pull-right" style="margin: 10px;">Update</button></a>
-        @else
-          <a href="{{ URL::to('page/create') }}"><button class="btn btn-success pull-right" style="margin: 10px;">Create One</button></a>
-        @endif
 
         <div class="card-body">
           @if(isset($survey_modal_time))
-            <p>Time in seconds: <span class="badge badge-primary">10</span></p> 
+            <p>Time: <span class="badge badge-primary">{{ $survey_modal_time->time }} Seconds</span></p> 
           @else
             <p class="badge badge-warning">Not defined yet!</p> 
           @endif
-
-          
         </div>
+
+        @if(isset($survey_modal_time))
+          <a href="{{ URL::to('admin/edit_survey_modal_time') }}"><button class="btn btn-success pull-right btn-sm" style="margin: 10px;">Edit</button></a>
+        @else
+          <a href="{{ URL::to('admin/create_survey_modal_time') }}"><button class="btn btn-success pull-right btn-sm" style="margin: 10px;">Create One</button></a>
+        @endif
 
       </div>
     </div>
