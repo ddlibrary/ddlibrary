@@ -17,13 +17,13 @@ class RedirectIfAdmin
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        // if (Auth::guard($guard)->check()) {
-        //     if(!isAdmin()){
-        //         return redirect('/home');
-        //     }
-        // }else{
-        //     return redirect('/login');
-        // }
+        if (Auth::guard($guard)->check()) {
+            if(!isAdmin()){
+                return redirect('/home');
+            }
+        }else{
+            return redirect('/login');
+        }
 
         return $next($request);
     }
