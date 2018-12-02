@@ -19,30 +19,7 @@
         </div>
 
         <div class="card-body">
-          <div class="table-responsive">
-              <form method="POST">
-                @csrf
-                <table class="table table-bordered" width="100%" cellspacing="0">
-                  <tr>
-                    <td>Question</td>
-                    <td>
-                      <input class="form-control" type="text" name="title">
-                    </td>  
-
-                    <td>Survey</td>
-                    <td>
-                      <input class="form-control" type="number" name="title">
-                    </td>  
-
-                    <td colspan="2">
-                        <input class="btn btn-primary float-right" type="submit" value="Filter">
-                    </td>
-                  </tr>
-                </table>
-              </form>
-            </div>
             <span>Total: <strong>{{count($survey_questions)}}</strong></span>
-
             <table class="table table-bordered" width="100%" cellspacing="0">
               <thead>
                 <tr>

@@ -32,7 +32,36 @@ class SurveyController extends Controller
 
     public function getPopUpTime()
     {
-        $survey_modal_time = SurveyModalTime::all();
+        $survey_modal_time = SurveyModalTime::all()->first();
+        return view('admin.surveys.survey_modal_time', compact('survey_modal_time'));
+    }
+
+    public function createSurveyModalTime()
+    {
+        return view('admin.surveys.create_survey_modal_time');
+    }
+
+    public function storeSurveyModalTime(Request $request)
+    {
+        $survey_modal_time = new SurveyModalTime();
+        $survey_modal_time->time = $request['time'];
+        $survey_modal_time->save();
+
+        $survey_modal_time = SurveyModalTime::all()->first();
+        return view('admin.surveys.survey_modal_time', compact('survey_modal_time'));
+    }
+
+    public function editSurveyModalTime()
+    {
+        $survey_modal_time = SurveyModalTime::all()->first();
+        return view('admin.surveys.edit_survey_modal_time', compact('survey_modal_time'));
+    }
+
+    public function updateSurveyModalTime($id,Request $request)
+    {
+        $survey_modal_time = SurveyModalTime::find($id);
+        $survey_modal_time->time = $request['time'];
+        $survey_modal_time->save();
         return view('admin.surveys.survey_modal_time', compact('survey_modal_time'));
     }
 }
