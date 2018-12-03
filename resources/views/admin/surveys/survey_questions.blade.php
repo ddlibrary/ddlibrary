@@ -9,7 +9,7 @@
         <li class="breadcrumb-item">
           <a href="{{ URL::to('admin') }}">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Surveys Result</li>
+        <li class="breadcrumb-item active">Surveys Results</li>
       </ol>
 
       <!-- Surveys Answers DataTables -->
