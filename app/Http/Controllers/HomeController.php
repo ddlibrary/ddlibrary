@@ -7,6 +7,7 @@ use App\Menu;
 use App\Survey;
 use App\SurveyQuestion;
 use App\SurveyQuestionOption;
+use App\SurveySettings;
 use Config;
 
 use Illuminate\Http\Request;
@@ -34,7 +35,15 @@ class HomeController extends Controller
         DDLClearSession();
         
         $resources = new Resource();
-        
+
+        //Set the survey pop up time
+        $pop_up_time = SurveySettings::all()->first();
+        if (!$pop_up_time){
+            $pop_up_time = 7000;
+        } else {
+            $pop_up_time = $pop_up_time->time;
+        }
+
         //latest news for the homepage
         $latestNews         = News::where('language',Config::get('app.locale'))->orderBy('id','desc')->take(4)->get();
         $subjectAreas       = $resources->subjectIconsAndTotal();
@@ -51,7 +60,8 @@ class HomeController extends Controller
             'latestResources',
             'surveys',
             'surveyQuestions',
-            'surveyQuestionOptions'
+            'surveyQuestionOptions',
+            'pop_up_time'
         ));
     }
 }
