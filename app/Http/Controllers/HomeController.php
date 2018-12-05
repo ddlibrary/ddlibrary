@@ -36,14 +36,6 @@ class HomeController extends Controller
         
         $resources = new Resource();
 
-        //Set the survey pop up time
-        $pop_up_time = SurveySettings::all()->first();
-        if (!$pop_up_time){
-            $pop_up_time = 7000;
-        } else {
-            $pop_up_time = $pop_up_time->time;
-        }
-
         //latest news for the homepage
         $latestNews         = News::where('language',Config::get('app.locale'))->orderBy('id','desc')->take(4)->get();
         $subjectAreas       = $resources->subjectIconsAndTotal();
@@ -60,8 +52,7 @@ class HomeController extends Controller
             'latestResources',
             'surveys',
             'surveyQuestions',
-            'surveyQuestionOptions',
-            'pop_up_time'
+            'surveyQuestionOptions'
         ));
     }
 }

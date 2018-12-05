@@ -14,7 +14,7 @@
 @section('content')
 <section class="main-section">
     @include('layouts.messages')
-    <div class="ddl-top-news" id="{{ $pop_up_time }}">
+    <div class="ddl-top-news">
         <div>
             <p>@lang('Help us get Afghan teacher colleges online: For a limited time your donation will be matched!') <a href="https://www.crowdrise.com/o/en/campaign/helping-female-student-teachers-to-be-better-teachers-through-internet-access" title="Donate">@lang('Learn More')</a></p>
         </div>
@@ -105,23 +105,5 @@
         </nav>
     </div>
 </section>
-
-<!-- The Survey Modal -->
-<div id="surveyModal" class="modal">
-    @include('survey/survey_view');
-</div>
-
-<script>
-    var pop_up_time = $(".ddl-top-news").attr('id');
-    
-    setTimeout(function () {
-        var cookieValue = Cookies.get('ddl');
-        if(cookieValue !== "survey"){
-            $('#surveyModal').show();
-
-            Cookies.set('ddl', 'survey', { expires: 20, path: '/' });
-        }
-    }, pop_up_time);
-</script>
 
 @endsection
