@@ -93,6 +93,7 @@
             @endif
             @endforeach
         </div>
+        @if (isAdmin())
         <div class="form-item">
             <label for="published"> 
                 <strong>@lang('Published?')</strong>
@@ -100,6 +101,7 @@
             <input type="radio" name="published" id="no-pub" {{ ($resource['status'] == 0)?"checked":""}} value="0"> <label for="no-pub">@lang('No')</label>
             <input type="radio" name="published" id="yes-pub" {{ ($resource['status'] == 1)?"checked":""}} value="1"> <label for="yes-pub">@lang('Yes')</label>
         </div>
+        @endif
         <div style="display:flex;">
             <input style="margin-{{ (app()->getLocale()=="en")?"right":"left" }}: 10px;" class="form-control normalButton" type="button" value="@lang('Previous')" onclick="location.href='{{ route('edit2', $resource['id']) }}'">
             <input class="form-control normalButton" type="submit" value="@lang('Submit')" onclick="this.style.display='none';document.getElementById('wait').style.display='block'" ondblclick="this.style.display='display';document.getElementById('wait').style.display='block'">
