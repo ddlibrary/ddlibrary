@@ -52,7 +52,7 @@
                 <strong>@lang('Subject')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('subject') ? ' is-invalid' : '' }}" id="subject" name="subject" size="40" maxlength="40" type="text" value="{{ old('subject') }}" required>
+            <input class="form-control{{ $errors->has('subject') ? ' is-invalid' : '' }}" id="subject" name="subject" size="40" type="text" value="{{ old('subject') }}" required>
             @if ($errors->has('subject'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('subject') }}</strong>

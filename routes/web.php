@@ -61,6 +61,7 @@ Route::group(
     Route::post('resources/edit/step2/{resourceId}', 'ResourceController@postStepTwoEdit')->middleware('admin');
     Route::get('resources/edit/step3/{resourceId}', 'ResourceController@createStepThreeEdit')->name('edit3')->middleware('admin');
     Route::post('resources/edit/step3/{resourceId}', 'ResourceController@postStepThreeEdit')->middleware('admin');
+    Route::post('resource/{resourceId}', 'ResourceController@updateTid')->middleware('admin')->name('updatetid');
 
     //delete file
     Route::get('delete/file/{resourceId}/{fileName}', 'ResourceController@deleteFile')->name('delete-file')->middleware('admin');

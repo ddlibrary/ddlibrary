@@ -60,6 +60,15 @@ class ResourceController extends Controller
         return view('admin.resources.resources',compact('resources','filters'));
     }
 
+    public function updateTid(Request $request, $resourceId)
+    {
+        $resource = Resource::findOrFail($request->input('link')); 
+        $resource->tnid = $resourceId;
+        $resource->save();  
+
+        return back();
+    }
+
     public function list(Request $request)
     {
         //setting the search session empty

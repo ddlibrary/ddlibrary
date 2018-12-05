@@ -238,6 +238,17 @@
         <div>
             <a href="{{ URL::to('/glossary') }}">DDL Glossary</a>
         </div>
+        @if (isAdmin())
+        <div>
+            <br>
+            <form method="post" action="{{ route('updatetid', $resource->id) }}">
+            @csrf
+            If this resource is translated, write down the translated resource id and click submit:
+            <input type="number" name="link" class="form-control">
+            <input type="submit" class="form-control normalButton" value="Submit">
+            </form>
+        </div>
+        @endif
     </aside>
     <section class="resource-view-comment">
         <header>
