@@ -51,7 +51,7 @@
             <label for="copyright_holder"> 
                 <strong>@lang('License/Copyright Holder')</strong>
             </label>
-            <input class="form-control{{ $errors->has('copyright_holder') ? ' is-invalid' : '' }}" id="copyright_holder" name="copyright_holder" size="40" maxlength="40" type="text" value="{{ count($dbRecords->CopyrightHolder)?$dbRecords->CopyrightHolder->value:"" }}">
+            <input class="form-control{{ $errors->has('copyright_holder') ? ' is-invalid' : '' }}" id="copyright_holder" name="copyright_holder" size="40" type="text" value="{{ count($dbRecords->CopyrightHolder)?$dbRecords->CopyrightHolder->value:"" }}">
             <div class="description">
                 @lang('Please enter the name of the person or organization owning or managing rights over the resource.')
             </div>

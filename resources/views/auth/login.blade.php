@@ -21,7 +21,7 @@
                 <strong>@lang('Email or Username')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('user-field') ? ' is-invalid' : '' }}" id="user-field" name="user-field" size="40" maxlength="40" type="text" value="{{ old('user-field') }}" required autofocus>
+            <input class="form-control{{ $errors->has('user-field') ? ' is-invalid' : '' }}" id="user-field" name="user-field" size="40" type="text" value="{{ old('user-field') }}" required autofocus>
             @if ($errors->has('user-field'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('user-field') }}</strong>
@@ -34,7 +34,7 @@
                 <strong>@lang('Password')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" name="password" size="40" maxlength="40" type="password" required>
+            <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" name="password" size="40" type="password" required>
             @if ($errors->has('password'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('password') }}</strong>

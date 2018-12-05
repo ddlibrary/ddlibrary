@@ -121,7 +121,7 @@
                                             <option value="{{ $pn->tnid }}" {{ ($user->profile->city==$pn->tnid?"selected":"") }}>{{ $pn->name }}</option>
                                             @endforeach
                                         </select>
-                                    <input type="text" class="form-control" name="city_other" id="js-text-city" size="40" maxlength="40" value="{{ $user->profile->city }}" style="display:none;">
+                                    <input type="text" class="form-control" name="city_other" id="js-text-city" size="40" value="{{ $user->profile->city }}" style="display:none;">
                                     </td>
                                 </tr>
                                 <tr>

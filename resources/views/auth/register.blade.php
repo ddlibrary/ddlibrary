@@ -23,7 +23,7 @@
                 <strong>@lang('Email')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="email" name="email" size="40" maxlength="40" type="email" value="{{ old('email') }}" required autofocus>
+            <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="email" name="email" size="40" type="email" value="{{ old('email') }}" required autofocus>
             @if ($errors->has('email'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('email') }}</strong>
@@ -38,7 +38,7 @@
                 <strong>@lang('Username')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" id="username" name="username" value="{{ old('username') }}" size="40" maxlength="40" type="text" required>
+            <input class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" id="username" name="username" value="{{ old('username') }}" size="40" type="text" required>
             <div class="description">
                 @lang('Spaces are allowed; punctuation is not allowed except for periods, hyphens, apostrophes, and underscores.')
             </div>
@@ -48,7 +48,7 @@
                 <strong>@lang('Password')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" name="password" size="40" maxlength="40" type="password" required>
+            <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" name="password" size="40" type="password" required>
             @if ($errors->has('password'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('password') }}</strong>
@@ -62,7 +62,7 @@
                         <strong>@lang('First Name')</strong>
                         <span class="form-required" title="This field is required.">*</span>
                     </label>
-                    <input class="form-control" id="first_name" name="first_name"  value="{{ old('first_name') }}" size="40" maxlength="40" type="text" required>
+                    <input class="form-control" id="first_name" name="first_name"  value="{{ old('first_name') }}" size="40" type="text" required>
                 </div>
             </div>
             <div class="left-side">
@@ -71,7 +71,7 @@
                         <strong>@lang('Last Name')</strong>
                         <span class="form-required" title="This field is required.">*</span>
                     </label>
-                    <input class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" id="last_name" name="last_name"  value="{{ old('last_name') }}" size="40" maxlength="40" type="text" required>
+                    <input class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" id="last_name" name="last_name"  value="{{ old('last_name') }}" size="40" type="text" required>
                 </div>
             </div>
             <div class="right-side">
@@ -79,7 +79,7 @@
                     <label for="phone"> 
                         <strong>@lang('Telephone Number')</strong>
                     </label>
-                    <input class="form-control{{ $errors->has('age') ? ' is-invalid' : '' }}" id="phone" name="phone" value="{{ old('phone') }}" size="40" maxlength="40" type="tel" style="width: 327px;" required>
+                    <input class="form-control{{ $errors->has('age') ? ' is-invalid' : '' }}" id="phone" name="phone" value="{{ old('phone') }}" size="40" type="tel" style="width: 327px;" required>
                     @if ($errors->has('phone'))
                     <span class="invalid-feedback">
                         <strong>{{ $errors->first('phone') }}</strong>
@@ -122,7 +122,7 @@
                     <select class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}" name="city" id="city">
                         <option value="">- @lang('None') -</option>
                     </select>
-                    <input type="text" class="form-control" name="city_other" id="js-text-city" size="40" maxlength="40" style="display:none;">
+                    <input type="text" class="form-control" name="city_other" id="js-text-city" size="40" style="display:none;">
                 </div>
             </div>
             @if(env('CAPTCHA') == 'yes')

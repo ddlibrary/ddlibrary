@@ -18,7 +18,7 @@
             <label for="attachments"> 
                 <strong>@lang('Attachments')</strong>
             </label>
-        <input class="form-control{{ $errors->has('attachments') ? ' is-invalid' : '' }}" id="attachments" name="attachments[]" size="40" maxlength="40" type="file">
+        <input class="form-control{{ $errors->has('attachments') ? ' is-invalid' : '' }}" id="attachments" name="attachments[]" size="40" stype="file">
             <button type='button' class="add_more">@lang('Add More Files')</button>
             @if(isset($resource['attc']))
             @foreach($resource['attc'] as $item)
@@ -60,7 +60,7 @@
             <label for="keywords"> 
                 <strong>@lang('Keywords')</strong>
             </label>
-            <input class="form-control{{ $errors->has('keywords') ? ' is-invalid' : '' }}" id="keywords" name="keywords" size="40" maxlength="40" type="text" value="{{ isset($resource['keywords'])?$resource['keywords']:"" }}" onkeydown="javascript:bringMeAttr('keywords','{{ URL::to('resources/attributes/keywords') }}')">
+            <input class="form-control{{ $errors->has('keywords') ? ' is-invalid' : '' }}" id="keywords" name="keywords" size="40" type="text" value="{{ isset($resource['keywords'])?$resource['keywords']:"" }}" onkeydown="javascript:bringMeAttr('keywords','{{ URL::to('resources/attributes/keywords') }}')">
             @if ($errors->has('keywords'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('keywords') }}</strong>
