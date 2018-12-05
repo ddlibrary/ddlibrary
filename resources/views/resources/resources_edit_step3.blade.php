@@ -110,4 +110,18 @@
         </form>
     </div>
 </section>
+@push('scripts')
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script>
+$(document).ready(function () {
+    $('input:radio[name="creative_commons"]').change(function() {
+        $('input:radio[name="creative_commons_other"]').attr('disabled',true);
+    });
+
+    $('input:radio[name="creative_commons_other"]').change(function() {
+        $('input:radio[name="creative_commons"]').attr('disabled',true);
+    });
+});
+</script>
+@endpush
 @endsection
