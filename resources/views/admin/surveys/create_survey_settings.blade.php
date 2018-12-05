@@ -9,24 +9,28 @@
         <li class="breadcrumb-item">
           <a href="{{ URL::to('admin') }}">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Create Survey Pop Up Time</li>
+        <li class="breadcrumb-item active">Survey Settings</li>
       </ol>
 
       <!-- Surveys Answers DataTables -->
       <div class="card mb-3">
 
         <div class="card-header">
-          <i class="fa fa-table"></i> Create
+          <i class="fa fa-table"></i> Create Pop Up Time
         </div>
 
         <div class="card-body">
-          <form method="POST" style="width: 20%" action="{{ route('store_survey_modal_time') }}">
+          <form method="POST" action="{{ route('store_survey_modal_time') }}">
             @csrf
-            <div class="form-group">
-                <label class="control-label">@lang('Time in seconds')</label>
+            <div style="display: flex;">
+              <div style="margin-right: 40px;">
+                <label class="control-label">@lang('Pop Up Time:')</label>
+              </div>
+              <div class="form-group">
                 <input type="number" class="form-control" id="time" name="time" required />
+              </div>
             </div>
-            <button class="btn btn-success bottom_buttons btn-sm" type="submit"> @lang('Submit')</button>
+            <button class="btn btn-success btn-sm" type="submit" style="margin-left: 286px;"> @lang('Save')</button>
           </form>
         </div>
       </div>

@@ -44,18 +44,10 @@
             </a>
             <ul class="sidenav-second-level collapse" id="collapseServeys">
                 <li>
-                    <a href="{{ URL::to('admin/survey_questions') }}">Survey Result</a>
+                    <a href="{{ URL::to('admin/survey_questions') }}">Survey Results</a>
                 </li>
-            </ul>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
-            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseSurveySettings" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-wrench"></i>
-            <span class="nav-link-text">Survey Settings</span>
-            </a>
-            <ul class="sidenav-second-level collapse" id="collapseSurveySettings">
                 <li>
-                    <a href="{{ URL::to('admin/survey_time') }}">Setting Up Time</a>
+                    <a href="{{ URL::to('admin/survey_time') }}">Survey Settings</a>
                 </li>
             </ul>
         </li>
