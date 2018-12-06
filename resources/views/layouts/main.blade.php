@@ -51,7 +51,17 @@
     @include('layouts.banner')
     @yield('search')
     <main>
+
+        @if (Request::is(Lang::locale().'/home'))
+            @include('../survey/survey_view')
+        @elseif (Request::is(Lang::locale()))
+            @include('../survey/survey_view')
+        @elseif (Request::is(Lang::locale().'/resources/*'))
+            @include('../survey/survey_view')
+        @endif
+        
         @yield('content')
+
     </main>
     @include('layouts.footer')
     <!-- Optional JavaScript -->

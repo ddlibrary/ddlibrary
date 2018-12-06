@@ -1,21 +1,49 @@
 <!-- Modal content -->
-<div class="modal-content">
-    <div class="modal-header">
-        <span class="close" id="survey-close">&times;</span>
-        <h2>@lang('DDL Survey')</h2>
-    </div>
-    <div class="modal-body">
-        <div class="modal-body" id="modal-body">
-            <h2>{{ $surveyQuestions->text }} </h2>
-            <form method="POST">
-            @foreach($surveyQuestionOptions as $item)
-                <input type="radio" value="{{ $item->id }}" name="useful" class="form-control" style="display: inline;"> {{ $item->text }} <br>
-            @endforeach
-                <br><input class="form-control normalButton" type="submit" value="Submit"><br>
-            </form>
+<div id="surveyModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="survey-close">&times;</span>
+            <h2>@lang('DDL Survey')</h2>
+        </div>
+        <div class="modal-body">
+            <div class="modal-body" id="modal-body">
+                <h2>{{ $surveyQuestions->text }} </h2>
+                <form method="POST">
+                @foreach($surveyQuestionOptions as $item)
+                    <input type="radio" value="{{ $item->id }}" name="useful" class="form-control" style="display: inline;"> {{ $item->text }} <br>
+                @endforeach
+                    <br><input class="form-control normalButton" type="submit" value="Submit"><br>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
+{{-- Survey pop up time/start  --}}
+<span class="pop_up_time" id="{{ \App\SurveySettings::first() }}"></span>
+
+<script>
+    var pop_up_time = document.querySelector('.pop_up_time').id
+
+    if (!Boolean(pop_up_time)){
+        pop_up_time = 7000;
+    } else{
+        pop_up_time  = JSON.parse(pop_up_time)['time'];
+    }
+
+    setTimeout(function () {            
+        console.log('Pop up time', pop_up_time);
+
+        var cookieValue = Cookies.get('ddl');
+        if(cookieValue !== "survey"){
+            $('#surveyModal').show();
+
+            Cookies.set('ddl', 'survey', { expires: 30, path: '/' });
+        }
+    }, pop_up_time);
+</script>
+{{-- Survey pop up time/end  --}}
+
 
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 <script src="{{ asset('js/js.cookie.min.js') }}"></script>
