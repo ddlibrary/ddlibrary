@@ -7,9 +7,9 @@
         </div>
         <div class="modal-body">
             <div class="modal-body" id="modal-body">
-                <h2>{{ $surveyQuestions->text }} </h2>
+                <h2>{{ \App\SurveyQuestion::where('survey_id', 1)->first()->text }} </h2>
                 <form method="POST">
-                @foreach($surveyQuestionOptions as $item)
+                @foreach(\App\SurveyQuestionOption::where('question_id', 1)->get() as $item)
                     <input type="radio" value="{{ $item->id }}" name="useful" class="form-control" style="display: inline;"> {{ $item->text }} <br>
                 @endforeach
                     <br><input class="form-control normalButton" type="submit" value="Submit"><br>
