@@ -17,13 +17,29 @@ class MenuController extends Controller
         $this->middleware('admin');
     }
     
-    function index ()
+    function index (Request $request)
     {
         //setting the search session empty
         DDLClearSession();
         
-        $menuRecords = Menu::paginate(10);
-        return view('admin.menu.menu_list', compact('menuRecords'));
+        $menuRecords = Menu::orderBy('id','desc')->orderBy('weight')
+        ->title(request('term'))
+        ->location(request('vocabulary'))
+        ->language(request('language'))
+        ->paginate(10);
+
+        $vocabulary = Menu::select('location AS val','location AS name')->groupBy('name')->get();
+
+        $args = array(
+            'route'         => 'menulist',
+            'filters'       => $request,
+            'vocabulary'    => $vocabulary
+        );
+        //creating search bar
+        $createSearchBar = new SearchController();
+        $searchBar = $createSearchBar->searchBar($args);
+
+        return view('admin.menu.menu_list', compact('menuRecords','searchBar'));
     }
 
     function edit(Menu $menu, $menuId)

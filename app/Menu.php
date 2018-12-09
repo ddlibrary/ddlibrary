@@ -22,4 +22,25 @@ class Menu extends Model
             ->paginate(20);
         return $records;
     }
+
+    public function scopeTitle($query, $title)
+    {
+        if (!is_null($title)) {
+            return $query->where('title','like', '%'.$title.'%');
+        }
+    }
+
+    public function scopeLocation($query, $location)
+    {
+        if (!is_null($location)) {
+            return $query->where('location', $location);
+        }
+    }
+
+    public function scopeLanguage($query, $language)
+    {
+        if (!is_null($language)) {
+            return $query->where('language', $language);
+        }
+    }
 }

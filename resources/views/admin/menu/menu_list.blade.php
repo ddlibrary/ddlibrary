@@ -14,6 +14,8 @@
       <div class="card-header">
         <i class="fa fa-table"></i> All Menus</div>
       <div class="card-body">
+        <!-- The search bar -->
+        {!! $searchBar !!}
         <div class="table-responsive">
           <table class="table table-bordered" width="100%" cellspacing="0">
             <thead>
@@ -50,7 +52,7 @@
             </tbody>
           </table>
         </div>
-        {{ $menuRecords->links() }}
+        {{ $menuRecords->appends(request()->input())->links() }}
       </div>
     </div>
   </div>
