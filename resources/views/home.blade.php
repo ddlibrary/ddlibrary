@@ -16,7 +16,7 @@
     @include('layouts.messages')
     <div class="ddl-top-news">
         <div>
-            <p>@lang('Help us get Afghan teacher colleges online: For a limited time your donation will be matched!') <a href="https://www.crowdrise.com/o/en/campaign/helping-female-student-teachers-to-be-better-teachers-through-internet-access" title="Donate">@lang('Learn More')</a></p>
+            <p>@lang('Watch a video to learn more about our work in Afghanistan'): <a href="https://www.youtube.com/watch?v=bF5dpED9W64" target="_blank" title="Our work in Afghanistan">@lang('Learn More')</a></p>
         </div>
     </div>
     <header>
