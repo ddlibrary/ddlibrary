@@ -47,7 +47,7 @@
 <section class="resource-list">
     <aside>
         <form method="POST" id="side-form" action="{{ route('resourceList') }}">
-            <input class="form-control normalButton" style="display:none;" id="side-submit" type="submit" value="@lang('filter')">
+            <input class="form-control normalButton" style="display:none;" id="side-submit" type="submit" value="@lang('Filter')">
         <fieldset>
             <legend class="accordion" id="resource-subjects">@lang('Resource Subject Areas')</legend>
             <ul class="panel">
