@@ -14,17 +14,17 @@ DDL Glossary
     @csrf
     <table class="glossary">
         <tr>
-            <td style="width:5%">Text</td>
+            <td style="width:5%">@lang('Text')</td>
             <td style="width:5%">
                 <input class="form-control" type="text" name="text" id="text" value="{{ isset($filters['text'])?$filters['text']:"" }}">
             </td>
-            <td style="width:5%">Subject</td>
+            <td style="width:5%">@lang('Subject')</td>
             <td style="width:5%">
                 <select name="subject" class="form-control">
-                    <option value="">Any</option>
-                    <option value="physics" {{ (isset($filters['subject']) && $filters['subject'] == "physics")?"selected":"" }}>Physics</option>
-                    <option value="math" {{ (isset($filters['subject']) && $filters['subject'] == "math")?"selected":"" }}>Math</option>
-                    <option value="chemistry" {{ (isset($filters['subject']) && $filters['subject'] == "chemistry")?"selected":"" }}>Chemistry</option>
+                    <option value="">@lang('Any')</option>
+                    <option value="physics" {{ (isset($filters['subject']) && $filters['subject'] == "physics")?"selected":"" }}>@lang('Physics')</option>
+                    <option value="math" {{ (isset($filters['subject']) && $filters['subject'] == "math")?"selected":"" }}>@lang('Math')</option>
+                    <option value="chemistry" {{ (isset($filters['subject']) && $filters['subject'] == "chemistry")?"selected":"" }}>@lang('Chemistry')</option>
                 </select>
             </td>
             <td>
@@ -35,11 +35,11 @@ DDL Glossary
     </form>
     <table>
         <tr>
-            <th>NO</th>
-            <th>English Name</th>
-            <th>Farsi Name</th>
-            <th>Pashto Name</th>
-            <th>Subject</th>
+            <th>@lang('NO')</th>
+            <th>@lang('English Name')</th>
+            <th>@lang('Farsi Name')</th>
+            <th>@lang('Pashto Name')</th>
+            <th>@lang('Subject')</th>
         </tr>
         @foreach($glossary as $indexkey => $item)
         <tr>

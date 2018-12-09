@@ -113,5 +113,28 @@
     "Message": "پیام",
     "Send": "ارسال",
 
-    "Please wait..": "لطفا صبر کنید!"
+    "Please wait..": "لطفا صبر کنید!",
+
+    "Filter": "فلتر",
+
+    "Flag this resource": "این منبع را نشانی کنید",
+    "DDL Glossary": "واژه نامه درخت دانش",
+
+    "Impact": "اثرگذاری",
+    "DDL Lite Installations": "نصب نسخه آفلاین درخت دانش",
+    "DDL & Internet Connectivity Installations": "نصب درخت دانش و انترنیت",
+    "Subjects": "مضامین",
+    "Views - Last 30 Days": "نمایش - 30 روز آخر",
+    "Teacher Colleges Running DDL": "دارالمعلمین هایی که درخت دانش داشته و از آن استفاده میکنند",
+    "DDL Demos Delivered": "دیموهای درخت دانش که انجام شده است",
+    "Provinces Represented by DDL Users": "ولایات بر اساس استفاده کننده گان درخت دانش",
+
+    "Text":"متن",
+    "NO":"شماره",
+    "English Name":"نام انگلیسی",
+    "Farsi Name":"نام فارسی",
+    "Pashto Name":"نام پشتو",
+    "Physics":"فزیک",
+    "Chemistry":"کیمیا",
+    "Math":"ریاضی"
 }

@@ -113,5 +113,27 @@
     "Message": "پیغام",
     "Send": "لېږل",
 
-    "Please wait..": "لطفا صبر کنید!"
+    "Please wait..": "لطفا صبر کنید!",
+
+    "Filter": "فلټر",
+    "Flag this resource": "دا سرچینه په نښه کړئ",
+    "DDL Glossary": "د درخت دانش د ځانګړو لغتونو ټولګه",
+
+    "Impact": "اغیزه",
+    "DDL Lite Installations": "د درخت دانش لایټ (پرته له انرټرنیټ څخه) نصب کول",
+    "DDL & Internet Connectivity Installations": "د درخت دانش لایټ او د انټرنیټ نصب کول",
+    "Subjects": "مضمونونه",
+    "Views - Last 30 Days": "په تیره ۳۰ ورځو کې کتنې",
+    "Teacher Colleges Running DDL": "دارالمعلیمونه چې درخت دانش لرې او کاروی",
+    "DDL Demos Delivered": "د درخت دانش تر سره شوې ډیمو (معرفی غونډی)",
+    "Provinces Represented by DDL Users": "هغه ولایتونه چی د درخت دانش کارونکې لرې",
+
+    "Text":"متن",
+    "NO":"شمیره",
+    "English Name":"انګلسې نوم",
+    "Farsi Name":"فارسی نوم",
+    "Pashto Name":"پښتو نوم",
+    "Physics":"فزیک",
+    "Chemistry":"کیمیا",
+    "Math":"ریاضی"
 }

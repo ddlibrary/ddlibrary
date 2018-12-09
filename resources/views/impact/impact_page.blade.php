@@ -95,40 +95,40 @@ DDL Impact
             </svg>
         </div>
         <div class="legends">
-            <p><span class="map-yellow"></span> DDL Lite Installations </p>
-            <p><span class="map-red"></span> DDL & Internet Connectivity Installations</p>
+            <p><span class="map-yellow"></span>@lang('DDL Lite Installations')</p>
+            <p><span class="map-red"></span>@lang('DDL & Internet Connectivity Installations')</p>
         </div>
     </div>
     <div class="stats">
         <article>
             <i class="fas fa-align-justify fa-3x"></i>
             <h2><em>{{ $totalResources }}</em></h2>
-            <h3>Resources</h3>
+            <h3>@lang('Resources')</h3>
         </article>
         <article>
             <i class="fas fa-book fa-3x"></i>
             <h2><em>{{ $totalSubjects }}</em></h2>
-            <h3>Subjects</h3>
+            <h3>@lang('Subjects')</h3>
         </article>
         <article>
             <i class="fas fa-eye fa-3x"></i>
             <h2><em>{{ $monthlyViews }}</em></h2>
-            <h3>Views - Last 30 Days</h3>
+            <h3>@lang('Views - Last 30 Days')</h3>
         </article>
         <article>
             <i class="fas fa-map-marker-alt fa-3x"></i>
             <h2><em>15</em></h2>
-            <h3>Teacher Colleges Running DDL</h3>
+            <h3>@lang('Teacher Colleges Running DDL')</h3>
         </article>
         <article>
             <i class="fas fa-desktop fa-3x"></i>
             <h2><em>47</em></h2>
-            <h3>DDL Demos Delivered</h3>
+            <h3>@lang('DDL Demos Delivered')</h3>
         </article>
         <article>
             <i class="fas fa-user fa-3x"></i>
             <h2><em>34</em></h2>
-            <h3>Provinces Represented by DDL Users</h3>
+            <h3>@lang('Provinces Represented by DDL Users')</h3>
         </article>
     </div>
 </section>
