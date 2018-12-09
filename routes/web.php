@@ -150,6 +150,13 @@ Route::group(
     Route::post('/survey/store','SurveyController@storeSurvey')->name('survey');
 
     //admin, survey
+    Route::get('admin/surveys','SurveyController@index');
+    Route::get('admin/survey/edit/{id}','SurveyController@edit');
+    Route::post('admin/update_survey/{id}','SurveyController@updateSurvey')->name('update_survey');
+    Route::get('admin/survey/create','SurveyController@create');
+    Route::post('admin/survey/create','SurveyController@postSurvey')->name('create_survey');
+    Route::get('admin/survey/delete/{id}','SurveyController@delete');
+
     Route::get('admin/survey_questions','SurveyQuestionController@index');
     Route::get('admin/survey_question/answers/{id}','SurveyQuestionController@viewAnswers');
     Route::get('admin/survey_time','SurveyController@getPopUpTime');

@@ -9,40 +9,38 @@
         <li class="breadcrumb-item">
           <a href="{{ URL::to('admin') }}">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Surveys Results</li>
+        <li class="breadcrumb-item active">Survey</li>
       </ol>
 
       <!-- Surveys Answers DataTables -->
       <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-list"></i> Survey Questions
+          <i class="fa fa-list"></i> Surveys
         </div>
 
         <div class="card-body">
-            <span>Total: <strong>{{count($survey_questions)}}</strong></span>
+            <a href="{{ URL::to('admin/survey/create') }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
+              <span class="fa fa-plus"></span> Create New
+            </a>
+            <span>Total: <strong>{{count($surveys)}}</strong></span>
             <table class="table table-bordered" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Question</th>
-                  <th>Survey Name</th>
+                  <th>Name</th>
+                  <th>Created At</th>
                   <th>OPERATIONS</th>
                 </tr>
               </thead>
 
-              <tfoot>
-                <tr>
-                  <th>Question</th>
-                  <th>Survey</th>
-                  <th>OPERATIONS</th>
-                </tr>
-              </tfoot>
-
               <tbody>
-                @foreach ($survey_questions as $indexkey => $survey_question)
+                @foreach ($surveys as $indexkey => $survey)
                   <tr>
-                    <td>{{ $survey_question-> text }}</td>
-                    <td>{{\App\Survey::find($survey_question->survey_id)->name }}</td>
-                    <td><a href="survey_question/answers/{{$survey_question->id}}" class="badge badge-success">View Answers</a></td>
+                    <td>{{ $survey-> name }}</td>
+                    <td>{{ $survey-> created_at }}</td>
+                    <td style="display: flex;">
+                      <a href="survey/edit/{{$survey->id}}" class="badge badge-primary" style="margin-right: 5px;">Edit</a>
+                      <a href="survey/delete/{{$survey->id}}" class="badge badge-danger">Delete</a>
+                    </td>
                   </tr>
                 @endforeach
               </tbody>
