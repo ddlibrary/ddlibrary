@@ -18,9 +18,17 @@ class TaxonomyController extends Controller
         ->language(request('language'))
         ->paginate(10);
 
-        $vocabulary = TaxonomyVocabulary::all();
-        $filters = $request;
-        return view('admin.taxonomy.taxonomy_list', compact('terms','vocabulary','filters'));
+        $vocabulary = TaxonomyVocabulary::all('vid AS val','name');
+
+        $args = array(
+            'route'         => 'taxonomylist',
+            'filters'       => $request,
+            'vocabulary'    => $vocabulary
+        );
+        //creating search bar
+        $createSearchBar = new SearchController();
+        $searchBar = $createSearchBar->searchBar($args);
+        return view('admin.taxonomy.taxonomy_list', compact('terms', 'searchBar'));
     }
 
     public function edit($tid)
