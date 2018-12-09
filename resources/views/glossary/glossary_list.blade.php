@@ -28,7 +28,7 @@ DDL Glossary
                 </select>
             </td>
             <td>
-                <input class="form-control" type="submit" value="Filter">
+                <input class="form-control" type="submit" value="@lang('Filter')">
             </td>
         </tr>
     </table>
@@ -56,7 +56,7 @@ DDL Glossary
             {{ $item->name_ps }}
         </td>
         <td>
-            {{ $item->subject }}
+            {{ __($item->subject) }}
         </td>
     </tr>
     @endforeach
