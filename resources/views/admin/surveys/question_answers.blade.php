@@ -16,7 +16,7 @@
       <!-- Surveys Answers DataTables -->
       <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-table"></i> Question Answers Summary
+          <i class="fa fa-list"></i> Question Answers Summary
         </div>
 
         <div class="card-body">

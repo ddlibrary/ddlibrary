@@ -9,14 +9,17 @@
         <li class="breadcrumb-item">
           <a href="{{ URL::to('admin') }}">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Survey Settings</li>
+        <li class="breadcrumb-item">
+          <a href="{{ URL::to('admin/surveys') }}">Surveys</a>
+        </li>
+        <li class="breadcrumb-item active">Edit</li>
       </ol>
 
       <!-- Surveys Answers DataTables -->
       <div class="card mb-3">
 
         <div class="card-header">
-          <i class="fa fa-table"></i> Edit Pop Up Time
+          <i class="fa fa-pencil-square-o"></i> Edit Survey
         </div>
 
         <div class="card-body">
@@ -25,15 +28,15 @@
                   {{ session('status') }}
               </div>
           @endif
-          <form method="POST" action="{{ route('update_survey_modal_time', ['id' => $survey_modal_time->id]) }}">
+          <form method="POST" action="{{ route('update_survey', ['id' => $survey->id]) }}">
             @csrf
             <div class="form-group row">
-              <label for="name" class="col-sm-2 col-form-label">Pop Up Time</label>
+              <label for="name" class="col-sm-2 col-form-label">Name</label>
               <div class="col-sm-10">
-                <input type="number" class="form-control" id="time" value="{{$survey_modal_time->time}}" name="time" required="true" placeholder="Time in seconds">
+                <input type="text" class="form-control" id="name" name="name" value="{{$survey->name}}" required="true" placeholder="Name">
               </div>
             </div>
-            <button type="submit" class="btn btn-primary pull-right">@lang('Update')</button>
+            <button type="submit" class="btn btn-primary pull-right"><span class="fa fa-download"></span> Update</button>
           </form>
         </div>
       </div>

@@ -16,7 +16,7 @@
       <div class="card mb-3">
 
         <div class="card-header">
-          <i class="fa fa-table"></i> Pop Up Time
+          <i class="fa fa-clock-o"></i> Pop Up Time
         </div>
 
         <div class="card-body">
@@ -28,9 +28,13 @@
         </div>
 
         @if(isset($survey_modal_time))
-          <a href="{{ URL::to('admin/edit_survey_modal_time') }}"><button class="btn btn-success btn-sm" style="margin: 10px;">Edit</button></a>
+          <a href="{{ URL::to('admin/edit_survey_modal_time') }}">
+            <button class="btn btn-primary btn-sm pull-right" style="margin: 10px;"><span class="fa fa-pencil-square-o"></span> Edit</button>
+          </a>
         @else
-          <a href="{{ URL::to('admin/create_survey_modal_time') }}"><button class="btn btn-success btn-sm" style="margin: 10px;">Create</button></a>
+          <a href="{{ URL::to('admin/create_survey_modal_time') }}">
+            <button class="btn btn-success btn-sm pull-right" style="margin: 10px;"><span class="fa fa-plus"></span> Create</button>
+          </a>
         @endif
 
       </div>

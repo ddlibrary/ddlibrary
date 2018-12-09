@@ -7,14 +7,49 @@ use App\Survey;
 use App\SurveyQuestion;
 use App\SurveyAnswer;
 use App\SurveySettings;
+use Redirect;
 
 class SurveyController extends Controller
 {
     public function index()
     {
-        $surveys = Survey::find(1);
-        $surveyQuestions = SurveyQuestion::where('survey_id', 1)->first();
-        return view('survey.survey_view', compact('surveys', 'surveyQuestions'));
+        $surveys = Survey::all();
+        return view('admin.surveys.list', compact('surveys'));
+    }
+
+    public function edit($id)
+    {
+        $survey = Survey::find($id);
+        return view('admin.surveys.edit',compact('survey'));
+    }
+
+    public function updateSurvey($id,Request $request)
+    {
+        $survey = Survey::find($id);
+        $survey->name = $request['name'];
+        $survey->save();
+        return Redirect::back()->with('status', 'Survey Updated!');
+    }
+
+    public function create()
+    {   
+        return view('admin.surveys.create');
+    }
+
+    public function postSurvey(Request $request)
+    {
+        $survey = new Survey();
+        $survey->name = $request['name'];
+        $survey->save();
+        return Redirect::back()->with('status', 'Survey Created!');
+    }
+
+
+    public function delete($id)
+    {
+        $survey = Survey::find($id);
+        $survey->delete();
+        return redirect()->back();
     }
 
     public function storeSurvey(Request $request)
@@ -46,9 +81,7 @@ class SurveyController extends Controller
         $survey_modal_time = new SurveySettings();
         $survey_modal_time->time = $request['time'];
         $survey_modal_time->save();
-
-        $survey_modal_time = SurveySettings::all()->first();
-        return view('admin.surveys.survey_settings', compact('survey_modal_time'));
+        return Redirect::back()->with('status', 'Pop Up Time Created!');
     }
 
     public function editSurveyModalTime()
@@ -62,6 +95,6 @@ class SurveyController extends Controller
         $survey_modal_time = SurveySettings::find($id);
         $survey_modal_time->time = $request['time'];
         $survey_modal_time->save();
-        return view('admin.surveys.survey_settings', compact('survey_modal_time'));
+        return Redirect::back()->with('status', 'Pop Up Time Updated!');
     }
 }

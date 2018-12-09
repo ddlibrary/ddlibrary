@@ -44,6 +44,9 @@
             </a>
             <ul class="sidenav-second-level collapse" id="collapseServeys">
                 <li>
+                    <a href="{{ URL::to('admin/surveys') }}">Surveys</a>
+                </li>
+                <li>
                     <a href="{{ URL::to('admin/survey_questions') }}">Survey Results</a>
                 </li>
                 <li>

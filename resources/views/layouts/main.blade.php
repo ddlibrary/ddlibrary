@@ -54,6 +54,8 @@
 
         @if (Request::is(Lang::locale().'/home'))
             @include('../survey/survey_view')
+        @elseif (Request::is(Lang::locale()))
+            @include('../survey/survey_view')
         @elseif (Request::is(Lang::locale().'/resource/*'))
             @include('../survey/survey_view')
         @elseif (Request::is(Lang::locale().'/resources/*'))
