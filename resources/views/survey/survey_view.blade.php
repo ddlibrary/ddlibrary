@@ -8,7 +8,7 @@
         <div class="modal-body">
             <div class="modal-body" id="modal-body">
                 <h2>{{ \App\SurveyQuestion::where('survey_id', 1)->first()->text }} </h2>
-                <form method="POST">
+                <form method="POST" id="surveyform">
                 @foreach(\App\SurveyQuestionOption::where('question_id', 1)->get() as $item)
                     <input type="radio" value="{{ $item->id }}" name="useful" class="form-control" style="display: inline;"> {{ $item->text }} <br>
                 @endforeach
@@ -51,7 +51,7 @@
 <script>
 if(window.jQuery){
     $(function () {
-        $('form').on('submit', function (e) {
+        $('#surveyform').on('submit', function (e) {
             e.preventDefault();
 
             $.ajax({
