@@ -10,7 +10,7 @@
           <a href="{{ URL::to('admin') }}">Dashboard</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{{ URL::to('admin/surveys') }}">Surveys</a>
+          <a href="{{ URL::to('admin/surveys') }}">Survey</a>
         </li>
         <li class="breadcrumb-item active">Edit</li>
       </ol>

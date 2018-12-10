@@ -7,6 +7,8 @@ use App\Survey;
 use App\SurveyQuestion;
 use App\SurveyAnswer;
 use App\SurveySettings;
+use App\SurveyQuestionOption;
+
 use Redirect;
 
 class SurveyController extends Controller
@@ -84,6 +86,14 @@ class SurveyController extends Controller
         $survey_question->survey_id = $request['survey_id'];
         $survey_question->save();
         return Redirect::back()->with('status', 'Question Added!');
+    }
+
+    public function viewOptions($id,$survey_id)
+    {
+        $question = SurveyQuestion::find($id);
+        $survey = Survey::find($id);
+        $questin_options = SurveyQuestionOption::where('question_id', $question->id)->get();
+        return view('admin.surveys.view_options', compact('question', 'questin_options','survey'));
     }
 
     public function getPopUpTime()
