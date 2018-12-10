@@ -156,6 +156,9 @@ Route::group(
     Route::get('admin/survey/create','SurveyController@create');
     Route::post('admin/survey/create','SurveyController@postSurvey')->name('create_survey');
     Route::get('admin/survey/delete/{id}','SurveyController@delete');
+    Route::get('admin/survey/questions/{id}','SurveyController@surveyQuestions');
+    Route::get('admin/survey/question/add/{id}','SurveyController@createQuestion');
+    Route::post('admin/survey/question/add','SurveyController@storeQuestion')->name('create_question');
 
     Route::get('admin/survey_questions','SurveyQuestionController@index');
     Route::get('admin/survey_question/answers/{id}','SurveyQuestionController@viewAnswers');

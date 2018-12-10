@@ -44,7 +44,6 @@ class SurveyController extends Controller
         return Redirect::back()->with('status', 'Survey Created!');
     }
 
-
     public function delete($id)
     {
         $survey = Survey::find($id);
@@ -63,6 +62,28 @@ class SurveyController extends Controller
         $surveyAnswer->ip = \Request::ip();
         $surveyAnswer->save();
         echo true;   
+    }
+
+    public function surveyQuestions($id)
+    {
+        $survey = Survey::find($id);
+        $survey_questions = SurveyQuestion::where('survey_id', $survey->id)->get();
+        return view('admin.surveys.view_questions', compact('survey','survey_questions'));
+    }
+    
+    public function createQuestion($id)
+    {
+        $survey = Survey::find($id);
+        return view('admin.surveys.create_question', compact('survey'));
+    }
+
+    public function storeQuestion(Request $request)
+    {
+        $survey_question = new SurveyQuestion();
+        $survey_question->text = $request['question'];
+        $survey_question->survey_id = $request['survey_id'];
+        $survey_question->save();
+        return Redirect::back()->with('status', 'Question Added!');
     }
 
     public function getPopUpTime()

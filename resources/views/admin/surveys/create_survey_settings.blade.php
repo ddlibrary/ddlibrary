@@ -27,13 +27,20 @@
           @endif
           <form method="POST" action="{{ route('store_survey_modal_time') }}">
             @csrf
-            <div class="form-group row">
-              <label for="name" class="col-sm-2 col-form-label">Pop Up Time</label>
-              <div class="col-sm-10">
-                <input type="number" class="form-control" id="time" name="time" required="true" placeholder="Time in seconds">
-              </div>
+
+            <div class="row">
+                <div class="col-sm-6 offset-sm-3">
+
+                  <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label">Pop Up Time</label>
+                    <div class="col-sm-10">
+                      <input type="number" class="form-control" id="time" name="time" required="true" placeholder="Time in seconds">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary pull-right">Create</button>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary pull-right">Create</button>
+
           </form>
         </div>
       </div>
