@@ -12,14 +12,18 @@
         <li class="breadcrumb-item">
           <a href="{{ URL::to('admin/surveys') }}">Survey</a>
         </li>
-        <li class="breadcrumb-item active">Create</li>
+        <li class="breadcrumb-item">
+            <a href="/admin/survey/questions/{{$survey->id}}">Survey's Questions</a>
+        </li>
+
+        <li class="breadcrumb-item active">Create Question</li>
       </ol>
 
       <!-- Surveys Answers DataTables -->
       <div class="card mb-3">
 
         <div class="card-header">
-          <i class="fa fa-plus"></i> Create Survey
+          <i class="fa fa-plus"></i> Create Question
         </div>
 
         <div class="card-body">
@@ -28,33 +32,24 @@
                   {{ session('status') }}
               </div>
           @endif
-          <form method="POST" action="{{ route('create_survey')}}">
+          <form method="POST" action="{{ route('create_question')}}">
             @csrf
 
             <div class="row">
               <div class="col-sm-6 offset-sm-3">
 
                 <div class="form-group row">
-                  <label for="name" class="col-sm-2 col-form-label">Name</label>
+                  <label for="name" class="col-sm-2 col-form-label">Question</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="name" name="name" required="true" placeholder="Survey Name">
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="name" class="col-sm-2 col-form-label">Status</label>
-                  <div class="col-sm-10">
-                      <input type="radio" id="status" name="status" value="published" checked>
-                      <label for="status" class="badge badge-success">Published</label>
-                      
-                      <input type="radio" id="status" name="status" value="draft">
-                      <label for="status" class="badge badge-warning">Draft</label>
+                    <input type="text" class="form-control" id="question" name="question" required="true" placeholder="Text">
+                    <input type="integer" name="survey_id" value="{{$survey->id}}" hidden>
                   </div>
                 </div>
                 <button type="submit" class="btn btn-primary pull-right"> Create</button>
               </div>
             </div>
 
+           
           </form>
         </div>
       </div>

@@ -10,7 +10,7 @@
           <a href="{{ URL::to('admin') }}">Dashboard</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{{ URL::to('admin/surveys') }}">Surveys</a>
+          <a href="{{ URL::to('admin/surveys') }}">Survey</a>
         </li>
         <li class="breadcrumb-item active">Edit</li>
       </ol>
@@ -30,13 +30,21 @@
           @endif
           <form method="POST" action="{{ route('update_survey', ['id' => $survey->id]) }}">
             @csrf
-            <div class="form-group row">
-              <label for="name" class="col-sm-2 col-form-label">Name</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="name" name="name" value="{{$survey->name}}" required="true" placeholder="Name">
+
+            <div class="row">
+              <div class="col-sm-6 offset-sm-3">
+
+                <div class="form-group row">
+                  <label for="name" class="col-sm-2 col-form-label">Name</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="name" name="name" value="{{$survey->name}}" required="true" placeholder="Name">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary pull-right"><span class="fa fa-download"></span> Update</button>
+                
               </div>
             </div>
-            <button type="submit" class="btn btn-primary pull-right"><span class="fa fa-download"></span> Update</button>
+
           </form>
         </div>
       </div>
