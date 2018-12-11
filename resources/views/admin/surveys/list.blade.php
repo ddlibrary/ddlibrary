@@ -20,7 +20,7 @@
 
         <div class="card-body">
             <a href="{{ URL::to('admin/survey/create') }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
-              <span class="fa fa-plus"></span> Create New
+              <span class="fa fa-plus"></span> Add New
             </a>
             <span>Total: <strong>{{count($surveys)}}</strong></span>
             <table class="table table-bordered" width="100%" cellspacing="0">

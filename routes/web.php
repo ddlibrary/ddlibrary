@@ -160,6 +160,9 @@ Route::group(
     Route::get('admin/survey/question/add/{id}','SurveyController@createQuestion');
     Route::post('admin/survey/question/add','SurveyController@storeQuestion')->name('create_question');
     Route::get('admin/survey/{survey_id}/question/{id}/view_options','SurveyController@viewOptions');
+    Route::get('admin/survey/{survey_id}/question/{id}/option/create','SurveyController@createOption');
+    Route::post('admin/survey/question/option/add','SurveyController@storeOption')->name('create_option');
+
 
     Route::get('admin/survey_questions','SurveyQuestionController@index');
     Route::get('admin/survey_question/answers/{id}','SurveyQuestionController@viewAnswers');
