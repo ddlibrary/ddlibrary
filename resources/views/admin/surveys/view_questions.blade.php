@@ -10,7 +10,7 @@
           <a href="{{ URL::to('admin') }}">Dashboard</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ URL::to('admin/surveys') }}">Survey</a>
+            <a href="{{ URL::to('admin/surveys') }}">Surveys</a>
           </li>
         <li class="breadcrumb-item active">{{ $survey->name}}</li>
       </ol>
@@ -23,7 +23,7 @@
 
         <div class="card-body">
             <a href="/admin/survey/question/add/{{ $survey->id }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
-              <span class="fa fa-plus"></span> Add Question
+              <span class="fa fa-plus"></span> Add New
             </a>
             <span>Total: <strong>{{count($survey_questions)}}</strong></span>
             <table class="table table-bordered" width="100%" cellspacing="0">

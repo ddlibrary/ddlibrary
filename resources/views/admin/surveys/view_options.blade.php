@@ -11,7 +11,7 @@
         </li>
 
         <li class="breadcrumb-item">
-          <a href="{{ URL::to('admin/surveys') }}">Survey</a>
+          <a href="{{ URL::to('admin/surveys') }}">Surveys</a>
         </li>
 
         <li class="breadcrumb-item">
@@ -28,8 +28,8 @@
         </div>
 
         <div class="card-body">
-            <a href="{{ URL::to('admin/survey/create') }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
-              <span class="fa fa-plus"></span> Create New
+            <a href="/admin/survey/{{$survey->id}}/question/{{$question->id}}/option/create" class="btn btn-success pull-right" style="margin-bottom: 10px">
+              <span class="fa fa-plus"></span> Add New
             </a>
             <span>Total: <strong>{{count($questin_options)}}</strong></span>
             <table class="table table-bordered" width="100%" cellspacing="0">

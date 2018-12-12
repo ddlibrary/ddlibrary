@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class SurveyQuestionOption extends Model
 {
-    //
+    public $timestamps = false;
 }

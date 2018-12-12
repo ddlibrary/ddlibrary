@@ -96,6 +96,22 @@ class SurveyController extends Controller
         return view('admin.surveys.view_options', compact('question', 'questin_options','survey'));
     }
 
+    public function createOption($survey_id, $question_id)
+    {
+        $survey = Survey::find($survey_id);
+        $question = SurveyQuestion::find($question_id);
+        return view('admin.surveys.create_option', compact('survey','question'));
+    }
+
+    public function storeOption(Request $request)
+    {
+        $option = new SurveyQuestionOption();
+        $option->question_id = $request['question_id'];
+        $option->text = $request['text'];
+        $option-> save();
+        return Redirect::back()->with('status', 'Question Option Created!');
+    }
+
     public function getPopUpTime()
     {
         $survey_modal_time = SurveySettings::all()->first();
