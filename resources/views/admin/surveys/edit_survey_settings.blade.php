@@ -16,7 +16,7 @@
       <div class="card mb-3">
 
         <div class="card-header">
-          <i class="fa fa-table"></i> Edit Pop Up Time
+          <i class="fa fa-table"></i> Edit Popup Time
         </div>
 
         <div class="card-body">
@@ -32,12 +32,12 @@
                 <div class="col-sm-6 offset-sm-3">
 
                   <div class="form-group row">
-                    <label for="name" class="col-sm-2 col-form-label">Pop Up Time</label>
-                    <div class="col-sm-10">
-                      <input type="number" class="form-control" id="time" value="{{$survey_modal_time->time}}" name="time" required="true" placeholder="Time in seconds">
+                    <label for="name" class="col-sm-3 col-form-label">Popup Time</label>
+                    <div class="col-sm-9">
+                      <input type="number" class="form-control" id="time" value="{{$survey_modal_time->time}}" name="time" required="true" placeholder="Numbers Only">
                     </div>
                   </div>
-                  <button type="submit" class="btn btn-primary pull-right">@lang('Update')</button>
+                  <button type="submit" class="btn btn-primary pull-right btn-sm">@lang('Update')</button>
                   
               </div>
             </div>

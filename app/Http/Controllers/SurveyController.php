@@ -50,7 +50,7 @@ class SurveyController extends Controller
     {
         $survey = Survey::find($id);
         $survey->delete();
-        return redirect()->back();
+        return Redirect::back()->with('status', 'Survey Deleted!');
     }
 
     public function storeSurvey(Request $request)
@@ -128,7 +128,7 @@ class SurveyController extends Controller
         $survey_modal_time = new SurveySettings();
         $survey_modal_time->time = $request['time'];
         $survey_modal_time->save();
-        return Redirect::back()->with('status', 'Pop Up Time Created!');
+        return Redirect::back()->with('status', 'Popup Time Created!');
     }
 
     public function editSurveyModalTime()
@@ -142,6 +142,6 @@ class SurveyController extends Controller
         $survey_modal_time = SurveySettings::find($id);
         $survey_modal_time->time = $request['time'];
         $survey_modal_time->save();
-        return Redirect::back()->with('status', 'Pop Up Time Updated!');
+        return Redirect::back()->with('status', 'Popup Time Updated!');
     }
 }

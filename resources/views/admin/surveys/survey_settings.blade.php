@@ -16,12 +16,12 @@
       <div class="card mb-3">
 
         <div class="card-header">
-          <i class="fa fa-clock-o"></i> Pop Up Time
+          <i class="fa fa-clock-o"></i> Popup Time
         </div>
 
         <div class="card-body">
           @if(isset($survey_modal_time))
-            <p>Pop Up Time: <span class="badge badge-primary">{{ $survey_modal_time->time }} Seconds</span></p> 
+            <p>Popup Time: <span class="badge badge-primary">{{ $survey_modal_time->time }} Seconds</span></p> 
           @else
             <p class="badge badge-warning">Not defined yet!</p> 
           @endif

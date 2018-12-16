@@ -16,7 +16,7 @@
       <div class="card mb-3">
 
         <div class="card-header">
-          <i class="fa fa-table"></i> Create Pop Up Time
+          <i class="fa fa-table"></i> Create Popup Time
         </div>
 
         <div class="card-body">
@@ -30,14 +30,13 @@
 
             <div class="row">
                 <div class="col-sm-6 offset-sm-3">
-
                   <div class="form-group row">
-                    <label for="name" class="col-sm-2 col-form-label">Pop Up Time</label>
-                    <div class="col-sm-10">
-                      <input type="number" class="form-control" id="time" name="time" required="true" placeholder="Time in seconds">
+                    <label for="name" class="col-sm-3 col-form-label">Popup Time</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="time" name="time" required="true" placeholder="Numbers Only">
                     </div>
                   </div>
-                  <button type="submit" class="btn btn-primary pull-right">Create</button>
+                  <button type="submit" class="btn btn-primary pull-right btn-sm">Submit</button>
                 </div>
             </div>
 
