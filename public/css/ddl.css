@@ -5,6 +5,7 @@ body{
     color: #000000;
     background-color: #eeeeee;
 }
+
 body main section footer nav {
     display: flex;
 }
@@ -17,6 +18,19 @@ main {
     margin-bottom: 2em;
     min-height: 76vh;
 }
+
+.alert-danger {
+    width: 50%;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
 .header {
     display: flex;
     flex-wrap: wrap;

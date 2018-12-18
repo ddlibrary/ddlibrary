@@ -15,6 +15,13 @@
     </header>
     <div class="content-body">
         <form method="POST" action="{{ route('login') }}">
+        @if ($errors->any())
+            <ul class="alert-danger">
+                @foreach ($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
+            </ul>
+        @endif
         @csrf
         <div class="form-item">
             <label for="user-field"> 
