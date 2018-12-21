@@ -16,7 +16,7 @@
     <div class="content-body">
         <form method="POST" action="{{ route('login') }}">
         @if ($errors->any())
-            <ul class="alert-danger">
+            <ul class="form-required">
                 @foreach ($errors->all() as $error)
                     <p>{{ $error }}</p>
                 @endforeach
