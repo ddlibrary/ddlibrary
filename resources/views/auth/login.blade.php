@@ -14,14 +14,8 @@
         <h1>@lang('Login with your DDL account')</h1>
     </header>
     <div class="content-body">
+        @include('layouts.messages')
         <form method="POST" action="{{ route('login') }}">
-        @if ($errors->any())
-            <ul class="form-required">
-                @foreach ($errors->all() as $error)
-                    <p>{{ $error }}</p>
-                @endforeach
-            </ul>
-        @endif
         @csrf
         <div class="form-item">
             <label for="user-field"> 
