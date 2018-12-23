@@ -88,10 +88,24 @@ class SurveyController extends Controller
         return Redirect::back()->with('status', 'Question Added!');
     }
 
-    public function viewOptions($id,$survey_id)
+    public function deleteQuestion($id)
     {
         $question = SurveyQuestion::find($id);
-        $survey = Survey::find($id);
+        $question->delete();
+        return Redirect::back()->with('status', 'Survey\'s Question Deleted!');
+    }
+
+    public function deleteOption($id)
+    {
+        $option = SurveyQuestionOption::find($id);
+        $option->delete();
+        return Redirect::back()->with('status', 'Question\'s Option Deleted!');
+    }
+
+    public function viewOptions($survey_id,$id)
+    {
+        $question = SurveyQuestion::find($id);
+        $survey = Survey::find($survey_id);
         $questin_options = SurveyQuestionOption::where('question_id', $question->id)->get();
         return view('admin.surveys.view_options', compact('question', 'questin_options','survey'));
     }
