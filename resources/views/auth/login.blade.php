@@ -14,6 +14,7 @@
         <h1>@lang('Login with your DDL account')</h1>
     </header>
     <div class="content-body">
+        @include('layouts.messages')
         <form method="POST" action="{{ route('login') }}">
         @csrf
         <div class="form-item">

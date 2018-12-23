@@ -5,6 +5,7 @@ body{
     color: #000000;
     background-color: #eeeeee;
 }
+
 body main section footer nav {
     display: flex;
 }
@@ -17,6 +18,7 @@ main {
     margin-bottom: 2em;
     min-height: 76vh;
 }
+
 .header {
     display: flex;
     flex-wrap: wrap;
