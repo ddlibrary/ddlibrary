@@ -88,6 +88,21 @@ class SurveyController extends Controller
         return Redirect::back()->with('status', 'Question Added!');
     }
 
+    public function editQuestion($survey_id, $id)
+    {
+        $question = SurveyQuestion::find($id);
+        $survey = Survey::find($survey_id);
+        return view('admin.surveys.edit_question',compact('question','survey'));
+    }
+
+    public function updateQuestion($id,Request $request)
+    {
+        $question = SurveyQuestion::find($id);
+        $question->text = $request['text'];
+        $question->save();
+        return Redirect::back()->with('status', 'Question Updated!');
+    }
+
     public function deleteQuestion($id)
     {
         $question = SurveyQuestion::find($id);
