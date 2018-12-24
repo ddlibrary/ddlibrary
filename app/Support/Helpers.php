@@ -21,7 +21,8 @@ if(! function_exists('giveMeFileFormat')){
             'text/plain' => 'Text',
             'audio/mpeg' => 'Audio',
 			'video/mp4' => 'Video',
-			'image/jpeg' => 'Image'
+			'image/jpeg' => 'Image',
+			'image/png'	=> 'Image'
         );
 
         if ( count($formats[$fileFormat]) > 0){
