@@ -50,7 +50,6 @@
                   <tr>
                     <td>{{ $questin_option-> text }}</td>
                     <td style="display: flex;">
-                      <a href="survey/edit/{{$questin_option->id}}" class="badge badge-primary" style="margin-right: 5px;">Edit</a>
                       <a href="javascript:void(0)" id="{{$questin_option->id}}" onclick="confirm(this.id);" class="badge badge-danger">Delete</a>
                     </td>
                   </tr>

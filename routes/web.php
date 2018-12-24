@@ -152,7 +152,9 @@ Route::group(
     //admin, survey
     Route::get('admin/surveys','SurveyController@index');
     Route::get('admin/survey/edit/{id}','SurveyController@edit');
+    Route::get('admin/survey/{survey_id}/question/{id}/edit','SurveyController@editQuestion');
     Route::post('admin/update_survey/{id}','SurveyController@updateSurvey')->name('update_survey');
+    Route::post('admin/update_question/{id}','SurveyController@updateQuestion')->name('update_question');
     Route::get('admin/survey/create','SurveyController@create');
     Route::post('admin/survey/create','SurveyController@postSurvey')->name('create_survey');
     Route::get('admin/survey/delete/{id}','SurveyController@delete');
@@ -164,8 +166,6 @@ Route::group(
     Route::get('admin/survey/{survey_id}/question/{id}/view_options','SurveyController@viewOptions');
     Route::get('admin/survey/{survey_id}/question/{id}/option/create','SurveyController@createOption');
     Route::post('admin/survey/question/option/add','SurveyController@storeOption')->name('create_option');
-
-
     Route::get('admin/survey_questions','SurveyQuestionController@index');
     Route::get('admin/survey_question/answers/{id}','SurveyQuestionController@viewAnswers');
     Route::get('admin/survey_time','SurveyController@getPopUpTime');
