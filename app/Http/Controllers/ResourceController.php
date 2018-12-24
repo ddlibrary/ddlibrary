@@ -104,15 +104,11 @@ class ResourceController extends Controller
 
         $resources = $myResources->paginateResourcesBy($request);
 
-        if($request->ajax()){
-            return view('resources.resources_list_content', compact('resources','subjectAreaIds','levelIds','typeIds'))->render();
-        }
-
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data',8);
         $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
         $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
         
-        return view('resources.resources_list', compact('subjects','types','levels'));
+        return view('resources.resources_list', compact('resources','subjects','types','levels','subjectAreaIds','levelIds','typeIds'));
     }
 
     public function viewPublicResource(Request $request, $resourceId)
