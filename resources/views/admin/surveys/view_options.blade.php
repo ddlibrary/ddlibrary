@@ -15,7 +15,7 @@
         </li>
 
         <li class="breadcrumb-item">
-          <a href="/admin/survey/questions/{{$survey->id}}">Question</a>
+          <a href="{{ URL::to('admin/survey/questions/'.$survey->id) }}">Question</a>
         </li> 
 
         <li class="breadcrumb-item active">{{$question->text}}</li>
@@ -33,7 +33,7 @@
                   {{ session('status') }}
               </div>
             @endif
-            <a href="/admin/survey/{{$survey->id}}/question/{{$question->id}}/option/create" class="btn btn-success pull-right" style="margin-bottom: 10px">
+            <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$question->id.'/option/create') }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
               <span class="fa fa-plus"></span> Add New
             </a>
             <span>Total: <strong>{{count($questin_options)}}</strong></span>

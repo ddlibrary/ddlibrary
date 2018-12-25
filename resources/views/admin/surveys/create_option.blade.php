@@ -13,10 +13,10 @@
           <a href="{{ URL::to('admin/surveys') }}">Surveys</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="/admin/survey/questions/{{$survey->id}}">Survey's Questions</a>
+            <a href="{{ URL::to('admin/survey/questions/'.$survey->id) }}">Survey's Questions</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="/admin/survey/{{$survey->id}}/question/{{$question->id}}/view_options">Question's Options</a>
+            <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$question->id.'/view_options') }}">Question's Options</a>
         </li>
 
         <li class="breadcrumb-item active">Create Option</li>

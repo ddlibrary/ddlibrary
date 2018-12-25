@@ -27,7 +27,7 @@
                   {{ session('status') }}
               </div>
             @endif
-            <a href="/admin/survey/question/add/{{ $survey->id }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
+            <a href="{{ URL::to('admin/survey/question/add/'.$survey->id) }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
               <span class="fa fa-plus"></span> Add New
             </a>
             <span>Total: <strong>{{count($survey_questions)}}</strong></span>
@@ -44,8 +44,8 @@
                   <tr>
                     <td>{{ $survey_question-> text }}</td>
                     <td style="display: flex;">
-                      <a href="/admin/survey/{{$survey->id}}/question/{{$survey_question->id}}/view_options" class="badge badge-primary" style="margin-right:5px;">Options</a>
-                      <a href="/admin/survey/{{$survey->id}}/question/{{$survey_question->id}}/edit" class="badge badge-primary" style="margin-right: 5px;">Edit</a>
+                      <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$survey_question->id.'/view_options') }}" class="badge badge-primary" style="margin-right:5px;">Options</a>
+                      <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$survey_question->id.'/edit') }}" class="badge badge-primary" style="margin-right: 5px;">Edit</a>
                       <a href="javascript:void(0)" id="{{$survey_question->id}}" onclick="confirm(this.id);" class="badge badge-danger">Delete</a>
                     </td>
                   </tr>
