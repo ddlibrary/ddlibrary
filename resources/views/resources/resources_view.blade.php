@@ -289,7 +289,4 @@
         <h1>@lang('Resource not found or is not yet translated!')</h1>
         @endif
 </section>
-@push('scripts')
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-@endpush
 @endsection

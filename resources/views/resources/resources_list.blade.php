@@ -83,7 +83,4 @@
         </div>
     </section>
 </section>
-@push('scripts')
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-@endpush
 @endsection

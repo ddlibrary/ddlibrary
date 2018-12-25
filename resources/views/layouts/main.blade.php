@@ -41,13 +41,18 @@
     </script>
     @endif
 
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script>
-        setTimeout(function () {
-            console.log('Hi');
-        }, 7000);
+        //paste this code under the head tag or in a separate js file.
+        // Wait for window load
+        $(window).on('load', function() {
+            // Animate loader off screen
+            $(".se-pre-con").fadeOut("slow");;
+        });
     </script>
 </head>
 <body>
+    <div class="se-pre-con"></div>
     @include('layouts.banner')
     @yield('search')
     <main>

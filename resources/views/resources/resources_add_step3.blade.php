@@ -104,7 +104,6 @@
     </div>
 </section>
 @push('scripts')
-<script src="{{ asset('js/jquery.min.js') }}"></script>
 <script>
 $(document).ready(function () {
     $('input:radio[name="creative_commons"]').change(function() {
