@@ -1200,7 +1200,6 @@ class ResourceController extends Controller
 
         Storage::disk('private')->delete($fileName);
         ResourceAttachment::where('resource_id', $resourceId)->where('file_name', $fileName)->delete();
-        Session::flash('success', "file successfully deleted!");
         $resource2 = session('resource2');
         $resource2Attc = $resource2['attc'];
 
@@ -1213,7 +1212,7 @@ class ResourceController extends Controller
             $resource2['attc'] = array_values($resource2Attc);
             session()->put('resource2', $resource2);
         }
-        return back();
+        return redirect('/resources/edit/step2/'.$resourceId)->with('success','File successfully deleted!');
     }
 
     public function published($resourceId)
