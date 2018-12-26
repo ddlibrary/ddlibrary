@@ -43,8 +43,8 @@
                     <td>{{ $survey-> name }}</td>
                     <td>{{ $survey-> created_at }}</td>
                     <td style="display: flex;">
-                      <a href="survey/questions/{{$survey->id}}" class="badge badge-primary" style="margin-right: 5px;">Questions</a>
-                      <a href="survey/edit/{{$survey->id}}" class="badge badge-primary" style="margin-right: 5px;">Edit</a>
+                      <a href="{{ URL::to('admin/survey/questions/'.$survey->id) }}" class="badge badge-primary" style="margin-right: 5px;">Questions</a>
+                      <a href="{{ URL::to('admin/survey/edit/'.$survey->id) }}" class="badge badge-primary" style="margin-right: 5px;">Edit</a>
                       <a href="javascript:void(0)" id="{{$survey->id}}" onclick="confirm(this.id);" class="badge badge-danger">Delete</a>
                     </td>
                   </tr>
