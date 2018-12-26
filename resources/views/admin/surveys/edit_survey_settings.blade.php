@@ -20,11 +20,7 @@
         </div>
 
         <div class="card-body">
-          @if (session('status'))
-              <div class="alert alert-success">
-                  {{ session('status') }}
-              </div>
-          @endif
+          @include('layouts.messages')
           <form method="POST" action="{{ route('update_survey_modal_time', ['id' => $survey_modal_time->id]) }}">
             @csrf
 

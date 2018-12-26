@@ -30,7 +30,7 @@ class SurveyController extends Controller
         $survey = Survey::find($id);
         $survey->name = $request['name'];
         $survey->save();
-        return Redirect::back()->with('status', 'Survey Updated!');
+        return Redirect::back()->with('success', 'Survey Updated!');
     }
 
     public function create()
@@ -43,14 +43,14 @@ class SurveyController extends Controller
         $survey = new Survey();
         $survey->name = $request['name'];
         $survey->save();
-        return Redirect::back()->with('status', 'Survey Created!');
+        return Redirect::back()->with('success', 'Survey Created!');
     }
 
     public function delete($id)
     {
         $survey = Survey::find($id);
         $survey->delete();
-        return Redirect::back()->with('status', 'Survey Deleted!');
+        return Redirect::back()->with('success', 'Survey Deleted!');
     }
 
     public function storeSurvey(Request $request)
@@ -85,7 +85,7 @@ class SurveyController extends Controller
         $survey_question->text = $request['question'];
         $survey_question->survey_id = $request['survey_id'];
         $survey_question->save();
-        return Redirect::back()->with('status', 'Question Added!');
+        return Redirect::back()->with('success', 'Question Added!');
     }
 
     public function editQuestion($survey_id, $id)
@@ -100,21 +100,21 @@ class SurveyController extends Controller
         $question = SurveyQuestion::find($id);
         $question->text = $request['text'];
         $question->save();
-        return Redirect::back()->with('status', 'Question Updated!');
+        return Redirect::back()->with('success', 'Question Updated!');
     }
 
     public function deleteQuestion($id)
     {
         $question = SurveyQuestion::find($id);
         $question->delete();
-        return Redirect::back()->with('status', 'Survey\'s Question Deleted!');
+        return Redirect::back()->with('success', 'Survey\'s Question Deleted!');
     }
 
     public function deleteOption($id)
     {
         $option = SurveyQuestionOption::find($id);
         $option->delete();
-        return Redirect::back()->with('status', 'Question\'s Option Deleted!');
+        return Redirect::back()->with('success', 'Question\'s Option Deleted!');
     }
 
     public function viewOptions($survey_id,$id)
@@ -138,7 +138,7 @@ class SurveyController extends Controller
         $option->question_id = $request['question_id'];
         $option->text = $request['text'];
         $option-> save();
-        return Redirect::back()->with('status', 'Question Option Created!');
+        return Redirect::back()->with('success', 'Question Option Created!');
     }
 
     public function getPopUpTime()
@@ -157,7 +157,7 @@ class SurveyController extends Controller
         $survey_modal_time = new SurveySettings();
         $survey_modal_time->time = $request['time'];
         $survey_modal_time->save();
-        return Redirect::back()->with('status', 'Popup Time Created!');
+        return Redirect::back()->with('success', 'Popup Time Created!');
     }
 
     public function editSurveyModalTime()
@@ -171,6 +171,6 @@ class SurveyController extends Controller
         $survey_modal_time = SurveySettings::find($id);
         $survey_modal_time->time = $request['time'];
         $survey_modal_time->save();
-        return Redirect::back()->with('status', 'Popup Time Updated!');
+        return Redirect::back()->with('success', 'Popup Time Updated!');
     }
 }
