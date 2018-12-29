@@ -22,7 +22,11 @@
         </div>
 
         <div class="card-body">
-            @include('layouts.messages')
+            @if (session('status'))
+              <div class="alert alert-success">
+                  {{ session('status') }}
+              </div>
+            @endif
             <a href="{{ URL::to('admin/survey/question/add/'.$survey->id) }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
               <span class="fa fa-plus"></span> Add New
             </a>

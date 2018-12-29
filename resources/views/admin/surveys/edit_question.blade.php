@@ -26,7 +26,11 @@
         </div>
 
         <div class="card-body">
-          @include('layouts.messages')
+          @if (session('status'))
+              <div class="alert alert-success">
+                  {{ session('status') }}
+              </div>
+          @endif
           <form method="POST" action="{{ route('update_question', ['id' => $question->id]) }}">
             @csrf
 
