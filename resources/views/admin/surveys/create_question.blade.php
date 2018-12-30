@@ -27,11 +27,13 @@
         </div>
 
         <div class="card-body">
+          
           @if (session('status'))
               <div class="alert alert-success">
                   {{ session('status') }}
               </div>
           @endif
+
           <form method="POST" action="{{ route('create_question')}}">
             @csrf
 
@@ -39,16 +41,43 @@
               <div class="col-sm-6 offset-sm-3">
 
                 <div class="form-group row">
-                  <label for="name" class="col-sm-2 col-form-label">Question</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="question" name="question" required="true" placeholder="Text">
+                  <label for="name" class="col-sm-3 col-form-label">Question Text</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="question" name="question" required="true" placeholder="Type question text">
                     <input type="integer" name="survey_id" value="{{$survey->id}}" hidden>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-primary pull-right"> Create</button>
+
+                <div class="form-group row">
+                  <label for="name" class="col-sm-3 col-form-label">Question Type</label>
+                  <div class="col-sm-9">
+                    <select class="form-control" id="option_type" required onchange="showOption()" name="question_type">
+                      <option value="descriptive">Descriptive</option>
+                      <option value="single_choice">Single Choice</option>
+                      <option value="multi_choice">Multi Choice</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="form-group row" style="display: none" id="options"> 
+                  <label for="name" class="col-sm-3 col-form-label">Option Text</label>
+              
+                  <div class="col-sm-9 d-flex">
+                    <input type="text" name="name[]" placeholder="Type option text" class="form-control name_lists" required=""/>
+                    <button type="button" name="add" id="add" class="btn btn-success btn-sm">Add More</button>
+                  </div>
+                </div>
+
+                <div class="row" style="display: none" id="dynamic_options">
+                  <div class="col-sm-3"></div>
+                  <div class="col-sm-9">
+                      <table id="dynamic_field"></table> 
+                  </div>
+                </div>
+               
+                <button type="submit" class="btn btn-primary pull-right btn-sm"> Add Question</button>
               </div>
             </div>
-
            
           </form>
         </div>
@@ -57,4 +86,43 @@
   </div>
   <!-- /.container-fluid-->
   <!-- /.content-wrapper-->
-  @endsection
+
+  <script src="{{ URL::to('vendor/jquery/jquery.min.js') }}"></script>
+
+  <script type="text/javascript">
+
+    function showOption() {
+      var optionText = document.getElementById("option_type");
+      var selected_option = optionText.options[optionText.selectedIndex].value;
+      console.log(selected_option);
+      
+      if (selected_option != 'descriptive'){
+        document.getElementById("options").style.display = "flex";
+        document.getElementById("dynamic_options").style.display = "flex";
+      }else{
+        document.getElementById("options").style.display = "none";
+        document.getElementById("dynamic_options").style.display = "none";
+      }
+    }
+
+
+    $(document).ready(function(){      
+      var i=1;  
+
+      $('#add').click(function(){  
+        i++;  
+        $('#dynamic_field').append(
+          '<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="name[]" placeholder="Type option text" class="form-control name_list" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">Remove</button></td></tr>'
+        );  
+      });
+
+      $(document).on('click', '.btn_remove', function(){  
+           var button_id = $(this).attr("id");   
+           $('#row'+button_id+'').remove();  
+      });  
+
+    }); 
+
+</script>
+
+@endsection

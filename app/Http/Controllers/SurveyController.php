@@ -81,11 +81,13 @@ class SurveyController extends Controller
 
     public function storeQuestion(Request $request)
     {
-        $survey_question = new SurveyQuestion();
-        $survey_question->text = $request['question'];
-        $survey_question->survey_id = $request['survey_id'];
-        $survey_question->save();
-        return Redirect::back()->with('status', 'Question Added!');
+
+        dd($request);
+        // $survey_question = new SurveyQuestion();
+        // $survey_question->text = $request['question'];
+        // $survey_question->survey_id = $request['survey_id'];
+        // $survey_question->save();
+        // return Redirect::back()->with('status', 'Question Added!');
     }
 
     public function editQuestion($survey_id, $id)
