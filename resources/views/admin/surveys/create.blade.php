@@ -35,19 +35,19 @@
               <div class="col-sm-6 offset-sm-3">
 
                 <div class="form-group row">
-                  <label for="name" class="col-sm-2 col-form-label">Name</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="name" name="name" required="true" placeholder="Survey Name">
+                  <label for="name" class="col-sm-3 col-form-label">Survey Name</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="name" name="name" required="true" placeholder="Type Survey Name">
                   </div>
                 </div>
 
                 <div class="form-group row">
-                  <label for="name" class="col-sm-2 col-form-label">Status</label>
-                  <div class="col-sm-10">
-                      <input type="radio" id="status" name="status" value="published" checked>
+                  <label for="name" class="col-sm-3 col-form-label">Survey Status</label>
+                  <div class="col-sm-9">
+                      <input type="radio" id="status" name="state" value="published" checked>
                       <label for="status" class="badge badge-success">Published</label>
                       
-                      <input type="radio" id="status" name="status" value="draft">
+                      <input type="radio" id="status" name="state" value="draft">
                       <label for="status" class="badge badge-warning">Draft</label>
                   </div>
                 </div>

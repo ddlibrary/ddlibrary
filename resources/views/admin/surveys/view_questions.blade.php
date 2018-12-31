@@ -35,6 +35,7 @@
               <thead>
                 <tr>
                   <th>Text</th>
+                  <th>Type</th>
                   <th>OPERATIONS</th>
                 </tr>
               </thead>
@@ -43,9 +44,17 @@
                 @foreach ($survey_questions as $indexkey => $survey_question)
                   <tr>
                     <td>{{ $survey_question-> text }}</td>
+                    <td>
+                      @if ($survey_question->type == 'single_choice')
+                        <span>Single Choise</span>
+                      @elseif ($survey_question->type == 'mulit_choice')
+                        <span>Multiple Choise</span>
+                      @else
+                        <span>Descriptive</span>
+                      @endif
+                    </td>
                     <td style="display: flex;">
                       <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$survey_question->id.'/view_options') }}" class="badge badge-primary" style="margin-right:5px;">Options</a>
-                      <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$survey_question->id.'/edit') }}" class="badge badge-primary" style="margin-right: 5px;">Edit</a>
                       <a href="javascript:void(0)" id="{{$survey_question->id}}" onclick="confirm(this.id);" class="badge badge-danger">Delete</a>
                     </td>
                   </tr>

@@ -29,6 +29,7 @@ class SurveyController extends Controller
     {
         $survey = Survey::find($id);
         $survey->name = $request['name'];
+        $survey->state = $request['state'];
         $survey->save();
         return Redirect::back()->with('status', 'Survey Updated!');
     }
@@ -42,6 +43,7 @@ class SurveyController extends Controller
     {
         $survey = new Survey();
         $survey->name = $request['name'];
+        $survey->state = $request['state'];
         $survey->save();
         return Redirect::back()->with('status', 'Survey Created!');
     }
@@ -81,13 +83,19 @@ class SurveyController extends Controller
 
     public function storeQuestion(Request $request)
     {
+        $question = new SurveyQuestion();
+        $question->text = $request['text'];
+        $question->type = $request['type'];
+        $question->survey_id = $request['survey_id'];
+        $question->save();
 
-        dd($request);
-        // $survey_question = new SurveyQuestion();
-        // $survey_question->text = $request['question'];
-        // $survey_question->survey_id = $request['survey_id'];
-        // $survey_question->save();
-        // return Redirect::back()->with('status', 'Question Added!');
+        foreach ($request->options as $option_text) {
+            $option = new SurveyQuestionOption();
+            $option->text = $option_text;
+            $option->question_id=$question->id;
+            $option->save();
+        }
+        return Redirect::back()->with('status', 'Question Added!');
     }
 
     public function editQuestion($survey_id, $id)
@@ -122,8 +130,8 @@ class SurveyController extends Controller
     public function viewOptions($survey_id,$id)
     {
         $question = SurveyQuestion::find($id);
-        $survey = Survey::find($survey_id);
-        $questin_options = SurveyQuestionOption::where('question_id', $question->id)->get();
+        $survey = $question->survey;
+        $questin_options = $question->options;
         return view('admin.surveys.view_options', compact('question', 'questin_options','survey'));
     }
 

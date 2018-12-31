@@ -43,7 +43,7 @@
                 <div class="form-group row">
                   <label for="name" class="col-sm-3 col-form-label">Question Text</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" id="question" name="question" required="true" placeholder="Type question text">
+                    <input type="text" class="form-control" id="question" name="text" required="true" placeholder="Type question text">
                     <input type="integer" name="survey_id" value="{{$survey->id}}" hidden>
                   </div>
                 </div>
@@ -51,7 +51,7 @@
                 <div class="form-group row">
                   <label for="name" class="col-sm-3 col-form-label">Question Type</label>
                   <div class="col-sm-9">
-                    <select class="form-control" id="option_type" required onchange="showOption()" name="question_type">
+                    <select class="form-control" id="option_type" required onchange="showOption()" name="type">
                       <option value="descriptive">Descriptive</option>
                       <option value="single_choice">Single Choice</option>
                       <option value="multi_choice">Multi Choice</option>
@@ -63,7 +63,7 @@
                   <label for="name" class="col-sm-3 col-form-label">Option Text</label>
               
                   <div class="col-sm-9 d-flex">
-                    <input type="text" name="name[]" placeholder="Type option text" class="form-control name_lists" required=""/>
+                    <input type="text" name="options[]" placeholder="Type option text" class="form-control name_lists" required=""/>
                     <button type="button" name="add" id="add" class="btn btn-success btn-sm">Add More</button>
                   </div>
                 </div>
@@ -112,7 +112,7 @@
       $('#add').click(function(){  
         i++;  
         $('#dynamic_field').append(
-          '<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="name[]" placeholder="Type option text" class="form-control name_list" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">Remove</button></td></tr>'
+          '<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="options[]" placeholder="Type option text" class="form-control name_list" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">Remove</button></td></tr>'
         );  
       });
 

@@ -42,9 +42,9 @@
               <div class="col-sm-6 offset-sm-3">
 
                 <div class="form-group row">
-                  <label for="name" class="col-sm-2 col-form-label">Option</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="text" name="text" required="true" placeholder="Text">
+                  <label for="name" class="col-sm-3 col-form-label">Option Text</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="text" name="text" required="true" placeholder="Type option text">
                     <input type="integer" name="question_id" value="{{$question->id}}" hidden>
                   </div>
                 </div>

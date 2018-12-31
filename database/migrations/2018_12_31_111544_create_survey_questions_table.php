@@ -17,6 +17,7 @@ class CreateSurveyQuestionsTable extends Migration
             $table->increments('id');
             $table->string('text');
             $table->string('type');
+            $table->integer('survey_id')->unsigned();
             $table->foreign('survey_id')->references('id')->on('surveys')->onDelete('cascade');
             $table->timestamps();
         });

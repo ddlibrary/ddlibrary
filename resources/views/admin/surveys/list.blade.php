@@ -32,6 +32,7 @@
               <thead>
                 <tr>
                   <th>Name</th>
+                  <th>Status</th>
                   <th>Created At</th>
                   <th>OPERATIONS</th>
                 </tr>
@@ -41,6 +42,13 @@
                 @foreach ($surveys as $indexkey => $survey)
                   <tr>
                     <td>{{ $survey-> name }}</td>
+                    <td>
+                      @if ($survey->state == 'published')
+                        <span class="badge badge-success">Published</span>
+                      @else
+                        <span class="badge badge-warning">Draft</span>
+                      @endif
+                    </td>
                     <td>{{ $survey-> created_at }}</td>
                     <td style="display: flex;">
                       <a href="{{ URL::to('admin/survey/questions/'.$survey->id) }}" class="badge badge-primary" style="margin-right: 5px;">Questions</a>
