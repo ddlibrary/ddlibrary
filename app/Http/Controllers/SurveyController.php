@@ -57,6 +57,7 @@ class SurveyController extends Controller
 
     public function storeSurvey(Request $request)
     {
+        dd($request);
         parse_str(request('mydata'), $output);
         $answer = $output['useful'];  // value
 

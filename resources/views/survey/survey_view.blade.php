@@ -7,11 +7,28 @@
         </div>
         <div class="modal-body">
             <div class="modal-body" id="modal-body">
-                <h2>{{ \App\SurveyQuestion::where('survey_id', 1)->first()->text }} </h2>
                 <form method="POST" id="surveyform">
-                @foreach(\App\SurveyQuestionOption::where('question_id', 1)->get() as $item)
-                    <input type="radio" value="{{ $item->id }}" name="useful" class="form-control" style="display: inline;"> {{ $item->text }} <br>
-                @endforeach
+                    @foreach(\App\Survey::where('state', 'published')->get() as $survey)
+                        <h3>Survey Name: {{ $survey->name }}</h3>
+                        @foreach($survey->questions as $question)
+                            <h5>Question: {{ $question->text }}</h5>
+                            @foreach($question->options as $option)
+                                @if ($question->type == "single_choice")
+                                    <input type="radio" value="{{ $option->id }}" name="useful" class="form-control" style="display: inline;"> 
+                                    {{ $option->text }} 
+                                    <br>
+                                @elseif ($question->type == "multi_choice")
+                                    <input type="checkbox" value="{{ $option->id }}" name="useful" class="form-control" style="display: inline;"> 
+                                    {{ $option->text }} 
+                                    <br>
+                                @else
+                                    <input type="text" value="{{ $option->id }}" name="useful" class="form-control" style="display: inline;"> 
+                                    {{ $option->text }} 
+                                    <br>
+                                @endif
+                            @endforeach
+                        @endforeach
+                    @endforeach
                     <br><input class="form-control normalButton" type="submit" value="Submit"><br>
                 </form>
             </div>
@@ -38,7 +55,7 @@
         if(cookieValue !== "survey"){
             $('#surveyModal').show();
 
-            Cookies.set('ddl', 'survey', { expires: 30, path: '/' });
+            // Cookies.set('ddl', 'survey', { expires: 30, path: '/' });
         }
     }, pop_up_time);
 </script>
@@ -47,25 +64,25 @@
 <script src="{{ asset('js/js.cookie.min.js') }}"></script>
 
 <script>
-if(window.jQuery){
-    $(function () {
-        $('#surveyform').on('submit', function (e) {
-            e.preventDefault();
+    if(window.jQuery){
+        $(function () {
+            $('#surveyform').on('submit', function (e) {
+                e.preventDefault();
 
-            $.ajax({
-                type: 'post',
-                url: "{{ route('survey') }}",
-                data: {"mydata": $('form').serialize(), "_token": "{{ csrf_token() }}"},
-                success: function (data) {
-                    if(data){
-                        console.log("success!");
-                        $("#modal-body").html("Thank you for completing the survey!");
-                    }else{
-                        console.log("failure!");
+                $.ajax({
+                    type: 'post',
+                    url: "{{ route('survey') }}",
+                    data: {"mydata": $('form').serialize(), "_token": "{{ csrf_token() }}"},
+                    success: function (data) {
+                        if(data){
+                            console.log("success!");
+                            $("#modal-body").html("Thank you for completing the survey!");
+                        }else{
+                            console.log("failure!");
+                        }
                     }
-                }
+                });
             });
         });
-    });
-}
+    }
 </script>
