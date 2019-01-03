@@ -284,6 +284,7 @@ class ResourceController extends Controller
         $resource1 = $request->session()->get('resource1');
         $resource2 = $request->session()->get('resource2');
         $resource3 = $request->session()->get('resource3');
+        $resource3['published'] = $request->input('published');
 
         $request->session()->forget('resource1');
         $request->session()->forget('resource2');
@@ -299,7 +300,7 @@ class ResourceController extends Controller
             $myResources->abstract = $finalArray['abstract'];
             $myResources->language = $finalArray['language'];
             $myResources->user_id = Auth::id();
-            $myResources->status = 0;
+            $myResources->status = $finalArray['published'];
             //inserting to resource table
             $myResources->save();
 
