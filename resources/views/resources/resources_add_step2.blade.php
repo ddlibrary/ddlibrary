@@ -18,7 +18,7 @@
             <label for="attachments"> 
                 <strong>@lang('Attachments')</strong>
             </label>
-        <input class="form-control{{ $errors->has('attachments') ? ' is-invalid' : '' }}" id="attachments" name="attachments[]" size="40" stype="file">
+        <input class="form-control{{ $errors->has('attachments') ? ' is-invalid' : '' }}" id="attachments" name="attachments[]" size="40" type="file">
             <button type='button' class="add_more">@lang('Add More Files')</button>
             @if(isset($resource['attc']))
             @foreach($resource['attc'] as $item)
