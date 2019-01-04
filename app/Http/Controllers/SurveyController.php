@@ -56,16 +56,33 @@ class SurveyController extends Controller
     }
 
     public function storeSurvey(Request $request)
-    {
-        dd($request);
-        parse_str(request('mydata'), $output);
-        $answer = $output['useful'];  // value
+    {   
+        foreach ($request->single_choice as $key => $value) {
+            // key is question and value is selected option
+            $surveyAnswer = new SurveyAnswer();
+            $surveyAnswer->question_id = $key;
+            $surveyAnswer->answer_id = $value;
+            $surveyAnswer->ip = \Request::ip();
+            $surveyAnswer->save();
+        }
 
-        $surveyAnswer = new SurveyAnswer();
-        $surveyAnswer->question_id = 1;
-        $surveyAnswer->answer = $answer;
-        $surveyAnswer->ip = \Request::ip();
-        $surveyAnswer->save();
+        foreach ($request->multi_choice as $key => $value) {
+            // key is option and value is question
+            $surveyAnswer = new SurveyAnswer();
+            $surveyAnswer->question_id = $value;
+            $surveyAnswer->answer_id = $key;
+            $surveyAnswer->ip = \Request::ip();
+            $surveyAnswer->save();
+        }
+
+        foreach ($request->descriptive as $key => $value) {
+            // key is question and value the text inserted
+            $surveyAnswer = new SurveyAnswer();
+            $surveyAnswer->question_id = $key;
+            $surveyAnswer->description = $value;
+            $surveyAnswer->ip = \Request::ip();
+            $surveyAnswer->save();
+        }
         echo true;   
     }
 
@@ -90,11 +107,13 @@ class SurveyController extends Controller
         $question->survey_id = $request['survey_id'];
         $question->save();
 
-        foreach ($request->options as $option_text) {
-            $option = new SurveyQuestionOption();
-            $option->text = $option_text;
-            $option->question_id=$question->id;
-            $option->save();
+        if ($question->type != "descriptive"){
+            foreach ($request->options as $option_text) {
+                $option = new SurveyQuestionOption();
+                $option->text = $option_text;
+                $option->question_id=$question->id;
+                $option->save();
+            }
         }
         return Redirect::back()->with('status', 'Question Added!');
     }

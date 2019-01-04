@@ -63,7 +63,7 @@
                   <label for="name" class="col-sm-3 col-form-label">Option Text</label>
               
                   <div class="col-sm-9 d-flex">
-                    <input type="text" name="options[]" placeholder="Type option text" class="form-control name_lists" required=""/>
+                    <input type="text" name="options[]" placeholder="Type option text" class="form-control name_lists"/>
                     <button type="button" name="add" id="add" class="btn btn-success btn-sm">Add More</button>
                   </div>
                 </div>
@@ -78,7 +78,6 @@
                 <button type="submit" class="btn btn-primary pull-right btn-sm"> Add Question</button>
               </div>
             </div>
-           
           </form>
         </div>
       </div>

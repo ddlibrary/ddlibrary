@@ -14,15 +14,20 @@ class SurveyQuestionController extends Controller
     {
         $this->middleware('admin');
         $survey_questions = SurveyQuestion::all();
-        return view('admin.surveys.survey_questions', compact('survey_questions'));        
+        return view('admin.surveys.survey_questions_result', compact('survey_questions'));        
     }
 
     public function viewAnswers($id)
     {
     	$this->middleware('admin');
     	$question = SurveyQuestion::find($id);
-    	$survey_question_options = SurveyQuestionOption::where('question_id', $id)->get();
-    	return view('admin.surveys.question_answers', compact('question','survey_question_options')); 
+
+        if ($question->type == 'descriptive'){
+            $descriptive_answers = SurveyAnswer::where(['question_id' => $question ->id])->get();
+        }else{
+            $survey_question_options = $question->options;
+        }
+    	return view('admin.surveys.question_answers', compact('question','survey_question_options','descriptive_answers')); 
     }
 
 }

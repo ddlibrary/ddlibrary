@@ -15,8 +15,10 @@ class CreateSurveyAnswersTable extends Migration
     {
         Schema::create('survey_answers', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('ip');
+            $table->text('description')->nullable();
             $table->integer('question_id')->unsigned();
-            $table->integer('answer_id')->unsigned();
+            $table->integer('answer_id')->unsigned()->nullable();
             $table->foreign('question_id')->references('id')->on('survey_questions')->onDelete('cascade');
             $table->foreign('answer_id')->references('id')->on('survey_question_options')->onDelete('cascade');
             $table->timestamps();

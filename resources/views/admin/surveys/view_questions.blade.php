@@ -46,16 +46,19 @@
                     <td>{{ $survey_question-> text }}</td>
                     <td>
                       @if ($survey_question->type == 'single_choice')
-                        <span>Single Choise</span>
-                      @elseif ($survey_question->type == 'mulit_choice')
-                        <span>Multiple Choise</span>
+                        <span>Single Choice</span>
+                      @elseif ($survey_question->type == 'multi_choice')
+                        <span>Multiple Choice</span>
                       @else
                         <span>Descriptive</span>
                       @endif
                     </td>
                     <td style="display: flex;">
-                      <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$survey_question->id.'/view_options') }}" class="badge badge-primary" style="margin-right:5px;">Options</a>
+                      @if ($survey_question->type != 'descriptive')
+                        <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$survey_question->id.'/view_options') }}" class="badge badge-primary" style="margin-right:5px;">Options</a>
+                       @endif
                       <a href="javascript:void(0)" id="{{$survey_question->id}}" onclick="confirm(this.id);" class="badge badge-danger">Delete</a>
+                     
                     </td>
                   </tr>
                 @endforeach

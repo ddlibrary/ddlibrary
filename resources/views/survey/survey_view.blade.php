@@ -7,29 +7,28 @@
         </div>
         <div class="modal-body">
             <div class="modal-body" id="modal-body">
-                <form method="POST" id="surveyform">
+                <!-- <form method="POST" id="surveyform"> -->
+                <form method="POST" action="{{ route('survey')}}"> 
+                    @csrf
                     @foreach(\App\Survey::where('state', 'published')->get() as $survey)
                         <h3>Survey Name: {{ $survey->name }}</h3>
                         @foreach($survey->questions as $question)
-                            <h5>Question: {{ $question->text }}</h5>
+                            <h5 style="padding-bottom: 5px;padding-top: 5px;">Question:{{ $question->text }}</h5>
                             @foreach($question->options as $option)
                                 @if ($question->type == "single_choice")
-                                    <input type="radio" value="{{ $option->id }}" name="useful" class="form-control" style="display: inline;"> 
-                                    {{ $option->text }} 
-                                    <br>
-                                @elseif ($question->type == "multi_choice")
-                                    <input type="checkbox" value="{{ $option->id }}" name="useful" class="form-control" style="display: inline;"> 
-                                    {{ $option->text }} 
-                                    <br>
+                                    <input type="radio" value="{{$option->id}}" name="single_choice[{{$question->id}}]" class="form-control" style="display: inline;">{{ $option->text }}<br>
                                 @else
-                                    <input type="text" value="{{ $option->id }}" name="useful" class="form-control" style="display: inline;"> 
-                                    {{ $option->text }} 
-                                    <br>
+                                    <input type="checkbox" value="{{$question->id}}" name="multi_choice[{{$option->id}}]" class="form-control" style="display: inline;">{{ $option->text }}<br>    
                                 @endif
                             @endforeach
+                            @if ($question->type == "descriptive")
+                                <input type="text" style="width: 80%;" name="descriptive[{{$question->id}}]" class="form-control" style="display: inline;"><br>
+                            @endif
+                            <hr>
                         @endforeach
                     @endforeach
-                    <br><input class="form-control normalButton" type="submit" value="Submit"><br>
+                    <!-- <br><input class="form-control normalButton" type="submit" value="Submit"><br> -->
+                    <button type="submit" class="btn btn-primary pull-right"> Create</button>
                 </form>
             </div>
         </div>
