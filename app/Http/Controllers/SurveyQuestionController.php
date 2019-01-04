@@ -2,32 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\SurveyAnswer;
-use App\SurveyQuestion;
-use App\SurveyQuestionOption;
 use Illuminate\Http\Request;
+use App\Survey;
+use App\SurveyQuestion;
+use App\SurveyAnswer;
+use App\SurveySettings;
+use App\SurveyQuestionOption;
+use Redirect;
 
 class SurveyQuestionController extends Controller
 {
-
-	public function index()
+    public function index($id)
     {
-        $this->middleware('admin');
-        $survey_questions = SurveyQuestion::all();
-        return view('admin.surveys.result.view', compact('survey_questions'));        
+        $survey = Survey::find($id);
+        $survey_questions = SurveyQuestion::where('survey_id', $survey->id)->get();
+        return view('admin.surveys.question.list', compact('survey','survey_questions'));
+    }
+    
+    public function create($id)
+    {
+        $survey = Survey::find($id);
+        return view('admin.surveys.question.create', compact('survey'));
     }
 
-    public function viewAnswers($id)
+    public function store(Request $request)
     {
-    	$this->middleware('admin');
-    	$question = SurveyQuestion::find($id);
+        $question = new SurveyQuestion();
+        $question->text = $request['text'];
+        $question->type = $request['type'];
+        $question->survey_id = $request['survey_id'];
+        $question->save();
 
-        if ($question->type == 'descriptive'){
-            $descriptive_answers = SurveyAnswer::where(['question_id' => $question ->id])->get();
-        }else{
-            $survey_question_options = $question->options;
+        if ($question->type != "descriptive"){
+            foreach ($request->options as $option_text) {
+                $option = new SurveyQuestionOption();
+                $option->text = $option_text;
+                $option->question_id=$question->id;
+                $option->save();
+            }
         }
-    	return view('admin.surveys.result.result', compact('question','survey_question_options','descriptive_answers')); 
+        return Redirect::back()->with('status', 'Question Added!');
     }
 
+    public function delete($id)
+    {
+        $question = SurveyQuestion::find($id);
+        $question->delete();
+        return Redirect::back()->with('status', 'Survey\'s Question Deleted!');
+    }
 }
