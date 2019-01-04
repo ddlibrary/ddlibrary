@@ -14,7 +14,7 @@ class SurveyQuestionController extends Controller
     {
         $this->middleware('admin');
         $survey_questions = SurveyQuestion::all();
-        return view('admin.surveys.survey_questions_result', compact('survey_questions'));        
+        return view('admin.surveys.result.view', compact('survey_questions'));        
     }
 
     public function viewAnswers($id)
@@ -27,7 +27,7 @@ class SurveyQuestionController extends Controller
         }else{
             $survey_question_options = $question->options;
         }
-    	return view('admin.surveys.question_answers', compact('question','survey_question_options','descriptive_answers')); 
+    	return view('admin.surveys.result.result', compact('question','survey_question_options','descriptive_answers')); 
     }
 
 }
