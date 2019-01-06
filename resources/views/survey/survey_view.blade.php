@@ -7,8 +7,7 @@
         </div>
         <div class="modal-body">
             <div class="modal-body" id="modal-body">
-                <!-- <form method="POST" id="surveyform"> -->
-                <form method="POST" action="{{ route('survey')}}"> 
+                <form method="POST" id="surveyform">
                     @csrf
                     @foreach(\App\Survey::where('state', 'published')->get() as $survey)
                         <h3>Survey Name: {{ $survey->name }}</h3>
@@ -27,8 +26,7 @@
                             <hr>
                         @endforeach
                     @endforeach
-                    <!-- <br><input class="form-control normalButton" type="submit" value="Submit"><br> -->
-                    <button type="submit" class="btn btn-primary pull-right"> Create</button>
+                    <br><input class="form-control normalButton" type="submit" value="Submit"><br>
                 </form>
             </div>
         </div>
@@ -54,7 +52,7 @@
         if(cookieValue !== "survey"){
             $('#surveyModal').show();
 
-            // Cookies.set('ddl', 'survey', { expires: 30, path: '/' });
+            Cookies.set('ddl', 'survey', { expires: 30, path: '/' });
         }
     }, pop_up_time);
 </script>
@@ -71,7 +69,7 @@
                 $.ajax({
                     type: 'post',
                     url: "{{ route('survey') }}",
-                    data: {"mydata": $('form').serialize(), "_token": "{{ csrf_token() }}"},
+                    data: $('form').serialize(),
                     success: function (data) {
                         if(data){
                             console.log("success!");
