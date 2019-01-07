@@ -9,16 +9,13 @@
         <li class="breadcrumb-item">
           <a href="{{ URL::to('admin') }}">Dashboard</a>
         </li>
-        <li class="breadcrumb-item">
-            <a href="{{ URL::to('admin/surveys') }}">Surveys</a>
-          </li>
-        <li class="breadcrumb-item active">{{ $survey->name}}</li>
+        <li class="breadcrumb-item active">Survey</li>
       </ol>
 
       <!-- Surveys Answers DataTables -->
       <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-list"></i> Questions
+          <i class="fa fa-list"></i> Surveys
         </div>
 
         <div class="card-body">
@@ -27,26 +24,36 @@
                   {{ session('status') }}
               </div>
             @endif
-            <a href="{{ URL::to('admin/survey/question/add/'.$survey->id) }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
+            <a href="{{ URL::to('admin/survey/create') }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
               <span class="fa fa-plus"></span> Add New
             </a>
-            <span>Total: <strong>{{count($survey_questions)}}</strong></span>
+            <span>Total: <strong>{{count($surveys)}}</strong></span>
             <table class="table table-bordered" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Text</th>
+                  <th>Name</th>
+                  <th>Status</th>
+                  <th>Created At</th>
                   <th>OPERATIONS</th>
                 </tr>
               </thead>
 
               <tbody>
-                @foreach ($survey_questions as $indexkey => $survey_question)
+                @foreach ($surveys as $indexkey => $survey)
                   <tr>
-                    <td>{{ $survey_question-> text }}</td>
+                    <td>{{ $survey-> name }}</td>
+                    <td>
+                      @if ($survey->state == 'published')
+                        <span class="badge badge-success">Published</span>
+                      @else
+                        <span class="badge badge-warning">Draft</span>
+                      @endif
+                    </td>
+                    <td>{{ $survey-> created_at }}</td>
                     <td style="display: flex;">
-                      <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$survey_question->id.'/view_options') }}" class="badge badge-primary" style="margin-right:5px;">Options</a>
-                      <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$survey_question->id.'/edit') }}" class="badge badge-primary" style="margin-right: 5px;">Edit</a>
-                      <a href="javascript:void(0)" id="{{$survey_question->id}}" onclick="confirm(this.id);" class="badge badge-danger">Delete</a>
+                      <a href="{{ URL::to('admin/survey/questions/'.$survey->id) }}" class="badge badge-primary" style="margin-right: 5px;">Questions</a>
+                      <a href="{{ URL::to('admin/survey/edit/'.$survey->id) }}" class="badge badge-primary" style="margin-right: 5px;">Edit</a>
+                      <a href="javascript:void(0)" id="{{$survey->id}}" onclick="confirm(this.id);" class="badge badge-danger">Delete</a>
                     </td>
                   </tr>
                 @endforeach
@@ -54,12 +61,10 @@
             </table>
           </div>
         </div>
-
       </div>
     </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
-
 
     <!-- Modal for confirmation -->
     <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -72,7 +77,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <p>Are you sure want to delete this question?</p>
+            <p>Are you sure want to delete this survey?</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">No</button>
@@ -87,11 +92,10 @@
         function confirm(id){
             $("#confirmModal").modal('show');
             $('.confirm').click(function(){
-                var url='/admin/survey/question/delete/'+id;
+                var url='/admin/survey/delete/'+id;
                 $('a.delete').attr('href',url);
             });
         }
     </script>
     <!--end-->
-
-  @endsection
+@endsection

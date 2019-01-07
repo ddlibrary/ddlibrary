@@ -9,13 +9,16 @@
         <li class="breadcrumb-item">
           <a href="{{ URL::to('admin') }}">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Survey</li>
+        <li class="breadcrumb-item">
+            <a href="{{ URL::to('admin/surveys') }}">Surveys</a>
+          </li>
+        <li class="breadcrumb-item active">{{ $survey->name}}</li>
       </ol>
 
       <!-- Surveys Answers DataTables -->
       <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-list"></i> Surveys
+          <i class="fa fa-list"></i> Questions
         </div>
 
         <div class="card-body">
@@ -24,28 +27,38 @@
                   {{ session('status') }}
               </div>
             @endif
-            <a href="{{ URL::to('admin/survey/create') }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
+            <a href="{{ URL::to('admin/survey/question/add/'.$survey->id) }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
               <span class="fa fa-plus"></span> Add New
             </a>
-            <span>Total: <strong>{{count($surveys)}}</strong></span>
+            <span>Total: <strong>{{count($survey_questions)}}</strong></span>
             <table class="table table-bordered" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Created At</th>
+                  <th>Text</th>
+                  <th>Type</th>
                   <th>OPERATIONS</th>
                 </tr>
               </thead>
 
               <tbody>
-                @foreach ($surveys as $indexkey => $survey)
+                @foreach ($survey_questions as $indexkey => $survey_question)
                   <tr>
-                    <td>{{ $survey-> name }}</td>
-                    <td>{{ $survey-> created_at }}</td>
+                    <td>{{ $survey_question-> text }}</td>
+                    <td>
+                      @if ($survey_question->type == 'single_choice')
+                        <span>Single Choice</span>
+                      @elseif ($survey_question->type == 'multi_choice')
+                        <span>Multiple Choice</span>
+                      @else
+                        <span>Descriptive</span>
+                      @endif
+                    </td>
                     <td style="display: flex;">
-                      <a href="{{ URL::to('admin/survey/questions/'.$survey->id) }}" class="badge badge-primary" style="margin-right: 5px;">Questions</a>
-                      <a href="{{ URL::to('admin/survey/edit/'.$survey->id) }}" class="badge badge-primary" style="margin-right: 5px;">Edit</a>
-                      <a href="javascript:void(0)" id="{{$survey->id}}" onclick="confirm(this.id);" class="badge badge-danger">Delete</a>
+                      @if ($survey_question->type != 'descriptive')
+                        <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$survey_question->id.'/view_options') }}" class="badge badge-primary" style="margin-right:5px;">Options</a>
+                       @endif
+                      <a href="javascript:void(0)" id="{{$survey_question->id}}" onclick="confirm(this.id);" class="badge badge-danger">Delete</a>
+                     
                     </td>
                   </tr>
                 @endforeach
@@ -53,10 +66,12 @@
             </table>
           </div>
         </div>
+
       </div>
     </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
+
 
     <!-- Modal for confirmation -->
     <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -69,7 +84,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <p>Are you sure want to delete this survey?</p>
+            <p>Are you sure want to delete this question?</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">No</button>
@@ -84,10 +99,11 @@
         function confirm(id){
             $("#confirmModal").modal('show');
             $('.confirm').click(function(){
-                var url='/admin/survey/delete/'+id;
+                var url='/admin/survey/question/delete/'+id;
                 $('a.delete').attr('href',url);
             });
         }
     </script>
     <!--end-->
-@endsection
+
+  @endsection

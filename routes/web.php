@@ -144,36 +144,35 @@ Route::group(
 
     //Impact Page
     Route::get('/impact','ImpactController@index');
-
-    //Survey Page
-    Route::get('/survey','SurveyController@index');
-    Route::post('/survey/store','SurveyController@storeSurvey')->name('survey');
-
+    
     //admin, survey
     Route::get('admin/surveys','SurveyController@index');
     Route::get('admin/survey/edit/{id}','SurveyController@edit');
-    Route::get('admin/survey/{survey_id}/question/{id}/edit','SurveyController@editQuestion');
-    Route::post('admin/update_survey/{id}','SurveyController@updateSurvey')->name('update_survey');
-    Route::post('admin/update_question/{id}','SurveyController@updateQuestion')->name('update_question');
     Route::get('admin/survey/create','SurveyController@create');
-    Route::post('admin/survey/create','SurveyController@postSurvey')->name('create_survey');
     Route::get('admin/survey/delete/{id}','SurveyController@delete');
-    Route::get('admin/survey/question/delete/{id}','SurveyController@deleteQuestion');
-    Route::get('admin/survey/question/option/delete/{id}','SurveyController@deleteOption');
-    Route::get('admin/survey/questions/{id}','SurveyController@surveyQuestions');
-    Route::get('admin/survey/question/add/{id}','SurveyController@createQuestion');
-    Route::post('admin/survey/question/add','SurveyController@storeQuestion')->name('create_question');
-    Route::get('admin/survey/{survey_id}/question/{id}/view_options','SurveyController@viewOptions');
-    Route::get('admin/survey/{survey_id}/question/{id}/option/create','SurveyController@createOption');
-    Route::post('admin/survey/question/option/add','SurveyController@storeOption')->name('create_option');
-    Route::get('admin/survey_questions','SurveyQuestionController@index');
-    Route::get('admin/survey_question/answers/{id}','SurveyQuestionController@viewAnswers');
-    Route::get('admin/survey_time','SurveyController@getPopUpTime');
-    Route::get('admin/edit_survey_modal_time','SurveyController@editSurveyModalTime');
-    Route::post('admin/update_survey_modal_time/{id}','SurveyController@updateSurveyModalTime')->name('update_survey_modal_time');
-    Route::get('admin/create_survey_modal_time','SurveyController@createSurveyModalTime');
-    Route::post('admin/store_survey_modal_time','SurveyController@storeSurveyModalTime')->name('store_survey_modal_time');
-
+    Route::post('admin/update_survey/{id}','SurveyController@update')->name('update_survey');
+    Route::post('admin/survey/create','SurveyController@store')->name('create_survey');
+    //question
+    Route::get('admin/survey/questions/{id}','SurveyQuestionController@index');
+    Route::post('admin/survey/question/add','SurveyQuestionController@store')->name('create_question');
+    Route::get('admin/survey/question/add/{id}','SurveyQuestionController@create');
+    Route::get('admin/survey/question/delete/{id}','SurveyQuestionController@delete');
+    //option
+    Route::get('admin/survey/question/option/delete/{id}','SurveyQuestionOptionController@delete');
+    Route::get('admin/survey/{survey_id}/question/{id}/view_options','SurveyQuestionOptionController@index');
+    Route::get('admin/survey/{survey_id}/question/{id}/option/create','SurveyQuestionOptionController@create');
+    Route::post('admin/survey/question/option/add','SurveyQuestionOptionController@store')->name('create_option');
+    //result
+    Route::get('admin/survey_questions','SurveyAnswerController@allQuestions');
+    Route::get('admin/survey_question/answers/{id}','SurveyAnswerController@questionAnswers');
+    Route::post('/survey/store','SurveyAnswerController@storeUserSurvey')->name('survey');
+    //setting
+    Route::get('admin/survey_time','SurveySettingController@getSurveyModalTime');
+    Route::get('admin/edit_survey_modal_time','SurveySettingController@editSurveyModalTime');
+    Route::post('admin/update_survey_modal_time/{id}','SurveySettingController@updateSurveyModalTime')->name('update_survey_modal_time');
+    Route::get('admin/create_survey_modal_time','SurveySettingController@createSurveyModalTime');
+    Route::post('admin/store_survey_modal_time','SurveySettingController@storeSurveyModalTime')->name('store_survey_modal_time');
+    
     //Analytics
     Route::get('/admin/analytics','AnalyticsController@index')->middleware('admin');
     Route::post('/admin/analytics','AnalyticsController@show')->name('analytics')->middleware('admin');

@@ -24,23 +24,23 @@
               <thead>
                 <tr>
                   <th>Question</th>
+                  <th>Type</th>
                   <th>Survey Name</th>
                   <th>OPERATIONS</th>
                 </tr>
               </thead>
 
-              <tfoot>
-                <tr>
-                  <th>Question</th>
-                  <th>Survey</th>
-                  <th>OPERATIONS</th>
-                </tr>
-              </tfoot>
-
               <tbody>
                 @foreach ($survey_questions as $indexkey => $survey_question)
                   <tr>
                     <td>{{ $survey_question-> text }}</td>
+                    @if ($survey_question->type == 'single_choice')
+                      <td>Single Choice</td>
+                    @elseif ($survey_question->type == 'multi_choice')
+                      <td>Multiple Choice</td>
+                    @else
+                      <td>Descriptive</td>
+                    @endif
                     <td>{{\App\Survey::find($survey_question->survey_id)->name }}</td>
                     <td><a href="{{ URL::to('admin/survey_question/answers/'.$survey_question->id) }}" class="badge badge-success">View Answers</a></td>
                   </tr>
