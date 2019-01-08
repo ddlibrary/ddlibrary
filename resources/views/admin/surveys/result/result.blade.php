@@ -25,18 +25,32 @@
           <table class="table table-bordered" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Answer Option</th>
-                  <th>Answers Count</th>
+                  @if ($question->type == "descriptive")
+                    <th>Answers</th>
+
+                  @else
+                    <th>Options</th>
+                    <th>Count</th>
+                  @endif
                 </tr>
               </thead>
 
               <tbody>
-                @foreach ($survey_question_options as $indexkey => $survey_question_option)
-                  <tr>
-                    <td>{{ $survey_question_option-> text }}</td>
-                    <td>{{ count(\App\SurveyAnswer::where(['question_id'=> $survey_question_option -> question_id, 'answer' => $survey_question_option->id])->get()) }} </td>
-                  </tr>
-                @endforeach
+                @if ($question->type != "descriptive")
+                  @foreach ($survey_question_options as $option)
+                    <tr>
+                      <td>{{ $option-> text }}</td>
+                      <td>{{ count(\App\SurveyAnswer::where(['question_id'=> $option -> question_id, 'answer_id' => $option->id])->get()) }}</td>
+                    </tr>
+                  @endforeach
+                @else
+                  @foreach ($descriptive_answers as $answer)
+                    <tr>
+                      <td>{{ $answer->description }}</td>
+                    </tr>
+                  @endforeach
+                @endif
+
               </tbody>
             </table>
         </div>

@@ -35,10 +35,28 @@
               <div class="col-sm-6 offset-sm-3">
 
                 <div class="form-group row">
-                  <label for="name" class="col-sm-2 col-form-label">Name</label>
-                  <div class="col-sm-10">
+                  <label for="name" class="col-sm-3 col-form-label">Survey Name</label>
+                  <div class="col-sm-9">
                     <input type="text" class="form-control" id="name" name="name" value="{{$survey->name}}" required="true" placeholder="Name">
                   </div>
+
+                  <label for="name" class="col-sm-3 col-form-label">Survey Status</label>
+                  <div class="col-sm-9">
+                      @if ($survey->state == 'published')
+                        <input type="radio" id="status" name="state" value="published" checked>
+                      @else
+                        <input type="radio" id="status" name="state" value="published">
+                      @endif
+                      <label for="status" class="badge badge-success">Published</label>
+                      
+                      @if ($survey->state == 'draft')
+                        <input type="radio" id="status" name="state" value="draft" checked>
+                      @else
+                        <input type="radio" id="status" name="state" value="draft">
+                      @endif
+                      <label for="status" class="badge badge-warning">Draft</label>
+                  </div>
+
                 </div>
                 <button type="submit" class="btn btn-primary pull-right"><span class="fa fa-download"></span> Update</button>
                 
