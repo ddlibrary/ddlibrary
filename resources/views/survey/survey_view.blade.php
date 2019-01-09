@@ -35,7 +35,9 @@
                 <form method="POST" id="surveyform">
                     @csrf
                     <div class="tab-content">
-                        <?php $a = 1; ?>
+                        <?php  
+                            $a = 1; 
+                        ?>
                         @foreach(\App\Survey::where('state', 'published')->get() as $survey)
                             @if ($a == 1)
                                 <div class="tab-pane fade in active" id="{{$survey->id}}">
@@ -54,7 +56,11 @@
                                             @endif
                                         </div>
                                     @endforeach
-                                    <a class="btn btn-primary next" href="#">Next</a>
+                                    @if (\App\Survey::where('state', 'published')->count() ==  $a)
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                    @else
+                                        <a class="btn btn-primary next" href="#">Next</a>
+                                    @endif
                                 </div>
                             @else
                                 <div class="tab-pane fade" id="{{$survey->id}}">
@@ -81,7 +87,9 @@
                                     @endif
                                 </div>
                             @endif
-                            <?php $a++; ?>
+                            <?php 
+                                $a++; 
+                            ?>
                         @endforeach
                         <div class="tab-pane" id="finish">
                             <div class="well"> 
@@ -152,7 +160,7 @@
         $(function () {
             $('#surveyform').on('submit', function (e) {
                 e.preventDefault();
-
+                
                 $.ajax({
                     type: 'post',
                     url: "{{ route('survey') }}",
