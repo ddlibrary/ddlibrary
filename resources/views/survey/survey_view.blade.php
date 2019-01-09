@@ -127,7 +127,7 @@
     var pop_up_time = document.querySelector('.pop_up_time').id
 
     if (!Boolean(pop_up_time)){
-        pop_up_time = 2000;
+        pop_up_time = 7000;
     } else{
         pop_up_time  = JSON.parse(pop_up_time)['time'];
     }
