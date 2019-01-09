@@ -210,6 +210,11 @@
             @if($file->file_mime=="application/pdf")
             <object data="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}" type="application/pdf" width="100%" height="500"></object>
             @endif
+            @if($file->file_mime == "audio/mpeg")
+            <audio controls>
+                <source src="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}" type="audio/mpeg">
+            </audio>
+            @endif
             @endforeach
             @endif
             </div>
