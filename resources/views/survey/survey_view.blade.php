@@ -138,7 +138,7 @@
         var cookieValue = Cookies.get('ddl');
         if(cookieValue !== "survey"){
             $('#surveyModal').show();
-            // Cookies.set('ddl', 'survey', { expires: 30, path: '/' });
+            Cookies.set('ddl', 'survey', { expires: 30, path: '/' });
         }
     }, pop_up_time);
 </script>
