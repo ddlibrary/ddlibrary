@@ -171,13 +171,13 @@ if (! function_exists('getCountry')) {
 if (! function_exists('isAdmin')) {
     function isAdmin()
     {
-        // $user = factory(App\User::class)->make();
+        $user = factory(App\User::class)->make();
 
-        // if(count($user->isAdministrator(Auth::id()))){
-        //     return TRUE;
-        // }else{
-        //     return FALSE;
-        // }
+        if(count($user->isAdministrator(Auth::id()))){
+            return TRUE;
+        }else{
+            return FALSE;
+        }
     }
 }
 
