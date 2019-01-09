@@ -95,6 +95,7 @@
     </div>
 </div>
 
+{{-- Survey progress bar/start  --}}
 <script type="text/javascript">
     var survey_count = $('#survey_count').val();
 	$('.next').click(function(){         
@@ -118,6 +119,7 @@
 	})
 </script>
 
+
 {{-- Survey pop up time/start  --}}
 <span class="pop_up_time" id="{{ \App\SurveySettings::first() }}"></span>
 
@@ -140,8 +142,9 @@
         }
     }, pop_up_time);
 </script>
-{{-- Survey pop up time/end  --}}
 
+
+{{-- Survey submission --}}
 <script src="{{ asset('js/js.cookie.min.js') }}"></script>
 
 <script>
