@@ -325,14 +325,8 @@ class Resource extends Model
                 'rs.id',
                 'rs.language', 
                 'rs.abstract',
-                'rs.title',
-                DB::raw('count(rf.resource_id) as totalfavorite'),	
-                DB::raw('count(rc.resource_id) as totalcomments'),	
-                DB::raw('count(rv.resource_id) as totalviews')
+                'rs.title'
             )
-            ->leftJoin('resource_favorites AS rf', 'rf.resource_id', '=', 'rs.id')	
-            ->leftJoin('resource_comments AS rc', 'rc.resource_id', '=', 'rs.id')	
-            ->leftJoin('resource_views AS rv', 'rv.resource_id', '=', 'rs.id')
             ->when(count($subjectAreaIds) > 0, function($query) use($subjectAreaIds){
                 return $query->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
                         ->join('taxonomy_term_hierarchy AS tth','tth.tid','=','rsa.tid')
