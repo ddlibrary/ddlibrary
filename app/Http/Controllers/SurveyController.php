@@ -39,7 +39,11 @@ class SurveyController extends Controller
 
         // update the tnid
         $created_survey = Survey::find($survey->id);
-        $created_survey->tnid = $survey->id;
+        if ($request['tnid']){
+            $created_survey->tnid = $request['tnid'];
+        }else{
+            $created_survey->tnid = $survey->id;
+        }
         $created_survey->save();
         return Redirect::back()->with('status', 'Survey Created!');
     }
@@ -70,16 +74,4 @@ class SurveyController extends Controller
     {
         return view('admin.surveys.survey.add_translation', compact('tnid', 'lang'));   
     }
-
-    public function storeTranslation(Request $request)
-    {
-        $survey = new Survey();
-        $survey->name = $request['name'];
-        $survey->state = $request['state'];
-        $survey->tnid = $request['tnid'];
-        $survey->language = $request['language'];
-        $survey->save();
-        return Redirect::back()->with('status', 'Survey Created!');
-    }
-
 }
