@@ -3,7 +3,7 @@
 {{ trim(strip_tags($resource->title)) }}
 @endsection
 @section('description')
-{{ substr(trim(strip_tags(fixImage($resource->abstract, $resource->id))), 0, 300) }}
+{{ html_entity_decode(trim(strip_tags(fixImage($resource->abstract, $resource->id)))) }}
 @endsection
 @section('page_image')
 {{ getImagefromResource($resource->abstract, '282x254') }}
@@ -209,6 +209,11 @@
             <span class="download-item item-mobile">{{ formatBytes($file->file_size) }}</span>
             @if($file->file_mime=="application/pdf")
             <object data="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}" type="application/pdf" width="100%" height="500"></object>
+            @endif
+            @if($file->file_mime == "audio/mpeg")
+            <audio controls>
+                <source src="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}" type="audio/mpeg">
+            </audio>
             @endif
             @endforeach
             @endif

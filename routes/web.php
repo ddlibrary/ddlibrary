@@ -149,13 +149,15 @@ Route::group(
     Route::get('admin/surveys','SurveyController@index');
     Route::get('admin/survey/edit/{id}','SurveyController@edit');
     Route::get('admin/survey/view/{id}/{tnid}','SurveyController@view');
-    Route::get('survey/add/translate/{id}/{lang}','SurveyController@addTranslate');
+    Route::get('admin/survey/add/translate/{id}/{lang}','SurveyController@addTranslate');
     Route::get('admin/survey/create','SurveyController@create');
     Route::get('admin/survey/delete/{id}','SurveyController@delete');
     Route::post('admin/update_survey/{id}','SurveyController@update')->name('update_survey');
     Route::post('admin/survey/create','SurveyController@store')->name('create_survey');
     //question
     Route::get('admin/survey/questions/{id}','SurveyQuestionController@index');
+    Route::get('admin/survey/{surveyid}/question/view/{id}/{tnid}','SurveyQuestionController@view');
+    Route::get('admin/survey/question/add/translate/{id}/{lang}','SurveyQuestionController@addTranslate');
     Route::post('admin/survey/question/add','SurveyQuestionController@store')->name('create_question');
     Route::get('admin/survey/question/add/{id}','SurveyQuestionController@create');
     Route::get('admin/survey/question/delete/{id}','SurveyQuestionController@delete');

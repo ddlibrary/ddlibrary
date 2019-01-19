@@ -59,6 +59,7 @@ class SurveyController extends Controller
         $survey = Survey::find($id);
         $survey->name = $request['name'];
         $survey->state = $request['state'];
+        $survey->language = $request['language'];
         $survey->save();
         return Redirect::back()->with('status', 'Survey Updated!');
     }

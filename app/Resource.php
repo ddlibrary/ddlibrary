@@ -324,20 +324,9 @@ class Resource extends Model
             ->select(
                 'rs.id',
                 'rs.language', 
-                'rs.title',
                 'rs.abstract',
-                'rs.user_id',
-                'users.username AS author',
-                'rs.status',
-                'rs.updated_at',
-                DB::raw('count(rf.resource_id) as totalfavorite'),	
-                DB::raw('count(rc.resource_id) as totalcomments'),	
-                DB::raw('count(rv.resource_id) as totalviews')
+                'rs.title'
             )
-            ->leftJoin('users', 'users.id', '=', 'rs.user_id')
-            ->leftJoin('resource_favorites AS rf', 'rf.resource_id', '=', 'rs.id')	
-            ->leftJoin('resource_comments AS rc', 'rc.resource_id', '=', 'rs.id')	
-            ->leftJoin('resource_views AS rv', 'rv.resource_id', '=', 'rs.id')
             ->when(count($subjectAreaIds) > 0, function($query) use($subjectAreaIds){
                 return $query->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
                         ->join('taxonomy_term_hierarchy AS tth','tth.tid','=','rsa.tid')
@@ -378,10 +367,6 @@ class Resource extends Model
                 'rs.language', 
                 'rs.title',
                 'rs.abstract',
-                'rs.user_id',
-                'users.username',
-                'rs.status',
-                'rs.updated_at',
                 'rs.created_at'
             )
             ->paginate(32);

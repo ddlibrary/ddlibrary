@@ -22,6 +22,7 @@ use App\ResourceTranslator;
 use App\ResourceIamAuthor;
 
 use App\ResourceComment;
+use App\ResourceView;
 use App\ResourceFlag;
 use App\ResourceFavorite;
 
@@ -102,13 +103,27 @@ class ResourceController extends Controller
             $typeIds = $everything['type'];
         }
 
+        $views = new ResourceView();
+        $favorites = new ResourceFavorite();
+        $comments = new ResourceComment();
         $resources = $myResources->paginateResourcesBy($request);
 
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data',8);
         $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
         $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
         
-        return view('resources.resources_list', compact('resources','subjects','types','levels','subjectAreaIds','levelIds','typeIds'));
+        return view('resources.resources_list', compact(
+            'resources',
+            'subjects',
+            'types',
+            'levels',
+            'subjectAreaIds',
+            'levelIds',
+            'typeIds',
+            'views',
+            'favorites',
+            'comments'
+        ));
     }
 
     public function viewPublicResource(Request $request, $resourceId)

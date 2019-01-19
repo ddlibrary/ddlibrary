@@ -12,7 +12,10 @@
         <li class="breadcrumb-item">
           <a href="{{ URL::to('admin/surveys') }}">Survey</a>
         </li>
-        <li class="breadcrumb-item active">Translation</li>
+        <li class="breadcrumb-item">
+            <a href="{{ URL::to('admin/survey/questions/'.$survey->id) }}">Survey's Questions</a>
+        </li>
+        <li class="breadcrumb-item active">Translations</li>
       </ol>
 
       <!-- Surveys Answers DataTables -->
@@ -25,7 +28,7 @@
             <table class="table table-bordered" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Survey</th>
+                  <th>Question</th>
                   <th>Language</th>
                   <th>OPERATIONS</th>
                 </tr>
@@ -33,10 +36,10 @@
 
               <tbody>
                 @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                  <?php $item = $surveys->firstWhere('language',$localeCode);?>
+                  <?php $item = $questions->firstWhere('language',$localeCode);?>
                   @if(count($item))
                     <tr>
-                        <td>{{ $item->name }}</td>
+                        <td>{{ $item->text }}</td>
                         <td>{{ fixLanguage($item->language) }}</td>
                         <td><span class="badge badge-success">Existed</span></td>
                     </tr>
@@ -44,7 +47,7 @@
                     <tr>
                       <td><span class="badge badge-warning">Empty</span></td>
                       <td>{{ $properties['name'] }}</td>
-                      <td><a href="{{ URL::to('admin/survey/add/translate/'.$survey_self->tnid.'/'.$localeCode) }}" class="badge badge-primary">Add</a></td>
+                      <td><a href="{{ URL::to('admin/survey/question/add/translate/'.$question_self->tnid.'/'.$localeCode) }}" class="badge badge-primary">Add</a></td>
                     </tr>
                   @endif
                 @endforeach

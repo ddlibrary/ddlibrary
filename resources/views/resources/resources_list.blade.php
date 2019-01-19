@@ -63,13 +63,13 @@
                 <div class="resource-title">{{ $resource->title }}</div>	
                 <div class="resource-details">	
                     <article>	
-                        <i class="fas fa-eye"></i><span>{{ $resource->totalviews }}</span>	
+                        <i class="fas fa-eye"></i><span>{{ $views->where('resource_id', $resource->id)->count() }}</span>	
                     </article>	
                     <article>	
-                        <i class="fas fa-star"></i><span>{{ $resource->totalfavorite }}</span>	
+                        <i class="fas fa-star"></i><span>{{ $favorites->where('resource_id', $resource->id)->count()  }}</span>	
                     </article>	
                     <article>	
-                        <i class="fas fa-comment"></i><span>{{ $resource->totalcomments }}</span>	
+                        <i class="fas fa-comment"></i><span>{{ $comments->where('resource_id', $resource->id)->count()  }}</span>	
                     </article>	
                 </div>	
             </article>	

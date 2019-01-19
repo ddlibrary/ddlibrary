@@ -10,24 +10,22 @@
           <a href="{{ URL::to('admin') }}">Dashboard</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{{ URL::to('admin/surveys') }}">Surveys</a>
+          <a href="{{ URL::to('admin/surveys') }}">Survey</a>
         </li>
         <li class="breadcrumb-item">
             <a href="{{ URL::to('admin/survey/questions/'.$survey->id) }}">Survey's Questions</a>
         </li>
-
-        <li class="breadcrumb-item active">Create Question</li>
+        <li class="breadcrumb-item active">Translations</li>
       </ol>
 
       <!-- Surveys Answers DataTables -->
       <div class="card mb-3">
 
         <div class="card-header">
-          <i class="fa fa-plus"></i> Create Question
+          <i class="fa fa-plus"></i> Create Question: <span class="badge badge-success">{{ fixLanguage($lang) }} </span>
         </div>
 
         <div class="card-body">
-          
           @if (session('status'))
               <div class="alert alert-success">
                   {{ session('status') }}
@@ -51,14 +49,17 @@
                 <div class="form-group row">
                   <label for="name" class="col-sm-3 col-form-label">Language</label>
                   <div class="col-sm-9">
-                    <select class="form-control{{ $errors->has('language') ? ' is-invalid' : '' }}" name="language" id="language" required>
-                        <option value="">- @lang('None') -</option>
-                        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                          <option value="{{ $localeCode }}" {{ old('language') == $localeCode ? "selected" : "" }}>{{ $properties['native'] }}</option>
-                        @endforeach
+                    <select readonly class="form-control{{ $errors->has('language') ? ' is-invalid' : '' }}" name="language" id="language" required>
+                      @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                        @if ( $lang == $localeCode)
+                          <option value="{{ $localeCode }}">{{ $properties['native'] }}</option>
+                        @endif
+                      @endforeach
                     </select>
                   </div>
                 </div>
+
+                <input type="integer" name="tnid" style="display: none;" value="{{$tnid}}">
 
                 <div class="form-group row">
                   <label for="name" class="col-sm-3 col-form-label">Question Type</label>
@@ -97,43 +98,4 @@
   </div>
   <!-- /.container-fluid-->
   <!-- /.content-wrapper-->
-
-  <script src="{{ URL::to('vendor/jquery/jquery.min.js') }}"></script>
-
-  <script type="text/javascript">
-
-    function showOption() {
-      var optionText = document.getElementById("option_type");
-      var selected_option = optionText.options[optionText.selectedIndex].value;
-      console.log(selected_option);
-      
-      if (selected_option != 'descriptive'){
-        document.getElementById("options").style.display = "flex";
-        document.getElementById("dynamic_options").style.display = "flex";
-      }else{
-        document.getElementById("options").style.display = "none";
-        document.getElementById("dynamic_options").style.display = "none";
-      }
-    }
-
-
-    $(document).ready(function(){      
-      var i=1;  
-
-      $('#add').click(function(){  
-        i++;  
-        $('#dynamic_field').append(
-          '<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="options[]" placeholder="Type option text" class="form-control name_list" required /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">Remove</button></td></tr>'
-        );  
-      });
-
-      $(document).on('click', '.btn_remove', function(){  
-           var button_id = $(this).attr("id");   
-           $('#row'+button_id+'').remove();  
-      });  
-
-    }); 
-
-</script>
-
-@endsection
+  @endsection

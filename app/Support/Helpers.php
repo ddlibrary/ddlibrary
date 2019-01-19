@@ -25,10 +25,10 @@ if(! function_exists('giveMeFileFormat')){
 			'image/png'	=> 'Image'
         );
 
-        if ( count($formats[$fileFormat]) > 0){
+        if ( isset($formats[$fileFormat]) && count($formats[$fileFormat]) > 0){
             return $formats[$fileFormat];
         }else{
-            return "No file mime detected";
+            return "-";
         }
     }
 }
