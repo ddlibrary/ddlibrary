@@ -164,6 +164,8 @@ Route::group(
     //option
     Route::get('admin/survey/question/option/delete/{id}','SurveyQuestionOptionController@delete');
     Route::get('admin/survey/{survey_id}/question/{id}/view_options','SurveyQuestionOptionController@index');
+    Route::get('admin/survey/question/{questionid}/option/{optionid}/view/{tnid}','SurveyQuestionOptionController@view');
+    Route::get('admin/survey/question/option/add/translate/{id}/{lang}','SurveyQuestionOptionController@addTranslate');
     Route::get('admin/survey/{survey_id}/question/{id}/option/create','SurveyQuestionOptionController@create');
     Route::post('admin/survey/question/option/add','SurveyQuestionOptionController@store')->name('create_option');
     //result

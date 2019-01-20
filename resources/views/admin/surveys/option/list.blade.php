@@ -9,16 +9,22 @@
         <li class="breadcrumb-item">
           <a href="{{ URL::to('admin') }}">Dashboard</a>
         </li>
+
         <li class="breadcrumb-item">
-            <a href="{{ URL::to('admin/surveys') }}">Surveys</a>
-          </li>
-        <li class="breadcrumb-item active">{{ $survey->name}}</li>
+          <a href="{{ URL::to('admin/surveys') }}">Surveys</a>
+        </li>
+
+        <li class="breadcrumb-item">
+          <a href="{{ URL::to('admin/survey/questions/'.$survey->id) }}">Question</a>
+        </li> 
+
+        <li class="breadcrumb-item active">{{$question->text}}</li>
       </ol>
 
       <!-- Surveys Answers DataTables -->
       <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-list"></i> Questions
+          <i class="fa fa-list"></i> Options
         </div>
 
         <div class="card-body">
@@ -27,40 +33,27 @@
                   {{ session('status') }}
               </div>
             @endif
-            <a href="{{ URL::to('admin/survey/question/add/'.$survey->id) }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
+            <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$question->id.'/option/create') }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
               <span class="fa fa-plus"></span> Add New
             </a>
-            <span>Total: <strong>{{count($survey_questions)}}</strong></span>
+            <span>Total: <strong>{{count($questin_options)}}</strong></span>
             <table class="table table-bordered" width="100%" cellspacing="0">
               <thead>
                 <tr>
                   <th>Text</th>
                   <th>Language</th>
-                  <th>Type</th>
                   <th>OPERATIONS</th>
                 </tr>
               </thead>
 
               <tbody>
-                @foreach ($survey_questions as $indexkey => $survey_question)
+                @foreach ($questin_options as $indexkey => $questin_option)
                   <tr>
-                    <td>{{ $survey_question-> text }}</td>
-                    <td>{{ fixLanguage($survey_question->language) }}</td>
-                    <td>
-                      @if ($survey_question->type == 'single_choice')
-                        <span>Single Choice</span>
-                      @elseif ($survey_question->type == 'multi_choice')
-                        <span>Multiple Choice</span>
-                      @else
-                        <span>Descriptive</span>
-                      @endif
-                    </td>
+                    <td>{{ $questin_option-> text }}</td>
+                    <td>{{ fixLanguage($questin_option->language) }}</td>
                     <td style="display: flex;">
-                      @if ($survey_question->type != 'descriptive')
-                        <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$survey_question->id.'/view_options') }}" class="badge badge-primary" style="margin-right:5px;">Options</a>
-                      @endif
-                      <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/view/'.$survey_question->id.'/'.$survey_question->tnid) }}" class="badge badge-primary" style="margin-right: 5px;">Translations</a>
-                      <a href="javascript:void(0)" id="{{$survey_question->id}}" onclick="confirm(this.id);" class="badge badge-danger">Delete</a>
+                      <a href="{{ URL::to('admin/survey/question/'.$question->id.'/option/'.$questin_option->id.'/view/'.$questin_option->tnid) }}" class="badge badge-primary" style="margin-right: 5px;">Translations</a>
+                      <a href="javascript:void(0)" id="{{$questin_option->id}}" onclick="confirm(this.id);" class="badge badge-danger">Delete</a>
                     </td>
                   </tr>
                 @endforeach
@@ -74,7 +67,6 @@
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
 
-
     <!-- Modal for confirmation -->
     <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -86,7 +78,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <p>Are you sure want to delete this question?</p>
+            <p>Are you sure want to delete this option?</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">No</button>
@@ -101,7 +93,7 @@
         function confirm(id){
             $("#confirmModal").modal('show');
             $('.confirm').click(function(){
-                var url='/admin/survey/question/delete/'+id;
+                var url='/admin/survey/question/option/delete/'+id;
                 $('a.delete').attr('href',url);
             });
         }
