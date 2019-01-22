@@ -1,0 +1,107 @@
+svg {
+    display: block;
+    margin: 0 auto;
+}
+
+#Nangarhar,
+#Parvan,
+#Kandahar,
+#Balkh,
+#Herat,
+#Bamyan {
+    fill: red;
+}
+
+#Kabul,
+#Panjshir,
+#Badakhshan,
+#Khost,
+#Takhar,
+#Faryab,
+#Laghman {
+    fill: #ffa800;
+}
+
+#Parvan:hover .label,
+#Kabul:hover .label,
+#Panjshir:hover .label,
+#Badakhshan:hover .label,
+#Khost:hover .label,
+#Herat:hover .label,
+#Kandahar:hover .label,
+#Balkh:hover .label,
+#Laghman:hover .label,
+#Faryab:hover .label,
+#Bamyan:hover .label,
+#Nangarhar:hover .label,
+#Takhar:hover .label { 
+  display: block;
+}
+
+#Takhar:hover .label {
+    transform: rotate(80deg);
+}
+
+#Badakhshan:hover .label {
+    transform: rotate(80deg);
+}
+
+.label {
+    display: none;
+    fill: #000000;
+    stroke: none;
+    font-size: 14px;
+}
+
+.map-area svg {
+    width: 100%;
+}
+
+.map-area {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.map-area .map {
+    flex: 2;
+}
+
+.legends {
+    flex: 1;
+}
+
+.map-yellow {
+    padding: 1px 25px;
+    width: 10px;
+    background-color: #ffa800;
+}
+
+.map-red {
+    padding: 1px 25px;
+    width: 10px;
+    background-color: red;
+}
+
+.stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 5em;
+}
+
+.stats i {
+    color: #ec7e3b;
+}
+
+.stats article {
+    text-align: center;
+}
+
+.stats article h2 em {
+    font-style: italic;
+}
+
+.stats article h3 {
+    width: 10rem;
+}
