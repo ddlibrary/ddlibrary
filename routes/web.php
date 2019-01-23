@@ -64,7 +64,7 @@ Route::group(
     Route::post('resource/{resourceId}', 'ResourceController@updateTid')->middleware('admin')->name('updatetid');
 
     //delete file
-    Route::get('delete/file/{resourceId}/{fileName}', 'ResourceController@deleteFile')->name('delete-file')->middleware('admin');
+    Route::get('delete/file/{resourceId}/{fileName}', 'ResourceController@deleteFile')->name('delete-file');
 
     //Contact 
     Route::get('contact-us', 'ContactController@create');
