@@ -7,12 +7,12 @@
             <h3>@lang('DDL Survey')</h3>
         </div>
         <div class="modal-body">
-            <input name="questions_count" id="questions_count" style="display: none;" value="{{\App\SurveyQuestion::all()->count()}}">
+            <input name="questions_count" id="questions_count" style="display: none;" value="{{\App\SurveyQuestion::getPublishedQuestions()->count()}}">
 
             <div class="survey_content">
                 <div class="progress">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5" style="width: 15%;">
-                        Question 1 of {{\App\SurveyQuestion::all()->count()}}
+                        Question 1 of {{\App\SurveyQuestion::getPublishedQuestions()->count()}}
                     </div>
                 </div>
 
@@ -20,7 +20,7 @@
                     <div class="navbar-inner">
                         <ul class="nav nav-pills">
                             <?php $i = 1; ?>
-                            @foreach(\App\SurveyQuestion::all() as $question)
+                            @foreach(\App\SurveyQuestion::getPublishedQuestions() as $question)
                                 @if ($i == 1)
                                     <li class="active"><a href="#{{$question->id}}" data-toggle="tab" data-step="{{$i}}">{{$question->name}}</a></li>
                                 @else
@@ -28,7 +28,7 @@
                                 @endif
                                 <?php $i++; ?>
                             @endforeach
-                            <li><a href="#finish" class="finish" data-toggle="tab" data-step="{{\App\SurveyQuestion::all()->count()}}"></a></li>
+                            <li><a href="#finish" class="finish" data-toggle="tab" data-step="{{\App\SurveyQuestion::getPublishedQuestions()->count()}}"></a></li>
                         </ul>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                         <?php  
                             $a = 1; 
                         ?>
-                        @foreach(\App\SurveyQuestion::all() as $question)
+                        @foreach(\App\SurveyQuestion::getPublishedQuestions() as $question)
                             @if ($a == 1)
                                 <div class="tab-pane fade in active" id="{{$question->id}}">
                                     <div class="well">
@@ -54,7 +54,7 @@
                                             <input type="text" style="width: 80%;" name="descriptive[{{$question->id}}]" class="form-control" style="display: inline;"><br>
                                         @endif
                                     </div>
-                                    @if (\App\SurveyQuestion::all()->count() ==  $a)
+                                    @if (\App\SurveyQuestion::getPublishedQuestions()->count() ==  $a)
                                         <button type="submit" class="btn btn-success">Submit</button>
                                     @else
                                         <a class="btn btn-primary next" href="#">Next</a>
@@ -75,7 +75,7 @@
                                             <input type="text" style="width: 80%;" name="descriptive[{{$question->id}}]" class="form-control" style="display: inline;"><br>
                                         @endif
                                     </div>
-                                    @if (\App\SurveyQuestion::all()->count() == $a)
+                                    @if (\App\SurveyQuestion::getPublishedQuestions()->count() == $a)
                                         <a class="btn btn-success first" href="#">Start over</a>
                                         <button type="submit" class="btn btn-success">Submit</button>
                                     @else
@@ -142,7 +142,7 @@
         var cookieValue = Cookies.get('ddl');
         if(cookieValue !== "survey"){
             $('#surveyModal').show();
-            Cookies.set('ddl', 'survey', { expires: 30, path: '/' });
+            // Cookies.set('ddl', 'survey', { expires: 30, path: '/' });
         }
     }, pop_up_time);
 </script>
