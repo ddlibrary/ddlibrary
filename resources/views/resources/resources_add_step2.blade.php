@@ -1,5 +1,7 @@
 @extends('layouts.main')
-
+@section('title')
+@lang('Add a new Resource - Step 2')
+@endsection
 @section('content')
 
 @push('styles')
