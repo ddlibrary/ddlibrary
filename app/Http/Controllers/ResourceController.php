@@ -1214,8 +1214,16 @@ class ResourceController extends Controller
     {   
         $this->middleware('admin');
 
-        Storage::disk('private')->delete($fileName);
-        ResourceAttachment::where('resource_id', $resourceId)->where('file_name', $fileName)->delete();
+        $fileInDisk = Storage::disk('private')->delete($fileName);
+        if(!$fileInDisk){
+            return redirect('/resources/edit/step2/'.$resourceId)->with('error','File was not found in the server!');
+        }
+
+        $fileInDb = ResourceAttachment::where('resource_id', $resourceId)->where('file_name', $fileName)->delete();
+        if(!$fileInDb){
+            return redirect('/resources/edit/step2/'.$resourceId)->with('error','File was not found in the database!');
+        }
+        
         $resource2 = session('resource2');
         $resource2Attc = $resource2['attc'];
 
