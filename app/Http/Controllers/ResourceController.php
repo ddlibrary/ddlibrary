@@ -1212,7 +1212,7 @@ class ResourceController extends Controller
 
     public function deleteFile($resourceId, $fileName)
     {   
-        //$this->middleware('admin');
+        $this->middleware('admin');
 
         $fileInDisk = Storage::disk('private')->delete($fileName);
         if(!$fileInDisk){
