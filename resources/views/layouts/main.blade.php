@@ -20,11 +20,7 @@
 
     <link rel="shortcut icon" href="{{ asset('storage/files/favicon.ico') }}">
 
-    <link rel="stylesheet" href="{{ asset('css/reset.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/common.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/ddl.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/survey.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/fontawesome-all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 
     @stack('styles')
 
@@ -74,10 +70,7 @@
     </main>
     @include('layouts.footer')
     <!-- Optional JavaScript -->
-    @stack('scripts')
-    <script async src="{{ asset('js/ddl.js') }}"></script>
-    {{-- for survey pop up --}}
-    <script async src="{{ asset('js/bootstrap.min.js') }}"></script>
-        
+    <script async src="{{ asset('js/all.js') }}"></script>
+    @stack('scripts')   
 </body>
 </html>

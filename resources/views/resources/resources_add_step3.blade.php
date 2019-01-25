@@ -1,5 +1,7 @@
 @extends('layouts.main')
-
+@section('title')
+@lang('Add a new Resource - Step 3')
+@endsection
 @section('content')
 <section class="ddl-forms">
     <header>

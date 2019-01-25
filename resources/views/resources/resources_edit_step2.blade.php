@@ -1,5 +1,7 @@
 @extends('layouts.main')
-
+@section('title')
+@lang('Add a new Resource - Step 2')
+@endsection
 @push('styles')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 @endpush
@@ -152,7 +154,6 @@
     </div>
 </section>
 @push('scripts')
-<script src="{{ asset('js/ddl.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
 <script>

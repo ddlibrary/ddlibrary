@@ -40,7 +40,7 @@
                   @foreach ($survey_question_options as $option)
                     <tr>
                       <td>{{ $option-> text }}</td>
-                      <td>{{ count(\App\SurveyAnswer::where(['question_id'=> $option -> question_id, 'answer_id' => $option->id])->get()) }}</td>
+                      <td>{{ \App\SurveyAnswer::getQuestionAnswersCount($option -> question_id, $option->id) }}</td>
                     </tr>
                   @endforeach
                 @else
