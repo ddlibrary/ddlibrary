@@ -34,7 +34,7 @@
               <tbody>
                 @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                   <?php $item = $surveys->firstWhere('language',$localeCode);?>
-                  @if(count($item))
+                  @if($item)
                     <tr>
                         <td>{{ $item->name }}</td>
                         <td>{{ fixLanguage($item->language) }}</td>

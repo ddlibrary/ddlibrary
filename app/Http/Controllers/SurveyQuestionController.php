@@ -44,11 +44,13 @@ class SurveyQuestionController extends Controller
 
         if ($question->type != "descriptive"){
             foreach ($request->options as $option_text) {
-                $option = new SurveyQuestionOption();
-                $option->text = $option_text;
-                $option->question_id=$question->id;
-                $option->save();
-            }
+                if ($option_text){
+                    $option = new SurveyQuestionOption();
+                    $option->text = $option_text;
+                    $option->question_id=$question->id;
+                    $option->save();
+                }
+            } 
         }
 
         // update the tnid
@@ -71,8 +73,8 @@ class SurveyQuestionController extends Controller
 
     public function addTranslate($tnid, $lang)
     {
-        $question = SurveyQuestion::where('tnid', $tnid)->get();
-        $survey = Survey::find($question[0]->survey_id);
-        return view('admin.surveys.question.add_translation', compact('tnid', 'lang','survey'));   
+        $question = SurveyQuestion::where('id', $tnid)->first();
+        $survey = Survey::find($question->survey_id);
+        return view('admin.surveys.question.add_translation', compact('tnid', 'lang','survey','question'));   
     }
 }

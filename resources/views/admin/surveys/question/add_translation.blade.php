@@ -64,10 +64,14 @@
                 <div class="form-group row">
                   <label for="name" class="col-sm-3 col-form-label">Question Type</label>
                   <div class="col-sm-9">
-                    <select class="form-control" id="option_type" required onchange="showOption()" name="type">
-                      <option value="descriptive">Descriptive</option>
-                      <option value="single_choice">Single Choice</option>
-                      <option value="multi_choice">Multi Choice</option>
+                    <select readonly class="form-control" id="option_type" required onchange="showOption()" name="type">
+                      @if ($question->type == 'description')
+                        <option value="descriptive">Descriptive</option>
+                      @elseif ($question->type == 'single_choice')
+                        <option value="single_choice">Single Choice</option>
+                      @else
+                        <option value="multi_choice">Multi Choice</option>
+                      @endif
                     </select>
                   </div>
                 </div>
