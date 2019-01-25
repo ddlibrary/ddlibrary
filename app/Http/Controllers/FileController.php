@@ -11,7 +11,7 @@ class FileController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     public function __invoke($resource_id, $file_id, $file_path)
