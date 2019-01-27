@@ -27,9 +27,11 @@
                   {{ session('status') }}
               </div>
             @endif
-            <a href="{{ URL::to('admin/survey/question/add/'.$survey->id) }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
-              <span class="fa fa-plus"></span> Add New
-            </a>
+            @if ($survey->language == 'en')
+              <a href="{{ URL::to('admin/survey/question/add/'.$survey->id) }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
+                <span class="fa fa-plus"></span> Add New
+              </a>
+            @endif
             <span>Total: <strong>{{count($survey_questions)}}</strong></span>
             <table class="table table-bordered" width="100%" cellspacing="0">
               <thead>

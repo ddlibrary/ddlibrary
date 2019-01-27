@@ -15,8 +15,13 @@ class SurveyQuestionOptionController extends Controller
 	public function index($survey_id,$id)
     {
         $question = SurveyQuestion::find($id);
+        $all_questions = SurveyQuestion::where('tnid', $question->tnid)->get();
+        $all_question_ids = array();
+        foreach ($all_questions as $question){
+            $all_question_ids[] = $question->id;
+        }
+        $questin_options = SurveyQuestionOption::whereIn('question_id', $all_question_ids)->get();
         $survey = $question->survey;
-        $questin_options = $question->options;
         return view('admin.surveys.option.list', compact('question', 'questin_options','survey'));
     }
 
@@ -63,9 +68,9 @@ class SurveyQuestionOptionController extends Controller
     }
 
     public function addTranslate($tnid, $lang)
-    {
+    {   
         $option = SurveyQuestionOption::where('id', $tnid)->first();
-        $question = SurveyQuestion::find($option->question_id);  
+        $question = SurveyQuestion::where(['tnid'=> $option->question_id, 'language' => $lang])->first();
         $survey = Survey::find($question->survey_id);
         return view('admin.surveys.option.add_translation', compact('tnid', 'lang','question','survey'));   
     }

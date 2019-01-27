@@ -33,9 +33,11 @@
                   {{ session('status') }}
               </div>
             @endif
-            <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$question->id.'/option/create') }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
-              <span class="fa fa-plus"></span> Add New
-            </a>
+            @if ($question->language == 'en')
+              <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$question->id.'/option/create') }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
+                <span class="fa fa-plus"></span> Add New
+              </a>
+            @endif
             <span>Total: <strong>{{count($questin_options)}}</strong></span>
             <table class="table table-bordered" width="100%" cellspacing="0">
               <thead>

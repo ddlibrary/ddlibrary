@@ -39,53 +39,55 @@
                             $a = 1; 
                         ?>
                         @foreach(\App\SurveyQuestion::getPublishedQuestions() as $question)
-                            @if ($a == 1)
-                                <div class="tab-pane fade in active" id="{{$question->id}}">
-                                    <div class="well">
-                                        <h4>{{ $question->text }}</h4>
-                                        @foreach($question->options as $option)
-                                            @if ($question->type == "single_choice")
-                                                <input type="radio" value="{{$option->id}}" name="single_choice[{{$question->id}}]" class="form-control" style="display: inline;">{{ $option->text }}<br>
-                                            @else
-                                                <input type="checkbox" value="{{$question->id}}" name="multi_choice[{{$option->id}}]" class="form-control" style="display: inline;">{{ $option->text }}<br>    
+                            @if ($question->options->count() != 0)
+                                @if ($a == 1)
+                                    <div class="tab-pane fade in active" id="{{$question->id}}">
+                                        <div class="well">
+                                            <h4>{{ $question->text }}</h4>
+                                            @foreach($question->options as $option)
+                                                @if ($question->type == "single_choice")
+                                                    <input type="radio" value="{{$option->id}}" name="single_choice[{{$question->id}}]" class="form-control" style="display: inline;">{{ $option->text }}<br>
+                                                @else
+                                                    <input type="checkbox" value="{{$question->id}}" name="multi_choice[{{$option->id}}]" class="form-control" style="display: inline;">{{ $option->text }}<br>    
+                                                @endif
+                                            @endforeach
+                                            @if ($question->type == "descriptive")
+                                                <input type="text" style="width: 80%;" name="descriptive[{{$question->id}}]" class="form-control" style="display: inline;"><br>
                                             @endif
-                                        @endforeach
-                                        @if ($question->type == "descriptive")
-                                            <input type="text" style="width: 80%;" name="descriptive[{{$question->id}}]" class="form-control" style="display: inline;"><br>
+                                        </div>
+                                        @if (\App\SurveyQuestion::getPublishedQuestions()->count() ==  $a)
+                                            <button type="submit" class="btn btn-success">Submit</button>
+                                        @else
+                                            <a class="btn btn-primary next" href="#">Next</a>
                                         @endif
                                     </div>
-                                    @if (\App\SurveyQuestion::getPublishedQuestions()->count() ==  $a)
-                                        <button type="submit" class="btn btn-success">Submit</button>
-                                    @else
-                                        <a class="btn btn-primary next" href="#">Next</a>
-                                    @endif
-                                </div>
-                            @else
-                                <div class="tab-pane fade" id="{{$question->id}}">
-                                    <div class="well">
-                                        <h4>{{ $question->text }}</h4>
-                                        @foreach($question->options as $option)
-                                            @if ($question->type == "single_choice")
-                                                <input type="radio" value="{{$option->id}}" name="single_choice[{{$question->id}}]" class="form-control" style="display: inline;">{{ $option->text }}<br>
-                                            @else
-                                                <input type="checkbox" value="{{$question->id}}" name="multi_choice[{{$option->id}}]" class="form-control" style="display: inline;">{{ $option->text }}<br>    
+                                @else
+                                    <div class="tab-pane fade" id="{{$question->id}}">
+                                        <div class="well">
+                                            <h4>{{ $question->text }}</h4>
+                                            @foreach($question->options as $option)
+                                                @if ($question->type == "single_choice")
+                                                    <input type="radio" value="{{$option->id}}" name="single_choice[{{$question->id}}]" class="form-control" style="display: inline;">{{ $option->text }}<br>
+                                                @else
+                                                    <input type="checkbox" value="{{$question->id}}" name="multi_choice[{{$option->id}}]" class="form-control" style="display: inline;">{{ $option->text }}<br>    
+                                                @endif
+                                            @endforeach
+                                            @if ($question->type == "descriptive")
+                                                <input type="text" style="width: 80%;" name="descriptive[{{$question->id}}]" class="form-control" style="display: inline;"><br>
                                             @endif
-                                        @endforeach
-                                        @if ($question->type == "descriptive")
-                                            <input type="text" style="width: 80%;" name="descriptive[{{$question->id}}]" class="form-control" style="display: inline;"><br>
+                                        </div>
+                                        @if (\App\SurveyQuestion::getPublishedQuestions()->count() == $a)
+                                            <a class="btn btn-success first" href="#">Start over</a>
+                                            <button type="submit" class="btn btn-success">Submit</button>
+                                        @else
+                                            <a class="btn btn-primary next" href="#">Next</a>
                                         @endif
                                     </div>
-                                    @if (\App\SurveyQuestion::getPublishedQuestions()->count() == $a)
-                                        <a class="btn btn-success first" href="#">Start over</a>
-                                        <button type="submit" class="btn btn-success">Submit</button>
-                                    @else
-                                        <a class="btn btn-primary next" href="#">Next</a>
-                                    @endif
-                                </div>
+                                @endif
+                                <?php 
+                                    $a++; 
+                                ?>
                             @endif
-                            <?php 
-                                $a++; 
-                            ?>
                         @endforeach
                         <div class="tab-pane" id="finish">
                             <div class="well"> 
@@ -142,7 +144,7 @@
         var cookieValue = Cookies.get('ddl');
         if(cookieValue !== "survey"){
             $('#surveyModal').show();
-            Cookies.set('ddl', 'survey', { expires: 30, path: '/' });
+            // Cookies.set('ddl', 'survey', { expires: 30, path: '/' });
         }
     }, pop_up_time);
 </script>

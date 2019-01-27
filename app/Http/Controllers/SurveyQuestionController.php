@@ -15,7 +15,7 @@ class SurveyQuestionController extends Controller
     public function index($id)
     {
         $survey = Survey::find($id);
-        $survey_questions = SurveyQuestion::where('survey_id', $survey->id)->get();
+        $survey_questions = SurveyQuestion::where('survey_id', $survey->tnid)->get();
         return view('admin.surveys.question.list', compact('survey','survey_questions'));
     }
 
@@ -48,13 +48,21 @@ class SurveyQuestionController extends Controller
                     $option = new SurveyQuestionOption();
                     $option->text = $option_text;
                     $option->question_id=$question->id;
+                    $option->language = $request['language'];
                     $option->save();
+
+                    // update the tnid
+                    $created_option = SurveyQuestionOption::find($option->id);
+                    $created_option->tnid = $option->id;                    
+                    $created_option->save();
                 }
             } 
         }
 
         // update the tnid
         $created_question = SurveyQuestion::find($question->id);
+
+
         if ($request['tnid']){
             $created_question->tnid = $request['tnid'];
         }else{

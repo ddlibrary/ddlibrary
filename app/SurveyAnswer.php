@@ -11,7 +11,9 @@ class SurveyAnswer extends Model
     */
     public static function getQuestionAnswersCount($question_id, $answer_id)
     {
-    	$count = SurveyAnswer::where(['question_id'=> $question_id, 'answer_id' => $answer_id])->count();
+    	$question = SurveyQuestion::find($question_id);
+    	$answer = SurveyQuestionOption::find($answer_id);
+    	$count = SurveyAnswer::where(['question_id'=> $question->tnid, 'answer_id' => $answer->tnid])->count();
     	return $count;
     }
 }

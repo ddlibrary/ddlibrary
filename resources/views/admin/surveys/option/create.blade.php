@@ -52,9 +52,10 @@
                   <label for="name" class="col-sm-3 col-form-label">Language</label>
                   <div class="col-sm-9">
                     <select class="form-control{{ $errors->has('language') ? ' is-invalid' : '' }}" name="language" id="language" required>
-                        <option value="">- @lang('None') -</option>
                         @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                          <option value="{{ $localeCode }}" {{ old('language') == $localeCode ? "selected" : "" }}>{{ $properties['native'] }}</option>
+                          @if ( $localeCode == 'en')
+                            <option value="{{ $localeCode }}">{{ $properties['native'] }}</option>
+                          @endif
                         @endforeach
                     </select>
                   </div>

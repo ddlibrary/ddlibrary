@@ -29,7 +29,7 @@
             <table class="table table-bordered" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Question</th>
+                  <th>Option</th>
                   <th>Language</th>
                   <th>OPERATIONS</th>
                 </tr>
@@ -48,7 +48,12 @@
                     <tr>
                       <td><span class="badge badge-warning">Empty</span></td>
                       <td>{{ $properties['name'] }}</td>
-                      <td><a href="{{ URL::to('admin/survey/question/option/add/translate/'.$option_self->tnid.'/'.$localeCode) }}" class="badge badge-primary">Add</a></td>
+                      @if (\App\SurveyQuestion::where(['tnid'=>$question->tnid, 'language' => $localeCode])->first())
+                        <td><a href="{{ URL::to('admin/survey/question/option/add/translate/'.$option_self->tnid.'/'.$localeCode) }}" class="badge badge-primary">Add</a></td>
+                      @else
+                        <td><span class="badge badge-warning">Add Question first!</span></td>
+                      @endif
+                     
                     </tr>
                   @endif
                 @endforeach
