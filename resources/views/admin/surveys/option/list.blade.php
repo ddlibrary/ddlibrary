@@ -18,7 +18,7 @@
           <a href="{{ URL::to('admin/survey/questions/'.$survey->id) }}">Question</a>
         </li> 
 
-        <li class="breadcrumb-item active">{{$question->text}}</li>
+        <li class="breadcrumb-item active">{{$question_self->text}}</li>
       </ol>
 
       <!-- Surveys Answers DataTables -->
@@ -33,8 +33,9 @@
                   {{ session('status') }}
               </div>
             @endif
-            @if ($question->language == 'en')
-              <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$question->id.'/option/create') }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
+
+            @if ($question_self->language == 'en')
+              <a href="{{ URL::to('admin/survey/'.$survey->id.'/question/'.$question_self->id.'/option/create') }}" class="btn btn-success pull-right" style="margin-bottom: 10px">
                 <span class="fa fa-plus"></span> Add New
               </a>
             @endif
@@ -54,7 +55,7 @@
                     <td>{{ $questin_option-> text }}</td>
                     <td>{{ fixLanguage($questin_option->language) }}</td>
                     <td style="display: flex;">
-                      <a href="{{ URL::to('admin/survey/question/'.$question->id.'/option/'.$questin_option->id.'/view/'.$questin_option->tnid) }}" class="badge badge-primary" style="margin-right: 5px;">Translations</a>
+                      <a href="{{ URL::to('admin/survey/question/'.$question_self->id.'/option/'.$questin_option->id.'/view/'.$questin_option->tnid) }}" class="badge badge-primary" style="margin-right: 5px;">Translations</a>
                       <a href="javascript:void(0)" id="{{$questin_option->id}}" onclick="confirm(this.id);" class="badge badge-danger">Delete</a>
                     </td>
                   </tr>
