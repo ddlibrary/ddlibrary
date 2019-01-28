@@ -17,6 +17,13 @@ class SurveyController extends Controller
         return view('admin.surveys.survey.list', compact('surveys'));
     }
 
+    public function view(Survey $surveys,$id ,$tnid)
+    {
+        $surveys = $surveys->where('tnid', $tnid)->get();
+        $survey_self = $surveys->find($id);
+        return view('admin.surveys.survey.view', compact('surveys', 'survey_self'));   
+    }
+
     public function create()
     {   
         return view('admin.surveys.survey.create');
@@ -27,7 +34,17 @@ class SurveyController extends Controller
         $survey = new Survey();
         $survey->name = $request['name'];
         $survey->state = $request['state'];
+        $survey->language = $request['language'];
         $survey->save();
+
+        // update the tnid
+        $created_survey = Survey::find($survey->id);
+        if ($request['tnid']){
+            $created_survey->tnid = $request['tnid'];
+        }else{
+            $created_survey->tnid = $survey->id;
+        }
+        $created_survey->save();
         return Redirect::back()->with('status', 'Survey Created!');
     }
 
@@ -42,6 +59,7 @@ class SurveyController extends Controller
         $survey = Survey::find($id);
         $survey->name = $request['name'];
         $survey->state = $request['state'];
+        $survey->language = $request['language'];
         $survey->save();
         return Redirect::back()->with('status', 'Survey Updated!');
     }
@@ -51,5 +69,10 @@ class SurveyController extends Controller
         $survey = Survey::find($id);
         $survey->delete();
         return Redirect::back()->with('status', 'Survey Deleted!');
+    }
+
+    public function addTranslate($tnid, $lang)
+    {
+        return view('admin.surveys.survey.add_translation', compact('tnid', 'lang'));   
     }
 }

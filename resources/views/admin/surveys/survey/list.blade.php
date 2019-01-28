@@ -32,8 +32,10 @@
               <thead>
                 <tr>
                   <th>Name</th>
+                  <th>Language</th>
                   <th>Status</th>
                   <th>Created At</th>
+                  <th>Updated At</th>
                   <th>OPERATIONS</th>
                 </tr>
               </thead>
@@ -42,6 +44,7 @@
                 @foreach ($surveys as $indexkey => $survey)
                   <tr>
                     <td>{{ $survey-> name }}</td>
+                    <td>{{ fixLanguage($survey->language) }}</td>
                     <td>
                       @if ($survey->state == 'published')
                         <span class="badge badge-success">Published</span>
@@ -49,10 +52,12 @@
                         <span class="badge badge-warning">Draft</span>
                       @endif
                     </td>
-                    <td>{{ $survey-> created_at }}</td>
+                    <td>{{ $survey->created_at->diffForHumans() }}</td>
+                    <td>{{ $survey->updated_at->diffForHumans() }}</td>
                     <td style="display: flex;">
                       <a href="{{ URL::to('admin/survey/questions/'.$survey->id) }}" class="badge badge-primary" style="margin-right: 5px;">Questions</a>
                       <a href="{{ URL::to('admin/survey/edit/'.$survey->id) }}" class="badge badge-primary" style="margin-right: 5px;">Edit</a>
+                      <a href="{{ URL::to('admin/survey/view/'.$survey->id.'/'.$survey->tnid) }}" class="badge badge-primary" style="margin-right: 5px;">Translations</a>
                       <a href="javascript:void(0)" id="{{$survey->id}}" onclick="confirm(this.id);" class="badge badge-danger">Delete</a>
                     </td>
                   </tr>

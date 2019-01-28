@@ -38,23 +38,29 @@ class SurveyAnswerController extends Controller{
     {   
     	if ($request->single_choice){
     		foreach ($request->single_choice as $key => $value) {
-            // key is question and value is selected option
-            $surveyAnswer = new SurveyAnswer();
-            $surveyAnswer->question_id = $key;
-            $surveyAnswer->answer_id = $value;
-            $surveyAnswer->ip = \Request::ip();
-            $surveyAnswer->save();
+                // key is question and value is selected option
+                $question = SurveyQuestion::find($key);
+                $answer = SurveyQuestionOption::find($value);
+
+                $surveyAnswer = new SurveyAnswer();
+                $surveyAnswer->question_id = $question->tnid;
+                $surveyAnswer->answer_id = $answer->tnid;
+                $surveyAnswer->ip = \Request::ip();
+                $surveyAnswer->save();
         	}
     	}
         
     	if ($request->multi_choice){
     		foreach ($request->multi_choice as $key => $value) {
-            // key is option and value is question
-            $surveyAnswer = new SurveyAnswer();
-            $surveyAnswer->question_id = $value;
-            $surveyAnswer->answer_id = $key;
-            $surveyAnswer->ip = \Request::ip();
-            $surveyAnswer->save();
+                // key is option and value is question
+                $question = SurveyQuestion::find($value);
+                $answer = SurveyQuestionOption::find($key);
+
+                $surveyAnswer = new SurveyAnswer();
+                $surveyAnswer->question_id = $question->tnid;
+                $surveyAnswer->answer_id = $answer->tnid;
+                $surveyAnswer->ip = \Request::ip();
+                $surveyAnswer->save();
         	}
     	}
         

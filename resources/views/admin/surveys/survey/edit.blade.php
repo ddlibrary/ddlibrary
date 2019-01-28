@@ -39,9 +39,26 @@
                   <div class="col-sm-9">
                     <input type="text" class="form-control" id="name" name="name" value="{{$survey->name}}" required="true" placeholder="Name">
                   </div>
+                </div>
 
-                  <label for="name" class="col-sm-3 col-form-label">Survey Status</label>
+                <div class="form-group row">
+                  <label for="name" class="col-sm-3 col-form-label">Language</label>
                   <div class="col-sm-9">
+                    <select class="form-control{{ $errors->has('language') ? ' is-invalid' : '' }}" name="language" id="language" required>
+                        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                          @if ( $survey->language == $localeCode)
+                            <option value="{{ $localeCode }}" selected>{{ $properties['native'] }}</option>
+                          @else
+                            <option value="{{ $localeCode }}">{{ $properties['native'] }}</option>
+                          @endif
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="name" class="col-sm-3 col-form-label">Survey Status</label>
+                  <div class="col-sm-7">
                       @if ($survey->state == 'published')
                         <input type="radio" id="status" name="state" value="published" checked>
                       @else
@@ -56,7 +73,6 @@
                       @endif
                       <label for="status" class="badge badge-warning">Draft</label>
                   </div>
-
                 </div>
                 <button type="submit" class="btn btn-primary pull-right"><span class="fa fa-download"></span> Update</button>
                 

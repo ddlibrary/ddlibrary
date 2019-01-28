@@ -19,7 +19,7 @@
       <div class="card mb-3">
 
         <div class="card-header">
-          <i class="fa fa-plus"></i> Create Survey
+          <i class="fa fa-plus"></i> Create Survey: <span class="badge badge-success">{{ fixLanguage($lang) }} </span>
         </div>
 
         <div class="card-body">
@@ -38,7 +38,7 @@
                 <div class="form-group row">
                   <label for="name" class="col-sm-3 col-form-label">Survey Name</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" id="name" name="name" required="true" placeholder="Type survey name">
+                    <input type="text" class="form-control" id="name" name="name" required="true" placeholder="Type survey name in {{ fixLanguage($lang) }}">
                   </div>
                 </div>
 
@@ -46,14 +46,16 @@
                   <label for="name" class="col-sm-3 col-form-label">Language</label>
                   <div class="col-sm-9">
                     <select readonly class="form-control{{ $errors->has('language') ? ' is-invalid' : '' }}" name="language" id="language" required>
-                        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                          @if ( $localeCode == 'en')
-                            <option value="{{ $localeCode }}">{{ $properties['native'] }}</option>
-                          @endif
-                        @endforeach
+                      @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                        @if ( $lang == $localeCode)
+                          <option value="{{ $localeCode }}">{{ $properties['native'] }}</option>
+                        @endif
+                      @endforeach
                     </select>
                   </div>
                 </div>
+                
+                <input type="integer" name="tnid" style="display: none;" value="{{$tnid}}">
 
                 <div class="form-group row">
                   <label for="name" class="col-sm-3 col-form-label">Published?</label>

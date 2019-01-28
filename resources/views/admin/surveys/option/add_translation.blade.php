@@ -22,11 +22,12 @@
         <li class="breadcrumb-item active">Create Option</li>
       </ol>
 
+
       <!-- Surveys Answers DataTables -->
       <div class="card mb-3">
 
         <div class="card-header">
-          <i class="fa fa-plus"></i> Create Option
+          <i class="fa fa-plus"></i> Create Question: <span class="badge badge-success">{{ fixLanguage($lang) }} </span>
         </div>
 
         <div class="card-body">
@@ -35,6 +36,7 @@
                   {{ session('status') }}
               </div>
           @endif
+
           <form method="POST" action="{{ route('create_option')}}">
             @csrf
 
@@ -48,15 +50,17 @@
                   </div>
                 </div>
 
+                <input type="integer" name="tnid" style="display: none;" value="{{$tnid}}">
+
                 <div class="form-group row">
                   <label for="name" class="col-sm-3 col-form-label">Language</label>
                   <div class="col-sm-9">
-                    <select class="form-control{{ $errors->has('language') ? ' is-invalid' : '' }}" name="language" id="language" required>
-                        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                          @if ( $localeCode == 'en')
-                            <option value="{{ $localeCode }}">{{ $properties['native'] }}</option>
-                          @endif
-                        @endforeach
+                    <select readonly class="form-control{{ $errors->has('language') ? ' is-invalid' : '' }}" name="language" id="language" required>
+                      @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                        @if ( $lang == $localeCode)
+                          <option value="{{ $localeCode }}">{{ $properties['native'] }}</option>
+                        @endif
+                      @endforeach
                     </select>
                   </div>
                 </div>

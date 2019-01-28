@@ -13,9 +13,8 @@
           <a href="{{ URL::to('admin/surveys') }}">Survey</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{{ URL::to('admin/survey/questions/'.$survey->id) }}">Question</a>
-        </li> 
-        <li class="breadcrumb-item active">{{$question->text}}</li>
+            <a href="{{ URL::to('admin/survey/questions/'.$survey->id) }}">Survey's Questions</a>
+        </li>
         <li class="breadcrumb-item active">Translations</li>
       </ol>
 
@@ -29,7 +28,7 @@
             <table class="table table-bordered" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Option</th>
+                  <th>Question</th>
                   <th>Language</th>
                   <th>OPERATIONS</th>
                 </tr>
@@ -37,7 +36,7 @@
 
               <tbody>
                 @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                  <?php $item = $options->firstWhere('language',$localeCode);?>
+                  <?php $item = $questions->firstWhere('language',$localeCode);?>
                   @if($item)
                     <tr>
                         <td>{{ $item->text }}</td>
@@ -48,12 +47,7 @@
                     <tr>
                       <td><span class="badge badge-warning">Empty</span></td>
                       <td>{{ $properties['name'] }}</td>
-                      @if (\App\SurveyQuestion::where(['tnid'=>$question->tnid, 'language' => $localeCode])->first())
-                        <td><a href="{{ URL::to('admin/survey/question/option/add/translate/'.$option_self->tnid.'/'.$localeCode) }}" class="badge badge-primary">Add</a></td>
-                      @else
-                        <td><span class="badge badge-warning">Add Question first!</span></td>
-                      @endif
-                     
+                      <td><a href="{{ URL::to('admin/survey/question/add/translate/'.$question_self->tnid.'/'.$localeCode) }}" class="badge badge-primary">Add</a></td>
                     </tr>
                   @endif
                 @endforeach
