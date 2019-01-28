@@ -4,6 +4,12 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/jamshidhashimi/laravel-filemanager"
+        }
+    ],
     "require": {
         "php": "^7.1.3",
         "anhskohbo/no-captcha": "^3.0",
@@ -12,7 +18,7 @@
         "laravel/tinker": "^1.0",
         "mcamara/laravel-localization": "^1.3",
         "spatie/laravel-analytics": "^3.5",
-        "unisharp/laravel-filemanager": "~1.8"
+        "unisharp/laravel-filemanager": "dev-db-support"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
