@@ -1,45 +1,51 @@
 
 <!-- Modal content -->
-<div id="surveyModal" class="modal">
+<?php 
+    $lang = Config::get('app.locale'); 
+    $questions_count = \App\SurveyQuestion::getPublishedQuestions($lang)->count();
+?>
+@if ($lang != 'en')
+<div id="surveyModal" class="modal" dir="rtl">
+@else
+<div id="surveyModal" class="modal" dir="ltr">
+@endif
     <div class="modal-content">
         <div class="modal-header">
             <span class="close" id="survey-close">&times;</span>
             <h3>@lang('DDL Survey')</h3>
         </div>
         <div class="modal-body">
-            <input name="questions_count" id="questions_count" style="display: none;" value="{{\App\SurveyQuestion::getPublishedQuestions()->count()}}">
+            @if ($questions_count != 0)
+                <input name="questions_count" id="questions_count" style="display: none;" value="{{$questions_count}}">
 
-            <div class="survey_content">
-                <div class="progress">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5" style="width: 15%;">
-                        Question 1 of {{\App\SurveyQuestion::getPublishedQuestions()->count()}}
+                <div class="survey_content">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5" style="width: 15%;">
+                            @lang('Question') 1 @lang('of') {{ $questions_count }}
+                        </div>
                     </div>
-                </div>
 
-                <div class="navbar" style="display: none;">
-                    <div class="navbar-inner">
-                        <ul class="nav nav-pills">
-                            <?php $i = 1; ?>
-                            @foreach(\App\SurveyQuestion::getPublishedQuestions() as $question)
-                                @if ($i == 1)
-                                    <li class="active"><a href="#{{$question->id}}" data-toggle="tab" data-step="{{$i}}">{{$question->name}}</a></li>
-                                @else
-                                    <li><a href="#{{$question->id}}" data-toggle="tab" data-step="{{$i}}">{{$question->name}}</a></li>
-                                @endif
-                                <?php $i++; ?>
-                            @endforeach
-                            <li><a href="#finish" class="finish" data-toggle="tab" data-step="{{\App\SurveyQuestion::getPublishedQuestions()->count()}}"></a></li>
-                        </ul>
+                    <div class="navbar" style="display: none;">
+                        <div class="navbar-inner">
+                            <ul class="nav nav-pills">
+                                <?php $i = 1; ?>
+                                @foreach(\App\SurveyQuestion::getPublishedQuestions($lang) as $question)
+                                    @if ($i == 1)
+                                        <li class="active"><a href="#{{$question->id}}" data-toggle="tab" data-step="{{$i}}">{{$question->name}}</a></li>
+                                    @else
+                                        <li><a href="#{{$question->id}}" data-toggle="tab" data-step="{{$i}}">{{$question->name}}</a></li>
+                                    @endif
+                                    <?php $i++; ?>
+                                @endforeach
+                                <li><a href="#finish" class="finish" data-toggle="tab" data-step="{{$questions_count}}"></a></li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <form method="POST" id="surveyform">
-                    @csrf
-                    <div class="tab-content">
-                        <?php  
-                            $a = 1; 
-                        ?>
-                        @foreach(\App\SurveyQuestion::getPublishedQuestions() as $question)
-                            @if ($question->options->count() != 0)
+                    <form method="POST" id="surveyform">
+                        @csrf
+                        <div class="tab-content">
+                            <?php  $a = 1; ?>
+                            @foreach(\App\SurveyQuestion::getPublishedQuestions($lang) as $question)
                                 @if ($a == 1)
                                     <div class="tab-pane fade in active" id="{{$question->id}}">
                                         <div class="well">
@@ -55,10 +61,10 @@
                                                 <input type="text" style="width: 80%;" name="descriptive[{{$question->id}}]" class="form-control" style="display: inline;"><br>
                                             @endif
                                         </div>
-                                        @if (\App\SurveyQuestion::getPublishedQuestions()->count() ==  $a)
-                                            <button type="submit" class="btn btn-success">Submit</button>
+                                        @if ($questions_count ==  $a)
+                                            <button type="submit" class="btn btn-success">@lang('Submit')</button>
                                         @else
-                                            <a class="btn btn-primary next" href="#">Next</a>
+                                            <a class="btn btn-primary next" href="#">@lang('Next')</a>
                                         @endif
                                     </div>
                                 @else
@@ -76,27 +82,29 @@
                                                 <input type="text" style="width: 80%;" name="descriptive[{{$question->id}}]" class="form-control" style="display: inline;"><br>
                                             @endif
                                         </div>
-                                        @if (\App\SurveyQuestion::getPublishedQuestions()->count() == $a)
+                                        @if ($questions_count == $a)
                                             <a class="btn btn-success first" href="#">Start over</a>
                                             <button type="submit" class="btn btn-success">Submit</button>
                                         @else
-                                            <a class="btn btn-primary next" href="#">Next</a>
+                                            <a class="btn btn-primary next" href="#">@lang('Next')</a>
                                         @endif
                                     </div>
                                 @endif
                                 <?php 
                                     $a++; 
                                 ?>
-                            @endif
-                        @endforeach
-                        <div class="tab-pane" id="finish">
-                            <div class="well"> 
-                                <h4 style="text-align: center;">Thank you for completing the survey!</h4>
+                            @endforeach
+                            <div class="tab-pane" id="finish">
+                                <div class="well"> 
+                                    <h4 style="text-align: center;"> @lang('Thank you for completing the survey!') </h4>
+                                </div>
                             </div>
-                        </div>
-                    </div>  
-                </form>
-            </div>
+                        </div>  
+                    </form>
+                </div>
+            @else
+                <p>@lang('No question added for the selected Language yet!')</p>
+            @endif
         </div>
     </div>
 </div>
