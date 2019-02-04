@@ -25,7 +25,7 @@ class SurveyQuestion extends Model
     /**
      * Get the published surveys questions.
     */
-    public static function getPublishedQuestions($language=None)
+    public static function getPublishedQuestions($language=Null)
     {
         $published_surveys = Survey::where('state', 'published')->get();
         $published_surveys_ids = array();
