@@ -37,6 +37,7 @@ Route::group(
     Route::get('user/{userId}', 'UserController@viewUser')->where('userId', '[0-9]+')->name('user-view');
     Route::get('admin/user/edit/{userId}', 'UserController@edit')->name('edit_user')->middleware('admin');
     Route::post('admin/user/update/{userId}', 'UserController@update')->name('update_user')->middleware('admin');
+    Route::get('admin/user/delete/{userId}', 'UserController@deleteUser')->middleware('admin');
 
     //Resources
     Route::get('admin/resources', 'ResourceController@index')->middleware('auth');

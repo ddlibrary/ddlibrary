@@ -87,7 +87,10 @@
                 <td>{{ $user->all_roles }}</td>
                 <td>{{ \Carbon\Carbon::parse($user->created_at)->diffForHumans() }}</td>
                 <td>{{ \Carbon\Carbon::parse($user->accessed_at)->diffForHumans() }}</td>
-                <td><a href="user/edit/{{$user->id}}">Edit</a></td>
+                <td>
+                  <a href="user/edit/{{$user->id}}">Edit</a> | 
+                  <a href="user/delete/{{$user->id}}" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                </td>
               </tr>
               @endforeach
             </tbody>

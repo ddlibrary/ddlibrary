@@ -126,4 +126,15 @@ class UserController extends Controller
 
         return redirect('/admin/user/edit/'.$userId)->with('success', 'User details updated successfully!');   
     }
+
+    /**
+    * Delete a user
+    */
+    public function deleteUser($userId)
+    {
+        $user = User::find($userId);
+        $user->delete();
+
+        return back()->with('error', 'You deleted the record!');
+    }
 }
