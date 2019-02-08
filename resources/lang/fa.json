@@ -138,5 +138,10 @@
     "Chemistry":"کیمیا",
     "Math":"ریاضی",
 
-    "Any": "انتخاب کنید"
+    "Any": "انتخاب کنید",
+
+    "DDL Survey": "نظر سنجی",
+    "Thank you for completing the survey!": "تشکر از اینکه در این نظرسنجی اشتراک نمودید!",
+    "Question":"سوال",
+    "of": "از"
 }

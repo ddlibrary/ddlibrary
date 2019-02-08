@@ -1,4 +1,10 @@
-
+@if(Lang::locale() != "en")
+<style>
+    .progress-bar {
+        float: right;
+    }
+</style>
+@endif
 <!-- Modal content -->
 <?php 
     $lang = Config::get('app.locale'); 
@@ -124,7 +130,7 @@
 	  var percent = (parseInt(step) / questions_count) * 100;
 	  
 	  $('.progress-bar').css({width: percent + '%'});
-	  $('.progress-bar').text("Question " + step + " of " + questions_count);
+	  $('.progress-bar').text(" @lang('Question') " + step + " @lang('of') " + questions_count);
 	  //e.relatedTarget // previous tab  
 	})
 
