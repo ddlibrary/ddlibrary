@@ -54,7 +54,8 @@
           </form>
         </div>
         <div class="table-responsive">
-            <span>Total: <strong>{{ $users->total() }}</strong></span>
+          <span>Total: <strong>{{ $users->total() }}</strong></span>
+          <button type="button" class="btn btn-link float-right"><a href="{{ URL::to('admin/user/export') }}">Exporting Users</a></button>
           <table class="table table-bordered" width="100%" cellspacing="0">
             <thead>
               <tr>

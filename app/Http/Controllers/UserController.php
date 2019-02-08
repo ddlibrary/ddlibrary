@@ -137,4 +137,19 @@ class UserController extends Controller
 
         return back()->with('error', 'You deleted the record!');
     }
+
+    /**
+    * Export the user list to CSV
+    */
+    public function exportUsers()
+    {
+        $users = User::get(); // All users
+        //$userProfiles = UserProfile::with('first_name','last_name')->get();
+        $csvExporter = new \Laracsv\Export();
+        $csvExporter->build($users, [
+            'email' =>'Email Address', 
+            'profile.first_name' => 'First Name', 
+            'profile.last_name' => 'Last Name'
+        ])->download();
+    }
 }

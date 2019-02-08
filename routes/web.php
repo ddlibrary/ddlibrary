@@ -38,6 +38,7 @@ Route::group(
     Route::get('admin/user/edit/{userId}', 'UserController@edit')->name('edit_user')->middleware('admin');
     Route::post('admin/user/update/{userId}', 'UserController@update')->name('update_user')->middleware('admin');
     Route::get('admin/user/delete/{userId}', 'UserController@deleteUser')->middleware('admin');
+    Route::get('admin/user/export', 'UserController@exportUsers')->middleware('admin');
 
     //Resources
     Route::get('admin/resources', 'ResourceController@index')->middleware('auth');
