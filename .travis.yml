@@ -8,12 +8,6 @@ before_script:
   - composer install --no-interaction
   - php artisan migrate
 
-before_install:
-  - mysql -e 'CREATE DATABASE travis;'
-
-services:
-  - mysql
-
 script:
   - php artisan key:generate
   - vendor/bin/phpunit
