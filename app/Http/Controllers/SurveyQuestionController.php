@@ -9,13 +9,15 @@ use App\SurveyAnswer;
 use App\SurveySettings;
 use App\SurveyQuestionOption;
 use Redirect;
+use Config;
 
 class SurveyQuestionController extends Controller
 {
     public function index($id)
     {
+        $lang = Config::get('app.locale'); 
         $survey = Survey::find($id);
-        $survey_questions = SurveyQuestion::where('survey_id', $survey->tnid)->get();
+        $survey_questions = SurveyQuestion::where(['survey_id'=> $survey->tnid, 'language'=> $lang])->get();
         return view('admin.surveys.question.list', compact('survey','survey_questions'));
     }
 
