@@ -9,13 +9,15 @@ use App\SurveyAnswer;
 use App\SurveySettings;
 use App\SurveyQuestionOption;
 use Redirect;
+use Config;
 
 class SurveyAnswerController extends Controller{
 
 	public function allQuestions()
     {
         $this->middleware('admin');
-        $survey_questions = SurveyQuestion::all();
+        $lang = Config::get('app.locale'); 
+        $survey_questions = SurveyQuestion::where('language', $lang)->get();
         return view('admin.surveys.result.view', compact('survey_questions'));        
     }
 
