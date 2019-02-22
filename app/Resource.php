@@ -331,6 +331,7 @@ class Resource extends Model
                 return $query->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
                         ->join('taxonomy_term_hierarchy AS tth','tth.tid','=','rsa.tid')
                         ->whereIn('tth.parent', $subjectAreaIds)
+                        ->orWhereIn('tth.tid', $subjectAreaIds)
                         ->groupBy('tth.tid');
             })
             ->when(count($levelIds) > 0, function($query)  use($levelIds){
