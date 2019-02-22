@@ -26,7 +26,7 @@
 
                 <div class="survey_content">
                     <div class="progress">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5" style="width: 15%;">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
                             @lang('Question') 1 @lang('of') {{ $questions_count }}
                         </div>
                     </div>
