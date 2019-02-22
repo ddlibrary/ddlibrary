@@ -21,7 +21,6 @@
     <link rel="shortcut icon" href="{{ asset('storage/files/favicon.ico') }}">
 
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/survey.css') }}">
 
     @stack('styles')
 
