@@ -34,11 +34,11 @@
                                     </td>
                                     <td>From</td>
                                     <td>
-                                        <input class="form-control" type="date" name="date">
+                                        <input class="form-control" type="date" name="date_from">
                                     </td>
                                     <td>To</td>
                                     <td>
-                                        <input class="form-control" type="date" name="date">
+                                        <input class="form-control" type="date" name="date_to">
                                     </td>
                                 </tr>
                                 <tr>
@@ -46,16 +46,16 @@
                                     <td>
                                         <select class="form-control" name="type">
                                             <option value="">- Choose -</option>
-                                            <option value="ddl">Gender</option>
-                                            <option value="ddl">Top Downloaded Resources</option>
-                                            <option value="ddl">Top Viewed Resources</option>
-                                            <option value="ddl">Total Users by Roles</option>
-                                            <option value="ddl">Total Users by Country</option>
-                                            <option value="ddl">Total Resources by Language</option>
-                                            <option value="ddl">Total Resources by Subject Area</option>
-                                            <option value="ddl">Total Resources by Level</option>
-                                            <option value="ddl">Total Resources by Material Type</option>
-                                            <option value="ddl">Total Resources by Format</option>
+                                            <option value="gender">Gender</option>
+                                            <option value="resource_download">Top Downloaded Resources</option>
+                                            <option value="resource_view">Top Viewed Resources</option>
+                                            <option value="user_role">Total Users by Roles</option>
+                                            <option value="user_country">Total Users by Country</option>
+                                            <option value="resource_language">Total Resources by Language</option>
+                                            <option value="resource_subject">Total Resources by Subject Area</option>
+                                            <option value="resource_level">Total Resources by Level</option>
+                                            <option value="resource_type">Total Resources by Material Type</option>
+                                            <option value="resource_format">Total Resources by Format</option>
                                         </select>
                                     </td>
 
@@ -79,6 +79,7 @@
             </div>
         </div>
     </div>
+    @yield('analytics.content')
 </div>
 <!-- /.container-fluid-->
 <!-- /.content-wrapper-->

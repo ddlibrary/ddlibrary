@@ -76,7 +76,6 @@ Route::group(
     Route::get('admin/contacts/delete/{id}', 'ContactController@delete')->middleware('admin');
 
     //Report
-    Route::get('admin/reports/ddl', 'ReportController@index')->middleware('admin');
     Route::get('admin/reports/ga', 'ReportController@gaReport')->middleware('admin');
     //Downloads
     Route::get('admin/reports/downloads','DownloadController@index')->middleware('admin');

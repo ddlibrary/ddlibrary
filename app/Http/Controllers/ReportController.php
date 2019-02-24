@@ -2,11 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Resource;
-use App\User;
-use App\DownloadCount;
-use App\ResourceView;
 use Analytics;
 use Spatie\Analytics\Period;
 
@@ -20,43 +15,6 @@ class ReportController extends Controller
     public function __construct()
     {
         $this->middleware('admin');
-    }
-    
-    public function index()
-    {
-        //setting the search session empty
-        DDLClearSession();
-        
-        $resourceModel  = new Resource();
-        $usersModel     = new User();
-        $downloadModel  = new DownloadCount();
-        $viewModel      = new ResourceView();
-
-        $downloadCount  = $downloadModel->getCount();
-        $viewCount      = $viewModel->getCount();
-
-        //total resources by language
-        $totalResources             = $resourceModel->totalResourcesByLanguage();
-        $totalResourcesBySubject    = $resourceModel->totalResourcesBySubject();
-        $totalResourcesByLevel      = $resourceModel->totalResourcesByLevel();
-        $totalResourcesByType       = $resourceModel->totalResourcesByType();
-        $totalResourcesByFormat     = $resourceModel->totalResourcesByFormat();
-        $totalUsersByGender         = $usersModel->totalUsersByGender();
-        $totalUsersByCountry        = $usersModel->totalUsersByCountry();
-        $totalResourcesByRoles      = $usersModel->totalResourcesByRoles();
-
-        return view('admin.reports.reports', compact(
-            'totalResources',
-            'totalUsersByGender',
-            'totalResourcesBySubject',
-            'totalResourcesByLevel',
-            'totalResourcesByType',
-            'totalResourcesByFormat',
-            'totalUsersByCountry',
-            'totalResourcesByRoles',
-            'downloadCount',
-            'viewCount'
-        ));
     }
 
     public function gaReport()

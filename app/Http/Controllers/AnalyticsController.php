@@ -3,16 +3,58 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User; 
+use App\DownloadCount;
+use App\ResourceView;
+use App\Resource;
 
 class AnalyticsController extends Controller
 {
     public function index()
     {
-        return view('admin.reports.analytics');
+        return view('admin.analytics.analytics_main');
     }
 
-    public function show()
+    public function show(Request $request)
     {
-        return view('admin.reports.analytics');    
+        if($request->filled('type') && $request->filled('source')) {
+            $usersModel     = new User();
+            $resourceModel  = new Resource();
+            if(request('type') == "gender") {
+                $totalUsersByGender     = $usersModel->totalUsersByGender();
+                return view('admin.analytics.user_gender', compact('totalUsersByGender'));
+            } else if (request('type') == "resource_download"){
+                $downloadModel  = new DownloadCount();  
+                $downloadCount  = $downloadModel->getCount();
+                return view('admin.analytics.resource_download', compact('downloadCount')); 
+            } else if (request('type') == "resource_view"){
+                $viewModel      = new ResourceView(); 
+                $viewCount      = $viewModel->getCount();
+                return view('admin.analytics.resource_view', compact('viewCount')); 
+            } else if (request('type') == "user_role"){
+                $totalResourcesByRoles  = $usersModel->totalResourcesByRoles();
+                return view('admin.analytics.user_role', compact('totalResourcesByRoles')); 
+            } else if (request('type') == "user_country"){
+                $totalUsersByCountry        = $usersModel->totalUsersByCountry();
+                return view('admin.analytics.user_country', compact('totalUsersByCountry')); 
+            } else if (request('type') == "resource_language"){
+                $totalResources = $resourceModel->totalResourcesByLanguage();
+                return view('admin.analytics.resource_language', compact('totalResources')); 
+            } else if (request('type') == "resource_subject"){
+                $totalResourcesBySubject    = $resourceModel->totalResourcesBySubject();
+                return view('admin.analytics.resource_subject', compact('totalResourcesBySubject')); 
+            } else if (request('type') == "resource_level"){
+                $totalResourcesByLevel      = $resourceModel->totalResourcesByLevel();
+                return view('admin.analytics.resource_level', compact('totalResourcesByLevel')); 
+            } else if (request('type') == "resource_type"){
+                $totalResourcesByType       = $resourceModel->totalResourcesByType();
+                return view('admin.analytics.resource_type', compact('totalResourcesByType')); 
+            } else if (request('type') == "resource_format"){
+                $totalResourcesByFormat     = $resourceModel->totalResourcesByFormat();
+                return view('admin.analytics.resource_format', compact('totalResourcesByFormat')); 
+            }
+        } else {
+            return view('admin.analytics.analytics_main');
+        }
     }
 }

@@ -92,11 +92,10 @@
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Reports</h6>
         <a class="collapse-item" href="{{ URL::to('admin/reports/downloads') }}">Downloads</a>
-        <a class="collapse-item" href="{{ URL::to('admin/reports/ddl') }}">DDL</a>
         <a class="collapse-item" href="{{ URL::to('admin/reports/ga') }}">Google Analytics</a>
         <div class="collapse-divider"></div>
         <h6 class="collapse-header">Analytics</h6>
-        <a class="collapse-item" href="{{ URL::to('admin/analytics') }}">Analytics</a>
+        <a class="collapse-item" href="{{ URL::to('admin/analytics') }}">DDL Analytics</a>
     </div>
     </div>
 </li>
