@@ -24,12 +24,12 @@
                                 <tr>
                                     <td>Source</td>
                                     <td>
-                                        <select class="form-control" name="source">
+                                        <select class="form-control" name="source" required>
                                             <option value="">- Choose -</option>
-                                            <option value="ddl">DDL</option>
-                                            <option value="ddl">Google Analytics</option>
-                                            <option value="ddl">Facebook</option>
-                                            <option value="ddl">Twitter</option>
+                                            <option value="dd">DDL</option>
+                                            <option value="ga">Google Analytics</option>
+                                            <option value="fb">Facebook</option>
+                                            <option value="tw">Twitter</option>
                                         </select>
                                     </td>
                                     <td>From</td>
@@ -44,7 +44,7 @@
                                 <tr>
                                     <td>Type</td>
                                     <td>
-                                        <select class="form-control" name="type">
+                                        <select class="form-control" name="type" required>
                                             <option value="">- Choose -</option>
                                             <option value="gender">Gender</option>
                                             <option value="resource_download">Top Downloaded Resources</option>
