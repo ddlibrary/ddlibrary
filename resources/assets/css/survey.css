@@ -358,3 +358,22 @@ fieldset[disabled] .btn-success.focus {
 .survey_content{
     padding: 20px;
 }
+
+/*Responsive - survey pop-up*/
+.progress-bar-success{
+    width: 30%;
+}
+
+@media only screen and (max-width: 800px) {
+    .progress-bar-success {
+        width: 50%;
+    }
+}
+
+@media (max-width: 800px) {
+    #surveyModal .modal-content {
+        width: 80%;
+    }
+}
+/* end */
+  
