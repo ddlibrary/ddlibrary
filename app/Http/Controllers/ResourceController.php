@@ -112,7 +112,72 @@ class ResourceController extends Controller
         $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
         $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
         
+        if ($request->ajax()) {
+            return view('resources.resources_list', compact(
+                'subjects',
+                'types',
+                'levels',
+                'subjectAreaIds',
+                'levelIds',
+                'typeIds'
+            ));
+        }
+
         return view('resources.resources_list', compact(
+            'resources',
+            'subjects',
+            'types',
+            'levels',
+            'subjectAreaIds',
+            'levelIds',
+            'typeIds',
+            'views',
+            'favorites',
+            'comments'
+        ));
+    }
+
+    public function listContent(Request $request)
+    {
+        
+        $myResources = new Resource();
+
+        //Getting all whatever in the parameterBag
+        $everything = $request->all();
+
+        if(isset($everything['search'])){
+            session(['search' => $everything['search']]);
+        }
+
+        $subjectAreaIds = array();
+        $levelIds = array();
+        $typeIds = array();
+
+        //if subject_area exists in the request
+        if($request->filled('subject_area')){
+            $subjectAreaIds = $everything['subject_area'];
+        }
+
+        //if level exists in the request
+        if($request->filled('level')){
+            $levelIds = $everything['level'];
+        }
+
+        //if type exists
+        if($request->filled('type')){
+            $typeIds = $everything['type'];
+        }
+
+        $views = new ResourceView();
+        $favorites = new ResourceFavorite();
+        $comments = new ResourceComment();
+        $resources = $myResources->paginateResourcesBy($request);
+
+        $subjects = $myResources->resourceAttributesList('taxonomy_term_data',8);
+        $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
+        $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
+        
+        return view('resources.resources_list_content', compact(
             'resources',
             'subjects',
             'types',

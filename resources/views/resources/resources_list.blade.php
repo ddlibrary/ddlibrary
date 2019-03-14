@@ -60,32 +60,54 @@
     </aside>
     
     <section class="resource-information-section">
-        @if (count($resources) > 0)
-        @foreach ($resources AS $resource)
-        <a href="{{ URL::to('resource/'.$resource->id) }}" title="{{ $resource->title }}">
-            <article class="resource-article resource-information">
-                <img class="resource-img" src="{{ getImagefromResource($resource->abstract) }}" alt="Resource Image">	
-                <div class="resource-title">{{ $resource->title }}</div>	
-                <div class="resource-details">	
-                    <article>	
-                        <i class="fas fa-eye"></i><span>{{ $views->where('resource_id', $resource->id)->count() }}</span>	
-                    </article>	
-                    <article>	
-                        <i class="fas fa-star"></i><span>{{ $favorites->where('resource_id', $resource->id)->count()  }}</span>	
-                    </article>	
-                    <article>	
-                        <i class="fas fa-comment"></i><span>{{ $comments->where('resource_id', $resource->id)->count()  }}</span>	
-                    </article>	
-                </div>	
-            </article>	
-        </a>	
-        @endforeach	
-        @else	
-        <h2>@lang('No records found!')</h2>	
-        @endif	
-        <div class="resource-pagination">	
-            {{ $resources->appends(request()->input())->links() }}	
-        </div>
+        @include('resources.resources_list_content')
     </section>
 </section>
 @endsection
+
+<script src="{{ URL::to('vendor/jquery/jquery.min.js') }}"></script>
+
+<script type="text/javascript">
+    $(window).on('hashchange', function() {
+        if (window.location.hash) {
+            var page = window.location.hash.replace('#', '');
+            if (page == Number.NaN || page <= 0) {
+                return false;
+            }else{
+                getData(page);
+            }
+        }
+    });
+    
+    $(document).ready(function()
+    {
+        $(document).on('click', '.pagination a',function(event)
+        {
+            event.preventDefault();
+  
+            $('li').removeClass('active');
+            $(this).parent('li').addClass('active');
+  
+            var myurl = $(this).attr('href');
+            var page=$(this).attr('href').split('page=')[1];
+  
+            getData(page);
+        });
+  
+    });
+  
+    function getData(page){
+        $.ajax(
+        {
+            url: "{{ route('resourceListContent') }}",
+            data: {page: page},
+            type: "get",
+            datatype: "html"
+        }).done(function(data){
+            $(".resource-information-section").empty().html(data);
+            location.hash = page;
+        }).fail(function(jqXHR, ajaxOptions, thrownError){
+              alert('No response from server');
+        });
+    }
+</script>
