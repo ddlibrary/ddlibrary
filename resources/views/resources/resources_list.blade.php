@@ -23,7 +23,9 @@
             @foreach($subjects AS $subject)
                 @if($subject->parent == 0)
                     <li>
-                        <input type="checkbox" name="subject_area[]" {{ (in_array($subject->id, $subjectAreaIds)?"checked":"")}} value="{{ $subject->id }}"><span>{{ ucwords(strtolower($subject->name)) }}</span>
+                        <label for="subject-{{ $subject->id }}">
+                        <input type="checkbox" name="subject_area[]" id="subject-{{ $subject->id }}" {{ (in_array($subject->id, $subjectAreaIds)?"checked":"")}} value="{{ $subject->id }}"><span>{{ ucwords(strtolower($subject->name)) }}</span>
+                        </label>
                     </li>
                 @endif
             @endforeach
@@ -34,7 +36,9 @@
             <ul class="panel">
                 @foreach($types AS $type)
                     <li>
-                        <input type="checkbox" name="type[]" {{ (in_array($type->id, $typeIds)?"checked":"")}} value="{{ $type->id }}"><span>{{ $type->name }}</span>
+                        <label for="type-{{ $type->id }}">
+                        <input type="checkbox" name="type[]" id="type-{{ $type->id }}" {{ (in_array($type->id, $typeIds)?"checked":"")}} value="{{ $type->id }}"><span>{{ $type->name }}</span>
+                        </label>
                     </li>
                 @endforeach
             </ul>
@@ -45,7 +49,8 @@
             @foreach($levels AS $level)
                 @if($level->parent == 0)
                     <li>
-                        <input type="checkbox" name="level[]" {{ (in_array($level->id, $levelIds)?"checked":"")}} value="{{ $level->id }}"><span>{{ $level->name }}</span>
+                        <label for="level-{{ $level->id }}">
+                        <input type="checkbox" name="level[]" id="level-{{ $level->id }}" {{ (in_array($level->id, $levelIds)?"checked":"")}} value="{{ $level->id }}"><span>{{ $level->name }}</span>
                     </li>
                 @endif
             @endforeach
