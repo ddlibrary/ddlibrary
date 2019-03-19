@@ -51,6 +51,64 @@ if(window.jQuery){
             });	
         }
         $('#resource-subjects').trigger('click');
+
+        //Resources
+        $(document).on('click', '.pagination a',function(event)
+        {
+            event.preventDefault();
+  
+            $('li').removeClass('active');
+            $(this).parent('li').addClass('active');
+  
+            var myurl = $(this).attr('href');
+  
+            getData(myurl);
+        });
+  
+        $(document).on('click', '#side-form ul li',function(event)
+        {
+            var subject_area = $(this).data('type')=="subject"?$(this).attr('value'):"";
+            var level = $(this).data('type')=="level"?$(this).attr('value'):"";
+            var type = $(this).data('type')=="type"?$(this).attr('value'):"";
+
+            var myurl = $(this).data('link');
+
+            $('.resource-list ul li').removeClass('active-header');
+            $(this).addClass('active-header');
+
+            $.ajax(
+            {
+                url: myurl,
+                data: {subject_area: subject_area, level: level, type: type},
+                type: "get",
+                datatype: "html"
+            }).done(function(data){
+                $('#subject-'+subject_area).toggle();
+                $(".resource-information-section").empty().html(data);
+            }).fail(function(jqXHR, ajaxOptions, thrownError){
+                alert('No response from server');
+            });
+        });
+
+        $(document).on('click', '.resource-information-section article', function(event)
+        {
+            var url = $(this).data('link');
+            window.location.href = url;
+        });
+
+    });
+}
+
+function getData(url){
+    $.ajax(
+    {
+        url: url,
+        type: "get",
+        datatype: "html"
+    }).done(function(data){
+        $(".resource-information-section").empty().html(data);
+    }).fail(function(jqXHR, ajaxOptions, thrownError){
+        alert('No response from server');
     });
 }
 

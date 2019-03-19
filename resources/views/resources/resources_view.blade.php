@@ -127,25 +127,25 @@
         <article class="resource-view-details">
             <h3>@lang('Resource Level')</h3>
             @foreach ($resource->levels AS $level)
-            <p><a href="{{ URL::to('resources/list?=&level[]='.$level->id) }}" title="{{ $level->name }}">{{ $level->name }}</a></p>
+            <p><a href="{{ URL::to('resources/list?level='.$level->id) }}" title="{{ $level->name }}">{{ $level->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
             <h3>@lang('Subject Area')</h3>
             @foreach ($resource->subjects AS $subject)
-            <p><a href="{{ URL::to('resources/list?=&subject_area[]='.$subject->id) }}" title="{{ $subject->name }}">{{ $subject->name }}</a></p>
+            <p><a href="{{ URL::to('resources/list?subject_area='.$subject->id) }}" title="{{ $subject->name }}">{{ $subject->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
             <h3>@lang('Learning Resource Type')</h3>
             @foreach($resource->LearningResourceTypes AS $ltype)
-            <p><a href="{{ URL::to('resources/list?=&type[]='.$ltype->id) }}" title="{{ $ltype->name }}">{{ $ltype->name }}</a></p>
+            <p><a href="{{ URL::to('resources/list?type='.$ltype->id) }}" title="{{ $ltype->name }}">{{ $ltype->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">
             <h3>@lang('Publisher')</h3>
             @foreach($resource->publishers AS $publisher)
-            <p><a href="{{ URL::to('resources/list?=&publisher='.$publisher->id) }}" title="{{ $publisher->name }}">{{ $publisher->name }}</a></p>
+            <p><a href="{{ URL::to('resources/list?publisher='.$publisher->id) }}" title="{{ $publisher->name }}">{{ $publisher->name }}</a></p>
             @endforeach
         </article>
         <article class="resource-view-details">

@@ -46,11 +46,11 @@
         if($item->url){
             $url = URL::to($item->url);
         }elseif($item->type_id){
-            $url = URL::to('resources/list?type[]='.$item->type_id);
+            $url = URL::to('resources/list?type='.$item->type_id);
         }elseif($item->subject_id){
-            $url = URL::to('resources/list?subject_area[]='.$item->subject_id);  
+            $url = URL::to('resources/list?subject_area='.$item->subject_id);  
         }elseif($item->level_id){
-            $url = URL::to('resources/list?level[]='.$item->level_id);    
+            $url = URL::to('resources/list?level='.$item->level_id);    
         }else{
             $url = URL::to('/');
         }
