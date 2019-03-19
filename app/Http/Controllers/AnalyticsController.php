@@ -21,7 +21,7 @@ class AnalyticsController extends Controller
             $usersModel     = new User();
             $resourceModel  = new Resource();
             if(request('type') == "gender") {
-                $totalUsersByGender     = $usersModel->totalUsersByGender();
+                $totalUsersByGender     = $usersModel->totalUsersByGender($request);
                 return view('admin.analytics.user_gender', compact('totalUsersByGender'));
             } else if (request('type') == "resource_download"){
                 $downloadModel  = new DownloadCount();  

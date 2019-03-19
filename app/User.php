@@ -150,14 +150,22 @@ class User extends Authenticatable
     }
 
     //Total users based on gender
-    public function totalUsersByGender()
+    public function totalUsersByGender($request)
     {
+        $start = \Carbon\Carbon::parse($request->date_from)->startOfDay();  //2016-09-29 00:00:00.000000
+        $end = \Carbon\Carbon::parse($request->date_to)->endOfDay(); //2016-09-29 23:59:59.000000
+
         $records = DB::table('users')
-                    ->select('user_profiles.gender')
-                    ->selectRaw('count(users.id) as total')
-                    ->join('user_profiles','user_profiles.user_id','=','users.id')
-                    ->groupBy('user_profiles.gender')
-                    ->get();
+                ->select('user_profiles.gender')
+                ->selectRaw('count(users.id) as total')
+                ->when($request->filled('date_from') && $request->filled('date_to'), function($query) use ($start, $end) {
+                    return $query->where('users.created_at', '>', $start)
+                        ->where('users.created_at', '<', $end);
+                })
+                ->join('user_profiles','user_profiles.user_id','=','users.id')
+                ->groupBy('user_profiles.gender')
+                ->get();
+
         return $records;   
     }
 
