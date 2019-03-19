@@ -76,6 +76,8 @@ if(window.jQuery){
             $('.resource-list ul li').removeClass('active-header');
             $(this).addClass('active-header');
 
+            $(".se-pre-con").show();
+
             $.ajax(
             {
                 url: myurl,
@@ -83,14 +85,17 @@ if(window.jQuery){
                 type: "get",
                 datatype: "html"
             }).done(function(data){
-                $('#subject-'+subject_area).toggle();
-                $(".resource-information-section").empty().html(data);
+                $(".se-pre-con").fadeOut("slow");
+                if(subject_area){
+                    $('#subject-'+subject_area).toggle();
+                }
+                $("#resource-information-section").empty().html(data);
             }).fail(function(jqXHR, ajaxOptions, thrownError){
                 alert('No response from server');
             });
         });
 
-        $(document).on('click', '.resource-information-section article', function(event)
+        $(document).on('click', '#resource-information-section article', function(event)
         {
             var url = $(this).data('link');
             window.location.href = url;
@@ -100,13 +105,16 @@ if(window.jQuery){
 }
 
 function getData(url){
+    $(".se-pre-con").show();
     $.ajax(
     {
         url: url,
         type: "get",
         datatype: "html"
     }).done(function(data){
-        $(".resource-information-section").empty().html(data);
+        $(".se-pre-con").fadeOut("slow");
+        $("#resource-information-section").empty().html(data);
+        $('html, body').animate({ scrollTop: 0 }, 0);
     }).fail(function(jqXHR, ajaxOptions, thrownError){
         alert('No response from server');
     });

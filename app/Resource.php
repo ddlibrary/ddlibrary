@@ -227,7 +227,7 @@ class Resource extends Model
                 'rs.updated_at',
                 'rs.created_at'
             )
-            ->paginate(8);
+            ->paginate(32);
 
         return $users;
     }
@@ -370,7 +370,7 @@ class Resource extends Model
                 'rs.abstract',
                 'rs.created_at'
             )
-            ->paginate(8);
+            ->paginate(32);
 
         return $records;    
     }

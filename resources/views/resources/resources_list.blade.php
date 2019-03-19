@@ -56,7 +56,7 @@
         </form>
     </aside>
     
-    <section class="resource-information-section">
+    <section id="resource-information-section" class="resource-information-section">
         @include('resources.resources_list_content')
     </section>
 </section>
