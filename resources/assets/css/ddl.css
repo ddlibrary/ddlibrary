@@ -479,6 +479,7 @@ select.form-control:focus::-ms-value {
 
 .resource-list ul li:hover{
     background-color: #afaaaa;
+    cursor: pointer;
 }
 
 .resource-list .active-header {

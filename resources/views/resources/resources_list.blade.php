@@ -22,12 +22,12 @@
             <ul class="panel">
                 @foreach($subjects AS $subject)
                     @if($subject->parent == 0)
-                    <li style="line-height: 2; cursor: pointer;" value="{{ $subject->id }}" data-type="subject" data-link="{{ route('resourceList', ['subject_area' => $subject->id])}}"><strong>{{ ucwords(strtolower($subject->name)) }}</strong></li>
+                    <li style="line-height: 2;" value="{{ $subject->id }}" data-type="subject" data-link="{{ route('resourceList', ['subject_area' => $subject->id])}}"><strong>{{ ucwords(strtolower($subject->name)) }}</strong></li>
 
                     <?php $sub_subjects = $subjects->where('parent', $subject->id); ?>
                     <div id="subject-{{ $subject->id }}" style="display: none;">
                         @foreach($sub_subjects AS $subject)
-                        <li style="padding:0 10px 0 10px; cursor: pointer;" value="{{ $subject->id }}" data-type="subject" data-link="{{ route('resourceList', ['subject_area' => $subject->id])}}">{{ ucwords(strtolower($subject->name)) }}</li>
+                        <li style="padding:0 10px 0 10px;" value="{{ $subject->id }}" data-type="subject" data-link="{{ route('resourceList', ['subject_area' => $subject->id])}}">{{ ucwords(strtolower($subject->name)) }}</li>
                         @endforeach
                     </div>
 
