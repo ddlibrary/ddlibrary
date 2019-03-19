@@ -21,5 +21,6 @@ mix.styles([
 
 mix.babel([
    'public/js/ddl.js',
+   'resources/assets/js/lazysizes.min.js',
    'public/js/bootstrap.min.js',
    ], 'public/js/all.js');
