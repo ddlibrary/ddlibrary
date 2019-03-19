@@ -45,7 +45,8 @@ if(window.jQuery){
              if (panel.style.maxHeight){	
                 panel.style.maxHeight = null;	
             } else {	
-                panel.style.maxHeight = panel.scrollHeight + "px";	
+                //adding 500 to just give extra max-height. 
+                panel.style.maxHeight = panel.scrollHeight+500 + "px";	
             } 	
             });	
         }

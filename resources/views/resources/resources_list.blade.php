@@ -20,26 +20,26 @@
         <fieldset>
             <legend class="accordion" id="resource-subjects">@lang('Resource Subject Areas')</legend>
             <ul class="panel">
-            @foreach($subjects AS $subject)
-                @if($subject->parent == 0)
-                    <li>
-                        <label for="subject-{{ $subject->id }}">
-                        <input type="checkbox" name="subject_area[]" id="subject-{{ $subject->id }}" {{ (in_array($subject->id, $subjectAreaIds)?"checked":"")}} value="{{ $subject->id }}"><span>{{ ucwords(strtolower($subject->name)) }}</span>
-                        </label>
-                    </li>
-                @endif
-            @endforeach
+                @foreach($subjects AS $subject)
+                    @if($subject->parent == 0)
+                    <li style="line-height: 2; cursor: pointer;" value="{{ $subject->id }}" data-type="subject"><strong>{{ ucwords(strtolower($subject->name)) }}</strong></li>
+
+                    <?php $sub_subjects = $subjects->where('parent', $subject->id); ?>
+                    <div id="subject-{{ $subject->id }}" style="display: none;">
+                        @foreach($sub_subjects AS $subject)
+                        <li style="padding:0 10px 0 10px; cursor: pointer;" value="{{ $subject->id }}" data-type="subject">{{ ucwords(strtolower($subject->name)) }}</li>
+                        @endforeach
+                    </div>
+
+                    @endif
+                @endforeach
             </ul>
         </fieldset>
         <fieldset>
             <legend class="accordion">@lang('Resource Types')</legend>
             <ul class="panel">
                 @foreach($types AS $type)
-                    <li>
-                        <label for="type-{{ $type->id }}">
-                        <input type="checkbox" name="type[]" id="type-{{ $type->id }}" {{ (in_array($type->id, $typeIds)?"checked":"")}} value="{{ $type->id }}"><span>{{ $type->name }}</span>
-                        </label>
-                    </li>
+                    <li value="{{ $type->id }}" data-type="type">{{ $type->name }}</li>
                 @endforeach
             </ul>
         </fieldset>
@@ -48,10 +48,7 @@
         <ul class="panel">
             @foreach($levels AS $level)
                 @if($level->parent == 0)
-                    <li>
-                        <label for="level-{{ $level->id }}">
-                        <input type="checkbox" name="level[]" id="level-{{ $level->id }}" {{ (in_array($level->id, $levelIds)?"checked":"")}} value="{{ $level->id }}"><span>{{ $level->name }}</span>
-                    </li>
+                    <li value="{{ $level->id }}" data-type="level">{{ $level->name }}</li>
                 @endif
             @endforeach
         </ul>
@@ -68,16 +65,6 @@
 <script src="{{ URL::to('vendor/jquery/jquery.min.js') }}"></script>
 
 <script type="text/javascript">
-    $(window).on('hashchange', function() {
-        if (window.location.hash) {
-            var page = window.location.hash.replace('#', '');
-            if (page == Number.NaN || page <= 0) {
-                return false;
-            }else{
-                getData(page);
-            }
-        }
-    });
     
     $(document).ready(function()
     {
@@ -89,25 +76,54 @@
             $(this).parent('li').addClass('active');
   
             var myurl = $(this).attr('href');
-            var page=$(this).attr('href').split('page=')[1];
   
-            getData(page);
+            getData(myurl);
         });
   
+        $(document).on('click', '#side-form ul li',function(event)
+        {
+            var subject_area = $(this).data('type')=="subject"?$(this).attr('value'):"";
+            var level = $(this).data('type')=="level"?$(this).attr('value'):"";
+            var type = $(this).data('type')=="type"?$(this).attr('value'):"";
+
+            console.log(type);
+
+
+            $('.resource-list ul li').removeClass('active-header');
+            $(this).addClass('active-header');
+
+            $.ajax(
+            {
+                url: "{{ route('resourceList') }}",
+                data: {subject_area: subject_area, level: level, type: type},
+                type: "get",
+                datatype: "html"
+            }).done(function(data){
+                $('#subject-'+subject_area).toggle();
+                $(".resource-information-section").empty().html(data);
+            }).fail(function(jqXHR, ajaxOptions, thrownError){
+                alert('No response from server');
+            });
+        });
+
+        $(document).on('click', '.resource-information-section article', function(event)
+        {
+            var url = $(this).data('link');
+            window.location.href = url;
+        });
+
     });
   
-    function getData(page){
+    function getData(url){
         $.ajax(
         {
-            url: "{{ route('resourceListContent') }}",
-            data: {page: page},
+            url: url,
             type: "get",
             datatype: "html"
         }).done(function(data){
             $(".resource-information-section").empty().html(data);
-            location.hash = page;
         }).fail(function(jqXHR, ajaxOptions, thrownError){
-              alert('No response from server');
+            alert('No response from server');
         });
     }
 </script>

@@ -330,20 +330,20 @@ class Resource extends Model
             ->when(count($subjectAreaIds) > 0, function($query) use($subjectAreaIds){
                 return $query->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
                         ->join('taxonomy_term_hierarchy AS tth','tth.tid','=','rsa.tid')
-                        ->whereIn('tth.parent', $subjectAreaIds)
-                        ->orWhereIn('tth.tid', $subjectAreaIds)
+                        ->where('tth.parent', $subjectAreaIds)
+                        ->orWhere('tth.tid', $subjectAreaIds)
                         ->groupBy('tth.tid');
             })
             ->when(count($levelIds) > 0, function($query)  use($levelIds){
                 return $query->join('resource_levels AS rl', function ($join) use($levelIds) {
                     $join->on('rl.resource_id', '=', 'rs.id')
-                        ->whereIn('rl.tid', $levelIds);
+                        ->where('rl.tid', $levelIds);
                 });
             })
             ->when(count($typeIds) > 0, function($query)  use($typeIds){
                 return $query->join('resource_learning_resource_types AS rlrt', function ($join) use($typeIds) {
                     $join->on('rlrt.resource_id', '=', 'rs.id')
-                            ->whereIn('rlrt.tid', $typeIds);
+                            ->where('rlrt.tid', $typeIds);
                     });
             })
             ->when(count($searchQuery) > 0, function($query)  use($searchQuery){

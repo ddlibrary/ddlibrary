@@ -44,7 +44,6 @@ Route::group(
     Route::get('admin/resources', 'ResourceController@index')->middleware('auth');
     Route::post('admin/resources', 'ResourceController@index')->name('resources')->middleware('admin');
     Route::any('resources/list', 'ResourceController@list')->name('resourceList');
-    Route::any('resources/listContent', 'ResourceController@listContent')->name('resourceListContent');
     Route::get('resource/{resourceId}', 'ResourceController@viewPublicResource');
     Route::get('resources', 'ResourceController@list');
     Route::get('resources/add/step1', 'ResourceController@createStepOne')->name('step1')->middleware('auth');

@@ -477,9 +477,12 @@ select.form-control:focus::-ms-value {
     font-size: 0.9rem;
 }
 
-.resource-list ul li span{
-    text-align: center;
-    cursor: pointer;
+.resource-list ul li:hover{
+    background-color: #afaaaa;
+}
+
+.resource-list .active-header {
+    background-color: #afaaaa;
 }
 
 /* Paste this css to your style sheet file or under head tag */
@@ -509,7 +512,9 @@ aside .sub-subject-show {
     flex: 1 1 75%;
     flex-wrap: wrap;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
 }
 
 .resource-information-section .resource-article:hover {
@@ -519,7 +524,7 @@ aside .sub-subject-show {
 
 .resource-list .resource-information {
     flex-basis: auto;
-    margin: 0 0 15px 0;
+    margin: 0 5px 15px 5px;
     box-shadow: 0 2px 5px #ccc;
 }
 
