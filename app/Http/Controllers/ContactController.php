@@ -66,7 +66,7 @@ class ContactController extends Controller
     {
         $this->validate($request, [
             'name'      => 'required',
-            'email'     => 'required',
+            'email'     => 'required|email',
             'subject'   => 'required',
             'message'   => 'required',
             'g-recaptcha-response' => 'sometimes|required|captcha'
