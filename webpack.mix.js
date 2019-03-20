@@ -24,3 +24,25 @@ mix.babel([
    'resources/assets/js/lazysizes.min.js',
    'public/js/bootstrap.min.js',
    ], 'public/js/all.js');
+
+
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const imageminMozjpeg = require('imagemin-mozjpeg');
+
+mix.webpackConfig({
+    plugins: [
+        new CopyWebpackPlugin([{
+            from: 'public/storage/files',
+            to: 'storage/files', // Laravel mix will place this in 'public/img'
+        }]),
+        new ImageminPlugin({
+            test: /\.(jpe?g|png|gif|svg)$/i,
+            plugins: [
+                imageminMozjpeg({
+                    quality: 50,
+                })
+            ]
+        })
+    ]
+});
