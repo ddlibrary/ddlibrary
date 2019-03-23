@@ -95,12 +95,6 @@ if(window.jQuery){
             });
         });
 
-        $(document).on('click', '#resource-information-section article', function(event)
-        {
-            var url = $(this).data('link');
-            window.location.href = url;
-        });
-
     });
 }
 
