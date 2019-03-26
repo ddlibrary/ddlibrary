@@ -53,7 +53,7 @@ if(window.jQuery){
         $('#resource-subjects').trigger('click');
 
         //Resources
-        $(document).on('click', '.pagination a',function(event)
+        $(document).on('click', '#resource-information-section .pagination a',function(event)
         {
             event.preventDefault();
   
