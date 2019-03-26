@@ -65,7 +65,7 @@ DDL Glossary
     @endforeach
     </table>
     <div class="resource-pagination">
-        {{ $glossary->links() }}
+        {{ $glossary->appends(request()->input())->links() }}
     </div>
 </section>
 @endsection 
