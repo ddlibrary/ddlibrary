@@ -27,13 +27,13 @@
               <tr>
                 <td>{{ $terms[0]['name'] }}</td>
                 <td>{{ fixLanguage($terms[0]['language']) }}</td>
-                <td><a href="{{ route('taxonomyedit', ['id' => $terms[0]['id']]) }}">Edit</a></td>
+                <td><a href="{{ route('taxonomyedit', ['vid' => $terms[0]['vid'], 'id' => $terms[0]['id']]) }}">Edit</a></td>
               </tr>
               @else
               <tr>
                 <td>Not translated</td>
                 <td>{{ fixLanguage($locale) }}</td>
-                <td><a href="{{ route('taxonomytranslatecreate', ['tnid' => $tnid, 'lang' => $locale]) }}">Add</a></td>
+                <td><a href="{{ route('taxonomytranslatecreate', ['tid' => $tid, 'tnid' => $tnid, 'lang' => $locale]) }}">Add</a></td>
               </tr>
               @endif
               @endforeach

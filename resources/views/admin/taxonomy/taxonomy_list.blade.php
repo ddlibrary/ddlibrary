@@ -49,7 +49,7 @@
                 <td>{{ $term->name }}</td>
                 <td>{{ $term->weight }}</td>
                 <td>{{ fixLanguage($term->language) }}</td>
-                <td><a href="taxonomy/edit/{{$term->id}}">Edit</a></td>
+                <td><a href="taxonomy/edit/{{$term->vid}}/{{$term->id}}">Edit</a></td>
               </tr>
               @endforeach
             </tbody>

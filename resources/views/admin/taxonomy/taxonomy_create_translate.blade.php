@@ -38,6 +38,17 @@
                 </td>
               </tr>
               <tr>
+                  <td>Parent</td>
+                  <td>
+                      <select class="form-control" name="parent" required>
+                          <option value="0" {{ $theParent == 0 ? "selected":"" }}>-- None --</option>
+                          @foreach($parents as $p)
+                              <option value="{{ $p->id }}" {{ $p->id == $theParent ? "selected":"" }}>{{ $p->name }}</option>
+                          @endforeach
+                      </select>
+                  </td>
+              </tr>
+              <tr>
                 <td>Weight</td>
                 <td>
                     <input class="form-control" type="text" value="{{ $weight }}" name="weight" required>

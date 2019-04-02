@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\TaxonomyTerm;
 use App\TaxonomyVocabulary;
+use App\TaxonomyHierarchy;
 
 use Illuminate\Http\Request;
 
@@ -31,14 +32,16 @@ class TaxonomyController extends Controller
         return view('admin.taxonomy.taxonomy_list', compact('terms', 'searchBar'));
     }
 
-    public function edit($tid)
+    public function edit($vid, $tid)
     {
         $term = TaxonomyTerm::find($tid);
         $vocabulary = TaxonomyVocabulary::all();
-        return view('admin.taxonomy.taxonomy_edit', compact('term', 'vocabulary'));
+        $parents = TaxonomyTerm::where('vid',$vid)->get();
+        $theParent = TaxonomyHierarchy::where('tid', $tid)->first()->parent;
+        return view('admin.taxonomy.taxonomy_edit', compact('term', 'vocabulary', 'parents', 'theParent'));
     }
 
-    public function update(Request $request, $tid)
+    public function update(Request $request, $vid, $tid)
     {
         $this->validate($request, [
             'vid'           => 'required',
@@ -60,6 +63,13 @@ class TaxonomyController extends Controller
 
         $term->save();
 
+        $parentid = $request->input('parent');
+
+        $parent = TaxonomyHierarchy::firstOrNew(['tid' => $tid], ['parent' => $parentid]);
+        $parent->tid = $tid;
+        $parent->parent = $parentid;
+        $parent->save();
+
         return redirect('/admin/taxonomy')->with('success', 'Taxonomy item updated successfully!');
     }
 
@@ -79,7 +89,7 @@ class TaxonomyController extends Controller
             array_push($supportedLocals, $key);
         }
 
-        return view('admin.taxonomy.taxonomy_translate', compact('translations','supportedLocals','tnid'));      
+        return view('admin.taxonomy.taxonomy_translate', compact('translations','supportedLocals','tnid','tid'));
     }
 
     public function create()
@@ -113,12 +123,24 @@ class TaxonomyController extends Controller
         return redirect('/admin/taxonomy')->with('success', 'Taxonomy item created successfully!');
     }
 
-    public function createTranslate($tnid, $lang)
+    public function createTranslate($tid, $tnid, $lang)
     {
         $vocabulary = TaxonomyVocabulary::all();
         $vid = TaxonomyTerm::where('tnid',$tnid)->first()->vid;
         $weight = TaxonomyTerm::where('tnid', $tnid)->first()->weight;
-        return view('admin.taxonomy.taxonomy_create_translate',compact('vocabulary','tnid','lang', 'vid', 'weight'));
+        $parents = TaxonomyTerm::where('vid',$vid)->get();
+        $sourceParent = TaxonomyHierarchy::where('tid', $tid)->first()->parent;
+        $parentTermTnid = TaxonomyTerm::where('id', $sourceParent)->first()->tnid;
+        $theParent = TaxonomyTerm::where('tnid',$parentTermTnid)->where('language', $lang)->first()->id;
+        return view('admin.taxonomy.taxonomy_create_translate',compact(
+            'vocabulary',
+            'tnid',
+            'vid',
+            'lang',
+            'weight',
+            'parents',
+            'theParent'
+        ));
     }
 
     public function storeTranslate(Request $request, $tnid)
@@ -140,6 +162,11 @@ class TaxonomyController extends Controller
         $term->language = $request->input('language');
         $term->tnid = $tnid;
         $term->save();
+
+        $parent = new TaxonomyHierarchy();
+        $parent->tid = $term->id;
+        $parent->parent = $request->input('parent');;
+        $parent->save();
 
         return redirect('/admin/taxonomy')->with('success', 'Taxonomy item added successfully!');
     }

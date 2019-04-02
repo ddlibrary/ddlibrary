@@ -17,7 +17,7 @@
       <div class="card-body">
         <div class="table-responsive">
         <a href="{{ URL::to('admin/taxonomy/translate/'.$term->id) }}"><button class="btn btn-primary pull-right">Translate</button></a>
-        <form method="POST" action="{{ route('taxonomyedit', ['id' => $term->id]) }}">
+        <form method="POST" action="{{ route('taxonomyedit', ['vid' => $term->vid, 'id' => $term->id]) }}">
         @csrf
           <table class="table table-bordered" width="100%" cellspacing="0">
               <tr>
@@ -35,6 +35,17 @@
                 <td>
                     <input class="form-control" type="text" value="{{ $term->name }}" name="name" required>
                 </td>
+              </tr>
+              <tr>
+                  <td>Parent</td>
+                  <td>
+                      <select class="form-control" name="parent" required>
+                          <option value="0" {{ $theParent == 0 ? "selected":"" }}>-- None --</option>
+                          @foreach($parents as $p)
+                              <option value="{{ $p->id }}" {{ $p->id == $theParent ? "selected":"" }}>{{ $p->name }}</option>
+                          @endforeach
+                      </select>
+                  </td>
               </tr>
               <tr>
                 <td>Weight</td>
