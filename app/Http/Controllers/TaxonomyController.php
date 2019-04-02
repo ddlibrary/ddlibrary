@@ -37,7 +37,12 @@ class TaxonomyController extends Controller
         $term = TaxonomyTerm::find($tid);
         $vocabulary = TaxonomyVocabulary::all();
         $parents = TaxonomyTerm::where('vid',$vid)->get();
-        $theParent = TaxonomyHierarchy::where('tid', $tid)->first()->parent;
+        $theParent = TaxonomyHierarchy::where('tid', $tid)->first();
+        if(isset($theParent->parent)){
+            $theParent = $theParent->parent;
+        }else{
+            $theParent = 0;
+        }
         return view('admin.taxonomy.taxonomy_edit', compact('term', 'vocabulary', 'parents', 'theParent'));
     }
 
