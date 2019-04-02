@@ -135,8 +135,12 @@ class TaxonomyController extends Controller
         $weight = TaxonomyTerm::where('tnid', $tnid)->first()->weight;
         $parents = TaxonomyTerm::where('vid',$vid)->get();
         $sourceParent = TaxonomyHierarchy::where('tid', $tid)->first()->parent;
-        $parentTermTnid = TaxonomyTerm::where('id', $sourceParent)->first()->tnid;
-        $theParent = TaxonomyTerm::where('tnid',$parentTermTnid)->where('language', $lang)->first()->id;
+        if($sourceParent) {
+            $parentTermTnid = TaxonomyTerm::where('id', $sourceParent)->first()->tnid;
+            $theParent = TaxonomyTerm::where('tnid',$parentTermTnid)->where('language', $lang)->first()->id;
+        } else {
+            $theParent = 0;
+        }
         return view('admin.taxonomy.taxonomy_create_translate',compact(
             'vocabulary',
             'tnid',
