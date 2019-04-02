@@ -8,4 +8,5 @@ class TaxonomyHierarchy extends Model
 {
     public $timestamps = false;
     protected $table = 'taxonomy_term_hierarchy';
+    protected $fillable = ['tid'];
 }
