@@ -15,8 +15,8 @@ class CreateResourceSharePermissionsTable extends Migration {
 		Schema::create('resource_share_permissions', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('resource_id')->unsigned()->nullable()->index('resources_share_permissions_ibfk_1');
-			$table->integer('tid')->nullable();
+			$table->integer('resource_id')->unsigned()->nullable()->index('resource_id');
+			$table->integer('tid')->unsigned()->nullable()->index('tid');
 		});
 	}
 

@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateResourceLevelsTable extends Migration {
+class CreateResourceAuthorsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,11 @@ class CreateResourceLevelsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('resource_levels', function(Blueprint $table)
+		Schema::create('resource_authors', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('resource_id')->unsigned()->index('resourceid');
-			$table->integer('tid')->unsigned()->nullable()->index('resource_level_tid');
+			$table->integer('tid')->unsigned()->nullable()->index('tid');
 		});
 	}
 
@@ -28,7 +28,7 @@ class CreateResourceLevelsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('resource_levels');
+		Schema::drop('resource_authors');
 	}
 
 }

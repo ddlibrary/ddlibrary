@@ -15,7 +15,7 @@ class CreateResourceCommentsTable extends Migration {
 		Schema::create('resource_comments', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('resource_id')->unsigned()->nullable()->index('resourceid');
+			$table->integer('resource_id')->unsigned()->nullable()->index('resource_id');
 			$table->integer('user_id')->unsigned()->nullable();
 			$table->text('comment', 65535)->nullable();
 			$table->integer('status')->nullable()->default(0)->comment('0: not published, 1: published');

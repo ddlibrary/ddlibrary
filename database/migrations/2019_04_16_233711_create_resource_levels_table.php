@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateResourceSubjectAreasTable extends Migration {
+class CreateResourceLevelsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,11 @@ class CreateResourceSubjectAreasTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('resource_subject_areas', function(Blueprint $table)
+		Schema::create('resource_levels', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('resource_id')->unsigned()->index('resourceid');
-			$table->integer('tid')->unsigned()->nullable()->index('subject_area');
+			$table->integer('tid')->unsigned()->nullable()->index('tid');
 		});
 	}
 
@@ -28,7 +28,7 @@ class CreateResourceSubjectAreasTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('resource_subject_areas');
+		Schema::drop('resource_levels');
 	}
 
 }

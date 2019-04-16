@@ -15,8 +15,8 @@ class CreateResourceFlagsTable extends Migration {
 		Schema::create('resource_flags', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('resource_id')->unsigned()->nullable()->index('resourceid');
-			$table->integer('user_id')->unsigned()->nullable();
+			$table->integer('resource_id')->unsigned()->nullable()->index('resource_id');
+			$table->integer('user_id')->unsigned()->nullable()->index('user_id');
 			$table->integer('type')->nullable()->comment('1: Graphic Violence, 2: Graphic Sexual Content, 3: Spam, Scam or Fraud, 4: Broken or Empty Data');
 			$table->text('details', 65535)->nullable();
 			$table->timestamps();

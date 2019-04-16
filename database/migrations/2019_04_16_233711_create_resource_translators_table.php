@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateResourceAuthorsTable extends Migration {
+class CreateResourceTranslatorsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,11 @@ class CreateResourceAuthorsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('resource_authors', function(Blueprint $table)
+		Schema::create('resource_translators', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('resource_id')->unsigned()->index('resourceid');
-			$table->integer('tid')->nullable();
+			$table->integer('tid')->unsigned()->nullable();
 		});
 	}
 
@@ -28,7 +28,7 @@ class CreateResourceAuthorsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('resource_authors');
+		Schema::drop('resource_translators');
 	}
 
 }

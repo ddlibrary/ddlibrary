@@ -15,7 +15,7 @@ class CreateResourceEducationalResourcesTable extends Migration {
 		Schema::create('resource_educational_resources', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('resource_id')->unsigned()->nullable()->index('resources_educational_resources_ibfk_1');
+			$table->integer('resource_id')->unsigned()->nullable()->index('resource_id');
 			$table->integer('value')->nullable()->comment('0: not published, 1: published');
 		});
 	}

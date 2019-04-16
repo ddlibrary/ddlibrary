@@ -15,8 +15,8 @@ class CreateResourceCreativeCommonsTable extends Migration {
 		Schema::create('resource_creative_commons', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('resource_id')->unsigned()->nullable()->index('resources_creative_commons_ibfk_1');
-			$table->integer('tid')->nullable()->comment('0: empty 1: by-sa, 2: by-nc-sa, 3: by-nc-nd, 4: public domain');
+			$table->integer('resource_id')->unsigned()->nullable()->index('resource_id');
+			$table->integer('tid')->unsigned()->nullable()->index('tid');
 		});
 	}
 

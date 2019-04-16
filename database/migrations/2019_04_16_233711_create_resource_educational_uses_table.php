@@ -16,7 +16,7 @@ class CreateResourceEducationalUsesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('resource_id')->unsigned()->index('resourceid');
-			$table->integer('tid')->nullable();
+			$table->integer('tid')->unsigned()->nullable()->index('tid');
 		});
 	}
 
