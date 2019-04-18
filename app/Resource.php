@@ -6,9 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Config;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Traits\CausesActivity;
 
 class Resource extends Model
 {
+    use CausesActivity;
+    use LogsActivity;
+
+    protected static $logAttributes = ['*'];
+
     public function levels()
     {
         return $this->belongsToMany(TaxonomyTerm::class, 'resource_levels', 'resource_id', 'tid');
