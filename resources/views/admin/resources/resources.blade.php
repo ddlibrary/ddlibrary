@@ -81,7 +81,10 @@
                 <td><a href="{{ URL::to('admin/resource/published/'.$resource->id) }}">{{ ($resource->status==0?"Not Published":"Published") }}</a></td>
                 <td>{{ $resource->updated_at }}</td>
                 <td>{{ fixLanguage($resource->language) }}</td>
-                <td><a href="{{ URL::to('resources/edit/step1/'.$resource->id) }}">Edit</a></td>
+                <td>
+                  <a href="{{ URL::to('resources/edit/step1/'.$resource->id) }}">Edit</a> |
+                  <a href="resource/delete/{{$resource->id}}" onclick="return confirm('Are you sure you want to delete this resource?');">Delete</a>
+                </td>
               </tr>
               @endforeach
             </tbody>

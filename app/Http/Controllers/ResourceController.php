@@ -1256,4 +1256,15 @@ class ResourceController extends Controller
 
         return back();
     }
+
+    /**
+    * Delete a resource
+    */
+    public function deleteResource($resourceId)
+    {
+        $resource = Resource::find($resourceId);
+        $resource->delete();
+
+        return back()->with('error', 'You deleted the record!');
+    }
 }
