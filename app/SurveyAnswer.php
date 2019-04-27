@@ -24,13 +24,13 @@ class SurveyAnswer extends Model
             ->select(
                 'sqo.text', 
                 'sa.language',
-                DB::Raw('count(sa.id) as total')
+                DB::Raw('count(sa.answer_id) as total')
             )
-            ->join('survey_answers AS sa','sa.question_id','=','sqo.question_id')
+            ->join('survey_answers AS sa','sa.answer_id','=','sqo.id')
             ->where('sqo.question_id', $question_id)
             ->groupBy(
-                'sqo.text', 
-                'sa.language'
+                'sa.language',
+                'sqo.text'
             )
             ->get();
         return $records;
