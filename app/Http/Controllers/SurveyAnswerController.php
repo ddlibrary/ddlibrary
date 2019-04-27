@@ -48,6 +48,7 @@ class SurveyAnswerController extends Controller{
                 $surveyAnswer->question_id = $question->tnid;
                 $surveyAnswer->answer_id = $answer->tnid;
                 $surveyAnswer->ip = \Request::ip();
+                $surveyAnswer->language = \LaravelLocalization::getCurrentLocale();
                 $surveyAnswer->save();
         	}
     	}
@@ -62,6 +63,7 @@ class SurveyAnswerController extends Controller{
                 $surveyAnswer->question_id = $question->tnid;
                 $surveyAnswer->answer_id = $answer->tnid;
                 $surveyAnswer->ip = \Request::ip();
+                $surveyAnswer->language = \LaravelLocalization::getCurrentLocale();
                 $surveyAnswer->save();
         	}
     	}
@@ -72,7 +74,8 @@ class SurveyAnswerController extends Controller{
 	            $surveyAnswer = new SurveyAnswer();
 	            $surveyAnswer->question_id = $key;
 	            $surveyAnswer->description = $value;
-	            $surveyAnswer->ip = \Request::ip();
+                $surveyAnswer->ip = \Request::ip();
+                $surveyAnswer->language = \LaravelLocalization::getCurrentLocale();
 	            $surveyAnswer->save();
         	}
         }

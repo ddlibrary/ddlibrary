@@ -30,6 +30,7 @@
 
                   @else
                     <th>Options</th>
+                    <th>Language</th>
                     <th>Count</th>
                   @endif
                 </tr>
@@ -37,10 +38,11 @@
 
               <tbody>
                 @if ($question->type != "descriptive")
-                  @foreach ($survey_question_options as $option)
+                  @foreach (\App\SurveyAnswer::getAnswersByOption($question->id) as $option)
                     <tr>
-                      <td>{{ $option-> text }}</td>
-                      <td>{{ \App\SurveyAnswer::getQuestionAnswersCount($option -> question_id, $option->id) }}</td>
+                      <td>{{ $option->text }}</td>
+                      <td>{{ fixLanguage($option->language) }}</td>
+                      <td>{{ $option->total }}</td>
                     </tr>
                   @endforeach
                 @else
