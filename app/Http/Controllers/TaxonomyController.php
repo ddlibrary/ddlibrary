@@ -137,7 +137,13 @@ class TaxonomyController extends Controller
         $sourceParent = TaxonomyHierarchy::where('tid', $tid)->first()->parent;
         if($sourceParent) {
             $parentTermTnid = TaxonomyTerm::where('id', $sourceParent)->first()->tnid;
-            $theParent = TaxonomyTerm::where('tnid',$parentTermTnid)->where('language', $lang)->first()->id;
+            $parentTranslation = TaxonomyTerm::where('tnid',$parentTermTnid)->where('language', $lang)->first();
+            //If the parent is translated in current language
+            if($parentTranslation){
+                $theParent = $parentTranslation;
+            }else{
+                return "First translate the parent";
+            }
         } else {
             $theParent = 0;
         }
