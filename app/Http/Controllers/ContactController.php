@@ -85,7 +85,7 @@ class ContactController extends Controller
             \Mail::to(Setting::find(1)->website_email)->send(new ContactPage($contact));
         }
 
-        return redirect('/contact-us')->with('success', 'We received your message and will contact you back soon!');
+        return redirect('/contact-us')->with('success', __('We received your message and will contact you back soon!'));
     }
 
     /**

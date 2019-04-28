@@ -539,7 +539,7 @@ class ResourceController extends Controller
         });
 
         if($result){
-            return redirect('/home')->with('success','Resource successfully added! It will be published after review.');
+            return redirect('/home')->with('success',__('Resource successfully added! It will be published after review.'));
         }
     }
 
@@ -1216,7 +1216,7 @@ class ResourceController extends Controller
         });
 
         if($result){
-            return redirect('/resource/'.$resourceId)->with('success','Resource updated successfully');
+            return redirect('/resource/'.$resourceId)->with('success',__('Resource updated successfully'));
         }
     }
 
