@@ -29,7 +29,7 @@ class SurveyAnswerController extends Controller{
         $survey_question_options = Null;
 
         if ($question->type == 'descriptive'){
-            $descriptive_answers = SurveyAnswer::where(['question_id' => $question ->id])->get();
+            $descriptive_answers = SurveyAnswer::where(['answer_id' => $question->tnid])->get();
         }else{
             $survey_question_options = $question->options;
         }
@@ -70,9 +70,12 @@ class SurveyAnswerController extends Controller{
         
     	if ($request->descriptive){
 	        foreach ($request->descriptive as $key => $value) {
-	            // key is question and value the text inserted
+                // key is question and value the text inserted
+                $question = SurveyQuestion::find($key);
+                
 	            $surveyAnswer = new SurveyAnswer();
-	            $surveyAnswer->question_id = $key;
+                $surveyAnswer->question_id = $key;
+                $surveyAnswer->answer_id = $question->tnid;
 	            $surveyAnswer->description = $value;
                 $surveyAnswer->ip = \Request::ip();
                 $surveyAnswer->language = \LaravelLocalization::getCurrentLocale();
