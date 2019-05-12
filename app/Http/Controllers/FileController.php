@@ -27,14 +27,16 @@ class FileController extends Controller
 
     public function fileDownloadCounter($resource_id, $file_id)
     {
-        $fileDownload = new DownloadCount();
+        if(is_int($resource_id) && is_int($file_id)) {
+            $fileDownload = new DownloadCount();
 
-        $userAgentParser = parse_user_agent(request());
+            $userAgentParser = parse_user_agent(request());
 
-        $fileDownload->resource_id = $resource_id;
-        $fileDownload->file_id = $file_id;
-        $fileDownload->user_id = (Auth::id())?Auth::id():0;
-        $fileDownload->ip_address = request()->ip();
-        $fileDownload->save();
+            $fileDownload->resource_id = $resource_id;
+            $fileDownload->file_id = $file_id;
+            $fileDownload->user_id = (Auth::id())?Auth::id():0;
+            $fileDownload->ip_address = request()->ip();
+            $fileDownload->save();
+        }
     }
 }
