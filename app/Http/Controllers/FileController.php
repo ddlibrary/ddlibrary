@@ -27,7 +27,8 @@ class FileController extends Controller
 
     public function fileDownloadCounter($resource_id, $file_id)
     {
-        if(is_int($resource_id) && is_int($file_id)) {
+        
+        if(is_numeric($resource_id) && is_numeric($file_id)) {
             $fileDownload = new DownloadCount();
 
             $userAgentParser = parse_user_agent(request());
