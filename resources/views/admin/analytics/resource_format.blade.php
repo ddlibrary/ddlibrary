@@ -13,7 +13,6 @@
                         <thead>
                             <tr>
                             <th>Format</th>
-                            <th>Language</th>
                             <th>TOTAL</th>
                             </tr>
                         </thead>
@@ -21,7 +20,6 @@
                         @foreach ($totalResourcesByFormat as $indexkey => $resource)
                         <tr>
                             <td>{{ giveMeFileFormat($resource->file_mime) }}</td>
-                            <td>{{ fixLanguage($resource->language) }}</td>
                             <td><a href="{{ URL::to('admin/resources?language='.$resource->language.'&format='.$resource->file_mime) }}">{{ $resource->total }}</a></td>
                             </tr>
                             @endforeach

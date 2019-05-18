@@ -13,18 +13,16 @@
                         <thead>
                             <tr>
                             <th>Subject Area</th>
-                            <th>Language</th>
-                            <th>TOTAL</th>
+                            <th>Total</th>
                             </tr>
                         </thead>
                         <tbody>
                         @foreach ($totalResourcesBySubject as $indexkey => $resource)
                         <tr>
                             <td>{{ $resource->name }}</td>
-                            <td>{{ fixLanguage($resource->language) }}</td>
                             <td><a href="{{ URL::to('admin/resources?language='.$resource->language.'&subject_area='.$resource->id) }}">{{ $resource->total }}</a></td>
-                            </tr>
-                            @endforeach
+                        </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>

@@ -10,13 +10,16 @@ use App\Resource;
 
 class AnalyticsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         return view('admin.analytics.analytics_main');
     }
 
     public function show(Request $request)
     {
+        //if language is present in the request, otherwise default it to English
+        $lang = $request->filled('language')?request('language'):"en";
+
         if($request->filled('type') && ($request->filled('source') && request('source') == "dd")) {
             $usersModel     = new User();
             $resourceModel  = new Resource();
@@ -41,16 +44,16 @@ class AnalyticsController extends Controller
                 $totalResources = $resourceModel->totalResourcesByLanguage();
                 return view('admin.analytics.resource_language', compact('totalResources')); 
             } else if (request('type') == "resource_subject"){
-                $totalResourcesBySubject = $resourceModel->totalResourcesBySubject();
+                $totalResourcesBySubject = $resourceModel->totalResourcesBySubject($lang);
                 return view('admin.analytics.resource_subject', compact('totalResourcesBySubject')); 
             } else if (request('type') == "resource_level"){
-                $totalResourcesByLevel = $resourceModel->totalResourcesByLevel();
+                $totalResourcesByLevel = $resourceModel->totalResourcesByLevel($lang);
                 return view('admin.analytics.resource_level', compact('totalResourcesByLevel')); 
             } else if (request('type') == "resource_type"){
-                $totalResourcesByType = $resourceModel->totalResourcesByType();
+                $totalResourcesByType = $resourceModel->totalResourcesByType($lang);
                 return view('admin.analytics.resource_type', compact('totalResourcesByType')); 
             } else if (request('type') == "resource_format"){
-                $totalResourcesByFormat = $resourceModel->totalResourcesByFormat();
+                $totalResourcesByFormat = $resourceModel->totalResourcesByFormat($lang);
                 return view('admin.analytics.resource_format', compact('totalResourcesByFormat')); 
             }
         } else {
