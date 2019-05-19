@@ -7,6 +7,7 @@ use App\User;
 use App\DownloadCount;
 use App\ResourceView;
 use App\Resource;
+use Facebook\Facebook;
 
 class AnalyticsController extends Controller
 {
@@ -55,7 +56,27 @@ class AnalyticsController extends Controller
             } else if (request('type') == "resource_format"){
                 $totalResourcesByFormat = $resourceModel->totalResourcesByFormat($lang);
                 return view('admin.analytics.resource_format', compact('totalResourcesByFormat')); 
+            } 
+        } else if(request('source') == "fb") {
+            $fb = new Facebook();
+            /* PHP SDK v5.0.0 */
+            /* make the API call */
+            try {
+                // Returns a `Facebook\FacebookResponse` object
+                $response = $fb->get(
+                '1540661852875335/insights/page_impressions,page_engaged_users,page_fans,page_views_total,post_impressions',
+                'EAAIZAeLHjJM4BAP2vk7najzWok0aBZBA2LCguZC0SmDbKlcgQqquoz9SuCiD7BkFaSktg4PZCrtQOeZCqt3pRvzOvBstZBXABEzh6XntZA7EcsqxIhf7A1ee5J1YhorSyZB4iva3IP5m4sL6mwX8dZCXBRFZAJxJpbSMYcYdNeLfW2Y8d8gWMSKeZBDnp1RyINwcZBqNpCEnfn3eqpnIza2cRDFC'
+                );
+            } catch(Facebook\Exceptions\FacebookResponseException $e) {
+                echo 'Graph returned an error: ' . $e->getMessage();
+                exit;
+            } catch(Facebook\Exceptions\FacebookSDKException $e) {
+                echo 'Facebook SDK returned an error: ' . $e->getMessage();
+                exit;
             }
+            $fbRecords = $response->getGraphEdge();
+            /* handle the result */
+            return view('admin.analytics.facebook_data', compact('fbRecords')); 
         } else {
             return view('admin.analytics.analytics_main', compact('request'));
         }
