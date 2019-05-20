@@ -65,7 +65,7 @@ class AnalyticsController extends Controller
                 // Returns a `Facebook\FacebookResponse` object
                 $response = $fb->get(
                 '1540661852875335/insights/page_impressions,page_engaged_users,page_fans,page_views_total,post_impressions',
-                'EAAIZAeLHjJM4BAP2vk7najzWok0aBZBA2LCguZC0SmDbKlcgQqquoz9SuCiD7BkFaSktg4PZCrtQOeZCqt3pRvzOvBstZBXABEzh6XntZA7EcsqxIhf7A1ee5J1YhorSyZB4iva3IP5m4sL6mwX8dZCXBRFZAJxJpbSMYcYdNeLfW2Y8d8gWMSKeZBDnp1RyINwcZBqNpCEnfn3eqpnIza2cRDFC'
+                env('FACEBOOK_PAGE_TOKEN')
                 );
             } catch(Facebook\Exceptions\FacebookResponseException $e) {
                 echo 'Graph returned an error: ' . $e->getMessage();
