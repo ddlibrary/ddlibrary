@@ -290,29 +290,31 @@ class Resource extends Model
         return $records;   
     }
 
-    //Total resources based on subject area
-    public function totalResourcesBySubject()
+    //Total resources based on subject area List
+    public function totalResourcesBySubject($lang="en")
     {
-        $records = DB::table('resources AS rs')
+        $records = DB::table('resource_subject_areas AS rsa')
                     ->select(
-                        'ttd.name',
-                        'ttd.id',
-                        'rs.language',
-                        DB::raw('count(rs.id) as total')
+                        'ttd.id', 
+                        'ttd.name', 
+                        'ttd.language', 
+                        'ttd.tnid',
+                        DB::raw('count(rsa.id) as total')
                     )
-                    ->join('resource_subject_areas AS rsa','rsa.resource_id','=','rs.id')
-                    ->join('taxonomy_term_data AS ttd', function($join){
+                    ->LeftJoin('taxonomy_term_data AS ttd', function($join){
                         $join->on('ttd.id','=','rsa.tid')
                             ->where('ttd.vid', 8);
                     })
+                    ->where('ttd.language', $lang)
                     ->groupBy(
-                        'ttd.name', 
-                        'ttd.id', 
-                        'rs.language')
-                    ->orderby('rs.language')
+                        'ttd.name',
+                        'ttd.id',
+                        'ttd.language',
+                        'ttd.tnid'
+                    )
                     ->orderBy('total','DESC')
                     ->get();
-        return $records;   
+        return $records;
     }
 
     public function paginateResourcesBy($request)
@@ -383,58 +385,56 @@ class Resource extends Model
     }
 
     //Total resources based on level
-    public function totalResourcesByLevel()
+    public function totalResourcesByLevel($lang="en")
     {
-        $records = DB::table('resources AS rs')
+        $records = DB::table('resource_levels AS rl')
             ->select(
                 'ttd.id', 
-                'ttd.name', 
-                'rs.language',
-                DB::Raw('count(rs.id) as total')
+                'ttd.name',
+                'ttd.language',
+                DB::Raw('count(rl.id) as total')
             )
-            ->join('resource_levels AS rl','rl.resource_id','=','rs.id')
             ->join('taxonomy_term_data AS ttd', function($join){
                 $join->on('ttd.id','=','rl.tid')
                     ->where('ttd.vid', 13);
             })
+            ->where('ttd.language', $lang)
             ->groupBy(
                 'ttd.name', 
-                'ttd.id', 
-                'rs.language')
-            ->orderBy('rs.language')
+                'ttd.id',
+                'ttd.language')
             ->orderBy('total','DESC')
             ->get();
         return $records;   
     }
 
     //Total resources based on Resource Type
-    public function totalResourcesByType()
+    public function totalResourcesByType($lang="en")
     {
-        $records = DB::table('resources AS rs')
+        $records = DB::table('resource_learning_resource_types AS rlrt')
             ->select(
                 'ttd.id',
                 'ttd.name',
-                'rs.language',
-                DB::Raw('count(rs.id) as total')
+                'ttd.language',
+                DB::Raw('count(rlrt.id) as total')
             )
-            ->join('resource_learning_resource_types AS rlrt','rlrt.resource_id','=','rs.id')
             ->join('taxonomy_term_data AS ttd', function($join){
                 $join->on('ttd.id','=','rlrt.tid')
                     ->where('ttd.vid', 7);
             })
+            ->where('ttd.language', $lang)
             ->groupBy(
                 'ttd.id',
                 'ttd.name',
-                'rs.language'
+                'ttd.language'
             )
-            ->orderby('rs.language')
             ->orderBy('total','DESC')
             ->get();
         return $records;   
     }
 
     //Total resources by attachment type (format)
-    public function totalResourcesByFormat()
+    public function totalResourcesByFormat($lang="en")
     {
         $records = DB::table('resources AS rs')
             ->select(
@@ -443,6 +443,7 @@ class Resource extends Model
                 DB::raw('count(rs.id) as total')
             )
             ->join('resource_attachments AS ra','ra.resource_id','=','rs.id')
+            ->where('rs.language', $lang)
             ->groupBy('ra.file_mime', 'rs.language')
             ->orderby('rs.language')
             ->orderBy('total','DESC')

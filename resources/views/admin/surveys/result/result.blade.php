@@ -47,9 +47,11 @@
                   @endforeach
                 @else
                   @foreach ($descriptive_answers as $answer)
+                  @if(!empty ($answer->description))
                     <tr>
                       <td>{{ $answer->description }}</td>
                     </tr>
+                  @endif
                   @endforeach
                 @endif
 

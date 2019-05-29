@@ -46,7 +46,7 @@
                 <td>{{ fixLanguage($page->language) }}</td>
                 <td>{{ $page->created_at->diffForHumans() }}</td>
                 <td>{{ $page->updated_at->diffForHumans() }}</td>
-                <td><a href="page/edit/{{$page->id}}">Edit</a></td>
+                <td><a href="{{ URL::to($page->language.'/'.'page/edit'.'/'.$page->id) }}">Edit</a></td>
               </tr>
               @endforeach
             </tbody>

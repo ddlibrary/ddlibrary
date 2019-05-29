@@ -13,7 +13,6 @@
                         <thead>
                             <tr>
                             <th>Level</th>
-                            <th>Language</th>
                             <th>TOTAL</th>
                             </tr>
                         </thead>
@@ -21,7 +20,6 @@
                         @foreach ($totalResourcesByLevel as $indexkey => $resource)
                         <tr>
                             <td>{{ $resource->name }}</td>
-                            <td>{{ fixLanguage($resource->language) }}</td>
                             <td><a href="{{ URL::to('admin/resources?language='.$resource->language.'&level='.$resource->id ) }}">{{ $resource->total }}</a></td>
                             </tr>
                             @endforeach

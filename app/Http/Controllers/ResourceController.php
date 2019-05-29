@@ -245,6 +245,8 @@ class ResourceController extends Controller
                 $fileMime = $attachments->getMimeType();
                 $fileSize = $attachments->getClientSize();
                 $fileName = $attachments->getClientOriginalName();
+                $fileExtension = \File::extension($fileName);
+                $fileName = auth()->user()->id."_".time().".".$fileExtension;
                 //$attachments->storeAs($fileName,'private');
                 Storage::disk('private')->put($fileName, file_get_contents($attachments));
                 $validatedData['attc'][] = array(
@@ -828,6 +830,8 @@ class ResourceController extends Controller
                 $fileMime = $attachments->getMimeType();
                 $fileSize = $attachments->getClientSize();
                 $fileName = $attachments->getClientOriginalName();
+                $fileExtension = \File::extension($fileName);
+                $fileName = auth()->user()->id."_".time().".".$fileExtension;
                 //$attachments->storeAs($fileName,'private');
                 unset($validatedData['attachments']);
                 Storage::disk('private')->put($fileName, file_get_contents($attachments));

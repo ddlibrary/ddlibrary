@@ -44,7 +44,7 @@
                                 <tr>
                                     <td>Type</td>
                                     <td>
-                                        <select class="form-control" name="type" required>
+                                        <select class="form-control" name="type">
                                             <option value="">- Choose -</option>
                                             <option value="gender">Gender</option>
                                             <option value="resource_download">Top Downloaded Resources</option>
