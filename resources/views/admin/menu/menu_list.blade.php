@@ -16,43 +16,38 @@
       <div class="card-body">
         <!-- The search bar -->
         {!! $searchBar !!}
-        <div class="table-responsive">
-          <table class="table table-bordered" width="100%" cellspacing="0">
-            <thead>
-              <tr>
-                <th>NO</th>
-                <th>LOCATION</th>
-                <th>TITLE</th>
-                <th>WEIGHT</th>
-                <th>LANGUAGE</th>
-                <th>OPERATIONS</th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <th>NO</th>
-                <th>LOCATION</th>
-                <th>TITLE</th>
-                <th>WEIGHT</th>
-                <th>LANGUAGE</th>
-                <th>OPERATIONS</th>
-              </tr>
-            </tfoot>
-            <tbody>
-            @foreach ($menuRecords as $indexkey => $menu)
-              <tr>
-                <td>{{ (($menuRecords->currentPage() - 1) * $menuRecords->perPage())+$indexkey + 1 }}</td>
-                <td>{{ $menu->location }}</td>
-                <td>{{ $menu->title }}</td>
-                <td>{{ $menu->weight }}</td>
-                <td>{{ fixLanguage($menu->language) }}</td>
-                <td><a href="menu/edit/{{$menu->id}}">Edit</a></td>
-              </tr>
+
+          <div class="clear-fix dd">
+            <ol class="dd-list">
+              @foreach ($menuRecords as $indexkey => $menu) 
+              @if($menu->parent == 0)
+              <li class="dd-item dd-item-alt" data-id="{{ $menu->id }}">
+                  <div class="dd-handle"></div>
+                  <div class="dd-content"> {{ $menu->title }} - {{ $menu->location }}
+                      <a style="float:right;" href="menu/edit/{{$menu->id}}"><i class="fa fa-edit"></i> edit</a> 
+                  </div>
+
+                  <ol class="dd-list">
+                    @foreach ($menuRecords as $indexkey => $sub) 
+                    @if($sub->parent > 0 && $sub->parent == $menu->id)
+                      <li class="dd-item dd-item-alt" data-id="{{ $sub->id }}">
+                          <div class="dd-handle"></div>
+                          <div class="dd-content"> {{ $sub->title }} 
+                            <a style="float:right;" href="menu/edit/{{$sub->id}}"><i class="fa fa-edit"></i> edit</a> 
+                          </div>
+                      </li>
+                    @endif
+                    @endforeach
+                  </ol>
+              </li>
+              @endif
               @endforeach
-            </tbody>
-          </table>
-        </div>
-        {{ $menuRecords->appends(request()->input())->links() }}
+
+            </ol>
+          </div>
+
+          <button class="btn btn-primary" id="sort_btn">Sort</button>
+
       </div>
     </div>
   </div>
