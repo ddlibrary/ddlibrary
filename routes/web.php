@@ -118,6 +118,7 @@ Route::group(
     Route::get('admin/menu/edit/{menuId}','MenuController@edit')->middleware('admin');
     Route::post('admin/menu/update/{menuId}','MenuController@update')->name('update_menu')->middleware('admin');
     Route::get('admin/menu/sort','MenuController@sort')->name('sort_menu')->middleware('admin');
+    Route::get('admin/menu/ajax_get_parents','MenuController@ajax_get_parents')->name('ajax_get_parents')->middleware('admin');
 
     //Settings
     Route::get('admin/settings','SettingController@edit')->middleware('admin');

@@ -264,6 +264,8 @@
           'maxDepth' : 2,
           'handleClass' : 'dd-handle'
         });
+
+        getParents();
       });
 
       $('#sort_btn').on('click', function(){
@@ -273,6 +275,15 @@
           if(data) toastr.success('Success', 'Menu Sorted Successfully!');
         });
       });
+
+      function getParents()
+      {
+        $.get('{{ URL('admin/menu/ajax_get_parents') }}', {lang:$('#lang').val(), loc:$('#loc').val(), id:$('#parent').val()}, 
+        function(data){
+          $('#parent').html(data);
+          //alert(data);
+        });
+      }
     </script>
   </div>
 </body>

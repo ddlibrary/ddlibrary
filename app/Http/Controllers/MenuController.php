@@ -44,32 +44,32 @@ class MenuController extends Controller
 
     function edit(Menu $menu, $menuId)
     {
-        $details = $menu->find($menuId);
-        $locations = $details->distinct()->pluck('location');
-        $parents = $details->distinct()->pluck('title','id');
+        $details    = $menu->find($menuId);
+        $locations  = $details->distinct()->pluck('location');
+        $parents    = $details->distinct()->pluck('title','id');
         return view('admin.menu.menu_edit', compact('details','locations','parents'));
     }
 
     public function update(Request $request, $menuId)
     {
         $this->validate($request, [
-            'title'      => 'required',
-            'location'   => 'required',
-            'path'    => 'required',
-            'parent'       => 'nullable',
+            'title'     => 'required',
+            'location'  => 'required',
+            'path'      => 'required',
+            'parent'    => 'nullable',
             'language'  => 'required',
-            'weight'  => 'required'
+            'weight'    => 'required'
         ]);
 
-        $menu = Menu::find($menuId);
-        $menu->title = $request->input('title');
-        $menu->location = $request->input('location');
-        $menu->path = $request->input('path');
+        $menu               = Menu::find($menuId);
+        $menu->title        = $request->input('title');
+        $menu->location     = $request->input('location');
+        $menu->path         = $request->input('path');
         if($request->filled('parent')){
-            $menu->parent = $request->input('parent');
+            $menu->parent   = $request->input('parent');
         }
-        $menu->language = $request->input('language');
-        $menu->weight = $request->input('weight');
+        $menu->language     = $request->input('language');
+        $menu->weight       = $request->input('weight');
         //inserting
         $menu->save();
 
@@ -110,5 +110,23 @@ class MenuController extends Controller
             }
         }
         echo true;
+    }
+
+    public function ajax_get_parents(Request $request)
+    {
+        $id     = $request->input('id');
+        $loc    = $request->input('loc');
+        $lang   = $request->input('lang');
+
+        $parents = Menu::where("language", $lang)->where("location", $loc)->get();
+        $data = '<option value="">- No Parent -</option>';
+        foreach($parents as $parent)
+        {
+            $data .= '<option value="' . $parent->id . '" ';
+            $data .= ($parent->id == $id) ? 'selected' : '';
+            $data .= '>' . $parent->title . '</option>';
+        }
+
+        echo ($data);
     }
 }
