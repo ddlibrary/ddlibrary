@@ -118,7 +118,7 @@ class MenuController extends Controller
         $loc    = $request->input('loc');
         $lang   = $request->input('lang');
 
-        $parents = Menu::where("language", $lang)->where("location", $loc)->get();
+        $parents = Menu::where("language", $lang)->where("location", $loc)->where("parent", 0)->get();
         $data = '<option value="">- No Parent -</option>';
         foreach($parents as $parent)
         {
