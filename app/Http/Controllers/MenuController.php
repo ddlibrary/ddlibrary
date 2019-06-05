@@ -39,7 +39,7 @@ class MenuController extends Controller
         $createSearchBar = new SearchController();
         $searchBar = $createSearchBar->searchBar($args);
 
-        return view('admin.menu.menu_list', compact('menuRecords','searchBar', 'menu', 'subMenues'));
+        return view('admin.menu.menu_list', compact('menuRecords','searchBar'));
     }
 
     function edit(Menu $menu, $menuId)
@@ -109,5 +109,6 @@ class MenuController extends Controller
                 }
             }
         }
+        echo true;
     }
 }
