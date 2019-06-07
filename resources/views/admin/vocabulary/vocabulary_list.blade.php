@@ -19,37 +19,17 @@
         <!-- Search bar will come here -->
         
         <div class="table-responsive">
-          <span>Total: <strong>{{count($vocabularies)}}</strong></span>
-          <table class="table table-bordered" width="100%" cellspacing="0">
+          {{-- <span>Total: <strong>{{count($vocabularies)}}</strong></span> --}}
+          <table class="table table-bordered" width="100%" cellspacing="0" id="taxonomy_vocabulary-table">
             <thead>
               <tr>
                 <th>NO</th>
                 <th>NAME</th>
                 <th>WEIGHT</th>
                 <th>LANGUAGE</th>
-                <th>OPERATIONS</th>
+                <th>ACTION</th>
               </tr>
             </thead>
-            <tfoot>
-              <tr>
-                <th>NO</th>
-                <th>NAME</th>
-                <th>WEIGHT</th>
-                <th>LANGUAGE</th>
-                <th>OPERATIONS</th>
-              </tr>
-            </tfoot>
-            <tbody>
-            @foreach ($vocabularies as $indexkey => $vocabulary)
-              <tr>
-                <td>{{ $vocabulary->vid }}</td>
-                <td>{{ $vocabulary->name }}</td>
-                <td>{{ $vocabulary->weight }}</td>
-                <td>{{ fixLanguage($vocabulary->language) }}</td>
-                <td><a href="vocabulary/edit/{{$vocabulary->vid}}">Edit</a></td>
-              </tr>
-              @endforeach
-            </tbody>
           </table>
         </div>
       </div>
@@ -58,3 +38,7 @@
   <!-- /.container-fluid-->
   <!-- /.content-wrapper-->
   @endsection
+
+  {{-- @push('scripts')
+  @stack('scripts') --}}
+  

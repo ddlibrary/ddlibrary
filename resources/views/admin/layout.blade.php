@@ -14,6 +14,8 @@
   <link href="{{ URL::to('vendor/nestable/nestable.min.css') }}" rel="stylesheet">
   <!-- Toaster CSS file for notification -->
   <link href="{{ URL::to('vendor/toastr/toastr.min.css') }}" rel="stylesheet">
+  <!-- Datatables CSS file -->
+  <link href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet">
   <!-- Custom styles for this template-->
   <link href="{{ URL::to('css/sb-admin-2.min.css') }}" rel="stylesheet">
   <style>
@@ -253,6 +255,8 @@
     <script src="{{ URL::to('vendor/nestable/jquery.nestable.min.js') }}"></script>
     <!-- Toaster plugin JavaScript-->
     <script src="{{ URL::to('vendor/toastr/toastr.min.js') }}"></script>
+    <!-- Datatables plugin JavaScript-->
+    <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="{{ URL::to('js/sb-admin.min.js') }}"></script>
     <!-- Optional JavaScript -->
@@ -285,6 +289,29 @@
         });
       }
     </script>
+
+
+  <script>
+      $(document).ready(function()
+      {
+        
+        $('#taxonomy_vocabulary-table').DataTable({
+              processing: true,
+              serverSide: true,
+              ajax: '{!! route('getvocabularies') !!}',
+              columns: [
+                  { data: 'vid', name: 'vid' },
+                  { data: 'name', name: 'name' },
+                  { data: 'weight', name: 'weight' },
+                  { data: 'language', name: 'language' },
+                  { data: 'action', name: 'action', orderable: false, searchable: false}
+              ]
+          });
+
+      });
+      </script>
+
+
   </div>
 </body>
 

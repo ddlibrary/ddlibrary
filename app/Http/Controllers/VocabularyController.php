@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\TaxonomyVocabulary;
+use Yajra\Datatables\Datatables;
 
 use Illuminate\Http\Request;
 
@@ -10,8 +11,24 @@ class VocabularyController extends Controller
     //Index Function
     public function index()
     {
-        $vocabularies = TaxonomyVocabulary::all();
+        //$vocabularies = TaxonomyVocabulary::all();
         return view('admin.vocabulary.vocabulary_list', compact('vocabularies'));
+    }
+
+
+    //Index Function
+    public function getVocabularies()
+    {
+        //return dataTables::of(TaxonomyVocabulary::query())->make(true);
+
+        $vocs = TaxonomyVocabulary::select(['vid', 'name', 'weight', 'language']);
+
+        return Datatables::of($vocs)
+            ->addColumn('action', function ($vocs) {
+                return '<a href="' . URL('admin/vocabulary/edit/' . $vocs->vid) .'" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>';
+            })
+            ->editColumn('language', '{{fixLanguage($language)}}')
+            ->make(true);
     }
 
     //Vocabulary Create Function

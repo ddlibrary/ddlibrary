@@ -144,6 +144,7 @@ Route::group(
 
     //Taxonomy Vocabulary
     Route::get('admin/vocabulary','VocabularyController@index')->name('vocabularylist')->middleware('admin');
+    Route::get('admin/vocabularies','VocabularyController@getVocabularies')->name('getvocabularies')->middleware('admin');
     Route::get('admin/vocabulary/create','VocabularyController@create')->name('vocabularycreate')->middleware('admin');
     Route::post('admin/vocabulary/store','VocabularyController@store')->name('vocabularystore')->middleware('admin');
     Route::get('admin/vocabulary/edit/{vid}','VocabularyController@edit')->name('vocabularyedit')->middleware('admin');
