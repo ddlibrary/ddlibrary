@@ -261,57 +261,6 @@
     <script src="{{ URL::to('js/sb-admin.min.js') }}"></script>
     <!-- Optional JavaScript -->
     @stack('scripts')
-
-    <script>
-      $(document).ready(function(){
-        $('.dd').nestable({
-          'maxDepth' : 2,
-          'handleClass' : 'dd-handle'
-        });
-
-        getParents();
-      });
-
-      $('#sort_btn').on('click', function(){
-        var order = $('.dd').nestable('serialize');
-
-        $.get('{{ URL('admin/menu/sort') }}', {data:order}, function(data){
-          if(data) toastr.success('Success', 'Menu Sorted Successfully!');
-        });
-      });
-
-      function getParents()
-      {
-        $.get('{{ URL('admin/menu/ajax_get_parents') }}', {lang:$('#lang').val(), loc:$('#loc').val(), id:$('#parent').val()}, 
-        function(data){
-          $('#parent').html(data);
-          //alert(data);
-        });
-      }
-    </script>
-
-
-  <script>
-      $(document).ready(function()
-      {
-        
-        $('#taxonomy_vocabulary-table').DataTable({
-              processing: true,
-              serverSide: true,
-              ajax: '{!! route('getvocabularies') !!}',
-              columns: [
-                  { data: 'vid', name: 'vid' },
-                  { data: 'name', name: 'name' },
-                  { data: 'weight', name: 'weight' },
-                  { data: 'language', name: 'language' },
-                  { data: 'action', name: 'action', orderable: false, searchable: false}
-              ]
-          });
-
-      });
-      </script>
-
-
   </div>
 </body>
 

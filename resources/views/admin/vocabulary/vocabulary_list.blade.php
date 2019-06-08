@@ -39,6 +39,22 @@
   <!-- /.content-wrapper-->
   @endsection
 
-  {{-- @push('scripts')
-  @stack('scripts') --}}
+  @push('scripts')
+  <script>
+    $(document).ready(function(){
+      $('#taxonomy_vocabulary-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: '{!! route('getvocabularies') !!}',
+            columns: [
+                { data: 'vid', name: 'vid' },
+                { data: 'name', name: 'name' },
+                { data: 'weight', name: 'weight' },
+                { data: 'language', name: 'language' },
+                { data: 'action', name: 'action', orderable: false, searchable: false}
+            ]
+        });
+    });
+    </script>
+  @endpush
   

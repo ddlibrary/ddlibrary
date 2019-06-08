@@ -54,3 +54,22 @@
   <!-- /.container-fluid-->
   <!-- /.content-wrapper-->
   @endsection
+
+  @push('scripts')
+    <script>
+      $(document).ready(function(){
+        $('.dd').nestable({
+          'maxDepth' : 2,
+          'handleClass' : 'dd-handle'
+        });
+      });
+
+      $('#sort_btn').on('click', function(){
+        var order = $('.dd').nestable('serialize');
+
+        $.get('{{ URL('admin/menu/sort') }}', {data:order}, function(data){
+          if(data) toastr.success('Success', 'Menu Sorted Successfully!');
+        });
+      });
+    </script>
+  @endpush

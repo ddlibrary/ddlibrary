@@ -104,7 +104,16 @@
     <script>
         $(document).ready(function(){
             $('#country').trigger('change');
+            getParents();
         });
+
+        function getParents()
+        {
+            $.get('{{ URL('admin/menu/ajax_get_parents') }}', {lang:$('#lang').val(), loc:$('#loc').val(), id:$('#parent').val()}, 
+            function(data){
+                $('#parent').html(data);
+            });
+        }
     </script> 
 @endpush
 @endsection
