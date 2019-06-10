@@ -11,16 +11,13 @@ class VocabularyController extends Controller
     //Index Function
     public function index()
     {
-        //$vocabularies = TaxonomyVocabulary::all();
-        return view('admin.vocabulary.vocabulary_list', compact('vocabularies'));
+        return view('admin.vocabulary.vocabulary_list');
     }
 
 
     //Index Function
     public function getVocabularies()
     {
-        //return dataTables::of(TaxonomyVocabulary::query())->make(true);
-
         $vocs = TaxonomyVocabulary::select(['vid', 'name', 'weight', 'language']);
 
         return Datatables::of($vocs)

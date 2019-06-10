@@ -166,9 +166,7 @@ class UserController extends Controller
         $countries = $myResources->resourceAttributesList('taxonomy_term_data',15);
         $provinces = $myResources->resourceAttributesList('taxonomy_term_data',12);
 
-        return view('admin.users.profile', compact('user', 'countries', 'provinces'));    
-
-        dd(Auth::id());
+        return view('admin.users.profile', compact('user', 'countries', 'provinces'));
     }
 
     /**
