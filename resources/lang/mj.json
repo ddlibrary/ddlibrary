@@ -137,6 +137,8 @@
     "Physics":"فزیک",
     "Chemistry":"کیمیا",
     "Math":"ریاضی",
+    "Agriculture":"زراعت",
+    "IT":"فن آوری معلوماتی",
 
     "Any": "انتخاب کنید",
 
@@ -145,5 +147,8 @@
     "Question":"سوال",
     "of": "از",
 
-    "Resource successfully added! It will be published after review.": "منبع موفقانه اضافه گردید! بعد از یک مرور نشر خواهد گردید."
+    "Resource successfully added! It will be published after review.": "منبع موفقانه اضافه گردید! بعد از یک مرور نشر خواهد گردید.",
+    
+    "Want to schedule a demo of the DD Library at your school, college or institution? Send us a request using this form.":"اگر میخواهید کتابخانه درخت دانش در نهاد تحصیلی شما معرفی شود، با پر کردن این فارم، درخواست خود را بفرستید.",
+    "We received your message and will contact you back soon!":"پیام شما را دریافت کردیم و به زودی با شما تماس می گیریم!"
 }
