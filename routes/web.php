@@ -97,7 +97,8 @@ Route::group(
     Route::get('admin/menu','MenuController@index')->middleware('admin');
     Route::post('admin/menu','MenuController@index')->middleware('admin')->name('menulist');
     Route::get('admin/menu/edit/{menuId}','MenuController@edit')->middleware('admin');
-    Route::post('admin/menu/update/{menuId}','MenuController@update')->name('update_menu')->middleware('admin');
+    Route::post('admin/menu/update/{menuId}','MenuController@update')->name('update_menu')->middleware('admin');    
+    Route::get('admin/menu/sort','MenuController@sort')->name('sort_menu')->middleware('admin');
     //Settings
     Route::get('admin/settings','SettingController@edit')->middleware('admin');
     Route::post('admin/settings', 'SettingController@update')->name('settings');
