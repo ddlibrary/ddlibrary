@@ -12,7 +12,11 @@
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <!-- Custom styles for this template-->
   <link href="{{ URL::to('css/sb-admin-2.min.css') }}" rel="stylesheet">
-  @stack('styles')
+  <!-- Toaster CSS file for notification -->
+  <link href="{{ URL::to('vendor/toastr/toastr.min.css') }}" rel="stylesheet">
+  <style>
+    .toast-success{background-color:rgb(76, 175, 80);}
+  </style>
 </head>
 
 <body id="page-top">
@@ -251,6 +255,8 @@
     <script src="{{ URL::to('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Core plugin JavaScript-->
     <script src="{{ URL::to('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <!-- Toaster plugin JavaScript-->
+    <script src="{{ URL::to('vendor/toastr/toastr.min.js') }}"></script>
     <!-- Custom scripts for all pages-->
     <script src="{{ URL::to('js/sb-admin.min.js') }}"></script>
     <!-- Optional JavaScript -->

@@ -72,7 +72,7 @@
       $('#sort_btn').on('click', function(){
         var order = $('.dd').nestable('serialize');
         $.get('{{ URL('admin/menu/sort') }}', {data:order}, function(data){
-          if(data) alert('Success, Menu Sorted Successfully!');
+          if(data) toastr.success('Success', 'Menu Sorted Successfully!');
         });
       });
     </script>

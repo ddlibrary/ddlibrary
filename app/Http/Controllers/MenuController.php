@@ -106,6 +106,8 @@ class MenuController extends Controller
                 }
             }
         }
+
+        echo true;
     }
     
     public function ajax_get_parents(Request $request)
