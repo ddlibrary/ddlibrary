@@ -107,4 +107,20 @@ class MenuController extends Controller
             }
         }
     }
+    
+    public function ajax_get_parents(Request $request)
+    {
+        $id     = $request->input('id');
+        $loc    = $request->input('loc');
+        $lang   = $request->input('lang');
+        $parents = Menu::where("language", $lang)->where("location", $loc)->get();
+        $data = '<option value="">- No Parent -</option>';
+        foreach($parents as $parent)
+        {
+            $data .= '<option value="' . $parent->id . '" ';
+            $data .= ($parent->id == $id) ? 'selected' : '';
+            $data .= '>' . $parent->title . '</option>';
+        }
+        echo ($data);
+    }
 }
