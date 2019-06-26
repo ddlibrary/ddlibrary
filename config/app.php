@@ -147,6 +147,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         App\Providers\FacebookServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
         
         /*
          * Package Service Providers...

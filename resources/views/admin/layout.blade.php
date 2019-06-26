@@ -12,6 +12,8 @@
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <!-- Custom styles for this template-->
   <link href="{{ URL::to('css/sb-admin-2.min.css') }}" rel="stylesheet">
+  <!-- Datatables CSS file -->
+  <link href="{{ URL('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -250,6 +252,9 @@
     <script src="{{ URL::to('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Core plugin JavaScript-->
     <script src="{{ URL::to('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <!-- Datatables plugin JavaScript-->
+    <script src="{{ URL::to('vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ URL::to('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <!-- Custom scripts for all pages-->
     <script src="{{ URL::to('js/sb-admin.min.js') }}"></script>
     <!-- Optional JavaScript -->
