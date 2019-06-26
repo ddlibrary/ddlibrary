@@ -152,4 +152,64 @@ class UserController extends Controller
             'profile.last_name' => 'Last Name'
         ])->download();
     }
+    
+    /**
+     * Edit a user profile
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function editProfile()
+    {
+        $this->middleware('admin');
+        $myResources = new Resource();
+        $user = User::where('id',Auth::id())->first();
+        $countries = $myResources->resourceAttributesList('taxonomy_term_data',15);
+        $provinces = $myResources->resourceAttributesList('taxonomy_term_data',12);
+        return view('admin.users.profile', compact('user', 'countries', 'provinces'));    
+        dd(Auth::id());
+    }
+    /**
+     * Edit a user details
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function updateProfile(Request $request)
+    {
+        $this->validate($request, [
+            'username'      => 'required',
+            'password'      => 'nullable',
+            'email'         => 'required',
+            'first_name'    => 'required',
+            'last_name'     => 'required',
+            'gender'        => 'required',
+            'phone'         => 'required',
+            'country'       => 'required',
+            'city'          => 'nullable',
+        ]);
+        if($request->filled('city')){
+            $city = $request->input('city');
+        }elseif($request->filled('city_other')){
+            $city = $request->input('city_other');
+        }else{
+            $city = NULL;
+        }
+        //Saving contact info to the database
+        $user = User::find(Auth::id());
+        $user->username = $request->input('username');
+        if($request->filled('password')){
+            $user->password = Hash::make($request->input('password'));
+        }
+        $user->email = $request->input('email');
+        $user->status = $request->input('status');
+        $user->save();
+        $userProfile = UserProfile::where('user_id', Auth::id())->first();
+        $userProfile->first_name = $request->input('first_name');
+        $userProfile->last_name = $request->input('last_name');
+        $userProfile->gender = $request->input('gender');
+        $userProfile->country = $request->input('country');
+        $userProfile->city = $city;
+        $userProfile->phone = $request->input('phone');
+        $userProfile->save();
+        return redirect('/admin/user/profile/')->with('success', 'Profile updated successfully!');   
+    }
 }
