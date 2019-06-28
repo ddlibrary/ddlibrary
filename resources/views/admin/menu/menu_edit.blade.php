@@ -36,7 +36,7 @@
                                         <strong>Location</strong>
                                     </td>
                                     <td>
-                                        <select name="location" required>
+                                        <select name="location" id="loc" onchange="getParents()" required>
                                             <option value=""></option>
                                             @foreach($locations AS $lc)
                                             <option value="{{ $lc }}" {{ ($details->location==$lc?"selected":"") }}>{{ $lc }}</option>
@@ -54,26 +54,26 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <strong>Parents</strong>
+                                        <strong>Language</strong>
                                     </td>
                                     <td>
-                                        <select name="parent">
-                                            <option value="">- No Parent -</option>
-                                            @foreach($parents AS $key=>$value)
-                                            <option value="{{ $key }}" {{ ($details->parent==$key?"selected":"") }}>{{ $value }}</option>
+                                        <select name="language" id="lang" onchange="getParents()" required>
+                                            <option value="">- @lang('None') -</option>
+                                            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                            <option value="{{ $localeCode }}" {{ $details->language == $localeCode ? "selected" : "" }}>{{ $properties['native'] }}</option>
                                             @endforeach
                                         </select>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <strong>Language</strong>
+                                        <strong>Parents</strong>
                                     </td>
                                     <td>
-                                        <select name="language" required>
-                                            <option value="">- @lang('None') -</option>
-                                            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                                            <option value="{{ $localeCode }}" {{ $details->language == $localeCode ? "selected" : "" }}>{{ $properties['native'] }}</option>
+                                        <select name="parent" id="parent">
+                                            <option value="">- No Parent -</option>
+                                            @foreach($parents AS $key=>$value)
+                                            <option value="{{ $key }}" {{ ($details->parent==$key?"selected":"") }}>{{ $value }}</option>
                                             @endforeach
                                         </select>
                                     </td>
@@ -104,7 +104,17 @@
     <script>
         $(document).ready(function(){
             $('#country').trigger('change');
+            getParents();
         });
+
+        function getParents()
+        {
+            $.get('{{ URL('admin/menu/ajax_get_parents') }}', {lang:$('#lang').val(), loc:$('#loc').val(), id:$('#parent').val()}, 
+            function(data){
+            $('#parent').html(data);
+            //alert(data);
+            });
+        }
     </script> 
 @endpush
 @endsection

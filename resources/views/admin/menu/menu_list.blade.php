@@ -1,4 +1,10 @@
 @extends('admin.layout')
+
+@push('scripts')
+  <!-- Nestable CSS file for menues -->
+  <link href="{{ URL::to('vendor/nestable/nestable.min.css') }}" rel="stylesheet">
+@endpush 
+
 @section('admin.content')
 <div class="content-wrapper">
   <div class="container-fluid">
@@ -16,46 +22,58 @@
       <div class="card-body">
         <!-- The search bar -->
         {!! $searchBar !!}
-        <div class="table-responsive">
-          <table class="table table-bordered" width="100%" cellspacing="0">
-            <thead>
-              <tr>
-                <th>NO</th>
-                <th>LOCATION</th>
-                <th>TITLE</th>
-                <th>WEIGHT</th>
-                <th>LANGUAGE</th>
-                <th>OPERATIONS</th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <th>NO</th>
-                <th>LOCATION</th>
-                <th>TITLE</th>
-                <th>WEIGHT</th>
-                <th>LANGUAGE</th>
-                <th>OPERATIONS</th>
-              </tr>
-            </tfoot>
-            <tbody>
-            @foreach ($menuRecords as $indexkey => $menu)
-              <tr>
-                <td>{{ (($menuRecords->currentPage() - 1) * $menuRecords->perPage())+$indexkey + 1 }}</td>
-                <td>{{ $menu->location }}</td>
-                <td>{{ $menu->title }}</td>
-                <td>{{ $menu->weight }}</td>
-                <td>{{ fixLanguage($menu->language) }}</td>
-                <td><a href="menu/edit/{{$menu->id}}">Edit</a></td>
-              </tr>
-              @endforeach
-            </tbody>
-          </table>
+        <div class="clear-fix dd">
+          <ol class="dd-list">
+            @foreach ($menuRecords as $indexkey => $menu) 
+            @if($menu->parent == 0)
+            <li class="dd-item dd-item-alt" data-id="{{ $menu->id }}">
+                <div class="dd-handle"></div>
+                <div class="dd-content"> {{ $menu->title }} - {{ $menu->location }}
+                    <a style="float:right;" href="menu/edit/{{$menu->id}}"><i class="fa fa-edit"></i> edit</a> 
+                </div>
+
+                <ol class="dd-list">
+                  @foreach ($menuRecords as $indexkey => $sub) 
+                  @if($sub->parent > 0 && $sub->parent == $menu->id)
+                    <li class="dd-item dd-item-alt" data-id="{{ $sub->id }}">
+                        <div class="dd-handle"></div>
+                        <div class="dd-content"> {{ $sub->title }} 
+                          <a style="float:right;" href="menu/edit/{{$sub->id}}"><i class="fa fa-edit"></i> edit</a> 
+                        </div>
+                    </li>
+                  @endif
+                  @endforeach
+                </ol>
+            </li>
+            @endif
+            @endforeach
+          </ol>
         </div>
-        {{ $menuRecords->appends(request()->input())->links() }}
+
+        <button class="btn btn-primary" id="sort_btn">Sort</button>
+
       </div>
     </div>
   </div>
   <!-- /.container-fluid-->
   <!-- /.content-wrapper-->
   @endsection
+
+  @push('scripts')
+    <!-- Nestable plugin JavaScript-->
+    <script src="{{ URL::to('vendor/nestable/nestable.min.js') }}"></script>
+    <script>
+      $(document).ready(function(){
+        $('.dd').nestable({
+          'maxDepth' : 2,
+          'handleClass' : 'dd-handle'
+        });
+      });
+      $('#sort_btn').on('click', function(){
+        var order = $('.dd').nestable('serialize');
+        $.get('{{ URL('admin/menu/sort') }}', {data:order}, function(data){
+          if(data) toastr.success('Success', 'Menu Sorted Successfully!');
+        });
+      });
+    </script>
+  @endpush 
