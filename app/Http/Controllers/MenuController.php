@@ -22,11 +22,11 @@ class MenuController extends Controller
         //setting the search session empty
         DDLClearSession();
         
-        $menuRecords = Menu::orderBy('id','desc')->orderBy('weight')
+        $menuRecords = Menu::orderBy('weight')
         ->title(request('term'))
         ->location(request('vocabulary'))
         ->language(request('language'))
-        ->paginate(10);
+        ->get();
 
         $vocabulary = Menu::select('location AS val','location AS name')->groupBy('name')->get();
 
@@ -74,5 +74,55 @@ class MenuController extends Controller
         $menu->save();
 
         return redirect('admin/menu/edit/'.$menuId)->with('success', 'Item successfully updated!');
+    }    
+    
+    public function sort(Request $request)
+    {
+        $pos        = 0;
+        $menus      = $request->input('data');
+        foreach ($menus as $menu) 
+        {
+            $m = Menu::find($menu['id']);
+            $m->weight = ++$pos;
+            $m->parent = 0;
+            $m->save();
+            if(isset($menu['children']))
+            {
+                foreach($menu['children'] as $sub_menu)
+                {
+                    $m = Menu::find($sub_menu['id']);
+                    $m->weight = ++$pos;
+                    $m->parent = $menu['id'];
+                    $m->save();
+                    if(isset($sub_menu['children']))
+                    {
+                        foreach($sub_menu['children'] as $sub_menu2)
+                        {
+                            $m = Menu::find($sub_menu2['id']);
+                            $m->weight = ++$pos;
+                            $m->save();                        
+                        }
+                    }
+                }
+            }
+        }
+
+        echo true;
+    }
+    
+    public function ajax_get_parents(Request $request)
+    {
+        $id     = $request->input('id');
+        $loc    = $request->input('loc');
+        $lang   = $request->input('lang');
+        $parents = Menu::where("language", $lang)->where("location", $loc)->get();
+        $data = '<option value="">- No Parent -</option>';
+        foreach($parents as $parent)
+        {
+            $data .= '<option value="' . $parent->id . '" ';
+            $data .= ($parent->id == $id) ? 'selected' : '';
+            $data .= '>' . $parent->title . '</option>';
+        }
+        echo ($data);
     }
 }
