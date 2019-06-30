@@ -39,10 +39,35 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function viewUser($userId)
+    public function viewUser()
     {
-        $user = User::users()->where('id',$userId)->first();
+        $user = User::users()->where('id', Auth::id())->first();
         return view('users.view_user', compact('user'));
+    }
+
+    /**
+     * Update user profile
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'email' => 'email|required',
+            'username' => 'required',
+        ]);
+
+        $user = User::find(Auth::id());
+        $user->username = $request->input('username');
+        $user->email = $request->input('email');
+
+        if($request->filled('password')){
+            $user->password = Hash::make($request->input('password'));
+        }
+
+        $user->save();
+
+        return redirect(URL('user/profile'));
     }
 
     /**

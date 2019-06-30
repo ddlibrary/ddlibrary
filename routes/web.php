@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,13 +9,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 // app/Http/routes.php
-
 if (env('APP_ENV') === 'production') {
     \URL::forceScheme('https');
 }
-
 Route::group(
 [
     'prefix' => LaravelLocalization::setLocale(),
@@ -25,21 +21,18 @@ Route::group(
     function()
 {
     /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
-
     Route::get('/', 'HomeController@index');
-
     Route::get('/admin', 'DashboardController@index')->middleware('admin');
-
     //Users
     Route::get('admin/users', 'UserController@index')->middleware('admin');
     Route::post('admin/users', 'UserController@index')->name('user')->middleware('admin');
     Route::get('admin/users/users-data', 'UserController@usersData')->middleware('admin');
-    Route::get('user/{userId}', 'UserController@viewUser')->where('userId', '[0-9]+')->name('user-view');
+    Route::get('user/profile', 'UserController@viewUser')->where('userId', '[0-9]+')->name('user-view');
+    Route::post('user/update_profile', 'UserController@updateProfile')->name('user-profile-update');
     Route::get('admin/user/edit/{userId}', 'UserController@edit')->name('edit_user')->middleware('admin');
     Route::post('admin/user/update/{userId}', 'UserController@update')->name('update_user')->middleware('admin');
     Route::get('admin/user/delete/{userId}', 'UserController@deleteUser')->middleware('admin');
     Route::get('admin/user/export', 'UserController@exportUsers')->middleware('admin');
-
     //Resources
     Route::get('admin/resources', 'ResourceController@index')->middleware('auth');
     Route::post('admin/resources', 'ResourceController@index')->name('resources')->middleware('admin');
@@ -57,7 +50,6 @@ Route::group(
     Route::post('resources/comment', 'ResourceController@comment')->name('comment')->middleware('auth');
     Route::get('admin/resource/published/{resourceId}', 'ResourceController@published');
     Route::get('admin/resource/delete/{resourceId}', 'ResourceController@deleteResource')->middleware('admin');
-
     Route::get('resources/edit/step1/{resourceId}', 'ResourceController@createStepOneEdit')->name('edit1')->middleware('admin');
     Route::post('resources/edit/step1/{resourceId}', 'ResourceController@postStepOneEdit')->middleware('admin');
     Route::get('resources/edit/step2/{resourceId}', 'ResourceController@createStepTwoEdit')->name('edit2')->middleware('admin');
@@ -65,23 +57,19 @@ Route::group(
     Route::get('resources/edit/step3/{resourceId}', 'ResourceController@createStepThreeEdit')->name('edit3')->middleware('admin');
     Route::post('resources/edit/step3/{resourceId}', 'ResourceController@postStepThreeEdit')->middleware('admin');
     Route::post('resource/{resourceId}', 'ResourceController@updateTid')->middleware('admin')->name('updatetid');
-
     //delete file
     Route::get('delete/file/{resourceId}/{fileName}', 'ResourceController@deleteFile')->name('delete-file');
-
     //Contact 
     Route::get('contact-us', 'ContactController@create');
     Route::post('contact-us', 'ContactController@store')->name('contact');
     Route::get('admin/contacts', 'ContactController@index')->middleware('admin');
     Route::get('admin/contacts/read/{id}', 'ContactController@read')->middleware('admin');
     Route::get('admin/contacts/delete/{id}', 'ContactController@delete')->middleware('admin');
-
     //Report
     Route::get('admin/reports/ga', 'ReportController@gaReport')->middleware('admin');
     //Downloads
     Route::get('admin/reports/downloads','DownloadController@index')->middleware('admin');
     Route::post('admin/reports/downloads','DownloadController@index')->name('downloads')->middleware('admin');
-
     //Pages
     Route::get('admin/pages','PageController@index')->middleware('admin');
     Route::get('admin/pages/view/{pageId}','PageController@view')->middleware('admin');
@@ -96,7 +84,6 @@ Route::group(
     Route::get('page/translate/{pageId}/{pageTnid}','PageController@translate')->middleware('admin');
     Route::get('page/add/translate/{pageId}/{lang}','PageController@addTranslate')->middleware('admin');
     Route::post('page/add/translate/{pageId}/{lang}','PageController@addPostTranslate')->name('add_page_translate')->middleware('admin');
-
     //News
     Route::get('admin/news','NewsController@index')->middleware('admin');
     Route::get('news/{newsId}','NewsController@view')->where('newsId', '[0-9]+');
@@ -107,24 +94,21 @@ Route::group(
     Route::get('news/translate/{newsId}/{newsTnid}','NewsController@translate')->middleware('admin');
     Route::get('news/add/translate/{newsId}/{lang}','NewsController@addTranslate')->middleware('admin');
     Route::post('news/add/translate/{newsId}/{lang}','NewsController@addPostTranslate')->name('add_news_translate')->middleware('admin');
-
     //Menu
     Route::get('admin/menu','MenuController@index')->middleware('admin');
     Route::post('admin/menu','MenuController@index')->middleware('admin')->name('menulist');
     Route::get('admin/menu/edit/{menuId}','MenuController@edit')->middleware('admin');
-    Route::post('admin/menu/update/{menuId}','MenuController@update')->name('update_menu')->middleware('admin');
-
+    Route::post('admin/menu/update/{menuId}','MenuController@update')->name('update_menu')->middleware('admin');    
+    Route::get('admin/menu/sort','MenuController@sort')->name('sort_menu')->middleware('admin');    
+    Route::get('admin/menu/ajax_get_parents','MenuController@ajax_get_parents')->name('ajax_get_parents')->middleware('admin');
     //Settings
     Route::get('admin/settings','SettingController@edit')->middleware('admin');
     Route::post('admin/settings', 'SettingController@update')->name('settings');
-
     //Comments
     Route::get('admin/comments','CommentController@index')->middleware('admin');
     Route::get('admin/comments/published/{commentId}', 'CommentController@published');
-
     //Flags
     Route::get('admin/flags','FlagController@index')->middleware('admin');
-
     //Taxonomy
     Route::get('admin/taxonomy','TaxonomyController@index')->name('taxonomylist')->middleware('admin');
     Route::post('admin/taxonomy','TaxonomyController@index')->name('taxonomylist')->middleware('admin');
@@ -135,15 +119,18 @@ Route::group(
     Route::post('admin/taxonomy/store','TaxonomyController@store')->name('taxonomystore')->middleware('admin');
     Route::get('admin/taxonomy/create-translate/{tid}/{tnid}/{lang}','TaxonomyController@createTranslate')->name('taxonomytranslatecreate')->middleware('admin');
     Route::post('admin/taxonomy/store-translate/{tnid}','TaxonomyController@storeTranslate')->name('taxonomytranslatestore')->middleware('admin');
-
+    //Taxonomy Vocabulary
+    Route::get('admin/vocabulary','VocabularyController@index')->name('vocabularylist')->middleware('admin');
+    Route::get('admin/vocabulary/create','VocabularyController@create')->name('vocabularycreate')->middleware('admin');
+    Route::post('admin/vocabulary/store','VocabularyController@store')->name('vocabularystore')->middleware('admin');
+    Route::get('admin/vocabulary/edit/{vid}','VocabularyController@edit')->name('vocabularyedit')->middleware('admin');
+    Route::post('admin/vocabulary/edit/{vid}','VocabularyController@update')->name('vocabularyedit')->middleware('admin');
     //Sync
     Route::get('/admin/sync', 'SyncController@index');
     Route::get('/admin/run_sync', 'SyncController@SyncIt');
-
     //Glossary
     Route::get('/glossary','GlossaryController@index');
     Route::post('/glossary','GlossaryController@index')->name('glossary');
-
     //Impact Page
     Route::get('/impact','ImpactController@index');
     
@@ -184,9 +171,7 @@ Route::group(
     //Analytics
     Route::get('/admin/analytics','AnalyticsController@index')->middleware('admin');
     Route::post('/admin/analytics','AnalyticsController@show')->name('analytics')->middleware('admin');
-
     Auth::routes();
-
     //Adding old DDL routes
     Route::get('/user/register', 'Auth\RegisterController@showRegistrationForm');
     Route::get('/user', 'Auth\LoginController@showLoginForm');
@@ -200,11 +185,9 @@ Route::group(
     Route::get('/volunteer', function() {
         return redirect('page/1532');
     });
-
     Route::get('/support-library', function() {
         return redirect('page/21');
     });
-
     Route::get('/logout', function() {
         Auth::logout();
         return redirect('/home');
