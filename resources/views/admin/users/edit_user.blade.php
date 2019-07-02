@@ -36,7 +36,7 @@
                                         <strong>Password</strong>
                                     </td>
                                     <td>
-                                        <input type="text" name="password" class="form-control" placeholder="Only fill this if you want to change the user's password" value="">
+                                        <input type="text" name="password" class="form-control" placeholder="Only fill this if you want to change the user's password">
                                     </td>
                                 </tr>
                                 <tr>

@@ -1,30 +1,48 @@
 @extends('layouts.main')
 @section('content')
 <section class="general-content">
-        <header>
-            <h1>@lang('Users Details for') <strong>{{ $user->username }}</strong></h1>
-        </header>
-        <article>
-            <div>
-                <span><strong>@lang('First Name'):</strong></span>
-                <span>{{ $user->first_name }}</span>
-            </div>
-            <div>
-                <span><strong>@lang('Last Name'):</strong></span>
-                <span>{{ $user->last_name }}</span>
-            </div>
-            <div>
-                <span><strong>@lang('Username'):</strong></span>
-                <span>{{ $user->username }}</span>
-            </div>
-            <div>
-                <span><strong>@lang('Email'):</strong></span>
-                @if(Auth::id() == $user->id || isAdmin())
-                <span>{{ $user->email }}</a>(@lang('Only visible to you'))</span>
-                @else
-                <span><i>(@lang('hidden'))</i></span>
+    <header>
+        <h1>@lang('Users Details for') <strong>{{ $user->username }}</strong></h1>
+    </header>
+    <article>
+
+        <form method="POST" action="{{ route('user-profile-update') }}" autocomplete="off">
+            @csrf
+            
+            <div class="form-item">
+                <label for="email"> 
+                    <strong>@lang('Email')</strong>
+                    <span class="form-required" title="This field is required.">*</span>
+                </label>
+                <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" size="40" type="text" value="{{ $user->email }}" required>
+                @if ($errors->has('email'))
+                    <span class="invalid-feedback">
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </span><br>
                 @endif
             </div>
+            
+            <div class="form-item">
+                <label for="username"> 
+                    <strong>@lang('Username')</strong>
+                    <span class="form-required" title="This field is required.">*</span>
+                </label>
+                <input class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" size="40" type="text" value="{{ $user->username }}" required>
+                @if ($errors->has('username'))
+                    <span class="invalid-feedback">
+                        <strong>{{ $errors->first('username') }}</strong>
+                    </span><br>
+                @endif
+            </div>
+            
+            <div class="form-item">
+                <label for="password"> 
+                    <strong>@lang('Password')</strong>
+                    <span class="form-required" title="This field is required.">*</span>
+                </label>
+                <input class="form-control" name="password" type="password" size="40" placeholder="Only fill this if you want to change the user's password" value="d" autocomplete="off">
+            </div>
+
             <div>
                 <span><strong>@lang('Status'):</strong></span>
                 <span>{{ ($user->status==0?"Not Active":"Active") }}</span>
@@ -36,8 +54,14 @@
             <div>
                 <span><strong>@lang('Access'):</strong></span>
                 <span>{{ $user->accessed_at }}</span>
+            </div> <br>
+            
+            <div class="left-side">
+                <input class="form-control normalButton" type="submit" value="@lang('Update')">
             </div>
-        </article>
+
+        </form>
+    </article>
 </section>
 <!-- /.container-fluid-->
 <!-- /.content-wrapper-->

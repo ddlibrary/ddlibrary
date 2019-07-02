@@ -27,7 +27,8 @@ Route::group(
     Route::get('admin/users', 'UserController@index')->middleware('admin');
     Route::post('admin/users', 'UserController@index')->name('user')->middleware('admin');
     Route::get('admin/users/users-data', 'UserController@usersData')->middleware('admin');
-    Route::get('user/{userId}', 'UserController@viewUser')->where('userId', '[0-9]+')->name('user-view');
+    Route::get('user/profile', 'UserController@viewUser')->where('userId', '[0-9]+')->name('user-view');
+    Route::post('user/update_profile', 'UserController@updateProfile')->name('user-profile-update');
     Route::get('admin/user/edit/{userId}', 'UserController@edit')->name('edit_user')->middleware('admin');
     Route::post('admin/user/update/{userId}', 'UserController@update')->name('update_user')->middleware('admin');
     Route::get('admin/user/delete/{userId}', 'UserController@deleteUser')->middleware('admin');
