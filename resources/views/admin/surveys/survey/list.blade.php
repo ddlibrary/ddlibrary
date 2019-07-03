@@ -58,6 +58,7 @@
                       <a href="{{ URL::to('admin/survey/questions/'.$survey->id) }}" class="badge badge-primary" style="margin-right: 5px;">Questions</a>
                       <a href="{{ URL::to('admin/survey/edit/'.$survey->id) }}" class="badge badge-primary" style="margin-right: 5px;">Edit</a>
                       <a href="{{ URL::to('admin/survey/view/'.$survey->id.'/'.$survey->tnid) }}" class="badge badge-primary" style="margin-right: 5px;">Translations</a>
+                      <a href="{{ URL::to('admin/survey/report/'.$survey->id) }}" class="badge badge-primary" style="margin-right: 5px;">Report</a>
                       <a href="javascript:void(0)" id="{{$survey->id}}" onclick="confirm(this.id);" class="badge badge-danger">Delete</a>
                     </td>
                   </tr>

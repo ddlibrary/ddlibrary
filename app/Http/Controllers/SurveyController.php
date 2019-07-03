@@ -77,4 +77,12 @@ class SurveyController extends Controller
     {
         return view('admin.surveys.survey.add_translation', compact('tnid', 'lang'));   
     }
+
+    public function report($id)
+    {
+        $lang = Config::get('app.locale'); 
+        $survey = Survey::find($id);
+        $survey_questions = SurveyQuestion::where(['survey_id'=> $survey->tnid, 'language'=> $lang])->get();
+        return view('admin.surveys.survey.report', compact('survey','survey_questions'));  
+    }
 }

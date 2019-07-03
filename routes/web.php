@@ -138,6 +138,7 @@ Route::group(
     Route::get('admin/surveys','SurveyController@index');
     Route::get('admin/survey/edit/{id}','SurveyController@edit');
     Route::get('admin/survey/view/{id}/{tnid}','SurveyController@view');
+    Route::get('admin/survey/report/{id}','SurveyController@report')->middleware('admin');
     Route::get('admin/survey/add/translate/{id}/{lang}','SurveyController@addTranslate');
     Route::get('admin/survey/create','SurveyController@create');
     Route::get('admin/survey/delete/{id}','SurveyController@delete');
