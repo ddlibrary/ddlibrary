@@ -2,7 +2,7 @@
 @foreach ($resources AS $resource)
 
     <article class="resource-article resource-information">
-        <a href="{{ URL::to('resource/'.$resource->id) }}">
+        <a href="{{ URL::to('resource/'.$resource->id) }}" target="_blank">
             <img class="resource-img lazyload" data-src="{{ getImagefromResource($resource->abstract) }}" alt="Resource Image">	
             <div class="resource-title">{{ $resource->title }}</div>	
             <div class="resource-details">	
