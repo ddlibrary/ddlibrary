@@ -51,12 +51,12 @@ Route::get('/page/{id}/{lang?}', function ($id, $lang="en") {
     return apiPage::collection(Page::where('status', 1)->where('language', $lang)->where('id', $id)->get());
 });
 
-//This endpoint returns all news items in DDL
+//This endpoint returns all news items
 Route::get('/news/{lang?}', function ($lang="en") {
     return apiNews::collection(News::where('status', 1)->where('language', $lang)->paginate(32));
 });
 
-//This endpoint returns a single news item in DDL
+//This endpoint returns a single news item
 Route::get('/news/{id}/{lang?}', function ($id, $lang="en") {
     return apiNews::collection(News::where('status', 1)->where('language', $lang)->where('id', $id)->get());
 });
