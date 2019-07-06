@@ -24,7 +24,8 @@ class SurveyAnswerController extends Controller{
     public function questionAnswers($id)
     {
     	$this->middleware('admin');
-    	$question = SurveyQuestion::find($id);
+        $question = SurveyQuestion::find($id);
+
         $descriptive_answers = Null;
         $survey_question_options = Null;
 
