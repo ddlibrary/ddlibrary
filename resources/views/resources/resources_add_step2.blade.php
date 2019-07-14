@@ -43,6 +43,7 @@
                 @foreach ($subjects AS $item)
                     @if($item->parent == 0)
                         <optgroup label="{{ $item->name }}">
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
                             <?php $parentItems = $subjects->where('parent', $item->id); ?>
                             @foreach($parentItems as $pitem)
                                 <option value="{{ $pitem->id }}">{{ $pitem->name }}</option>
