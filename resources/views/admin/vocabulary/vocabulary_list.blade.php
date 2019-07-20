@@ -19,8 +19,7 @@
         <!-- Search bar will come here -->
 
         <div class="table-responsive">
-          <span>Total: <strong>{{count($vocabularies)}}</strong></span>
-          <table class="table table-bordered" width="100%" cellspacing="0">
+          <table class="table table-bordered" width="100%" cellspacing="0" id="taxonomy_vocabulary-table">
             <thead>
               <tr>
                 <th>NO</th>
@@ -30,26 +29,6 @@
                 <th>OPERATIONS</th>
               </tr>
             </thead>
-            <tfoot>
-              <tr>
-                <th>NO</th>
-                <th>NAME</th>
-                <th>WEIGHT</th>
-                <th>LANGUAGE</th>
-                <th>OPERATIONS</th>
-              </tr>
-            </tfoot>
-            <tbody>
-            @foreach ($vocabularies as $indexkey => $vocabulary)
-              <tr>
-                <td>{{ $vocabulary->vid }}</td>
-                <td>{{ $vocabulary->name }}</td>
-                <td>{{ $vocabulary->weight }}</td>
-                <td>{{ fixLanguage($vocabulary->language) }}</td>
-                <td><a href="vocabulary/edit/{{$vocabulary->vid}}">Edit</a></td>
-              </tr>
-              @endforeach
-            </tbody>
           </table>
         </div>
       </div>
@@ -58,3 +37,22 @@
   <!-- /.container-fluid-->
   <!-- /.content-wrapper-->
   @endsection
+
+  @push('scripts')
+  <script>
+    $(document).ready(function(){
+      $('#taxonomy_vocabulary-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: '{!! route('getvocabularies') !!}',
+            columns: [
+                { data: 'vid', name: 'vid' },
+                { data: 'name', name: 'name' },
+                { data: 'weight', name: 'weight' },
+                { data: 'language', name: 'language' },
+                { data: 'action', name: 'action', orderable: false, searchable: false}
+            ]
+        });
+    });
+    </script>
+  @endpush
