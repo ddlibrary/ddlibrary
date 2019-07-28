@@ -18,7 +18,7 @@
         @csrf
         <div class="form-item">
             <label for="attachments"> 
-                <strong>@lang('Attachments')</strong>
+                <strong>@lang('Attachments') {{ en('Attachments') }}</strong>
             </label>
         <input class="form-control{{ $errors->has('attachments') ? ' is-invalid' : '' }}" id="attachments" name="attachments[]" size="40" type="file">
             <button type='button' class="add_more">@lang('Add More Files')</button>
@@ -41,7 +41,7 @@
         </div>
         <div class="form-item">
             <label for="subject_areas"> 
-                <strong>@lang('Subject Areas')</strong>
+                <strong>@lang('Subject Areas') {{ en('Subject Areas') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <select class="form-control{{ $errors->has('subject_areas') ? ' is-invalid' : '' }}" id="subject_areas" name="subject_areas[]" required  multiple="multiple">
@@ -51,7 +51,7 @@
                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                         <?php $parentItems = $subjects->where('parent', $item->id); ?>
                         @foreach($parentItems as $pitem)
-                            <option value="{{ $pitem->id }}">{{ $pitem->name }}</option>
+                            <option value="{{ $pitem->id }}">{{ $pitem->name . termEn($pitem->id)}}</option>
                         @endforeach      
                     </optgroup>
                 @endif
@@ -66,7 +66,7 @@
         </div>
         <div class="form-item">
                 <label for="keywords"> 
-                    <strong>@lang('Keywords')</strong>
+                    <strong>@lang('Keywords') {{ en('Keywords') }}</strong>
                 </label>
                 <input class="form-control{{ $errors->has('keywords') ? ' is-invalid' : '' }}" id="keywords" name="keywords" size="40" type="text" value="{{ isset($resourceKeywords)?$resourceKeywords:"" }}" onkeydown="javascript:bringMeAttr('keywords','{{ URL::to('resources/attributes/keywords') }}')">
                 @if ($errors->has('keywords'))
@@ -77,12 +77,12 @@
             </div>
         <div class="form-item">
             <label for="learning_resources_types"> 
-                <strong>@lang('Learning Resources Types')</strong>
+                <strong>@lang('Learning Resources Types') {{ en('Learning Resources Types') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <select class="form-control{{ $errors->has('learning_resources_types') ? ' is-invalid' : '' }}" id="learning_resources_types" name="learning_resources_types[]" required  multiple="multiple">
                 @foreach ($learningResourceTypes AS $item)
-                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    <option value="{{ $item->id }}">{{ $item->name . termEn($item->id)}}</option>
                 @endforeach
             </select>
 
@@ -94,12 +94,12 @@
         </div>
         <div class="form-item">
             <label for="educational_use"> 
-                <strong>@lang('Educational Use')</strong>
+                <strong>@lang('Educational Use') {{ en('Educational Use') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <select class="form-control{{ $errors->has('educational_use') ? ' is-invalid' : '' }}" id="educational_use" name="educational_use[]" required  multiple="multiple">
                 @foreach ($educationalUse AS $item)
-                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    <option value="{{ $item->id }}">{{ $item->name . termEn($item->id) }}</option>
                 @endforeach
             </select>
 
@@ -112,7 +112,7 @@
 
         <div class="form-item">
             <label for="resource_levels"> 
-                <strong>@lang('Resource Levels')</strong>
+                <strong>@lang('Resource Levels') {{ en('Resource Levels') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <ul>
@@ -123,7 +123,7 @@
             ?>
             @foreach($levels AS $level)
                 @if($level->parent == 0)
-                    <li><input type="checkbox" name="level[]" {{ in_array($level->id, $resourceLevels) ? "checked" : ""}} value="{{ $level->id }}" onchange="fnTest(this,'subLevel{{$level->id}}');">{{ $level->name }}
+                    <li><input type="checkbox" name="level[]" {{ in_array($level->id, $resourceLevels) ? "checked" : ""}} value="{{ $level->id }}" onchange="fnTest(this,'subLevel{{$level->id}}');">{{ $level->name . termEn($level->id) }}
                         <?php $levelParent = $levels->where('parent', $level->id);?>
                         @if(count($levelParent) > 0)
                             <i class="fas fa-plus fa-xs" onclick="javascript:showHide(this,'subLevel{{$level->id}}')"></i>
@@ -131,7 +131,7 @@
                     @if(count($levelParent) > 0)
                         <ul id="subLevel{{$level->id}}" class="subItem" style="display:none;">
                             @foreach($levelParent as $item)
-                                <li><input type="checkbox" name="level[]" onchange="fnTest(this,'subLevel{{$item->id}}');" {{ in_array($item->id, $resourceLevels) ?"checked":""}} class="child" value="{{ $item->id }}">{{ $item->name }}
+                                <li><input type="checkbox" name="level[]" onchange="fnTest(this,'subLevel{{$item->id}}');" {{ in_array($item->id, $resourceLevels) ?"checked":""}} class="child" value="{{ $item->id }}">{{ $item->name . termEn($item->id) }}
                             
                                 <?php $levelItemParent = $levels->where('parent', $item->id);?>
                                 @if(count($levelItemParent) > 0)
@@ -140,7 +140,7 @@
                                 @if(count($levelItemParent) > 0)
                                     <ul id="subLevel{{$item->id}}" class="subItem" style="display:none;">
                                         @foreach($levelItemParent as $itemLevel)
-                                            <li><input type="checkbox" name="level[]" {{ in_array($itemLevel->id, $resourceLevels) ?"checked":""}} class="child" value="{{ $itemLevel->id }}">{{ $itemLevel->name }}</li>
+                                            <li><input type="checkbox" name="level[]" {{ in_array($itemLevel->id, $resourceLevels) ?"checked":""}} class="child" value="{{ $itemLevel->id }}">{{ $itemLevel->name . termEn($itemLevel->id) }}</li>
                                         @endforeach
                                     </ul>
                                 @endif
@@ -154,9 +154,9 @@
             </ul>
         </div>
         <div style="display:flex;">
-            <input style="margin-{{ (app()->getLocale()=="en")?"right":"left" }}: 10px;" class="form-control normalButton" type="button" value="@lang('Previous')" onclick="location.href='{{ route('edit1', $resource["id"]) }}'">
-            <input class="form-control normalButton" type="submit" value="@lang('Next')" onclick="this.style.display='none';document.getElementById('wait').style.display='block'" ondblclick="this.style.display='display';document.getElementById('wait').style.display='block'">
-            <input type="button" class="form-control" id="wait" value="@lang('Please wait..')" style="color:red;display:none" disabled>
+            <input style="margin-{{ (app()->getLocale()=="en")?"right":"left" }}: 10px;" class="form-control normalButton" type="button" value="@lang('Previous') {{ en('Previous') }}" onclick="location.href='{{ route('edit1', $resource["id"]) }}'">
+            <input class="form-control normalButton" type="submit" value="@lang('Next') {{ en('Next') }}" onclick="this.style.display='none';document.getElementById('wait').style.display='block'" ondblclick="this.style.display='display';document.getElementById('wait').style.display='block'">
+            <input type="button" class="form-control" id="wait" value="@lang('Please wait..') {{ en('Please wait..') }}" style="color:red;display:none" disabled>
         </div>
         </form>
     </div>

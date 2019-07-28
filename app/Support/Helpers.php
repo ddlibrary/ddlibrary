@@ -409,3 +409,26 @@ if(! function_exists('DDLClearSession')){
 		}
 	}
 }
+
+if(! function_exists('en'))
+{
+	function en($phrase='')
+	{
+		return (Lang::locale() != 'en') ? '(' . Lang::get($phrase) . ')' : '';
+	}
+}
+
+if(! function_exists('termEn'))
+{
+	function termEn($id='')
+	{
+		$tnid = App\TaxonomyTerm::where('id', $id)->first()->tnid;
+
+		$term = App\TaxonomyTerm::
+		where('tnid', $tnid)->
+		where('language', 'en')->
+		first();
+
+		return (count($term)) ? ' (' . $term->name . ')' : '';
+	}
+}
