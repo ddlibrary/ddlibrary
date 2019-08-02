@@ -24,21 +24,27 @@
         {!! $searchBar !!}
         <div class="clear-fix dd">
           <ol class="dd-list">
-            @foreach ($menuRecords as $indexkey => $menu) 
+            @foreach ($menuRecords as $indexkey => $menu)
             @if($menu->parent == 0)
             <li class="dd-item dd-item-alt" data-id="{{ $menu->id }}">
                 <div class="dd-handle"></div>
                 <div class="dd-content"> {{ $menu->title }} - {{ $menu->location }}
-                    <a style="float:right;" href="menu/edit/{{$menu->id}}"><i class="fa fa-edit"></i> edit</a> 
+                  <span style="float:right;">
+                    <a href="menu/edit/{{$menu->id}}"><i class="fa fa-edit"></i> Edit</a> &nbsp; &nbsp;
+                    <a href="menu/translate/{{$menu->id}}"><i class="fa fa-language"></i> Translate</a>
+                  </span>
                 </div>
 
                 <ol class="dd-list">
-                  @foreach ($menuRecords as $indexkey => $sub) 
+                  @foreach ($menuRecords as $indexkey => $sub)
                   @if($sub->parent > 0 && $sub->parent == $menu->id)
                     <li class="dd-item dd-item-alt" data-id="{{ $sub->id }}">
                         <div class="dd-handle"></div>
-                        <div class="dd-content"> {{ $sub->title }} 
-                          <a style="float:right;" href="menu/edit/{{$sub->id}}"><i class="fa fa-edit"></i> edit</a> 
+                        <div class="dd-content"> {{ $sub->title }}
+                          <span style="float:right;">
+                            <a href="menu/edit/{{$sub->id}}"><i class="fa fa-edit"></i> Edit</a> &nbsp; &nbsp;
+                            <a href="menu/translate/{{$sub->id}}"><i class="fa fa-language"></i> Translate</a>
+                          </span>
                         </div>
                     </li>
                   @endif

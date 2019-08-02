@@ -42,6 +42,44 @@ class MenuController extends Controller
         return view('admin.menu.menu_list', compact('menuRecords','searchBar'));
     }
 
+    function create(Menu $menu, $id='')
+    {
+        $details = Menu::find($id);
+        $locations = $details->distinct()->pluck('location');
+        $parents = $details->distinct()->pluck('title','id');
+        return view('admin.menu.menu_add', compact('details','locations','parents'));
+    }
+
+    public function store(Request $request)
+    {
+        //dd($request->all());
+        $this->validate($request, [
+            'title'     => 'required',
+            'location'  => 'required',
+            'path'      => 'required',
+            'parent'    => 'nullable',
+            'language'  => 'required',
+            'weight'    => 'required'
+        ]);
+
+        $menu = new Menu;
+        $menu->title = $request->input('title');
+        $menu->location = $request->input('location');
+        $menu->path = $request->input('path');
+        if($request->filled('parent')){
+            $menu->parent = $request->input('parent');
+        }
+        $menu->language = $request->input('language');
+        $menu->weight = $request->input('weight');
+
+        $menu->tnid = ($request->input('tnid')) ? $request->input('tnid') : Menu::max('tnid') + 1;
+        
+        //inserting
+        $menu->save();
+
+        return redirect('admin/menu')->with('success', 'Menu translation successfully added!');
+    }  
+
     function edit(Menu $menu, $menuId)
     {
         $details = $menu->find($menuId);
@@ -112,11 +150,11 @@ class MenuController extends Controller
     
     public function ajax_get_parents(Request $request)
     {
-        $id     = $request->input('id');
-        $loc    = $request->input('loc');
-        $lang   = $request->input('lang');
+        $id      = $request->input('id');
+        $loc     = $request->input('loc');
+        $lang    = $request->input('lang');
         $parents = Menu::where("language", $lang)->where("location", $loc)->get();
-        $data = '<option value="">- No Parent -</option>';
+        $data    = '<option value="">- No Parent -</option>';
         foreach($parents as $parent)
         {
             $data .= '<option value="' . $parent->id . '" ';
@@ -125,4 +163,49 @@ class MenuController extends Controller
         }
         echo ($data);
     }
+
+    public function translate($id='')
+    {
+        $tnid = Menu::find($id)->tnid;
+
+        if(!$tnid)
+        {
+            $menu = Menu::find($id);
+            $menu->tnid = Menu::max('tnid') + 1;
+            $menu->language = 'en';
+            $menu->save();
+
+            $tnid = Menu::find($id)->tnid;
+        }
+
+        $translations = ($tnid) ? Menu::where('tnid', $tnid)->get() : NULL;
+        $locals       = \LaravelLocalization::getSupportedLocales();
+
+        return view('admin.menu.menu_translate', compact('translations','locals','tnid', 'id'));
+    }
+
+    public function translate_menu(Request $request, $tnid='')
+    {
+        echo 'ID: ' . $tnid . '<br>';
+
+        foreach(\LaravelLocalization::getSupportedLocales() as $key=>$value)
+        {
+            if($request->input($key))
+            {
+                $menues = Menu::where('tnid', $tnid)->where('language', $key)->first();
+
+                if(count($menues))
+                {
+                    
+                }
+
+                echo count($menues);
+                echo $request->input($key) . ' ' . $key . '<br>';
+            }
+        }
+
+        dd($request->all());
+        //return redirect('admin/menu/translate/' . $menuId);
+    }
+
 }
