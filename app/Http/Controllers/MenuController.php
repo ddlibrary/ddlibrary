@@ -184,28 +184,4 @@ class MenuController extends Controller
         return view('admin.menu.menu_translate', compact('translations','locals','tnid', 'id'));
     }
 
-    public function translate_menu(Request $request, $tnid='')
-    {
-        echo 'ID: ' . $tnid . '<br>';
-
-        foreach(\LaravelLocalization::getSupportedLocales() as $key=>$value)
-        {
-            if($request->input($key))
-            {
-                $menues = Menu::where('tnid', $tnid)->where('language', $key)->first();
-
-                if(count($menues))
-                {
-                    
-                }
-
-                echo count($menues);
-                echo $request->input($key) . ' ' . $key . '<br>';
-            }
-        }
-
-        dd($request->all());
-        //return redirect('admin/menu/translate/' . $menuId);
-    }
-
 }
