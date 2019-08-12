@@ -1,7 +1,7 @@
 @extends('layouts.main')
 {!! NoCaptcha::renderJs() !!}
 @section('title')
-@lang('Register an Account with DDL') - @lang('Darakht-e Danish Online Library')
+@lang('Register an Account with DDL') - @lang('Darakht-e Danesh Online Library')
 @endsection
 @section('description')
 @lang('The Darakht-e Danesh Online Library for Educators is a repository of open educational resources for teachers, teacher trainers, school administrators, literacy workers and others involved in furthering education in Afghanistan.')

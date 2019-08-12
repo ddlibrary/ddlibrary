@@ -1351,7 +1351,7 @@
 	// - \u20B9 - Indian Rupee
 	// - R - Brazil (R$) and South Africa
 	// - fr - Swiss Franc
-	// - kr - Swedish krona, Norwegian krone and Danish krone
+	// - kr - Swedish krona, Norwegian krone and Danesh krone
 	// - \u2009 is thin space and \u202F is narrow no-break space, both used in many
 	// - Ƀ - Bitcoin
 	// - Ξ - Ethereum
