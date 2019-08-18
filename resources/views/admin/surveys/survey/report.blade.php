@@ -59,7 +59,7 @@
                     </td>
                     <td>
                         @foreach(\App\SurveyAnswer::getQuestionOptions($survey_question->id) as $qoption)
-                        <i class="badge badge-primary">{{ $qoption->text }}</i> <br>
+                        <i class="badge badge-primary">{{ ($survey_question->type != 'descriptive') ? $qoption->text : '' }}</i> <br>
                         @endforeach
                     </td>
                     @foreach(['en', 'fa', 'ps'] as $lang)
