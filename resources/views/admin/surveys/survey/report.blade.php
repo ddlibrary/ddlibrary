@@ -22,18 +22,19 @@
           <button class="btn btn-sm btn-primary float-right" onclick="to_xls()">Export</button>
         </div>
 
-        <div class="card-body">
+        <div class="card-body" style="width:100%; overflow:scroll;">
             @if (session('status'))
               <div class="alert alert-success">
                   {{ session('status') }}
               </div>
             @endif
             
-            <table class="table table-bordered" width="100%" cellspacing="0" id="dvData">
+            <table class="table table-bordered table-condensed" width="100%" cellspacing="0" id="dvData">
               <thead style="text-align:center;">
                 <tr>
                   <th rowspan="2">Question</th>
                   <th rowspan="2">Type</th>
+                  <th rowspan="2">Options</th>
                   <th colspan="3">Language</th>
                 </tr>
                 <tr>
@@ -56,13 +57,24 @@
                         <span>Descriptive</span>
                       @endif
                     </td>
-                    @foreach(['en', 'fa', 'ps'] as $lang)
                     <td>
-                        @foreach (\App\SurveyAnswer::getAnswersByOption($survey_question->id) as $option)
-                            @if($option->language == $lang)
-                                <i class="badge badge-primary">{{ $option->text . ' ' . $option->total }} </i><br>
-                            @endif
+                        @foreach(\App\SurveyAnswer::getQuestionOptions($survey_question->id) as $qoption)
+                        <i class="badge badge-primary">{{ ($survey_question->type != 'descriptive') ? $qoption->text : '' }}</i> <br>
                         @endforeach
+                    </td>
+                    @foreach(['en', 'fa', 'ps'] as $lang)
+                    <td>                            
+                        @if($survey_question->type != 'descriptive')
+
+                            @foreach(\App\SurveyAnswer::getQuestionOptions($survey_question->id) as $qoption)
+                              <?php $data = (\App\SurveyAnswer::getAnswerAmount($survey_question->id, $qoption->id, $lang)); ?>
+                              {{ ($data) ? $data->total : 0 }}<br>
+                            @endforeach
+
+                        @else
+                            <?php $data = (\App\SurveyAnswer::getDescriptiveAnswers($survey_question->id, $lang)); ?>
+                            {{ ($data) ? $data->total : 0 }}<br>
+                        @endif
                     </td>
                     @endforeach
                   </tr>
