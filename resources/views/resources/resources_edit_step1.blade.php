@@ -13,7 +13,7 @@
         @csrf
         <div class="form-item">
             <label for="title"> 
-                <strong>@lang('Title')</strong>
+                <strong>@lang('Title') {{ en('Title') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="title" name="title" size="40" type="text" value="{{ $resource['title'] }}" required autofocus>
@@ -25,7 +25,7 @@
         </div>
         <div class="form-item">
             <label for="author"> 
-                <strong>@lang('Author')</strong>
+                <strong>@lang('Author') {{ en('Author') }}</strong>
             </label>
             <input class="form-control{{ $errors->has('author') ? ' is-invalid' : '' }}" id="author" name="author" size="40" type="text" value="{{ $resource['author'] }}" onkeydown="javascript:bringMeAttr('author','{{ URL::to('resources/attributes/authors') }}')">
             @if ($errors->has('author'))
@@ -36,7 +36,7 @@
         </div>
         <div class="form-item">
             <label for="publisher"> 
-                <strong>@lang('Publisher')</strong>
+                <strong>@lang('Publisher') {{ en('Publisher') }}</strong>
             </label>
             <input class="form-control{{ $errors->has('publisher') ? ' is-invalid' : '' }}" id="publisher" name="publisher" size="40" type="text" value="{{ old('publisher')?old('publisher'):$resource['publisher'] }}" onkeydown="javascript:bringMeAttr('publisher','{{ URL::to('resources/attributes/publishers') }}')">
             @if ($errors->has('publisher'))
@@ -47,7 +47,7 @@
         </div>
         <div class="form-item">
             <label for="translator"> 
-                <strong>@lang('Translator')</strong>
+                <strong>@lang('Translator') {{ en('Translator') }}</strong>
             </label>
             <input class="form-control{{ $errors->has('translator') ? ' is-invalid' : '' }}" id="translator" name="translator" size="40" type="text" value="{{ $resource['translator'] }}" onkeydown="javascript:bringMeAttr('translator','{{ URL::to('resources/attributes/translators') }}')">
             @if ($errors->has('translator'))
@@ -58,7 +58,7 @@
         </div>
         <div class="form-item">
             <label for="language"> 
-                <strong>@lang('Language')</strong>
+                <strong>@lang('Language') {{ en('Language') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <select class="form-control{{ $errors->has('language') ? ' is-invalid' : '' }}" name="language" id="language" required>
@@ -70,7 +70,7 @@
         </div>
         <div class="form-item">
             <label for="abstract"> 
-                <strong>@lang('Abstract')</strong>
+                <strong>@lang('Abstract') {{ en('Abstract') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <div id="editor">
@@ -84,7 +84,7 @@
         </div>
         <div class="left-side">
             <input type="hidden" name="status" value="{{ $resource['status'] }}">
-            <input class="form-control normalButton" type="submit" value="@lang('Next')">
+            <input class="form-control normalButton" type="submit" value="@lang('Next') {{ en('Next') }}">
         </div>
         </form>
     </div>
