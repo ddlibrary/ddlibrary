@@ -95,8 +95,8 @@ DDL Impact
             </svg>
         </div>
         <div class="legends">
-            <p><span class="map-yellow"></span>@lang('DDL Lite Installations')</p>
-            <p><span class="map-red"></span>@lang('DDL & Internet Connectivity Installations')</p>
+            <p><span class="map-yellow"></span> &nbsp; @lang('DDL Lite Installations')</p>
+            <p><span class="map-red"></span> &nbsp; @lang('DDL & Internet Connectivity Installations')</p>
         </div>
     </div>
     <div class="stats">
@@ -122,7 +122,7 @@ DDL Impact
         </article>
         <article>
             <i class="fas fa-desktop fa-3x"></i>
-            <h2><em>48</em></h2>
+            <h2><em>54</em></h2>
             <h3>@lang('DDL Demos Delivered')</h3>
         </article>
         <article>
