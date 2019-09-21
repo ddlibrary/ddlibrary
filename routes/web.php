@@ -72,6 +72,7 @@ Route::group(
     Route::post('admin/reports/downloads','DownloadController@index')->name('downloads')->middleware('admin');
     //Pages
     Route::get('admin/pages','PageController@index')->middleware('admin');
+    Route::get('admin/get-pages','PageController@getPages')->name('getpages')->middleware('admin');
     Route::get('admin/pages/view/{pageId}','PageController@view')->middleware('admin');
     Route::get('page/{pageId}','PageController@view')->where('pageId', '[0-9]+');
     Route::get('/about-education-afghanistan', function() {
