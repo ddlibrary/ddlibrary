@@ -19,6 +19,9 @@ mix.styles([
    'resources/assets/css/fontawesome-all.min.css',
 ], 'public/css/all.css');
 
+
+mix.styles('resources/assets/css/local.css', 'public/css/local.css');
+
 mix.babel([
    'public/js/ddl.js',
    'resources/assets/js/lazysizes.min.js',
