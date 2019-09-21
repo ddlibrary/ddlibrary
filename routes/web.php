@@ -85,7 +85,8 @@ Route::group(
     Route::get('page/add/translate/{pageId}/{lang}','PageController@addTranslate')->middleware('admin');
     Route::post('page/add/translate/{pageId}/{lang}','PageController@addPostTranslate')->name('add_page_translate')->middleware('admin');
     //News
-    Route::get('admin/news','NewsController@index')->middleware('admin');
+    Route::get('admin/news','NewsController@index')->middleware('admin');    
+    Route::get('admin/get-news','NewsController@getNews')->name('getnews')->middleware('admin');
     Route::get('news/{newsId}','NewsController@view')->where('newsId', '[0-9]+');
     Route::get('news/edit/{newsId}','NewsController@edit')->middleware('admin');
     Route::post('news/update/{newsId}','NewsController@update')->name('update_news')->middleware('admin');
