@@ -12,12 +12,12 @@
     <!-- Example DataTables Card-->
     <div class="card mb-3">
       <div class="card-header">
-        <i class="fa fa-table"></i> All Pages</div>
+        <i class="fa fa-table"></i> All Pages
+        <a href="{{ URL::to('page/create') }}" style="float:right"><button class="btn btn-primary">+</button></a>
+      </div>
       <div class="card-body">
         <div class="table-responsive">
-          <a href="{{ URL::to('page/create') }}"><button class="btn btn-primary pull-right">Create New</button></a>
-          <span class="pull-left">Total: <strong>{{ $pages->total() }}</strong></span>
-          <table class="table table-bordered" width="100%" cellspacing="0">
+          <table class="table table-bordered" width="100%" cellspacing="0" id="pages-table">
             <thead>
               <tr>
                 <th>NO</th>
@@ -28,34 +28,31 @@
                 <th>OPERATIONS</th>
               </tr>
             </thead>
-            <tfoot>
-              <tr>
-                <th>NO</th>
-                <th>TITLE</th>
-                <th>LANGUAGE</th>
-                <th>CREATED</th>
-                <th>UPDATED</th>
-                <th>OPERATIONS</th>
-              </tr>
-            </tfoot>
-            <tbody>
-            @foreach ($pages as $indexkey => $page)
-              <tr>
-                <td>{{ (($pages->currentPage() - 1) * $pages->perPage())+$indexkey + 1 }}</td>
-                <td><a href="{{ URL::to($page->language.'/'.'page/'.$page->id) }}">{{ $page->title }}</a></td>
-                <td>{{ fixLanguage($page->language) }}</td>
-                <td>{{ $page->created_at->diffForHumans() }}</td>
-                <td>{{ $page->updated_at->diffForHumans() }}</td>
-                <td><a href="{{ URL::to($page->language.'/'.'page/edit'.'/'.$page->id) }}">Edit</a></td>
-              </tr>
-              @endforeach
-            </tbody>
           </table>
         </div>
-        {{ $pages->links() }}
       </div>
     </div>
   </div>
   <!-- /.container-fluid-->
   <!-- /.content-wrapper-->
   @endsection
+
+  @push('scripts')
+  <script>
+    $(document).ready(function(){
+      $('#pages-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: '{!! route('getpages') !!}',
+            columns: [
+                { data: 'id', name: 'id' },
+                { data: 'title', name: 'title' },
+                { data: 'language', name: 'language' },
+                { data: 'created_at', name: 'created', searchable: false },
+                { data: 'updated_at', name: 'update', searchable: false },
+                { data: 'action', name: 'action', orderable: false, searchable: false}
+            ]
+        });
+    });
+    </script>
+  @endpush
