@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\News;
+use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -20,9 +21,22 @@ class NewsController extends Controller
     
     public function index ()
     {
-        $this->middleware('admin');
-        $newsRecords = News::orderBy('id','desc')->paginate(10);
-        return view('admin.news.news_list', compact('newsRecords'));
+        return view('admin.news.news_list');
+    }
+
+    //Ajax get News Function
+    public function getNews()
+    {
+        $news = News::select(['id', 'title', 'language', 'created_at', 'updated_at']);
+        return Datatables::of($news)
+            ->addColumn('action', function ($news) {
+                return '<a href="' . URL($news->language . '/news/edit/' . $news->id) .'" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>';
+            })
+            ->editColumn('language', '{{fixLanguage($language)}}')
+            ->editColumn('created_at', '{{$created_at->diffForHumans()}}')
+            ->editColumn('updated_at', '{{$updated_at->diffForHumans()}}')
+            ->orderColumn('id', '-id $1')
+            ->make(true);
     }
 
     public function view($newsId)
