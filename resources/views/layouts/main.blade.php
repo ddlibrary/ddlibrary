@@ -22,6 +22,10 @@
 
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 
+    @if(Lang::locale() != 'en')
+    <link rel="stylesheet" href="{{ asset('css/local.css') }}">
+    @endif
+
     @stack('styles')
     @if(App::environment('production'))
     <!-- Global site tag (gtag.js) - Google Analytics -->

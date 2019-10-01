@@ -3,7 +3,7 @@
 /public/storage
 /storage/*.key
 /public/css
-/pbulic/js
+/public/js
 /vendor
 /.idea
 /.vscode
