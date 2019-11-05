@@ -19,8 +19,9 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             @include('layouts.messages')
-                            <form method="POST" action="{{ route('update_user', ['user_id' => $user->id]) }}">
+                            <form method="POST" enctype="multipart/form-data" id="submit_user">
                             @csrf
+                            <input type='hidden' id='useridforscript' name='user_id' value="<?php echo  $user->id; ?>"/>
                             <table class="table table-bordered" width="100%" cellspacing="0">
                                 <tbody>
                                 <tr>
@@ -134,7 +135,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <input class="btn btn-outline-dark" type="submit" value="Update">
+                            <input class="btn btn-outline-dark" type="button" id="save" value="Update">
                             </form>
                         </div>
                     </div>
@@ -153,4 +154,29 @@
         });
     </script> 
 @endpush
+<script>
+    
+    var userid=$('#useridforscript').val();
+    $(document).on('click', '#save', function() {
+        $.ajax({
+            url:'/api/update_user/'+userid,
+            data:new FormData($("#submit_user")[0]),
+            dataType:'json',
+            async:false,
+            type:'post',
+            processData: false,
+            contentType: false,
+            success:function(response){
+                //$('#result').append('the user updated successfull');
+                alert('the user successfuly updated');
+                window.location.replace('http://localhost:8000/en/admin/users');
+            },
+        });
+        $('#username').val('');
+        $('#email').val('');
+        $('#password').val('');
+        
+        return false;
+    });
+</script>
 @endsection
