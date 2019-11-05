@@ -1,0 +1,33 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    },
+    "devDependencies": {
+        "axios": "^0.18",
+        "bootstrap": "^4.0.0",
+        "copy-webpack-plugin": "^5.0.1",
+        "cross-env": "^5.1",
+        "imagemin-mozjpeg": "^8.0.0",
+        "imagemin-webpack-plugin": "^2.4.2",
+        "jquery": "^3.2",
+        "laravel-mix": "^4.0.15",
+        "lodash": "^4.17.4",
+        "popper.js": "^1.12",
+        "vue": "^2.5.7"
+    },
+    "dependencies": {
+        "gulp": "^3.9.1",
+        "vee-validate": "^2.1.0-beta.6",
+        "vue-read-more": "^1.1.1",
+        "vue-resource": "^1.5.1",
+        "vue-router": "^3.0.1",
+        "vue-social-sharing": "^2.3.3"
+    }
+}
