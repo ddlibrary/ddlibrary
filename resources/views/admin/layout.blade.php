@@ -16,6 +16,7 @@
   <link href="{{ URL('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
   <!-- Toaster CSS file for notification -->
   <link href="{{ URL::to('vendor/toastr/toastr.min.css') }}" rel="stylesheet">
+  <script src="{{ URL::to('vendor/jquery/jquery.min.js') }}"></script>
   <style>
     .toast-success{background-color:rgb(76, 175, 80);}
   </style>
