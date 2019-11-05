@@ -23,7 +23,11 @@ class User extends JsonResource
             'language'  => $this->language,
             'accessed_at'  => $this->accessed_at,
             'created_at'  => $this->created_at,
-            'updated_at'  => $this->updated_at
+            'updated_at'  => $this->updated_at,
+            'updated_at'  => $this->updated_at,
+            'user_id'=>$this->user_id,
+            'role_id'=>$this->role_id
+
         ];
     }
 }
