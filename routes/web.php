@@ -175,7 +175,10 @@ Route::group(
     Route::post('admin/update_survey_modal_time/{id}','SurveySettingController@updateSurveyModalTime')->name('update_survey_modal_time');
     Route::get('admin/create_survey_modal_time','SurveySettingController@createSurveyModalTime');
     Route::post('admin/store_survey_modal_time','SurveySettingController@storeSurveyModalTime')->name('store_survey_modal_time');
+    // user 
     
+    Route::get('user/create','UserController@create')->middleware('admin');
+
     //Analytics
     Route::get('/admin/analytics','AnalyticsController@index')->middleware('admin');
     Route::post('/admin/analytics','AnalyticsController@show')->name('analytics')->middleware('admin');
