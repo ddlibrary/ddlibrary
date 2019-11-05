@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\User;
 use App\Resource;
@@ -10,78 +8,43 @@ use App\Role;
 use App\UserRole;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use DB;
 class UserController extends Controller
 {
-    /**
-     * Showing the list of users in the admin panel
-     *
-     * @return \Illuminate\Http\Response
-     */   
+
     public function index(Request $request)
     {
         $this->middleware('admin');
 
-        $usersModel = new User();
+    $usersModel = new User();
+    $users = $usersModel->filterUsers($request->all());
+    $roles = Role::all();
+    $request->session()->put('filters', $request->all());
+    $filters = $request->session()->get('filters');
 
-        $users = $usersModel->filterUsers($request->all());
-        $roles = Role::all();
-
-        $request->session()->put('filters', $request->all());
-
-        $filters = $request->session()->get('filters');
-
-        return view('admin.users.users',compact('users','roles', 'filters'));
+    return view('admin.users.users', compact('users', 'roles', 'filters'));
     }
-
-    /**
-     * View a single user
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function viewUser()
     {
         $user = User::users()->where('id', Auth::id())->first();
         return view('users.view_user', compact('user'));
     }
-
-    /**
-     * Update user profile
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function updateProfile(Request $request)
+    public function create()
     {
-        $request->validate([
-            'email' => 'email|required',
-            'username' => 'required',
-        ]);
-
-        $user = User::find(Auth::id());
-        $user->username = $request->input('username');
-        $user->email = $request->input('email');
-
-        if($request->filled('password')){
-            $user->password = Hash::make($request->input('password'));
-        }
-
-        $user->save();
-
-        return redirect(URL('user/profile'));
+        
+        DDLClearSession();
+        $myResources = new Resource();
+        $countries = $myResources->resourceAttributesList('taxonomy_term_data', 15);
+        $provinces = $myResources->resourceAttributesList('taxonomy_term_data', 12)->all();
+        return view('users.user_create', compact('countries', 'provinces'));
     }
-
-    /**
-     * Edit a user details
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function edit($userId)
     {
         $this->middleware('admin');
         $myResources = new Resource();
-        $user = User::where('id',$userId)->first();
-        $countries = $myResources->resourceAttributesList('taxonomy_term_data',15);
-        $provinces = $myResources->resourceAttributesList('taxonomy_term_data',12);
+        $user = User::where('id', $userId)->first();
+        $countries = $myResources->resourceAttributesList('taxonomy_term_data', 15);
+        $provinces = $myResources->resourceAttributesList('taxonomy_term_data', 12);
         $userRoles = UserRole::where('user_id', $userId)->get();
         $roles = Role::all();
         return view('admin.users.edit_user', compact(
@@ -90,49 +53,89 @@ class UserController extends Controller
             'provinces',
             'userRoles',
             'roles'
-        ));    
+        ));
     }
-
-    /**
-     * Edit a user details
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $userId)
+    public function exportUsers()
     {
-        $this->validate($request, [
-            'username'      => 'required',
-            'password'      => 'nullable',
-            'email'         => 'required',
-            'status'        => 'required',
-            'first_name'    => 'required',
-            'last_name'     => 'required',
-            'gender'        => 'required',
-            'role'          => 'required',
-            'phone'         => 'required',
-            'country'       => 'required',
-            'city'          => 'nullable',
+        $users = User::get(); // All users
+        //$userProfiles = UserProfile::with('first_name','last_name')->get();
+        $csvExporter = new \Laracsv\Export();
+        $csvExporter->build($users, [
+            'email' => 'Email Address',
+            'profile.first_name' => 'First Name',
+            'profile.last_name' => 'Last Name'
+        ])->download();
+    }
+    /* the bellow functions will work with api access  */
+    /* show users list */
+    public function listUsers()
+    {
+        $show_user = User::join('user_roles', 'users.id', 'user_roles.user_id')->where('user_roles.user_id', '!=', 'users.id')->get();
+        return UserResource::collection($show_user);
+    }
+    // inserting user to db
+    public function insert_user(Request $request)
+    {
+        $save_user = new User();
+        $save_user->username = $request['UserName'];
+        $save_user->email = $request['Email'];
+        $save_user->password = bcrypt($request['Password']);
+        $save_user->status = $request['Status'];
+        $save_user->save();
+        //  current saved user id 
+        $c_id = DB::table('users')->orderBy('id', 'desc')->first();
+        DB::table('user_roles')->insert([
+            'user_id' => $c_id->id,
+            'role_id' => $request['Role']
         ]);
-
-        if($request->filled('city')){
+        DB::table('user_profiles')->insert([
+            'user_id' => $c_id->id,
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+            'phone' => $request['phone'],
+            'gender' => $request['gender'],
+            'country' => $request['country'],
+            'city' => $request['city']
+        ]);
+        return response()->json($save_user);
+    }
+    // this function delete the user from list
+    public function user_delete($id)
+    {
+        $find_user = User::find($id);
+        // find the photo and remove from directory
+        $oldPhoto = $find_user->photo;
+        if ($oldPhoto !== $find_user->photo) {
+            $this->removeUserphoto($oldPhoto);
+        }
+        $find_user->delete();
+        return response()->json($find_user);
+    }
+    // this function reterive single user
+    public function user_get($id)
+    {
+        $find_user_edit = User::find($id);
+        return response()->json($find_user_edit);
+    }
+    // this function update the user which reterived
+    public function user_update(Request $request, $id)
+    {
+        $find_user_update = User::find($id);
+        if ($request->filled('city')) {
             $city = $request->input('city');
-        }elseif($request->filled('city_other')){
+        } elseif ($request->filled('city_other')) {
             $city = $request->input('city_other');
-        }else{
+        } else {
             $city = NULL;
         }
-
-        //Saving contact info to the database
-        $user = User::find($userId);
-        $user->username = $request->input('username');
-        if($request->filled('password')){
-            $user->password = Hash::make($request->input('password'));
+        $find_user_update->username = $request['username'];
+        $find_user_update->email = $request['email'];
+        if ($request->filled('password')) {
+            $find_user_update->password = Hash::make($request->input('password'));
         }
-        $user->email = $request->input('email');
-        $user->status = $request->input('status');
-        $user->save();
-
-        $userProfile = UserProfile::where('user_id',$userId)->first();
+        $find_user_update->password = bcrypt($request['password']);
+        $find_user_update->status = $request['status'];
+        $userProfile = UserProfile::where('user_id', $id)->first();
         $userProfile->first_name = $request->input('first_name');
         $userProfile->last_name = $request->input('last_name');
         $userProfile->gender = $request->input('gender');
@@ -140,41 +143,13 @@ class UserController extends Controller
         $userProfile->city = $city;
         $userProfile->phone = $request->input('phone');
         $userProfile->save();
-
-        $userRole = UserRole::where('user_id', $userId);
+        $userRole = UserRole::where('user_id', $id);
         $userRole->delete();
-
         $userRole = new UserRole();
-        $userRole->user_id = $userId;
+        $userRole->user_id = $id;
         $userRole->role_id = $request->input('role');
         $userRole->save();
-
-        return redirect('/admin/user/edit/'.$userId)->with('success', 'User details updated successfully!');   
-    }
-
-    /**
-    * Delete a user
-    */
-    public function deleteUser($userId)
-    {
-        $user = User::find($userId);
-        $user->delete();
-
-        return back()->with('error', 'You deleted the record!');
-    }
-
-    /**
-    * Export the user list to CSV
-    */
-    public function exportUsers()
-    {
-        $users = User::get(); // All users
-        //$userProfiles = UserProfile::with('first_name','last_name')->get();
-        $csvExporter = new \Laracsv\Export();
-        $csvExporter->build($users, [
-            'email' =>'Email Address', 
-            'profile.first_name' => 'First Name', 
-            'profile.last_name' => 'Last Name'
-        ])->download();
+        $find_user_update->save();
+        return response()->json($find_user_update);
     }
 }
