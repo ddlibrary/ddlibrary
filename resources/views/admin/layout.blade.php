@@ -12,7 +12,15 @@
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <!-- Custom styles for this template-->
   <link href="{{ URL::to('css/sb-admin-2.min.css') }}" rel="stylesheet">
+  {{--  all js for excel export  --}}
+  <script src="{{ asset('js/blob.js') }}"></script>
+  <script src="{{ asset('js/excel.download.js') }}"></script>
+  <script src="{{ asset('js/filesave.js') }}"></script>
+  <script src="{{ asset('js/shim.excel.js') }}"></script>
+  <script src="{{ asset('js/xlsx.download.js') }}"></script>
+  {{--  all js for excel export  --}}
   <!-- Datatables CSS file -->
+  
   <link href="{{ URL('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
   <!-- Toaster CSS file for notification -->
   <link href="{{ URL::to('vendor/toastr/toastr.min.css') }}" rel="stylesheet">
@@ -239,6 +247,7 @@
     <script src="{{ URL::to('js/sb-admin.min.js') }}"></script>
     <!-- Optional JavaScript -->
     @stack('scripts')
+
   </div>
 </body>
 
