@@ -19,7 +19,7 @@
       <div class="card mb-3">
         <div class="card-header">
           <i class="fa fa-list"></i> Report
-          <button class="btn btn-sm btn-primary float-right" onclick="to_xls()">Export</button>
+          <button class="btn btn-sm btn-primary float-right" onclick="to_xls(&#39;xlsx&#39;)">Export</button>
         </div>
 
         <div class="card-body" style="width:100%; overflow:scroll;">
@@ -127,34 +127,12 @@
 
   @push('scripts')
   <script>
-    
-	function to_xls()
-	{
-		var htmls = "";
-        var uri = 'data:application/vnd.ms-excel;base64,';
-        var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'; 
-        var base64 = function(s) {
-            return window.btoa(unescape(encodeURIComponent(s)))
-        };
-
-        var format = function(s, c) {
-            return s.replace(/{(\w+)}/g, function(m, p) {
-                return c[p];
-            })
-        };
-
-        htmls = $('#dvData').html();
-
-        var ctx = {
-            worksheet : 'Worksheet',
-            table : htmls
-        }
-
-
-        var link = document.createElement("a");
-        link.download = '{{ $survey->name}}_Survey_Report_' + '{{ date("d-M-Y h:i:s") }}' + '.xls';
-        link.href = uri + base64(format(template, ctx));
-        link.click();
-	}
+      function to_xls(type, fn, dl) {
+        var elt = document.getElementById("dvData");
+        var wb = XLSX.utils.table_to_book(elt, { sheet: "Sheet JS" });
+        return dl
+          ? XLSX.write(wb, { bookType: type, bookSST: true, type: "base64" })
+          : XLSX.writeFile(wb, fn || '{{ $survey->name}}_Survey_Report_' + '{{ date("d-M-Y h:i:s") }}.' + (type || "xlsx"));
+      }
   </script>
   @endpush

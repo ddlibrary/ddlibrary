@@ -19,6 +19,13 @@
   <style>
     .toast-success{background-color:rgb(76, 175, 80);}
   </style>
+  {{--  all js for excel export  --}}
+  <script src="{{ asset('js/blob.js') }}"></script>
+  <script src="{{ asset('js/excel.download.js') }}"></script>
+  <script src="{{ asset('js/filesave.js') }}"></script>
+  <script src="{{ asset('js/shim.excel.js') }}"></script>
+  <script src="{{ asset('js/xlsx.download.js') }}"></script>
+  {{--  all js for excel export  --}}
 </head>
 
 <body id="page-top">
