@@ -246,6 +246,7 @@ return [
         'mj'          => ['name' => 'Munji',                    'script' => 'Arab', 'native' => 'منجی', 'regional' => 'fa_IR'],
         'no'          => ['name' => 'Nooristani',                'script' => 'Arab', 'native' => 'نورستانی', 'regional' => 'fa_IR'],
         'sw'          => ['name' => 'Savji',                    'script' => 'Arab', 'native' => 'سوجی', 'regional' => 'fa_IR'],
+        'sh'          => ['name' => 'Sheghnani',                'script' => 'Arab', 'native' => 'شغنانی', 'regional' => 'fa_IR'],
         //'ks'          => ['name' => 'Kashmiri (Arabic)',      'script' => 'Arab', 'native' => 'کأشُر', 'regional' => 'ks_IN'],
         //'ku'          => ['name' => 'Kurdish',                'script' => 'Arab', 'native' => 'کوردی', 'regional' => 'ku_TR'],
         //'dv'          => ['name' => 'Divehi',                 'script' => 'Thaa', 'native' => 'ދިވެހިބަސް', 'regional' => 'dv_MV'],
