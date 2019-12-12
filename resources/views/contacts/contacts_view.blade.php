@@ -82,9 +82,18 @@
                 <input class="form-control normalButton" type="submit" value="@lang('Send')">
             </div>
         </form>
-
-        <div class="sidebar" style="flex: 2; padding: 1em;">
-            <h3>@lang('Want to schedule a demo of the DD Library at your school, college or institution? Send us a request using this form.')</h3>
+        <div style="flex:2; flex-direction:column;">
+            <div class="sidebar" style="padding: 1em;">
+                <h3>@lang('Want to schedule a demo of the DD Library at your school, college or institution? Send us a request using this form.')</h3>
+            </div>
+            
+            <div class="sidebar" style="padding: 1em;">
+                <h2>@lang('Want to receive our newsletter?')</h2>
+                <p>
+                    @lang('About three times a year we send out the DDL newsletter. If you are a registered user of the Library, you will automatically receive the newsletter. If you are not a registered library user but would like to subscribe to our newsletter, please')
+                    <a href="https://darakhtdanesh.us11.list-manage.com/subscribe?u=abbdaa95e801980b608399770&id=9bf90f679d" target="_blank">click here.</a>
+                </p>
+            </div>
         </div>
     </div>
 </section>
