@@ -13,6 +13,11 @@
 if (env('APP_ENV') === 'production') {
     \URL::forceScheme('https');
 }
+
+if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
+    error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
+}
+
 Route::group(
 [
     'prefix' => LaravelLocalization::setLocale(),
