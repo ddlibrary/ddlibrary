@@ -122,7 +122,7 @@ DDL Impact
         </article>
         <article>
             <i class="fas fa-desktop fa-3x"></i>
-            <h2><em>54</em></h2>
+            <h2><em>56</em></h2>
             <h3>@lang('DDL Demos Delivered')</h3>
         </article>
         <article>
