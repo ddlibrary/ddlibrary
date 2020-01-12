@@ -4,6 +4,12 @@ svg {
 }
 
 #Nangarhar,
+#Kabul,
+#Faryab,
+#Laghman,
+#Takhar,
+#Khost,
+#Badakhshan,
 #Parvan,
 #Kandahar,
 #Balkh,
@@ -12,13 +18,7 @@ svg {
     fill: red;
 }
 
-#Kabul,
-#Panjshir,
-#Badakhshan,
-#Khost,
-#Takhar,
-#Faryab,
-#Laghman {
+#Panjshir {
     fill: #ffa800;
 }
 
