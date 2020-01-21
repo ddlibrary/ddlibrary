@@ -334,25 +334,29 @@ class Resource extends Model
                 'rs.id',
                 'rs.language', 
                 'rs.abstract',
-                'rs.title'
+                'rs.title',
+                'rs.status'
             )
             ->when(count($subjectAreaIds) > 0, function($query) use($subjectAreaIds){
                 return $query->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
                         ->join('taxonomy_term_hierarchy AS tth','tth.tid','=','rsa.tid')
                         ->where('tth.parent', $subjectAreaIds)
+                        ->where('rs.status', 1)
                         ->orWhere('tth.tid', $subjectAreaIds)
                         ->groupBy('tth.tid');
             })
             ->when(count($levelIds) > 0, function($query)  use($levelIds){
                 return $query->join('resource_levels AS rl', function ($join) use($levelIds) {
                     $join->on('rl.resource_id', '=', 'rs.id')
-                        ->where('rl.tid', $levelIds);
+                        ->where('rl.tid', $levelIds)
+                        ->where('rs.status', 1);
                 });
             })
             ->when(count($typeIds) > 0, function($query)  use($typeIds){
                 return $query->join('resource_learning_resource_types AS rlrt', function ($join) use($typeIds) {
                     $join->on('rlrt.resource_id', '=', 'rs.id')
-                            ->where('rlrt.tid', $typeIds);
+                            ->where('rlrt.tid', $typeIds)
+                            ->where('rs.status', 1);
                     });
             })
             ->when(count($searchQuery) > 0, function($query)  use($searchQuery){
@@ -363,11 +367,13 @@ class Resource extends Model
                     ->where('rs.title','like','%'.$searchQuery.'%')
                     ->orwhere('rs.abstract', 'like' , '%'.$searchQuery.'%')
                     ->orwhere('ttd.name', 'like' , '%'.$searchQuery.'%')
-                    ->orwhere('ttdp.name', 'like' , '%'.$searchQuery.'%');
+                    ->orwhere('ttdp.name', 'like' , '%'.$searchQuery.'%')
+                    ->where('rs.status', 1);
             })
             ->when($request->filled('publisher'), function($query) use($request){
                 return $query->leftJoin('resource_publishers AS rpub','rpub.resource_id','=','rs.id')
-                    ->where('rpub.tid', $request['publisher']);
+                    ->where('rpub.tid', $request['publisher'])
+                    ->where('rs.status', 1);
             })
             ->where('rs.language',Config::get('app.locale'))
             ->where('rs.status', 1)
