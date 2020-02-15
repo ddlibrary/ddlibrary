@@ -57,11 +57,17 @@
         ?>
         <a href="{{ URL::to($url) }}" title="{{ $item->name }}">
             <article class="home-subject-areas">
-                <i class="{{ $item->icon }} fa-5x" style="color: #ffa300"></i>
+                <i class="{{ $item->icon }} fa-4x" style="color: #ffa300"></i>
                 <p>{{ $item->name }}</p>
             </article>
         </a>
         @endforeach
+        <a href="{{ URL::to('glossary') }}" title="Glossary">
+            <article class="home-subject-areas">
+                <i class="fa fa-search fa-4x" style="color: #ffa300"></i>
+                <p>@lang('DDL Glossary')</p>
+            </article>
+        </a>
     </div>
 </section>
 <section class="latest-news">
