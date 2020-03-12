@@ -242,11 +242,12 @@ return [
         'fa'          => ['name' => 'Persian',                  'script' => 'Arab', 'native' => 'فارسی', 'regional' => 'fa_IR'],
         //'pa-Arab'     => ['name' => 'Punjabi (Arabic)',       'script' => 'Arab', 'native' => 'پنجاب', 'regional' => 'pa_IN'],
         'ps'          => ['name' => 'Pashto',                   'script' => 'Arab', 'native' => 'پښتو', 'regional' => 'ps_AF'],
-        'uz'          => ['name' => 'Uzbeki',                    'script' => 'Arab', 'native' => 'ازبیکی', 'regional' => 'fa_IR'],
+        'uz'          => ['name' => 'Uzbeki',                   'script' => 'Arab', 'native' => 'ازبیکی', 'regional' => 'fa_IR'],
         'mj'          => ['name' => 'Munji',                    'script' => 'Arab', 'native' => 'منجی', 'regional' => 'fa_IR'],
-        'no'          => ['name' => 'Nooristani',                'script' => 'Arab', 'native' => 'نورستانی', 'regional' => 'fa_IR'],
+        'no'          => ['name' => 'Nooristani',               'script' => 'Arab', 'native' => 'نورستانی', 'regional' => 'fa_IR'],
         'sw'          => ['name' => 'Savji',                    'script' => 'Arab', 'native' => 'سوجی', 'regional' => 'fa_IR'],
         'sh'          => ['name' => 'Sheghnani',                'script' => 'Arab', 'native' => 'شغنانی', 'regional' => 'fa_IR'],
+        'pa'          => ['name' => 'Pashai',                   'script' => 'Arab', 'native' => 'پشه یی', 'regional' => 'fa_IR'],
         //'ks'          => ['name' => 'Kashmiri (Arabic)',      'script' => 'Arab', 'native' => 'کأشُر', 'regional' => 'ks_IN'],
         //'ku'          => ['name' => 'Kurdish',                'script' => 'Arab', 'native' => 'کوردی', 'regional' => 'ku_TR'],
         //'dv'          => ['name' => 'Divehi',                 'script' => 'Thaa', 'native' => 'ދިވެހިބަސް', 'regional' => 'dv_MV'],
@@ -317,6 +318,6 @@ return [
     // If you want to display the locales in particular order in the language selector you should write the order here. 
     //CAUTION: Please consider using the appropriate locale code otherwise it will not work
     //Example: 'localesOrder' => ['es','en'],
-    'localesOrder' => ['en', 'fa', 'ps', 'uz', 'mj', 'no', 'sw'],
+    'localesOrder' => ['en', 'fa', 'ps', 'uz', 'mj', 'no', 'sw', 'pa'],
 
 ];
