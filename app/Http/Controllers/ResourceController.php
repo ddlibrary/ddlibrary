@@ -248,7 +248,7 @@ class ResourceController extends Controller
                 $fileExtension = \File::extension($fileName);
                 $fileName = auth()->user()->id."_".time().".".$fileExtension;
                 //$attachments->storeAs($fileName,'private');
-                Storage::disk('private')->put($fileName, file_get_contents($attachments));
+                Storage::disk('s3')->put('resources/' . $fileName, file_get_contents($attachments));
                 $validatedData['attc'][] = array(
                     'file_name' => $fileName,
                     'file_size' => $fileSize,
@@ -834,7 +834,7 @@ class ResourceController extends Controller
                 $fileName = auth()->user()->id."_".time().".".$fileExtension;
                 //$attachments->storeAs($fileName,'private');
                 unset($validatedData['attachments']);
-                Storage::disk('private')->put($fileName, file_get_contents($attachments));
+                Storage::disk('s3')->put('resources/' . $fileName, file_get_contents($attachments));
                 $validatedData['attc'][] = array(
                     'file_name' => $fileName,
                     'file_size' => $fileSize,
@@ -1228,7 +1228,7 @@ class ResourceController extends Controller
     {   
         $this->middleware('admin');
 
-        Storage::disk('private')->delete($fileName);
+        Storage::disk('s3')->delete($fileName);
         ResourceAttachment::where('resource_id', $resourceId)->where('file_name', $fileName)->delete();
         $resource2 = session('resource2');
         $resource2Attc = $resource2['attc'];

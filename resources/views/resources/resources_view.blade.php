@@ -202,7 +202,7 @@
                 <span class="download-item">@lang('File Name')</strong></span>
                 <span class="download-item item-mobile"><strong>@lang('File Size')</strong></span>
                 @foreach($resource->attachments as $file)
-                    <span class="download-item"><a title="File Name" href="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}">{{ $file->file_name }}</a></span>
+                    <span class="download-item"><a title="File Name" href="{{ URL::to('https://ddl-resources.s3-ap-southeast-1.amazonaws.com/resources/'.$file->file_name) }}">{{ $file->file_name }}</a></span>
                     <span class="download-item item-mobile">{{ formatBytes($file->file_size) }}</span>
                     @if (Auth::check())
                         @if($file->file_mime=="application/pdf")
