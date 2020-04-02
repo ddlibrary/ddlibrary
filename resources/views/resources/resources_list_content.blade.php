@@ -1,11 +1,11 @@
 @if (count($resources) > 0)
-@foreach ($resources AS $resource)
+@foreach ($resources->unique('id') AS $resource)
 @if ($resource->status)
 
     <article class="resource-article resource-information">
         <a href="{{ URL::to('resource/'.$resource->id) }}" target="_blank">
             <img class="resource-img lazyload" data-src="{{ getImagefromResource($resource->abstract) }}" alt="Resource Image">	
-            <div class="resource-title">{{ $resource->title }} {{ $resource->status }}</div>	
+            <div class="resource-title">{{ $resource->title }}</div>	
             <div class="resource-details">	
                 <article>	
                     <i class="fas fa-eye"></i><span>{{ $views->where('resource_id', $resource->id)->count() }}</span>	
