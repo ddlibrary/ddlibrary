@@ -68,6 +68,12 @@
                 <p>@lang('DDL Glossary')</p>
             </article>
         </a>
+        <a href="{{ URL::to('news/7913') }}" title="Covid-19">
+            <article class="home-subject-areas">
+                <img src="{{ Storage::disk('public')->url('covid19.png') }}" alt="COVID19 Icon" style="height:52px">
+                <p>@lang('COVID19')</p>
+            </article>
+        </a>
     </div>
 </section>
 <section class="latest-news">
