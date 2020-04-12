@@ -98,7 +98,7 @@
                     $cc_common = "";
                 }
             ?>
-            @if(in_array($cc->tnid, array(535, 536, 537, 159)))
+            @if(in_array($cc->tnid, array(535, 536, 537, 159, 6187)))
             <input type="radio" value="{{ $cc->id }}" name="creative_commons" {{ ($cc_common == $cc->name)?"checked":"" }}>{{ $cc->name }}<br>
             @endif
             @endforeach
@@ -113,7 +113,7 @@
                     {{ en('If there is no Creative Commons License on the resource, select one these') }}</strong>
             </label>
             @foreach($creativeCommons AS $other)
-            @if(!in_array($other->tnid, array(535, 536, 537, 159)))
+            @if(!in_array($other->tnid, array(535, 536, 537, 159, 6187)))
             <input type="radio" value="{{ $other->id }}" name="creative_commons_other" @if(count($dbRecords->SharePermissions)) {{ $dbRecords->SharePermissions->tid == $other->id?"checked":"" }} @endif>{{ $other->name . termEn($other->id) }}<br>
             @endif
             @endforeach
