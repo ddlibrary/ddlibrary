@@ -92,7 +92,7 @@
             </label>
             <br>
             @foreach($creativeCommons AS $cc)
-                @if(in_array($cc->tnid, array(535, 536, 537, 159)))
+                @if(in_array($cc->tnid, array(535, 536, 537, 159, 6187)))
                     <input type="radio" value="{{ $cc->id }}" name="creative_commons">{{ $cc->name }}<br>
                 @endif
             @endforeach
@@ -109,7 +109,7 @@
                 </strong>
             </label>
             @foreach($creativeCommons AS $other)
-                @if(!in_array($other->tnid, array(535, 536, 537, 159)))
+                @if(!in_array($other->tnid, array(535, 536, 537, 159, 6187)))
                     <input type="radio" value="{{ $other->id }}" name="creative_commons_other">{{ $other->name . termEn($other->id) }}<br>
                 @endif
             @endforeach
