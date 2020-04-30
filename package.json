@@ -16,7 +16,7 @@
         "cross-env": "^5.1",
         "imagemin-mozjpeg": "^8.0.0",
         "imagemin-webpack-plugin": "^2.4.2",
-        "jquery": "^3.4",
+        "jquery": "^3.5",
         "laravel-mix": "^4.0.15",
         "lodash": "^4.17.13",
         "popper.js": "^1.12",
