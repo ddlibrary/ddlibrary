@@ -375,7 +375,7 @@ class Resource extends Model
                     ->where('rpub.tid', $request['publisher'])
                     ->where('rs.status', 1);
             })
-            ->where('rs.language',Config::get('app.locale'))
+            ->where('rs.language', Config::get('app.locale'))
             ->where('rs.status', 1)
             ->orderBy('rs.created_at','desc')
             ->groupBy(
@@ -482,8 +482,10 @@ class Resource extends Model
         return $records;
     }
 
-    public function subjectIconsAndTotal()
+    public function subjectIconsAndTotal($lang = '')
     {
+        $lang = (!$lang) ? Config::get('app.locale') : $lang;
+
         $records = DB::table('resource_subject_areas AS sarea')
             ->select(
                 'sticons.file_name', 
@@ -496,7 +498,7 @@ class Resource extends Model
                     ->where('ttd.vid', 8);
             })
             ->join('static_subject_area_icons AS sticons','sticons.tid','=','ttd.id')
-            ->where('ttd.language', Config::get('app.locale'))
+            ->where('ttd.language', $lang)
             ->groupBy(
                 'sarea.tid', 
                 'sticons.file_name',
@@ -519,8 +521,10 @@ class Resource extends Model
             ->first();
     }
 
-    public function featuredCollections()
+    public function featuredCollections($lang='')
     {
+        $lang = (!$lang) ? Config::get('app.locale') : $lang;
+
         $records = DB::table('featured_collections AS fcid')
             ->select(
                 'fcid.id', 
@@ -541,7 +545,7 @@ class Resource extends Model
             ->leftJoin('featured_resource_types AS frt','frt.fcid', '=', 'fcid.id')
             ->leftJoin('featured_resource_subjects AS frs', 'frs.fcid', '=', 'fcid.id')
             ->leftJoin('featured_resource_levels AS frls', 'frls.fcid', '=', 'fcid.id')
-            ->where('ttd.language',Config::get('app.locale'))
+            ->where('ttd.language', $lang)
             ->orderBy('fcid.id')
             ->get();
 
