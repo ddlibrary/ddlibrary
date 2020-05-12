@@ -291,7 +291,7 @@ class Resource extends Model
     }
 
     //Total resources based on subject area List
-    public function totalResourcesBySubject($lang="en")
+    public function totalResourcesBySubject($lang="en", $date_from="", $date_to="")
     {
         $records = DB::table('resource_subject_areas AS rsa')
                     ->select(
@@ -306,6 +306,10 @@ class Resource extends Model
                             ->where('ttd.vid', 8);
                     })
                     ->where('ttd.language', $lang)
+                    ->when($date_from, function($query) use($date_from, $date_to){
+                        return $query->join('resources AS r', 'r.id','=','rsa.resource_id')
+                        ->whereBetween('r.created_at', [$date_from, $date_to]);
+                    })
                     ->groupBy(
                         'ttd.name',
                         'ttd.id',
