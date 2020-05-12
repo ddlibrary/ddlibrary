@@ -84,7 +84,7 @@
         </form>
         <div style="flex:2; flex-direction:column;">
             <div class="sidebar" style="padding: 1em;">
-                <h3>@lang('Want to schedule a demo of the DD Library at your school, college or institution? Send us a request using this form.')</h3>
+                <h3>@lang('Want to schedule a demo of the DD Library at your school, college or institution? Send us a request using the contact form on this page.')</h3>
             </div>
             
             <div class="sidebar" style="padding: 1em;">
