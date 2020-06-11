@@ -68,7 +68,15 @@
                 <p>@lang('DDL Glossary')</p>
             </article>
         </a>
-        <a href="{{ URL::to('news/7913') }}" title="Covid-19">
+        
+        <?php 
+            $covid_url = 'page/4137';
+            if(Lang::locale() == 'fa') $covid_url = 'page/4133';
+            else if(Lang::locale() == 'ps') $covid_url = 'page/4134';
+            else if(Lang::locale() == 'pa') $covid_url = 'page/4135';
+            else if(Lang::locale() == 'uz') $covid_url = 'page/4136';
+        ?>
+        <a href="{{ URL::to($covid_url) }}" title="Covid-19">
             <article class="home-subject-areas">
                 <img src="{{ Storage::disk('public')->url('covid19.png') }}" alt="COVID19 Icon" style="height:52px">
                 <p>@lang('COVID19')</p>
