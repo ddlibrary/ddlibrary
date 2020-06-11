@@ -20,6 +20,8 @@ class AnalyticsController extends Controller
     {
         //if language is present in the request, otherwise default it to English
         $lang = $request->filled('language')?request('language'):"en";
+        $date_from = $request->filled('date_from')?request('date_from'):"";
+        $date_to = $request->filled('date_to')?request('date_to'):"";
 
         if($request->filled('type') && ($request->filled('source') && request('source') == "dd")) {
             $usersModel     = new User();
@@ -45,7 +47,7 @@ class AnalyticsController extends Controller
                 $totalResources = $resourceModel->totalResourcesByLanguage();
                 return view('admin.analytics.resource_language', compact('totalResources')); 
             } else if (request('type') == "resource_subject"){
-                $totalResourcesBySubject = $resourceModel->totalResourcesBySubject($lang);
+                $totalResourcesBySubject = $resourceModel->totalResourcesBySubject($lang, $date_from, $date_to);
                 return view('admin.analytics.resource_subject', compact('totalResourcesBySubject')); 
             } else if (request('type') == "resource_level"){
                 $totalResourcesByLevel = $resourceModel->totalResourcesByLevel($lang);
