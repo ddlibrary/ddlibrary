@@ -8,6 +8,7 @@ use App\ResourceView;
 use App\TaxonomyTerm;
 use Analytics;
 use Spatie\Analytics\Period;
+use App;
 
 class ImpactController extends Controller
 {
@@ -16,7 +17,7 @@ class ImpactController extends Controller
         //total resources in number for the dashboard
         $totalResources     = Resource::count();
         $myresourceView     = new ResourceView;
-        $totalSubjects      = TaxonomyTerm::where('vid',8)->count();
+        $totalSubjects      = TaxonomyTerm::where('vid',8)->where('language', App::getLocale())->count();
         $monthlyViews       = $myresourceView->where('created_at', '>', \Carbon\Carbon::now()->subDays(30))->count();
         return view('impact.impact_page', compact('totalResources','monthlyViews','totalSubjects'));
     }
