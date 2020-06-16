@@ -207,6 +207,20 @@ Route::group(
     });
     Route::get('/home', 'HomeController@index')->name('home');
 });
+
+/** Middleware group for owners/self **/
+Route::group([
+    'prefix' => LaravelLocalization::setLocale(),
+    'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' , 'owner']
+],
+    function(){
+        Route::get('resources/edit/step1/{resourceId}', 'ResourceController@createStepOneEdit')->name('edit1');
+        Route::post('resources/edit/step1/{resourceId}', 'ResourceController@postStepOneEdit');
+        Route::get('resources/edit/step2/{resourceId}', 'ResourceController@createStepTwoEdit')->name('edit2');
+        Route::post('resources/edit/step2/{resourceId}', 'ResourceController@postStepTwoEdit');
+        Route::get('resources/edit/step3/{resourceId}', 'ResourceController@createStepThreeEdit')->name('edit3');
+        Route::post('resources/edit/step3/{resourceId}', 'ResourceController@postStepThreeEdit');
+});
 /** OTHER PAGES THAT SHOULD NOT BE LOCALIZED **/
 Route::post('resources/favorite', 'ResourceController@resourceFavorite');
 Route::get('/storage/{resource_id}/{file_id}/{file_name}', 'FileController')->where(['file_name' => '.*']);
