@@ -33,6 +33,7 @@ main {
 .header-right .main-navigation {
     display: flex;
     padding: 30px;
+    justify-content: end;
 }
 
 header #toggle {
