@@ -118,7 +118,7 @@
             @endif
             @endforeach
         </div>
-        @if (isAdmin())
+        @if (isAdmin() or isLibraryManager())
         <div class="form-item">
             <label for="published"> 
                 <strong>@lang('Published?') {{ en('Published?') }}</strong>
