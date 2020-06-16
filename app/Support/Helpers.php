@@ -1,4 +1,8 @@
 <?php
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 if (! function_exists('fixLanguage')) {
     function fixLanguage($lang)
     {
@@ -200,6 +204,20 @@ if (! function_exists('isLibraryManager')) {
         $user = factory(App\User::class)->make();
 
         if(count($user->isLibraryManager(Auth::id()))){
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
+}
+
+if (! function_exists('isOwner')) {
+    function isOwner($resource_id)
+    {
+        $user_id = Auth::id();
+        $resource_user_id = DB::table('resources')->find($resource_id)->user_id;
+
+        if($resource_user_id == $user_id){
             return TRUE;
         }else{
             return FALSE;
