@@ -2,15 +2,21 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * @method static find($user_id)
+ * @property mixed        username
+ * @property mixed|string password
+ * @property mixed        email
+ * @property int|mixed    status
+ * @property Carbon|mixed accessed_at
+ * @property mixed        language
+ * @property mixed        id
  */
 class User extends Authenticatable
 {
@@ -40,7 +46,7 @@ class User extends Authenticatable
      */
     public function scopeUsers($query)
     {
-        $users = DB::table('users')
+        return DB::table('users')
             ->select(
                 'users.id',
                 'users.username',
@@ -48,7 +54,7 @@ class User extends Authenticatable
                 'up.first_name',
                 'up.last_name',
                 'users.email',
-                'users.status', 
+                'users.status',
                 'users.created_at',
                 'users.accessed_at',
                 'roles.name AS all_roles'
@@ -70,8 +76,6 @@ class User extends Authenticatable
                 'roles.name'
             )
             ->get();
-
-        return $users;
     }
 
     /**
@@ -79,12 +83,12 @@ class User extends Authenticatable
      */
     public function filterUsers($requestArray)
     {
-        $users = DB::table('users')
+        return DB::table('users')
             ->select(
                 'users.id',
                 'users.username',
                 'users.email',
-                'users.status', 
+                'users.status',
                 'users.created_at',
                 'users.accessed_at',
                 'up.gender',
@@ -108,7 +112,7 @@ class User extends Authenticatable
             ->when(isset($requestArray['role']), function($query) use($requestArray){
                 return $query
                     ->where('roles.id', $requestArray['role']);
-            })  
+            })
             ->when(isset($requestArray['gender']), function($query) use($requestArray){
                 return $query
                     ->where('up.gender', $requestArray['gender']);
@@ -129,36 +133,32 @@ class User extends Authenticatable
                 'roles.name'
             )
             ->paginate(10);
-
-        return $users;
     }
 
     public function oneUser($credentials)
     {
-        $user = DB::table('users')
+        return DB::table('users')
             ->select(
                 'users.id',
                 'users.username',
-                'users.password', 
+                'users.password',
                 'users.email',
-                'users.status', 
+                'users.status',
                 'users.created_at',
                 'users.accessed_at'
             )
             ->where('email', $credentials['user-field'])
             ->orWhere('username', $credentials['user-field'])
             ->first();
-
-        return $user;    
     }
 
     //Total users based on gender
     public function totalUsersByGender($request)
     {
-        $start = \Carbon\Carbon::parse($request->date_from)->startOfDay();  //2016-09-29 00:00:00.000000
-        $end = \Carbon\Carbon::parse($request->date_to)->endOfDay(); //2016-09-29 23:59:59.000000
+        $start = Carbon::parse($request->date_from)->startOfDay();  //2016-09-29 00:00:00.000000
+        $end = Carbon::parse($request->date_to)->endOfDay(); //2016-09-29 23:59:59.000000
 
-        $records = DB::table('users')
+        return DB::table('users')
                 ->select('user_profiles.gender')
                 ->selectRaw('count(users.id) as total')
                 ->when($request->filled('date_from') && $request->filled('date_to'), function($query) use ($start, $end) {
@@ -168,14 +168,12 @@ class User extends Authenticatable
                 ->join('user_profiles','user_profiles.user_id','=','users.id')
                 ->groupBy('user_profiles.gender')
                 ->get();
-
-        return $records;   
     }
 
     //Total users based on country
     public function totalUsersByCountry()
     {
-        $records = DB::table('user_profiles AS up')
+        return DB::table('user_profiles AS up')
                     ->select(
                         'up.country AS id',
                         DB::raw('count(up.country) as total')
@@ -185,20 +183,18 @@ class User extends Authenticatable
                     )
                     ->orderBy('id')
                     ->get();
-        return $records;   
     }
 
     //Total users based on roles
     public function totalResourcesByRoles()
     {
-        $records = DB::table('roles')
+        return DB::table('roles')
                     ->select('roles.name', 'roles.id')
                     ->selectRaw('count(roles.id) as total')
                     ->join('user_roles','user_roles.role_id','=','roles.id')
                     ->groupBy('roles.id', 'roles.name')
                     ->orderBy('total','DESC')
                     ->get();
-        return $records;   
     }
 
     public function updateUser($newPassword, $credentials)
