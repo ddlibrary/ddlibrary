@@ -83,14 +83,14 @@
             @foreach ($users as $indexkey => $user)
               <tr>
                 <td>{{ (($users->currentPage() - 1) * $users->perPage())+$indexkey + 1 }}</td>
-                <td><a href="{{URL::to('user/'.$user->id) }}">{{ $user->username }}</a><br>{{ $user->email }}</td>
+                <td><a href="{{ URL::to('admin/user/edit/'.$user->id) }}">{{ $user->username }}</a><br>{{ $user->email }}</td>
                 <td>{{ ($user->status==0?"Not Active":"Active") }}</td>
                 <td>{{ $user->all_roles }}</td>
                 <td>{{ \Carbon\Carbon::parse($user->created_at)->diffForHumans() }}</td>
                 <td>{{ \Carbon\Carbon::parse($user->accessed_at)->diffForHumans() }}</td>
                 <td>
-                  <a href="user/edit/{{$user->id}}">Edit</a> | 
-                  <a href="user/delete/{{$user->id}}" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                  <a href="{{ URL::to('admin/user/edit/'.$user->id) }}">Edit</a> |
+                  <a href="{{ URL::to('admin/user/delete/'.$user->id) }}" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
                 </td>
               </tr>
               @endforeach
