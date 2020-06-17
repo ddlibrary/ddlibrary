@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Http\Controllers\Controller;
 use BladeView;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;
@@ -89,7 +92,7 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\User
+     * @return User
      */
     protected function create($data)
     {
@@ -98,7 +101,7 @@ class RegisterController extends Controller
         $user->password = Hash::make($data['password']);
         $user->email = $data['email'];
         $user->status = 1;
-        $user->accessed_at = \Carbon\Carbon::now();
+        $user->accessed_at = Carbon::now();
         $user->language = Config::get('app.locale');
         $user->save();
 
@@ -133,7 +136,7 @@ class RegisterController extends Controller
      *
      * @param Request $request
      *
-     * @return Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Application|RedirectResponse|Redirector
      */
     public function register(Request $request)
     {
@@ -145,18 +148,5 @@ class RegisterController extends Controller
 
         return $this->registered($request, $userId)
                         ?: redirect($this->redirectPath());
-    }
-
-    /**
-     * The user has been registered.
-     *
-     * @param Request                  $request
-     * @param                          $userId
-     *
-     * @return mixed
-     */
-    protected function registered(Request $request, $userId)
-    {
-        
     }
 }
