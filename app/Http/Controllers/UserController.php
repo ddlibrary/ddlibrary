@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\User;
 use App\Resource;
@@ -10,6 +11,7 @@ use App\Role;
 use App\UserRole;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Laracsv\Export;
 
 class UserController extends Controller
 {
@@ -153,13 +155,29 @@ class UserController extends Controller
     }
 
     /**
-    * Delete a user
-    */
+     * Delete a user
+     *
+     * @param $userId
+     *
+     * @return RedirectResponse
+     */
     public function deleteUser($userId)
     {
-        $user = User::find($userId);
-        $user->delete();
+        // Since we have not included an onDelete('cascade'),
+        // we have to find the corresponding records from
+        // UserProfile and UserRole and delete them manually.
+        // We don't however, want to delete the resources they've
+        // uploaded so, we set null.
+        $userProfile = UserProfile::where('user_id', $userId);
+        if ($userProfile != null){
+            $userProfile->delete();
+        }
+        $userRole = UserRole::where('user_id', $userId);
+        if ($userRole != null){
+            $userRole->delete();
+        }
 
+        User::find($userId)->delete();
         return back()->with('error', 'You deleted the record!');
     }
 
@@ -170,7 +188,7 @@ class UserController extends Controller
     {
         $users = User::get(); // All users
         //$userProfiles = UserProfile::with('first_name','last_name')->get();
-        $csvExporter = new \Laracsv\Export();
+        $csvExporter = new Export();
         $csvExporter->build($users, [
             'email' =>'Email Address', 
             'profile.first_name' => 'First Name', 
