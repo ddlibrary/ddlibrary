@@ -79,7 +79,7 @@
                     <label for="phone"> 
                         <strong>@lang('Telephone Number')</strong>
                     </label>
-                    <input class="form-control{{ $errors->has('age') ? ' is-invalid' : '' }}" id="phone" name="phone" value="{{ old('phone') }}" size="40" type="tel" style="width: 327px;" required>
+                    <input class="form-control{{ $errors->has('age') ? ' is-invalid' : '' }}" id="phone" name="phone" value="{{ old('phone') }}" size="40" type="tel" style="width: 327px;">
                     @if ($errors->has('phone'))
                     <span class="invalid-feedback">
                         <strong>{{ $errors->first('phone') }}</strong>
