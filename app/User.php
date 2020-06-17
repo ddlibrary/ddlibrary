@@ -17,6 +17,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property Carbon|mixed accessed_at
  * @property mixed        language
  * @property mixed        id
+ * @method static find($userId)
+ * @method static get()
  */
 class User extends Authenticatable
 {
