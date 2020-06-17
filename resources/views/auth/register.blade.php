@@ -97,6 +97,7 @@
                         <option value="">- @lang('None') -</option>
                         <option value="Male" {{ old('gender') == "Male" ? "selected" : "" }}>@lang('Male')</option>
                         <option value="Female" {{ old('gender') == "Female" ? "selected" : "" }}>@lang('Female')</option>
+                        <option value="None" {{ old('gender') == "None" ? "selected" : "" }}>@lang('Prefer not to say')</option>
                     </select>
                 </div>
             </div>
