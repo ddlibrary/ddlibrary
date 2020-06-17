@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use BladeView;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +15,8 @@ use App\Resource;
 use App\UserProfile;
 use App\UserRole;
 use Illuminate\Support\Facades\Hash;
-use Config;
+use Illuminate\Support\Facades\Config;
+use Illuminate\View\View;
 
 class RegisterController extends Controller
 {
@@ -49,7 +53,7 @@ class RegisterController extends Controller
     /**
      * Show the application registration form.
      *
-     * @return \Illuminate\Http\Response
+     * @return BladeView|bool|Factory|Application|View
      */
     public function showRegistrationForm()
     {
@@ -73,7 +77,7 @@ class RegisterController extends Controller
             'password' => 'required|string|min:6',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'phone' => 'required|max:20',
+            'phone' => 'nullable|max:20',
             'gender' => 'required',
             'country' => 'required',
             'city' => 'nullable',
@@ -127,8 +131,9 @@ class RegisterController extends Controller
     /**
      * Handle a registration request for the application.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function register(Request $request)
     {
@@ -145,8 +150,9 @@ class RegisterController extends Controller
     /**
      * The user has been registered.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
+     * @param Request                  $request
+     * @param                          $userId
+     *
      * @return mixed
      */
     protected function registered(Request $request, $userId)
