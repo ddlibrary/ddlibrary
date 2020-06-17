@@ -82,6 +82,7 @@
                                             <option value=""></option>
                                             <option value="Male" {{ ($user->profile->gender=="Male"?"selected":"") }}>Male</option>
                                             <option value="Female" {{ ($user->profile->gender=="Female"?"selected":"") }}>Female</option>
+                                            <option value="None" {{ ($user->profile->gender=="None"?"selected":"") }}>Prefer not to say</option>
                                         </select>
                                     </td>
                                 </tr>
