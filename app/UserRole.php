@@ -4,6 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property mixed     user_id
+ * @property int|mixed role_id
+ * @method static find($userId)
+ * @method static where(string $string, $userId)
+ */
 class UserRole extends Model
 {
     /**
