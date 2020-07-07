@@ -61,7 +61,7 @@
     },
     "scripts": {
         "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.docker/local.env', '.env');\""
+            "@php -r \"file_exists('.env') || copy('.local.env', '.env');\""
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate"

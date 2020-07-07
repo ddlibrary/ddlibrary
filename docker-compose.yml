@@ -24,11 +24,8 @@ services:
     tty: true
     ports:
       - "3306:3306"
-    environment:
-      MYSQL_DATABASE: ddlmain
-      MYSQL_ROOT_PASSWORD: password
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
+    env_file:
+      - '.env'
     volumes:
       - dbdata:/var/lib/mysql
       - ./docker/mysql/db.cnf:/etc/mysql/conf.d/my.cnf
