@@ -103,8 +103,8 @@
                       <td><a href="{{ URL::to($resource->language.'/'.'resource/'.$resource->id) }}">{{ $resource->title }}</a></td>
                       <td><a href="{{ URL::to('user/'.$resource->user_id) }}">{{ $resource->user->username }}</a></td>
                       <td>{{ ($resource->status==0?"Not Published":"Published") }}</td>
-                    </tr>
-                    @endforeach
+                  </tr>
+                  @endforeach
                   </tbody>
                 </table>
               </div>
