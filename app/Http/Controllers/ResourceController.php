@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Ajaxray\PHPWatermark\Watermark;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Resource;
 use App\ResourceLevel;
@@ -31,6 +33,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Session;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ResourceController extends Controller
 {
@@ -1262,13 +1265,50 @@ class ResourceController extends Controller
     }
 
     /**
-    * Delete a resource
-    */
+     * Delete a resource
+     *
+     * @param $resourceId
+     *
+     * @return RedirectResponse
+     */
     public function deleteResource($resourceId)
     {
         $resource = Resource::find($resourceId);
         $resource->delete();
 
         return back()->with('error', 'You deleted the record!');
+    }
+
+    /**
+     * Download a watermarked file attached to a resource
+     *
+     * @param $fileId
+     * @param $resourceId
+     *
+     * @return BinaryFileResponse
+     */
+    public function downloadFile($resourceId, $fileId)
+    {
+        ini_set('display_errors', 1);
+        error_reporting(E_ALL);
+        // Fetch file from an external source
+        $file = ResourceAttachment::find($fileId);
+        $file_name = $file->file_name;
+        $pdf_url = config('constants.DDLMAIN_FILE_STORAGE_URL').$file_name;
+
+        $headers = [
+            'Content-Type' => 'application/pdf',
+        ];
+        $file = tempnam(sys_get_temp_dir(), $file_name);
+        copy($pdf_url, $file);
+
+        $watermark = new Watermark($file);
+        $watermark->setFontSize(10);
+        $watermark->setOffset(20, 60);
+        $watermark->setPosition(Watermark::POSITION_BOTTOM_RIGHT);
+        $watermark->withText('Downloaded from www.ddl.af', $file);
+        //$watermark->withImage(asset('storage/files/logo-dd.png'), $file);
+
+        return response()->file($file);
     }
 }
