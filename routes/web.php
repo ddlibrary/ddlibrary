@@ -43,6 +43,10 @@ Route::group(
     Route::post('admin/resources', 'ResourceController@index')->name('resources')->middleware('admin');
     Route::any('resources/list', 'ResourceController@list')->name('resourceList');
     Route::get('resource/{resourceId}', 'ResourceController@viewPublicResource');
+    //Route::get('resource/{resourceId}/download/{fileId}', function() {
+    //    return View::make('resources.resources_download');
+    //});
+    Route::get('resource/{resourceId}/download/{fileId}', 'ResourceController@downloadFile')->middleware('auth');
     Route::get('resources', 'ResourceController@list');
     Route::get('resources/add/step1', 'ResourceController@createStepOne')->name('step1')->middleware('auth');
     Route::post('resources/add/step1', 'ResourceController@postStepOne');
