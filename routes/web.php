@@ -55,12 +55,12 @@ Route::group(
     Route::post('resources/comment', 'ResourceController@comment')->name('comment')->middleware('auth');
     Route::get('admin/resource/published/{resourceId}', 'ResourceController@published');
     Route::get('admin/resource/delete/{resourceId}', 'ResourceController@deleteResource')->middleware('admin');
-    Route::get('resources/edit/step1/{resourceId}', 'ResourceController@createStepOneEdit')->name('edit1')->middleware('admin');
-    Route::post('resources/edit/step1/{resourceId}', 'ResourceController@postStepOneEdit')->middleware('admin');
-    Route::get('resources/edit/step2/{resourceId}', 'ResourceController@createStepTwoEdit')->name('edit2')->middleware('admin');
-    Route::post('resources/edit/step2/{resourceId}', 'ResourceController@postStepTwoEdit')->middleware('admin');
-    Route::get('resources/edit/step3/{resourceId}', 'ResourceController@createStepThreeEdit')->name('edit3')->middleware('admin');
-    Route::post('resources/edit/step3/{resourceId}', 'ResourceController@postStepThreeEdit')->middleware('admin');
+    Route::get('resources/edit/step1/{resourceId}', 'ResourceController@createStepOneEdit')->name('edit1')->middleware('LibraryManager');
+    Route::post('resources/edit/step1/{resourceId}', 'ResourceController@postStepOneEdit')->middleware('LibraryManager');
+    Route::get('resources/edit/step2/{resourceId}', 'ResourceController@createStepTwoEdit')->name('edit2')->middleware('LibraryManager');
+    Route::post('resources/edit/step2/{resourceId}', 'ResourceController@postStepTwoEdit')->middleware('LibraryManager');
+    Route::get('resources/edit/step3/{resourceId}', 'ResourceController@createStepThreeEdit')->name('edit3')->middleware('LibraryManager');
+    Route::post('resources/edit/step3/{resourceId}', 'ResourceController@postStepThreeEdit')->middleware('LibraryManager');
     Route::post('resource/{resourceId}', 'ResourceController@updateTid')->middleware('admin')->name('updatetid');
     //delete file
     Route::get('delete/file/{resourceId}/{fileName}', 'ResourceController@deleteFile')->name('delete-file');
