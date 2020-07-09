@@ -199,14 +199,12 @@
             <h3>@lang('Download')</h3>
             <div class="download-box">
             @if($resource->attachments)
-                <span class="download-item">@lang('File Name')</strong></span>
-                <span class="download-item item-mobile"><strong>@lang('File Size')</strong></span>
                 @foreach($resource->attachments as $file)
-                    <span class="download-item"><a title="File Name" href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}">{{ $file->file_name }}</a></span>
-                    <span class="download-item item-mobile">{{ formatBytes($file->file_size) }}</span>
+                    <h4>@lang('File') {{ $loop->iteration }}</h4>
+                    <br>
                     @if (Auth::check())
                         @if($file->file_mime=="application/pdf")
-                            <object data="{{ URL::to('https://ddl-resources.s3-ap-southeast-1.amazonaws.com/resources/'.$file->file_name) }}" type="application/pdf" width="100%" height="500"></object>
+                            <iframe src="{{ URL::to('https://ddl-resources.s3-ap-southeast-1.amazonaws.com/resources/'.$file->file_name) }}#toolbar=0" height="500" width="100%"></iframe>
                         @endif
                     @endif
                     @if (Auth::check())
@@ -216,6 +214,7 @@
                             </audio>
                         @endif
                     @endif
+                    <span class="download-item"><a title="File Name" class="btn btn-primary" href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}"><i class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a></span>
                 @endforeach
             @endif
             </div>
