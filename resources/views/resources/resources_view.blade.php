@@ -214,7 +214,7 @@
                             </audio>
                         @endif
                     @endif
-                    <span class="download-item"><a title="File Name" class="btn btn-primary" href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}"><i class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a></span>
+                    <span class="download-item"><a class="btn btn-primary" href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}"><i class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a></span>
                 @endforeach
             @endif
             </div>
