@@ -1289,7 +1289,6 @@ class ResourceController extends Controller
      */
     public function downloadFile($resourceId, $fileId)
     {
-        ini_set('max_execution_time', '0');
         // Fetch file from an external source
         $file = ResourceAttachment::find($fileId);
         $file_name = $file->file_name;
@@ -1303,14 +1302,18 @@ class ResourceController extends Controller
         rename($file, $file .= '.pdf');
         copy($pdf_url, $file);
 
+        list($total_pages, $version) = get_pdf_version_and_pages($file);
+        dd($total_pages, $version);
+
         $watermark = new Watermark($file);
         $watermark->setFont('Helvetica');
         $watermark->setFontSize(7);
         $watermark->setOffset(30, 10);
         $watermark->setPosition(Watermark::POSITION_BOTTOM_RIGHT);
-        $watermark->withText('Downloaded from www.ddl.af', $file);
-        $watermark->setOpacity(.1);
-        $watermark->withImage(asset('storage/files/logo-dd.png'), $file);
+        $watermark->setDebug(true);
+        dd($watermark->withText('Downloaded from www.ddl.af', $file));
+        //$watermark->setOpacity(.1);
+        //$watermark->withImage(asset('storage/files/logo-dd.png'), $file);
 
         return response()->download($file);
     }
