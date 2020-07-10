@@ -1,4 +1,8 @@
 <?php
+
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
+
 if (! function_exists('fixLanguage')) {
     function fixLanguage($lang)
     {
@@ -431,4 +435,36 @@ if(! function_exists('termEn'))
 
 		return (count($term)) ? ' (' . $term->name . ')' : '';
 	}
+}
+
+if(! function_exists('get_pdf_version'))
+{
+    function get_pdf_version_and_pages($file)
+    {
+        // Ripped from https://stackoverflow.com/a/14644354, but slightly
+        // modified to suit our requirements.
+        $process = new Process(['pdfinfo', $file]);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        $output = $process->getOutput();
+        $output = explode(PHP_EOL , $output);
+        $total_pages = 0;
+        $version = 0;
+        foreach ($output as $each_line)
+        {
+            if(preg_match('/Pages:\s*(\d+)/i', $each_line, $matches) === 1)
+            {
+                $total_pages = intval($matches[1]);
+            }
+            elseif (preg_match('/PDF version:\s*(\d.\d)/i', $each_line, $matches) === 1)
+            {
+                $version =floatval($matches[1]);
+            }
+        }
+        return array($total_pages, $version);
+    }
 }
