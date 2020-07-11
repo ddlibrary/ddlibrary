@@ -1297,23 +1297,27 @@ class ResourceController extends Controller
         $headers = [
             'Content-Type' => 'application/pdf',
         ];
-        $file_name = explode(".", $file_name);
-        $file = tempnam(sys_get_temp_dir(), $file_name[0]."_");
+        $file_name = explode('.', $file_name);
+        $file = tempnam(sys_get_temp_dir(), $file_name[0].'_');
         rename($file, $file .= '.pdf');
         copy($pdf_url, $file);
 
-        list($total_pages, $version) = get_pdf_version_and_pages($file);
-        dd($total_pages, $version);
+        // TODO: Update to actual ddl-logo
+        $logo = Storage::disk('public')->path('just-text.png');
 
-        $watermark = new Watermark($file);
-        $watermark->setFont('Helvetica');
-        $watermark->setFontSize(7);
-        $watermark->setOffset(30, 10);
-        $watermark->setPosition(Watermark::POSITION_BOTTOM_RIGHT);
-        $watermark->setDebug(true);
-        dd($watermark->withText('Downloaded from www.ddl.af', $file));
-        //$watermark->setOpacity(.1);
-        //$watermark->withImage(asset('storage/files/logo-dd.png'), $file);
+        $version = get_pdf_version_and_pages($file);
+
+        if ($version == 0)
+        {
+            return response()->download($file);
+        }
+        elseif ($version > 1.4)
+        {
+            $file = lower_pdf_version($file, $file_name);
+        }
+
+        $file = watermark_pdf($file, $logo);
+        return response()->file($file);
 
         return response()->download($file);
     }
