@@ -1,5 +1,11 @@
 <?php
 
+use setasign\Fpdi\Fpdi;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\Filter\FilterException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
+use setasign\Fpdi\PdfReader\PdfReaderException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -441,8 +447,6 @@ if(! function_exists('get_pdf_version'))
 {
     function get_pdf_version_and_pages($file)
     {
-        // Ripped from https://stackoverflow.com/a/14644354, but slightly
-        // modified to suit our requirements.
         $process = new Process(['pdfinfo', $file]);
         $process->run();
 
@@ -452,19 +456,81 @@ if(! function_exists('get_pdf_version'))
 
         $output = $process->getOutput();
         $output = explode(PHP_EOL , $output);
-        $total_pages = 0;
+
         $version = 0;
         foreach ($output as $each_line)
         {
-            if(preg_match('/Pages:\s*(\d+)/i', $each_line, $matches) === 1)
+            if (preg_match('/PDF version:\s*(\d.\d)/i', $each_line, $matches) === 1)
             {
-                $total_pages = intval($matches[1]);
-            }
-            elseif (preg_match('/PDF version:\s*(\d.\d)/i', $each_line, $matches) === 1)
-            {
-                $version =floatval($matches[1]);
+                $version = floatval($matches[1]);
             }
         }
-        return array($total_pages, $version);
+        return $version;
+    }
+}
+
+if(! function_exists('lower_pdf_version'))
+{
+    function lower_pdf_version($old_file, $file_name)
+    {
+        $new_file = tempnam(sys_get_temp_dir(), $file_name[0]."_");
+        rename($new_file, $new_file .= '.pdf');
+        $process = new Process([
+            'gs',
+            '-sDEVICE=pdfwrite',
+            '-dCompatibilityLevel=1.4',
+            '-dNOPAUSE',
+            '-dBATCH',
+            '-sOutputFile='.$new_file,
+            $old_file
+        ]);
+        $process->run();
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+        return $new_file;
+    }
+}
+
+if(! function_exists('watermark_pdf'))
+{
+    function watermark_pdf($file, $logo)
+    {
+        list($logo_width, $logo_height) = getimagesize($logo);
+        $pdf = new FPDI();
+        try
+        {
+            $pages = $pdf->setSourceFile($file);
+        }
+        catch (PdfParserException $e)
+        {
+            return $file;
+        }
+        for ($i = 1; $i <= $pages; $i++)
+        {
+            try
+            {
+                $tpl = $pdf->importPage($i);
+            }
+            catch (
+                CrossReferenceException |
+                FilterException |
+                PdfParserException |
+                PdfTypeException |
+                PdfReaderException $e
+            )
+            {
+                return $file;
+            }
+
+            $pdf->addPage();
+            list($page_width, $page_height) = $pdf->getTemplateSize($tpl);
+            $pdf->useTemplate($tpl, 1, 1, $page_width, null, TRUE);
+            if ($i == 1 or $pages <= 20)
+            {
+                $pdf->Image($logo, $page_width - 74, $page_height - 20, 50, 0, 'png');
+            }
+        }
+        return $pdf->Output();
     }
 }
