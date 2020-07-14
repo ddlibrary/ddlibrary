@@ -1286,7 +1286,6 @@ class ResourceController extends Controller
      * @param $resourceId
      *
      * @return BinaryFileResponse
-     * @throws FileNotFoundException
      */
     public function downloadFile($resourceId, $fileId)
     {
