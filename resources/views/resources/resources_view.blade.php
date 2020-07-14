@@ -193,7 +193,7 @@
         </article>
         <article class="resource-view-details">
             <h3>@lang('License')</h3>
-            <p>{{ count($resource->CreativeCommons)?$resource->CreativeCommons[0]->name:"" }}</p>
+            <p>{{ count($resource->creativeCommons)?$resource->creativeCommons[0]->name:"" }}</p>
         </article>
         <article class="resource-view-details">
             <h3>@lang('Download')</h3>
@@ -204,7 +204,7 @@
                     <br>
                     @if (Auth::check())
                         @if($file->file_mime=="application/pdf")
-                            <iframe src="{{ URL::to('https://ddl-resources.s3-ap-southeast-1.amazonaws.com/resources/'.$file->file_name) }}#toolbar=0" height="500" width="100%"></iframe>
+                            <iframe src="{{ URL::to(config('constants.DDLMAIN_FILE_STORAGE_URL').$file->file_name) }}#toolbar=0" height="500" width="100%"></iframe>
                         @endif
                     @endif
                     @if (Auth::check())
