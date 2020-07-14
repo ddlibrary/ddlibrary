@@ -443,7 +443,7 @@ if(! function_exists('termEn'))
 	}
 }
 
-if(! function_exists('get_pdf_version'))
+if (! function_exists('get_pdf_version'))
 {
     function get_pdf_version_and_pages($file)
     {
@@ -455,11 +455,14 @@ if(! function_exists('get_pdf_version'))
         }
 
         $output = $process->getOutput();
+        // Split the string $output at every instance
+        // of a newline character (/n) or PHP_EOL
         $output = explode(PHP_EOL , $output);
 
         $version = 0;
         foreach ($output as $each_line)
         {
+            // Regex to match "PDF version:   #.#"
             if (preg_match('/PDF version:\s*(\d.\d)/i', $each_line, $matches) === 1)
             {
                 $version = floatval($matches[1]);
@@ -469,18 +472,18 @@ if(! function_exists('get_pdf_version'))
     }
 }
 
-if(! function_exists('lower_pdf_version'))
+if (! function_exists('lower_pdf_version'))
 {
     function lower_pdf_version($old_file, $file_name)
     {
         $new_file = tempnam(sys_get_temp_dir(), $file_name[0]."_");
         rename($new_file, $new_file .= '.pdf');
         $process = new Process([
-            'gs',
-            '-sDEVICE=pdfwrite',
-            '-dCompatibilityLevel=1.4',
-            '-dNOPAUSE',
-            '-dBATCH',
+            'gs',  // Invokes Ghostscript
+            '-sDEVICE=pdfwrite',  // sets PDF as output device
+            '-dCompatibilityLevel=1.4',  // we do the actual conversion here
+            '-dNOPAUSE',  // no interaction
+            '-dBATCH',  // no interaction
             '-sOutputFile='.$new_file,
             $old_file
         ]);
@@ -492,11 +495,10 @@ if(! function_exists('lower_pdf_version'))
     }
 }
 
-if(! function_exists('watermark_pdf'))
+if (! function_exists('watermark_pdf'))
 {
-    function watermark_pdf($file, $logo)
+    function watermark_pdf($file, $logo, $license_button_1, $license_button_2)
     {
-        list($logo_width, $logo_height) = getimagesize($logo);
         $pdf = new FPDI();
         try
         {
@@ -525,10 +527,62 @@ if(! function_exists('watermark_pdf'))
 
             $pdf->addPage();
             list($page_width, $page_height) = $pdf->getTemplateSize($tpl);
-            $pdf->useTemplate($tpl, 1, 1, $page_width, null, TRUE);
-            if ($i == 1 or $pages <= 20)
+            $pdf->useTemplate(
+                $tpl,
+                1,  // start drawing the page at the beginning of x-axis
+                1,  // start drawing the page at the beginning of x-axis
+                $page_width,  // set width from the imported page
+                null,  // null, to maintain the aspect ratio
+                TRUE  // resize page to fit the imported page
+            );
+            if ($i <= 20)
             {
-                $pdf->Image($logo, $page_width - 74, $page_height - 20, 50, 0, 'png');
+                $x_pos = $page_width - 55;
+                $y_pos = (
+                    $page_height - (
+                        (
+                            $i == 1 and
+                            ($license_button_1 or $license_button_2)
+                        ) ? 25 : 17  // 25, if we're in the first iteration
+                    )                // 17, if we're not and there's no license
+                );
+
+                $pdf->Image(
+                    $logo,
+                    $x_pos,
+                    $y_pos,
+                    50,  // watermark logo width
+                    0,  // height = 0, to maintain aspect ratio
+                    'png'
+                );
+                if ($i == 1 and ($license_button_1 or $license_button_2))
+                {
+                    if ($license_button_1)
+                    {
+                        $pdf->Image(
+                            $license_button_1,
+                            // if we have another button to place, make room
+                            $page_width - 25 + (
+                                $license_button_2 ? -25 : 0
+                            ),
+                            $page_height - 10,
+                            20,  // license button width
+                            0,  // height = 0, to maintain aspect ratio
+                            'png'
+                        );
+                    }
+                    if ($license_button_2)
+                    {
+                        $pdf->Image(
+                            $license_button_2,
+                            $page_width - 25,
+                            $page_height - 10,
+                            20,  // license button width
+                            0,  // height = 0, to maintain aspect ratio
+                            'png'
+                        );
+                    }
+                }
             }
         }
         return $pdf->Output();
