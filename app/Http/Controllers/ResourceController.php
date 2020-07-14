@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Ajaxray\PHPWatermark\Watermark;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Resource;
@@ -1289,26 +1288,39 @@ class ResourceController extends Controller
      */
     public function downloadFile($resourceId, $fileId)
     {
-        // Fetch file from an external source
-        $file = ResourceAttachment::find($fileId);
+        $resource = Resource::findOrFail($resourceId);
+        $all_attachments = $resource->attachments;
+        $file = null;
+        foreach ($all_attachments as $attachment)
+        {
+            if ($attachment->id == $fileId)
+            {
+                $file = $attachment;
+            }
+        }
+        if (!$file)
+        {
+            abort(404);
+        }
+
         $file_name = $file->file_name;
+
+        // Fetch file from an external source
         $pdf_url = config('constants.DDLMAIN_FILE_STORAGE_URL').$file_name;
 
-        $headers = [
-            'Content-Type' => 'application/pdf',
-        ];
+        // Separate the filename from the file type
         $file_name = explode('.', $file_name);
         $file = tempnam(sys_get_temp_dir(), $file_name[0].'_');
         rename($file, $file .= '.pdf');
         copy($pdf_url, $file);
 
-        // TODO: Update to actual ddl-logo
-        $logo = Storage::disk('public')->path('just-text.png');
-
         $version = get_pdf_version_and_pages($file);
 
         if ($version == 0)
         {
+            // Something's wrong – pdinfo wasn't able to find
+            // the PDF version of this file. Return the original
+            // file.
             return response()->download($file);
         }
         elseif ($version > 1.4)
@@ -1316,9 +1328,51 @@ class ResourceController extends Controller
             $file = lower_pdf_version($file, $file_name);
         }
 
-        $file = watermark_pdf($file, $logo);
-        return response()->file($file);
+        $logo = Storage::disk('public')->path('watermark.png');
 
-        return response()->download($file);
+        $license_button_1 = null;
+        $license_button_2 = null;
+        if ($resource->creativeCommons)
+        {
+            $license = $resource->creativeCommons[0]->name;
+            /*
+            We can add a license as long as it is a CC license
+            and is formatted certain way. The formats we currently
+            support are string values picked up from the database, and
+            form the conditional statements below.
+            */
+            if ($license === 'CC 0 / public domain')
+            {
+                $license_button_1 = Storage::disk('public')
+                    ->path('cc-zero.png');
+            }
+            elseif ($license === 'CC BY / CC BY-SA' or $license === 'CC BY 4.0')
+            {
+                if ($license === 'CC BY / CC BY-SA')
+                {
+                    $license_button_1 = Storage::disk('public')
+                        ->path('by-sa.png');
+                }
+                $license_button_2 = Storage::disk('public')
+                    ->path('by.png');
+            }
+            elseif ($license === 'CC BY-NC / CC BY-NC-SA')
+            {
+                $license_button_1 = Storage::disk('public')
+                    ->path('by-nc.png');
+                $license_button_2 = Storage::disk('public')
+                    ->path('by-nc-sa.png');
+            }
+            elseif ($license === 'CC BY-ND / CC BY-NC-ND')
+            {
+                $license_button_1 = Storage::disk('public')
+                    ->path('by-nd.png');
+                $license_button_2 = Storage::disk('public')
+                    ->path('by-nc-nd.png');
+            }
+        }
+        $file = watermark_pdf($file, $logo, $license_button_1, $license_button_2);
+
+        return response()->file($file);
     }
 }
