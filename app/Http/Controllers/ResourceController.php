@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Resource;
@@ -1285,94 +1286,53 @@ class ResourceController extends Controller
      * @param $resourceId
      *
      * @return BinaryFileResponse
+     * @throws FileNotFoundException
      */
     public function downloadFile($resourceId, $fileId)
     {
         $resource = Resource::findOrFail($resourceId);
         $all_attachments = $resource->attachments;
         $file = null;
-        foreach ($all_attachments as $attachment)
-        {
+        foreach ($all_attachments as $attachment) {
             if ($attachment->id == $fileId)
             {
                 $file = $attachment;
             }
         }
-        if (!$file)
-        {
+        if (!$file) {
             abort(404);
         }
 
         $file_name = $file->file_name;
 
         // Fetch file from an external source
-        $pdf_url = config('constants.DDLMAIN_FILE_STORAGE_URL').$file_name;
+        $file = Storage::disk('s3')->get('resources/'.$file_name);
 
-        // Separate the filename from the file type
-        $file_name = explode('.', $file_name);
-        $file = tempnam(sys_get_temp_dir(), $file_name[0].'_');
-        rename($file, $file .= '.pdf');
-        copy($pdf_url, $file);
+        dispatch(function () use ($file, $file_name, $resource) {
+            $version = get_pdf_version_and_pages($file);
 
-        $version = get_pdf_version_and_pages($file);
-
-        if ($version == 0)
-        {
-            // Something's wrong – pdinfo wasn't able to find
-            // the PDF version of this file. Return the original
-            // file.
-            return response()->download($file);
-        }
-        elseif ($version > 1.4)
-        {
-            $file = lower_pdf_version($file, $file_name);
-        }
-
-        $logo = Storage::disk('public')->path('watermark.png');
-
-        $license_button_1 = null;
-        $license_button_2 = null;
-        if ($resource->creativeCommons)
-        {
-            $license = $resource->creativeCommons[0]->name;
-            /*
-            We can add a license as long as it is a CC license
-            and is formatted certain way. The formats we currently
-            support are string values picked up from the database, and
-            form the conditional statements below.
-            */
-            if ($license === 'CC 0 / public domain')
-            {
-                $license_button_1 = Storage::disk('public')
-                    ->path('cc-zero.png');
+            if ($version == 0) {
+                // Something's wrong – pdinfo wasn't able to find
+                // the PDF version of this file. Return the original
+                // file.
+                return response()->download($file);
             }
-            elseif ($license === 'CC BY / CC BY-SA' or $license === 'CC BY 4.0')
-            {
-                if ($license === 'CC BY / CC BY-SA')
-                {
-                    $license_button_1 = Storage::disk('public')
-                        ->path('by-sa.png');
-                }
-                $license_button_2 = Storage::disk('public')
-                    ->path('by.png');
+            elseif ($version > 1.4) {
+                $file = lower_pdf_version($file, $file_name);
             }
-            elseif ($license === 'CC BY-NC / CC BY-NC-SA')
-            {
-                $license_button_1 = Storage::disk('public')
-                    ->path('by-nc.png');
-                $license_button_2 = Storage::disk('public')
-                    ->path('by-nc-sa.png');
-            }
-            elseif ($license === 'CC BY-ND / CC BY-NC-ND')
-            {
-                $license_button_1 = Storage::disk('public')
-                    ->path('by-nd.png');
-                $license_button_2 = Storage::disk('public')
-                    ->path('by-nc-nd.png');
-            }
-        }
-        $file = watermark_pdf($file, $logo, $license_button_1, $license_button_2);
 
-        return response()->file($file);
+            $logo = Storage::disk('s3')->get('public/img/watermark.png');
+
+            list($license_button_1, $license_button_2) = get_license_buttons(
+                $resource
+            );
+
+            $file = watermark_pdf($file, $logo, $license_button_1, $license_button_2);
+
+
+            Storage::disk('s3')->put('resources/' . $file_name, file_get_contents($file));
+        });
+
+        return response()->download($file);
     }
 }
