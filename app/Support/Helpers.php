@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Facades\Storage;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
 use setasign\Fpdi\PdfParser\Filter\FilterException;
@@ -492,6 +494,61 @@ if (! function_exists('lower_pdf_version'))
             throw new ProcessFailedException($process);
         }
         return $new_file;
+    }
+}
+
+if (! function_exists('get_license_buttons'))
+{
+    function get_license_buttons($resource)
+    {
+        $license_button_1 = null;
+        $license_button_2 = null;
+
+        if ($resource->creativeCommons)
+        {
+            $license = $resource->creativeCommons[0]->name;
+            /*
+            We can add a license as long as it is a CC license
+            and is formatted certain way. The formats we currently
+            support are string values picked up from the database, and
+            form the conditional statements below.
+            */
+            try {
+                if ($license === 'CC 0 / public domain')
+                {
+                    $license_button_1 = Storage::disk('s3')
+                        ->get('public/img/cc-zero.png');
+                }
+                elseif ($license === 'CC BY / CC BY-SA' or $license === 'CC BY 4.0')
+                {
+                    if ($license === 'CC BY / CC BY-SA')
+                    {
+                        $license_button_1 = Storage::disk('s3')
+                            ->get('public/img/by-sa.png');
+                    }
+                    $license_button_2 = Storage::disk('s3')
+                        ->get('public/img/by.png');
+                }
+                elseif ($license === 'CC BY-NC / CC BY-NC-SA')
+                {
+                    $license_button_1 = Storage::disk('s3')
+                        ->get('public/img/by-nc.png');
+                    $license_button_2 = Storage::disk('s3')
+                        ->get('public/img/by-nc-sa.png');
+                }
+                elseif ($license === 'CC BY-ND / CC BY-NC-ND')
+                {
+                    $license_button_1 = Storage::disk('s3')
+                        ->get('public/img/by-nd.png');
+                    $license_button_2 = Storage::disk('s3')
+                        ->get('public/img/by-nc-nd.png');
+                }
+            }
+            catch (FileNotFoundException $e) {
+
+            }
+        }
+        return array($license_button_1, $license_button_2);
     }
 }
 
