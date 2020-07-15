@@ -16,7 +16,7 @@ class ResourceAttachment extends Model
      */
     public $timestamps = false;
 
-    protected $fillable = ['resource_id','file_name', 'file_mime', 'file_size'];
+    protected $fillable = ['resource_id', 'file_name', 'file_mime', 'file_size', 'watermarked'];
 
     public function resource()
     {
