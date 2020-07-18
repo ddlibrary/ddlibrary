@@ -548,6 +548,20 @@ if (! function_exists('get_license_buttons'))
 
             }
         }
+        if ($license_button_1){
+            $temp_license_button_1 = tempnam(
+                sys_get_temp_dir(),
+                'license_button_1_');
+            file_put_contents($temp_license_button_1, $license_button_1);
+            $license_button_1 = $temp_license_button_1;
+        }
+        if ($license_button_2){
+            $temp_license_button_2 = tempnam(
+                sys_get_temp_dir(),
+                'license_button_2_');
+            file_put_contents($temp_license_button_2, $license_button_2);
+            $license_button_2 = $temp_license_button_2;
+        }
         return array($license_button_1, $license_button_2);
     }
 }
