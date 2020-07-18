@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\WatermarkPDF;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,6 +29,7 @@ use App\ResourceView;
 use App\ResourceFlag;
 use App\ResourceFavorite;
 
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Storage;
@@ -1291,47 +1293,40 @@ class ResourceController extends Controller
     {
         $resource = Resource::findOrFail($resourceId);
         $all_attachments = $resource->attachments;
-        $file = null;
-        foreach ($all_attachments as $attachment) {
-            if ($attachment->id == $fileId)
+        $attachment = null;
+        foreach ($all_attachments as $attach) {
+            if ($attach->id == $fileId)
             {
-                $file = $attachment;
+                $attachment = $attach;
             }
         }
-        if (!$file) {
+        if (!$attachment) {
             abort(404);
         }
 
-        $file_name = $file->file_name;
+        $file_name = $attachment->file_name;
 
         // Fetch file from an external source
-        $file = Storage::disk('s3')->get('resources/'.$file_name);
+        $pdf_file = Storage::disk('s3')->get('resources/'.$file_name);
+        if (! $pdf_file) {
+            abort('404');
+        }
 
-        dispatch(function () use ($file, $file_name, $resource) {
-            $version = get_pdf_version_and_pages($file);
+        $temp_file = tempnam(
+            sys_get_temp_dir(), $attachment->file_name . '_'
+        );
+        file_put_contents($temp_file, $pdf_file);
 
-            if ($version == 0) {
-                // Something's wrong – pdinfo wasn't able to find
-                // the PDF version of this file. Return the original
-                // file.
-                return response()->download($file);
-            }
-            elseif ($version > 1.4) {
-                $file = lower_pdf_version($file, $file_name);
-            }
+        if (! $attachment->file_watermarked) {
+            WatermarkPDF::dispatch($attachment, $temp_file, $resource);
+        }
 
-            $logo = Storage::disk('s3')->get('public/img/watermark.png');
-
-            list($license_button_1, $license_button_2) = get_license_buttons(
-                $resource
-            );
-
-            $file = watermark_pdf($file, $logo, $license_button_1, $license_button_2);
-
-
-            Storage::disk('s3')->put('resources/' . $file_name, file_get_contents($file));
-        });
-
-        return response()->download($file);
+        $headers = [
+            'Content-Type' => 'application/pdf',
+            'Content-Description' => 'File Transfer',
+            'Content-Disposition' => "attachment; filename={$file_name}",
+            'filename'=> $file_name
+        ];
+        return response()->download($pdf_file, 200, $headers);
     }
 }
