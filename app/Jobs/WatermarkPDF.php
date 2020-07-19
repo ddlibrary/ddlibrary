@@ -10,7 +10,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class WatermarkPDF implements ShouldQueue
@@ -56,7 +55,7 @@ class WatermarkPDF implements ShouldQueue
         $version = get_pdf_version_and_pages($this->temp_file);
 
         if ($version == 0) {
-            // Something's wrong – pdinfo wasn't able to find
+            // Something's wrong – pdfinfo wasn't able to find
             // the PDF version of this file . We won't bother
             // watermarking this file anymore, so we set the
             // field as true and return the original file.
@@ -89,7 +88,6 @@ class WatermarkPDF implements ShouldQueue
             $license_button_1,
             $license_button_2
         );
-        Log::info($new_file);
 
         Storage::disk('s3')->put(
             'resources/' . $this->attachment->file_name,
