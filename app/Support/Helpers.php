@@ -656,6 +656,6 @@ if (! function_exists('watermark_pdf'))
                 }
             }
         }
-        return $pdf->Output();
+        return $pdf->Output('S');  // S: return the document as a string.
     }
 }
