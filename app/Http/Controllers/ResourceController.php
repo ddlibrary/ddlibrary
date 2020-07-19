@@ -1313,7 +1313,7 @@ class ResourceController extends Controller
         }
 
         $temp_file = tempnam(
-            sys_get_temp_dir(), $attachment->file_name . '_'
+            sys_get_temp_dir(), $file_name . '_'
         );
         file_put_contents($temp_file, $pdf_file);
 
@@ -1327,6 +1327,6 @@ class ResourceController extends Controller
             'Content-Disposition' => "attachment; filename={$file_name}",
             'filename'=> $file_name
         ];
-        return response()->download($pdf_file, 200, $headers);
+        return response()->download($temp_file, $file_name, $headers);
     }
 }
