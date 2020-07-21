@@ -52,20 +52,23 @@ class WatermarkPDF implements ShouldQueue
      */
     public function handle()
     {
-        $version = get_pdf_version_and_pages($this->temp_file);
+        $temp_file = $this->temp_file;
+        $attachment = $this->attachment;
+
+        $version = get_pdf_version_and_pages($temp_file);
 
         if ($version == 0) {
             // Something's wrong – pdfinfo wasn't able to find
             // the PDF version of this file . We won't bother
             // watermarking this file anymore, so we set the
             // field as true and return the original file.
-            $this->attachment->file_watermarked = true;
-            $this->attachment->save();
+            $attachment->file_watermarked = true;
+            $attachment->save();
             return;
         } elseif ($version > 1.4) {
-            $this->temp_file = lower_pdf_version(
-                $this->temp_file,
-                $this->attachment->file_name
+            $temp_file = lower_pdf_version(
+                $temp_file,
+                $attachment->file_name
             );
         }
 
@@ -83,18 +86,18 @@ class WatermarkPDF implements ShouldQueue
         );
 
         $new_file = watermark_pdf(
-            $this->temp_file,
+            $temp_file,
             $temp_logo,
             $license_button_1,
             $license_button_2
         );
 
         Storage::disk('s3')->put(
-            'resources/' . $this->attachment->file_name,
+            'resources/' . $attachment->file_name,
             $new_file
         );
 
-        $this->attachment->file_watermarked = true;
-        $this->attachment->save();
+        $attachment->file_watermarked = true;
+        $attachment->save();
     }
 }
