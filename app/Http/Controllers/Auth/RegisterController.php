@@ -63,7 +63,8 @@ class RegisterController extends Controller
         $myResources = new Resource();
         $countries = $myResources->resourceAttributesList('taxonomy_term_data',15);
         $provinces = $myResources->resourceAttributesList('taxonomy_term_data',12)->all();
-        return view('auth.register', compact('countries','provinces'));
+        $gmail_signup_url = 'https://accounts.google.com/signup/v2/webcreateaccount?flowName=GlifWebSignIn&flowEntry=SignUp';
+        return view('auth.register', compact('countries','provinces', 'gmail_signup_url'));
     }
 
     /**
@@ -74,18 +75,25 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'email' => 'required|string|email|max:255|unique:users',
-            'username' => 'required|string|max:255',
-            'password' => 'required|string|min:6',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'phone' => 'nullable|max:20',
-            'gender' => 'required',
-            'country' => 'required',
-            'city' => 'nullable',
-            'g-recaptcha-response' => 'sometimes|required|captcha'
-        ]);
+        return Validator::make(
+            $data,
+            [
+                'email' => 'required_without:phone|string|email|max:255|unique:users|nullable',
+                'username' => 'required|string|max:255',
+                'password' => 'confirmed|required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',  // Regex for at least one digit and one special character
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'phone' => 'required_without:email|max:20|unique:user_profiles|nullable',
+                'gender' => 'required',
+                'country' => 'required',
+                'city' => 'nullable',
+                'g-recaptcha-response' => 'sometimes|required|captcha'
+            ],
+            $messages = [
+                'phone.unique' => __('The phone number has already been taken.'),
+                'password.regex' => __('The password you entered doesn\'t have any special characters (!@#$%^&.) and (or) digits (0-9).')
+            ]
+        );
     }
 
     /**
