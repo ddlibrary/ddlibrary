@@ -303,7 +303,7 @@ input[type=button]:hover, input[type=submit]:hover, input[type=button]:active  {
     background: #eee;
 }
 body{
-    font-family: Tahoma,'Iranian Sans','DejaVu Sans','Noto Sans Arabic','Noto Kufi Arabic','Droid Arabic Kufi',sans-serif;
+    font-family: Arial, 'Iranian Sans', 'DejaVu Sans', 'Noto Sans Arabic', 'Noto Kufi Arabic', 'Droid Arabic Kufi', sans-serif;
     font-size: 16px;
     line-height: 1.42857143;
     color: #000000;
@@ -670,8 +670,11 @@ select.form-control:focus::-ms-value {
 }
 
 .ddl-forms .description {
+    padding-top: 4px;
+    padding-left: 4px;
     line-height: 20px;
-    font-size: .85rem;
+    font-size: 0.84rem;
+    color: #777;
 }
 
 .personal-information {
@@ -1033,6 +1036,11 @@ aside .sub-subject-show {
 
 .ck-editor__editable {
     min-height: 200px;
+}
+
+.open-phone {
+    color: blue;
+    cursor: pointer;
 }
 
 /* StoryWeaver */
