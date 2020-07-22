@@ -121,7 +121,7 @@
                         <strong>@lang('Gender')</strong>
                         <span class="form-required" title="This field is required.">*</span>
                     </label>
-                    <select class="form-control{{ $errors->has('gender') ? ' is-invalid' : '' }}" style="width:338px;" {{-- 338px ~= 40pt (<input size=40>) --}} name="gender" id="gender" required>
+                    <select class="form-control{{ $errors->has('gender') ? ' is-invalid' : '' }}" name="gender" id="gender" required>
                         <option value="">- @lang('None') -</option>
                         <option value="Male" {{ old('gender') == "Male" ? "selected" : "" }}>@lang('Male')</option>
                         <option value="Female" {{ old('gender') == "Female" ? "selected" : "" }}>@lang('Female')</option>
@@ -136,7 +136,7 @@
                         <strong>@lang('Country')</strong>
                         <span class="form-required" title="This field is required.">*</span>
                     </label>
-                    <select class="form-control{{ $errors->has('country') ? ' is-invalid' : '' }}" style="width:338px;" {{-- 338px ~= 40pt (<input size=40>) --}} name="country" id="country" onchange="javascript:populate(this,'city', {{ json_encode($provinces) }})" required>
+                    <select class="form-control{{ $errors->has('country') ? ' is-invalid' : '' }}" name="country" id="country" onchange="javascript:populate(this,'city', {{ json_encode($provinces) }})" required>
                         <option value="">- @lang('None') -</option>
                         @foreach($countries AS $cn)
                         <option value="{{ $cn->tnid }}" {{ old('country') == $cn->tnid ? "selected" : "" }}>{{ $cn->name }}</option>
@@ -149,7 +149,7 @@
                     <label for="city"> 
                         <strong>@lang('City')</strong>
                     </label>
-                    <select class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}" style="width:338px;" {{-- 338px ~= 40pt (<input size=40>) --}} name="city" id="city">
+                    <select class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}" name="city" id="city">
                         <option value="">- @lang('None') -</option>
                     </select>
                     <input type="text" class="form-control" name="city_other" id="js-text-city" size="40" style="display:none;">
