@@ -10,9 +10,9 @@
 {{ asset('storage/files/logo-dd.png') }}
 @endsection
 @section('content')
-<section class="ddl-forms">
+<section class="ddl-forms register-form">
     <header>
-        <h1>@lang('Register an account with DDL')</h1>
+        <h1>@lang('Register an account')</h1>
     </header>
     <div class="content-body">
         @include('layouts.messages')
@@ -24,7 +24,7 @@
                 <span class="form-required" id="email-asterisk" title="This field is required." {{ $errors->has('phone')? 'style=display:none;' : '' }}>*</span>
                 <span id="email-preferred" style="display:none;">(preferred)</span>
             </label>
-            <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="email" name="email" size="40" type="email" value="{{ old('email') }}" {{ $errors->has('phone')? '' : 'required' }} autofocus>
+            <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="email" name="email" type="email" value="{{ old('email') }}" {{ $errors->has('phone')? '' : 'required' }} autofocus>
             @if ($errors->has('email'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('email') }}</strong>
@@ -48,7 +48,7 @@
                 <strong>@lang('Telephone number')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" id="phone" name="phone" value="{{ old('phone') }}" size="40" type="tel" style="width: 327px;">
+            <input class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" id="phone" name="phone" value="{{ old('phone') }}" type="tel" style="width: 327px;">
             @if ($errors->has('phone'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('phone') }}</strong>
@@ -60,7 +60,7 @@
                 <strong>@lang('Username')</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
-            <input class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" id="username" name="username" value="{{ old('username') }}" size="40" type="text" required>
+            <input class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" id="username" name="username" value="{{ old('username') }}" type="text" required>
             @if ($errors->has('username'))
                 <span class="invalid-feedback">
                     <strong>{{ $errors->first('username') }}</strong>
@@ -77,7 +77,7 @@
                         <strong>@lang('Password')</strong>
                         <span class="form-required" title="This field is required.">*</span>
                     </label>
-                    <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" name="password" size="40" type="password" required>
+                    <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" name="password" type="password" required>
                     @if ($errors->has('password'))
                         <span class="invalid-feedback">
                             <strong>{{ $errors->first('password') }}</strong>
@@ -94,7 +94,7 @@
                         <strong>@lang('Confirm password')</strong>
                         <span class="form-required" title="This field is required.">*</span>
                     </label>
-                    <input class="form-control" id="password_confirmation" name="password_confirmation" size="40" type="password" required>
+                    <input class="form-control" id="password_confirmation" name="password_confirmation" type="password" required>
                 </div>
             </div>
             <div class="right-side">
@@ -103,7 +103,7 @@
                         <strong>@lang('First name')</strong>
                         <span class="form-required" title="This field is required.">*</span>
                     </label>
-                    <input class="form-control" id="first_name" name="first_name"  value="{{ old('first_name') }}" size="40" type="text" required>
+                    <input class="form-control" id="first_name" name="first_name"  value="{{ old('first_name') }}" type="text" required>
                 </div>
             </div>
             <div class="left-side">
@@ -112,7 +112,7 @@
                         <strong>@lang('Last name')</strong>
                         <span class="form-required" title="This field is required.">*</span>
                     </label>
-                    <input class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" id="last_name" name="last_name"  value="{{ old('last_name') }}" size="40" type="text" required>
+                    <input class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" id="last_name" name="last_name"  value="{{ old('last_name') }}" type="text" required>
                 </div>
             </div>
             <div class="right-side">
@@ -152,7 +152,7 @@
                     <select class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}" name="city" id="city">
                         <option value="">- @lang('None') -</option>
                     </select>
-                    <input type="text" class="form-control" name="city_other" id="js-text-city" size="40" style="display:none;">
+                    <input type="text" class="form-control" name="city_other" id="js-text-city" style="display:none;">
                 </div>
             </div>
             @if(env('CAPTCHA') == 'yes')
@@ -163,7 +163,7 @@
             </div>
             @endif
             <div class="left-side">
-                <input class="form-control" type="submit" value="@lang('Submit')">
+                <input class="form-control submit-button" type="submit" value="@lang('Submit')">
             </div>
         </div>
         </form>

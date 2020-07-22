@@ -49,20 +49,18 @@
         </div>
 
         <div class="form-item">
-                <div class="left-side">
-                    <input class="form-control normalButton" type="submit" value="@lang('Submit')">
-                </div>
-
-                <div class="btn-div">
-                    <a href="{{ route('password.request') }}">
-                        {{ __('Forgot Your Password?') }}
-                    </a>
-                </div>
-                <div class="btn-div">
-                    <a href="{{ route('register') }}">
-                        @lang('Register an Account with DDL')
-                    </a>
-                </div>
+            <div class="left-side">
+                <input class="form-control normalButton" type="submit" value="@lang('Submit')">
+            </div>
+            <div class="btn-div">
+                <a href="{{ route('password.request') }}">
+                    {{ __('Forgot Your Password?') }}
+                </a>
+            </div>
+            <div class="btn-div">
+                <a href="{{ route('register') }}">
+                    @lang('Register an Account with DDL')
+                </a>
             </div>
         </div>
     </form>

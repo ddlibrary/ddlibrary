@@ -689,6 +689,11 @@ select.form-control:focus::-ms-value {
     flex: 1 1 55%;
 }
 
+.register-form input:not(.submit-button),
+.register-form select{
+    width: 340px;
+}
+
 .btnlink {
     padding-top: 15px;
 }
