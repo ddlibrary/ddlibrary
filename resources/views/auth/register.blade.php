@@ -1,7 +1,7 @@
 @extends('layouts.main')
 {!! NoCaptcha::renderJs() !!}
 @section('title')
-@lang('Register an Account with DDL') - @lang('Darakht-e Danesh Online Library')
+@lang('Register an account') - @lang('Darakht-e Danesh Library')
 @endsection
 @section('description')
 @lang('The Darakht-e Danesh Online Library for Educators is a repository of open educational resources for teachers, teacher trainers, school administrators, literacy workers and others involved in furthering education in Afghanistan.')
@@ -35,11 +35,13 @@
                     'Your email will be treated as confidential information and will be <br>used to
                      reset your password and communicate to you. <br>If you do not own an email address,
                      <a href="' . $gmail_signup_url . '" target="_blank">click here</a> to create one.'
-                     )
+                )
                 <br>
                 <span id="phone-text" {{ $errors->has('phone')? 'style=display:none;' : '' }}>
-                    @lang('Or, <span class="open-phone" id="phone-field" onclick="showDiv()">
-                     click here</span> to use your phone number to register.')
+                    @lang(
+                        'Or, <span class="open-phone" id="phone-field" onclick="showDiv()">
+                         click here</span> to use your phone number to register.'
+                    )
                 </span>
             </div>
         </div>
@@ -54,6 +56,14 @@
                     <strong>{{ $errors->first('phone') }}</strong>
                 </span>
             @endif
+            <div class="description">
+                @lang(
+                    'Your telephone number will also be treated as confidential information. <br>
+                     But please note that you won\'t be able to reset your password and <br>
+                     we won\'t be able to communicate to you. If you forget your password, <br>
+                     you will have to contact us.'
+                )
+            </div>
         </div>
         <div class="form-item">
             <label for="username"> 
@@ -163,7 +173,7 @@
             </div>
             @endif
             <div class="left-side">
-                <input class="form-control submit-button" type="submit" value="@lang('Submit')">
+                <input class="form-control submit-button btn btn-primary" type="submit" value="@lang('Submit')">
             </div>
         </div>
         </form>
