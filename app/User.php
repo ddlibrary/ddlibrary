@@ -19,6 +19,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property mixed        id
  * @method static find($userId)
  * @method static get()
+ * @method static where(string $string, $id)
  */
 class User extends Authenticatable
 {
@@ -151,6 +152,7 @@ class User extends Authenticatable
             )
             ->where('email', $credentials['user-field'])
             ->orWhere('username', $credentials['user-field'])
+            ->orWhere('id', $credentials['user-id'])
             ->first();
     }
 

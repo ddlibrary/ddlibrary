@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property mixed      user_id
@@ -23,4 +24,14 @@ class UserProfile extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    public function getUserProfile(array $credentials)
+    {
+        return DB::table('user_profiles')
+            ->select(
+                'user_id'
+            )
+            ->where('phone', $credentials['user-field'])
+            ->first();
+    }
 }
