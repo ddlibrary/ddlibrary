@@ -63,8 +63,8 @@ class RegisterController extends Controller
         $myResources = new Resource();
         $countries = $myResources->resourceAttributesList('taxonomy_term_data',15);
         $provinces = $myResources->resourceAttributesList('taxonomy_term_data',12)->all();
-        $gmail_signup_url = 'https://accounts.google.com/signup/v2/webcreateaccount?flowName=GlifWebSignIn&flowEntry=SignUp';
-        return view('auth.register', compact('countries','provinces', 'gmail_signup_url'));
+        $gmail_signup_url = 'https://accounts.google.com/signup';
+        return view('auth.register', compact('countries', 'provinces', 'gmail_signup_url'));
     }
 
     /**
