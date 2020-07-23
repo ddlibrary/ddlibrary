@@ -83,7 +83,15 @@
             @foreach ($users as $indexkey => $user)
               <tr>
                 <td>{{ (($users->currentPage() - 1) * $users->perPage())+$indexkey + 1 }}</td>
-                <td><a href="{{URL::to('user/'.$user->id) }}">{{ $user->username }}</a><br>{{ $user->email }}</td>
+                <td>
+                  {{-- <a href="{{URL::to('user/'.$user->id) }}">{{ $user->username }}</a> We currently don't have user profiles resulting in a 404.--}}
+                  <span style="color: #4e73df;">{{ $user->username }}</span><br>
+                  @if ($user->email)
+                    {{ $user->email }}
+                  @else
+                    @lang('No email in file.')
+                  @endif
+                </td>
                 <td>{{ ($user->status==0?"Not Active":"Active") }}</td>
                 <td>{{ $user->all_roles }}</td>
                 <td>{{ \Carbon\Carbon::parse($user->created_at)->diffForHumans() }}</td>
