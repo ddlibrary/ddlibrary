@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @method static orderBy(string $string)
+ */
 class Menu extends Model
 {
     public function scopeMenu()
