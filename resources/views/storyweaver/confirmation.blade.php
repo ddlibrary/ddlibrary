@@ -1,0 +1,30 @@
+@extends('layouts.main')
+@section('title')
+    @lang('StoryWeaver redirect confirmation') - @lang('Darakht-e Danesh Library')
+@endsection
+@section('description')
+    @lang('The Darakht-e Danesh Online Library for Educators is a repository of open educational resources for teachers, teacher trainers, school administrators, literacy workers and others involved in furthering education in Afghanistan.')
+@endsection
+
+@section('content')
+    <section class="storyweaver-confirm">
+        @if (! $email)
+            @lang(
+                'You do not have a registered email address. StoryWeaver currently does not support users
+                without an email address. <br>If you\'d like to add your email address to your profile, please
+                <a href="'.URL::to('contact-us').'">contact us</a>.'
+            )
+        @else
+            <p>
+                @lang(
+                    'Once you click \'Confirm\', you\'ll be redirected to our partner\'s external site:
+                     <a href="https://ddl.storyweaver.org.in" target="_blank">https://ddl.storyweaver.org.in</a>.'
+                )
+            </p>
+            <p class="disclaimer">
+                (@lang('Your email, name and language preference will be shared with StoryWeaver.'))
+            </p> <br>
+            <a href="{{ route('storyweaver-auth') }}" class="btn btn-primary">@lang('Confirm')</a>
+        @endif
+    </section>
+@endsection
