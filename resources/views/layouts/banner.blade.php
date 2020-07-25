@@ -85,9 +85,10 @@
         <ul class="main-navigation">
             <?php
             $classNames = array(
-                125 => 'fa-home',
-                566 => 'fa-align-justify',
-                131 => 'fa-upload'
+                125  => 'fa-home',
+                566  => 'fa-align-justify',
+                8414 => 'fa-book-reader',  // TODO: replace with whatever tnid is generated
+                131  => 'fa-upload'
             );
             ?>
             @foreach ($menu->where('location', 'top-menu')->where('language', app()->getLocale()) as $tmenu)
