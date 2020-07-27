@@ -16,6 +16,7 @@
             </div>
             <a href="{{ URL::to('/') }}" title="@lang('Home')">@lang('Home')</a>
             <a href="{{ URL::to('resources') }}" title="@lang('Browse')">@lang('Browse')</a>
+            <a href="{{ route ('storyweaver-confirm') }}" title="@lang('StoryWeaver')">@lang('StoryWeaver')</a>
             <a href="{{ URL::to('resources/add/step1') }}" title="@lang('Upload a Resource')">@lang('Upload a Resource')</a>
             @if (Auth::check())
             <a href="{{ URL::to('logout') }}" title="@lang('Log Out')">@lang('Log Out')</a>
