@@ -105,9 +105,9 @@ Route::group(
     Route::get('admin/menu','MenuController@index')->middleware('admin');
     Route::post('admin/menu','MenuController@index')->middleware('admin')->name('menulist');
     Route::get('admin/menu/add/{menuId}','MenuController@create')->middleware('admin');
+    Route::post('admin/menu/store','MenuController@store')->name('store_menu')->middleware('admin');
     Route::get('admin/menu/edit/{menuId}','MenuController@edit')->middleware('admin');
     Route::post('admin/menu/update/{menuId}','MenuController@update')->name('update_menu')->middleware('admin');
-    Route::post('admin/menu/store/{menuId}','MenuController@store')->name('store_menu')->middleware('admin');
     Route::get('admin/menu/translate/{menuId}','MenuController@translate')->middleware('admin');
     Route::post('admin/menu/translate/{menuId}','MenuController@translate_menu')->name('translateMenu')->middleware('admin');
     Route::get('admin/menu/sort','MenuController@sort')->name('sort_menu')->middleware('admin');    
