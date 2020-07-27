@@ -116,6 +116,14 @@ class StoryWeaverController extends Controller
             return redirect()->away($response_contents->redirect_url);
         }
 
+        Log::info(
+            $first_name . ' ' . $last_name . 'was not redirected to StoryWeaver.
+                    Email: ' . $user_email . ' and user id: ' . $user_id . '. 
+                    Status code: ' . $response->getStatusCode() . '
+                    Status: ' . $response_contents->status . '
+                    Redirect URL: ' . $response_contents->redirect_url
+        );
+
         return redirect(route('home'));
     }
 }
