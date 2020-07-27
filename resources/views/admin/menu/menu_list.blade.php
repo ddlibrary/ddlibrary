@@ -18,7 +18,9 @@
     <!-- Example DataTables Card-->
     <div class="card mb-3">
       <div class="card-header">
-        <i class="fa fa-table"></i> All Menus</div>
+        <i class="fa fa-table"></i> All Menus
+        <a href="{{ URL::to('admin/menu/add/new') }}" class="btn btn-primary float-right">Add a new menu</a>
+      </div>
       <div class="card-body">
         <!-- The search bar -->
         {!! $searchBar !!}
