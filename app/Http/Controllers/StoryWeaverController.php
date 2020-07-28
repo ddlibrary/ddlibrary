@@ -92,7 +92,7 @@ class StoryWeaverController extends Controller
         } catch (ClientException $e) {
             if  ($e->getResponse()->getStatusCode() == 422) {
                 Log::info(
-                    $first_name . ' ' . $last_name . 'was unable to authenticate to StoryWeaver.
+                    $first_name . ' ' . $last_name . ' was unable to authenticate to StoryWeaver.
                     Email: ' . $user_email . ' and user id: ' . $user_id .'. Response: 422.'
                 );
                 abort(422, __('Something went wrong while redirecting you to StoryWeaver.'));
@@ -100,7 +100,7 @@ class StoryWeaverController extends Controller
 
         } catch (TransferException $e) {
             Log::info(
-                $first_name . ' ' . $last_name . 'was unable to authenticate to StoryWeaver. 
+                $first_name . ' ' . $last_name . ' was unable to authenticate to StoryWeaver. 
                 Server 500.'
             );
             abort(500);
@@ -117,7 +117,7 @@ class StoryWeaverController extends Controller
         }
 
         Log::info(
-            $first_name . ' ' . $last_name . 'was not redirected to StoryWeaver.
+            $first_name . ' ' . $last_name . ' was not redirected to StoryWeaver.
                     Email: ' . $user_email . ' and user id: ' . $user_id . '. 
                     Status code: ' . $response->getStatusCode() . '
                     Status: ' . $response_contents->status . '
