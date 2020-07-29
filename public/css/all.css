@@ -621,6 +621,7 @@ footer i:hover, footer i:active, footer i:focus {
     width: 377px;
     box-sizing: border-box;
 }
+
 .form-control {
     display: block;
     padding: .375rem .75rem;

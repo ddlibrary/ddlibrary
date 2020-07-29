@@ -18,7 +18,7 @@
         <form method="POST" action="{{ route('login') }}">
             @csrf
             <div class="form-item">
-                <input class="form-control{{ $errors->has('user-field') ? ' is-invalid' : '' }}" id="user-field" name="user-field" placeholder="@lang('Email or username or phone')" size="40" type="text" value="{{ old('user-field') }}" required autofocus>
+                <input class="form-control{{ $errors->has('user-field') ? ' is-invalid' : '' }}" id="user-field" name="user-field" autocomplete="username" spellcheck="false"  placeholder="@lang('Email or username or phone')" size="40" type="text" value="{{ old('user-field') }}" required autofocus>
                 @if ($errors->has('user-field'))
                     <span class="invalid-feedback">
                         <strong>{{ $errors->first('user-field') }}</strong>
@@ -27,7 +27,7 @@
             </div>
 
             <div class="form-item">
-                <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" name="password" placeholder="@lang('Password')" size="40" type="password" required>
+                <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" name="password" autocomplete="current-password" spellcheck="false" placeholder="@lang('Password')" size="40" type="password" required>
                 @if ($errors->has('password'))
                     <span class="invalid-feedback">
                         <strong>{{ $errors->first('password') }}</strong>
