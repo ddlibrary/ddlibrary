@@ -1036,6 +1036,11 @@ aside .sub-subject-show {
 }
 
 /* StoryWeaver */
+.storyweaver-logo {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+}
 
 .storyweaver-confirm {
     display: inline-table;
