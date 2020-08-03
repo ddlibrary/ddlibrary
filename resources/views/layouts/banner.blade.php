@@ -88,7 +88,6 @@
             $classNames = array(
                 125  => 'fa-home',
                 566  => 'fa-align-justify',
-                8414 => 'fa-book-reader',  // TODO: replace with whatever tnid is generated
                 131  => 'fa-upload'
             );
             ?>
@@ -96,6 +95,11 @@
             <li>
                 <a href="{{ URL::to($tmenu->path) }}" title="{{ $tmenu->title }}"><i class="fas {{ $classNames[$tmenu->tnid]}} fa-lg icons"></i>{{ $tmenu->title }}</a>
             </li>
+            @if ($loop->index == 1) {{-- where 0 is Home, 1 is DDL Library. We want it next to DDL Library. --}}
+                <li>
+                    <a href="{{ route('storyweaver-confirm') }}" title="StoryWeaver"><img src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/public/img/storyweaver-logo.svg') }}" class="storyweaver-logo"> @lang('StoryWeaver Library')</a>
+                </li>
+            @endif
             @endforeach
             @if (Auth::check())
             <li>
