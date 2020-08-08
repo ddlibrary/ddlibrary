@@ -5,6 +5,19 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @method static orderBy(string $string)
+ * @method static find(string $id)
+ * @method distinct()
+ * @method static max(string $string)
+ * @property array|mixed|string|null     title
+ * @property array|mixed|string|null     parent
+ * @property array|mixed|string|null     path
+ * @property array|mixed|string|null     location
+ * @property array|mixed|string|null     language
+ * @property array|mixed|string|null     weight
+ * @property array|int|mixed|string|null tnid  // translation id (translations are chained)
+ */
 class Menu extends Model
 {
     public function scopeMenu()

@@ -105,9 +105,9 @@ Route::group(
     Route::get('admin/menu','MenuController@index')->middleware('admin');
     Route::post('admin/menu','MenuController@index')->middleware('admin')->name('menulist');
     Route::get('admin/menu/add/{menuId}','MenuController@create')->middleware('admin');
+    Route::post('admin/menu/store','MenuController@store')->name('store_menu')->middleware('admin');
     Route::get('admin/menu/edit/{menuId}','MenuController@edit')->middleware('admin');
     Route::post('admin/menu/update/{menuId}','MenuController@update')->name('update_menu')->middleware('admin');
-    Route::post('admin/menu/store/{menuId}','MenuController@store')->name('store_menu')->middleware('admin');
     Route::get('admin/menu/translate/{menuId}','MenuController@translate')->middleware('admin');
     Route::post('admin/menu/translate/{menuId}','MenuController@translate_menu')->name('translateMenu')->middleware('admin');
     Route::get('admin/menu/sort','MenuController@sort')->name('sort_menu')->middleware('admin');    
@@ -180,11 +180,13 @@ Route::group(
     Route::post('admin/update_survey_modal_time/{id}','SurveySettingController@updateSurveyModalTime')->name('update_survey_modal_time');
     Route::get('admin/create_survey_modal_time','SurveySettingController@createSurveyModalTime');
     Route::post('admin/store_survey_modal_time','SurveySettingController@storeSurveyModalTime')->name('store_survey_modal_time');
-    
     //Analytics
     Route::get('/admin/analytics','AnalyticsController@index')->middleware('admin');
     Route::post('/admin/analytics','AnalyticsController@show')->name('analytics')->middleware('admin');
     Auth::routes();
+    //StoryWeaver
+    Route::get('/storyweaver', 'StoryWeaverController@storyWeaverConfirmation')->name('storyweaver-confirm')->middleware('auth');
+    Route::get('/storyweaver/auth', 'StoryWeaverController@storyWeaverAuth')->name('storyweaver-auth')->middleware('auth');
     //Adding old DDL routes
     Route::get('/user/register', 'Auth\RegisterController@showRegistrationForm');
     Route::get('/user', 'Auth\LoginController@showLoginForm');

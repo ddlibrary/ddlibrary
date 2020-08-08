@@ -16,6 +16,7 @@
             </div>
             <a href="{{ URL::to('/') }}" title="@lang('Home')">@lang('Home')</a>
             <a href="{{ URL::to('resources') }}" title="@lang('Browse')">@lang('Browse')</a>
+            <a href="{{ route ('storyweaver-confirm') }}" title="@lang('StoryWeaver')">@lang('StoryWeaver')</a>
             <a href="{{ URL::to('resources/add/step1') }}" title="@lang('Upload a Resource')">@lang('Upload a Resource')</a>
             @if (Auth::check())
             <a href="{{ URL::to('logout') }}" title="@lang('Log Out')">@lang('Log Out')</a>
@@ -85,15 +86,20 @@
         <ul class="main-navigation">
             <?php
             $classNames = array(
-                125 => 'fa-home',
-                566 => 'fa-align-justify',
-                131 => 'fa-upload'
+                125  => 'fa-home',
+                566  => 'fa-align-justify',
+                131  => 'fa-upload'
             );
             ?>
             @foreach ($menu->where('location', 'top-menu')->where('language', app()->getLocale()) as $tmenu)
             <li>
                 <a href="{{ URL::to($tmenu->path) }}" title="{{ $tmenu->title }}"><i class="fas {{ $classNames[$tmenu->tnid]}} fa-lg icons"></i>{{ $tmenu->title }}</a>
             </li>
+            @if ($loop->index == 1) {{-- where 0 is Home, 1 is DDL Library. We want it next to DDL Library. --}}
+                <li>
+                    <a href="{{ route('storyweaver-confirm') }}" title="StoryWeaver"><img src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/public/img/storyweaver-logo.svg') }}" class="storyweaver-logo"> @lang('StoryWeaver Library')</a>
+                </li>
+            @endif
             @endforeach
             @if (Auth::check())
             <li>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Menu;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class MenuController extends Controller
 {
@@ -42,25 +43,41 @@ class MenuController extends Controller
         return view('admin.menu.menu_list', compact('menuRecords','searchBar'));
     }
 
-    function create(Menu $menu, $id='')
+    function create($id)
     {
-        $details = Menu::find($id);
-        $locations = $details->distinct()->pluck('location');
-        $parents = $details->distinct()->pluck('title','id');
-        return view('admin.menu.menu_add', compact('details','locations','parents'));
+        $menu = Menu::find($id);
+        $new_menu = false;
+        if (! $menu) {
+            $menu = new Menu();
+            $new_menu = true;
+        }
+        $locations = $menu->distinct()->pluck('location');
+        $parents = $menu->distinct()->pluck('title','id');
+        return view('admin.menu.menu_add', compact(
+            'menu',
+            'new_menu',
+            'locations',
+            'parents'
+            )
+        );
     }
 
     public function store(Request $request)
     {
-        //dd($request->all());
-        $this->validate($request, [
-            'title'     => 'required',
-            'location'  => 'required',
-            'path'      => 'required',
-            'parent'    => 'nullable',
-            'language'  => 'required',
-            'weight'    => 'required'
-        ]);
+        try {
+            $this->validate(
+                $request, [
+                'title' => 'required',
+                'location' => 'required',
+                'path' => 'required',
+                'parent' => 'nullable',
+                'language' => 'required',
+                'weight' => 'required'
+            ]
+            );
+        } catch (ValidationException $e) {
+            abort(400);
+        }
 
         $menu = new Menu;
         $menu->title = $request->input('title');
@@ -77,7 +94,7 @@ class MenuController extends Controller
         //inserting
         $menu->save();
 
-        return redirect('admin/menu')->with('success', 'Menu translation successfully added!');
+        return redirect('admin/menu')->with('success', 'Menu translation or new menu successfully added!');
     }  
 
     function edit(Menu $menu, $menuId)
