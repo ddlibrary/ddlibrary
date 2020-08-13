@@ -1,4 +1,5 @@
 <?php /** @noinspection PhpUnhandledExceptionInspection */
+
 /** @noinspection PhpComposerExtensionStubsInspection */
 
 namespace App\Http\Controllers;
@@ -15,6 +16,10 @@ class StoryWeaverController extends Controller
 {
     function storyWeaverConfirmation()
     {
+        $user_profile = UserProfile::where('user_id', auth()->id())->first();
+        if ($user_profile->visited_storyweaver_disclaimer) {
+            return redirect(route('storyweaver-auth'));
+        }
         $email = false;
         if (auth()->user()->email) {
             $email = true;
@@ -26,6 +31,9 @@ class StoryWeaverController extends Controller
 
     function storyWeaverAuth()
     {
+        $user_profile = UserProfile::where('user_id', auth()->id())->first();
+        $user_profile->visited_storyweaver_disclaimer = true;
+        $user_profile->save();
         $storyweaver_url = config('constants.storyweaver_url');
         $secret = config('storyweaver.config.secret');
 

@@ -9,25 +9,13 @@
 @section('content')
     <section class="storyweaver-confirm">
         @if (! $email)
-            @lang(
-                'You do not have a registered email address. StoryWeaver currently does not support users
-                without an email address. <br>If you\'d like to add your email address to your profile, please
-                <a href="'.URL::to('contact-us').'">contact us</a>.'
-            )
+        @lang('You do not have a registered email address. StoryWeaver currently does not support users without an email address. <br>If you\'d like to add your email address to your profile, please <a href=":contact">contact us</a>.', ['contact' => URL::to('contact-us')])
         @else
             <p>
-                <strong>@lang(
-                    'Once you click \'Confirm\', you\'ll be redirected to our partner\'s external site:
-                     <a href="https://ddl.storyweaver.org.in" target="_blank">https://ddl.storyweaver.org.in</a>.'
-                )</strong>
+                <strong>@lang('Once you click \'Confirm\', you\'ll be redirected to our partner\'s external site: <a href="https://ddl.storyweaver.org.in" target="_blank">https://ddl.storyweaver.org.in</a>.')</strong>
             </p>
             <p class="disclaimer">
-                (@lang(
-                    'Your email, name and language preference will be shared with StoryWeaver. Before proceeding,
-                    please read StoryWeaver\'s <a href="https://ddl.storyweaver.org.in/privacy_policy" target="_blank">
-                    privacy policy</a> and <a href="https://ddl.storyweaver.org.in/terms_and_conditions" target="_blank">
-                    terms of use</a>.'
-                ))
+                (@lang('Your email, name and language preference will be shared with StoryWeaver. Before proceeding, please read StoryWeaver\'s <a href="https://ddl.storyweaver.org.in/privacy_policy" target="_blank">privacy policy</a> and <a href="https://ddl.storyweaver.org.in/terms_and_conditions" target="_blank">terms of use</a>.'))
             </p> <br>
             <a href="{{ route('storyweaver-auth') }}" class="btn btn-primary">@lang('Confirm')</a>
         @endif
