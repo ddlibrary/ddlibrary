@@ -5,9 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     image: ddlibrary/ddlmain
-    container_name: app
     restart: unless-stopped
-    tty: true
     working_dir: /var/www/
     environment:
       SERVICE_NAME: app
@@ -15,12 +13,9 @@ services:
     volumes:
       - ./:/var/www
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-    networks:
-      - main
   db:
     image: mysql:5.7
     restart: unless-stopped
-    tty: true
     ports:
       - "3306:3306"
     environment:
@@ -33,23 +28,11 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
       - ./docker/mysql/db.cnf:/etc/mysql/conf.d/my.cnf
-    networks:
-      - main
   webserver:
     image: nginx:alpine
     restart: unless-stopped
-    tty: true
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./:/var/www
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
-    networks:
-      - main
-networks:
-  main:
-
-volumes:
-  dbdata:
-    driver: local
