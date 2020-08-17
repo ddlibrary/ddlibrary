@@ -9,14 +9,5 @@ storage/logs/*
 bootstrap/cache/services.php
 
 vendor
-
-**.git
-.idea
-**.gitignore
-**.gitattributes
-**.sass-cache
-*.env*
-composer.json
-
 Dockerfile
 docker-compose.yml
