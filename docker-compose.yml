@@ -36,3 +36,7 @@ services:
     volumes:
       - ./:/var/www
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
+
+volumes:
+  dbdata:
+    driver: local
