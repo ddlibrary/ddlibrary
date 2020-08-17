@@ -16,10 +16,9 @@ services:
       - ./:/var/www
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
-      - ddlmain-network
+      - main
   db:
     image: mysql:5.7
-    container_name: db
     restart: unless-stopped
     tty: true
     ports:
@@ -35,10 +34,9 @@ services:
       - dbdata:/var/lib/mysql
       - ./docker/mysql/db.cnf:/etc/mysql/conf.d/my.cnf
     networks:
-      - ddlmain-network
+      - main
   webserver:
     image: nginx:alpine
-    container_name: webserver
     restart: unless-stopped
     tty: true
     ports:
@@ -48,10 +46,10 @@ services:
       - ./:/var/www
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
     networks:
-      - ddlmain-network
+      - main
 networks:
-  ddlmain-network:
-    driver: bridge
+  main:
+
 volumes:
   dbdata:
     driver: local
