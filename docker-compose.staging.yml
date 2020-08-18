@@ -48,7 +48,6 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - ./:/var/www
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - ddlmain-network
