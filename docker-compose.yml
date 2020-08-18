@@ -15,7 +15,7 @@ services:
       - "8080:80"
     volumes:
       - ./:/var/www
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/conf.d/ddlmain.local.conf:/etc/nginx/conf.d/ddlmain.local.conf
     depends_on:
       - app
       - db

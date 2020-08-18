@@ -15,7 +15,7 @@ services:
       - "80:80"
     volumes:
       - ./:/var/www
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/conf.d/ddlmain.staging.conf:/etc/nginx/conf.d/ddlmain.staging.conf
     depends_on:
       - app
       - db
