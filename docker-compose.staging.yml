@@ -58,7 +58,7 @@ services:
       - ./:/var/www
     working_dir: /var/www
     depends_on:
-      - php
+      - app
     networks:
       - ddlmain-network
   npm:
