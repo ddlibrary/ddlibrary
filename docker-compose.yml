@@ -53,14 +53,13 @@ services:
     networks:
       - ddlmain-network
   composer:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: composer:latest
     container_name: composer
     volumes:
       - ./:/var/www
     working_dir: /var/www
-    entrypoint: ['composer']
+    depends_on:
+      - php
     networks:
       - ddlmain-network
   npm:
