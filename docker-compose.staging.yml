@@ -42,6 +42,9 @@ services:
       - ddlmain-network
   app:
     build:
+      args:
+        user: ddl
+        uid: 1000
       context: .
       dockerfile: Dockerfile
     container_name: app
@@ -53,33 +56,14 @@ services:
       - ddlmain-network
   composer:
     build:
+      args:
+        user: ddl
+        uid: 1000
       context: .
       dockerfile: Dockerfile
     container_name: composer
     volumes:
       - ./:/var/www
     working_dir: /var/www
-    networks:
-      - ddlmain-network
-  npm:
-    image: node:13.7
-    container_name: npm
-    volumes:
-      - ./:/var/www
-    working_dir: /var/www
-    entrypoint: ['npm']
-    networks:
-      - ddlmain-network
-  artisan:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: artisan
-    volumes:
-      -  ./:/var/www
-    depends_on:
-      - db
-    working_dir: /var/www
-    entrypoint: ['php', '/var/www/artisan']
     networks:
       - ddlmain-network
