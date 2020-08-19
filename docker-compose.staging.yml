@@ -28,6 +28,7 @@ services:
       - ddlmain-network
   certbot:
     image: certbot/certbot
+    container_name: certbot
     volumes:
       - ./docker/certbot/conf:/etc/letsencrypt
       - ./docker/certbot/www:/var/www/certbot
