@@ -5,9 +5,9 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
-domains=(staging.darakhtdanesh.org www.staging.darakhtdanesh.org)
+domains=(staging.darakhtdanesh.org)
 rsa_key_size=4096
-data_path="./docker/certbot"
+data_path="./docker/certbot/"
 email="admin@darakhtdanesh.org"
 staging=1 # Set to 1 if you're testing your setup to avoid hitting request limits
 
@@ -39,7 +39,7 @@ echo
 
 
 echo "### Starting nginx ..."
-docker-compose up --force-recreate -d web
+docker-compose -f docker-compose.staging.yml up --force-recreate -d web
 echo
 
 echo "### Deleting dummy certificate for $domains ..."
