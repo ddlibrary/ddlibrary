@@ -42,7 +42,7 @@ RUN mkdir -p /home/$user/.composer && \
 COPY . /var/www
 
 # Copy existing application directory permissions
-COPY --chown=$user:$user  . /var/www
+RUN chown -R $user:$user /var/www
 
 # Set working directory
 WORKDIR /var/www
