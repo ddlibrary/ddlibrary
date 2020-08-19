@@ -16,7 +16,6 @@ services:
     volumes:
       - ./:/var/www
       - ./docker/nginx/conf.d/ddlmain.local.conf:/etc/nginx/conf.d/ddlmain.local.conf
-      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
     depends_on:
       - app
     restart: unless-stopped
