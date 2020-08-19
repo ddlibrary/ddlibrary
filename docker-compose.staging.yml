@@ -52,13 +52,13 @@ services:
     networks:
       - ddlmain-network
   composer:
-    image: composer:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: composer
     volumes:
       - ./:/var/www
     working_dir: /var/www
-    depends_on:
-      - app
     networks:
       - ddlmain-network
   npm:
