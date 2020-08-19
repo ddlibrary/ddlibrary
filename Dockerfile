@@ -50,4 +50,7 @@ COPY --chown=www-data:www-data . /var/www/
 # Set working directory
 WORKDIR /var/www
 
-USER $user
+USER www-data
+
+EXPOSE 9000
+CMD ["php-fpm"]
