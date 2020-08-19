@@ -16,15 +16,15 @@ services:
     volumes:
       - ./:/var/www
       - ./docker/nginx/conf.d/ddlmain.local.conf:/etc/nginx/conf.d/ddlmain.local.conf
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
     depends_on:
       - app
-      - db
+    restart: unless-stopped
     networks:
       - ddlmain-network
   db:
     image: mysql:5.7
     container_name: db
-    restart: unless-stopped
     tty: true
     ports:
       - "3306:3306"
@@ -38,16 +38,20 @@ services:
     volumes:
       - ./docker/mysql/db.cnf:/etc/mysql/conf.d/my.cnf
       - dbdata:/var/lib/mysql
+    depends_on:
+      - app
     networks:
       - ddlmain-network
   app:
     build:
       args:
-        user: ddl
-        uid: 1000
+        APP_ENV: ${APP_ENV}
+        PHP_VERSION: ${PHP_VERSION}
       context: .
       dockerfile: Dockerfile
     container_name: app
+    restart: unless-stopped
+    env_file: .env
     ports:
       - "9000:9000"
     volumes:

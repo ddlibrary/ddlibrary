@@ -1,8 +1,10 @@
-FROM php:7.2-fpm
+# PHP Version environment variable
+ARG PHP_VERSION
 
-# Arguments defined in docker-compose.yml
-ARG user
-ARG uid
+FROM php:$PHP_VERSION-fpm
+
+# Application environment variable
+ARG APP_ENV
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -30,19 +32,20 @@ RUN docker-php-ext-install pdo pdo_mysql zip exif pcntl
 RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
 RUN docker-php-ext-install gd
 
+# Install xdebug and enable it if the development environment is local
+RUN if [ $APP_ENV = "local" ]; then \
+   pecl install xdebug; \
+   docker-php-ext-enable xdebug; \
+fi;
+
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Create system user to run Composer and Artisan Commands
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user
-
-# Copy existing application directory contents
-COPY . /var/www
+# Add UID '1000' to www-data
+RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
 
 # Copy existing application directory permissions
-RUN chown -R $user:$user /var/www
+COPY --chown=www-data:www-data . /var/www/
 
 # Set working directory
 WORKDIR /var/www
