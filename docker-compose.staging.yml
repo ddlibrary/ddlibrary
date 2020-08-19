@@ -54,16 +54,3 @@ services:
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - ddlmain-network
-  composer:
-    build:
-      args:
-        user: ddl
-        uid: 1000
-      context: .
-      dockerfile: Dockerfile
-    container_name: composer
-    volumes:
-      - ./:/var/www
-    working_dir: /var/www
-    networks:
-      - ddlmain-network
