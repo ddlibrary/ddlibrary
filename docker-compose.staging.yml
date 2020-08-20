@@ -65,8 +65,9 @@ services:
     container_name: app
     volumes:
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-    db:
-      condition: service_healthy
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
     ports:
       - "9000:9000"
