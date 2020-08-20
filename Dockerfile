@@ -6,6 +6,9 @@ FROM php:$PHP_VERSION-fpm
 # Application environment variable
 ARG APP_ENV
 
+# Set working directory
+WORKDIR /var/www
+
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -41,11 +44,23 @@ fi;
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Add UID '1000' to www-data
-RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
-
 # Copy existing application directory permissions
-COPY --chown=www-data:www-data . /var/www/
+COPY . /var/www/
 
-# Set working directory
-WORKDIR /var/www
+# Set ownership to www-data
+RUN chown -R www-data:www-data \
+        /var/www/storage \
+        /var/www/bootstrap/cache
+
+RUN if [ $APP_ENV = "local" ]; then \
+    mv .env.local .env; \
+    php artisan optimize
+fi;
+RUN if [ $APP_ENV = "staging" ]; then \
+    mv .env.staging .env; \
+    php artisan optimize
+fi;
+RUN if [ $APP_ENV = "production " ]; then \
+    mv .env.prod .env; \
+    php artisan optimize
+fi;
