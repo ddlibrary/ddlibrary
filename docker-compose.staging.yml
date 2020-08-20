@@ -11,18 +11,19 @@ services:
   web:
     image: nginx:stable-alpine
     container_name: web
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
     volumes:
-      - ./:/var/www
+      - ./public:/var/www/public
+      - ./storage/logs/:/var/log/nginx
       - ./docker/nginx/conf.d/ddlmain.staging.conf:/etc/nginx/conf.d/default.conf
       - ./docker/certbot/conf:/etc/letsencrypt
       - ./docker/certbot/www:/var/www/certbot
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     depends_on:
       - app
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
     networks:
       - ddlmain-network
   certbot:
@@ -62,11 +63,10 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: app
-    restart: unless-stopped
-    env_file: .env
-    ports:
-      - "9000:9000"
     volumes:
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
     networks:
       - ddlmain-network
