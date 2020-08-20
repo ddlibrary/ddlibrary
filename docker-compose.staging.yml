@@ -66,6 +66,7 @@ services:
     env_file:
       - .env
     volumes:
+      - ./storage:/var/www/storage
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     restart: unless-stopped
     ports:
