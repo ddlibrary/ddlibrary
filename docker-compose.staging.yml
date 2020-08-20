@@ -11,19 +11,18 @@ services:
   web:
     image: nginx:stable-alpine
     container_name: web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
     volumes:
-      - ./public:/var/www/public
-      - ./storage/logs/:/var/log/nginx
+      - ./:/var/www
       - ./docker/nginx/conf.d/ddlmain.staging.conf:/etc/nginx/conf.d/default.conf
       - ./docker/certbot/conf:/etc/letsencrypt
       - ./docker/certbot/www:/var/www/certbot
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     depends_on:
       - app
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
     networks:
       - ddlmain-network
   certbot:
@@ -38,19 +37,21 @@ services:
   db:
     image: mysql:5.7
     container_name: db
+    tty: true
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    depends_on:
+      - app
     volumes:
       - ./docker/mysql/db.cnf:/etc/mysql/conf.d/my.cnf
       - dbdata:/var/lib/mysql
-    healthcheck:
-      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
-    tty: true
-    ports:
-      - "3306:3306"
     networks:
       - ddlmain-network
   app:
@@ -61,12 +62,11 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: app
-    volumes:
-      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-    depends_on:
-      - db
     restart: unless-stopped
+    env_file: .env
     ports:
       - "9000:9000"
+    volumes:
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - ddlmain-network
