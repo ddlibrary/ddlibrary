@@ -38,21 +38,21 @@ services:
   db:
     image: mysql:5.7
     container_name: db
-    tty: true
-    ports:
-      - "3306:3306"
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_USER: ${DB_USERNAME}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    depends_on:
-      - app
     volumes:
       - ./docker/mysql/db.cnf:/etc/mysql/conf.d/my.cnf
       - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost","-plinks"]
+      timeout: 20s
+      retries: 10
+    tty: true
+    ports:
+      - "3306:3306"
     networks:
       - ddlmain-network
   app:
@@ -63,6 +63,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: app
+    env_file: .env
     volumes:
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     restart: unless-stopped
