@@ -38,7 +38,7 @@ services:
   db:
     image: mysql:5.7
     container_name: db
-    env_file: .env.staging
+    env_file: '.env.staging'
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
@@ -62,7 +62,7 @@ services:
     container_name: app
     volumes:
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-    env_file: .env.staging
+    env_file: '.env.staging'
     depends_on:
       - db
     restart: unless-stopped
