@@ -51,16 +51,3 @@ COPY . /var/www/
 RUN chown -R www-data:www-data \
         /var/www/storage \
         /var/www/bootstrap/cache
-
-RUN if [ $APP_ENV = "local" ]; then \
-    mv .env.local .env; \
-    php artisan optimize
-fi;
-RUN if [ $APP_ENV = "staging" ]; then \
-    mv .env.staging .env; \
-    php artisan optimize
-fi;
-RUN if [ $APP_ENV = "production " ]; then \
-    mv .env.prod .env; \
-    php artisan optimize
-fi;
