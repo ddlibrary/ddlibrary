@@ -46,7 +46,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copy existing application directory permissions
 COPY . /var/www/
-COPY ./public /var/www/html
 
 # Set ownership to www-data
 RUN chown -R www-data:www-data \
