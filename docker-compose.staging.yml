@@ -43,6 +43,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: db
     volumes:
       - ./docker/mysql/db.cnf:/etc/mysql/conf.d/my.cnf
       - dbdata:/var/lib/mysql
