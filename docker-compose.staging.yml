@@ -63,7 +63,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: app
-    env_file: .env
+    env_file:
+      - .env
     volumes:
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     restart: unless-stopped
