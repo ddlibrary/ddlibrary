@@ -64,8 +64,9 @@ services:
       dockerfile: Dockerfile
     container_name: app
     env_file:
-      - .env
+      - '.env'
     volumes:
+      - ./storage/app/public/files:/var/www/storage/app/public/files
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     restart: unless-stopped
     ports:
