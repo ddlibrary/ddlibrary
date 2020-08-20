@@ -47,9 +47,7 @@ services:
       - ./docker/mysql/db.cnf:/etc/mysql/conf.d/my.cnf
       - dbdata:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost","-plinks"]
-      timeout: 20s
-      retries: 10
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
     tty: true
     ports:
       - "3306:3306"
@@ -66,8 +64,7 @@ services:
     volumes:
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     depends_on:
-      db:
-        condition: service_healthy
+      db
     restart: unless-stopped
     ports:
       - "9000:9000"
