@@ -46,6 +46,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: app
+    env_file:
+      - '.env'
     volumes:
       - ./:/var/www
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
