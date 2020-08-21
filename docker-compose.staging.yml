@@ -46,10 +46,6 @@ services:
     volumes:
       - ./docker/mysql/db.cnf:/etc/mysql/conf.d/my.cnf
       - dbdata:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost","-plinks"]
-      timeout: 20s
-      retries: 10
     tty: true
     ports:
       - "3306:3306"
