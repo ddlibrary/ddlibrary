@@ -1,7 +1,11 @@
+FROM composer as composer
+COPY . /app
+RUN composer install --ignore-platform-reqs --no-scripts
+
 # PHP Version environment variable
 ARG PHP_VERSION
 
-FROM php:$PHP_VERSION-fpm
+FROM php:7.1-fpm
 
 # Application environment variable
 ARG APP_ENV
@@ -12,17 +16,13 @@ WORKDIR /var/www
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
-    libpng-dev \
-    libjpeg62-turbo-dev \
-    libfreetype6-dev \
-    locales \
-    zip \
-    jpegoptim optipng pngquant gifsicle \
+    zlib1g-dev \
     vim \
     nano \
-    unzip \
     git \
     curl \
+    wget \
+    unzip \
     nodejs npm \
     imagemagick \
     ghostscript
@@ -33,15 +33,6 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install extensions
 RUN docker-php-ext-install pdo pdo_mysql zip exif pcntl
 
-# Install xdebug and enable it if the development environment is local
-RUN if [ $APP_ENV = "local" ]; then \
-   pecl install xdebug; \
-   docker-php-ext-enable xdebug; \
-fi;
-
-# Get latest Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
 # Copy existing application directory permissions
 COPY . /var/www/
 
@@ -49,3 +40,5 @@ COPY . /var/www/
 RUN chown -R www-data:www-data \
         /var/www/storage \
         /var/www/bootstrap/cache
+
+COPY --from=composer /app/vendor /var/www/vendor

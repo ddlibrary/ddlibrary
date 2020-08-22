@@ -33,6 +33,7 @@ services:
       - ./docker/certbot/conf:/etc/letsencrypt
       - ./docker/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    restart: unless-stopped
     networks:
       - ddlmain-network
   db:
@@ -47,6 +48,7 @@ services:
       - ./docker/mysql/db.cnf:/etc/mysql/conf.d/my.cnf
       - dbdata:/var/lib/mysql
     tty: true
+    restart: unless-stopped
     ports:
       - "3306:3306"
     networks:
@@ -62,8 +64,9 @@ services:
     env_file:
       - '.env'
     volumes:
-      - ./storage:/var/www/storage
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    depends_on:
+      - db
     restart: unless-stopped
     ports:
       - "9000:9000"
