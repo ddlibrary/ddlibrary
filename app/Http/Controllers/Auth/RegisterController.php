@@ -4,6 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use BladeView;
+use Carbon\Carbon;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +18,8 @@ use App\Resource;
 use App\UserProfile;
 use App\UserRole;
 use Illuminate\Support\Facades\Hash;
-use Config;
+use Illuminate\Support\Facades\Config;
+use Illuminate\View\View;
 
 class RegisterController extends Controller
 {
@@ -49,14 +56,15 @@ class RegisterController extends Controller
     /**
      * Show the application registration form.
      *
-     * @return \Illuminate\Http\Response
+     * @return BladeView|bool|Factory|Application|View
      */
     public function showRegistrationForm()
     {
         $myResources = new Resource();
         $countries = $myResources->resourceAttributesList('taxonomy_term_data',15);
         $provinces = $myResources->resourceAttributesList('taxonomy_term_data',12)->all();
-        return view('auth.register', compact('countries','provinces'));
+        $gmail_signup_url = 'https://accounts.google.com/signup';
+        return view('auth.register', compact('countries', 'provinces', 'gmail_signup_url'));
     }
 
     /**
@@ -67,25 +75,32 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'email' => 'required|string|email|max:255|unique:users',
-            'username' => 'required|string|max:255',
-            'password' => 'required|string|min:6',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'phone' => 'required|max:20',
-            'gender' => 'required',
-            'country' => 'required',
-            'city' => 'nullable',
-            'g-recaptcha-response' => 'sometimes|required|captcha'
-        ]);
+        return Validator::make(
+            $data,
+            [
+                'email' => 'required_without:phone|string|email|max:255|unique:users|nullable',
+                'username' => 'required|string|max:255',
+                'password' => 'confirmed|required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',  // Regex for at least one digit and one special character
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'phone' => 'required_without:email|max:20|unique:user_profiles|nullable',
+                'gender' => 'required',
+                'country' => 'required',
+                'city' => 'nullable',
+                'g-recaptcha-response' => 'sometimes|required|captcha'
+            ],
+            $messages = [
+                'phone.unique' => __('The phone number has already been taken.'),
+                'password.regex' => __('The password you entered doesn\'t have any special characters (!@#$%^&.) and (or) digits (0-9).')
+            ]
+        );
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\User
+     * @return User
      */
     protected function create($data)
     {
@@ -94,7 +109,7 @@ class RegisterController extends Controller
         $user->password = Hash::make($data['password']);
         $user->email = $data['email'];
         $user->status = 1;
-        $user->accessed_at = \Carbon\Carbon::now();
+        $user->accessed_at = Carbon::now();
         $user->language = Config::get('app.locale');
         $user->save();
 
@@ -127,8 +142,9 @@ class RegisterController extends Controller
     /**
      * Handle a registration request for the application.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return Application|RedirectResponse|Redirector
      */
     public function register(Request $request)
     {
@@ -140,17 +156,5 @@ class RegisterController extends Controller
 
         return $this->registered($request, $userId)
                         ?: redirect($this->redirectPath());
-    }
-
-    /**
-     * The user has been registered.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
-     * @return mixed
-     */
-    protected function registered(Request $request, $userId)
-    {
-        
     }
 }

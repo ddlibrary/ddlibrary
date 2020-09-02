@@ -303,7 +303,7 @@ input[type=button]:hover, input[type=submit]:hover, input[type=button]:active  {
     background: #eee;
 }
 body{
-    font-family: Tahoma,'Iranian Sans','DejaVu Sans','Noto Sans Arabic','Noto Kufi Arabic','Droid Arabic Kufi',sans-serif;
+    font-family: Arial, 'Iranian Sans', 'DejaVu Sans', 'Noto Sans Arabic', 'Noto Kufi Arabic', 'Droid Arabic Kufi', sans-serif;
     font-size: 16px;
     line-height: 1.42857143;
     color: #000000;
@@ -581,19 +581,45 @@ footer i:hover, footer i:active, footer i:focus {
     padding: 1rem;
     background-color: white;
 }
+
 .ddl-forms header {
     margin-bottom: 20px;
 }
+
 .content-body {
     width: 100%;
 }
+
 .form-item {
     max-width: 100%;
     margin-bottom: 15px;
 }
+
 .form-item label:first-child {
     display: block;
     margin-bottom: 4px;
+}
+
+.form-item label#remember-me {
+    display: inline;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    vertical-align: bottom;
+}
+
+.ddl-forms.login {
+    justify-content: center;
+    text-align: center;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.ddl-forms.login input.form-control {
+    display: inline;
+    width: 377px;
+    box-sizing: border-box;
 }
 
 .form-control {
@@ -670,8 +696,11 @@ select.form-control:focus::-ms-value {
 }
 
 .ddl-forms .description {
+    padding-top: 4px;
+    padding-left: 4px;
     line-height: 20px;
-    font-size: .85rem;
+    font-size: 0.84rem;
+    color: #777;
 }
 
 .personal-information {
@@ -686,12 +715,18 @@ select.form-control:focus::-ms-value {
     flex: 1 1 55%;
 }
 
+.register-form input:not(.submit-button),
+.register-form select {
+    width: 340px;
+}
+
 .btnlink {
     padding-top: 15px;
 }
 
 .btn-div {
     margin-top: 15px;
+    font-size: 0.84rem;
 }
 
 .general-content {
@@ -1033,6 +1068,11 @@ aside .sub-subject-show {
 
 .ck-editor__editable {
     min-height: 200px;
+}
+
+.open-phone {
+    color: blue;
+    cursor: pointer;
 }
 
 /* StoryWeaver */

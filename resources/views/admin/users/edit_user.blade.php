@@ -44,7 +44,7 @@
                                         <strong>Email</strong>
                                     </td>
                                     <td>
-                                        <input type="email" name="email" class="form-control" value="{{ $user->email }}" required>
+                                        <input type="email" name="email" class="form-control" value="{{ $user->email }}">
                                     </td>
                                 </tr>
                                 <tr>
@@ -82,6 +82,7 @@
                                             <option value=""></option>
                                             <option value="Male" {{ ($user->profile->gender=="Male"?"selected":"") }}>Male</option>
                                             <option value="Female" {{ ($user->profile->gender=="Female"?"selected":"") }}>Female</option>
+                                            <option value="None" {{ ($user->profile->gender=="None"?"selected":"") }}>Prefer not to say</option>
                                         </select>
                                     </td>
                                 </tr>

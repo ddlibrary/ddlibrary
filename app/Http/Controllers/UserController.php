@@ -8,15 +8,17 @@ use App\Resource;
 use App\UserProfile;
 use App\Role;
 use App\UserRole;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
     /**
      * Showing the list of users in the admin panel
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */   
     public function index(Request $request)
     {
@@ -37,7 +39,7 @@ class UserController extends Controller
     /**
      * View a single user
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function viewUser()
     {
@@ -48,7 +50,7 @@ class UserController extends Controller
     /**
      * Update user profile
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function updateProfile(Request $request)
     {
@@ -73,7 +75,7 @@ class UserController extends Controller
     /**
      * Edit a user details
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($userId)
     {
@@ -96,20 +98,24 @@ class UserController extends Controller
     /**
      * Edit a user details
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param         $userId
+     *
+     * @return Response
+     * @throws ValidationException
      */
     public function update(Request $request, $userId)
     {
         $this->validate($request, [
             'username'      => 'required',
             'password'      => 'nullable',
-            'email'         => 'required',
+            'email'         => 'required_without:phone|nullable',
             'status'        => 'required',
             'first_name'    => 'required',
             'last_name'     => 'required',
             'gender'        => 'required',
             'role'          => 'required',
-            'phone'         => 'required',
+            'phone'         => 'required_without:email|nullable',
             'country'       => 'required',
             'city'          => 'nullable',
         ]);

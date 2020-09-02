@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\UserProfile;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -55,15 +56,26 @@ class LoginController extends Controller
         }
 
         $credentials = $request->only('user-field', 'password');
+        $credentials['user-id'] = null;
         //Checking if user exists
         $userInstance = new User();
-        $userPassword = $userInstance->oneUser($credentials);
+        $authUser = $userInstance->oneUser($credentials);
 
-        if($userPassword){
-            if(checkUserPassword($credentials['password'], $userPassword->password)){
+        if (!$authUser) {
+            $userProfileInstance = new UserProfile();
+            $authUserProfile = $userProfileInstance
+                ->getUserProfile($credentials);
+            if ($authUserProfile) {
+                $credentials['user-id'] = $authUserProfile->user_id;
+                $authUser = $userInstance->oneUser($credentials);
+            }
+        }
+
+        if($authUser){
+            if(checkUserPassword($credentials['password'], $authUser->password)){
                 $user = new User();
                 if($user->updateUser(array('password' => Hash::make($credentials['password'])), $credentials)){
-                    if($this->attemptLogin($request)){
+                    if($this->attemptLogin($request, $authUser)){
                         return $this->sendLoginResponse($request);
                     }else{
                         $this->incrementLoginAttempts($request);
@@ -76,7 +88,7 @@ class LoginController extends Controller
                     $this->incrementLoginAttempts($request);
                     return $this->sendFailedLoginResponse($request);
                 }
-            }else if ($this->attemptLogin($request)){
+            }else if ($this->attemptLogin($request, $authUser)){
                 return $this->sendLoginResponse($request);     
             }else{
                 // If the login attempt was unsuccessful we will increment the number of attempts
@@ -93,7 +105,8 @@ class LoginController extends Controller
     /**
      * Validate the user login request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
+     *
      * @return void
      */
     protected function validateLogin(Request $request)
@@ -107,7 +120,7 @@ class LoginController extends Controller
     /**
      * Get the needed authorization credentials from the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return array
      */
     protected function credentials(Request $request)
@@ -127,14 +140,32 @@ class LoginController extends Controller
     /**
      * Attempt to log the user into the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request                  $request
+     * @param                          $authUser
+     *
      * @return bool
      */
-    protected function attemptLogin(Request $request)
+    protected function attemptLogin(Request $request, $authUser)
     {
-        return $this->guard()->attempt(
+        $auth_status = $this->guard()->attempt(
             $this->credentials($request), $request->filled('remember')
         );
+        if (! $auth_status and $authUser ) {
+            $user_id = $authUser->id;
+            $username = $authUser->username;
+            $password = $request->only('password');
+            return $this->guard()->attempt(
+                [
+                    'id' => $user_id,
+                    'username' => $username,
+                    'password' => $password['password']
+                ],
+                $request->filled('remember')
+            );
+        }
+        else {
+            return $auth_status;
+        }
     }
 
     public function authenticated(Request $request, $user) 

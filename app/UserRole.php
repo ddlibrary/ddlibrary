@@ -4,6 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property mixed     user_id
+ * @property int|mixed role_id
+ */
 class UserRole extends Model
 {
     /**
