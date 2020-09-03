@@ -128,6 +128,13 @@
 <!-- Divider -->
 <hr class="sidebar-divider d-none d-md-block">
 
+<!-- Nav Item - Translation -->
+<li class="nav-item">
+    <a class="nav-link" href="{{ URL::to('translations') }}">
+        <i class="fas fa-language"></i>
+        <span>Translation manager</span></a>
+</li>
+
 <!-- Sidebar Toggler (Sidebar) -->
 <div class="text-center d-none d-md-inline">
     <button class="rounded-circle border-0" id="sidebarToggle"></button>
