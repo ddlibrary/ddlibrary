@@ -1,17 +1,14 @@
+# PHP Version environment variable
+ARG PHP_VERSION
+
 FROM composer as composer
 COPY . /app
 RUN composer install --ignore-platform-reqs --no-scripts
 
-# PHP Version environment variable
-ARG PHP_VERSION
-
-FROM php:7.1-fpm
-
-# Application environment variable
-ARG APP_ENV
+FROM php:$PHP_VERSION-fpm
 
 # Set working directory
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
