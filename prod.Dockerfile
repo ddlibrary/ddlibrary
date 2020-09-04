@@ -3,7 +3,7 @@ ARG PHP_VERSION
 
 FROM composer as composer
 COPY . /app
-RUN composer install --ignore-platform-reqs --no-scripts
+RUN composer install
 
 FROM php:$PHP_VERSION-fpm
 
@@ -31,11 +31,11 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install pdo pdo_mysql zip exif pcntl
 
 # Copy existing application directory permissions
-COPY . /var/www/
+COPY . /var/www/html
 
 # Set ownership to www-data
 RUN chown -R www-data:www-data \
-        /var/www/storage \
-        /var/www/bootstrap/cache
+        /var/www/html/storage \
+        /var/www/html/bootstrap/cache
 
-COPY --from=composer /app/vendor /var/www/vendor
+COPY --from=composer /app/vendor /var/www/html/vendor
