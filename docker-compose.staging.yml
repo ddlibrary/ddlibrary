@@ -1,0 +1,73 @@
+version: "3.7"
+
+networks:
+  ddlmain-network:
+
+volumes:
+  dbdata:
+    driver: local
+
+services:
+  web:
+    image: nginx:stable-alpine
+    container_name: web
+    volumes:
+      - ./public:/var/www/html/public
+      - ./storage/logs/:/var/log/nginx
+      - ./docker/nginx/conf.d/ddlmain.staging.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/certbot/conf:/etc/letsencrypt
+      - ./docker/certbot/www:/var/www/html/certbot
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    depends_on:
+      - app
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - ddlmain-network
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./docker/certbot/conf:/etc/letsencrypt
+      - ./docker/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    restart: unless-stopped
+    networks:
+      - ddlmain-network
+  db:
+    image: mysql:5.7
+    container_name: db
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+    volumes:
+      - ./docker/mysql/db.cnf:/etc/mysql/conf.d/my.cnf
+      - dbdata:/var/lib/mysql
+    tty: true
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    networks:
+      - ddlmain-network
+  app:
+    build:
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+      context: .
+      dockerfile: prod.Dockerfile
+    container_name: app
+    env_file:
+      - '.env'
+    volumes:
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    depends_on:
+      - db
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    networks:
+      - ddlmain-network
