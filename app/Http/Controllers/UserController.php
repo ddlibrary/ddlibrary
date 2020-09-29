@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Resource;
 use App\UserProfile;
+use App\ResourceFavorite;
 use App\Role;
 use App\UserRole;
 use Illuminate\Http\Response;
@@ -44,7 +45,37 @@ class UserController extends Controller
     public function viewUser()
     {
         $user = User::users()->where('id', Auth::id())->first();
-        return view('users.view_user', compact('user'));
+
+
+        $page = 'profile';
+        return view('users.view_user', compact('page', 'user'));
+    }
+
+    /**
+     * View a single users favorite resources
+     *
+     * @return Response
+     */
+    public function favorites()
+    {
+        $favorites = ResourceFavorite::where('user_id', Auth::id())->pluck('resource_id');
+        $resources = Resource::find($favorites);
+        
+        $page = 'favorites';
+        return view('users.favorites', compact('page', 'resources'));
+    }
+
+    /**
+     * View a single users uploaded resources
+     *
+     * @return Response
+     */
+    public function uploadedResources()
+    {
+        $resources = Resource::where('user_id', Auth::id())->get();
+        
+        $page = 'uploaded-resources';
+        return view('users.uploaded-resources', compact('page', 'resources'));
     }
 
     /**

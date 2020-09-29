@@ -5,6 +5,7 @@
         <h1>@lang('Users Details for') <strong>{{ $user->username }}</strong></h1>
     </header>
     <article>
+        @include('users.user_nav')
 
         <form method="POST" action="{{ route('user-profile-update') }}" autocomplete="off">
             @csrf

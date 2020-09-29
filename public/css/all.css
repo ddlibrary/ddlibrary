@@ -1737,6 +1737,19 @@ fieldset[disabled] .btn-success.focus {
 .survey_content{
     padding: 20px;
 }
+
+.user-nav a{
+    margin-right: 25px;
+    color: #000;
+}
+
+.user-nav a.active{
+    color: #da7437;
+}
+
+.user-nav hr{
+    margin-bottom: 20px;
+}
 /*!
  * Font Awesome Free 5.5.0 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)

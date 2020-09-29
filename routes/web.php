@@ -33,6 +33,8 @@ Route::group(
     Route::post('admin/users', 'UserController@index')->name('user')->middleware('admin');
     Route::get('admin/users/users-data', 'UserController@usersData')->middleware('admin');
     Route::get('user/profile', 'UserController@viewUser')->where('userId', '[0-9]+')->name('user-view');
+    Route::get('user/favorites', 'UserController@favorites')->where('userId', '[0-9]+')->name('user-favorites');
+    Route::get('user/uploaded-resources', 'UserController@uploadedResources')->where('userId', '[0-9]+')->name('user-uploaded-resources');
     Route::post('user/update_profile', 'UserController@updateProfile')->name('user-profile-update');
     Route::get('admin/user/edit/{userId}', 'UserController@edit')->name('edit_user')->middleware('admin');
     Route::post('admin/user/update/{userId}', 'UserController@update')->name('update_user')->middleware('admin');
@@ -65,7 +67,7 @@ Route::group(
     //delete file
     Route::get('delete/file/{resourceId}/{fileName}', 'ResourceController@deleteFile')->name('delete-file');
     //Contact 
-    Route::get('contact-us', 'ContactController@create')->middleware('auth');
+    Route::get('contact-us', 'ContactController@create');
     Route::post('contact-us', 'ContactController@store')->name('contact');
     Route::get('admin/contacts', 'ContactController@index')->middleware('admin');
     Route::get('admin/contacts/read/{id}', 'ContactController@read')->middleware('admin');
