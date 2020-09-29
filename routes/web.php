@@ -34,6 +34,7 @@ Route::group(
     Route::get('admin/users/users-data', 'UserController@usersData')->middleware('admin');
     Route::get('user/profile', 'UserController@viewUser')->where('userId', '[0-9]+')->name('user-view');
     Route::post('user/update_profile', 'UserController@updateProfile')->name('user-profile-update');
+    Route::get('user/remove_profile', 'UserController@removeProfile')->name('user-profile-remove')->middleware('auth');
     Route::get('admin/user/edit/{userId}', 'UserController@edit')->name('edit_user')->middleware('admin');
     Route::post('admin/user/update/{userId}', 'UserController@update')->name('update_user')->middleware('admin');
     Route::get('admin/user/delete/{userId}', 'UserController@deleteUser')->middleware('admin');

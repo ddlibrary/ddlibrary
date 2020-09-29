@@ -61,6 +61,14 @@
             </div>
 
         </form>
+
+        <div class="well" style="margin-top: 20px;">
+            Be aware this will parmnently remove your account from DDL library
+            <a class="btn" style="background-color: rgb(240, 75, 75); color: #fff" href="{{ URL::to('user/remove_profile') }}"
+                onclick="return confirm('Are you sure about this, by clicking yes your profile will be removed from DDL library parmanently.')">
+            @lang('Delete Account')
+        </a>
+        </div>
     </article>
 </section>
 <!-- /.container-fluid-->

@@ -73,6 +73,30 @@ class UserController extends Controller
     }
 
     /**
+     * Remove user profile
+     * 
+     * If the user uploaded any resources will keep the user and just deactivate the account
+     * Else will remove the account permanently
+     * 
+     * @return Response
+     */
+    public function removeProfile(Request $request)
+    {
+        $user = User::find(Auth::id());
+
+        $resources = Resource::where('user_id', $user->id)->count();
+
+        if(Resource::where('user_id', $user->id)->count() > 0)
+        {
+            $user->status = 0;
+            $user->save();
+            
+        } else $user->delete();
+
+        return redirect(URL('user/logout'));
+    }
+
+    /**
      * Edit a user details
      *
      * @return Response
