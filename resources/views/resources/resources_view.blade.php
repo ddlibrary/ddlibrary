@@ -250,7 +250,7 @@
             <form method="post" action="{{ route('updatetid', $resource->id) }}">
             @csrf
             If this resource is translated, write down the translated resource id and click submit:
-            <input type="number" name="link" class="form-control">
+            <input type="number" name="link" class="form-control tnid-input">
             <input type="submit" class="form-control normalButton" value="Submit">
             </form>
         </div>
