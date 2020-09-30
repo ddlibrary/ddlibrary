@@ -200,21 +200,22 @@
             <div class="download-box">
             @if($resource->attachments)
                 @foreach($resource->attachments as $file)
-                    <h4>@lang('File') {{ $loop->iteration }}</h4>
+                    <h4>@lang('File :id', ['id' => $loop->iteration])</h4>
                     <br>
                     @if (Auth::check())
                         @if($file->file_mime=="application/pdf")
                             <iframe src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}#toolbar=0" height="500" width="100%"></iframe>
+                        @elseif($file->file_mime == "audio/mpeg")
+                            <span class="download-item">
+                                <audio controls>
+                                    <source src="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}" type="audio/mpeg">
+                                </audio>
+                            </span>
+                        @else
+                            <span class="download-item no-preview">@lang('No preview available.')</span>
                         @endif
                     @endif
-                    @if (Auth::check())
-                        @if($file->file_mime == "audio/mpeg")
-                            <audio controls>
-                                <source src="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}" type="audio/mpeg">
-                            </audio>
-                        @endif
-                    @endif
-                    <span class="download-item"><a class="btn btn-primary" href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}"><i class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a></span>
+                    <span class="download-item"><a class="btn btn-primary" href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}"><i class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a><br><hr></span>
                 @endforeach
             @endif
             </div>
