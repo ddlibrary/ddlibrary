@@ -1,11 +1,6 @@
 # PHP Version environment variable
 ARG PHP_VERSION
 
-FROM composer as composer
-COPY . /app
-RUN docker-php-ext-install exif
-RUN composer install
-
 FROM php:$PHP_VERSION-fpm
 
 # Set working directory
@@ -29,7 +24,9 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install extensions
-RUN docker-php-ext-install mysqli pdo pdo_mysql zip exif pcntl
+RUN docker-php-ext-install pdo pdo_mysql zip exif pcntl
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copy existing application directory permissions
 COPY . /var/www/html
@@ -38,5 +35,3 @@ COPY . /var/www/html
 RUN chown -R www-data:www-data \
         /var/www/html/storage \
         /var/www/html/bootstrap/cache
-
-COPY --from=composer /app/vendor /var/www/html/vendor
