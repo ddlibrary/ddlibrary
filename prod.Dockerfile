@@ -3,6 +3,7 @@ ARG PHP_VERSION
 
 FROM composer as composer
 COPY . /app
+RUN docker-php-ext-install exif
 RUN composer install
 
 FROM php:$PHP_VERSION-fpm
