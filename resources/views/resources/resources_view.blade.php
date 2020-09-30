@@ -204,7 +204,7 @@
                     <br>
                     @if (Auth::check())
                         @if($file->file_mime=="application/pdf")
-                            <iframe src="{{ URL::to(config('constants.DDLMAIN_FILE_STORAGE_URL').$file->file_name) }}#toolbar=0" height="500" width="100%"></iframe>
+                            <iframe src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}#toolbar=0" height="500" width="100%"></iframe>
                         @endif
                     @endif
                     @if (Auth::check())
