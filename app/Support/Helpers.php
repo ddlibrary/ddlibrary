@@ -1,4 +1,16 @@
 <?php
+
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Facades\Storage;
+use setasign\Fpdi\Fpdi;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\Filter\FilterException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
+use setasign\Fpdi\PdfReader\PdfReaderException;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
+
 if (! function_exists('fixLanguage')) {
     function fixLanguage($lang)
     {
@@ -431,4 +443,219 @@ if(! function_exists('termEn'))
 
 		return (count($term)) ? ' (' . $term->name . ')' : '';
 	}
+}
+
+if (! function_exists('get_pdf_version'))
+{
+    function get_pdf_version_and_pages($file)
+    {
+        $process = new Process(['pdfinfo', $file]);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        $output = $process->getOutput();
+        // Split the string $output at every instance
+        // of a newline character (/n) or PHP_EOL
+        $output = explode(PHP_EOL , $output);
+
+        $version = 0;
+        foreach ($output as $each_line)
+        {
+            // Regex to match "PDF version:   #.#"
+            if (preg_match('/PDF version:\s*(\d.\d)/i', $each_line, $matches) === 1)
+            {
+                $version = floatval($matches[1]);
+            }
+        }
+        return $version;
+    }
+}
+
+if (! function_exists('lower_pdf_version'))
+{
+    function lower_pdf_version($old_file, $file_name)
+    {
+        $new_file = tempnam(sys_get_temp_dir(), $file_name[0]."_");
+        rename($new_file, $new_file .= '.pdf');
+        $process = new Process([
+            'gs',  // Invokes Ghostscript
+            '-sDEVICE=pdfwrite',  // sets PDF as output device
+            '-dCompatibilityLevel=1.4',  // we do the actual conversion here
+            '-dNOPAUSE',  // no interaction
+            '-dBATCH',  // no interaction
+            '-sOutputFile='.$new_file,
+            $old_file
+        ]);
+        $process->run();
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+        return $new_file;
+    }
+}
+
+if (! function_exists('get_license_buttons'))
+{
+    function get_license_buttons($resource)
+    {
+        $license_button_1 = null;
+        $license_button_2 = null;
+
+        if ($resource->creativeCommons)
+        {
+            $license = $resource->creativeCommons[0]->name;
+            /*
+            We can add a license as long as it is a CC license
+            and is formatted certain way. The formats we currently
+            support are string values picked up from the database, and
+            form the conditional statements below.
+            */
+            try {
+                if ($license === 'CC 0 / public domain')
+                {
+                    $license_button_1 = Storage::disk('s3')
+                        ->get('public/img/cc-zero.png');
+                }
+                elseif ($license === 'CC BY / CC BY-SA' or $license === 'CC BY 4.0')
+                {
+                    if ($license === 'CC BY / CC BY-SA')
+                    {
+                        $license_button_1 = Storage::disk('s3')
+                            ->get('public/img/by-sa.png');
+                    }
+                    $license_button_2 = Storage::disk('s3')
+                        ->get('public/img/by.png');
+                }
+                elseif ($license === 'CC BY-NC / CC BY-NC-SA')
+                {
+                    $license_button_1 = Storage::disk('s3')
+                        ->get('public/img/by-nc.png');
+                    $license_button_2 = Storage::disk('s3')
+                        ->get('public/img/by-nc-sa.png');
+                }
+                elseif ($license === 'CC BY-ND / CC BY-NC-ND')
+                {
+                    $license_button_1 = Storage::disk('s3')
+                        ->get('public/img/by-nd.png');
+                    $license_button_2 = Storage::disk('s3')
+                        ->get('public/img/by-nc-nd.png');
+                }
+            }
+            catch (FileNotFoundException $e) {
+
+            }
+        }
+        if ($license_button_1){
+            $temp_license_button_1 = tempnam(
+                sys_get_temp_dir(),
+                'license_button_1_');
+            file_put_contents($temp_license_button_1, $license_button_1);
+            $license_button_1 = $temp_license_button_1;
+        }
+        if ($license_button_2){
+            $temp_license_button_2 = tempnam(
+                sys_get_temp_dir(),
+                'license_button_2_');
+            file_put_contents($temp_license_button_2, $license_button_2);
+            $license_button_2 = $temp_license_button_2;
+        }
+        return array($license_button_1, $license_button_2);
+    }
+}
+
+if (! function_exists('watermark_pdf'))
+{
+    function watermark_pdf($file, $logo, $license_button_1, $license_button_2)
+    {
+        $pdf = new FPDI();
+        try
+        {
+            $pages = $pdf->setSourceFile($file);
+        }
+        catch (PdfParserException $e)
+        {
+            return $file;
+        }
+        for ($i = 1; $i <= $pages; $i++)
+        {
+            try
+            {
+                $tpl = $pdf->importPage($i);
+            }
+            catch (
+                CrossReferenceException |
+                FilterException |
+                PdfParserException |
+                PdfTypeException |
+                PdfReaderException $e
+            )
+            {
+                return $file;
+            }
+
+            $pdf->addPage();
+            list($page_width, $page_height) = $pdf->getTemplateSize($tpl);
+            $pdf->useTemplate(
+                $tpl,
+                1,  // start drawing the page at the beginning of x-axis
+                1,  // start drawing the page at the beginning of x-axis
+                $page_width,  // set width from the imported page
+                null,  // null, to maintain the aspect ratio
+                TRUE  // resize page to fit the imported page
+            );
+            if ($i <= 20)
+            {
+                $x_pos = $page_width - 55;
+                $y_pos = (
+                    $page_height - (
+                        (
+                            $i == 1 and
+                            ($license_button_1 or $license_button_2)
+                        ) ? 25 : 17  // 25, if we're in the first iteration
+                    )                // 17, if we're not and there's no license
+                );
+
+                $pdf->Image(
+                    $logo,
+                    $x_pos,
+                    $y_pos,
+                    50,  // watermark logo width
+                    0,  // height = 0, to maintain aspect ratio
+                    'png'
+                );
+                if ($i == 1 and ($license_button_1 or $license_button_2))
+                {
+                    if ($license_button_1)
+                    {
+                        $pdf->Image(
+                            $license_button_1,
+                            // if we have another button to place, make room
+                            $page_width - 25 + (
+                                $license_button_2 ? -25 : 0
+                            ),
+                            $page_height - 10,
+                            20,  // license button width
+                            0,  // height = 0, to maintain aspect ratio
+                            'png'
+                        );
+                    }
+                    if ($license_button_2)
+                    {
+                        $pdf->Image(
+                            $license_button_2,
+                            $page_width - 25,
+                            $page_height - 10,
+                            20,  // license button width
+                            0,  // height = 0, to maintain aspect ratio
+                            'png'
+                        );
+                    }
+                }
+            }
+        }
+        return $pdf->Output('S');  // S: return the document as a string.
+    }
 }

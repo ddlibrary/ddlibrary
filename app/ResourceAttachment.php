@@ -4,6 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static find($fileId)
+ * @property bool|mixed file_watermarked
+ * @property mixed      file_name
+ */
 class ResourceAttachment extends Model
 {
     /**
@@ -13,8 +18,8 @@ class ResourceAttachment extends Model
      */
     public $timestamps = false;
 
-    protected $fillable = ['resource_id','file_name', 'file_mime', 'file_size'];
-    
+    protected $fillable = ['resource_id', 'file_name', 'file_mime', 'file_size', 'file_watermarked'];
+
     public function resource()
     {
         return $this->belongsTo(Resource::class);

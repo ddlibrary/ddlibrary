@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\WatermarkPDF;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Resource;
 use App\ResourceLevel;
@@ -26,11 +29,13 @@ use App\ResourceView;
 use App\ResourceFlag;
 use App\ResourceFavorite;
 
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Session;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ResourceController extends Controller
 {
@@ -1262,13 +1267,67 @@ class ResourceController extends Controller
     }
 
     /**
-    * Delete a resource
-    */
+     * Delete a resource
+     *
+     * @param $resourceId
+     *
+     * @return RedirectResponse
+     */
     public function deleteResource($resourceId)
     {
         $resource = Resource::find($resourceId);
         $resource->delete();
 
         return back()->with('error', 'You deleted the record!');
+    }
+
+    /**
+     * Download a watermarked file attached to a resource
+     *
+     * @param $fileId
+     * @param $resourceId
+     *
+     * @return BinaryFileResponse
+     * @throws FileNotFoundException
+     */
+    public function downloadFile($resourceId, $fileId)
+    {
+        $resource = Resource::findOrFail($resourceId);
+        $all_attachments = $resource->attachments;
+        $attachment = null;
+        foreach ($all_attachments as $attach) {
+            if ($attach->id == $fileId)
+            {
+                $attachment = $attach;
+            }
+        }
+        if (!$attachment) {
+            abort(404);
+        }
+
+        $file_name = $attachment->file_name;
+
+        // Fetch file from an external source
+        $pdf_file = Storage::disk('s3')->get('resources/'.$file_name);
+        if (! $pdf_file) {
+            abort('404');
+        }
+
+        $temp_file = tempnam(
+            sys_get_temp_dir(), $file_name . '_'
+        );
+        file_put_contents($temp_file, $pdf_file);
+
+        if (! $attachment->file_watermarked) {
+            WatermarkPDF::dispatch($attachment, $temp_file, $resource);
+        }
+
+        $headers = [
+            'Content-Type' => 'application/pdf',
+            'Content-Description' => 'File Transfer',
+            'Content-Disposition' => "attachment; filename={$file_name}",
+            'filename'=> $file_name
+        ];
+        return response()->download($temp_file, $file_name, $headers);
     }
 }
