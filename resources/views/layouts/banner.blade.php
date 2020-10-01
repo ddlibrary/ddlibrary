@@ -97,7 +97,7 @@
             </li>
             @if ($loop->index == 1) {{-- where 0 is Home, 1 is DDL Library. We want it next to DDL Library. --}}
                 <li>
-                    <a href="{{ route('storyweaver-confirm') }}" title="StoryWeaver"><img src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/public/img/storyweaver-logo.svg') }}" class="storyweaver-logo"> @lang('StoryWeaver Library')</a>
+                    <a href="{{ route('storyweaver-confirm') }}" title="@lang('StoryWeaver Library')"><img src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/public/img/storyweaver-logo.svg') }}" class="storyweaver-logo"> @lang('StoryWeaver Library')</a>
                 </li>
             @endif
             @endforeach

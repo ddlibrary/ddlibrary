@@ -16,7 +16,12 @@
     @include('layouts.messages')
     <div class="ddl-top-news">
         <div>
-            <p>@lang('Watch a video to learn more about our work in Afghanistan'): <a href="https://www.youtube.com/watch?v=bF5dpED9W64" target="_blank" title="Our work in Afghanistan">@lang('Learn More')</a></p>
+            <p>@lang("Access children's storybooks through Storyweaver, click here"): 
+                <a href="{{ route('storyweaver-confirm') }}" target="_blank" title="@lang('StoryWeaver Library')">
+                    <img src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/public/img/storyweaver-logo.svg') }}" class="storyweaver-logo">
+                    @lang('StoryWeaver Library')
+                </a>
+            </p>
         </div>
     </div>
     <header>
@@ -82,6 +87,14 @@
                 <p>@lang('COVID19')</p>
             </article>
         </a>
+    </div>
+</section>
+<section class="main-section">
+    <header>
+        <h2>@lang('Watch a video to learn more about our work in Afghanistan')</h2>
+    </header>
+    <div style="margin: 20px;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/bF5dpED9W64" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
 </section>
 <section class="latest-news">
