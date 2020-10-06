@@ -3,7 +3,7 @@
 return [
 
     'storyweaver_url' => 'https://ddl.storyweaver.org.in/api/v1/ThirdPartyUserReg',
-    'storyweaver_default' => 'https://ddl.storyweaver.org.in',
+    'storyweaver_default' => 'https://ddl.storyweaver.org.in/',
     'storyweaver_family_and_friends' => 'https://ddl.storyweaver.org.in/stories?category=Family%26Friends&query=&sort=Ratings',
     'storyweaver_growing_up' => 'https://ddl.storyweaver.org.in/stories?category=GrowingUp&query=&sort=Ratings',
     'storyweaver_stem' => 'https://ddl.storyweaver.org.in/stories?category=STEM&query=&sort=Ratings',
