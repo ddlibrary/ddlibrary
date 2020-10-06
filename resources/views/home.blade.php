@@ -83,6 +83,56 @@
             </article>
         </a>
     </div>
+    <header>
+        <h2>@lang('StoryWeaver Library')</h2>
+    </header>
+    <hr>
+    <div class="storyweaver-homepage">
+        <h3>@lang('Explore the StoryWeaver Collections')</h3>
+    </div>
+    <div class="section-content">
+        <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_family_and_friends']) }}" title="Family & Friends">
+            <article class="home-subject-areas">
+                <img src="{{ Storage::disk('public')->url('') }}" alt="Family & Friends collection">
+                <p>@lang('Family & Friends')</p>
+            </article>
+        </a>
+        <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_growing_up']) }}" title="Growing Up">
+            <article class="home-subject-areas">
+                <img src="{{ Storage::disk('public')->url('') }}" alt="Growing Up collection">
+                <p>@lang('Growing Up')</p>
+            </article>
+        </a>
+        <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_funny']) }}" title="Funny">
+            <article class="home-subject-areas">
+                <img src="{{ Storage::disk('public')->url('') }}" alt="Funny collection">
+                <p>@lang('Funny')</p>
+            </article>
+        </a>
+        <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_stem']) }}" title="STEM">
+            <article class="home-subject-areas">
+                <img src="{{ Storage::disk('public')->url('') }}" alt="STEM collection">
+                <p>@lang('STEM')</p>
+            </article>
+        </a>
+    </div>
+    <div class="storyweaver-homepage">
+        <h3>@lang('Translate English Storybooks to Afghan languages')</h3>
+    </div>
+    <div class="section-content">
+        <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_pashto']) }}" title="Pashto">
+            <article class="home-subject-areas">
+                <img src="{{ Storage::disk('public')->url('') }}" alt="Pashto translation">
+                <p>@lang('Pashto')</p>
+            </article>
+        </a>
+        <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_dari']) }}" title="Dari/Farsi">
+            <article class="home-subject-areas">
+                <img src="{{ Storage::disk('public')->url('') }}" alt="Dari/Farsi translation">
+                <p>@lang('Dari/Farsi')</p>
+            </article>
+        </a>
+    </div>
 </section>
 <section class="latest-news">
     <div class="latest-div">
