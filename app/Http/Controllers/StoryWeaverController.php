@@ -14,9 +14,18 @@ use Illuminate\Support\Facades\URL;
 
 class StoryWeaverController extends Controller
 {
-    function storyWeaverConfirmation()
+    function storyWeaverConfirmation($landing_page = 'storyweaver_default')
     {
         $user_profile = UserProfile::where('user_id', auth()->id())->first();
+
+        $previous_url = URL::previous();
+        session(
+            [
+                'previous_url' => $previous_url,
+                'landing_page' => $landing_page
+            ]
+        );
+
         if ($user_profile->visited_storyweaver_disclaimer) {
             return redirect(route('storyweaver-auth'));
         }
@@ -24,9 +33,8 @@ class StoryWeaverController extends Controller
         if (auth()->user()->email) {
             $email = true;
         }
-        $previous_url = URL::previous();
-        session(['previous_url' => $previous_url]);
-        return view('storyweaver.confirmation', compact('email'));
+
+        return view('storyweaver.confirmation', compact('email', 'landing_page'));
     }
 
     function storyWeaverAuth()
@@ -36,6 +44,7 @@ class StoryWeaverController extends Controller
         $user_profile->save();
         $storyweaver_url = config('constants.storyweaver_url');
         $secret = config('storyweaver.config.secret');
+
 
         if (! $storyweaver_url or ! $secret) {
             Log::info(
@@ -59,6 +68,14 @@ class StoryWeaverController extends Controller
         $redirect_home = session()->pull('previous_url');
         if (! $redirect_home) {
             $redirect_home = URL::to('/');
+        }
+
+        $landing_page = session()->pull('landing_page');
+        if ($landing_page) {
+            if (array_key_exists($landing_page, config('constants'))) {
+                $landing_page = config('constants.' . $landing_page);
+            }
+            else $landing_page = config('constants.storyweaver_default');
         }
 
         $client = new Client();
@@ -89,6 +106,10 @@ class StoryWeaverController extends Controller
                         [
                             'name' => 'locale_preferences',
                             'contents' => $language
+                        ],
+                        [
+                            'name' => 'landing_page',
+                            'contents' => $landing_page
                         ],
                         [
                             'name' => 'redirect_home',
