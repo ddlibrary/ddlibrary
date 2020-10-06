@@ -91,6 +91,7 @@
         <h3>@lang('Explore the StoryWeaver Collections')</h3>
     </div>
     <div class="section-content">
+        {{-- The route() landing_page parameters are keys from config/constants.php, and as such, must match with the keys to work --}}
         <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_family_and_friends']) }}" title="Family & Friends">
             <article class="home-subject-areas">
                 <img src="{{ Storage::disk('public')->url('') }}" alt="Family & Friends collection">

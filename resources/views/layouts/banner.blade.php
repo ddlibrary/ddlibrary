@@ -16,6 +16,7 @@
             </div>
             <a href="{{ URL::to('/') }}" title="@lang('Home')">@lang('Home')</a>
             <a href="{{ URL::to('resources') }}" title="@lang('Browse')">@lang('Browse')</a>
+            {{-- The route() landing_page parameter is a key from config/constants.php, and as such, must match with a key to work --}}
             <a href="{{ route ('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}" title="@lang('StoryWeaver')">@lang('StoryWeaver')</a>
             <a href="{{ URL::to('resources/add/step1') }}" title="@lang('Upload a Resource')">@lang('Upload a Resource')</a>
             @if (Auth::check())
