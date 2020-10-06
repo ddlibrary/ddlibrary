@@ -94,25 +94,25 @@
         {{-- The route() landing_page parameters are keys from config/constants.php, and as such, must match with the keys to work --}}
         <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_family_and_friends']) }}" title="Family & Friends">
             <article class="home-subject-areas">
-                <img src="{{ Storage::disk('public')->url('') }}" alt="Family & Friends collection">
+                <img src="{{ Storage::disk('public')->url('StoryWeaver family and friends.svg') }}" alt="Family & Friends collection">
                 <p>@lang('Family & Friends')</p>
             </article>
         </a>
         <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_growing_up']) }}" title="Growing Up">
             <article class="home-subject-areas">
-                <img src="{{ Storage::disk('public')->url('') }}" alt="Growing Up collection">
+                <img src="{{ Storage::disk('public')->url('StoryWeaver growing up.svg') }}" alt="Growing Up collection">
                 <p>@lang('Growing Up')</p>
             </article>
         </a>
         <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_funny']) }}" title="Funny">
             <article class="home-subject-areas">
-                <img src="{{ Storage::disk('public')->url('') }}" alt="Funny collection">
+                <img src="{{ Storage::disk('public')->url('StoryWeaver funny.svg') }}" alt="Funny collection">
                 <p>@lang('Funny')</p>
             </article>
         </a>
         <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_stem']) }}" title="STEM">
             <article class="home-subject-areas">
-                <img src="{{ Storage::disk('public')->url('') }}" alt="STEM collection">
+                <img src="{{ Storage::disk('public')->url('StoryWeaver STEM.svg') }}" alt="STEM collection">
                 <p>@lang('STEM')</p>
             </article>
         </a>
@@ -123,13 +123,13 @@
     <div class="section-content">
         <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_pashto']) }}" title="Pashto">
             <article class="home-subject-areas">
-                <img src="{{ Storage::disk('public')->url('') }}" alt="Pashto translation">
+                <img src="{{ Storage::disk('public')->url('StoryWeaver pashto.svg') }}" alt="Pashto translation">
                 <p>@lang('Pashto')</p>
             </article>
         </a>
         <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_dari']) }}" title="Dari/Farsi">
             <article class="home-subject-areas">
-                <img src="{{ Storage::disk('public')->url('') }}" alt="Dari/Farsi translation">
+                <img src="{{ Storage::disk('public')->url('StoryWeaver dari.svg') }}" alt="Dari/Farsi translation">
                 <p>@lang('Dari/Farsi')</p>
             </article>
         </a>
