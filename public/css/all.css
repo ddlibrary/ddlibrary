@@ -457,6 +457,12 @@ input[type=search] {
     margin: 15px;
     padding: 15px;
 }
+
+.main-section .storyweaver-homepage {
+    text-align: center;
+    color: #777;
+}
+
 .section-content {
     display: flex;
     flex-wrap: wrap;
