@@ -186,7 +186,7 @@ Route::group(
     Route::post('/admin/analytics','AnalyticsController@show')->name('analytics')->middleware('admin');
     Auth::routes();
     //StoryWeaver
-    Route::get('/storyweaver', 'StoryWeaverController@storyWeaverConfirmation')->name('storyweaver-confirm')->middleware('auth');
+    Route::get('/storyweaver/confirm/{landing_page}', 'StoryWeaverController@storyWeaverConfirmation')->name('storyweaver-confirm')->middleware('auth');
     Route::get('/storyweaver/auth', 'StoryWeaverController@storyWeaverAuth')->name('storyweaver-auth')->middleware('auth');
     //Adding old DDL routes
     Route::get('/user/register', 'Auth\RegisterController@showRegistrationForm');
