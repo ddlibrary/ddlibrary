@@ -1313,15 +1313,6 @@ class ResourceController extends Controller
             abort('404');
         }
         
-        $headers = [
-            'Content-Type' => 'application/pdf',
-            'Content-Description' => 'File Transfer',
-            'Content-Disposition' => "attachment; filename={$file_name}",
-            'filename'=> $file_name
-        ];        
-        
-        return response()->download($pdf_file, $file_name, $headers);
-        
         /* Tabling this until we can get poppler-utils installed in out systems */
         /*
         $temp_file = tempnam(
