@@ -93,7 +93,7 @@
             @foreach($creativeCommons AS $cc)
             <?php
                 if(count($dbRecords->creativeCommons)){
-                    $cc_common = $dbRecords-creativeCommons[0]->name;
+                    $cc_common = $dbRecords->creativeCommons[0]->name;
                 }else{
                     $cc_common = "";
                 }
