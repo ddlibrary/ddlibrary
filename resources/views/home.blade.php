@@ -89,12 +89,25 @@
         </a>
     </div>
 </section>
-<section class="main-section">
-    <header>
-        <h2>@lang('Watch a video to learn more about our work in Afghanistan')</h2>
-    </header>
-    <div style="margin: 20px;">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/bF5dpED9W64" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<section class="main-section" style="display: flex;">
+    <div style="flex:1">
+        <header>
+            <h3>@lang('Watch a video to learn more about our work in Afghanistan')</h3>
+        </header>
+        <hr>
+        <div style="margin: 20px;" class="thumbnail">
+            <iframe width="100%" height="315" src="https://www.youtube.com/embed/bF5dpED9W64" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <div style="flex:1">
+        <header>
+            <h3>@lang('How to Use the Darakht-e Danesh Library')</h3>
+        </header>
+        <hr>
+        <div style="margin: 20px;" class="thumbnail">
+            <iframe width="100%" height="315" src="https://www.youtube.com/embed/-{{ (Lang::locale() == 'en') ? 'PgQmUX2vbs' : 'JM5lzeDWrE' }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
     </div>
 </section>
 <section class="latest-news">
