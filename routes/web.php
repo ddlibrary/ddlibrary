@@ -142,8 +142,13 @@ Route::group(
     Route::get('/admin/sync', 'SyncController@index');
     Route::get('/admin/run_sync', 'SyncController@SyncIt');
     //Glossary
-    Route::get('/glossary','GlossaryController@index');
-    Route::post('/glossary','GlossaryController@index')->name('glossary');
+    Route::get('glossary','GlossaryController@index');
+    Route::post('glossary','GlossaryController@index')->name('glossary');
+    Route::get('glossary/create', 'GlossaryController@create')->name('glossary_create')->middleware('LibraryManager');
+    Route::post('glossary/store', 'GlossaryController@store')->name('glossary_store')->middleware('LibraryManager');
+    Route::post('glossary/update', 'GlossaryController@update')->name('glossary_update')->middleware('LibraryManager');
+    Route::post('glossary/delete/{id}', 'GlossaryController@destroy')->name('glossary_delete')->middleware('LibraryManager');
+    Route::post('glossary/approve/{id}', 'GlossaryController@approve')->name('glossary_approve')->middleware('LibraryManager');
     //Impact Page
     Route::get('/impact','ImpactController@index');
     

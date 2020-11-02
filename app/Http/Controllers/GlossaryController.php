@@ -3,98 +3,150 @@
 namespace App\Http\Controllers;
 
 use App\Glossary;
+use BladeView;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 
 class GlossaryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return BladeView|false|Factory|Application|Response|View
      */
     public function index(Request $request)
     {
-        if($request->filled('text')){
-            $glossary = Glossary::orderBy('id','desc')    
-            ->orWhere('name_en',request('text'))
-            ->orWhere('name_fa',request('text'))
-            ->orWhere('name_ps',request('text'))
-            ->paginate(15);
-        }elseif($request->filled('subject') && !$request->filled('text')){
+        $glossary_flagged = null;
+
+        if ($request->filled('text')) {
             $glossary = Glossary::orderBy('id','desc')
-            ->where('subject', request('subject'))
-            ->paginate(15);    
-        }else{
-            $glossary = Glossary::orderBy('id','desc')->paginate(15);
+                ->orWhere('name_en', request('text'))
+                ->orWhere('name_fa', request('text'))
+                ->orWhere('name_ps', request('text'))
+                ->where('flagged_for_review', '!=', true)
+                ->paginate(15);
+        } elseif ($request->filled('subject') && !$request->filled('text')) {
+            $glossary = Glossary::orderBy('id','desc')
+                ->where('subject', request('subject'))
+                ->where('flagged_for_review', '!=', true)
+                ->paginate(15);
+        } else {
+            $glossary = Glossary::orderBy('id','desc')
+                ->where('flagged_for_review', '!=', true)
+                ->paginate(15);
+        }
+
+        if (isAdmin() and (request('flagged') == 'show' or request('flagged') == null)) {
+            $glossary_flagged = Glossary::orderBy('id','desc')
+                ->where('flagged_for_review', '=', true)
+                ->paginate(50);
         }
 
         $filters = $request;
-        return view('glossary.glossary_list', compact('glossary','filters'));
+        return view('glossary.glossary_list', compact('glossary','glossary_flagged', 'filters'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return BladeView|false|Factory|Application|View
      */
     public function create()
     {
-        //
+        return view('glossary.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector|void
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validatedData = $request->validate([
+            'english'         => 'required_without_all:farsi,pashto',
+            'farsi'           => 'required_without_all:english,pashto',
+            'pashto'          => 'required_without_all:farsi,english',
+            'subject'         => 'required'
+        ]);
+        $glossary = new Glossary();
+        $glossary->name_en = $validatedData['english'];
+        $glossary->name_fa = $validatedData['farsi'];
+        $glossary->name_ps = $validatedData['pashto'];
+        $glossary->subject = $validatedData['subject'];
+        if (!isAdmin()) $glossary->flagged_for_review = true;
+        $glossary->save();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Glossary  $glossary
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Glossary $glossary)
-    {
-        //
-    }
+        return redirect(route('glossary'))->with('status', __('Glossary item added successfully!'));
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Glossary  $glossary
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Glossary $glossary)
-    {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Glossary  $glossary
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function update(Request $request, Glossary $glossary)
+    public function update(Request $request)
     {
-        //
+        $data = $request['data'];
+        $glossary_id = (int)$data[0];  // id of the glossary item
+        $type = $data[1];  // two inputs are possible 'glossary' or 'subject'
+        $locale = $data[2];  // valid when $type is 'glossary'. Can be 'en', 'fa' or 'ps'
+        $string = htmlspecialchars_decode($data[3]);  // the edited string
+
+        if (($glossary_id or  $type or $locale or $string) == null) {
+            return response()->json(array('msg'=> 'error'), 400);
+        }
+
+        $glossary = Glossary::where('id', $glossary_id)->first();
+        if ($type == 'glossary') {
+            if ($locale == 'en') $glossary->name_en = $string;
+            elseif ($locale == 'fa') $glossary->name_fa = $string;
+            elseif ($locale == 'ps') $glossary->name_ps = $string;
+        }
+        elseif ($type == 'subject') $glossary->subject = $string;
+
+        if (!isAdmin()) $glossary->flagged_for_review = true;
+
+        $glossary->save();
+
+        return response()->json(array('msg'=> 'success'), 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Glossary  $glossary
-     * @return \Illuminate\Http\Response
+     * @param null $glossary_id
+     * @return JsonResponse
      */
-    public function destroy(Glossary $glossary)
+    public function destroy($glossary_id = null)
     {
-        //
+        $glossary = Glossary::where('id', $glossary_id)->first();
+        if (!$glossary) {
+            return response()->json(array('msg'=> 'error'), 400);
+        }
+        $glossary->delete();
+        return response()->json(array('msg'=> 'success'), 200);
+    }
+
+    public function approve($glossary_id = null)
+    {
+        $glossary = Glossary::where('id', $glossary_id)->first();
+        if (!$glossary) {
+            return response()->json(array('msg'=> 'error'), 400);
+        }
+        $glossary->flagged_for_review = false;
+        $glossary->save();
+        return response()->json(array('msg'=> 'success'), 200);
     }
 }
