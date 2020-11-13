@@ -3,22 +3,11 @@ svg {
     margin: 0 auto;
 }
 
-#Kabul,
-#Badakhshan,
-#Khost,
-#Takhar,
-#Faryab,
-#Laghman,
-#Nangarhar,
-#Parvan,
-#Kandahar,
-#Balkh,
-#Herat,
-#Bamyan {
+.bg-red{
     fill: red;
 }
 
-#Panjshir {
+.bg-yellow{
     fill: #ffa800;
 }
 
