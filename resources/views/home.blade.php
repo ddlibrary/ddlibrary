@@ -106,7 +106,7 @@
         </header>
         <hr>
         <div style="margin: 20px;" class="thumbnail">
-            <iframe width="100%" height="315" src="https://www.youtube.com/embed/-{{ (Lang::locale() == 'en') ? 'PgQmUX2vbs' : 'JM5lzeDWrE' }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe width="100%" height="315" src="https://www.youtube.com/embed/{{ (Lang::locale() == 'en') ? '-PgQmUX2vbs' : ( (Lang::locale() == 'ps') ? 'EhoGbreiCjo' : '-JM5lzeDWrE') }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
     </div>
 </section>
