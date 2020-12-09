@@ -9,6 +9,7 @@
       </li>
       <li class="breadcrumb-item active">Comments</li>
     </ol>
+    @include('layouts.messages')
     <!-- Example DataTables Card-->
     <div class="card mb-3">
       <div class="card-header">
@@ -24,6 +25,7 @@
                 <th>Comment</th>
                 <th>Status</th>
                 <th>Created</th>
+                <th>Operations</th>
               </tr>
             </thead>
             <tfoot>
@@ -34,6 +36,7 @@
                 <th>Comment</th>
                 <th>Status</th>
                 <th>Created</th>
+                <th>Operations</th>
               </tr>
             </tfoot>
             <tbody>
@@ -45,6 +48,7 @@
                 <td>{{ $comment->comment }}</td>
                 <td><a href="{{ URL::to('admin/comments/published/'.$comment->id) }}" title="Status">{{ ($comment->status==0?"Not Published":"Published") }}</a></td>
                 <td>{{ $comment->created_at->diffForHumans() }}</td>
+                <td><a href="{{ URL::to('admin/comments/delete/'.$comment->id) }}">Delete</a></td>
               </tr>
               @endforeach
             </tbody>
