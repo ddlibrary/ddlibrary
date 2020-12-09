@@ -118,6 +118,7 @@ Route::group(
     Route::post('admin/settings', 'SettingController@update')->name('settings');
     //Comments
     Route::get('admin/comments','CommentController@index')->middleware('admin');
+    Route::get('admin/comments/delete/{commentId}','CommentController@delete')->middleware('admin');
     Route::get('admin/comments/published/{commentId}', 'CommentController@published');
     //Flags
     Route::get('admin/flags','FlagController@index')->middleware('admin');
