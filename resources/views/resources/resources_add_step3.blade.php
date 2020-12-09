@@ -116,12 +116,14 @@
         </div>
         @if (isAdmin())
         <div class="form-item">
-            <label for="published"> 
+            <label for="published">
                 <strong>@lang('Published?') {{ en('Published?') }}</strong>
             </label>
             <input type="radio" name="published" id="no-pub" {{ ($resource['status'] == 0)?"checked":""}} value="0"> <label for="no-pub">@lang('No') {{ en('No') }}</label>
             <input type="radio" name="published" id="yes-pub" {{ ($resource['status'] == 1)?"checked":""}} value="1"> <label for="yes-pub">@lang('Yes') {{ en('Yes') }}</label>
         </div>
+        @else
+            <input type="hidden" name="published" value="0">
         @endif
         <div style="display:flex;">
             <input style="margin-{{ (app()->getLocale()=="en")?"right":"left" }}: 10px;" class="form-control normalButton" type="button" value="@lang('Previous') {{ en('Previous') }}" onclick="location.href='{{ URL::to('resources/add/step2') }}'">
