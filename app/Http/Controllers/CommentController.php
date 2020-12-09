@@ -9,7 +9,7 @@ class CommentController extends Controller
 {
     public function index()
     {
-        $comments = ResourceComment::paginate(10);
+        $comments = ResourceComment::orderBy('id', 'DESC')->paginate(10);
         return view('admin.comments.comments_list', compact('comments'));
     }
 
@@ -27,5 +27,12 @@ class CommentController extends Controller
         }
 
         return back();
+    }
+
+    public function delete($commentId)
+    {
+        $comment = ResourceComment::findOrFail($commentId);
+        $comment->delete();
+        return redirect()->back()->with('success', 'Comment has been deleted successfully!');
     }
 }
