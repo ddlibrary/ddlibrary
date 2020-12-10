@@ -268,18 +268,16 @@
             <h2>{{ count($comments) }} @lang('comment(s) so far')</h2>
         </header>
         @foreach($comments AS $cm)
-        <article>
+        <article style="border:1px solid #f1f1f1; border-radius: 5px;">
             <div>
                 <strong>{{ $cm->user->username }}</strong>
             </div>
-            <div>
+            <span style="font-size: 10px; color: #8795a1;">Posted {{ $cm->created_at->diffForHumans() }}</span>
+            <div style="padding-top: 10px;">
                 {{ $cm->comment }}
             </div>
-            <div>
-                {{ $cm->created_at->diffForHumans() }}
-            </div>
         </article>
-        <hr>
+        <br>
         @endforeach
         @if (Auth::check())
         <form method="POST" action="{{ route('comment') }}">

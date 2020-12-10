@@ -116,7 +116,7 @@
         </div>
         @if (isAdmin())
         <div class="form-item">
-            <label for="published"> 
+            <label for="published">
                 <strong>@lang('Published?') {{ en('Published?') }}</strong>
             </label>
             <input type="radio" name="published" id="no-pub" {{ ($resource['status'] == 0)?"checked":""}} value="0"> <label for="no-pub">@lang('No') {{ en('No') }}</label>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\WatermarkPDF;
+use App\Mail\NewComment;
+use App\Setting;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,6 +34,7 @@ use App\ResourceFavorite;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Session;
@@ -316,7 +319,13 @@ class ResourceController extends Controller
         $resource1 = $request->session()->get('resource1');
         $resource2 = $request->session()->get('resource2');
         $resource3 = $request->session()->get('resource3');
-        $resource3['published'] = $request->input('published');
+        if (isAdmin()) {
+            $resource3['published'] = $request->input('published');
+        }
+        else {
+            $resource3['published'] = 0;
+        }
+
 
         $request->session()->forget('resource1');
         $request->session()->forget('resource2');
@@ -622,8 +631,6 @@ class ResourceController extends Controller
 
     public function comment(Request $request)
     {
-        $myResources = new Resource();
-
         $userId = $request->input('userid');
         $resourceId = $request->input('resource_id');
 
@@ -636,6 +643,10 @@ class ResourceController extends Controller
         $comment->user_id = $userId;
         $comment->comment = $request->input('comment');
         $comment->save();
+
+        if(env('SEND_EMAIL') == 'yes') {
+            Mail::to(Setting::find(1)->website_email)->send(new NewComment($comment));
+        }
         
         return redirect('resource/'.$resourceId)
             ->with('success', 'Your comment is successfully registered. We will publish it after review.');
