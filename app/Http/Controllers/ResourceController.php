@@ -240,7 +240,7 @@ class ResourceController extends Controller
         $resource = $request->session()->get('resource2');
 
         $validatedData = $request->validate([
-            'attachments.*'             => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff',
+            'attachments.*'             => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3',
             'subject_areas'             => 'required',
             'keywords'                  => 'string|nullable',
             'learning_resources_types'  => 'required',
@@ -644,7 +644,7 @@ class ResourceController extends Controller
         $comment->comment = $request->input('comment');
         $comment->save();
 
-        if(env('SEND_EMAIL') == 'yes') {
+        if(config('mail.send_email') == 'yes') {
             Mail::to(Setting::find(1)->website_email)->send(new NewComment($comment));
         }
         
@@ -833,7 +833,7 @@ class ResourceController extends Controller
 
         $resource = $request->session()->get('resource2');
         $validatedData = $request->validate([
-            'attachments.*'             => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff',
+            'attachments.*'             => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3',
             'subject_areas'             => 'required',
             'keywords'                  => 'string|nullable',
             'learning_resources_types'  => 'required',

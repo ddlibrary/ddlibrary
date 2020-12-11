@@ -120,4 +120,6 @@ return [
         ],
     ],
 
+    'send_email' => env('SEND_EMAIL', 'no'),
+
 ];
