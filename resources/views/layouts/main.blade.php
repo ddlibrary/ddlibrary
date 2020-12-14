@@ -85,14 +85,20 @@
     @yield('search')
     <main>
 
-        @if (Request::is(Lang::locale().'/home'))
-            @include('../survey/survey_view')
-        @elseif (Request::is(Lang::locale()))
-            @include('../survey/survey_view')
-        @elseif (Request::is(Lang::locale().'/resource/*'))
-            @include('../survey/survey_view')
-        @elseif (Request::is(Lang::locale().'/resources/*'))
-            @include('../survey/survey_view')
+        <?php
+        $lang = Config::get('app.locale');
+        $questions_count = \App\SurveyQuestion::getPublishedQuestions($lang)->count();
+        ?>
+        @if ($questions_count != 0)
+            @if (Request::is(Lang::locale().'/home'))
+                @include('../survey/survey_view')
+            @elseif (Request::is(Lang::locale()))
+                @include('../survey/survey_view')
+            @elseif (Request::is(Lang::locale().'/resource/*'))
+                @include('../survey/survey_view')
+            @elseif (Request::is(Lang::locale().'/resources/*'))
+                @include('../survey/survey_view')
+            @endif
         @endif
         
         @yield('content')
