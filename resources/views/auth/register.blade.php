@@ -165,7 +165,7 @@
                     <input type="text" class="form-control" name="city_other" id="js-text-city" style="display:none;">
                 </div>
             </div>
-            @if(env('CAPTCHA') == 'yes')
+            @if(Config::get('captcha.captcha') == 'yes')
             <div class="left-side">
                 <div class="form-item">
                     {!! NoCaptcha::display() !!}
