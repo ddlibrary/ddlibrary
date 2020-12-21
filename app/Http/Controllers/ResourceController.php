@@ -64,12 +64,10 @@ class ResourceController extends Controller
     public function updateTid(Request $request, $resourceId)
     {
         $translatedResource = Resource::findOrFail($request->input('link')); 
-        if($translatedResource)
-        {
-            $resource = Resource::findOrFail($resourceId); 
-            $resource->tnid = $translatedResource->id;
-            $resource->save();  
-        }
+        
+        $resource = Resource::findOrFail($resourceId); 
+        $resource->tnid = $translatedResource->id;
+        $resource->save();
 
         return back();
     }
