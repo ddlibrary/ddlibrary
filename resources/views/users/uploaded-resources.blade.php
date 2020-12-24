@@ -15,6 +15,7 @@
                 </tr>
             </thead>
             <tbody>
+                <?php $c = 0;?>
                 @foreach ($resources as $resource)
                     <tr>
                         <td>{{ ++$c }}</td>

@@ -58,11 +58,12 @@ class UserController extends Controller
      */
     public function favorites()
     {
+        $user = User::users()->where('id', Auth::id())->first();
         $favorites = ResourceFavorite::where('user_id', Auth::id())->pluck('resource_id');
         $resources = Resource::find($favorites);
         
         $page = 'favorites';
-        return view('users.favorites', compact('page', 'resources'));
+        return view('users.favorites', compact('user', 'page', 'resources'));
     }
 
     /**
@@ -72,10 +73,11 @@ class UserController extends Controller
      */
     public function uploadedResources()
     {
+        $user = User::users()->where('id', Auth::id())->first();
         $resources = Resource::where('user_id', Auth::id())->get();
         
         $page = 'uploaded-resources';
-        return view('users.uploaded-resources', compact('page', 'resources'));
+        return view('users.uploaded-resources', compact('user', 'page', 'resources'));
     }
 
     /**
