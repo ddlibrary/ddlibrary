@@ -200,7 +200,7 @@ Route::get('/resource_attributes/{id}', function ($resourceId) {
     $result['LearningResourceTypes'] = $resource->LearningResourceTypes;
     $result['publishers'] = $resource->publishers;
     $result['translations'] = $translations;
-    $result['CreativeCommons'] = $resource->CreativeCommons;
+    $result['CreativeCommons'] = $resource->creativeCommons;
     $result['attachments'] = $attachments;
     $result['related_items'] = $relatedItems;
 

@@ -193,29 +193,35 @@
         </article>
         <article class="resource-view-details">
             <h3>@lang('License')</h3>
-            <p>{{ count($resource->CreativeCommons)?$resource->CreativeCommons[0]->name:"" }}</p>
+            <p>{{ count($resource->creativeCommons)?$resource->creativeCommons[0]->name:"" }}</p>
         </article>
         <article class="resource-view-details">
             <h3>@lang('Download')</h3>
             <div class="download-box">
             @if($resource->attachments)
-                <span class="download-item">@lang('File Name')</strong></span>
-                <span class="download-item item-mobile"><strong>@lang('File Size')</strong></span>
                 @foreach($resource->attachments as $file)
-                    <span class="download-item"><a title="File Name" href="{{ URL::to('https://ddl-resources.s3-ap-southeast-1.amazonaws.com/resources/'.$file->file_name) }}">{{ $file->file_name }}</a></span>
-                    <span class="download-item item-mobile">{{ formatBytes($file->file_size) }}</span>
+                    <h4>@lang('File :id', ['id' => $loop->iteration])</h4>
+                    <br>
                     @if (Auth::check())
                         @if($file->file_mime=="application/pdf")
-                            <object data="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}" type="application/pdf" width="100%" height="500"></object>
+                            <iframe src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}#toolbar=0" height="500" width="100%"></iframe>
+                        @elseif($file->file_mime == "audio/mpeg")
+                            <span class="download-item">
+                                <audio controls>
+                                    <source src="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}" type="audio/mpeg">
+                                </audio>
+                            </span>
+                        @else
+                            <span class="download-item no-preview">@lang('No preview available.')</span>
                         @endif
                     @endif
-                    @if (Auth::check())
-                        @if($file->file_mime == "audio/mpeg")
-                            <audio controls>
-                                <source src="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}" type="audio/mpeg">
-                            </audio>
-                        @endif
-                    @endif
+                {{-- revert to older direct download format until we have the correct packages installed for PDF watermarking <span class="download-item"><a class="btn btn-primary"
+                                                href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}"><i
+                    class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a>
+                <br>
+                <hr>
+                </span>--}}
+                        <span class="download-item"><a class="btn btn-primary" href="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}"><i class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a><br><hr></span>
                 @endforeach
             @endif
             </div>
@@ -250,7 +256,7 @@
             <form method="post" action="{{ route('updatetid', $resource->id) }}">
             @csrf
             If this resource is translated, write down the translated resource id and click submit:
-            <input type="number" name="link" class="form-control">
+            <input type="number" name="link" class="form-control tnid-input">
             <input type="submit" class="form-control normalButton" value="Submit">
             </form>
         </div>
@@ -262,18 +268,16 @@
             <h2>{{ count($comments) }} @lang('comment(s) so far')</h2>
         </header>
         @foreach($comments AS $cm)
-        <article>
+        <article style="border:1px solid #f1f1f1; border-radius: 5px;">
             <div>
                 <strong>{{ $cm->user->username }}</strong>
             </div>
-            <div>
+            <span style="font-size: 10px; color: #8795a1;">Posted {{ $cm->created_at->diffForHumans() }}</span>
+            <div style="padding-top: 10px;">
                 {{ $cm->comment }}
             </div>
-            <div>
-                {{ $cm->created_at->diffForHumans() }}
-            </div>
         </article>
-        <hr>
+        <br>
         @endforeach
         @if (Auth::check())
         <form method="POST" action="{{ route('comment') }}">

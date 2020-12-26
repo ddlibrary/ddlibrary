@@ -153,6 +153,12 @@ input[type=search] {
     margin: 15px;
     padding: 15px;
 }
+
+.main-section .storyweaver-homepage {
+    text-align: center;
+    color: #777;
+}
+
 .section-content {
     display: flex;
     flex-wrap: wrap;
@@ -689,8 +695,15 @@ aside .sub-subject-show {
 }
 
 .resource-view-details .download-box .download-item {
-    width: 50%;
+    width: 100%;
     margin: 1em 0 0.1em 0;
+}
+
+.resource-view-details .download-box .download-item.no-preview {
+    background-color: #808080;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 5px;
 }
 
 .resource-view .social-share{

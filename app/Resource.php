@@ -9,6 +9,10 @@ use Config;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\Traits\CausesActivity;
 
+/**
+ * @method static find($resourceId)
+ * @method static findOrFail($resourceId)
+ */
 class Resource extends Model
 {
     use CausesActivity;
@@ -86,7 +90,7 @@ class Resource extends Model
         return $this->hasOne(ResourceCopyrightHolder::class);
     }
 
-    public function CreativeCommons()
+    public function creativeCommons()
     {
         return $this->belongsToMany(TaxonomyTerm::class, 'resource_creative_commons', 'resource_id', 'tid');
     }

@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\WatermarkPDF;
+use App\Mail\NewComment;
+use App\Setting;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Resource;
 use App\ResourceLevel;
@@ -26,11 +31,14 @@ use App\ResourceView;
 use App\ResourceFlag;
 use App\ResourceFavorite;
 
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Session;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ResourceController extends Controller
 {
@@ -63,9 +71,11 @@ class ResourceController extends Controller
 
     public function updateTid(Request $request, $resourceId)
     {
-        $resource = Resource::findOrFail($request->input('link')); 
-        $resource->tnid = $resourceId;
-        $resource->save();  
+        $translatedResource = Resource::findOrFail($request->input('link')); 
+        
+        $resource = Resource::findOrFail($resourceId); 
+        $resource->tnid = $translatedResource->id;
+        $resource->save();
 
         return back();
     }
@@ -232,7 +242,7 @@ class ResourceController extends Controller
         $resource = $request->session()->get('resource2');
 
         $validatedData = $request->validate([
-            'attachments.*'             => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff',
+            'attachments.*'             => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3',
             'subject_areas'             => 'required',
             'keywords'                  => 'string|nullable',
             'learning_resources_types'  => 'required',
@@ -311,7 +321,13 @@ class ResourceController extends Controller
         $resource1 = $request->session()->get('resource1');
         $resource2 = $request->session()->get('resource2');
         $resource3 = $request->session()->get('resource3');
-        $resource3['published'] = $request->input('published');
+        if (isAdmin()) {
+            $resource3['published'] = $request->input('published');
+        }
+        else {
+            $resource3['published'] = 0;
+        }
+
 
         $request->session()->forget('resource1');
         $request->session()->forget('resource2');
@@ -617,8 +633,6 @@ class ResourceController extends Controller
 
     public function comment(Request $request)
     {
-        $myResources = new Resource();
-
         $userId = $request->input('userid');
         $resourceId = $request->input('resource_id');
 
@@ -631,6 +645,10 @@ class ResourceController extends Controller
         $comment->user_id = $userId;
         $comment->comment = $request->input('comment');
         $comment->save();
+
+        if(config('mail.send_email') == 'yes') {
+            Mail::to(Setting::find(1)->website_email)->send(new NewComment($comment));
+        }
         
         return redirect('resource/'.$resourceId)
             ->with('success', 'Your comment is successfully registered. We will publish it after review.');
@@ -817,7 +835,7 @@ class ResourceController extends Controller
 
         $resource = $request->session()->get('resource2');
         $validatedData = $request->validate([
-            'attachments.*'             => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff',
+            'attachments.*'             => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3',
             'subject_areas'             => 'required',
             'keywords'                  => 'string|nullable',
             'learning_resources_types'  => 'required',
@@ -1262,13 +1280,70 @@ class ResourceController extends Controller
     }
 
     /**
-    * Delete a resource
-    */
+     * Delete a resource
+     *
+     * @param $resourceId
+     *
+     * @return RedirectResponse
+     */
     public function deleteResource($resourceId)
     {
         $resource = Resource::find($resourceId);
         $resource->delete();
 
         return back()->with('error', 'You deleted the record!');
+    }
+
+    /**
+     * Download a watermarked file attached to a resource
+     *
+     * @param $fileId
+     * @param $resourceId
+     *
+     * @return BinaryFileResponse
+     * @throws FileNotFoundException
+     */
+    public function downloadFile($resourceId, $fileId)
+    {
+        $resource = Resource::findOrFail($resourceId);
+        $all_attachments = $resource->attachments;
+        $attachment = null;
+        foreach ($all_attachments as $attach) {
+            if ($attach->id == $fileId)
+            {
+                $attachment = $attach;
+            }
+        }
+        if (!$attachment) {
+            abort(404);
+        }
+
+        $file_name = $attachment->file_name;
+
+        // Fetch file from an external source
+        $pdf_file = Storage::disk('s3')->get('resources/'.$file_name);
+        if (! $pdf_file) {
+            abort('404');
+        }
+        
+        /* Tabling this until we can get poppler-utils installed in out systems */
+        /*
+        $temp_file = tempnam(
+            sys_get_temp_dir(), $file_name . '_'
+        );
+        file_put_contents($temp_file, $pdf_file);
+
+        if (! $attachment->file_watermarked) {
+            WatermarkPDF::dispatch($attachment, $temp_file, $resource);
+        }
+
+        $headers = [
+            'Content-Type' => 'application/pdf',
+            'Content-Description' => 'File Transfer',
+            'Content-Disposition' => "attachment; filename={$file_name}",
+            'filename'=> $file_name
+        ];
+        return response()->download($temp_file, $file_name, $headers);
+        */
     }
 }

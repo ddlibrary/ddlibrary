@@ -457,6 +457,12 @@ input[type=search] {
     margin: 15px;
     padding: 15px;
 }
+
+.main-section .storyweaver-homepage {
+    text-align: center;
+    color: #777;
+}
+
 .section-content {
     display: flex;
     flex-wrap: wrap;
@@ -993,8 +999,15 @@ aside .sub-subject-show {
 }
 
 .resource-view-details .download-box .download-item {
-    width: 50%;
+    width: 100%;
     margin: 1em 0 0.1em 0;
+}
+
+.resource-view-details .download-box .download-item.no-preview {
+    background-color: #808080;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 5px;
 }
 
 .resource-view .social-share{
@@ -1749,6 +1762,17 @@ fieldset[disabled] .btn-success.focus {
 
 .user-nav hr{
     margin-bottom: 20px;
+}
+
+.tnid-input::-webkit-outer-spin-button,
+.tnid-input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+.tnid-input {
+    -moz-appearance:textfield; /* Firefox */
 }
 /*!
  * Font Awesome Free 5.5.0 by @fontawesome - https://fontawesome.com

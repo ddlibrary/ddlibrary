@@ -45,6 +45,7 @@ Route::group(
     Route::post('admin/resources', 'ResourceController@index')->name('resources')->middleware('admin');
     Route::any('resources/list', 'ResourceController@list')->name('resourceList');
     Route::get('resource/{resourceId}', 'ResourceController@viewPublicResource');
+    Route::get('resource/{resourceId}/download/{fileId}', 'ResourceController@downloadFile')->name('download-file')->middleware('auth');
     Route::get('resources', 'ResourceController@list');
     Route::get('resources/add/step1', 'ResourceController@createStepOne')->name('step1')->middleware('auth');
     Route::post('resources/add/step1', 'ResourceController@postStepOne');
@@ -119,6 +120,7 @@ Route::group(
     Route::post('admin/settings', 'SettingController@update')->name('settings');
     //Comments
     Route::get('admin/comments','CommentController@index')->middleware('admin');
+    Route::get('admin/comments/delete/{commentId}','CommentController@delete')->middleware('admin');
     Route::get('admin/comments/published/{commentId}', 'CommentController@published');
     //Flags
     Route::get('admin/flags','FlagController@index')->middleware('admin');
@@ -143,8 +145,13 @@ Route::group(
     Route::get('/admin/sync', 'SyncController@index');
     Route::get('/admin/run_sync', 'SyncController@SyncIt');
     //Glossary
-    Route::get('/glossary','GlossaryController@index');
-    Route::post('/glossary','GlossaryController@index')->name('glossary');
+    Route::get('glossary','GlossaryController@index');
+    Route::post('glossary','GlossaryController@index')->name('glossary');
+    Route::get('glossary/create', 'GlossaryController@create')->name('glossary_create')->middleware('LibraryManager');
+    Route::post('glossary/store', 'GlossaryController@store')->name('glossary_store')->middleware('LibraryManager');
+    Route::post('glossary/update', 'GlossaryController@update')->name('glossary_update')->middleware('LibraryManager');
+    Route::post('glossary/delete/{id}', 'GlossaryController@destroy')->name('glossary_delete')->middleware('LibraryManager');
+    Route::post('glossary/approve/{id}', 'GlossaryController@approve')->name('glossary_approve')->middleware('LibraryManager');
     //Impact Page
     Route::get('/impact','ImpactController@index');
     
@@ -187,7 +194,7 @@ Route::group(
     Route::post('/admin/analytics','AnalyticsController@show')->name('analytics')->middleware('admin');
     Auth::routes();
     //StoryWeaver
-    Route::get('/storyweaver', 'StoryWeaverController@storyWeaverConfirmation')->name('storyweaver-confirm')->middleware('auth');
+    Route::get('/storyweaver/confirm/{landing_page}', 'StoryWeaverController@storyWeaverConfirmation')->name('storyweaver-confirm')->middleware('auth');
     Route::get('/storyweaver/auth', 'StoryWeaverController@storyWeaverAuth')->name('storyweaver-auth')->middleware('auth');
     //Adding old DDL routes
     Route::get('/user/register', 'Auth\RegisterController@showRegistrationForm');
