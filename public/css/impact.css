@@ -51,6 +51,13 @@ svg {
     flex-wrap: wrap;
     align-items: flex-end;
 }
+  
+/* Responsive layout - makes a one column layout instead of a two-column layout */
+@media (max-width: 800px) {
+    .map-area {
+        flex-direction: column;
+    }
+}
 
 .map-area .map {
     flex: 2;
