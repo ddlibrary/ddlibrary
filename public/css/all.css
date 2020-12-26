@@ -1751,6 +1751,19 @@ fieldset[disabled] .btn-success.focus {
     padding: 20px;
 }
 
+.user-nav a{
+    margin-right: 25px;
+    color: #000;
+}
+
+.user-nav a.active{
+    color: #da7437;
+}
+
+.user-nav hr{
+    margin-bottom: 20px;
+}
+
 .tnid-input::-webkit-outer-spin-button,
 .tnid-input::-webkit-inner-spin-button {
     /* display: none; <- Crashes Chrome on hover */
