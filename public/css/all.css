@@ -1750,6 +1750,17 @@ fieldset[disabled] .btn-success.focus {
 .survey_content{
     padding: 20px;
 }
+
+.tnid-input::-webkit-outer-spin-button,
+.tnid-input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+.tnid-input {
+    -moz-appearance:textfield; /* Firefox */
+}
 /*!
  * Font Awesome Free 5.5.0 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)

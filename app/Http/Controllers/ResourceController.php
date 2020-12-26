@@ -71,9 +71,11 @@ class ResourceController extends Controller
 
     public function updateTid(Request $request, $resourceId)
     {
-        $resource = Resource::findOrFail($request->input('link')); 
-        $resource->tnid = $resourceId;
-        $resource->save();  
+        $translatedResource = Resource::findOrFail($request->input('link')); 
+        
+        $resource = Resource::findOrFail($resourceId); 
+        $resource->tnid = $translatedResource->id;
+        $resource->save();
 
         return back();
     }
