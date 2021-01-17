@@ -1273,6 +1273,7 @@ class ResourceController extends Controller
             $rs->save();
         }else{
             $rs->status = 1;
+            $rs->published_at = date('Y-m-d H:i:s');
             $rs->save();   
         }
 

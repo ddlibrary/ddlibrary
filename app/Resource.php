@@ -385,7 +385,7 @@ class Resource extends Model
             })
             ->where('rs.language', Config::get('app.locale'))
             ->where('rs.status', 1)
-            ->orderBy('rs.created_at','desc')
+            ->orderBy('rs.published_at','desc')
             ->groupBy(
                 'rs.id',
                 'rs.language', 
