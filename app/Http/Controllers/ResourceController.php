@@ -344,6 +344,7 @@ class ResourceController extends Controller
             $myResources->language = $finalArray['language'];
             $myResources->user_id = Auth::id();
             $myResources->status = $finalArray['published'];
+            $myResources->published_at = date('Y-m-d H:i:s');
             //inserting to resource table
             $myResources->save();
 
@@ -941,6 +942,7 @@ class ResourceController extends Controller
             $myResources->abstract = $finalArray['abstract'];
             $myResources->language = $finalArray['language'];
             $myResources->status = $finalArray['published'];
+            $myResources->published_at = date('Y-m-d H:i:s');
             //inserting to resource table
             $myResources->save();
 
