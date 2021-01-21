@@ -100,7 +100,8 @@ Route::get('/resources/{lang}/{offset}', function ($lang="en", $offset=0, Reques
         'rs.id',
         'rs.language', 
         'rs.abstract',
-        'rs.title'
+        'rs.title',
+        'rs.status'
     )
     ->when(count($subjectAreaIds) > 0, function($query) use($subjectAreaIds){
         return $query->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
@@ -138,8 +139,6 @@ Route::get('/resources/{lang}/{offset}', function ($lang="en", $offset=0, Reques
     ->where('rs.language', $lang)
     ->where('rs.status', 1)
     ->orderBy('rs.created_at','desc')
-    ->limit(32)
-    ->offset($offset)
     ->groupBy(
         'rs.id',
         'rs.language', 
@@ -147,6 +146,8 @@ Route::get('/resources/{lang}/{offset}', function ($lang="en", $offset=0, Reques
         'rs.abstract',
         'rs.created_at'
     )
+    ->limit(32)
+    ->offset($offset)
     ->get();
 
     $results = [];
@@ -158,6 +159,7 @@ Route::get('/resources/{lang}/{offset}', function ($lang="en", $offset=0, Reques
         $res['abstract'] = $resource->abstract;
         $res['img'] = getImagefromResource($resource->abstract);
         
+        if($lang == $resource->language)
         array_push($results, $res);
     }
 
@@ -171,12 +173,10 @@ Route::get('/resource_attributes/{id}', function ($resourceId) {
     DDLClearSession();
     
     $myResources = new Resource();
+    $views = new ResourceView();
 
     $attachments = new ResourceAttachment();
     $attachments = $attachments->where('resource_id', $resourceId)->get();
-
-    //$authors = new ResourceAuthor();
-
 
     $resource = Resource::findOrFail($resourceId);
     $authors = $resource->authors;
@@ -184,7 +184,15 @@ Route::get('/resource_attributes/{id}', function ($resourceId) {
     $result = [];
 
     $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
-    $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
+    $comments = ResourceComment::select(
+        'comment',
+        'u.username'
+    )
+    ->leftJoin('users as u','u.id','=','resource_comments.user_id')
+    ->where('resource_id', $resourceId)
+    ->where('resource_comments.status', 1)
+    ->get();
+
     if($resource){
         $translation_id = $resource->tnid;
         if($translation_id){
@@ -200,12 +208,13 @@ Route::get('/resource_attributes/{id}', function ($resourceId) {
     $result['LearningResourceTypes'] = $resource->LearningResourceTypes;
     $result['publishers'] = $resource->publishers;
     $result['translations'] = $translations;
-    $result['CreativeCommons'] = $resource->creativeCommons;
+    $result['CreativeCommons'] = $resource->CreativeCommons;
     $result['attachments'] = $attachments;
     $result['related_items'] = $relatedItems;
-
+    $result['comments'] = $comments;
+    $result['views'] = $views->resourceCount($resourceId);
+    
     return $result;
-
 });
 
 //This end point return resource categories based on language
@@ -316,4 +325,31 @@ Route::get('/filter_resources/{lang?}', function (Request $request)
         'favorites',
         'comments'
     );
+});
+
+
+//User Login endpoint
+Route::post('/login', function (Request $request) {
+    $data = array(
+        'state' => 'undefined',
+        'message' => 'processing!'
+    );
+
+    $request->validate([
+        'username' => 'required',
+        'password' => 'required',
+    ]);
+
+    $user = User::where('email', $request->username)->orWhere('username', $request->username)->first();
+
+    if ($user && Hash::check($request->password, $user->password)) {
+        $data['state'] = 'success';
+        $data['message'] = 'Successfully logged in.';
+        $data['user_id'] = $user->id;
+    } else{
+        $data['state'] = 'error';
+        $data['message'] = 'These credentials do not match our records.';
+    }
+
+    return json_encode($data);
 });

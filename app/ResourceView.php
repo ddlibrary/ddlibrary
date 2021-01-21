@@ -28,4 +28,14 @@ class ResourceView extends Model
             ->limit(10)
             ->get();
     }
+
+    public function resourceCount($resource_id=0)
+    {
+        return DB::table('resource_views')
+            ->select(
+                DB::raw('count(resource_id) AS total')
+            )
+            ->where('resource_id', $resource_id)
+            ->first()->total;
+    }
 }
