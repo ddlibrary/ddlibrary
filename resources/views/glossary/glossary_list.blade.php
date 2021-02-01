@@ -29,6 +29,7 @@ DDL Glossary
                     <option value="Biology" {{ (isset($filters['subject']) && $filters['subject'] == "Biology")?"selected":"" }}>@lang('Biology')</option>
                     <option value="Agriculture" {{ (isset($filters['subject']) && $filters['subject'] == "Agriculture")?"selected":"" }}>@lang('Agriculture')</option>
                     <option value="Sociology" {{ (isset($filters['subject']) && $filters['subject'] == "Sociology")?"selected":"" }}>@lang('Sociology')</option>
+                    <option value="accounting" {{ (isset($filters['subject']) && $filters['subject'] == "accounting")?"selected":"" }}>@lang('Accounting')</option>
                 </select>
             </td>
             @if (isLibraryManager() or isAdmin())
