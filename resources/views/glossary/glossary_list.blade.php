@@ -30,6 +30,7 @@ DDL Glossary
                     <option value="Agriculture" {{ (isset($filters['subject']) && $filters['subject'] == "Agriculture")?"selected":"" }}>@lang('Agriculture')</option>
                     <option value="Sociology" {{ (isset($filters['subject']) && $filters['subject'] == "Sociology")?"selected":"" }}>@lang('Sociology')</option>
                     <option value="accounting" {{ (isset($filters['subject']) && $filters['subject'] == "accounting")?"selected":"" }}>@lang('Accounting')</option>
+                    <option value="political_science" {{ (isset($filters['subject']) && $filters['subject'] == "political_science")?"selected":"" }}>@lang('Political science')</option>
                 </select>
             </td>
             @if (isLibraryManager() or isAdmin())
