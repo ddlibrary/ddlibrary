@@ -465,6 +465,20 @@ class Resource extends Model
         return $records;   
     }
 
+    //Total resources by attachment type (format)
+    public function downloadCounts($date_from, $date_to)
+    {
+        $downloads = DB::table('download_counts')
+            ->select(
+                DB::raw('count(id) as total')
+            )
+            ->when($date_from, function($query) use($date_from, $date_to){
+                return $query->whereBetween('created_at', [$date_from, $date_to]);
+            })
+            ->first()->total;
+        return $downloads;
+    }
+
     public function getRelatedResources($resourceId, $subjectAreas)
     {
         $ids = array();
