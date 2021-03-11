@@ -80,6 +80,11 @@ class Resource extends Model
         return $this->belongsToMany(TaxonomyTerm::class, 'resource_authors', 'resource_id', 'tid');
     }
 
+    public function translators()
+    {
+        return $this->belongsToMany(TaxonomyTerm::class, 'resource_translators', 'resource_id', 'tid');
+    }
+
     public function comments()
     {
         return $this->hasMany(ResourceComment::class);
