@@ -87,7 +87,7 @@ class RegisterController extends Controller
                 'gender' => 'required',
                 'country' => 'required',
                 'city' => 'nullable',
-                'g-recaptcha-response' => 'captcha'
+                'g-recaptcha-response' => 'required|captcha'
             ],
             $messages = [
                 'phone.unique' => __('The phone number has already been taken.'),
