@@ -970,7 +970,7 @@ aside .sub-subject-show {
 }
 
 .glossary-icon i {
-    color: #3c475e; !important;
+    color: #3c475e;
 }
 
 .resource-view .resource-icons-group i.active {
@@ -1343,8 +1343,20 @@ tr:nth-child(even){background-color: #f2f2f2}
         display: none;
     }
 
+
+
+    .resource-view .resource-view-title {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
     .glossary-icon {
-        display: block;
+        float: right;
+    }
+
+    .glossary-icon i {
+        color: #b5afae;
     }
 
     .resource-view .resource-view-related-items {
