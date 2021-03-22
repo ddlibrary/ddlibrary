@@ -22,12 +22,17 @@
                     <h2>{{ $resource->title }}</h2>
                 </header>
                 <div class="resource-icons">
-                    @if (isLibraryManager() or isAdmin())
-                    <a href="{{ URL::to($resource->language.'/resources/edit/step1/'.$resource->id) }}">@lang('Edit')</a>
-                    @endif
-                    <i class="fas fa-lg fa-star {{ count($resource->favorites)?"active":"" }}" title="@lang('Favorite this resource')" id="resourceFavorite" onclick="favorite('resourceFavorite','{{ URL::to("resources/favorite/") }}','{{ $resource->id }}','{{ Auth::id() }}')"></i>
-                    <i class="fas fa-lg fa-share-square"  title="@lang('Share this resource')"></i>
-                    <i class="fas fa-lg fa-flag" title="@lang('Flag this resource')"></i>
+                    <div class="resource-icons-group">
+                        @if (isLibraryManager() or isAdmin())
+                        <a href="{{ URL::to($resource->language.'/resources/edit/step1/'.$resource->id) }}">@lang('Edit')</a>
+                        @endif
+                        <i class="fas fa-lg fa-star {{ count($resource->favorites)?"active":"" }}" title="@lang('Favorite this resource')" id="resourceFavorite" onclick="favorite('resourceFavorite','{{ URL::to("resources/favorite/") }}','{{ $resource->id }}','{{ Auth::id() }}')"></i>
+                        <i class="fas fa-lg fa-share-square"  title="@lang('Share this resource')"></i>
+                        <i class="fas fa-lg fa-flag" title="@lang('Flag this resource')"></i>
+                    </div>
+                    <div class="glossary-icon">
+                         <a href="/glossary" ><i class="fas fa-lg fa-globe" title="@lang('DDL Glossary')" > @lang('Glossary')</i></a>
+                    </div>
                 </div>
 
                 <!-- The Share Modal -->
@@ -260,9 +265,6 @@
         @if (isAdmin())
         <p>@lang('Added by'): <a href="{{ route('user-view',isset($resource->user)?$resource->user->id:"") }}">{{ isset($resource->user)?$resource->user->username:"" }}</a>
         @endif
-        <div>
-            <a href="{{ URL::to('/glossary') }}">@lang('DDL Glossary')</a>
-        </div>
         @if (isAdmin())
         <div>
             <br>
