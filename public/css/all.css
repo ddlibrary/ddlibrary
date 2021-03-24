@@ -367,6 +367,25 @@ header #toggle {
     font-size: 1rem;
 }
 
+.badge {
+    display: inline-block;
+    padding: 0.25em 0.4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.badge-secondary {
+    color: #fff;
+    background-color: #6c757d;
+}
+
+
 .language-content .username {
     color: #ffffff!important;
     text-decoration: underline;
@@ -960,30 +979,19 @@ aside .sub-subject-show {
     min-width: 7em;
 }
 
-.resource-view .resource-icons-group i {
+.resource-view .resource-icons i {
     margin: 5px;
     color: #ced6dc;
 }
 
-.glossary-icon{
-    padding-top: 10px;
-}
-
-.glossary-icon i {
-    color: #3c475e;
-}
-
-.resource-view .resource-icons-group i.active {
-    color: #ffa800;
-}
-
-.glossary-icon i.active {
+.resource-view .resource-icons i.active {
     color: #ffa800;
 }
 
 .resource-view .resource-icons i:focus, .resource-view .resource-icons i:hover {
     color: #ffa800;
 }
+
 
 .resource-view-title-box img:first-child {
     display: none;
@@ -1339,24 +1347,8 @@ tr:nth-child(even){background-color: #f2f2f2}
         display: none;
     }
 
-    .resource-icons-group {
+    .resource-view .resource-icons {
         display: none;
-    }
-
-
-
-    .resource-view .resource-view-title {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .glossary-icon {
-        float: right;
-    }
-
-    .glossary-icon i {
-        color: #b5afae;
     }
 
     .resource-view .resource-view-related-items {
@@ -1776,30 +1768,6 @@ fieldset[disabled] .btn-success.focus {
 
 .survey_content{
     padding: 20px;
-}
-
-.user-nav a{
-    margin-right: 25px;
-    color: #000;
-}
-
-.user-nav a.active{
-    color: #da7437;
-}
-
-.user-nav hr{
-    margin-bottom: 20px;
-}
-
-.tnid-input::-webkit-outer-spin-button,
-.tnid-input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-}
-
-.tnid-input {
-    -moz-appearance:textfield; /* Firefox */
 }
 /*!
  * Font Awesome Free 5.5.0 by @fontawesome - https://fontawesome.com

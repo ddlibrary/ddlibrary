@@ -206,10 +206,12 @@
             @if($resource->attachments)
                 @foreach($resource->attachments as $file)
                     <h4>@lang('File :id', ['id' => $loop->iteration])</h4>
+                    <h4><span class="badge badge-secondary">@lang($file->file_mime)</span></h4>
                     <br>
                     @if (Auth::check())
                         @if($file->file_mime=="application/pdf")
                             <iframe src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}#toolbar=0" height="500" width="100%"></iframe>
+
                         @elseif($file->file_mime == "audio/mpeg")
                             <span class="download-item">
                                 <audio controls>
