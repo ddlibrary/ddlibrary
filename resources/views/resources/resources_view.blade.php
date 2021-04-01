@@ -206,7 +206,12 @@
             @if($resource->attachments)
                 @foreach($resource->attachments as $file)
                     <h4>@lang('File :id', ['id' => $loop->iteration])</h4>
-                    <h4><span class="badge badge-secondary">@lang($file->file_mime)</span></h4>
+                    <h4><span class="badge badge-secondary">
+                        @php
+                          /* @var $file */
+                          echo(pathinfo($file->file_name, PATHINFO_EXTENSION));
+                        @endphp
+                    </span></h4>
                     <br>
                     @if (Auth::check())
                         @if($file->file_mime=="application/pdf")
