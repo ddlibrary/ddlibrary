@@ -58,6 +58,9 @@ class AnalyticsController extends Controller
             } else if (request('type') == "resource_format"){
                 $totalResourcesByFormat = $resourceModel->totalResourcesByFormat($lang);
                 return view('admin.analytics.resource_format', compact('totalResourcesByFormat')); 
+            } else if (request('type') == "download_count"){
+                $downloadsCount = $resourceModel->downloadCounts($date_from, $date_to);
+                return view('admin.analytics.resource_downloads_count', compact('downloadsCount')); 
             } 
         } else if(request('source') == "fb") {
             $fb = new Facebook();

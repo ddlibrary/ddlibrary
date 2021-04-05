@@ -56,6 +56,7 @@
                                             <option value="resource_level">Total Resources by Level</option>
                                             <option value="resource_type">Total Resources by Material Type</option>
                                             <option value="resource_format">Total Resources by Format</option>
+                                            <option value="download_count">Downloaded Resources Count</option>
                                         </select>
                                     </td>
 
