@@ -216,17 +216,18 @@
         <article class="resource-view-details">
             <h3>@lang('Download')</h3>
             <div class="download-box">
-            @if($resource->attachments)
-                @foreach($resource->attachments as $file)
-                    <h4>@lang('File :id', ['id' => $loop->iteration])</h4>
-                    <h4><span class="badge badge-secondary">
-                        @php
-                          /* @var $file */
-                          echo(pathinfo($file->file_name, PATHINFO_EXTENSION));
-                        @endphp
-                    </span></h4>
-                    <br>
-                    @if (Auth::check())
+            @if (Auth::check())
+                @if($resource->attachments)
+                    @foreach($resource->attachments as $file)
+                        <h4>@lang('File :id', ['id' => $loop->iteration])</h4>
+                        <h4>
+                            <span class="badge badge-secondary">
+                                @php
+                                   /* @var $file */
+                                   echo(pathinfo($file->file_name, PATHINFO_EXTENSION));
+                                @endphp
+                            </span>
+                        </h4>
                         @if($file->file_mime=="application/pdf")
                             <iframe src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}#toolbar=0" height="500" width="100%"></iframe>
                         @elseif($file->file_mime == "application/msword" || $file->file_mime == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
@@ -240,15 +241,18 @@
                         @else
                             <span class="download-item no-preview">@lang('No preview available.')</span>
                         @endif
-                    @endif
-                {{-- revert to older direct download format until we have the correct packages installed for PDF watermarking <span class="download-item"><a class="btn btn-primary"
-                                                href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}"><i
-                    class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a>
-                <br>
-                <hr>
-                </span>--}}
+
+                    {{-- revert to older direct download format until we have the correct packages installed for PDF watermarking <span class="download-item"><a class="btn btn-primary"
+                                                    href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}"><i
+                        class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a>
+                    <br>
+                    <hr>
+                    </span>--}}
                         <span class="download-item"><a class="btn btn-primary" href="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}"><i class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a><br><hr></span>
-                @endforeach
+                    @endforeach
+                @endif
+            @else
+                <h4 class="download-resource">@lang('Please login to download this resource.')</h4>
             @endif
             </div>
         </article>
@@ -315,7 +319,7 @@
             </div>
         </form>
         @else
-        <h2>@lang('Please login to add comment.')</h2>
+        <h4 class="download-resource">@lang('Please login to add comments.')</h4>
         @endif
     </section>
     @else

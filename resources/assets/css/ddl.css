@@ -725,6 +725,10 @@ aside .sub-subject-show {
     border-radius: 5px;
 }
 
+.download-resource {
+    color: #777777;
+}
+
 .resource-view .social-share{
     text-align: center;
     padding: 30px;
@@ -1104,4 +1108,5 @@ tr:nth-child(even){background-color: #f2f2f2}
         display: none;
     }
 }
+
 
