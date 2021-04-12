@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Glossary;
+use App\GlossarySubjects;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -20,7 +21,7 @@ class GlossaryController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return BladeView|false|Factory|Application|Response|View
+     * @return Application|BladeView|Factory|false|View
      */
     public function index(Request $request)
     {
@@ -50,8 +51,11 @@ class GlossaryController extends Controller
                 ->paginate(50);
         }
 
+        $locale = app()->getLocale();
+        $glossary_subjects = GlossarySubjects::orderBy('id')->pluck($locale, 'id');
+
         $filters = $request;
-        return view('glossary.glossary_list', compact('glossary','glossary_flagged', 'filters'));
+        return view('glossary.glossary_list', compact('glossary','glossary_flagged', 'filters', 'glossary_subjects'));
     }
 
     /**
@@ -61,7 +65,9 @@ class GlossaryController extends Controller
      */
     public function create()
     {
-        return view('glossary.create');
+        $locale = app()->getLocale();
+        $glossary_subjects = GlossarySubjects::orderBy('id')->pluck($locale, 'id');
+        return view('glossary.create', compact('glossary_subjects'));
     }
 
     /**
@@ -100,7 +106,7 @@ class GlossaryController extends Controller
     {
         $data = $request['data'];
         $glossary_id = (int)$data[0];  // id of the glossary item
-        $type = $data[1];  // two inputs are possible 'glossary' or 'subject'
+        $type = $data[1];  // possible input - 'glossary'
         $locale = $data[2];  // valid when $type is 'glossary'. Can be 'en', 'fa' or 'ps'
         $string = htmlspecialchars_decode($data[3]);  // the edited string
 
@@ -114,7 +120,6 @@ class GlossaryController extends Controller
             elseif ($locale == 'fa') $glossary->name_fa = $string;
             elseif ($locale == 'ps') $glossary->name_ps = $string;
         }
-        elseif ($type == 'subject') $glossary->subject = $string;
 
         if (!isAdmin()) $glossary->flagged_for_review = true;
 
