@@ -27,17 +27,12 @@
                     <textarea class="form-control" rows="4" cols="100" name="pashto" id="pashto"></textarea>
                 </div>
                 <div class="form-item">
-                    <label for="subject"><strong>@lang('Subject')</strong> <span class="form-required" title="This field is required.">*</span></label>
-                    <input class="form-control" type="text" size="40" list="subject_list" id="subject" name="subject" />
-                    <datalist id="subject_list">
-                        <option value="physics" {{ (isset($filters['subject']) && $filters['subject'] == "physics")?"selected":"" }}>@lang('Physics')</option>
-                        <option value="math" {{ (isset($filters['subject']) && $filters['subject'] == "math")?"selected":"" }}>@lang('Math')</option>
-                        <option value="chemistry" {{ (isset($filters['subject']) && $filters['subject'] == "chemistry")?"selected":"" }}>@lang('Chemistry')</option>
-                        <option value="IT" {{ (isset($filters['subject']) && $filters['subject'] == "IT")?"selected":"" }}>@lang('IT')</option>
-                        <option value="Biology" {{ (isset($filters['subject']) && $filters['subject'] == "Biology")?"selected":"" }}>@lang('Biology')</option>
-                        <option value="Agriculture" {{ (isset($filters['subject']) && $filters['subject'] == "Agriculture")?"selected":"" }}>@lang('Agriculture')</option>
-                        <option value="Sociology" {{ (isset($filters['subject']) && $filters['subject'] == "Sociology")?"selected":"" }}>@lang('Sociology')</option>
-                    </datalist>
+                    <select name="subject" class="form-control">
+                        <label for="subject"><strong>@lang('Subject')</strong> <span class="form-required" title="This field is required.">*</span></label>
+                        @foreach($glossary_subjects as $id => $subject)
+                            <option value="{{ $id }}" >{{ $subject }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="left-side">
                     <input class="form-control submit-button btn btn-primary" type="submit" value="@lang('Submit')">
