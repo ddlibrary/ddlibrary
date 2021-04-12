@@ -203,9 +203,9 @@
         <article class="resource-view-details">
             <h3>@lang('Download')</h3>
             <div class="download-box">
-            @if($resource->attachments)
-                @foreach($resource->attachments as $file)
-                    @if (Auth::check())
+            @if (Auth::check())
+                @if($resource->attachments)
+                    @foreach($resource->attachments as $file)
                         <h4>@lang('File :id', ['id' => $loop->iteration])</h4>
                         <h4>
                             <span class="badge badge-secondary">
@@ -235,11 +235,10 @@
                     <hr>
                     </span>--}}
                         <span class="download-item"><a class="btn btn-primary" href="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}"><i class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a><br><hr></span>
-
-                    @else
-                        <h4 class="download-resource">@lang('Please login to download this resource.')</h4>
-                    @endif
-                @endforeach
+                    @endforeach
+                @endif
+            @else
+                <h4 class="download-resource">@lang('Please login to download this resource.')</h4>
             @endif
             </div>
         </article>
@@ -314,5 +313,6 @@
         @endif
 </section>
 @endsection
+
 
 
