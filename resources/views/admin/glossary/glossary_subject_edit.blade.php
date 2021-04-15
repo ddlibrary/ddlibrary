@@ -13,6 +13,7 @@
                 </li>
                 <li class="breadcrumb-item active">@if($glossary_subject)Edit @else Create @endif</li>
             </ol>
+            @include('layouts.messages')
             <div class="row">
                 <div class="col-lg-12">
                     <!-- Example Bar Chart Card-->
@@ -101,7 +102,8 @@
                                         </tbody>
                                     </table>
                                     <input type="hidden" name="id" value="@if($glossary_subject){{ $glossary_subject->id }}@else new @endif">
-                                    <span style="display: block; padding-bottom: 10px;">* At least one of the above fields is required.</span>
+                                    <span style="display: block; padding-bottom: 10px;">* All of the fields are required. If you do not know the
+                                        translation of a subject word in a particular language, fill in the English version as a stopgap.</span>
                                     <input class="btn btn-outline-dark" type="submit" value="@if($glossary_subject)Update @else Create @endif">
                                 </form>
                             </div>

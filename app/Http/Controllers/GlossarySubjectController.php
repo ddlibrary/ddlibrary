@@ -78,15 +78,15 @@ class GlossarySubjectController extends Controller
     public function update(Request $request)
     {
         $validatedData = $request->validate([
-            'english'       =>  'required_without_all:farsi,pashto,munji,nuristani,pashayi,shughni,swahili,uzbek',
-            'farsi'         =>  'required_without_all:english,pashto,munji,nuristani,pashayi,shughni,swahili,uzbek',
-            'pashto'        =>  'required_without_all:farsi,english,munji,nuristani,pashayi,shughni,swahili,uzbek',
-            'munji'         =>  'required_without_all:english,farsi,pashto,nuristani,pashayi,shughni.swahili,uzbek',
-            'nuristani'     =>  'required_without_all:english,farsi,pashto,munji,pashayi,shughni,swahili,uzbek',
-            'pashayi'       =>  'required_without_all:english,farsi,pashto,munji,nuristani,shughni,swahili,uzbek',
-            'shughni'       =>  'required_without_all:english,farsi,pashto,munji,nuristani,pashayi,swahili,uzbek',
-            'swahili'       =>  'required_without_all:english,farsi,pashto,munji,nuristani,pashayi,shughni,uzbek',
-            'uzbek'         =>  'required_without_all:english,farsi,pashto,munji,nuristani,pashayi,shughni,swahili',
+            'english'       =>  'required',
+            'farsi'         =>  'required',
+            'pashto'        =>  'required',
+            'munji'         =>  'required',
+            'nuristani'     =>  'required',
+            'pashayi'       =>  'required',
+            'shughni'       =>  'required',
+            'swahili'       =>  'required',
+            'uzbek'         =>  'required',
             'id'            =>  'required'
         ]);
 
