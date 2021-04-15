@@ -193,6 +193,11 @@ Route::group(
     Route::get('/admin/analytics','AnalyticsController@index')->middleware('admin');
     Route::post('/admin/analytics','AnalyticsController@show')->name('analytics')->middleware('admin');
     Auth::routes();
+    //admin, glossary
+    Route::get('admin/glossary_subjects','GlossarySubjectController@index')->middleware('admin')->name('glossary_subjects_list');;
+    Route::get('admin/glossary_subjects/create','GlossarySubjectController@create')->middleware('admin');
+    Route::get('admin/glossary_subjects/edit/{id}','GlossarySubjectController@edit')->middleware('admin');
+    Route::post('admin/glossary_subjects/update','GlossarySubjectController@update')->middleware('admin')->name('glossary_subjects_update');
     //StoryWeaver
     Route::get('/storyweaver/confirm/{landing_page}', 'StoryWeaverController@storyWeaverConfirmation')->name('storyweaver-confirm')->middleware('auth');
     Route::get('/storyweaver/auth', 'StoryWeaverController@storyWeaverAuth')->name('storyweaver-auth')->middleware('auth');

@@ -21,26 +21,10 @@ DDL Glossary
             <td style="width:5%">@lang('Subject'):</td>
             <td style="width:5%">
                 <select name="subject" class="form-control">
-                    <option value="">@lang('Any')</option>
-                    <option value="physics" {{ (isset($filters['subject']) && $filters['subject'] == "physics")?"selected":"" }}>@lang('Physics')</option>
-                    <option value="math" {{ (isset($filters['subject']) && $filters['subject'] == "math")?"selected":"" }}>@lang('Math')</option>
-                    <option value="chemistry" {{ (isset($filters['subject']) && $filters['subject'] == "chemistry")?"selected":"" }}>@lang('Chemistry')</option>
-                    <option value="IT" {{ (isset($filters['subject']) && $filters['subject'] == "IT")?"selected":"" }}>@lang('IT')</option>
-                    <option value="Biology" {{ (isset($filters['subject']) && $filters['subject'] == "Biology")?"selected":"" }}>@lang('Biology')</option>
-                    <option value="Agriculture" {{ (isset($filters['subject']) && $filters['subject'] == "Agriculture")?"selected":"" }}>@lang('Agriculture')</option>
-                    <option value="Sociology" {{ (isset($filters['subject']) && $filters['subject'] == "Sociology")?"selected":"" }}>@lang('Sociology')</option>
-                    <option value="accounting" {{ (isset($filters['subject']) && $filters['subject'] == "accounting")?"selected":"" }}>@lang('Accounting')</option>
-                    <option value="political_science" {{ (isset($filters['subject']) && $filters['subject'] == "political_science")?"selected":"" }}>@lang('Political science')</option>
-                    <option value="literature" {{ (isset($filters['subject']) && $filters['subject'] == "literature")?"selected":"" }}>@lang('Literature')</option>
-                    <option value="arts" {{ (isset($filters['subject']) && $filters['subject'] == "arts")?"selected":"" }}>@lang('Arts')</option>
-                    <option value="music" {{ (isset($filters['subject']) && $filters['subject'] == "music")?"selected":"" }}>@lang('Music')</option>
-                    <option value="food_nutrition" {{ (isset($filters['subject']) && $filters['subject'] == "food_nutrition")?"selected":"" }}>@lang('Food & Nutrition')</option>
-                    <option value="health" {{ (isset($filters['subject']) && $filters['subject'] == "health")?"selected":"" }}>@lang('Health')</option>
-                    <option value="economics" {{ (isset($filters['subject']) && $filters['subject'] == "economics")?"selected":"" }}>@lang('Economics')</option>
-                    <option value="law" {{ (isset($filters['subject']) && $filters['subject'] == "law")?"selected":"" }}>@lang('Law')</option>
-                    <option value="language" {{ (isset($filters['subject']) && $filters['subject'] == "language")?"selected":"" }}>@lang('Language')</option>
-                    <option value="education" {{ (isset($filters['subject']) && $filters['subject'] == "education")?"selected":"" }}>@lang('Education')</option>
-                    <option value="earth_science" {{ (isset($filters['subject']) && $filters['subject'] == "earth_science")?"selected":"" }}>@lang('Earth Science')</option>
+                    <option value="">@lang('All')</option>
+                    @foreach($glossary_subjects as $id => $subject)
+                        <option value="{{ $id }}" {{ (isset($filters['subject']) && $filters['subject'] ==  $id)?"selected":"" }}>{{ $subject }}</option>
+                    @endforeach
                 </select>
             </td>
             @if (isLibraryManager() or isAdmin())
@@ -77,14 +61,14 @@ DDL Glossary
     @endif
     @if ($glossary_flagged)
         <h3>@lang('Flagged for review')</h3>
-        @include('glossary.table', ['glossary' => $glossary_flagged, 'flagged_queue' => true])
+        @include('glossary.table', ['glossary' => $glossary_flagged, 'glossary_subjects' => $glossary_subjects, 'flagged_queue' => true])
         <br>
         <div class="resource-pagination">
             {{ $glossary_flagged->appends(request()->input())->links() }}
         </div>
         <br>
     @endif
-    @include('glossary.table', ['glossary' => $glossary, 'flagged_queue' => false])
+    @include('glossary.table', ['glossary' => $glossary, 'glossary_subjects' => $glossary_subjects, 'flagged_queue' => false])
     <br>
     <div class="resource-pagination">
         {{ $glossary->appends(request()->input())->links() }}

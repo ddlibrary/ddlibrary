@@ -42,7 +42,7 @@
             <tbody>
             @foreach ($comments as $indexkey => $comment)
               <tr>
-                <td>{{ (($comments->currentPage() - 1) * 20)+$indexkey + 1 }}</td>
+                <td>{{ (($comments->currentPage() - 1) * 10)+$indexkey + 1 }}</td>
                 <td><a href="{{ URL::to('resource/'.$comment->resource_id) }}" title="Resource Title">{{ $comment->resource->title }}</a></td>
                 <td><a href="{{ URL::to('user/'.$comment->user_id) }}" title="User">{{ $comment->user->username }}</a></td>
                 <td>{{ $comment->comment }}</td>
