@@ -32,6 +32,12 @@
                                 <th>ENGLISH</th>
                                 <th>FARSI</th>
                                 <th>PASHTO</th>
+                                <th>MUNJI</th>
+                                <th>NURISTANI</th>
+                                <th>PASHAYI</th>
+                                <th>SHUGHNI</th>
+                                <th>SWAHILI</th>
+                                <th>UZBEK</th>
                                 <th>OPERATIONS</th>
                             </tr>
                             </thead>
@@ -41,6 +47,12 @@
                                 <th>ENGLISH</th>
                                 <th>FARSI</th>
                                 <th>PASHTO</th>
+                                <th>MUNJI</th>
+                                <th>NURISTANI</th>
+                                <th>PASHAYI</th>
+                                <th>SHUGHNI</th>
+                                <th>SWAHILI</th>
+                                <th>UZBEK</th>
                                 <th>OPERATIONS</th>
                             </tr>
                             </tfoot>
@@ -51,6 +63,12 @@
                                     <td>{{ $subject->en }}</td>
                                     <td>{{ $subject->fa }}</td>
                                     <td>{{ $subject->ps }}</td>
+                                    <td>{{ $subject->mj }}</td>
+                                    <td>{{ $subject->no }}</td>
+                                    <td>{{ $subject->pa }}</td>
+                                    <td>{{ $subject->sh }}</td>
+                                    <td>{{ $subject->sw }}</td>
+                                    <td>{{ $subject->uz }}</td>
                                     <td>
                                         <a href="{{ URL::to('admin/glossary_subjects/edit/'.$subject->id) }}">Edit</a>
                                     </td>

@@ -196,7 +196,6 @@ Route::group(
     //admin, glossary
     Route::get('admin/glossary_subjects','GlossarySubjectController@index')->middleware('admin')->name('glossary_subjects_list');;
     Route::get('admin/glossary_subjects/create','GlossarySubjectController@create')->middleware('admin');
-    Route::post('admin/glossary_subjects/store','GlossarySubjectController@store')->middleware('admin')->name('glossary_subjects_store');
     Route::get('admin/glossary_subjects/edit/{id}','GlossarySubjectController@edit')->middleware('admin');
     Route::post('admin/glossary_subjects/update','GlossarySubjectController@update')->middleware('admin')->name('glossary_subjects_update');
     //StoryWeaver
