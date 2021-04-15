@@ -14,6 +14,7 @@ class CreateGlossarySubjects extends Migration
     public function up()
     {
         Schema::create('glossary_subjects', function (Blueprint $table) {
+            $table->engine = “InnoDB”;
             $table->increments('id');
             $table->string('en', 100)->nullable()->default('');
             $table->string('fa', 100)->nullable()->default('');
