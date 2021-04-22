@@ -1046,6 +1046,18 @@ aside .sub-subject-show {
 .social-share i:hover {
     color: #ffa800;
 }
+.glossary-icon{
+    display: flex;
+    float: right;
+    padding-top: 10px;
+    color: #777777;
+}
+
+.glossary-text{
+    font-family:Arial !important;
+    font-size: 15px !important;
+    font-weight: lighter;
+}
 
 .resource-view .resource-view-related-items {
     width: 288px;
@@ -1412,6 +1424,7 @@ tr:nth-child(even){background-color: #f2f2f2}
         display: none;
     }
 }
+
 
 
 
