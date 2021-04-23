@@ -78,7 +78,7 @@ class RegisterController extends Controller
         return Validator::make(
             $data,
             [
-                'email' => 'required_without:phone|string|email|max:255|unique:users|nullable',
+                'email' => 'required_without:phone|string|email|max:255|unique:users|nullable|regex:/^([a-zA-Z\d\._-]+)@(?!fmail.com)/', //Regex to block fmail.com domain
                 'username' => 'required|string|max:255',
                 'password' => 'confirmed|required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',  // Regex for at least one digit and one special character
                 'first_name' => 'required|string|max:255',
@@ -91,10 +91,12 @@ class RegisterController extends Controller
             ],
             $messages = [
                 'phone.unique' => __('The phone number has already been taken.'),
-                'password.regex' => __('The password you entered doesn\'t have any special characters (!@#$%^&.) and (or) digits (0-9).')
+                'password.regex' => __('The password you entered doesn\'t have any special characters (!@#$%^&.) and (or) digits (0-9).'),
+                'email.regex' => __('Please enter a valid email.')
             ]
         );
     }
+
 
     /**
      * Create a new user instance after a valid registration.
@@ -158,3 +160,4 @@ class RegisterController extends Controller
                         ?: redirect($this->redirectPath());
     }
 }
+
