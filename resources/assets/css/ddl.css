@@ -861,12 +861,6 @@ aside .sub-subject-show {
     padding-top: 6px;
 }
 
-.glossary-resource-icon {
-    font-family:Arial !important;
-    color: tomato !important;
-    font-weight: normal;
-}
-
 /* Start - The Modal */
 .modal {
     display: none; /* Hidden by default */
