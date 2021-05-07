@@ -80,6 +80,11 @@ class Resource extends Model
         return $this->belongsToMany(TaxonomyTerm::class, 'resource_authors', 'resource_id', 'tid');
     }
 
+    public function translators()
+    {
+        return $this->belongsToMany(TaxonomyTerm::class, 'resource_translators', 'resource_id', 'tid');
+    }
+
     public function comments()
     {
         return $this->hasMany(ResourceComment::class);
@@ -463,6 +468,20 @@ class Resource extends Model
             ->orderBy('total','DESC')
             ->get();
         return $records;   
+    }
+
+    //Total resources by attachment type (format)
+    public function downloadCounts($date_from, $date_to)
+    {
+        $downloads = DB::table('download_counts')
+            ->select(
+                DB::raw('count(id) as total')
+            )
+            ->when($date_from, function($query) use($date_from, $date_to){
+                return $query->whereBetween('created_at', [$date_from, $date_to]);
+            })
+            ->first()->total;
+        return $downloads;
     }
 
     public function getRelatedResources($resourceId, $subjectAreas)

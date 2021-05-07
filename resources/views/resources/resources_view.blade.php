@@ -120,12 +120,25 @@
             <hr>
             {!! fixImage($resource->abstract, $resource->id) !!}
         </article>
+
+        @if($resource->authors->count())
         <article class="resource-view-details">
             <h3>@lang('Author')</h3>
             @foreach ($resource->authors AS $author)
             <p>{{ $author->name }}</p>
             @endforeach
         </article>
+        @endif
+
+        @if($resource->translators->count())
+        <article class="resource-view-details">
+            <h3>@lang('Translator')</h3>
+            @foreach ($resource->translators AS $translator)
+            <p>{{ $translator->name }}</p>
+            @endforeach
+        </article>
+        @endif
+
         <article class="resource-view-details">
             <h3>@lang('Resource Level')</h3>
             @foreach ($resource->levels AS $level)
@@ -216,7 +229,8 @@
                         </h4>
                         @if($file->file_mime=="application/pdf")
                             <iframe src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}#toolbar=0" height="500" width="100%"></iframe>
-
+                        @elseif($file->file_mime == "application/msword" || $file->file_mime == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
+                            <iframe src="{{ URL::to(config('constants.google_doc_viewer_url').config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name.'&embedded=true') }}" height="500" width="100%"></iframe>
                         @elseif($file->file_mime == "audio/mpeg")
                             <span class="download-item">
                                 <audio controls>

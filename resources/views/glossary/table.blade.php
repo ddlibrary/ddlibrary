@@ -42,11 +42,11 @@
                     {{ $item->name_ps }}
                 @endif
             </td>
-            <td @if (isLibraryManager() or isAdmin()) contenteditable="true" data-id="{{ $item->id }}" data-type="subject" data-language="en" @endif>
+            <td>
                 @if (! $item->subject)
                     -
                 @else
-                    {{ __($item->subject) }}
+                    {{ $glossary_subjects[$item->subject] }}
                 @endif
             </td>
             @if (isLibraryManager() or isAdmin())
