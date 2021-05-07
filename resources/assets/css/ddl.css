@@ -510,7 +510,7 @@ select.form-control:focus::-ms-value {
 }
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-.resource-list .accordion .active, .resource-list .accordion:hover {
+.resource-list .accordion .active, .resource-list .accordion:hover ,.glossary-accordion:hover {
     background-color: #ccc;
 }
 
