@@ -18,7 +18,7 @@
         "imagemin-webpack-plugin": "^2.4.2",
         "jquery": "^3.5",
         "laravel-mix": "^4.0.15",
-        "lodash": "^4.17.19",
+        "lodash": "^4.17.21",
         "popper.js": "^1.12",
         "vue": "^2.5.7"
     }
