@@ -30,9 +30,6 @@
                         <i class="fas fa-lg fa-share-square"  title="@lang('Share this resource')"></i>
                         <i class="fas fa-lg fa-flag" title="@lang('Flag this resource')"></i>
                     </div>
-                    <div class="glossary-icon">
-                         <a href="/glossary" ><i class="fas fa-lg fa-globe" title="@lang('DDL Glossary')" > @lang('Glossary')</i></a>
-                    </div>
                 </div>
 
                 <!-- The Share Modal -->
@@ -214,7 +211,9 @@
             <p>{{ count($resource->creativeCommons)?$resource->creativeCommons[0]->name:"" }}</p>
         </article>
         <article class="resource-view-details">
-            <h3>@lang('Download')</h3>
+            <h3>@lang('Download')
+            <a href="/glossary" class="glossary-icon"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text">&nbsp;@lang('Glossary')</span> </i></a>
+            </h3>
             <div class="download-box">
             @if (Auth::check())
                 @if($resource->attachments)
@@ -327,5 +326,7 @@
         @endif
 </section>
 @endsection
+
+
 
 

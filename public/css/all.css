@@ -814,7 +814,7 @@ select.form-control:focus::-ms-value {
 }
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-.resource-list .accordion .active, .resource-list .accordion:hover {
+.resource-list .accordion .active, .resource-list .accordion:hover ,.glossary-accordion:hover {
     background-color: #ccc;
 }
 
@@ -1045,6 +1045,39 @@ aside .sub-subject-show {
 
 .social-share i:hover {
     color: #ffa800;
+}
+.glossary-icon{
+    display: flex;
+    float: right;
+    padding-top: 10px;
+    color: #777777;
+}
+
+.glossary-icon-sidebar{
+    color: #444;
+}
+.glossary-accordion{
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    box-sizing: border-box;
+    border-radius: .1rem;
+    -webkit-border-radius: .1rem;
+    -moz-border-radius: .1rem;
+}
+.glossary-text-sidebar{
+    font-family:Arial !important;
+    font-weight: normal !important;
+}
+.glossary-text{
+    font-family:Arial !important;
+    font-size: 15px !important;
+    font-weight: lighter;
 }
 
 .resource-view .resource-view-related-items {
@@ -1412,6 +1445,7 @@ tr:nth-child(even){background-color: #f2f2f2}
         display: none;
     }
 }
+
 
 
 

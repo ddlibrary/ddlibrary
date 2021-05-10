@@ -53,6 +53,11 @@
             @endforeach
         </ul>
         </fieldset>
+        <fieldset>
+            <legend class="glossary-accordion">
+                <a href="/glossary" class="glossary-icon-sidebar"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text-sidebar">&nbsp;@lang('Glossary')</span> </i></a>
+            </legend>
+        </fieldset>
         </form>
     </aside>
     
