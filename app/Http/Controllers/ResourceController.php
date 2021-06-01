@@ -155,6 +155,9 @@ class ResourceController extends Controller
 
         $resource = Resource::findOrFail($resourceId);
 
+        if ($resource->status == 0 && !(isAdmin() || isLibraryManager()))  // We don't want anyone else to unpublished resources
+            abort(403);
+
         $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
         $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
         if($resource){
@@ -680,7 +683,7 @@ class ResourceController extends Controller
 
         $resource = $request->session()->get('resource1');
         if(count($resource)){
-            $resource = $resource;
+
         }else{
             $resource = (array) $myResources->getResources($resourceId);
         }
