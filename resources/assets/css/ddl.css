@@ -665,7 +665,8 @@ aside .sub-subject-show {
     padding: 5px;
 }
 
-.resource-view .resource-view-title {
+.resource-view .resource-view-title,
+.resource-view .resource-view-download {
     display: flex;
     justify-content: space-between;
 }
