@@ -120,7 +120,53 @@
             <hr>
             {!! fixImage($resource->abstract, $resource->id) !!}
         </article>
+        <article class="resource-view-details">
+            <div class="resource-view-download">
+            <h3 style="display: inline;">@lang('Download')</h3>
+            <a href="/glossary" class="glossary-icon"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text">&nbsp;@lang('Glossary')</span> </i></a>
+            </div>
+            <div class="download-box">
+                @if (Auth::check())
+                    @if($resource->attachments)
+                        @foreach($resource->attachments as $file)
+                            <h4>@lang('File :id', ['id' => $loop->iteration])</h4>
+                            <h4>
+                            <span class="badge badge-secondary">
+                                @php
+                                    /* @var $file */
+                                    echo(pathinfo($file->file_name, PATHINFO_EXTENSION));
+                                @endphp
+                            </span>
+                            </h4>
+                            @if($file->file_mime=="application/pdf")
+                                <iframe src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}#toolbar=0" height="500" width="100%"></iframe>
+                            @elseif($file->file_mime == "application/msword" || $file->file_mime == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
+                                <iframe src="{{ URL::to(config('constants.google_doc_viewer_url').config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name.'&embedded=true') }}" height="500" width="100%"></iframe>
+                            @elseif($file->file_mime == "audio/mpeg")
+                                <span class="download-item">
+                                <audio controls>
+                                    <source src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}" type="audio/mpeg">
+                                </audio>
+                            </span>
+                            @else
+                                <span class="download-item no-preview">@lang('No preview available.')</span>
+                            @endif
 
+                            {{-- revert to older direct download format until we have the correct packages installed for PDF watermarking <span class="download-item"><a class="btn btn-primary"
+                                                            href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}"><i
+                                class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a>
+                            <br>
+                            <hr>
+                            </span>--}}
+                            <span class="download-item"><a class="btn btn-primary" href="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}"><i class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a><br></span>
+                        @endforeach
+                    @endif
+                @else
+                    <h4 class="download-resource">@lang('Please login to download this resource.')</h4>
+                @endif
+            </div>
+        </article><br>
+        <h3 style="background-color: #77777742; padding: 0 7px 0 7px;">@lang('About this resource')</h3>
         @if($resource->authors->count())
         <article class="resource-view-details">
             <h3>@lang('Author')</h3>
@@ -209,51 +255,6 @@
         <article class="resource-view-details">
             <h3>@lang('License')</h3>
             <p>{{ count($resource->creativeCommons)?$resource->creativeCommons[0]->name:"" }}</p>
-        </article>
-        <article class="resource-view-details">
-            <h3>@lang('Download')
-            <a href="/glossary" class="glossary-icon"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text">&nbsp;@lang('Glossary')</span> </i></a>
-            </h3>
-            <div class="download-box">
-            @if (Auth::check())
-                @if($resource->attachments)
-                    @foreach($resource->attachments as $file)
-                        <h4>@lang('File :id', ['id' => $loop->iteration])</h4>
-                        <h4>
-                            <span class="badge badge-secondary">
-                                @php
-                                   /* @var $file */
-                                   echo(pathinfo($file->file_name, PATHINFO_EXTENSION));
-                                @endphp
-                            </span>
-                        </h4>
-                        @if($file->file_mime=="application/pdf")
-                            <iframe src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}#toolbar=0" height="500" width="100%"></iframe>
-                        @elseif($file->file_mime == "application/msword" || $file->file_mime == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
-                            <iframe src="{{ URL::to(config('constants.google_doc_viewer_url').config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name.'&embedded=true') }}" height="500" width="100%"></iframe>
-                        @elseif($file->file_mime == "audio/mpeg")
-                            <span class="download-item">
-                                <audio controls>
-                                    <source src="{{ URL::to('/storage/'.$resource->id.'/'.$file->id.'/'.$file->file_name) }}" type="audio/mpeg">
-                                </audio>
-                            </span>
-                        @else
-                            <span class="download-item no-preview">@lang('No preview available.')</span>
-                        @endif
-
-                    {{-- revert to older direct download format until we have the correct packages installed for PDF watermarking <span class="download-item"><a class="btn btn-primary"
-                                                    href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}"><i
-                        class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a>
-                    <br>
-                    <hr>
-                    </span>--}}
-                        <span class="download-item"><a class="btn btn-primary" href="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}"><i class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a><br><hr></span>
-                    @endforeach
-                @endif
-            @else
-                <h4 class="download-resource">@lang('Please login to download this resource.')</h4>
-            @endif
-            </div>
         </article>
     </section>
     <aside>
