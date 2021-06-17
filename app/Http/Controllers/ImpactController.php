@@ -18,7 +18,7 @@ class ImpactController extends Controller
         $totalResources     = Resource::count();
         $myresourceView     = new ResourceView;
         $totalSubjects      = TaxonomyTerm::where('vid',8)->where('language', App::getLocale())->count();
-        $monthlyViews       = $myresourceView->where('created_at', '>', \Carbon\Carbon::now()->subDays(30))->count();
+        $monthlyViews       = $myresourceView->where('created_at', '>', \Carbon\Carbon::now()->subDays(30))->whereNotNull('platform')->count();
         return view('impact.impact_page', compact('totalResources','monthlyViews','totalSubjects'));
     }
 }
