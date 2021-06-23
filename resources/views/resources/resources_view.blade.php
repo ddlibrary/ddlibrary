@@ -122,7 +122,7 @@
         </article>
         <article class="resource-view-details">
             <div class="resource-view-download">
-            <h3 style="display: inline;">@lang('Download')</h3>
+            <h3 style="display: inline;">@lang('Please click the button(s) below to download the resource(s)')</h3>
             <a href="/glossary" class="glossary-icon"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text">&nbsp;@lang('Glossary')</span> </i></a>
             </div>
             <div class="download-box">

@@ -768,12 +768,12 @@ aside .sub-subject-show {
     -moz-border-radius: .1rem;
 }
 .glossary-text-sidebar{
-    font-family:Arial !important;
+    font-family: Arial, serif !important;
     font-weight: normal !important;
 }
 .glossary-text{
-    font-family:Arial !important;
-    font-size: 15px !important;
+    font-family: Arial, serif !important;
+    font-size: 17px !important;
     font-weight: lighter;
 }
 
