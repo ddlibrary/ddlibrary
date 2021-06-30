@@ -54,7 +54,7 @@ Route::group(
     Route::get('resources/add/step2', 'ResourceController@createStepTwo')->name('step2')->middleware('auth');
     Route::post('resources/add/step2', 'ResourceController@postStepTwo');
     Route::get('resources/add/step3', 'ResourceController@createStepThree')->name('step3')->middleware('auth');
-    Route::post('resources/add/step3', 'ResourceController@postStepThree');
+    Route::post('resources/add/step3', 'ResourceController@postStepThree')->middleware(ProtectAgainstSpam::class);
     Route::get('resources/attributes/{entity}', 'ResourceController@attributes');
     Route::post('resources/flag', 'ResourceController@flag')->name('flag');
     Route::post('resources/comment', 'ResourceController@comment')->name('comment')->middleware('auth');

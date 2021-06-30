@@ -11,6 +11,7 @@
         @include('layouts.messages')
         <form method="POST" action="{{ route('step3') }}">
         @csrf
+        @honeypot
         <div class="form-item">
             <label for="translation_rights"> 
                 <h2>1. @lang('Translation Rights') {{ en('Translation Rights') }}</h2>
