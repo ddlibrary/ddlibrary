@@ -16,6 +16,7 @@
     <div class="content-body">
         @include('layouts.messages')
         <form method="POST" action="{{ route('login') }}">
+            @honeypot
             @csrf
             <div class="form-item">
                 <input class="form-control{{ $errors->has('user-field') ? ' is-invalid' : '' }}" id="user-field" name="user-field" autocomplete="username" spellcheck="false"  placeholder="@lang('Email or username or phone')" size="40" type="text" value="{{ old('user-field') }}" required autofocus>

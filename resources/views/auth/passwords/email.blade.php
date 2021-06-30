@@ -16,6 +16,7 @@
             @endif
 
             <form method="POST" action="{{ route('password.email') }}">
+                @honeypot
                 @csrf
 
                 <div class="form-item">

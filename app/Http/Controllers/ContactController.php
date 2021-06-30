@@ -4,20 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Contact;
 use App\Setting;
+use BladeView;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Mail\ContactPage;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 class ContactController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return Application|BladeView|Factory|false|View
      */
     public function index()
     {
@@ -27,7 +31,11 @@ class ContactController extends Controller
         return view('admin.contacts.contact_list', compact('records'));
     }
 
-    public function read($id)
+    /**
+     * @param $id
+     * @return RedirectResponse
+     */
+    public function read($id): RedirectResponse
     {
         $contact = Contact::find($id);
         if($contact->isread == 0){
@@ -41,7 +49,11 @@ class ContactController extends Controller
         }
     }
 
-    public function delete($id)
+    /**
+     * @param $id
+     * @return RedirectResponse
+     */
+    public function delete($id): RedirectResponse
     {
         $contact = Contact::find($id);
         $contact->delete();
@@ -52,7 +64,7 @@ class ContactController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return Application|BladeView|Factory|false|View
      */
     public function create()
     {
@@ -65,7 +77,7 @@ class ContactController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return Application|RedirectResponse|Response|Redirector
+     * @return Application|Redirector|RedirectResponse
      * @throws ValidationException
      */
     public function store(Request $request)
@@ -88,54 +100,10 @@ class ContactController extends Controller
         $contact->save();
 
         if(config('mail.send_email') == 'yes'){
-            \Mail::to(Setting::find(1)->website_email)->send(new ContactPage($contact));
+            Mail::to(Setting::find(1)->website_email)->send(new ContactPage($contact));
         }
 
         return redirect('/contact-us')->with('success', __('We received your message and will contact you back soon!'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Contact  $contact
-     * @return Response
-     */
-    public function show(Contact $contact)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Contact  $contact
-     * @return Response
-     */
-    public function edit(Contact $contact)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param  \App\Contact  $contact
-     * @return Response
-     */
-    public function update(Request $request, Contact $contact)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Contact  $contact
-     * @return Response
-     */
-    public function destroy(Contact $contact)
-    {
-        //
-    }
 }

@@ -10,6 +10,8 @@
 |
 */
 // app/Http/routes.php
+use Spatie\Honeypot\ProtectAgainstSpam;
+
 if (env('APP_ENV') === 'production') {
     \URL::forceScheme('https');
 }
@@ -52,7 +54,7 @@ Route::group(
     Route::get('resources/add/step2', 'ResourceController@createStepTwo')->name('step2')->middleware('auth');
     Route::post('resources/add/step2', 'ResourceController@postStepTwo');
     Route::get('resources/add/step3', 'ResourceController@createStepThree')->name('step3')->middleware('auth');
-    Route::post('resources/add/step3', 'ResourceController@postStepThree');
+    Route::post('resources/add/step3', 'ResourceController@postStepThree')->middleware(ProtectAgainstSpam::class);
     Route::get('resources/attributes/{entity}', 'ResourceController@attributes');
     Route::post('resources/flag', 'ResourceController@flag')->name('flag');
     Route::post('resources/comment', 'ResourceController@comment')->name('comment')->middleware('auth');
@@ -69,7 +71,7 @@ Route::group(
     Route::get('delete/file/{resourceId}/{fileName}', 'ResourceController@deleteFile')->name('delete-file');
     //Contact 
     Route::get('contact-us', 'ContactController@create');
-    Route::post('contact-us', 'ContactController@store')->name('contact');
+    Route::post('contact-us', 'ContactController@store')->name('contact')->middleware(ProtectAgainstSpam::class);
     Route::get('admin/contacts', 'ContactController@index')->middleware('admin');
     Route::get('admin/contacts/read/{id}', 'ContactController@read')->middleware('admin');
     Route::get('admin/contacts/delete/{id}', 'ContactController@delete')->middleware('admin');
@@ -192,7 +194,6 @@ Route::group(
     //Analytics
     Route::get('/admin/analytics','AnalyticsController@index')->middleware('admin');
     Route::post('/admin/analytics','AnalyticsController@show')->name('analytics')->middleware('admin');
-    Auth::routes();
     //admin, glossary
     Route::get('admin/glossary_subjects','GlossarySubjectController@index')->middleware('admin')->name('glossary_subjects_list');;
     Route::get('admin/glossary_subjects/create','GlossarySubjectController@create')->middleware('admin');
@@ -216,6 +217,10 @@ Route::group(
     });
     Route::get('/support-library', function() {
         return redirect('page/21');
+    });
+    //Auth
+    Route::middleware(ProtectAgainstSpam::class)->group(function() {
+        Auth::routes();
     });
     Route::get('/logout', function() {
         Auth::logout();

@@ -8,6 +8,7 @@
     <div class="content-body">
         <div class="card-body">
             <form method="POST" action="{{ route('password.request') }}">
+                @honeypot
                 @csrf
                 <input type="hidden" name="token" value="{{ $token }}">
 
