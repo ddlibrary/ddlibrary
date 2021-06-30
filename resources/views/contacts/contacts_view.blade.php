@@ -22,6 +22,7 @@
             </span>
         @endif
         <form method="POST" action="{{ route('contact') }}" style="flex: 1;">
+            @honeypot
             @csrf
             <div class="form-item">
                 <label for="name"> 
@@ -73,10 +74,10 @@
                     </span><br>
                 @endif
             </div>
-            @if(env('CAPTCHA') == 'yes')
-            <div class="form-item">
-                {!! NoCaptcha::display() !!}
-            </div>
+            @if(Config::get('captcha.captcha') == 'yes')
+                <div class="form-item">
+                    {!! NoCaptcha::display() !!}
+                </div>
             @endif
             <div class="left-side">
                 <input class="form-control normalButton" type="submit" value="@lang('Send')">

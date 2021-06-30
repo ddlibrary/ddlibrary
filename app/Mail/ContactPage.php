@@ -22,6 +22,7 @@ class ContactPage extends Mailable
     public function __construct(Contact $contact)
     {
         $this->contact = $contact;
+        $this->replyTo($this->contact->email);
     }
 
     /**
