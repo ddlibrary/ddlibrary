@@ -220,7 +220,7 @@ Route::group(
     });
     //Auth
     Route::middleware(ProtectAgainstSpam::class)->group(function() {
-        Auth::routes();
+        Auth::routes(['verify' => true]);
     });
     Route::get('/logout', function() {
         Auth::logout();
