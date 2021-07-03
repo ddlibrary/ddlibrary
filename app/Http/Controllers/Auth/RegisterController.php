@@ -6,6 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use BladeView;
 use Carbon\Carbon;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -121,6 +122,7 @@ class RegisterController extends Controller
         }
 
         $user->save();
+        event(new Registered($user));
 
         if(isset($data['city'])){
             $city = $data['city'];
