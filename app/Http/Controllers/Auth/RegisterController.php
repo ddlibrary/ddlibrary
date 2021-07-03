@@ -120,9 +120,10 @@ class RegisterController extends Controller
             $user->email_verified_at = Carbon::now(); // This is a hack for the duration, until we can verify phone numbers as well
             $using_email = False;
         }
+        else
+            event(new Registered($user)); // accommodate for phone registrations as well
 
         $user->save();
-        event(new Registered($user));
 
         if(isset($data['city'])){
             $city = $data['city'];
