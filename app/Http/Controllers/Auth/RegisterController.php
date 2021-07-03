@@ -102,7 +102,7 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return User
+     * @return array
      */
     protected function create($data)
     {
@@ -113,6 +113,13 @@ class RegisterController extends Controller
         $user->status = 1;
         $user->accessed_at = Carbon::now();
         $user->language = Config::get('app.locale');
+
+        $using_email = True;
+        if ($user->email == null) {
+            $user->email_verified_at = Carbon::now(); // This is a hack for the duration, until we can verify phone numbers as well
+            $using_email = False;
+        }
+
         $user->save();
 
         if(isset($data['city'])){
@@ -138,7 +145,7 @@ class RegisterController extends Controller
         $userRole->role_id = 6; //library user from roles table
         $userRole->save();
 
-        return $user->id;
+        return array($user->id, $using_email);
     }
 
     /**
@@ -152,9 +159,12 @@ class RegisterController extends Controller
     {
         $this->validator($request->all())->validate();
 
-        $userId = $this->create($request->all());
+        list($userId, $using_email) = $this->create($request->all());
 
         Auth::loginUsingId($userId);
+
+        if ($using_email)
+            return redirect('email/verify');
 
         return $this->registered($request, $userId)
                         ?: redirect($this->redirectPath());

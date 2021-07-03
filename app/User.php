@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Notifications\Notifiable;
@@ -17,10 +18,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property Carbon|mixed accessed_at
  * @property mixed        language
  * @property mixed        id
+ * @property Carbon|mixed email_verified_at
  * @method static get()
  * @method static where(string $string, $id)
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
