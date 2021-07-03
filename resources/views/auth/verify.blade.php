@@ -7,7 +7,7 @@
 
         <div class="form-item">
             @if (session('resent'))
-                <div class="alert alert-success" role="alert">
+                <div style="color: #39af53; font-weight: bold;">
                     {{ __('A fresh verification link has been sent to your email address.') }}
                 </div>
             @endif

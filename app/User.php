@@ -18,6 +18,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property Carbon|mixed accessed_at
  * @property mixed        language
  * @property mixed        id
+ * @property Carbon|mixed email_verified_at
  * @method static get()
  * @method static where(string $string, $id)
  */
