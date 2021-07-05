@@ -126,7 +126,7 @@
             <a href="/glossary" class="glossary-icon"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text">&nbsp;@lang('Glossary')</span> </i></a>
             </div>
             <div class="download-box">
-                @if (Auth::check())
+                @if (Auth::check() && auth()->user()->hasVerifiedEmail())
                     @if($resource->attachments)
                         @foreach($resource->attachments as $file)
                             <h4>@lang('File :id', ['id' => $loop->iteration])</h4>
@@ -161,6 +161,8 @@
                             <span class="download-item"><a class="btn btn-primary" href="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}"><i class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a><br></span>
                         @endforeach
                     @endif
+                @elseif(!auth()->user()->hasVerifiedEmail())
+                    <h4 class="download-resource">@lang('Please <a href="'. URL::to('email/verify')  .'">verify</a> your email to view or download this resource.')</h4>
                 @else
                     <h4 class="download-resource">@lang('Please login to download this resource.')</h4>
                 @endif
