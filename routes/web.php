@@ -47,17 +47,17 @@ Route::group(
     Route::post('admin/resources', 'ResourceController@index')->name('resources')->middleware('admin');
     Route::any('resources/list', 'ResourceController@list')->name('resourceList');
     Route::get('resource/{resourceId}', 'ResourceController@viewPublicResource');
-    Route::get('resource/{resourceId}/download/{fileId}', 'ResourceController@downloadFile')->name('download-file')->middleware('auth')->middleware('verified');;
+    Route::get('resource/{resourceId}/download/{fileId}', 'ResourceController@downloadFile')->name('download-file')->middleware('auth')->middleware('verified');
     Route::get('resources', 'ResourceController@list');
-    Route::get('resources/add/step1', 'ResourceController@createStepOne')->name('step1')->middleware('auth')->middleware('verified');;
+    Route::get('resources/add/step1', 'ResourceController@createStepOne')->name('step1')->middleware('auth')->middleware('verified');
     Route::post('resources/add/step1', 'ResourceController@postStepOne');
-    Route::get('resources/add/step2', 'ResourceController@createStepTwo')->name('step2')->middleware('auth')->middleware('verified');;
+    Route::get('resources/add/step2', 'ResourceController@createStepTwo')->name('step2')->middleware('auth')->middleware('verified');
     Route::post('resources/add/step2', 'ResourceController@postStepTwo');
-    Route::get('resources/add/step3', 'ResourceController@createStepThree')->name('step3')->middleware('auth')->middleware('verified');;
+    Route::get('resources/add/step3', 'ResourceController@createStepThree')->name('step3')->middleware('auth')->middleware('verified');
     Route::post('resources/add/step3', 'ResourceController@postStepThree')->middleware(ProtectAgainstSpam::class);
     Route::get('resources/attributes/{entity}', 'ResourceController@attributes');
     Route::post('resources/flag', 'ResourceController@flag')->name('flag');
-    Route::post('resources/comment', 'ResourceController@comment')->name('comment')->middleware('auth')->middleware('verified');;
+    Route::post('resources/comment', 'ResourceController@comment')->name('comment')->middleware('auth')->middleware('verified');
     Route::get('admin/resource/published/{resourceId}', 'ResourceController@published');
     Route::get('admin/resource/delete/{resourceId}', 'ResourceController@deleteResource')->middleware('admin');
     Route::get('resources/edit/step1/{resourceId}', 'ResourceController@createStepOneEdit')->name('edit1')->middleware('LibraryManager');
@@ -147,7 +147,7 @@ Route::group(
     Route::get('/admin/sync', 'SyncController@index');
     Route::get('/admin/run_sync', 'SyncController@SyncIt');
     //Glossary
-    Route::get('glossary','GlossaryController@index');
+    Route::get('glossary','GlossaryController@index')->middleware('auth')->middleware('verified');
     Route::post('glossary','GlossaryController@index')->name('glossary');
     Route::get('glossary/create', 'GlossaryController@create')->name('glossary_create')->middleware('LibraryManager');
     Route::post('glossary/store', 'GlossaryController@store')->name('glossary_store')->middleware('LibraryManager');
@@ -195,20 +195,20 @@ Route::group(
     Route::get('/admin/analytics','AnalyticsController@index')->middleware('admin');
     Route::post('/admin/analytics','AnalyticsController@show')->name('analytics')->middleware('admin');
     //admin, glossary
-    Route::get('admin/glossary_subjects','GlossarySubjectController@index')->middleware('admin')->name('glossary_subjects_list');;
+    Route::get('admin/glossary_subjects','GlossarySubjectController@index')->middleware('admin')->name('glossary_subjects_list');
     Route::get('admin/glossary_subjects/create','GlossarySubjectController@create')->middleware('admin');
     Route::get('admin/glossary_subjects/edit/{id}','GlossarySubjectController@edit')->middleware('admin');
     Route::post('admin/glossary_subjects/update','GlossarySubjectController@update')->middleware('admin')->name('glossary_subjects_update');
     //StoryWeaver
-    Route::get('/storyweaver/confirm/{landing_page}', 'StoryWeaverController@storyWeaverConfirmation')->name('storyweaver-confirm')->middleware('auth')->middleware('verified');;
-    Route::get('/storyweaver/auth', 'StoryWeaverController@storyWeaverAuth')->name('storyweaver-auth')->middleware('auth')->middleware('verified');;
+    Route::get('/storyweaver/confirm/{landing_page}', 'StoryWeaverController@storyWeaverConfirmation')->name('storyweaver-confirm')->middleware('auth')->middleware('verified');
+    Route::get('/storyweaver/auth', 'StoryWeaverController@storyWeaverAuth')->name('storyweaver-auth')->middleware('auth')->middleware('verified');
     //Adding old DDL routes
     Route::get('/user/register', 'Auth\RegisterController@showRegistrationForm');
     Route::get('/user', 'Auth\LoginController@showLoginForm');
-    Route::get('/access-library', 'ResourceController@createStepOne')->middleware('auth')->middleware('verified');;
-    Route::get('/node/add', 'ResourceController@createStepOne')->middleware('auth')->middleware('verified');;
-    Route::get('/node/add/resourcefile', 'ResourceController@createStepOne')->middleware('auth')->middleware('verified');;
-    Route::get('/add/resourcefile', 'ResourceController@createStepOne')->middleware('auth')->middleware('verified');;
+    Route::get('/access-library', 'ResourceController@createStepOne')->middleware('auth')->middleware('verified');
+    Route::get('/node/add', 'ResourceController@createStepOne')->middleware('auth')->middleware('verified');
+    Route::get('/node/add/resourcefile', 'ResourceController@createStepOne')->middleware('auth')->middleware('verified');
+    Route::get('/add/resourcefile', 'ResourceController@createStepOne')->middleware('auth')->middleware('verified');
     Route::get('/node/{resourceId}', 'ResourceController@viewPublicResource');
     Route::get('/user/logout', 'Auth\LoginController@logout');
     Route::get('/user/password', 'Auth\ForgotPasswordController@showLinkRequestForm');

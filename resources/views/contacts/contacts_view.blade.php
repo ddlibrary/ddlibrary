@@ -15,15 +15,10 @@
         <h1>@lang('Contact Us')</h1>
     </header>
     <div class="content-body" style="display: flex;flex-wrap: wrap;">
-        @include('layouts.messages')
-        @if ($errors->has('g-recaptcha-response'))
-            <span class="help-block">
-                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-            </span>
-        @endif
         <form method="POST" action="{{ route('contact') }}" style="flex: 1;">
             @honeypot
             @csrf
+            @include('layouts.messages')
             <div class="form-item">
                 <label for="name"> 
                     <strong>@lang('Full Name')</strong>

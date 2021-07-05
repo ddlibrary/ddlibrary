@@ -2,6 +2,7 @@
 @section('title')
     @lang('Reset your password') - @lang('Darakht-e Danesh Library')
 @endsection
+{!! NoCaptcha::renderJs() !!}
 @section('content')
 <section class="ddl-forms">
     <header>
@@ -14,6 +15,7 @@
                     {{ session('status') }}
                 </div>
             @endif
+            @include('layouts.messages')
 
             <form method="POST" action="{{ route('password.email') }}">
                 @honeypot
@@ -32,6 +34,12 @@
                         @endif
                     </div>
                 </div>
+
+                @if(Config::get('captcha.captcha') == 'yes')
+                    <div class="form-item">
+                        {!! NoCaptcha::display() !!}
+                    </div>
+                @endif
 
                 <div class="form-item">
                     <input type="submit" class="form-control" value="{{ __('Send password reset link') }}" onclick="this.style.display='none';document.getElementById('wait').style.display='block'" ondblclick="this.style.display='display';document.getElementById('wait').style.display='block'">
