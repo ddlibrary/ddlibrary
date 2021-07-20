@@ -26,9 +26,65 @@
 </head>
 <body>
   <div class="container-fluid" id="wrapper">
+    <div class="panel panel-primary hidden-xs">
+      <div class="panel-heading">
+        <h1 class="panel-title">{{ trans('laravel-filemanager::lfm.title-panel') }}</h1>
+      </div>
+    </div>
     <div class="row">
+      <div class="col-sm-2 hidden-xs">
+        <div id="tree"></div>
+      </div>
 
-      <div class="col-sm-12 col-xs-12" id="main">
+      <div class="col-sm-10 col-xs-12" id="main">
+        <nav class="navbar navbar-default" id="nav">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-buttons">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand clickable hide" id="to-previous">
+              <i class="fa fa-arrow-left"></i>
+              <span class="hidden-xs">{{ trans('laravel-filemanager::lfm.nav-back') }}</span>
+            </a>
+            <a class="navbar-brand visible-xs" href="#">{{ trans('laravel-filemanager::lfm.title-panel') }}</a>
+          </div>
+          <div class="collapse navbar-collapse" id="nav-buttons">
+            <ul class="nav navbar-nav navbar-right">
+              <li>
+                <a class="clickable" id="thumbnail-display">
+                  <i class="fa fa-th-large"></i>
+                  <span>{{ trans('laravel-filemanager::lfm.nav-thumbnails') }}</span>
+                </a>
+              </li>
+              <li>
+                <a class="clickable" id="list-display">
+                  <i class="fa fa-list"></i>
+                  <span>{{ trans('laravel-filemanager::lfm.nav-list') }}</span>
+                </a>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  {{ trans('laravel-filemanager::lfm.nav-sort') }} <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="#" id="list-sort-alphabetic">
+                      <i class="fa fa-sort-alpha-asc"></i> {{ trans('laravel-filemanager::lfm.nav-sort-alphabetic') }}
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" id="list-sort-time">
+                      <i class="fa fa-sort-amount-asc"></i> {{ trans('laravel-filemanager::lfm.nav-sort-time') }}
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
         <div class="visible-xs" id="current_dir" style="padding: 5px 15px;background-color: #f8f8f8;color: #5e5e5e;"></div>
 
         <div id="alerts"></div>
@@ -40,6 +96,11 @@
         <li>
           <a href="#"></a>
           <ul class="hide">
+            <li>
+              <a href="#" id="add-folder" data-mfb-label="{{ trans('laravel-filemanager::lfm.nav-new') }}">
+                <i class="fa fa-folder"></i>
+              </a>
+            </li>
             <li>
               <a href="#" id="upload" data-mfb-label="{{ trans('laravel-filemanager::lfm.nav-upload') }}">
                 <i class="fa fa-upload"></i>
