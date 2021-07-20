@@ -26,7 +26,7 @@
         "spatie/laravel-activitylog": "^3.2",
         "spatie/laravel-analytics": "^3.5",
         "spatie/laravel-honeypot": "^1.3",
-        "unisharp/laravel-filemanager": "dev-db-support",
+        "unisharp/laravel-filemanager": "^1.9",
         "usmanhalalit/laracsv": "1.*@dev",
         "yajra/laravel-datatables-oracle": "6.0"
     },

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1438e9b6b21e4759ac1a898d3a91aeb0",
+    "content-hash": "455ce0fb7e4c508476d2d1b84dfae6cd",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -7155,11 +7155,11 @@
         },
         {
             "name": "unisharp/laravel-filemanager",
-            "version": "dev-db-support",
+            "version": "v1.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jamshidhashimi/laravel-filemanager",
-                "reference": "16e2805b356ca40207f939b00f820b8851ecf556"
+                "reference": "aaf2764f26eb8dcc9356bea1e25010333c2e61f4"
             },
             "require": {
                 "ext-exif": "*",
@@ -7218,7 +7218,7 @@
                 "tinymce",
                 "upload"
             ],
-            "time": "2019-01-28T08:18:46+00:00"
+            "time": "2018-07-05T11:36:08+00:00"
         },
         {
             "name": "usmanhalalit/laracsv",
@@ -10678,7 +10678,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "mcamara/laravel-localization": 20,
-        "unisharp/laravel-filemanager": 20,
         "usmanhalalit/laracsv": 20
     },
     "prefer-stable": true,
