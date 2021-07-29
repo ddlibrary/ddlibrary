@@ -7,10 +7,13 @@ use App\Menu;
 use App\Survey;
 use App\SurveyQuestion;
 use App\SurveyQuestionOption;
-use App\SurveySettings;
-use Config;
+use BladeView;
 
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
 
 class HomeController extends Controller
 {
@@ -21,13 +24,13 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        //$this->middleware('guest');
+        View::share('menu', Menu::orderBy('weight')->get());
     }
 
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|BladeView|Factory|false
      */
     public function index(Request $request)
     {

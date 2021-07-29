@@ -14,12 +14,16 @@ class CreateStaticSubjectAreaIconsTable extends Migration {
 	{
 		Schema::create('static_subject_area_icons', function(Blueprint $table)
 		{
-			$table->integer('id', true);
-			$table->integer('tid')->unsigned()->primary();
+		    $table->uuid('id');
+		    $table->increments('aux_id');
+			$table->integer('tid')->unsigned();
 			$table->string('file_name')->nullable();
 			$table->string('file_url')->nullable();
 			$table->string('file_mime')->nullable();
 			$table->string('file_size')->nullable();
+			$table->index(array('aux_id'));
+			$table->dropPrimary();
+            $table->primary('tid');
 		});
 	}
 
