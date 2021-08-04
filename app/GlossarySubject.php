@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property mixed sw (Swahili)
  * @property mixed uz (Uzbek)
  */
-class GlossarySubjects extends Model
+class GlossarySubject extends Model
 {
-    //
+    protected $table = "glossary_subjects";
 }

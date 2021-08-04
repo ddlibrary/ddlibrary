@@ -21,6 +21,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property Carbon|mixed email_verified_at
  * @method static get()
  * @method static where(string $string, $id)
+ * @method static users()
  */
 class User extends Authenticatable implements MustVerifyEmail
 {

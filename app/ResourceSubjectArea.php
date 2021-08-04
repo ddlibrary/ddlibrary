@@ -22,6 +22,6 @@ class ResourceSubjectArea extends Model
 
     public function icon()
     {
-        return $this->hasOne(StaticSubjectIcons::class, 'tid', 'tid');
+        return $this->hasOne(StaticSubjectIcon::class, 'tid', 'tid');
     }
 }

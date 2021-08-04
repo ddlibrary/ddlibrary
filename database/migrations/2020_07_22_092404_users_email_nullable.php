@@ -26,7 +26,7 @@ class UsersEmailNullable extends Migration
     public function down()
     {
         Schema::table('resource_attachments', function (Blueprint $table) {
-            $table->string('email')->nullable(false)->change();
+            //
         });
     }
 }

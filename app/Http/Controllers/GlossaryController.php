@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Glossary;
-use App\GlossarySubjects;
+use App\GlossarySubject;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -52,7 +52,7 @@ class GlossaryController extends Controller
         }
 
         $locale = app()->getLocale();
-        $glossary_subjects = GlossarySubjects::orderBy('id')->pluck($locale, 'id');
+        $glossary_subjects = GlossarySubject::orderBy('id')->pluck($locale, 'id');
 
         $filters = $request;
         return view('glossary.glossary_list', compact('glossary','glossary_flagged', 'filters', 'glossary_subjects'));
@@ -66,7 +66,7 @@ class GlossaryController extends Controller
     public function create()
     {
         $locale = app()->getLocale();
-        $glossary_subjects = GlossarySubjects::orderBy('id')->pluck($locale, 'id');
+        $glossary_subjects = GlossarySubject::orderBy('id')->pluck($locale, 'id');
         return view('glossary.create', compact('glossary_subjects'));
     }
 

@@ -13,6 +13,7 @@ use Spatie\Activitylog\Traits\CausesActivity;
  * @method static find($resourceId)
  * @method static findOrFail($resourceId)
  * @method static published()
+ * @method static where(string $string, int|null $id)
  */
 class Resource extends Model
 {
@@ -58,7 +59,7 @@ class Resource extends Model
 
     public function subjectsIcons()
     {
-        return $this->belongsToMany(StaticSubjectIcons::class, 'resource_subject_areas', 'resource_id', 'tid');
+        return $this->belongsToMany(StaticSubjectIcon::class, 'resource_subject_areas', 'resource_id', 'tid');
     }
 
     public function TranslationRights()

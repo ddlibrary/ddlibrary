@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use App\News;
 use App\Resource;
-use App\Menu;
 use App\Survey;
 use App\SurveyQuestion;
 use App\SurveyQuestionOption;
@@ -13,7 +12,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\View;
 
 class HomeController extends Controller
 {
@@ -24,7 +22,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        View::share('menu', Menu::orderBy('weight')->get());
+        //
     }
 
     /**
