@@ -19,6 +19,7 @@ use App\UserProfile;
 use App\UserRole;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class RegisterController extends Controller
@@ -156,6 +157,7 @@ class RegisterController extends Controller
      * @param Request $request
      *
      * @return Application|RedirectResponse|Redirector
+     * @throws ValidationException
      */
     public function register(Request $request)
     {
