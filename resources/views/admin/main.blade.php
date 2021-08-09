@@ -88,7 +88,7 @@
           </div>
           <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
+                <table class="table table-bordered" style="width: 100%; border-spacing:0;">
                   <thead>
                     <tr>
                       <th>TITLE</th>
@@ -118,7 +118,7 @@
           </div>
           <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
+                <table class="table table-bordered" style="width: 100%; border-spacing:0;">
                   <thead>
                     <tr>
                       <th>NAME</th>
@@ -132,7 +132,7 @@
                       <td><a href="{{ URL::to('user/'.$user->id) }}">{{ $user->username }}</a></td>
                       <td>{{ ($user->status==0?"Not Active":"Active") }}</td>
                       <td>
-                        @if(count($user->role))
+                        @if($user->role != null)
                         {{ $user->role->role->name }}
                         @endif
                       </td>
@@ -156,7 +156,7 @@
           </div>
             <div class="card-body">
               <div class="table-responsive">
-                  <table class="table table-bordered" width="100%" cellspacing="0">
+                  <table class="table table-bordered" style="width: 100%; border-spacing:0;">
                     <thead>
                       <tr>
                         <th>TITLE</th>
@@ -186,7 +186,7 @@
           </div>
             <div class="card-body">
               <div class="table-responsive">
-                  <table class="table table-bordered" width="100%" cellspacing="0">
+                  <table class="table table-bordered" style="width: 100%; border-spacing:0;">
                     <thead>
                       <tr>
                         <th>TITLE</th>

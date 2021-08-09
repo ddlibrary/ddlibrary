@@ -87,7 +87,7 @@ Route::get('/link/{lang}', function ($id="") {
 });
 
 //This endpoint returns all resources based on language, and filters provided
-Route::get('/resources/{lang}/{offset}', function ($lang="en", $offset=0, Request $request) {
+Route::get('/resources/{lang}/{offset}', function (Request $request, $lang="en", $offset=0) {
 
     $searchQuery = $request['search'];
 
