@@ -39,7 +39,6 @@ class ForgotPasswordController extends Controller
     {
         $this->validate($request, [
             'email' => 'required|email',
-            'password' => 'confirmed|required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',
             'g-recaptcha-response' => 'required|captcha',
         ]);
     }

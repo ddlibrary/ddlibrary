@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use setasign\Fpdi\Fpdi;
@@ -37,7 +38,7 @@ if(! function_exists('giveMeFileFormat')){
 			'image/png'	=> 'Image'
         );
 
-        if ( isset($formats[$fileFormat]) && count($formats[$fileFormat]) > 0){
+        if ( isset($formats[$fileFormat]) && $formats[$fileFormat] != null){
             return $formats[$fileFormat];
         }else{
             return "-";
@@ -57,7 +58,7 @@ if(! function_exists('giveMeResourceIcon')){
             'video/mp4' => 'fas fa-video'
         );
 
-        if ( count($formats[$fileFormat]) > 0){
+        if ( $formats[$fileFormat] != null){
             $theIcon = $formats[$fileFormat];
             return $formats[$fileFormat];
         }else{
@@ -173,7 +174,7 @@ if (! function_exists('getCountry')) {
 			where('vid', 15)->
 			first();
 		
-		if(count($term)){
+		if($term != null){
 			return $term->name;
 		}else{
 			return $tnid;
@@ -181,11 +182,11 @@ if (! function_exists('getCountry')) {
     }
 }
 if (! function_exists('isAdmin')) {
-    function isAdmin()
+    function isAdmin(): bool
     {
-        $user = factory(App\User::class)->make();
+        $user = new User();
 
-        if(count($user->isAdministrator(Auth::id()))){
+        if($user->isAdministrator(Auth::id())){
             return TRUE;
         }else{
             return FALSE;
@@ -194,11 +195,11 @@ if (! function_exists('isAdmin')) {
 }
 
 if (! function_exists('isNormalUser')) {
-    function isNormalUser()
+    function isNormalUser(): bool
     {
-        $user = factory(App\User::class)->make();
+        $user = new User();
 
-        if(count($user->isNormalUser(Auth::id()))){
+        if($user->isNormalUser(Auth::id())){
             return TRUE;
         }else{
             return FALSE;
@@ -207,11 +208,11 @@ if (! function_exists('isNormalUser')) {
 }
 
 if (! function_exists('isLibraryManager')) {
-    function isLibraryManager()
+    function isLibraryManager(): bool
     {
-        $user = factory(App\User::class)->make();
+        $user = new User();
 
-        if(count($user->isLibraryManager(Auth::id()))){
+        if($user->isLibraryManager(Auth::id())){
             return TRUE;
         }else{
             return FALSE;
@@ -220,7 +221,7 @@ if (! function_exists('isLibraryManager')) {
 }
 
 if(! function_exists('formatBytes')){
-    function formatBytes($size, $precision = 2)
+    function formatBytes($size, $precision = 2): string
     {
         $base = log($size, 1024);
         $suffixes = array('', 'KB', 'MB', 'GB', 'TB');   
@@ -240,19 +241,20 @@ if(! function_exists('encodeUrl')){
 /**
  * Parses a user agent string into its important parts
  *
+ * @param string|null $u_agent User agent string to parse or null. Uses $_SERVER['HTTP_USER_AGENT'] on NULL
+ * @return string[] an array with browser, version and platform keys
+ * @throws InvalidArgumentException on not having a proper user agent to parse.
  * @author Jesse G. Donat <donatj@gmail.com>
  * @link https://github.com/donatj/PhpUserAgent
  * @link http://donatstudios.com/PHP-Parser-HTTP_USER_AGENT
- * @param string|null $u_agent User agent string to parse or null. Uses $_SERVER['HTTP_USER_AGENT'] on NULL
- * @throws \InvalidArgumentException on not having a proper user agent to parse.
- * @return string[] an array with browser, version and platform keys
  */
-function parse_user_agent( $u_agent = null ) {
+function parse_user_agent( string $u_agent = null ): array
+{
 	if( is_null($u_agent) ) {
 		if( isset($_SERVER['HTTP_USER_AGENT']) ) {
 			$u_agent = $_SERVER['HTTP_USER_AGENT'];
 		} else {
-			throw new \InvalidArgumentException('parse_user_agent requires a user agent');
+			throw new InvalidArgumentException('parse_user_agent requires a user agent');
 		}
 	}
 
@@ -294,8 +296,8 @@ function parse_user_agent( $u_agent = null ) {
 				Baiduspider|Googlebot|YandexBot|bingbot|Lynx|Version|Wget|curl|
 				Valve\ Steam\ Tenfoot|
 				NintendoBrowser|PLAYSTATION\ (\d|Vita)+)
-				(?:\)?;?)
-				(?:(?:[:/ ])(?P<version>[0-9A-Z.]+)|/(?:[A-Z]*))%ix',
+				\)?;?
+				(?:[:/ ](?P<version>[0-9A-Z.]+)|/[A-Z]*)%ix',
 		$u_agent, $result, PREG_PATTERN_ORDER);
 
 	// If nothing matched, return null (to avoid undefined index errors)
@@ -432,16 +434,13 @@ if(! function_exists('en'))
 
 if(! function_exists('termEn'))
 {
-	function termEn($id='')
-	{
+	function termEn($id=''): string
+    {
 		$tnid = App\TaxonomyTerm::where('id', $id)->first()->tnid;
 
-		$term = App\TaxonomyTerm::
-		where('tnid', $tnid)->
-		where('language', 'en')->
-		first();
+		$term = App\TaxonomyTerm::where('tnid', $tnid)->where('language', 'en')->first();
 
-		return (count($term)) ? ' (' . $term->name . ')' : '';
+		return ($term != null) ? ' (' . $term->name . ')' : '';
 	}
 }
 

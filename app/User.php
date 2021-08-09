@@ -211,11 +211,11 @@ class User extends Authenticatable implements MustVerifyEmail
             ->update($newPassword);
     }
 
-    public function isAdministrator($userid)
+    public function isAdministrator(int $userid)
     {
         return DB::table('users')
             ->join('user_roles', 'user_roles.user_id','=','users.id')
-            ->where('users.id',$userid)
+            ->where('users.id', $userid)
             ->where('user_roles.role_id', 5)
             ->first();
     }
@@ -224,7 +224,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return DB::table('users')
             ->join('user_roles', 'user_roles.user_id','=','users.id')
-            ->where('users.id',$userid)
+            ->where('users.id', $userid)
             ->where('user_roles.role_id', 2)
             ->first();
     }
@@ -233,7 +233,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return DB::table('users')
             ->join('user_roles', 'user_roles.user_id','=','users.id')
-            ->where('users.id',$userid)
+            ->where('users.id', $userid)
             ->where('user_roles.role_id', 3)
             ->first();
     }

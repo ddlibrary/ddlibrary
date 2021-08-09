@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
-use BladeView;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\View\Factory;
@@ -57,7 +56,7 @@ class RegisterController extends Controller
     /**
      * Show the application registration form.
      *
-     * @return BladeView|bool|Factory|Application|View
+     * @return Factory|\Illuminate\Contracts\Foundation\Application|View
      */
     public function showRegistrationForm()
     {
@@ -90,7 +89,7 @@ class RegisterController extends Controller
                 'city' => 'nullable',
                 'g-recaptcha-response' => 'required|captcha'
             ],
-            $messages = [
+            [
                 'phone.unique' => __('The phone number has already been taken.'),
                 'password.regex' => __('The password you entered doesn\'t have any special characters (!@#$%^&.) and (or) digits (0-9).'),
                 'email.regex' => __('Please enter a valid email.')
@@ -120,10 +119,10 @@ class RegisterController extends Controller
             $user->email_verified_at = Carbon::now(); // This is a hack for the duration, until we can verify phone numbers as well
             $using_email = False;
         }
-        else
-            event(new Registered($user)); // accommodate for phone registrations as well
-
         $user->save();
+
+        if ($using_email)
+            event(new Registered($user));
 
         if(isset($data['city'])){
             $city = $data['city'];
@@ -166,8 +165,9 @@ class RegisterController extends Controller
 
         Auth::loginUsingId($userId);
 
-        if ($using_email)
+        if ($using_email) {
             return redirect('email/verify');
+        }
 
         return $this->registered($request, $userId)
                         ?: redirect($this->redirectPath());
