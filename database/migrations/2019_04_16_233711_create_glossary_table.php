@@ -15,7 +15,7 @@ class CreateGlossaryTable extends Migration {
 		Schema::create('glossary', function(Blueprint $table)
 		{
 			$table->increments('id');
-            $table->integer('subject')->unsigned()->nullable(false);
+			$table->integer('subject')->unsigned()->nullable(false);
 			$table->text('name_en', 65535)->nullable();
 			$table->text('name_fa', 65535)->nullable();
 			$table->text('name_ps', 65535)->nullable();
