@@ -382,23 +382,19 @@ class ResourceController extends Controller
                 $theTaxonomy = TaxonomyTerm::where('name', trim($kw))
                                             ->where('vid', 23)
                                             ->first();
-                if(count($theTaxonomy)){
-                    $myKeywords = new ResourceKeyword();
-                    $myKeywords->resource_id = $myResources->id;
-                    $myKeywords->tid = $theTaxonomy->id;
-                    $myKeywords->save();
-                }else{
+
+                $myKeywords = new ResourceKeyword();
+                $myKeywords->resource_id = $myResources->id;
+                if($theTaxonomy != null) $myKeywords->tid = $theTaxonomy->id;
+                else {
                     $myTaxonomy = new TaxonomyTerm();
                     $myTaxonomy->vid = 23;
                     $myTaxonomy->name = trim($kw);
                     $myTaxonomy->language = $finalArray['language'];
                     $myTaxonomy->save();
-
-                    $myKeywords = new ResourceKeyword();
-                    $myKeywords->resource_id = $myResources->id;
                     $myKeywords->tid = $myTaxonomy->id;
-                    $myKeywords->save();
                 }
+                $myKeywords->save();
             }
 
             //Inserting Authors
@@ -410,23 +406,20 @@ class ResourceController extends Controller
                                                 ->where('vid', 24)
                                                 ->first();
 
-                    if(count($theTaxonomy)){
-                        $myAuthor = new ResourceAuthor();
-                        $myAuthor->resource_id = $myResources->id;
-                        $myAuthor->tid = $theTaxonomy->id;
-                        $myAuthor->save();
-                    }else{
+                    $myAuthor = new ResourceAuthor();
+                    $myAuthor->resource_id = $myResources->id;
+
+                    if($theTaxonomy != null) $myAuthor->tid = $theTaxonomy->id;
+                    else {
                         $myTaxonomy = new TaxonomyTerm();
                         $myTaxonomy->vid = 24;
                         $myTaxonomy->name = $author;
                         $myTaxonomy->language = $finalArray['language'];
                         $myTaxonomy->save();
 
-                        $myAuthor = new ResourceAuthor();
-                        $myAuthor->resource_id = $myResources->id;
                         $myAuthor->tid = $myTaxonomy->id;
-                        $myAuthor->save();   
                     }
+                    $myAuthor->save();
                 }
             }
 
@@ -437,23 +430,20 @@ class ResourceController extends Controller
                                             ->where('vid', 9)
                                             ->first();
 
-                if(count($theTaxonomy)){
-                    $myPublisher = new ResourcePublisher();
-                    $myPublisher->resource_id = $myResources->id;
-                    $myPublisher->tid = $theTaxonomy->id;
-                    $myPublisher->save();
-                }else{
+                $myPublisher = new ResourcePublisher();
+                $myPublisher->resource_id = $myResources->id;
+
+                if($theTaxonomy != null) $myPublisher->tid = $theTaxonomy->id;
+                else {
                     $myTaxonomy = new TaxonomyTerm();
                     $myTaxonomy->vid = 9;
                     $myTaxonomy->name = $publisherName;
                     $myTaxonomy->language = $finalArray['language'];
                     $myTaxonomy->save();
 
-                    $myPublisher = new ResourcePublisher();
-                    $myPublisher->resource_id = $myResources->id;
                     $myPublisher->tid = $myTaxonomy->id;
-                    $myPublisher->save();
                 }
+                $myPublisher->save();
             }
 
             //Inserting Translators
@@ -465,23 +455,20 @@ class ResourceController extends Controller
                                                 ->where('vid', 24)
                                                 ->first();
 
-                    if(count($theTaxonomy)){
-                        $myTranslator = new ResourceTranslator();
-                        $myTranslator->resource_id = $myResources->id;
-                        $myTranslator->tid = $theTaxonomy->id;
-                        $myTranslator->save();
-                    }else{
+                    $myTranslator = new ResourceTranslator();
+                    $myTranslator->resource_id = $myResources->id;
+
+                    if($theTaxonomy != null) $myTranslator->tid = $theTaxonomy->id;
+                    else {
                         $myTaxonomy = new TaxonomyTerm();
                         $myTaxonomy->vid = 24;
                         $myTaxonomy->name = $translator;
                         $myTaxonomy->language = $finalArray['language'];
                         $myTaxonomy->save();
 
-                        $myTranslator = new ResourceTranslator();
-                        $myTranslator->resource_id = $myResources->id;
                         $myTranslator->tid = $myTaxonomy->id;
-                        $myTranslator->save();
                     }
+                    $myTranslator->save();
                 }
             }
 
@@ -600,7 +587,7 @@ class ResourceController extends Controller
 
         $favorite = resourceFavorite::where('resource_id', $resourceId)->first();
 
-        if(count($favorite)){
+        if($favorite != null){
             $favorite->delete();
             return json_encode("deleted");
         }else{
@@ -682,11 +669,7 @@ class ResourceController extends Controller
         $myResources = new Resource();
 
         $resource = $request->session()->get('resource1');
-        if(count($resource)){
-
-        }else{
-            $resource = (array) $myResources->getResources($resourceId);
-        }
+        if(!$resource == null) $resource = (array) $myResources->getResources($resourceId);
         return view('resources.resources_edit_step1', compact('resource'));
     }
 
@@ -805,7 +788,7 @@ class ResourceController extends Controller
 
         $resourceSubjectAreas = json_encode($resourceSubjectAreas, JSON_NUMERIC_CHECK);
         $resourceLearningResourceTypes = json_encode($resourceLearningResourceTypes, JSON_NUMERIC_CHECK);
-        $resourceKeywords = count($resourceKeywords)?implode(',',$resourceKeywords):"";
+        $resourceKeywords = $resourceKeywords? implode(',',$resourceKeywords) : "";
         $EditEducationalUse = json_encode($EditEducationalUse, JSON_NUMERIC_CHECK);
 
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data',8);
@@ -965,7 +948,7 @@ class ResourceController extends Controller
 
             //Deleting Subject Areas
             $theSubjects = ResourceSubjectArea::where('resource_id', $resourceId);
-            if(count($theSubjects)){
+            if($theSubjects != null){
                 $theSubjects->delete();
             }
 
@@ -979,20 +962,18 @@ class ResourceController extends Controller
 
             //Delete Keywords
             $theKeyword = ResourceKeyword::where('resource_id', $resourceId);
-            if(count($theKeyword)){
-                $theKeyword->delete();
-            }
+            $theKeyword?->delete();
 
             if(isset($finalArray['keywords'])){
                 $keywords = trim($finalArray['keywords'], ",");
                 $keywords = explode(',',$keywords);
-                if(count($keywords) > 0){
+                if($keywords != null){
                     foreach($keywords as $kw){
                         $theTaxonomy = TaxonomyTerm::where('name', trim($kw))
                                                     ->where('vid', 23)
                                                     ->first();
 
-                        if(count($theTaxonomy)){
+                        if($theTaxonomy != null){
                             $myKeywords = new ResourceKeyword();
                             $myKeywords->resource_id = $myResources->id;
                             $myKeywords->tid = $theTaxonomy->id;
@@ -1015,9 +996,7 @@ class ResourceController extends Controller
 
             //Deleting Authors
             $theAuthors = ResourceAuthor::where('resource_id', $resourceId);
-            if(count($theAuthors)){
-                $theAuthors->delete();
-            }
+            $theAuthors?->delete();
 
             //Inserting Authors
             $authors = trim($finalArray['author'], ",");
@@ -1027,28 +1006,24 @@ class ResourceController extends Controller
                                             ->where('vid', 24)
                                             ->first();
 
-                if(count($theTaxonomy)){
-                    $myAuthor = new ResourceAuthor();
-                    $myAuthor->resource_id = $resourceId;
-                    $myAuthor->tid = $theTaxonomy->id;
-                    $myAuthor->save();
-                }else{
+                $myAuthor = new ResourceAuthor();
+                $myAuthor->resource_id = $resourceId;
+                if($theTaxonomy != null) $myAuthor->tid = $theTaxonomy->id;
+                else {
                     $myTaxonomy = new TaxonomyTerm();
                     $myTaxonomy->vid = 24;
                     $myTaxonomy->name = $author;
                     $myTaxonomy->language = $finalArray['language'];
                     $myTaxonomy->save();
 
-                    $myAuthor = new ResourceAuthor();
-                    $myAuthor->resource_id = $resourceId;
                     $myAuthor->tid = $myTaxonomy->id;
-                    $myAuthor->save();
                 }
+                $myAuthor->save();
             }
 
             //Deleting Publishers
             $thePublisher = ResourcePublisher::where('resource_id', $resourceId);
-            if(count($thePublisher)){
+            if($thePublisher != null){
                 $thePublisher->delete();
             }
 
@@ -1059,30 +1034,24 @@ class ResourceController extends Controller
                                             ->where('vid', 9)
                                             ->first();
 
-                if(count($theTaxonomy)){
-                    $myPublisher = new ResourcePublisher();
-                    $myPublisher->resource_id = $resourceId;
-                    $myPublisher->tid = $theTaxonomy->id;
-                    $myPublisher->save();
-                }else{
+                $myPublisher = new ResourcePublisher();
+                $myPublisher->resource_id = $resourceId;
+                if($theTaxonomy != null) $myPublisher->tid = $theTaxonomy->id;
+                else{
                     $myTaxonomy = new TaxonomyTerm();
                     $myTaxonomy->vid = 9;
                     $myTaxonomy->name = $publisherName;
                     $myTaxonomy->language = $finalArray['language'];
                     $myTaxonomy->save();
 
-                    $myPublisher = new ResourcePublisher();
-                    $myPublisher->resource_id = $resourceId;
                     $myPublisher->tid = $myTaxonomy->id;
-                    $myPublisher->save();
                 }
+                $myPublisher->save();
             }
 
             //Deleting Translators
             $theTranslator = ResourceTranslator::where('resource_id', $resourceId);
-            if(count($theTranslator)){
-                $theTranslator->delete();
-            }
+            $theTranslator?->delete();
 
             //Inserting Translators
             if(isset($finalArray['translator'])){
@@ -1093,9 +1062,9 @@ class ResourceController extends Controller
                                                 ->where('vid', 24)
                                                 ->first();
 
-                    if(count($theTaxonomy)){
-                        $myTranslator = new ResourceTranslator();
-                        $myTranslator->resource_id = $resourceId;
+                    $myTranslator = new ResourceTranslator();
+                    $myTranslator->resource_id = $resourceId;
+                    if($theTaxonomy != null){
                         $myTranslator->tid = $theTaxonomy->id;
                         $myTranslator->save();
                     }else{
@@ -1105,19 +1074,15 @@ class ResourceController extends Controller
                         $myTaxonomy->language = $finalArray['language'];
                         $myTaxonomy->save();
 
-                        $myTranslator = new ResourceTranslator();
-                        $myTranslator->resource_id = $resourceId;
                         $myTranslator->tid = $myTaxonomy->id;
-                        $myTranslator->save();
                     }
+                    $myTranslator->save();
                 }
             }
 
             //Deleting Learning Resource Types
             $theLearningResourceType = ResourceLearningResourceType::where('resource_id', $resourceId);
-            if(count($theLearningResourceType)){
-                $theLearningResourceType->delete();
-            }
+            $theLearningResourceType?->delete();
 
             //Inserting Learning Resource Types
             foreach($finalArray['learning_resources_types'] as $ltype){
@@ -1129,9 +1094,7 @@ class ResourceController extends Controller
 
             //Deleting Educational Use
             $theEduUse = ResourceEducationalUse::where('resource_id', $resourceId);
-            if(count($theEduUse)){
-                $theEduUse->delete();
-            }
+            $theEduUse?->delete();
 
             //Inserting Educational Use
             foreach($finalArray['educational_use'] as $edus){
@@ -1143,9 +1106,7 @@ class ResourceController extends Controller
 
             //Deleting Levels
             $theLevels = ResourceLevel::where('resource_id', $resourceId);
-            if(count($theLevels)){
-                $theLevels->delete();
-            }
+            $theLevels?->delete();
 
             //Inserting Resource Levels
             foreach($finalArray['level'] as $level){
@@ -1157,9 +1118,7 @@ class ResourceController extends Controller
 
             //Deleting Translation Rights
             $theTransRight = ResourceTranslationRight::where('resource_id', $resourceId);
-            if(count($theTransRight)){
-                $theTransRight->delete();
-            }
+            $theTransRight?->delete();
 
             if(isset($finalArray['translation_rights'])){
                 //Inserting Translation Rights
@@ -1171,9 +1130,7 @@ class ResourceController extends Controller
 
             //Deleting Educational Resource
             $theEduResource = ResourceEducationalResource::where('resource_id', $resourceId);
-            if(count($theEduResource)){
-                $theEduResource->delete();
-            }
+            $theEduResource?->delete();
 
             if(isset($finalArray['educational_resource'])){
                 //Inserting Educational Resource
@@ -1185,10 +1142,7 @@ class ResourceController extends Controller
 
             //Deleting I am author
             $theIamAuthor = ResourceIamAuthor::where('resource_id', $resourceId);
-            if(count($theIamAuthor)){
-                //Deleting I am author
-                $theIamAuthor->delete();
-            }
+            $theIamAuthor?->delete();
 
             if(isset($finalArray['iam_author'])){
                 //Inserting i am author
@@ -1200,9 +1154,7 @@ class ResourceController extends Controller
 
             //Deleting Copyright Holder
             $theCopyrightHolder = ResourceCopyrightHolder::where('resource_id', $resourceId);
-            if(count($theCopyrightHolder)){
-                $theCopyrightHolder->delete();
-            }
+            $theCopyrightHolder?->delete();
 
             if(isset($finalArray['copyright_holder'])){
                 //Inserting Copyright Holder
@@ -1214,9 +1166,7 @@ class ResourceController extends Controller
 
             //Deleting Creative Commons
             $theCC = ResourceCreativeCommon::where('resource_id', $resourceId);
-            if(count($theCC)){
-                $theCC->delete();
-            }
+            $theCC?->delete();
 
             if(isset($finalArray['creative_commons'])){
                 //Inserting Creative Commons
@@ -1228,9 +1178,7 @@ class ResourceController extends Controller
 
             //Deleting Creative Commons
             $theCCOther = ResourceSharePermission::where('resource_id', $resourceId);
-            if(count($theCCOther)){
-                $theCCOther->delete();
-            }
+            $theCCOther?->delete();
 
             if(isset($finalArray['creative_commons_other'])){
                 //Inserting Sharing Permission
@@ -1273,14 +1221,12 @@ class ResourceController extends Controller
         $this->middleware('admin');
 
         $rs = Resource::find($resourceId);
-        if($rs->status == 1){
-            $rs->status = 0;
-            $rs->save();
-        }else{
+        if($rs->status == 1) $rs->status = 0;
+        else {
             $rs->status = 1;
             $rs->published_at = date('Y-m-d H:i:s');
-            $rs->save();   
         }
+        $rs->save();
 
         return back();
     }
