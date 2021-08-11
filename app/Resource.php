@@ -352,7 +352,7 @@ class Resource extends Model
                 'rs.title',
                 'rs.status'
             )
-            ->when(count($subjectAreaIds) > 0, function($query) use($subjectAreaIds){
+            ->when($subjectAreaIds != null, function($query) use($subjectAreaIds){
                 return $query->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
                         ->join('taxonomy_term_hierarchy AS tth','tth.tid','=','rsa.tid')
                         ->where('tth.parent', $subjectAreaIds)
@@ -360,21 +360,21 @@ class Resource extends Model
                         ->orWhere('tth.tid', $subjectAreaIds)
                         ->groupBy('tth.tid');
             })
-            ->when(count($levelIds) > 0, function($query)  use($levelIds){
+            ->when($levelIds != null, function($query)  use($levelIds){
                 return $query->join('resource_levels AS rl', function ($join) use($levelIds) {
                     $join->on('rl.resource_id', '=', 'rs.id')
                         ->where('rl.tid', $levelIds)
                         ->where('rs.status', 1);
                 });
             })
-            ->when(count($typeIds) > 0, function($query)  use($typeIds){
+            ->when($typeIds != null, function($query)  use($typeIds){
                 return $query->join('resource_learning_resource_types AS rlrt', function ($join) use($typeIds) {
                     $join->on('rlrt.resource_id', '=', 'rs.id')
                             ->where('rlrt.tid', $typeIds)
                             ->where('rs.status', 1);
                     });
             })
-            ->when(count($searchQuery) > 0, function($query)  use($searchQuery){
+            ->when($searchQuery != null, function($query)  use($searchQuery){
                 return $query->leftJoin('resource_authors AS ra','ra.resource_id','=','rs.id')
                     ->leftJoin('resource_publishers AS rp','rp.resource_id','=','rs.id')
                     ->leftJoin('taxonomy_term_data AS ttd','ttd.id','=','ra.tid')

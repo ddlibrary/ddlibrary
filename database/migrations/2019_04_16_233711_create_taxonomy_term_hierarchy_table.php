@@ -14,12 +14,12 @@ class CreateTaxonomyTermHierarchyTable extends Migration {
 	{
 		Schema::create('taxonomy_term_hierarchy', function(Blueprint $table)
 		{
-            $table->uuid('id');
-            $table->increments('aux_id');
+			$table->uuid('id');
+			$table->increments('aux_id');
 			$table->integer('tid')->unsigned()->default(0);
 			$table->integer('parent')->unsigned()->default(0)->index('parent');
-            $table->index(array('aux_id'));
-            $table->dropPrimary();
+			$table->index(array('aux_id'));
+			$table->dropPrimary();
 			$table->primary(['tid','parent']);
 		});
 	}
