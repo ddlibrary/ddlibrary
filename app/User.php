@@ -211,7 +211,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ->update($newPassword);
     }
 
-    public function isAdministrator(int $userid)
+    public function isAdministrator($userid): \Illuminate\Database\Query\Builder|null
     {
         return DB::table('users')
             ->join('user_roles', 'user_roles.user_id','=','users.id')
@@ -220,7 +220,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ->first();
     }
 
-    public function isNormalUser($userid)
+    public function isNormalUser($userid): \Illuminate\Database\Query\Builder|null
     {
         return DB::table('users')
             ->join('user_roles', 'user_roles.user_id','=','users.id')
@@ -229,7 +229,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ->first();
     }
 
-    public function isLibraryManager($userid)
+    public function isLibraryManager($userid): \Illuminate\Database\Query\Builder|null
     {
         return DB::table('users')
             ->join('user_roles', 'user_roles.user_id','=','users.id')
