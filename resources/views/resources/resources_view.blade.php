@@ -123,7 +123,7 @@
         <article class="resource-view-details">
             <div class="resource-view-download">
             <h3 style="display: inline;">@lang('Please click the button(s) below to download the resource(s)')</h3>
-            <a href="/glossary" class="glossary-icon"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text">&nbsp;@lang('Glossary')</span> </i></a>
+            <a href="{{ URL::to('glossary') }}" class="glossary-icon"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text">&nbsp;@lang('Glossary')</span> </i></a>
             </div>
             <div class="download-box">
                 @if (Auth::check() && auth()->user()->hasVerifiedEmail())
@@ -217,7 +217,7 @@
             <?php
             $supportedLocals = array();
             $newId = array();
-                foreach($app['config']->get('laravellocalization.localesOrder') as $localeCode)
+                foreach(config('laravellocalization.localesOrder') as $localeCode)
                 {
                     $supportedLocals[] = $localeCode;
                 }
@@ -232,13 +232,13 @@
             ?>
 
             @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-            @if(isset($newId[$localeCode]) && count($newId) > 0)
+            @if(isset($newId[$localeCode]) && $newId != 0)
                 <?php 
                     $currentUrl = explode('/',url()->current());
                     $index = count($currentUrl) - 1;
                     $value = $currentUrl[$index];
                     $currentUrl[$index] = $newId[$localeCode];
-                    $newUrl = implode($currentUrl, '/');
+                    $newUrl = implode('/', $currentUrl);
                 ?>
                 <p>
                     <a rel="alternate" title="language" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, $newUrl, [], true) }}">
