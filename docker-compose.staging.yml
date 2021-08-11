@@ -64,6 +64,7 @@ services:
       - '.env'
     volumes:
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./vendor:/var/www/html/vendor
     depends_on:
       - db
     restart: unless-stopped
