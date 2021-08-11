@@ -669,7 +669,7 @@ class ResourceController extends Controller
         $myResources = new Resource();
 
         $resource = $request->session()->get('resource1');
-        if($resource != null) $resource = (array) $myResources->getResources($resourceId);
+        if($resource == null) $resource = (array) $myResources->getResources($resourceId);
         return view('resources.resources_edit_step1', compact('resource'));
     }
 
