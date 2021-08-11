@@ -40,7 +40,7 @@
             <?php
             $supportedLocals = array();
             $newId = array();
-                foreach($app['config']->get('laravellocalization.localesOrder') as $localeCode)
+                foreach(config('laravellocalization.localesOrder') as $localeCode)
                 {
                     $supportedLocals[] = $localeCode;
                 }
@@ -68,7 +68,7 @@
                     $index = count($currentUrl) - 1;
                     $value = $currentUrl[$index];
                     $currentUrl[$index] = $newId[$localeCode];
-                    $newUrl = implode($currentUrl, '/');
+                    $newUrl = implode('/', $currentUrl);
                 ?>
                 <li>
                     <a rel="alternate" title="Language" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, $newUrl, [], true) }}">
@@ -98,7 +98,7 @@
             </li>
             @if ($loop->index == 1) {{-- where 0 is Home, 1 is DDL Library. We want it next to DDL Library. --}}
                 <li>
-                    <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}" title="StoryWeaver"><img src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/public/img/storyweaver-logo.svg') }}" class="storyweaver-logo"> @lang('StoryWeaver Library')</a>
+                    <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}" title="StoryWeaver"><img src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/public/img/storyweaver-logo.svg') }}" class="storyweaver-logo" alt="StoryWeaver logo"> @lang('StoryWeaver Library')</a>
                 </li>
             @endif
             @endforeach
