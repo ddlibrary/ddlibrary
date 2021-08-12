@@ -57,7 +57,6 @@ services:
     build:
       args:
         PHP_VERSION: ${PHP_VERSION}
-        MYSQL_CLIENT: ${INSTALL_MYSQL_CLIENT}
       context: .
       dockerfile: prod.Dockerfile
     container_name: app
