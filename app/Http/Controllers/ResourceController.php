@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
 use App\Setting;
+use Carbon\Carbon;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Resource;
@@ -32,6 +36,7 @@ use App\ResourceFlag;
 use App\ResourceFavorite;
 
 use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Mail;
@@ -39,6 +44,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Session;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Throwable;
 
 class ResourceController extends Controller
 {
@@ -51,7 +57,7 @@ class ResourceController extends Controller
     {
     }
     
-    public function index(Request $request)
+    public function index(Request $request): Factory|View|Application
     {
         $this->middleware('admin');
 
@@ -69,7 +75,7 @@ class ResourceController extends Controller
         return view('admin.resources.resources',compact('resources','filters'));
     }
 
-    public function updateTid(Request $request, $resourceId)
+    public function updateTid(Request $request, $resourceId): RedirectResponse
     {
         $translatedResource = Resource::findOrFail($request->input('link')); 
         
@@ -80,7 +86,7 @@ class ResourceController extends Controller
         return back();
     }
 
-    public function list(Request $request)
+    public function list(Request $request): Factory|View|Application
     {
         //setting the search session empty
         DDLClearSession();
@@ -146,7 +152,7 @@ class ResourceController extends Controller
         ));
     }
 
-    public function viewPublicResource(Request $request, $resourceId)
+    public function viewPublicResource(Request $request, $resourceId): Factory|View|Application
     {
         //setting the search session empty
         DDLClearSession();
@@ -160,6 +166,7 @@ class ResourceController extends Controller
 
         $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
         $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
+        $translations = null;
         if($resource){
             $translation_id = $resource->tnid;
             if($translation_id){
@@ -170,7 +177,7 @@ class ResourceController extends Controller
         }
 
         $this->resourceViewCounter($request, $resourceId);
-        \Carbon\Carbon::setLocale(app()->getLocale());
+        Carbon::setLocale(app()->getLocale());
         return view('resources.resources_view', compact(
             'resource',
             'relatedItems',
@@ -179,14 +186,14 @@ class ResourceController extends Controller
         ));   
     }
 
-    public function createStepOne(Request $request)
+    public function createStepOne(Request $request): Factory|View|Application
     {
         $this->middleware('auth');
         $resource = $request->session()->get('resource1');
         return view('resources.resources_add_step1', compact('resource'));
     }
 
-    public function postStepOne(Request $request)
+    public function postStepOne(Request $request): Redirector|Application|RedirectResponse
     {
         $validatedData = $request->validate([
             'title'         => 'required',
@@ -202,7 +209,7 @@ class ResourceController extends Controller
         return redirect('/resources/add/step2');
     }
 
-    public function createStepTwo(Request $request)
+    public function createStepTwo(Request $request): View|Factory|Redirector|RedirectResponse|Application
     {
         $resource1 = $request->session()->get('resource1');
 
@@ -240,7 +247,7 @@ class ResourceController extends Controller
         ));
     }
 
-    public function postStepTwo(Request $request)
+    public function postStepTwo(Request $request): Redirector|Application|RedirectResponse
     {
         $resource = $request->session()->get('resource2');
 
@@ -271,21 +278,13 @@ class ResourceController extends Controller
             unset($validatedData['attachments']);
         }
 
-        if(isset($resource['attc'])){
-            for($i=0; $i<count($resource['attc']); $i++){
-                $validatedData['attc'][] = array(
-                    'file_name' => $resource['attc'][$i]['file_name'],
-                    'file_size' => $resource['attc'][$i]['file_size'],
-                    'file_mime' => $resource['attc'][$i]['file_mime'],
-                );
-            }
-        }
+        $validatedData = $this->getValidatedData($resource, $validatedData);
 
         $request->session()->put('resource2', $validatedData);
         return redirect('/resources/add/step3');
     }
 
-    public function createStepThree(Request $request)
+    public function createStepThree(Request $request): View|Factory|Redirector|RedirectResponse|Application
     {
         $resource1 = $request->session()->get('resource1');
         $resource2 = $request->session()->get('resource2');
@@ -307,6 +306,7 @@ class ResourceController extends Controller
     /**
      * Store resource
      *
+     * @throws Throwable
      */
     public function postStepThree(Request $request)
     {
@@ -550,6 +550,7 @@ class ResourceController extends Controller
         if($result){
             return redirect('/home')->with('success',__('Resource successfully added! It will be published after review.'));
         }
+        return redirect('/home')->with('error',__('Resource couldn\'t be added.'));
     }
 
     public function attributes($entity, Request $request)
@@ -557,7 +558,7 @@ class ResourceController extends Controller
         $myResources = new Resource();
         $keyword = $request->only('term');
         if(!$keyword){
-            return;
+            return redirect('/home');
         }
         if($entity == "authors"){
             $records = $myResources->searchResourceAttributes($keyword['term'],'taxonomy_term_data', 24);
@@ -572,9 +573,10 @@ class ResourceController extends Controller
             $records = $myResources->searchResourceAttributes($keyword['term'],'taxonomy_term_data', 23);
             return response()->json($records->toArray());    
         }
+        return redirect('/home');
     }
 
-    public function resourceFavorite(Request $request)
+    public function resourceFavorite(Request $request): bool|string
     {
         $myResources = new Resource();
         
@@ -600,16 +602,13 @@ class ResourceController extends Controller
         }
     }
 
-    public function flag(Request $request)
+    public function flag(Request $request): Redirector|Application|RedirectResponse
     {
-        $myResources = new Resource();
-
         $userId = $request->input('userid');
         $resourceId = $request->input('resource_id');
 
-        if(empty($userId)){
-            return redirect('login');
-        }
+        if(empty($userId)) return redirect('login');
+        elseif (empty($resourceId)) return redirect('home');
 
         $flag = new ResourceFlag;
         $flag->resource_id = $resourceId;
@@ -619,10 +618,10 @@ class ResourceController extends Controller
         $flag->save();
 
         return redirect('resource/'.$resourceId)
-            ->with('success', 'Your flag report is now registered! We will get back to you as soon as possible!');
+            ->with('success', __('Your flag report is now registered! We will get back to you as soon as possible!'));
     }
 
-    public function comment(Request $request)
+    public function comment(Request $request): Redirector|Application|RedirectResponse
     {
         $userId = $request->input('userid');
         $resourceId = $request->input('resource_id');
@@ -662,7 +661,7 @@ class ResourceController extends Controller
         $myResources->updateResourceCounter($userAgent);
     }
 
-    public function createStepOneEdit($resourceId, Request $request)
+    public function createStepOneEdit($resourceId, Request $request): Factory|View|Application
     {
         $this->middleware('admin');
 
@@ -673,7 +672,7 @@ class ResourceController extends Controller
         return view('resources.resources_edit_step1', compact('resource'));
     }
 
-    public function postStepOneEdit($resourceId, Request $request)
+    public function postStepOneEdit($resourceId, Request $request): Redirector|Application|RedirectResponse
     {
         $this->middleware('admin');
 
@@ -693,7 +692,7 @@ class ResourceController extends Controller
         return redirect('/resources/edit/step2/'.$resourceId);
     }
 
-    public function createStepTwoEdit($resourceId, Request $request)
+    public function createStepTwoEdit($resourceId, Request $request): View|Factory|Redirector|RedirectResponse|Application
     {
         $this->middleware('admin');
 
@@ -816,7 +815,7 @@ class ResourceController extends Controller
         ));
     }
 
-    public function postStepTwoEdit($resourceId, Request $request)
+    public function postStepTwoEdit($resourceId, Request $request): Redirector|Application|RedirectResponse
     {
         $this->middleware('admin');
 
@@ -848,15 +847,7 @@ class ResourceController extends Controller
             }
         }
 
-        if(isset($resource['attc'])){
-            for($i=0; $i<count($resource['attc']); $i++){
-                $validatedData['attc'][] = array(
-                    'file_name' => $resource['attc'][$i]['file_name'],
-                    'file_size' => $resource['attc'][$i]['file_size'],
-                    'file_mime' => $resource['attc'][$i]['file_mime'],
-                ); 
-            }
-        }
+        $validatedData = $this->getValidatedData($resource, $validatedData);
 
         $validatedData['resourceid'] = $resourceId;
         $request->session()->put('resource2', $validatedData);
@@ -864,7 +855,7 @@ class ResourceController extends Controller
         return redirect('/resources/edit/step3/'.$resourceId);
     }
 
-    public function createStepThreeEdit($resourceId, Request $request)
+    public function createStepThreeEdit($resourceId, Request $request): View|Factory|Redirector|RedirectResponse|Application
     {
         $this->middleware('admin');
 
@@ -893,8 +884,9 @@ class ResourceController extends Controller
     /**
      * Store resource
      *
+     * @throws Throwable
      */
-    public function postStepThreeEdit($resourceId, Request $request)
+    public function postStepThreeEdit($resourceId, Request $request): Redirector|Application|RedirectResponse
     {
         $this->middleware('admin');
 
@@ -948,9 +940,7 @@ class ResourceController extends Controller
 
             //Deleting Subject Areas
             $theSubjects = ResourceSubjectArea::where('resource_id', $resourceId);
-            if($theSubjects != null){
-                $theSubjects->delete();
-            }
+            $theSubjects?->delete();
 
             //Inserting Subject Areas
             foreach($finalArray['subject_areas'] as $subject){
@@ -1193,9 +1183,10 @@ class ResourceController extends Controller
         if($result){
             return redirect('/resource/'.$resourceId)->with('success',__('Resource updated successfully'));
         }
+        return redirect('/resource/'.$resourceId)->with('error',__('Resource could not be updated.'));
     }
 
-    public function deleteFile($resourceId, $fileName)
+    public function deleteFile($resourceId, $fileName): Redirector|Application|RedirectResponse
     {   
         $this->middleware('admin');
 
@@ -1216,7 +1207,7 @@ class ResourceController extends Controller
         return redirect('/resources/edit/step2/'.$resourceId)->with('success','File successfully deleted!');
     }
 
-    public function published($resourceId)
+    public function published($resourceId): RedirectResponse
     {
         $this->middleware('admin');
 
@@ -1238,7 +1229,7 @@ class ResourceController extends Controller
      *
      * @return RedirectResponse
      */
-    public function deleteResource($resourceId)
+    public function deleteResource($resourceId): RedirectResponse
     {
         $resource = Resource::find($resourceId);
         $resource->delete();
@@ -1252,7 +1243,7 @@ class ResourceController extends Controller
      * @param $fileId
      * @param $resourceId
      *
-     * @return BinaryFileResponse
+     * @return void
      * @throws FileNotFoundException
      */
     public function downloadFile($resourceId, $fileId)
@@ -1297,5 +1288,24 @@ class ResourceController extends Controller
         ];
         return response()->download($temp_file, $file_name, $headers);
         */
+    }
+
+    /**
+     * @param mixed $resource
+     * @param array $validatedData
+     * @return array
+     */
+    public function getValidatedData(mixed $resource, array $validatedData): array
+    {
+        if (isset($resource['attc'])) {
+            for ($i = 0; $i < count($resource['attc']); $i++) {
+                $validatedData['attc'][] = array(
+                    'file_name' => $resource['attc'][$i]['file_name'],
+                    'file_size' => $resource['attc'][$i]['file_size'],
+                    'file_mime' => $resource['attc'][$i]['file_mime'],
+                );
+            }
+        }
+        return $validatedData;
     }
 }
