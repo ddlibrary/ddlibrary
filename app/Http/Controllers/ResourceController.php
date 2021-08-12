@@ -547,9 +547,9 @@ class ResourceController extends Controller
             return true;
         });
 
-        if($result){
-            return redirect('/home')->with('success',__('Resource successfully added! It will be published after review.'));
-        }
+        if($result and isAdmin()) return redirect('/home')->with('success',__('Resource successfully added!'));
+        elseif($result) return redirect('/home')->with('success',__('Resource successfully added! It will be published after review.'));
+
         return redirect('/home')->with('error',__('Resource couldn\'t be added.'));
     }
 
