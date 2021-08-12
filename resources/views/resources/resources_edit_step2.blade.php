@@ -126,7 +126,7 @@
             @foreach($levels AS $level)
                 @if($level->parent == 0)
                     <li><input type="checkbox" name="level[]" {{ in_array($level->id, $resourceLevels) ? "checked" : ""}} value="{{ $level->id }}" onchange="fnTest(this,'subLevel{{$level->id}}');">{{ $level->name . termEn($level->id) }}
-                        <?php if (isset($levels) && isset($level) {
+                        <?php if (isset($levels) && isset($level)) {
                             $levelParent = $levels->where('parent', $level->id);
                         }?>
                         @if($levelParent)
