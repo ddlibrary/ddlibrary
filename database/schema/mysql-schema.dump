@@ -1,0 +1,848 @@
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `activity_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `activity_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `log_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subject_id` int(11) DEFAULT NULL,
+  `subject_type` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `causer_id` int(11) DEFAULT NULL,
+  `causer_type` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `properties` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `activity_log_log_name_index` (`log_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `contacts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `contacts` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subject` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `isread` int(11) DEFAULT '0' COMMENT '0: unread, 1: read',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `download_counts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `download_counts` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned DEFAULT NULL,
+  `file_id` int(10) unsigned NOT NULL COMMENT 'The id from the drupal file_managed table of the file downloaded.',
+  `user_id` int(10) unsigned DEFAULT '0' COMMENT 'The uid of the user that downloaded the file.',
+  `ip_address` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT 'The IP address of the downloading user.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `dc_fid_type_id` (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `featured_collections`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `featured_collections` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name_tid` int(10) unsigned DEFAULT NULL,
+  `icon` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `featured_resource_levels`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `featured_resource_levels` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `fcid` int(10) unsigned DEFAULT NULL,
+  `level_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `featured_resource_subjects`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `featured_resource_subjects` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `fcid` int(10) unsigned DEFAULT NULL,
+  `subject_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `featured_resource_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `featured_resource_types` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `fcid` int(10) unsigned DEFAULT NULL,
+  `type_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `featured_urls`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `featured_urls` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `fcid` int(10) unsigned DEFAULT NULL,
+  `url` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `files`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `files` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `url` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `size` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `glossary`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `glossary` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `subject` int(10) unsigned NOT NULL,
+  `name_en` text COLLATE utf8mb4_unicode_ci,
+  `name_fa` text COLLATE utf8mb4_unicode_ci,
+  `name_ps` text COLLATE utf8mb4_unicode_ci,
+  `user_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `flagged_for_review` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `glossary_subject_foreign` (`subject`),
+  CONSTRAINT `glossary_subject_foreign` FOREIGN KEY (`subject`) REFERENCES `glossary_subjects` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `glossary_subjects`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `glossary_subjects` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `en` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `fa` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `pa` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `mj` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `no` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `ps` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `sh` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `sw` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `uz` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jobs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `queue` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attempts` tinyint(3) unsigned NOT NULL,
+  `reserved_at` int(10) unsigned DEFAULT NULL,
+  `available_at` int(10) unsigned NOT NULL,
+  `created_at` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `jobs_queue_index` (`queue`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `ltm_translations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ltm_translations` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `status` int(11) NOT NULL DEFAULT '0',
+  `locale` varchar(191) COLLATE utf8mb4_bin NOT NULL,
+  `group` varchar(191) COLLATE utf8mb4_bin NOT NULL,
+  `key` text COLLATE utf8mb4_bin NOT NULL,
+  `value` text COLLATE utf8mb4_bin,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `menus`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `menus` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `location` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `path` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent` int(11) DEFAULT '0',
+  `language` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `weight` int(11) DEFAULT NULL,
+  `tnid` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `parent` (`parent`),
+  KEY `weight` (`weight`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `news`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `news` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `summary` text COLLATE utf8mb4_unicode_ci,
+  `body` text COLLATE utf8mb4_unicode_ci,
+  `language` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `tnid` int(11) DEFAULT NULL COMMENT 'translation id',
+  `status` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `pages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `summary` text COLLATE utf8mb4_unicode_ci,
+  `body` text COLLATE utf8mb4_unicode_ci,
+  `language` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `tnid` int(11) DEFAULT NULL COMMENT 'translation id',
+  `status` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `password_resets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `password_resets` (
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  KEY `password_resets_email_index` (`email`),
+  KEY `password_resets_token_index` (`token`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_attachments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_attachments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned NOT NULL,
+  `file_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_mime` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_size` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_watermarked` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `resourceid` (`resource_id`),
+  CONSTRAINT `resource_attachments_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_authors`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_authors` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned NOT NULL,
+  `tid` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resourceid` (`resource_id`),
+  KEY `tid` (`tid`),
+  CONSTRAINT `resource_authors_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `resource_authors_ibfk_2` FOREIGN KEY (`tid`) REFERENCES `taxonomy_term_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_comments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_comments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned DEFAULT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `comment` text COLLATE utf8mb4_unicode_ci,
+  `status` int(11) DEFAULT '0' COMMENT '0: not published, 1: published',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resource_id` (`resource_id`),
+  CONSTRAINT `resource_comments_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_copyright_holders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_copyright_holders` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned NOT NULL,
+  `value` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resourceid` (`resource_id`),
+  CONSTRAINT `resource_copyright_holders_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_creative_commons`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_creative_commons` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned DEFAULT NULL,
+  `tid` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resource_id` (`resource_id`),
+  KEY `tid` (`tid`),
+  CONSTRAINT `resource_creative_commons_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `resource_creative_commons_ibfk_2` FOREIGN KEY (`tid`) REFERENCES `taxonomy_term_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_educational_resources`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_educational_resources` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned DEFAULT NULL,
+  `value` int(11) DEFAULT NULL COMMENT '0: not published, 1: published',
+  PRIMARY KEY (`id`),
+  KEY `resource_id` (`resource_id`),
+  CONSTRAINT `resource_educational_resources_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_educational_uses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_educational_uses` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned NOT NULL,
+  `tid` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resourceid` (`resource_id`),
+  KEY `tid` (`tid`),
+  CONSTRAINT `resource_educational_uses_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `resource_educational_uses_ibfk_2` FOREIGN KEY (`tid`) REFERENCES `taxonomy_term_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_favorites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_favorites` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned DEFAULT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resource_id` (`resource_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `resource_favorites_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `resource_favorites_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_flags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_flags` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned DEFAULT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `type` int(11) DEFAULT NULL COMMENT '1: Graphic Violence, 2: Graphic Sexual Content, 3: Spam, Scam or Fraud, 4: Broken or Empty Data',
+  `details` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resource_id` (`resource_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `resource_flags_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `resource_flags_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_iam_author`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_iam_author` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned DEFAULT NULL,
+  `value` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resource_id` (`resource_id`),
+  CONSTRAINT `resource_iam_author_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_keywords`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_keywords` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned NOT NULL,
+  `tid` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resourceid` (`resource_id`),
+  KEY `tid` (`tid`),
+  CONSTRAINT `resource_keywords_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `resource_keywords_ibfk_2` FOREIGN KEY (`tid`) REFERENCES `taxonomy_term_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_learning_resource_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_learning_resource_types` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned NOT NULL,
+  `tid` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resourceid` (`resource_id`),
+  KEY `tid` (`tid`),
+  CONSTRAINT `resource_learning_resource_types_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `resource_learning_resource_types_ibfk_2` FOREIGN KEY (`tid`) REFERENCES `taxonomy_term_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_levels`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_levels` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned NOT NULL,
+  `tid` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resourceid` (`resource_id`),
+  KEY `tid` (`tid`),
+  CONSTRAINT `resource_levels_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `resource_levels_ibfk_2` FOREIGN KEY (`tid`) REFERENCES `taxonomy_term_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_publishers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_publishers` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned NOT NULL,
+  `tid` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resourceid` (`resource_id`),
+  CONSTRAINT `resource_publishers_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_share_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_share_permissions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned DEFAULT NULL,
+  `tid` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resource_id` (`resource_id`),
+  KEY `tid` (`tid`),
+  CONSTRAINT `resource_share_permissions_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `resource_share_permissions_ibfk_2` FOREIGN KEY (`tid`) REFERENCES `taxonomy_term_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_subject_areas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_subject_areas` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned NOT NULL,
+  `tid` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resourceid` (`resource_id`),
+  KEY `tid` (`tid`),
+  CONSTRAINT `resource_subject_areas_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `resource_subject_areas_ibfk_2` FOREIGN KEY (`tid`) REFERENCES `taxonomy_term_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_translation_rights`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_translation_rights` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned DEFAULT NULL,
+  `value` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resource_id` (`resource_id`),
+  CONSTRAINT `resource_translation_rights_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_translators`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_translators` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned NOT NULL,
+  `tid` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resourceid` (`resource_id`),
+  CONSTRAINT `resource_translators_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_views`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_views` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resource_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `ip` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `browser_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `browser_version` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `platform` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `nid` (`resource_id`),
+  KEY `ip` (`ip`),
+  CONSTRAINT `resource_views_ibfk_1` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resources`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resources` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `abstract` text COLLATE utf8mb4_unicode_ci,
+  `language` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `status` int(11) DEFAULT '0' COMMENT '0: not published, 1: published',
+  `tnid` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `published_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `userid` (`user_id`),
+  KEY `status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `roles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `settings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `settings` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `website_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `website_slogan` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `website_email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `static_subject_area_icons`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `static_subject_area_icons` (
+  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `aux_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tid` int(10) unsigned NOT NULL,
+  `file_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_url` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_mime` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_size` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`tid`),
+  KEY `static_subject_area_icons_aux_id_index` (`aux_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `survey_answers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `survey_answers` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `question_id` int(10) unsigned NOT NULL,
+  `answer_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `language` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `survey_answers_question_id_foreign` (`question_id`),
+  KEY `survey_answers_answer_id_foreign` (`answer_id`),
+  CONSTRAINT `survey_answers_answer_id_foreign` FOREIGN KEY (`answer_id`) REFERENCES `survey_question_options` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `survey_answers_question_id_foreign` FOREIGN KEY (`question_id`) REFERENCES `survey_questions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `survey_question_options`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `survey_question_options` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `text` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `question_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `language` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tnid` int(11) DEFAULT NULL COMMENT 'translation id',
+  PRIMARY KEY (`id`),
+  KEY `survey_question_options_question_id_foreign` (`question_id`),
+  CONSTRAINT `survey_question_options_question_id_foreign` FOREIGN KEY (`question_id`) REFERENCES `survey_questions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `survey_questions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `survey_questions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `text` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `survey_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `language` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tnid` int(11) DEFAULT NULL COMMENT 'translation id',
+  PRIMARY KEY (`id`),
+  KEY `survey_questions_survey_id_foreign` (`survey_id`),
+  CONSTRAINT `survey_questions_survey_id_foreign` FOREIGN KEY (`survey_id`) REFERENCES `surveys` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `survey_settings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `survey_settings` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `time` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `surveys`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `surveys` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `state` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `language` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tnid` int(11) DEFAULT NULL COMMENT 'translation id',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `surveys_name_unique` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `taxonomy_term_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `taxonomy_term_data` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `vid` int(10) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `weight` int(11) NOT NULL DEFAULT '0' COMMENT 'The weight of this term in relation to other terms.',
+  `language` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'und',
+  `tnid` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `taxonomy_tree` (`vid`,`weight`,`name`),
+  KEY `vid_name` (`vid`,`name`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `taxonomy_term_hierarchy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `taxonomy_term_hierarchy` (
+  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `aux_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tid` int(10) unsigned NOT NULL DEFAULT '0',
+  `parent` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`tid`,`parent`),
+  KEY `taxonomy_term_hierarchy_aux_id_index` (`aux_id`),
+  KEY `parent` (`parent`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `taxonomy_vocabulary`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `taxonomy_vocabulary` (
+  `vid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `weight` int(11) NOT NULL DEFAULT '0' COMMENT 'The weight of this vocabulary in relation to other vocabularies.',
+  `language` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'und',
+  PRIMARY KEY (`vid`),
+  KEY `list` (`weight`,`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `user_profiles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_profiles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `first_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `gender` varchar(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `city` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `visited_storyweaver_disclaimer` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `userid` (`user_id`),
+  CONSTRAINT `user_profiles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `user_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_roles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `role_id` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `userid` (`user_id`),
+  KEY `roleid` (`role_id`),
+  CONSTRAINT `user_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `user_roles_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT 'User’s e-mail address.',
+  `status` tinyint(1) DEFAULT '0',
+  `language` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT 'en',
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `accessed_at` datetime DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `status` (`status`),
+  KEY `access` (`accessed_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+INSERT INTO `migrations` VALUES (190,'2014_04_02_193005_create_translations_table',1);
+INSERT INTO `migrations` VALUES (191,'2019_04_16_233711_create_contacts_table',1);
+INSERT INTO `migrations` VALUES (192,'2019_04_16_233711_create_download_counts_table',1);
+INSERT INTO `migrations` VALUES (193,'2019_04_16_233711_create_featured_collections_table',1);
+INSERT INTO `migrations` VALUES (194,'2019_04_16_233711_create_featured_resource_levels_table',1);
+INSERT INTO `migrations` VALUES (195,'2019_04_16_233711_create_featured_resource_subjects_table',1);
+INSERT INTO `migrations` VALUES (196,'2019_04_16_233711_create_featured_resource_types_table',1);
+INSERT INTO `migrations` VALUES (197,'2019_04_16_233711_create_featured_urls_table',1);
+INSERT INTO `migrations` VALUES (198,'2019_04_16_233711_create_files_table',1);
+INSERT INTO `migrations` VALUES (199,'2019_04_16_233711_create_glossary_table',1);
+INSERT INTO `migrations` VALUES (200,'2019_04_16_233711_create_menus_table',1);
+INSERT INTO `migrations` VALUES (201,'2019_04_16_233711_create_news_table',1);
+INSERT INTO `migrations` VALUES (202,'2019_04_16_233711_create_pages_table',1);
+INSERT INTO `migrations` VALUES (203,'2019_04_16_233711_create_password_resets_table',1);
+INSERT INTO `migrations` VALUES (204,'2019_04_16_233711_create_resource_attachments_table',1);
+INSERT INTO `migrations` VALUES (205,'2019_04_16_233711_create_resource_authors_table',1);
+INSERT INTO `migrations` VALUES (206,'2019_04_16_233711_create_resource_comments_table',1);
+INSERT INTO `migrations` VALUES (207,'2019_04_16_233711_create_resource_copyright_holders_table',1);
+INSERT INTO `migrations` VALUES (208,'2019_04_16_233711_create_resource_creative_commons_table',1);
+INSERT INTO `migrations` VALUES (209,'2019_04_16_233711_create_resource_educational_resources_table',1);
+INSERT INTO `migrations` VALUES (210,'2019_04_16_233711_create_resource_educational_uses_table',1);
+INSERT INTO `migrations` VALUES (211,'2019_04_16_233711_create_resource_favorites_table',1);
+INSERT INTO `migrations` VALUES (212,'2019_04_16_233711_create_resource_flags_table',1);
+INSERT INTO `migrations` VALUES (213,'2019_04_16_233711_create_resource_iam_author_table',1);
+INSERT INTO `migrations` VALUES (214,'2019_04_16_233711_create_resource_keywords_table',1);
+INSERT INTO `migrations` VALUES (215,'2019_04_16_233711_create_resource_learning_resource_types_table',1);
+INSERT INTO `migrations` VALUES (216,'2019_04_16_233711_create_resource_levels_table',1);
+INSERT INTO `migrations` VALUES (217,'2019_04_16_233711_create_resource_publishers_table',1);
+INSERT INTO `migrations` VALUES (218,'2019_04_16_233711_create_resource_share_permissions_table',1);
+INSERT INTO `migrations` VALUES (219,'2019_04_16_233711_create_resource_subject_areas_table',1);
+INSERT INTO `migrations` VALUES (220,'2019_04_16_233711_create_resource_translation_rights_table',1);
+INSERT INTO `migrations` VALUES (221,'2019_04_16_233711_create_resource_translators_table',1);
+INSERT INTO `migrations` VALUES (222,'2019_04_16_233711_create_resource_views_table',1);
+INSERT INTO `migrations` VALUES (223,'2019_04_16_233711_create_resources_table',1);
+INSERT INTO `migrations` VALUES (224,'2019_04_16_233711_create_roles_table',1);
+INSERT INTO `migrations` VALUES (225,'2019_04_16_233711_create_settings_table',1);
+INSERT INTO `migrations` VALUES (226,'2019_04_16_233711_create_static_subject_area_icons_table',1);
+INSERT INTO `migrations` VALUES (227,'2019_04_16_233711_create_survey_answers_table',1);
+INSERT INTO `migrations` VALUES (228,'2019_04_16_233711_create_survey_question_options_table',1);
+INSERT INTO `migrations` VALUES (229,'2019_04_16_233711_create_survey_questions_table',1);
+INSERT INTO `migrations` VALUES (230,'2019_04_16_233711_create_survey_settings_table',1);
+INSERT INTO `migrations` VALUES (231,'2019_04_16_233711_create_surveys_table',1);
+INSERT INTO `migrations` VALUES (232,'2019_04_16_233711_create_taxonomy_term_data_table',1);
+INSERT INTO `migrations` VALUES (233,'2019_04_16_233711_create_taxonomy_term_hierarchy_table',1);
+INSERT INTO `migrations` VALUES (234,'2019_04_16_233711_create_taxonomy_vocabulary_table',1);
+INSERT INTO `migrations` VALUES (235,'2019_04_16_233711_create_user_profiles_table',1);
+INSERT INTO `migrations` VALUES (236,'2019_04_16_233711_create_user_roles_table',1);
+INSERT INTO `migrations` VALUES (237,'2019_04_16_233711_create_users_table',1);
+INSERT INTO `migrations` VALUES (238,'2019_04_16_233712_add_foreign_keys_to_resource_attachments_table',1);
+INSERT INTO `migrations` VALUES (239,'2019_04_16_233712_add_foreign_keys_to_resource_authors_table',1);
+INSERT INTO `migrations` VALUES (240,'2019_04_16_233712_add_foreign_keys_to_resource_comments_table',1);
+INSERT INTO `migrations` VALUES (241,'2019_04_16_233712_add_foreign_keys_to_resource_copyright_holders_table',1);
+INSERT INTO `migrations` VALUES (242,'2019_04_16_233712_add_foreign_keys_to_resource_creative_commons_table',1);
+INSERT INTO `migrations` VALUES (243,'2019_04_16_233712_add_foreign_keys_to_resource_educational_resources_table',1);
+INSERT INTO `migrations` VALUES (244,'2019_04_16_233712_add_foreign_keys_to_resource_educational_uses_table',1);
+INSERT INTO `migrations` VALUES (245,'2019_04_16_233712_add_foreign_keys_to_resource_favorites_table',1);
+INSERT INTO `migrations` VALUES (246,'2019_04_16_233712_add_foreign_keys_to_resource_flags_table',1);
+INSERT INTO `migrations` VALUES (247,'2019_04_16_233712_add_foreign_keys_to_resource_iam_author_table',1);
+INSERT INTO `migrations` VALUES (248,'2019_04_16_233712_add_foreign_keys_to_resource_keywords_table',1);
+INSERT INTO `migrations` VALUES (249,'2019_04_16_233712_add_foreign_keys_to_resource_learning_resource_types_table',1);
+INSERT INTO `migrations` VALUES (250,'2019_04_16_233712_add_foreign_keys_to_resource_levels_table',1);
+INSERT INTO `migrations` VALUES (251,'2019_04_16_233712_add_foreign_keys_to_resource_publishers_table',1);
+INSERT INTO `migrations` VALUES (252,'2019_04_16_233712_add_foreign_keys_to_resource_share_permissions_table',1);
+INSERT INTO `migrations` VALUES (253,'2019_04_16_233712_add_foreign_keys_to_resource_subject_areas_table',1);
+INSERT INTO `migrations` VALUES (254,'2019_04_16_233712_add_foreign_keys_to_resource_translation_rights_table',1);
+INSERT INTO `migrations` VALUES (255,'2019_04_16_233712_add_foreign_keys_to_resource_translators_table',1);
+INSERT INTO `migrations` VALUES (256,'2019_04_16_233712_add_foreign_keys_to_resource_views_table',1);
+INSERT INTO `migrations` VALUES (257,'2019_04_16_233712_add_foreign_keys_to_survey_answers_table',1);
+INSERT INTO `migrations` VALUES (258,'2019_04_16_233712_add_foreign_keys_to_survey_question_options_table',1);
+INSERT INTO `migrations` VALUES (259,'2019_04_16_233712_add_foreign_keys_to_survey_questions_table',1);
+INSERT INTO `migrations` VALUES (260,'2019_04_16_233712_add_foreign_keys_to_user_profiles_table',1);
+INSERT INTO `migrations` VALUES (261,'2019_04_16_233712_add_foreign_keys_to_user_roles_table',1);
+INSERT INTO `migrations` VALUES (262,'2019_04_17_055642_create_activity_log_table',1);
+INSERT INTO `migrations` VALUES (263,'2019_04_27_195052_add_language_to_survey_answers_table',1);
+INSERT INTO `migrations` VALUES (264,'2020_07_18_140143_add_file_watermarked_to_resource_attachments',1);
+INSERT INTO `migrations` VALUES (265,'2020_07_22_092404_users_email_nullable',1);
+INSERT INTO `migrations` VALUES (266,'2020_08_13_073528_add_visited_storyweaver_disclaimer_to_user_profiles_table',1);
+INSERT INTO `migrations` VALUES (267,'2020_09_30_055917_create_jobs_table',1);
+INSERT INTO `migrations` VALUES (268,'2020_10_27_183558_add_flagged_for_review_to_glossary_table',1);
+INSERT INTO `migrations` VALUES (269,'2021_01_17_045707_add_published_at_to_resources',1);
+INSERT INTO `migrations` VALUES (270,'2021_01_28_142112_create_glossary_subjects',1);
+INSERT INTO `migrations` VALUES (271,'2021_01_28_143800_change_glossary_subjects_type',1);
+INSERT INTO `migrations` VALUES (272,'2021_05_05_051228_change_ip_size_in_resource_views_table',1);
+INSERT INTO `migrations` VALUES (273,'2021_07_02_141111_add_email_verified_at_to_users_table',1);
