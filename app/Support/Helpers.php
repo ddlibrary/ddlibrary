@@ -88,7 +88,7 @@ if (! function_exists('fixImage')) {
 		}
 
         preg_match_all('/src="([^"]*)"/',$abstract,$matches);
-        if(count($matches[1])> 0){
+        if($matches[1]){
             $replaceMe = array();
             $originalMe = array();
 

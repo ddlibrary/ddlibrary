@@ -7,8 +7,10 @@
     </header>
     <table class="translate">
         @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-            <?php $item = $page->firstWhere('language',$localeCode);?>
-            @if(count($item))
+            <?php if (isset($page) && isset($localeCode)) {
+                $item = $page->firstWhere('language',$localeCode);
+            }?>
+            @if($item)
             <tr>
                 <td>{{ $item->title }}</td>
                 <td>{{ fixLanguage($item->language) }}</td>
@@ -24,4 +26,4 @@
         @endforeach
     </table>
 </section>
-@endsection 
+@endsection

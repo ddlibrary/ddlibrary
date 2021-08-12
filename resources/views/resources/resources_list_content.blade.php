@@ -1,4 +1,4 @@
-@if (count($resources) > 0)
+@if ($resources)
 @foreach ($resources->unique('id') AS $resource)
 @if ($resource->status)
 

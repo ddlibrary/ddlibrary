@@ -62,7 +62,7 @@
                     </a>
                 </li>
 
-            @elseif(isset($newId[$localeCode]) && count($newId) > 0)
+            @elseif(isset($newId[$localeCode]) && $newId)
                 <?php 
                     $currentUrl = explode('/',url()->current());
                     $index = count($currentUrl) - 1;
