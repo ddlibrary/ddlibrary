@@ -396,10 +396,9 @@ header #toggle {
 .banner {
     padding: 5px;
     max-width: 1170px;
-    margin: 0 auto;
     text-align: center;
     background: #eeeeee;
-    margin-bottom: 2em;
+    margin: 0 auto 2em;
 }
 .banner header {
     margin: 5px 0px 30px 0px;
