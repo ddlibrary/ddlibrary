@@ -31,9 +31,9 @@ class PageController extends Controller
             ->addColumn('action', function ($page) {
                 return '<a href="' . URL($page->language . '/page/edit/' . $page->id) .'" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>';
             })
-            ->editColumn('language', '{{fixLanguage($language)}}')
-            ->editColumn('created_at', '{{$created_at->diffForHumans()}}')
-            ->editColumn('updated_at', '{{$updated_at->diffForHumans()}}')
+            ->editColumn('language', '{{ fixLanguage($language) }}')
+            ->editColumn('created_at', '{{ Carbon::parse($created_at)->diffForHumans(Carbon::now()) }}')
+            ->editColumn('updated_at', '{{ Carbon::parse($updated_at)->diffForHumans(Carbon::now()) }}')
             ->orderColumn('id', '-id $1')
             ->make(true);
     }
