@@ -15,7 +15,7 @@
             <label for="translation_rights"> 
                 <h2>1. @lang('Translation Rights') {{ en('Translation Rights') }}</h2>
             </label>
-            <input type="checkbox" value="1" name="translation_rights" {{ count($dbRecords->TranslationRights)?"checked":"" }}> 
+            <input type="checkbox" value="1" name="translation_rights" {{ $dbRecords->TranslationRights?"checked":"" }}>
             @lang('I am providing a new translation. I have selected the license that appears on the original resource.')
             @lang('If this is not translation, please skip this question and go to #2.')
 
@@ -34,7 +34,7 @@
             <label for="educational_resource"> 
                 <h2>2. @lang('Educational Resource') {{ en('Educational Resource') }}</h2>
             </label>
-            <input type="checkbox" value="1" name="educational_resource" {{ count($dbRecords->EducationalResources)?"checked":""  }}> 
+            <input type="checkbox" value="1" name="educational_resource" {{ $dbRecords->EducationalResources?"checked":""  }}>
             @lang('I am submitting a resource to DDL that is already published. I have selected the license that is on the original resource.')
             @lang('If you are the original author, please skip this question and go to #3.')
 
@@ -53,7 +53,7 @@
                 <label for="iam_author"> 
                     <h2>3. @lang('I am the author') {{ en('I am the author') }}</h2>
                 </label>
-                <input type="checkbox" value="1" name="iam_author" {{ count($dbRecords->IamAuthors)?"checked":"" }}> 
+                <input type="checkbox" value="1" name="iam_author" {{ $dbRecords->IamAuthors?"checked":"" }}>
                 @lang('I am the author and I am submitting my resource to DDL. I am selecting a creative commons license for my resource below.')
                 
                 <br>
@@ -71,7 +71,7 @@
             <label for="copyright_holder"> 
                 <strong>@lang('License/Copyright Holder') {{ en('License/Copyright Holder') }}</strong>
             </label>
-            <input class="form-control{{ $errors->has('copyright_holder') ? ' is-invalid' : '' }}" id="copyright_holder" name="copyright_holder" size="40" type="text" value="{{ count($dbRecords->CopyrightHolder)?$dbRecords->CopyrightHolder->value:"" }}">
+            <input class="form-control{{ $errors->has('copyright_holder') ? ' is-invalid' : '' }}" id="copyright_holder" name="copyright_holder" size="40" type="text" value="{{ $dbRecords->CopyrightHolder?$dbRecords->CopyrightHolder->value:"" }}">
             <div class="description">
                 @lang('Please enter the name of the person or organization owning or managing rights over the resource.') <br>
                 {{ en('Please enter the name of the person or organization owning or managing rights over the resource') }}
@@ -92,10 +92,12 @@
             <br>
             @foreach($creativeCommons AS $cc)
             <?php
-                if(count($dbRecords->creativeCommons)){
-                    $cc_common = $dbRecords->creativeCommons[0]->name;
-                }else{
-                    $cc_common = "";
+                if (!empty($dbRecords)) {
+                    if($dbRecords->creativeCommons){
+                        $cc_common = $dbRecords->creativeCommons[0]->name;
+                    }else{
+                        $cc_common = "";
+                    }
                 }
             ?>
             @if(in_array($cc->tnid, array(535, 536, 537, 159, 6187)))
@@ -114,7 +116,7 @@
             </label>
             @foreach($creativeCommons AS $other)
             @if(!in_array($other->tnid, array(535, 536, 537, 159, 6187)))
-            <input type="radio" value="{{ $other->id }}" name="creative_commons_other" @if(count($dbRecords->SharePermissions)) {{ $dbRecords->SharePermissions->tid == $other->id?"checked":"" }} @endif>{{ $other->name . termEn($other->id) }}<br>
+            <input type="radio" value="{{ $other->id }}" name="creative_commons_other" @if($dbRecords->SharePermissions) {{ $dbRecords->SharePermissions->tid == $other->id?"checked":"" }} @endif>{{ $other->name . termEn($other->id) }}<br>
             @endif
             @endforeach
         </div>
