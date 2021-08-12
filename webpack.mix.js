@@ -25,7 +25,7 @@ mix.styles('resources/assets/css/local.css', 'public/css/local.css');
 mix.babel([
    'public/js/ddl.js',
    'resources/assets/js/lazysizes.min.js',
-   'public/js/bootstrap.min.js',
+   'resources/assets/js/boostrap.min.js',
    ], 'public/js/all.js');
 
 /*

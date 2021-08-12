@@ -1,12 +1,12 @@
 <section class="banner">
     <header>
-        <h1>@lang('Free and open educational resources for Afghanistan')</h1>
+        <h3>@lang('Free and open educational resources for Afghanistan')</h3>
     </header>
-    <form method="GET" action="{{ route('resourceList') }}" id="search-form">
+    <form class="form-inline" method="GET" action="{{ route('resourceList') }}" id="search-form">
         @csrf
-        <label for="search">
-            <input type="search" name="search" class="form-search form-control" value="{{ session('search') }}" placeholder="@lang('SEARCH OUR GROWING LIBRARY!')" autofocus>
-        </label>
-        <input type="submit" class="search-button" value="@lang('Go')">
+        <div class="form-group mx-auto mb-2">
+            <input type="text" name="search" class="form-control col-md-10" style="margin-right: 10px;" value="{{ session('search') }}" placeholder="@lang('SEARCH OUR GROWING LIBRARY!')" autofocus>
+            <button type="submit" class="btn btn-primary">@lang('Go')</button>
+        </div>
     </form>
 </section>
