@@ -14,7 +14,6 @@ class ChangeGlossarySubjectsType extends Migration
     public function up()
     {
         Schema::table('glossary', function (Blueprint $table) {
-            $table->integer('subject')->unsigned()->change();
             $table->foreign('subject')->references('id')->on('glossary_subjects')->onDelete('cascade');
         });
     }

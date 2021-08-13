@@ -41,7 +41,7 @@
                     <strong>@lang('Password')</strong>
                     <span class="form-required" title="This field is required.">*</span>
                 </label>
-                <input class="form-control" name="password" type="password" size="40" placeholder="Only fill this if you want to change the user's password" value="d" autocomplete="off">
+                <input class="form-control" name="password" type="password" size="40" placeholder="@lang("Only fill this if you want to change your password")" autocomplete="off">
             </div>
 
             <div>

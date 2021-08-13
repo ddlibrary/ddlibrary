@@ -10,11 +10,8 @@
     $lang = Config::get('app.locale'); 
     $questions_count = \App\SurveyQuestion::getPublishedQuestions($lang)->count();
 ?>
-@if ($lang != 'en')
-<div id="surveyModal" class="modal" dir="rtl">
-@else
-<div id="surveyModal" class="modal" dir="ltr">
-@endif
+
+<div id="surveyModal" class="modal" dir="@if ($lang != 'en')rtl@else ltr@endif">
     <div class="modal-content">
         <div class="modal-header">
             <span class="close" id="survey-close">&times;</span>
@@ -141,7 +138,7 @@
 
 
 {{-- Survey pop up time/start  --}}
-<span class="pop_up_time" id="{{ \App\SurveySettings::first() }}"></span>
+<span class="pop_up_time" id="{{ \App\SurveySetting::first() }}"></span>
 
 <script>
     var pop_up_time = document.querySelector('.pop_up_time').id

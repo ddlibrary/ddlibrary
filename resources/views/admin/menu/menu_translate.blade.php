@@ -24,10 +24,12 @@
                     <th> Action </th>
                 </tr>
               </thead>
-              @if(count($translations))
+              @if($translations)
                 @foreach($locals as $key=>$value)
-                <?php 
-                $terms = $translations->where('language', $key);
+                <?php
+                  if (isset($translations) && isset($key)) {
+                    $terms = $translations->where('language', $key);
+                  }
                 $terms = array_values($terms->toArray());
                 ?>
                 @if(isset($terms[0]['language']))

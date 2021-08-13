@@ -4,14 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use Config;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\Traits\CausesActivity;
 
 /**
  * @method static find($resourceId)
  * @method static findOrFail($resourceId)
+ * @method static published()
+ * @method static where(string $string, int|null $id)
  */
 class Resource extends Model
 {
@@ -57,7 +59,7 @@ class Resource extends Model
 
     public function subjectsIcons()
     {
-        return $this->belongsToMany(StaticSubjectIcons::class, 'resource_subject_areas', 'resource_id', 'tid');
+        return $this->belongsToMany(StaticSubjectIcon::class, 'resource_subject_areas', 'resource_id', 'tid');
     }
 
     public function TranslationRights()
@@ -350,7 +352,7 @@ class Resource extends Model
                 'rs.title',
                 'rs.status'
             )
-            ->when(count($subjectAreaIds) > 0, function($query) use($subjectAreaIds){
+            ->when($subjectAreaIds != null, function($query) use($subjectAreaIds){
                 return $query->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
                         ->join('taxonomy_term_hierarchy AS tth','tth.tid','=','rsa.tid')
                         ->where('tth.parent', $subjectAreaIds)
@@ -358,21 +360,21 @@ class Resource extends Model
                         ->orWhere('tth.tid', $subjectAreaIds)
                         ->groupBy('tth.tid');
             })
-            ->when(count($levelIds) > 0, function($query)  use($levelIds){
+            ->when($levelIds != null, function($query)  use($levelIds){
                 return $query->join('resource_levels AS rl', function ($join) use($levelIds) {
                     $join->on('rl.resource_id', '=', 'rs.id')
                         ->where('rl.tid', $levelIds)
                         ->where('rs.status', 1);
                 });
             })
-            ->when(count($typeIds) > 0, function($query)  use($typeIds){
+            ->when($typeIds != null, function($query)  use($typeIds){
                 return $query->join('resource_learning_resource_types AS rlrt', function ($join) use($typeIds) {
                     $join->on('rlrt.resource_id', '=', 'rs.id')
                             ->where('rlrt.tid', $typeIds)
                             ->where('rs.status', 1);
                     });
             })
-            ->when(count($searchQuery) > 0, function($query)  use($searchQuery){
+            ->when($searchQuery != null, function($query)  use($searchQuery){
                 return $query->leftJoin('resource_authors AS ra','ra.resource_id','=','rs.id')
                     ->leftJoin('resource_publishers AS rp','rp.resource_id','=','rs.id')
                     ->leftJoin('taxonomy_term_data AS ttd','ttd.id','=','ra.tid')
@@ -611,5 +613,14 @@ class Resource extends Model
             'platform'          => $data['platform'],
             'created_at'        => \Carbon\Carbon::now()
         ]);
+    }
+
+    /**
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['title', 'created_at']);
     }
 }

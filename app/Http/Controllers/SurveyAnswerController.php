@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Survey;
 use App\SurveyQuestion;
 use App\SurveyAnswer;
-use App\SurveySettings;
+use App\SurveySetting;
 use App\SurveyQuestionOption;
 use Redirect;
 use Config;

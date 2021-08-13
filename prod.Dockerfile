@@ -9,7 +9,13 @@ WORKDIR /var/www/html
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
-    zlib1g-dev \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    libzip-dev \
+    libicu-dev \
+    jpegoptim optipng pngquant gifsicle \
+    locales \
     vim \
     nano \
     git \
@@ -18,14 +24,14 @@ RUN apt-get update && apt-get install -y \
     unzip \
     nodejs npm \
     imagemagick \
-    ghostscript \
-    poppler-utils
+    ghostscript
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install extensions
-RUN docker-php-ext-install pdo pdo_mysql zip exif pcntl
+RUN docker-php-ext-configure intl
+RUN docker-php-ext-install pdo pdo_mysql zip exif pcntl intl
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

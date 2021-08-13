@@ -61,6 +61,9 @@ return [
     // Supported: "grid", "list"
     'images_startup_view' => 'grid',
     'files_startup_view' => 'list',
+    'paginator' => [
+        'perPage' => 100,
+    ],
 
     /*
     |--------------------------------------------------------------------------

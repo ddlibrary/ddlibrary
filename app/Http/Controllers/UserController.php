@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use BladeView;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\User;
 use App\Resource;
@@ -9,17 +13,19 @@ use App\UserProfile;
 use App\ResourceFavorite;
 use App\Role;
 use App\UserRole;
-use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
+use Laracsv\Export;
 
 class UserController extends Controller
 {
     /**
      * Showing the list of users in the admin panel
      *
-     * @return Response
+     * @return BladeView|false|Application|Factory|View
      */   
     public function index(Request $request)
     {
@@ -40,7 +46,7 @@ class UserController extends Controller
     /**
      * View a single user
      *
-     * @return Response
+     * @return Application|BladeView|Factory|false|View
      */
     public function viewUser()
     {
@@ -54,7 +60,7 @@ class UserController extends Controller
     /**
      * View a single users favorite resources
      *
-     * @return Response
+     * @return Application|BladeView|Factory|false|View
      */
     public function favorites()
     {
@@ -69,7 +75,7 @@ class UserController extends Controller
     /**
      * View a single users uploaded resources
      *
-     * @return Response
+     * @return Application|BladeView|Factory|false|View
      */
     public function uploadedResources()
     {
@@ -83,12 +89,13 @@ class UserController extends Controller
     /**
      * Update user profile
      *
-     * @return Response
+     * @return Application|RedirectResponse|Redirector
      */
     public function updateProfile(Request $request)
     {
         $request->validate([
             'email' => 'email|required',
+            'password' => 'confirmed|required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',
             'username' => 'required',
         ]);
 
@@ -108,7 +115,7 @@ class UserController extends Controller
     /**
      * Edit a user details
      *
-     * @return Response
+     * @return Application|BladeView|Factory|false|View
      */
     public function edit($userId)
     {
@@ -134,7 +141,7 @@ class UserController extends Controller
      * @param Request $request
      * @param         $userId
      *
-     * @return Response
+     * @return Application|Redirector|RedirectResponse
      * @throws ValidationException
      */
     public function update(Request $request, $userId)
@@ -194,7 +201,7 @@ class UserController extends Controller
     /**
     * Delete a user
     */
-    public function deleteUser($userId)
+    public function deleteUser($userId): RedirectResponse
     {
         $user = User::find($userId);
         $user->delete();
@@ -208,8 +215,8 @@ class UserController extends Controller
     public function exportUsers()
     {
         $users = User::get(); // All users
-        //$userProfiles = UserProfile::with('first_name','last_name')->get();
-        $csvExporter = new \Laracsv\Export();
+        // $userProfiles = UserProfile::with('first_name','last_name')->get();
+        $csvExporter = new Export();
         $csvExporter->build($users, [
             'email' =>'Email Address', 
             'profile.first_name' => 'First Name', 

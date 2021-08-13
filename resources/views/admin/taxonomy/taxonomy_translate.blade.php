@@ -17,10 +17,12 @@
       <div class="card-body">
         <div class="table-responsive">
           <table class="table table-bordered" width="100%" cellspacing="0">
-            @if(count($translations))
+            @if($translations)
               @foreach($supportedLocals as $locale)
-              <?php 
-              $terms = $translations->where('language', $locale);
+              <?php
+                if (isset($translations) && isset($locale)) {
+                  $terms = $translations->where('language', $locale);
+                }
               $terms = array_values($terms->toArray());
               ?>
               @if(isset($terms[0]['language']))

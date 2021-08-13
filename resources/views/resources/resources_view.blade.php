@@ -26,7 +26,7 @@
                         @if (isLibraryManager() or isAdmin())
                         <a href="{{ URL::to($resource->language.'/resources/edit/step1/'.$resource->id) }}">@lang('Edit')</a>
                         @endif
-                        <i class="fas fa-lg fa-star {{ count($resource->favorites)?"active":"" }}" title="@lang('Favorite this resource')" id="resourceFavorite" onclick="favorite('resourceFavorite','{{ URL::to("resources/favorite/") }}','{{ $resource->id }}','{{ Auth::id() }}')"></i>
+                        <i class="fas fa-lg fa-star {{ $resource->favorites?"active":"" }}" title="@lang('Favorite this resource')" id="resourceFavorite" onclick="favorite('resourceFavorite','{{ URL::to("resources/favorite/") }}','{{ $resource->id }}','{{ Auth::id() }}')"></i>
                         <i class="fas fa-lg fa-share-square"  title="@lang('Share this resource')"></i>
                         <i class="fas fa-lg fa-flag" title="@lang('Flag this resource')"></i>
                     </div>
@@ -123,7 +123,7 @@
         <article class="resource-view-details">
             <div class="resource-view-download">
             <h3 style="display: inline;">@lang('Please click the button(s) below to download the resource(s)')</h3>
-            <a href="/glossary" class="glossary-icon"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text">&nbsp;@lang('Glossary')</span> </i></a>
+            <a href="{{ URL::to('glossary') }}" class="glossary-icon"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text">&nbsp;@lang('Glossary')</span> </i></a>
             </div>
             <div class="download-box">
                 @if (Auth::check() && auth()->user()->hasVerifiedEmail())
@@ -169,7 +169,7 @@
             </div>
         </article><br>
         <h3 style="background-color: #77777742; padding: 0 7px 0 7px;">@lang('About this resource')</h3>
-        @if($resource->authors->count())
+        @if($resource->authors)
         <article class="resource-view-details">
             <h3>@lang('Author')</h3>
             @foreach ($resource->authors AS $author)
@@ -178,7 +178,7 @@
         </article>
         @endif
 
-        @if($resource->translators->count())
+        @if($resource->translators)
         <article class="resource-view-details">
             <h3>@lang('Translator')</h3>
             @foreach ($resource->translators AS $translator)
@@ -217,7 +217,7 @@
             <?php
             $supportedLocals = array();
             $newId = array();
-                foreach($app['config']->get('laravellocalization.localesOrder') as $localeCode)
+                foreach(config('laravellocalization.localesOrder') as $localeCode)
                 {
                     $supportedLocals[] = $localeCode;
                 }
@@ -232,13 +232,13 @@
             ?>
 
             @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-            @if(isset($newId[$localeCode]) && count($newId) > 0)
+            @if(isset($newId[$localeCode]) && $newId != 0)
                 <?php 
                     $currentUrl = explode('/',url()->current());
                     $index = count($currentUrl) - 1;
                     $value = $currentUrl[$index];
                     $currentUrl[$index] = $newId[$localeCode];
-                    $newUrl = implode($currentUrl, '/');
+                    $newUrl = implode('/', $currentUrl);
                 ?>
                 <p>
                     <a rel="alternate" title="language" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, $newUrl, [], true) }}">
@@ -256,7 +256,7 @@
         </article>
         <article class="resource-view-details">
             <h3>@lang('License')</h3>
-            <p>{{ count($resource->creativeCommons)?$resource->creativeCommons[0]->name:"" }}</p>
+            <p>{{ $resource->creativeCommons?$resource->creativeCommons[0]->name:"" }}</p>
         </article>
     </section>
     <aside>

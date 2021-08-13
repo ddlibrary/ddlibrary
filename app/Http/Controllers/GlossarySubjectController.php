@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\GlossarySubjects;
+use App\GlossarySubject;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -20,7 +20,7 @@ class GlossarySubjectController extends Controller
      */
     public function index()
     {
-        $glossary_subjects = GlossarySubjects::orderBy('id', 'DESC')->paginate(10);
+        $glossary_subjects = GlossarySubject::orderBy('id', 'DESC')->paginate(10);
         return view('admin.glossary.glossary_subject_list', compact('glossary_subjects'));
     }
 
@@ -65,7 +65,7 @@ class GlossarySubjectController extends Controller
      */
     public function edit(int $id)
     {
-        $glossary_subject = GlossarySubjects::findOrFail($id);
+        $glossary_subject = GlossarySubject::findOrFail($id);
         return view('admin.glossary.glossary_subject_edit', compact('glossary_subject'));
     }
 
@@ -91,9 +91,9 @@ class GlossarySubjectController extends Controller
         ]);
 
         if($validatedData['id'] == "new")
-            $glossary_subject = new GlossarySubjects();
+            $glossary_subject = new GlossarySubject();
         else
-            $glossary_subject = GlossarySubjects::findOrFail($validatedData['id']);
+            $glossary_subject = GlossarySubject::findOrFail($validatedData['id']);
 
         $glossary_subject->en = $validatedData['english'];
         $glossary_subject->fa = $validatedData['farsi'];

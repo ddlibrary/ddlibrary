@@ -32,11 +32,9 @@
                     </span><br>
                 @endif
                 <div class="description">
-                    @lang(
-                        'Your email will be treated as confidential information and will be <br>used to
+                    @lang('Your email will be treated as confidential information and will be <br>used to
                          reset your password and communicate to you. <br>If you do not own an email address,
-                         <a href="' . $gmail_signup_url . '" target="_blank">click here</a> to create one.'
-                    )
+                         <a href=":gmail_signup_url" target="_blank">click here</a> to create one.', ['gmail_signup_url' => $gmail_signup_url])
                     <br>
                     <span id="phone-text" {{ $errors->has('phone')? 'style=display:none;' : '' }}>
                         @lang(
@@ -59,10 +57,10 @@
                 @endif
                 <div class="description">
                     @lang(
-                        'Your telephone number will also be treated as confidential information. <br>
-                         But please note that you won\'t be able to reset your password and <br>
-                         we won\'t be able to communicate to you. If you forget your password, <br>
-                         you will have to contact us.'
+                        "Your telephone number will also be treated as confidential information. <br>
+                         But please note that you won't be able to reset your password and <br>
+                         we won't be able to communicate to you. If you forget your password, <br>
+                         you will have to contact us."
                     )
                 </div>
             </div>
@@ -147,7 +145,7 @@
                             <strong>@lang('Country')</strong>
                             <span class="form-required" title="This field is required.">*</span>
                         </label>
-                        <select class="form-control{{ $errors->has('country') ? ' is-invalid' : '' }}" name="country" id="country" onchange="javascript:populate(this,'city', {{ json_encode($provinces) }})" required>
+                        <select class="form-control{{ $errors->has('country') ? ' is-invalid' : '' }}" name="country" id="country" onchange="populate(this,'city', {{ json_encode($provinces) }})" required>
                             <option value="">- @lang('None') -</option>
                             @foreach($countries AS $cn)
                             <option value="{{ $cn->tnid }}" {{ old('country') == $cn->tnid ? "selected" : "" }}>{{ $cn->name }}</option>

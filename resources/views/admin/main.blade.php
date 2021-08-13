@@ -6,7 +6,6 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-      <a href="{{ URL::to('admin') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> My Dashboard</a>
     </div>
 
     <!-- Content Row -->
@@ -89,7 +88,7 @@
           </div>
           <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
+                <table class="table table-bordered" style="width: 100%; border-spacing:0;">
                   <thead>
                     <tr>
                       <th>TITLE</th>
@@ -119,7 +118,7 @@
           </div>
           <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
+                <table class="table table-bordered" style="width: 100%; border-spacing:0;">
                   <thead>
                     <tr>
                       <th>NAME</th>
@@ -133,7 +132,7 @@
                       <td><a href="{{ URL::to('user/'.$user->id) }}">{{ $user->username }}</a></td>
                       <td>{{ ($user->status==0?"Not Active":"Active") }}</td>
                       <td>
-                        @if(count($user->role))
+                        @if($user->role != null)
                         {{ $user->role->role->name }}
                         @endif
                       </td>
@@ -157,7 +156,7 @@
           </div>
             <div class="card-body">
               <div class="table-responsive">
-                  <table class="table table-bordered" width="100%" cellspacing="0">
+                  <table class="table table-bordered" style="width: 100%; border-spacing:0;">
                     <thead>
                       <tr>
                         <th>TITLE</th>
@@ -187,7 +186,7 @@
           </div>
             <div class="card-body">
               <div class="table-responsive">
-                  <table class="table table-bordered" width="100%" cellspacing="0">
+                  <table class="table table-bordered" style="width: 100%; border-spacing:0;">
                     <thead>
                       <tr>
                         <th>TITLE</th>
@@ -214,6 +213,6 @@
   </div>
   <!-- /.container-fluid -->
 
-</div>
+
 <!-- End of Main Content -->
 @endsection

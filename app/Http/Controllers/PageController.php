@@ -32,8 +32,12 @@ class PageController extends Controller
                 return '<a href="' . URL($page->language . '/page/edit/' . $page->id) .'" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>';
             })
             ->editColumn('language', '{{fixLanguage($language)}}')
-            ->editColumn('created_at', '{{$created_at->diffForHumans()}}')
-            ->editColumn('updated_at', '{{$updated_at->diffForHumans()}}')
+            ->addColumn('created_at', function($page) {
+                return $page->created_at->diffForHumans();
+            })
+            ->addColumn('updated_at', function($page) {
+                return $page->updated_at->diffForHumans();
+            })
             ->orderColumn('id', '-id $1')
             ->make(true);
     }

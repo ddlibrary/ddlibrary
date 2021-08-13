@@ -21,6 +21,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property Carbon|mixed email_verified_at
  * @method static get()
  * @method static where(string $string, $id)
+ * @method static users()
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -210,29 +211,29 @@ class User extends Authenticatable implements MustVerifyEmail
             ->update($newPassword);
     }
 
-    public function isAdministrator($userid)
+    public function isAdministrator($userid): \stdClass|null
     {
         return DB::table('users')
             ->join('user_roles', 'user_roles.user_id','=','users.id')
-            ->where('users.id',$userid)
+            ->where('users.id', $userid)
             ->where('user_roles.role_id', 5)
             ->first();
     }
 
-    public function isNormalUser($userid)
+    public function isNormalUser($userid): \stdClass|null
     {
         return DB::table('users')
             ->join('user_roles', 'user_roles.user_id','=','users.id')
-            ->where('users.id',$userid)
+            ->where('users.id', $userid)
             ->where('user_roles.role_id', 2)
             ->first();
     }
 
-    public function isLibraryManager($userid)
+    public function isLibraryManager($userid): \stdClass|null
     {
         return DB::table('users')
             ->join('user_roles', 'user_roles.user_id','=','users.id')
-            ->where('users.id',$userid)
+            ->where('users.id', $userid)
             ->where('user_roles.role_id', 3)
             ->first();
     }

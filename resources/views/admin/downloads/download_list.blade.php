@@ -61,7 +61,7 @@
                 <td>{{ (($records->currentPage() - 1) * $records->perPage())+$indexkey + 1 }}</td>
                 <td><a href="{{ URL::to($record->resource->language.'/'.'resource/'.$record->resource->id) }}">{{ $record->resource->title }}</a></td>
                 <td><a href="{{ URL::to($record->resource->language.'/'.'resource/'.$record->resource->id) }}">{{ $record->file->file_name ?? "-" }}</a></td>
-                @if(count($record->user))
+                @if($record->user)
                 <td><a href="{{ URL::to('user/'.$record->user->id) }}">{{ $record->user->username }}</a></td>
                 @else
                 <td>{{ $record->user_id }}</td>

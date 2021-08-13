@@ -1,4 +1,4 @@
-@if(count($errors) > 0)
+@if($errors)
     @foreach($errors->all() as $error)
         <div class="form-required">
             {{ $error }}
