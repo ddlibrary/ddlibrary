@@ -26,7 +26,7 @@ return [
     |
      */
 
-    'allow_private_folder'     => true,
+    'allow_private_folder'     => false,
 
     // Flexible way to customize client folders accessibility
     // If you want to customize client folders, publish tag="lfm_handler"
@@ -35,9 +35,9 @@ return [
     // Ex: The private folder of user will be named as the user id.
     'private_folder_name'      => UniSharp\LaravelFilemanager\Handlers\ConfigHandler::class,
 
-    'allow_shared_folder'      => false,
+    'allow_shared_folder'      => true,
 
-    'shared_folder_name'       => 'shares',
+    'shared_folder_name'       => '.',
 
     /*
     |--------------------------------------------------------------------------
