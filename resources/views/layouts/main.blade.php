@@ -39,15 +39,7 @@
     </script>
     @endif
 
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script>
-        //paste this code under the head tag or in a separate js file.
-        // Wait for window load
-        $(window).on('load', function() {
-            // Animate loader off screen
-            $(".se-pre-con").fadeOut("slow");
-        });
-    </script>
+    <script src="{{ asset('js/jquery.min.js') }}"></script>>
 </head>
 <body>
 
@@ -80,7 +72,6 @@
         logged_out_greeting="به کتاب‌خانه درخت دانش خوش آمدید. چگونه می‌توانیم به شما کمک کنیم؟">
     </div>
     <!-- Facebook Chat Integration - End -->
-    <div class="se-pre-con"></div>
     @include('layouts.banner')
     @yield('search')
     <main>
