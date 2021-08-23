@@ -263,7 +263,7 @@ class ResourceController extends Controller
         if(isset($validatedData['attachments'])){
             foreach($validatedData['attachments'] as $attachments){
                 $fileMime = $attachments->getMimeType();
-                $fileSize = $attachments->getClientSize();
+                $fileSize = $attachments->getSize();
                 $fileName = $attachments->getClientOriginalName();
                 $fileExtension = \File::extension($fileName);
                 $fileName = auth()->user()->id."_".time().".".$fileExtension;
