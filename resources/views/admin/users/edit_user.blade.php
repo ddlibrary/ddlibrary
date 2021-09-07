@@ -19,7 +19,7 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             @include('layouts.messages')
-                            <form method="POST" action="{{ route('update_user', ['user_id' => $user->id]) }}">
+                            <form method="POST" action="{{ route('update_user', $user->id) }}">
                             @csrf
                             <table class="table table-bordered" width="100%" cellspacing="0">
                                 <tbody>
