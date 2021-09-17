@@ -76,7 +76,6 @@ DDL Glossary
 </section>
 @endsection
 @push('scripts')
-    <script src="{{ asset('js/ddl.js') }}"></script>
     <script>
         $(document).ready(function() {
             $("td[contenteditable=\"true\"]").keydown(function(event) {

@@ -13,56 +13,26 @@
 @endsection
 @section('content')
 
-<section class="resource-list">
-    <aside>
-        <form method="GET" id="side-form" action="{{ route('resourceList') }}">
-            <input class="form-control normalButton" style="display:none;" id="side-submit" type="submit" value="@lang('Filter')">
-        <fieldset>
-            <legend class="accordion" id="resource-subjects">@lang('Resource Subject Areas')</legend>
-            <ul class="panel">
-                @foreach($subjects AS $subject)
-                    @if($subject->parent == 0)
-                    <li style="line-height: 2;" value="{{ $subject->id }}" data-type="subject" data-link="{{ route('resourceList', ['subject_area' => $subject->id])}}"><strong>{{ ucwords(strtolower($subject->name)) }}</strong></li>
-
-                    <?php $sub_subjects = $subjects->where('parent', $subject->id); ?>
-                    <div id="subject-{{ $subject->id }}" style="display: none;">
-                        @foreach($sub_subjects AS $subject)
-                        <li style="padding:0 10px 0 10px;" value="{{ $subject->id }}" data-type="subject" data-link="{{ route('resourceList', ['subject_area' => $subject->id])}}">{{ ucwords(strtolower($subject->name)) }}</li>
-                        @endforeach
-                    </div>
-
-                    @endif
-                @endforeach
-            </ul>
-        </fieldset>
-        <fieldset>
-            <legend class="accordion">@lang('Resource Types')</legend>
-            <ul class="panel">
-                @foreach($types AS $type)
-                    <li value="{{ $type->id }}" data-type="type" data-link="{{ route('resourceList', ['type' => $type->id])}}">{{ $type->name }}</li>
-                @endforeach
-            </ul>
-        </fieldset>
-        <fieldset>
-        <legend class="accordion">@lang('Resource Levels')</legend>
-        <ul class="panel">
-            @foreach($levels AS $level)
-                @if($level->parent == 0)
-                    <li value="{{ $level->id }}" data-type="level" data-link="{{ route('resourceList', ['level' => $subject->id])}}">{{ $level->name }}</li>
-                @endif
-            @endforeach
-        </ul>
-        </fieldset>
-        <fieldset>
-            <legend class="glossary-accordion">
-                <a href="/glossary" class="glossary-icon-sidebar"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text-sidebar">&nbsp;@lang('Glossary')</span> </i></a>
-            </legend>
-        </fieldset>
-        </form>
-    </aside>
-    
-    <section id="resource-information-section" class="resource-information-section">
-        @include('resources.resources_list_content')
-    </section>
-</section>
+<div class="container-fluid">
+    @if ($resources)
+        <div class="row justify-content-center">
+            @foreach ($resources->unique('id') AS $resource)
+                @if ($resource->status)
+                        <div class="card col-8 col-md-4 col-lg-2 m-1 p-0">
+                            <img class="card-img-top" src="{{ getImagefromResource($resource->abstract) }}" alt="Resource image" loading="lazy">
+                            <div class="card-body" style="padding: 0.75rem;">
+                                <p class="card-text">{{ $resource->title }}</p>
+                            </div>
+                            <a href="{{ URL::to('resource/'.$resource->id) }}" class="stretched-link" target="_blank"></a>
+                        </div>
+            @endif
+        @endforeach
+        </div>
+    @else
+        <h2>@lang('No records found!')</h2>
+    @endif
+    <div class="resource-pagination">
+        {{ $resources->appends(request()->input())->links() }}
+    </div>
+</div>
 @endsection

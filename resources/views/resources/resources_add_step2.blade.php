@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-@lang('Add a new Resource - Step 2')
+@lang('Create or edit a resource - step 2')
 @endsection
 @section('content')
 
@@ -8,20 +8,23 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 @endpush
 
-<section class="ddl-forms">
-    <header>
-        <h1>@lang('Add a new Resource - Step 2')</h1>
-    </header>
-    <div class="content-body">
-        @include('layouts.messages')
-        <form method="POST" action="{{ route('step2') }}" enctype="multipart/form-data">
+<div class="container mt-3">
+
+    <h3>@lang('Create or edit a resource - step 2 of 3')</h3>
+    <hr>
+    @include('layouts.messages')
+    <form method="POST" action="{{ route('step2') }}" enctype="multipart/form-data">
         @csrf
-        <div class="form-item">
-            <label for="attachments"> 
-                <strong>@lang('Attachments') {{ en('Attachments') }}</strong>
+        <div class="form-group">
+            <label for="attachments">
+                @lang('Attachments')
             </label>
-        <input class="form-control{{ $errors->has('attachments') ? ' is-invalid' : '' }}" id="attachments" name="attachments[]" size="40" type="file">
-            <button type='button' class="add_more">@lang('Add More Files')</button>
+            <input class="form-control-file{{ $errors->has('attachments') ? ' is-invalid' : '' }}col-md-6"
+                   id="attachments"
+                   name="attachments[]"
+                   type="file"
+            >
+            <button type='button' class="add_more btn btn-link">@lang('Add more files')</button>
             @if(isset($resource['attc']))
             @foreach($resource['attc'] as $item)
                 <br><a href="{{ asset('/storage/attachments/'.$item['file_name']) }}">{{ $item['file_name'] }}</a>
@@ -35,7 +38,7 @@
             @endif
         </div>
         <div class="form-item">
-            <label for="subject_areas"> 
+            <label for="subject_areas">
                 <strong>@lang('Subject Areas') {{ en('Subject Areas') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
@@ -49,7 +52,7 @@
                             } ?>
                             @foreach($parentItems as $pitem)
                                 <option value="{{ $pitem->id }}">{{ $pitem->name . termEn($pitem->id) }}</option>
-                            @endforeach      
+                            @endforeach
                         </optgroup>
                     @endif
                 @endforeach
@@ -62,7 +65,7 @@
             @endif
         </div>
         <div class="form-item">
-            <label for="keywords"> 
+            <label for="keywords">
                 <strong>@lang('Keywords') {{ en('Keywords') }}</strong>
             </label>
             <input class="form-control{{ $errors->has('keywords') ? ' is-invalid' : '' }}" id="keywords" name="keywords" size="40" type="text" value="{{ isset($resource['keywords'])?$resource['keywords']:"" }}" onkeydown="javascript:bringMeAttr('keywords','{{ URL::to('resources/attributes/keywords') }}')">
@@ -73,7 +76,7 @@
             @endif
         </div>
         <div class="form-item">
-            <label for="learning_resources_types"> 
+            <label for="learning_resources_types">
                 <strong>@lang('Learning Resources Types') {{ en('Learning Resources Types') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
@@ -90,7 +93,7 @@
             @endif
         </div>
         <div class="form-item">
-            <label for="educational_use"> 
+            <label for="educational_use">
                 <strong>@lang('Educational Use') {{ en('Educational Use') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
@@ -108,7 +111,7 @@
         </div>
 
         <div class="form-item">
-            <label for="resource_levels"> 
+            <label for="resource_levels">
                 <strong>@lang('Resource Levels') {{ en('Resource Levels') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
@@ -131,7 +134,7 @@
                         <ul id="subLevel{{$level->id}}" class="subItem" style="display:none;">
                             @foreach($levelParent as $item)
                                 <li><input type="checkbox" name="level[]" onchange="fnTest(this,'subLevel{{$item->id}}');" {{ in_array($item->id, @$resource['level']) ?"checked":""}} class="js-child" value="{{ $item->id }}">{{ $item->name  . termEn($item->id)}}
-                            
+
                                 <?php $levelItemParent = $levels->where('parent', $item->id);?>
                                 @if($levelItemParent)
                                     <i class="fas fa-plus fa-xs" onclick="showHide(this,'subLevel{{$item->id}}')"></i>
@@ -157,9 +160,8 @@
             <input class="form-control normalButton" type="submit" value="@lang('Next') {{ en('Next') }}" onclick="this.style.display='none';document.getElementById('wait').style.display='block'" ondblclick="this.style.display='display';document.getElementById('wait').style.display='block'">
             <input type="button" class="form-control" id="wait" value="@lang('Please wait..') {{ en('Please wait ..') }}" style="color:red;display:none" disabled>
         </div>
-        </form>
-    </div>
-</section>
+    </form>
+</div>
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 

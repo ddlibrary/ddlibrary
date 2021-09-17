@@ -1,124 +1,82 @@
-<header class="header">
-    <div class="ddl-logo">
-        <a href="{{ URL::to('/') }}" title="Website Logo"><img class="header-img" src="{{ asset('storage/files/logo-dd.png') }}" alt="Website Logo"></a>
-    </div>
-    <i class="fas fa-align-justify fa-3x icons" id="toggle" onclick="openNav()"></i>
+<nav class="navbar navbar-expand-lg" style="border-radius: 0; background-color: #000000;">
+    <a href="{{ URL::to('/') }}" class="navbar-brand" title="Website Logo">
+        <img src="{{ asset('storage/files/logo-dd.png') }}" alt="DDL Logo">
+    </a>
+    <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <div id="myNav" class="overlay">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" title="Close Navigation">&times;</a>
-        <div class="overlay-content">
-            <div class="language-container">
-            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                <a rel="alternate" href="{{ URL::to('/'.$localeCode) }}" hreflang="{{ $localeCode }}" title="Language">
-                {{ $properties['native'] }}
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ URL::to('/') }}"><i class="fas fa-home"></i> @lang('Home') <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ URL::to('/resources') }}"><i class="fas fa-book"></i> @lang('Darakht-e Danesh Library')</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}" class="nav-link" title="StoryWeaver">
+                    <img src="{{ asset('storage/files/storyweaver-logo.svg') }}"
+                         class="storyweaver-logo"
+                         alt="StoryWeaver logo"
+                    >
+                    @lang('StoryWeaver Library')
                 </a>
-            @endforeach
-            </div>
-            <a href="{{ URL::to('/') }}" title="@lang('Home')">@lang('Home')</a>
-            <a href="{{ URL::to('resources') }}" title="@lang('Browse')">@lang('Browse')</a>
-            {{-- The route() landing_page parameter is a key from config/constants.php, and as such, must match with a key to work --}}
-            <a href="{{ route ('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}" title="@lang('StoryWeaver')">@lang('StoryWeaver')</a>
-            <a href="{{ URL::to('resources/add/step1') }}" title="@lang('Upload a Resource')">@lang('Upload a Resource')</a>
-            @if (Auth::check())
-            <a href="{{ URL::to('logout') }}" title="@lang('Log Out')">@lang('Log Out')</a>
-            @if (isAdmin())
-            <a href="{{ URL::to('/admin') }}" title="@lang('Admin Panel')">@lang('Admin Panel')</a>
-            @endif
-            @else
-            <a href="{{ URL::to('/login') }}" title="@lang('Sign In')">@lang('Sign In')</a>
-            <a href="{{ URL::to('/register') }}" title="@lang('Register')">@lang('Register')</a>
-            @endif
-        </div>
-    </div>
-    <nav class="header-right">
-        <ul class="language-content">
-            @if (Auth::check())
-            <li>
-                @lang('Welcome'): <a class="username" href="{{ URL::to('user/profile') }}"> {{ ucwords(Auth::user()->username) }}</a>
             </li>
-            @endif
-            <?php
-            $supportedLocals = array();
-            $newId = array();
-                foreach(config('laravellocalization.localesOrder') as $localeCode)
-                {
-                    $supportedLocals[] = $localeCode;
-                }
-                
-                if(isset($translations)){
-                    foreach($translations AS $tr){
-                        if(in_array($tr->language, $supportedLocals)){
-                            $newId[$tr->language] = $tr->id;
+            <li class="nav-item">
+                <a class="nav-link" href="{{ URL::to('add/resourcefile') }}"><i class="fas fa-upload"></i> @lang('Submit a resource')</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-language"></i> {{ LaravelLocalization::getCurrentLocaleNative() }}
+                </a>
+                <div class="dropdown-menu @if(LaravelLocalization::getCurrentLocaleDirection() == 'ltr') dropdown-menu-right @else dropdown-menu-left @endif" aria-labelledby="navbarDropdown">
+                    <?php
+                        $currentLocale = LaravelLocalization::getCurrentLocale();
+                        $currentPath = request()->path();
+                        $redirectPath = null;
+                        if ($pos = str_contains($currentPath, $currentLocale . '/')) {
+                            $redirectPath = substr($currentPath, $pos + 1);
                         }
-                    }
-                }
-            ?>
-
-            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-            @if(request()->segment(2) == "" || (request()->segment(2) != "resource" && request()->segment(2) != "page" && request()->segment(2) != "news" && request()->segment(2) != "node"))
-                <li>
-                    <a rel="alternate" title="Language" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                    {{ $properties['native'] }}
-                    </a>
-                </li>
-
-            @elseif(isset($newId[$localeCode]) && $newId)
-                <?php 
-                    $currentUrl = explode('/',url()->current());
-                    $index = count($currentUrl) - 1;
-                    $value = $currentUrl[$index];
-                    $currentUrl[$index] = $newId[$localeCode];
-                    $newUrl = implode('/', $currentUrl);
-                ?>
-                <li>
-                    <a rel="alternate" title="Language" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, $newUrl, [], true) }}">
-                    {{ $properties['native'] }}
-                    </a>
-                </li>
-            @else
-                <li>
-                    <a rel="alternate" title="Language" style="text-decoration: line-through;" hreflang="{{ $localeCode }}">
-                    {{ $properties['native'] }}
-                    </a>
-                </li>
-            @endif
-            @endforeach
-        </ul>
-        <ul class="main-navigation">
-            <?php
-            $classNames = array(
-                125  => 'fa-home',
-                566  => 'fa-align-justify',
-                131  => 'fa-upload'
-            );
-            ?>
-            @foreach ($menu->where('location', 'top-menu')->where('language', app()->getLocale()) as $tmenu)
-            <li>
-                <a href="{{ URL::to($tmenu->path) }}" title="{{ $tmenu->title }}"><i class="fas {{ $classNames[$tmenu->tnid]}} fa-lg icons"></i>{{ $tmenu->title }}</a>
+                    ?>
+                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                        @unless($localeCode == LaravelLocalization::getCurrentLocale())
+                            <a rel="alternate"
+                               href="{{ URL::to('/'.$localeCode.$redirectPath) }}"
+                               hreflang="{{ $localeCode }}"
+                               title="Language"
+                               class="dropdown-item"
+                            >
+                                {{ $properties['native'] }}
+                            </a>
+                        @endunless
+                    @endforeach
+                </div>
             </li>
-            @if ($loop->index == 1) {{-- where 0 is Home, 1 is DDL Library. We want it next to DDL Library. --}}
-                <li>
-                    <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}" title="StoryWeaver"><img src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/public/img/storyweaver-logo.svg') }}" class="storyweaver-logo" alt="StoryWeaver logo"> @lang('StoryWeaver Library')</a>
-                </li>
-            @endif
-            @endforeach
             @if (Auth::check())
-            <li>
-                <a href="{{ URL::to('logout') }}" title="@lang('Log Out')"><i class="fas fa-sign-in-alt fa-lg icons"></i>@lang('Log Out')</a>     
-            </li>
-            @if (isAdmin())
-            <li>
-                <a href="{{ URL::to('/admin') }}" title="@lang('Admin Panel')"><i class="fas fa-user fa-lg icons"></i>@lang('Admin Panel')</a>
-            </li>
-            @endif
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <div class="dropdown-menu @if(LaravelLocalization::getCurrentLocaleDirection() == 'ltr') dropdown-menu-right @else dropdown-menu-left @endif" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ URL::to('/user/profile') }}" title="@lang('Account')">@lang('Account')</a>
+                        @if (isAdmin())
+                            <a class="dropdown-item" href="{{ URL::to('/admin') }}" title="@lang('Admin panel')">@lang('Admin panel')</a>
+                        @endif
+                        <div class="dropdown-divider"></div>
+                        <a href="{{ URL::to('logout') }}" class="dropdown-item" title="@lang('Log out')">@lang('Log Out')</a>
+                    </div>
+                </li>
             @else
-            <li>
-                <a href="{{ URL::to('/login') }}" title="@lang('Sign In')"><i class="fas fa-sign-in-alt fa-lg icons"></i>@lang('Sign In')</a>
-            </li>
-            <li>
-                <a href="{{ URL::to('/register') }}" title="@lang('Register')"><i class="fas fa-save fa-lg icons"></i>@lang('Register')</a>
-            </li>
+                <li class="nav-item">
+                    <a href="{{ URL::to('/register') }}" class="nav-link" title="@lang('Sign up')"><i class="fas fa-user-plus"></i> @lang('Sign up')</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ URL::to('/login') }}" class="nav-link" title="@lang('Log in')"><i class="fas fa-sign-in-alt"></i> @lang('Log in')</a>
+                </li>
             @endif
         </ul>
-    </nav>
-</header>
+    </div>
+</nav>
