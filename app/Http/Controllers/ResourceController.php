@@ -10,6 +10,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Resource;
@@ -37,11 +38,13 @@ use App\ResourceFavorite;
 
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use LaravelLocalization;
 use Session;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
@@ -100,56 +103,72 @@ class ResourceController extends Controller
             session(['search' => $everything['search']]);
         }
 
-        $subjectAreaIds = array();
-        $levelIds = array();
-        $typeIds = array();
+        if(
+            $request->filled('subjectAreaParent')
+            or
+            $request->filled('subjectAreaChild')
+        ) {
+            $subjectAreaParentIds = array();
+            $parentIdsfromChildren = array();
+            $subjectAreaChildIds = array();
 
-        //if subject_area exists in the request
-        if($request->filled('subject_area')){
-            $subjectAreaIds = $everything['subject_area'];
+            if ($request->filled('subjectAreaParent')) {
+                $subjectAreaParentIds = $everything['subjectAreaParent'];
+            }
+
+            if ($request->filled('subjectAreaChild')) {
+                $subjectAreaChildIds = $everything['subjectAreaChild'];
+                $parentIdsfromChildren = (new Resource())
+                    ->resourceAttributesList('taxonomy_term_data', 8)  // 8 being subject areas
+                    ->whereIn('id', $subjectAreaChildIds)
+                    ->pluck('parent')
+                    ->toArray();
+            }
+
+            $bothParentIds = array_merge($parentIdsfromChildren, $subjectAreaParentIds);
+            $noDuplicateParentAreaIds = array_keys(  // return the array with all the keys
+                array_intersect(
+                    array_count_values(  // count how many times a particular value occurs
+                        $bothParentIds
+                    ),
+                    [1]  // keep only the ones with that occurred exactly once
+                )
+            );
+
+
+            $finalSubjectAreaIds = array_merge($noDuplicateParentAreaIds, $subjectAreaChildIds);
+            $finalSubjectAreaIds = array_map('strval', $finalSubjectAreaIds);
+            $request->request->remove('subjectAreaParent');
+            $request->request->add(['subject_area' => $finalSubjectAreaIds]);
         }
 
-        //if level exists in the request
-        if($request->filled('level')){
-            $levelIds = $everything['level'];
-        }
-
-        //if type exists
-        if($request->filled('type')){
-            $typeIds = $everything['type'];
-        }
-
-        $views = new ResourceView();
-        $favorites = new ResourceFavorite();
-        $comments = new ResourceComment();
         $resources = $myResources->paginateResourcesBy($request);
 
-        $subjects = $myResources->resourceAttributesList('taxonomy_term_data',8);
-        $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
-        $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
-        
-        if ($request->ajax()) {
-            $resources = $myResources->paginateResourcesBy($request);
-            return view('resources.resources_list_content', compact(
-                'resources',
-                'views',
-                'favorites',
-                'comments'
-            ));
-        }
+        return view('resources.resources_list', compact('resources'));
+    }
 
-        return view('resources.resources_list', compact(
-            'resources',
-            'subjects',
-            'types',
-            'levels',
-            'subjectAreaIds',
-            'levelIds',
-            'typeIds',
-            'views',
-            'favorites',
-            'comments'
-        ));
+    public function resourceFilter(): Factory|View|Application
+    {
+        $resourceObject = new Resource();
+        $parentSubjects = $resourceObject
+            ->resourceAttributesList('taxonomy_term_data',8)  // 8 being subject areas
+            ->where('parent', 0);
+        $resourceTypes = $resourceObject->resourceAttributesList('taxonomy_term_data', 7);  // 7 being resource types
+        $literacyLevels = $resourceObject
+            ->resourceAttributesList('taxonomy_term_data', 13)
+            ->where('parent', 0);// 13 being resource literacy levels
+
+        return view('resources.resources_filter', compact('parentSubjects', 'resourceTypes', 'literacyLevels'));
+    }
+
+    public function getSubjectChildren(Request $request): array
+    {
+        $subjectIds = explode(',',$request->input('IDs'));
+        return (new Resource())
+            ->resourceAttributesList('taxonomy_term_data',8)  // 8 being subject areas
+            ->whereIn('parent', $subjectIds)
+            ->pluck('id', 'name')
+            ->toArray();
     }
 
     public function viewPublicResource(Request $request, $resourceId): Factory|View|Application
@@ -166,23 +185,49 @@ class ResourceController extends Controller
 
         $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
         $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
-        $translations = null;
-        if($resource){
-            $translation_id = $resource->tnid;
-            if($translation_id){
-                $translations = $myResources->getResourceTranslations($translation_id);
-            }else{
-                $translations = array();
+
+        $languages_available = array();
+
+        $translation_id = $resource->tnid;
+        if($translation_id) {
+            $translations = $myResources->getResourceTranslations($translation_id);
+            $supportedLocals = array();
+            $newId = array();
+            foreach (config('laravellocalization.localesOrder') as $localeCode) {
+                $supportedLocals[] = $localeCode;
+            }
+
+            if ($translations) {
+                foreach ($translations as $tr) {
+                    if (in_array($tr->language, $supportedLocals)) {
+                        $newId[$tr->language] = $tr->id;
+                    }
+                }
+            }
+
+            foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
+                if(isset($newId[$localeCode]) && $newId != 0) {
+                    $currentUrl = explode('/',url()->current());
+                    $index = count($currentUrl) - 1;
+                    $currentUrl[$index] = $newId[$localeCode];
+                    $newUrl = implode('/', $currentUrl);
+                    $languages_available[$localeCode]['url'] = $newUrl;
+                    $languages_available[$localeCode]['native'] = $properties['native'];
+                }
             }
         }
 
         $this->resourceViewCounter($request, $resourceId);
+        $views = new ResourceView();
+        $favorites = new ResourceFavorite();
         Carbon::setLocale(app()->getLocale());
         return view('resources.resources_view', compact(
             'resource',
             'relatedItems',
             'comments',
-            'translations'
+            'views',
+            'favorites',
+            'languages_available'
         ));   
     }
 
@@ -190,7 +235,8 @@ class ResourceController extends Controller
     {
         $this->middleware('auth');
         $resource = $request->session()->get('resource1');
-        return view('resources.resources_add_step1', compact('resource'));
+        $edit = false;
+        return view('resources.resources_modify_step1', compact('resource', 'edit'));
     }
 
     public function postStepOne(Request $request): Redirector|Application|RedirectResponse
@@ -553,26 +599,25 @@ class ResourceController extends Controller
         return redirect('/home')->with('error',__('Resource couldn\'t be added.'));
     }
 
-    public function attributes($entity, Request $request)
+    public function attributes(string $entity, Request $request): JsonResponse|Redirector|RedirectResponse|Application
     {
         $myResources = new Resource();
         $keyword = $request->only('term');
         if(!$keyword){
             return redirect('/home');
         }
-        if($entity == "authors"){
-            $records = $myResources->searchResourceAttributes($keyword['term'],'taxonomy_term_data', 24);
+
+        $vid = null;
+        if ($entity == "authors") $vid = 24;
+        elseif ($entity == "publishers") $vid = 9;
+        elseif ($entity == "translators") $vid = 22;
+        elseif ($entity == "keywords") $vid = 23;
+
+        if ($vid) {
+            $records = $myResources->searchResourceAttributes($keyword['term'],'taxonomy_term_data', $vid);
             return response()->json($records->toArray());
-        }elseif($entity == "publishers"){
-            $records = $myResources->searchResourceAttributes($keyword['term'],'taxonomy_term_data', 9);
-            return response()->json($records->toArray());    
-        }elseif($entity == "translators"){
-            $records = $myResources->searchResourceAttributes($keyword['term'],'taxonomy_term_data', 22);
-            return response()->json($records->toArray());    
-        }elseif($entity == "keywords"){
-            $records = $myResources->searchResourceAttributes($keyword['term'],'taxonomy_term_data', 23);
-            return response()->json($records->toArray());    
         }
+
         return redirect('/home');
     }
 
@@ -618,7 +663,7 @@ class ResourceController extends Controller
         $flag->save();
 
         return redirect('resource/'.$resourceId)
-            ->with('success', __('Your flag report is now registered! We will get back to you as soon as possible!'));
+            ->with('success', __('Thank you for your report. We will review and take action as soon as possible.'));
     }
 
     public function comment(Request $request): Redirector|Application|RedirectResponse
@@ -641,7 +686,7 @@ class ResourceController extends Controller
         }
         
         return redirect('resource/'.$resourceId)
-            ->with('success', 'Your comment is successfully registered. We will publish it after review.');
+            ->with('success', 'Your comment is recorded. It will be published after a review.');
     }
 
     public function resourceViewCounter(Request $request, $resourceId)
@@ -669,7 +714,8 @@ class ResourceController extends Controller
 
         $resource = $request->session()->get('resource1');
         if($resource == null) $resource = (array) $myResources->getResources($resourceId);
-        return view('resources.resources_edit_step1', compact('resource'));
+        $edit = true;
+        return view('resources.resources_modify_step1', compact('resource', 'edit'));
     }
 
     public function postStepOneEdit($resourceId, Request $request): Redirector|Application|RedirectResponse

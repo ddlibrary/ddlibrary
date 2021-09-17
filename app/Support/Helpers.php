@@ -72,20 +72,20 @@ if(! function_exists('giveMeResourceIcon')){
 if (! function_exists('fixImage')) {
     function fixImage($abstract, $resource_id)
     {
-		//To replace hardcoded url to dynamic base_url
-		$abstract = str_replace('http://www.darakhtdanesh.org/', URL::to('/').'/', $abstract);
-		
-		if(env('DDL_LITE') == 'yes'){
-			if(strpos($abstract, '<div class="media_embed"') == true || strpos($abstract, '<div class="embeddedContent') == true){
-				$abstract = preg_replace('#<div class="media_embed" height="315px" width="560px">(.*?)</div>#', '', $abstract);
-				$abstract = $abstract . "
-				<video width='560' height='315' controls>
-				<source src='".URL::to('/storage/videos/'.$resource_id.".mp4")."' type='video/mp4'>
-				Your browser does not support the video tag.
-				</video>
-				";
-			}
-		}
+        //To replace hardcoded url to dynamic base_url
+        $abstract = str_replace('http://www.darakhtdanesh.org/', URL::to('/').'/', $abstract);
+
+        if(env('DDL_LITE') == 'yes'){
+            if(strpos($abstract, '<div class="media_embed"') == true || strpos($abstract, '<div class="embeddedContent') == true){
+                $abstract = preg_replace('#<div class="media_embed" height="315px" width="560px">(.*?)</div>#', '', $abstract);
+                $abstract = $abstract . "
+                <video width='560' height='315' controls>
+                <source src='".URL::to('/storage/videos/'.$resource_id.".mp4")."' type='video/mp4'>
+                Your browser does not support the video tag.
+                </video>
+                ";
+            }
+        }
 
         preg_match_all('/src="([^"]*)"/',$abstract,$matches);
         if($matches[1]){
@@ -93,22 +93,21 @@ if (! function_exists('fixImage')) {
             $originalMe = array();
 
             for($i=0; $i<count($matches[1]); $i++){
-				$absStr = $matches[1][$i];
-				if(strpos($absStr, 'youtube') == false && strpos($absStr, 'google') == false){
-					$absArray = explode('/',$absStr);
-					$imageName = last($absArray);
-					if(Storage::disk('public')->exists($imageName)){
-						$fixedImage = Storage::disk('public')->url($imageName);
-					}else{
-						$fixedImage = "";
-					}
+                $absStr = $matches[1][$i];
+                if(strpos($absStr, 'youtube') == false && strpos($absStr, 'google') == false){
+                    $absArray = explode('/',$absStr);
+                    $imageName = last($absArray);
+                    if(Storage::disk('public')->exists($imageName)){
+                        $fixedImage = Storage::disk('public')->url($imageName);
+                    }else{
+                        $fixedImage = "";
+                    }
 
-					array_push($replaceMe, $fixedImage);
-					array_push($originalMe, $absStr);
-				}
+                    array_push($replaceMe, $fixedImage);
+                    array_push($originalMe, $absStr);
+                }
             }
-			$finalFixedStr = str_replace($originalMe, $replaceMe, $abstract);
-            return $finalFixedStr;
+            return str_replace($originalMe, $replaceMe, $abstract);
         }else{
             return $abstract;
         }

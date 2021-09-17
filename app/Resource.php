@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Config;
@@ -332,7 +333,7 @@ class Resource extends Model
         return $records;
     }
 
-    public function paginateResourcesBy($request)
+    public function paginateResourcesBy($request): LengthAwarePaginator
     {
         $subjectAreaIds = $request['subject_area'];
         $levelIds = $request['level'];
@@ -344,10 +345,10 @@ class Resource extends Model
             $searchQuery = $request->input('search');
         }
 
-        $records = DB::table('resources AS rs')
+        return DB::table('resources AS rs')
             ->select(
                 'rs.id',
-                'rs.language', 
+                'rs.language',
                 'rs.abstract',
                 'rs.title',
                 'rs.status'
@@ -395,14 +396,12 @@ class Resource extends Model
             ->orderBy('rs.published_at','desc')
             ->groupBy(
                 'rs.id',
-                'rs.language', 
+                'rs.language',
                 'rs.title',
                 'rs.abstract',
                 'rs.created_at'
             )
-            ->paginate(32);
-
-        return $records;    
+            ->paginate(30);
     }
 
     //Total resources based on level
