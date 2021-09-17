@@ -10,6 +10,7 @@
 |
 */
 // app/Http/routes.php
+use Laravel\Socialite\Facades\Socialite;
 use Spatie\Honeypot\ProtectAgainstSpam;
 
 if (env('APP_ENV') === 'production') {
@@ -45,8 +46,13 @@ Route::group(
     //Resources
     Route::get('admin/resources', 'ResourceController@index')->middleware('auth');
     Route::post('admin/resources', 'ResourceController@index')->name('resources')->middleware('admin');
-    Route::any('resources/list', 'ResourceController@list')->name('resourceList');
+    Route::get('resources/list', 'ResourceController@list')->name('resourceList');
+    Route::get('resources/filter', 'ResourceController@resourceFilter')->name('resourceFilter');
+    Route::get('resources/filter/subject', 'ResourceController@getSubjectChildren');
     Route::get('resource/{resourceId}', 'ResourceController@viewPublicResource');
+    Route::get('resource/no-show/{state}', function ($state) {
+        return View::make('resources.resources_view_no_show', compact('state'));
+    });
     Route::get('resource/{resourceId}/download/{fileId}', 'ResourceController@downloadFile')->name('download-file')->middleware('auth')->middleware('verified');
     Route::get('resources', 'ResourceController@list');
     Route::get('resources/add/step1', 'ResourceController@createStepOne')->name('step1')->middleware('auth')->middleware('verified');
@@ -212,11 +218,27 @@ Route::group(
     Route::get('/node/{resourceId}', 'ResourceController@viewPublicResource');
     Route::get('/user/logout', 'Auth\LoginController@logout');
     Route::get('/user/password', 'Auth\ForgotPasswordController@showLinkRequestForm');
+
     Route::get('/volunteer', function() {
         return redirect('page/1532');
     });
     Route::get('/support-library', function() {
         return redirect('page/21');
+    });
+    Route::get('/disclaimer', function() {
+        return redirect('page/35');
+    });
+    Route::get('/terms', function() {
+        return redirect('page/33');
+    });
+    Route::get('/privacy-policy', function() {
+        return redirect('page/34');
+    });
+    Route::get('/oer', function() {
+        return redirect('page/812');
+    });
+    Route::get('/help', function() {
+        return redirect('page/1275');
     });
     //Auth
     Route::middleware(ProtectAgainstSpam::class)->group(function() {
@@ -234,3 +256,13 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
 /** OTHER PAGES THAT SHOULD NOT BE LOCALIZED **/
 Route::post('resources/favorite', 'ResourceController@resourceFavorite');
 Route::get('/storage/{resource_id}/{file_id}/{file_name}', 'FileController')->where(['file_name' => '.*']);
+
+Route::get('/auth/redirect', function () {
+    return Socialite::driver('google')->redirect();
+});
+
+Route::get('/auth/callback', function () {
+    $user = Socialite::driver('google')->user();
+
+    dd($user);
+});
