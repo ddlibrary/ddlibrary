@@ -12,10 +12,7 @@ let mix = require('laravel-mix');
  */
 
 mix.styles([
-   'resources/assets/css/reset.css',
-   'resources/assets/css/common.css',
    'resources/assets/css/ddl.css',
-   'resources/assets/css/survey.css',
    'resources/assets/css/fontawesome-all.min.css',
 ], 'public/css/all.css');
 
