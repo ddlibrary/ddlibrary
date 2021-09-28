@@ -25,21 +25,21 @@
                 @if (! $item->name_en)
                     -
                 @else
-                    {{ $item->name_en }}
+                    {!! $item->name_en !!}
                 @endif
             </td>
             <td @if (isLibraryManager() or isAdmin()) contenteditable="true" data-id="{{ $item->id }}" data-type="glossary" data-language="fa" @endif>
                 @if (! $item->name_fa)
                     -
                 @else
-                    {{ $item->name_fa }}
+                    {!! $item->name_fa !!}
                 @endif
             </td>
             <td @if (isLibraryManager() or isAdmin()) contenteditable="true"  data-id="{{ $item->id }}" data-type="glossary" data-language="ps" @endif>
                 @if (! $item->name_ps)
                     -
                 @else
-                    {{ $item->name_ps }}
+                    {!! $item->name_ps !!}
                 @endif
             </td>
             <td>
