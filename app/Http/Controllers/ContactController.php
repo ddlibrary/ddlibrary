@@ -13,6 +13,7 @@ use App\Mail\ContactPage;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -68,6 +69,15 @@ class ContactController extends Controller
      */
     public function create()
     {
+        if (Auth::check()) {
+            //Get the currently authenticated user details...
+            //get login email details using Auth facade
+
+            if($email = Auth::user()->email){
+                return view('contacts.contacts_view', ['email'=>$email]);
+            }
+
+        }
         //setting the search session empty
         DDLClearSession();
         return view('contacts.contacts_view');
