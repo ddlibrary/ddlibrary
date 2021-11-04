@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contact;
 use App\Setting;
+use App\User;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -74,7 +75,11 @@ class ContactController extends Controller
             //get login email details using Auth facade
 
             if($email = Auth::user()->email){
-                return view('contacts.contacts_view', ['email'=>$email]);
+                $profile = User::users()->where('id', Auth::id())->first();
+                $firstname = $profile->first_name;
+                $lastname = $profile->last_name;
+                $fullname = $firstname." ".$lastname;
+                return view('contacts.contacts_view', ['email'=>$email, 'fullname'=>$fullname]);
             }
 
         }
