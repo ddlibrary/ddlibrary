@@ -24,7 +24,7 @@
                     <strong>@lang('Full Name')</strong>
                     <span class="form-required" title="This field is required.">*</span>
                 </label>
-                <input class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" id="name" name="name" size="40" type="text" value="{{ old('name') }}" required autofocus>
+                <input class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" id="name" name="name" size="40" type="text" value="{{ old('name', $fullname) }}" required autofocus>
                 @if ($errors->has('name'))
                     <span class="invalid-feedback">
                         <strong>{{ $errors->first('name') }}</strong>
@@ -36,7 +36,7 @@
                     <strong>@lang('Email')</strong>
                     <span class="form-required" title="This field is required.">*</span>
                 </label>
-                <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="email" name="email" size="40" type="email" value="{{ old('email') }}" required>
+                <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="email" name="email" size="40" type="email" value="{{ old('email', $email) }}" required>
                 @if ($errors->has('email'))
                     <span class="invalid-feedback">
                         <strong>{{ $errors->first('email') }}</strong>
