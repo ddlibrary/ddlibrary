@@ -87,6 +87,15 @@
                 <p>@lang('COVID19')</p>
             </article>
         </a>
+        @php
+            $newcomers_support_url = 'page/4141';
+        @endphp
+        <a href="{{ URL::to($newcomers_support_url) }}" title="@lang('Newcomers support URL')">
+            <article class="home-subject-areas">
+                <i class="fas fa-hands-helping fa-4x" style="color: #ffa300"></i>
+                <p>@lang('Resources For Afghan Newcomers')</p>
+            </article>
+        </a>
     </div>
     <header>
         <h2>@lang('StoryWeaver Library')</h2>
