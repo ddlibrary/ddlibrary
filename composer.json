@@ -21,6 +21,7 @@
         "mcamara/laravel-localization": "^1.6",
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.3",
+        "shvetsgroup/laravel-email-database-log": "^8.0.0",
         "spatie/laravel-activitylog": "^4.1",
         "spatie/laravel-analytics": "^4.0",
         "spatie/laravel-honeypot": "^4.0",
