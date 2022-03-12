@@ -446,7 +446,7 @@ if(! function_exists('termEn'))
 
 if (! function_exists('get_pdf_version'))
 {
-    function get_pdf_version_and_pages($file)
+    function get_pdf_version_and_pages($file): float|int
     {
         $process = new Process(['pdfinfo', $file]);
         $process->run();
@@ -475,7 +475,7 @@ if (! function_exists('get_pdf_version'))
 
 if (! function_exists('lower_pdf_version'))
 {
-    function lower_pdf_version($old_file, $file_name)
+    function lower_pdf_version($old_file, $file_name): string
     {
         $new_file = tempnam(sys_get_temp_dir(), $file_name[0]."_");
         rename($new_file, $new_file .= '.pdf');
@@ -498,7 +498,7 @@ if (! function_exists('lower_pdf_version'))
 
 if (! function_exists('get_license_buttons'))
 {
-    function get_license_buttons($resource)
+    function get_license_buttons($resource): array
     {
         $license_button_1 = null;
         $license_button_2 = null;
@@ -574,7 +574,7 @@ if (! function_exists('watermark_pdf'))
         {
             $pages = $pdf->setSourceFile($file);
         }
-        catch (PdfParserException $e)
+        catch (PdfParserException)
         {
             return $file;
         }
@@ -589,7 +589,7 @@ if (! function_exists('watermark_pdf'))
                 FilterException |
                 PdfParserException |
                 PdfTypeException |
-                PdfReaderException $e
+                PdfReaderException
             )
             {
                 return $file;

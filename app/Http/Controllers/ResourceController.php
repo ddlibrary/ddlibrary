@@ -1243,7 +1243,7 @@ class ResourceController extends Controller
      * @param $fileId
      * @param $resourceId
      *
-     * @return void
+     * @return BinaryFileResponse
      * @throws FileNotFoundException
      */
     public function downloadFile($resourceId, $fileId)
@@ -1252,25 +1252,17 @@ class ResourceController extends Controller
         $all_attachments = $resource->attachments;
         $attachment = null;
         foreach ($all_attachments as $attach) {
-            if ($attach->id == $fileId)
-            {
-                $attachment = $attach;
-            }
+            if ($attach->id == $fileId) $attachment = $attach;
         }
-        if (!$attachment) {
-            abort(404);
-        }
+        if (!$attachment) abort(404);
 
         $file_name = $attachment->file_name;
 
         // Fetch file from an external source
         $pdf_file = Storage::disk('s3')->get('resources/'.$file_name);
-        if (! $pdf_file) {
-            abort('404');
-        }
-        
-        /* Tabling this until we can get poppler-utils installed in out systems */
-        /*
+
+        if (! $pdf_file) abort('404');
+
         $temp_file = tempnam(
             sys_get_temp_dir(), $file_name . '_'
         );
@@ -1287,7 +1279,6 @@ class ResourceController extends Controller
             'filename'=> $file_name
         ];
         return response()->download($temp_file, $file_name, $headers);
-        */
     }
 
     /**
