@@ -152,13 +152,15 @@
                                 <span class="download-item no-preview">@lang('No preview available.')</span>
                             @endif
 
-                            {{-- revert to older direct download format until we have the correct packages installed for PDF watermarking <span class="download-item"><a class="btn btn-primary"
-                                                            href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}"><i
-                                class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a>
+                            <span class="download-item">
+                                <a class="btn btn-primary"
+                                   href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}">
+                                    <i class="fa fa-download"
+                                       aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})
+                                </a>
                             <br>
                             <hr>
-                            </span>--}}
-                            <span class="download-item"><a class="btn btn-primary" href="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}"><i class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a><br></span>
+                            </span>
                         @endforeach
                     @endif
                 @elseif(Auth::check() && !auth()->user()->hasVerifiedEmail())
