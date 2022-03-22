@@ -8,7 +8,7 @@
         "php": "^8.0",
         "anhskohbo/no-captcha": "^3.0",
         "aws/aws-sdk-php": "^3.190",
-        "barryvdh/laravel-translation-manager": "^0.5.8",
+        "barryvdh/laravel-translation-manager": "^0.6.2",
         "facebook/graph-sdk": "~5.0",
         "fideloper/proxy": "^4.3",
         "guzzlehttp/guzzle": "^7.0.1",
