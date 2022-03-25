@@ -166,14 +166,12 @@ class ResourceController extends Controller
 
         $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
         $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
-        $translations = null;
-        if($resource){
-            $translation_id = $resource->tnid;
-            if($translation_id){
-                $translations = $myResources->getResourceTranslations($translation_id);
-            }else{
-                $translations = array();
-            }
+
+        $translation_id = $resource->tnid;
+        if($translation_id){
+            $translations = $myResources->getResourceTranslations($translation_id);
+        }else{
+            $translations = array();
         }
 
         $this->resourceViewCounter($request, $resourceId);
