@@ -280,10 +280,16 @@
             <br>
             <form method="post" action="{{ route('updatetid', $resource->id) }}">
             @csrf
-            If this resource is translated, write down the translated resource id and click submit:
-            <input type="number" name="link" class="form-control tnid-input">
+            If this resource is translated, enter the translated resource id and click submit:
+            <input type="number" name="link" min=0 class="form-control tnid-input"><br>
             <input type="submit" class="form-control normalButton" value="Submit">
             </form>
+            @if($translations)
+                <br><b>Linked resources:</b>
+                @foreach($translations as $resource)
+                    <a href="{{ URL::to($resource->language . '/resource/' . $resource->id) }}" target="_blank">{{ $resource->id }} ({{ $resource->language }})</a>@if(!$loop->last),@endif
+                @endforeach
+            @endif
         </div>
         @endif
     </aside>
