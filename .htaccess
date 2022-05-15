@@ -22,3 +22,12 @@ RewriteCond %{HTTP:X-Forwarded-SSL} !on
 RewriteCond %{HTTP_HOST} ^www\.darakhtdanesh\.org$
 RewriteRule ^/?$ "https\:\/\/darakhtdanesh\.org\/" [R=301,L]
 
+# Disable index view
+Options -Indexes
+
+# Hide a specific file
+<Files .env>
+    Order allow,deny
+    Deny from all
+</Files>
+
