@@ -95,15 +95,15 @@ class ReportController extends Controller
         ]);
 
         foreach ($subjects_list as $subject_id => $name) {
-            $resources = ResourceSubjectArea::where('tid', $subject_id)->get();
+            $subject_resources = ResourceSubjectArea::where('tid', $subject_id)->get();
             fputcsv($file, [
                 $name,
                 "",
-                $resources->count(),
+                $subject_resources->count(),
             ]);
 
-            foreach ($resources as $resource) {
-                $levels = ResourceLevel::where('resource_id', '=', $resource->id)->get();
+            foreach ($subject_resources as $subject_resource) {
+                $levels = ResourceLevel::where('resource_id', '=', $subject_resource->resource_id)->get();
                 foreach ($levels as $level) {
                     $levels_list[$level->tid]['count'] += 1;
                 }
