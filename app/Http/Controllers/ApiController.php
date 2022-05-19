@@ -1,10 +1,17 @@
 <?php
 
+// php artisan serve --host 192.168.0.103 to host with IP
+
 namespace App\Http\Controllers;
 
+use App\UserProfile;
+use App\UserRole;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 use App\Resource;
@@ -42,22 +49,68 @@ class ApiController extends Controller
 
     // Login
     public function login(Request $request) {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
             'device_name' => 'required',
         ]);
+
+        if ($validator->fails()) {
+             return [ 'message' => 'Email and password are required'];
+        }
     
         $user = User::where('email', $request->email)->first();
     
         if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'error' => ['The provided credentials are incorrect.'],
-            ]);
+            return [ 'message' => 'Wrong email or password!' ];
         }
-    
-        return $user->createToken($request->device_name)->plainTextToken;
+
+        auth()->login($user);
+
+        return ["token"=>$user->createToken($user->username)->plainTextToken,"user"=>$user->username];
     }
+
+    // Register
+    public function register(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255|unique:users|nullable|regex:/^([a-zA-Z\d\._-]+)@(?!fmail.com)/', //Regex to block fmail.com domain
+            'username' => 'required|string|max:255',
+            'password' => 'required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',
+        ],[
+            'password.regex' => __('The password you entered doesn\'t have any special characters (!@#$%^&.) and (or) digits (0-9).'),
+            'email.regex' => __('Please enter a valid email.')
+        ]);
+
+        if ($validator->fails()) {
+            return $validator->errors()->jsonSerialize();
+        }
+
+        $user = new User();
+        $user->username = $request->username;
+        $user->password = Hash::make($request->password);
+        $user->email = $request->email;
+        $user->status = 1;
+        $user->accessed_at = Carbon::now();
+        $user->language = Config::get('app.locale');
+
+        $user->save();
+
+        auth()->login($user);
+
+        $userProfile = new UserProfile();
+        $userProfile->user_id       = $user->id;
+        $userProfile->save();
+
+        $userRole = new UserRole;
+        $userRole->user_id = $user->id;
+        $userRole->role_id = 6; //library user from roles table
+        $userRole->save();
+
+        return ["token"=>$user->createToken($user->username)->plainTextToken,"user"=>$user->username];
+
+    }
+
 
     // Pages
     public function pages($lang="en") {
