@@ -19,7 +19,7 @@ class WatermarkPDF implements ShouldQueue
     /**
      * @var ResourceAttachment
      */
-    private $attachment;
+    private ResourceAttachment $attachment;
     /**
      * @var Resource
      */

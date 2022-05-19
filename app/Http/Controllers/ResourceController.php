@@ -166,14 +166,12 @@ class ResourceController extends Controller
 
         $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
         $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
-        $translations = null;
-        if($resource){
-            $translation_id = $resource->tnid;
-            if($translation_id){
-                $translations = $myResources->getResourceTranslations($translation_id);
-            }else{
-                $translations = array();
-            }
+
+        $translation_id = $resource->tnid;
+        if($translation_id){
+            $translations = $myResources->getResourceTranslations($translation_id);
+        }else{
+            $translations = array();
         }
 
         $this->resourceViewCounter($request, $resourceId);
@@ -1243,7 +1241,7 @@ class ResourceController extends Controller
      * @param $fileId
      * @param $resourceId
      *
-     * @return void
+     * @return BinaryFileResponse
      * @throws FileNotFoundException
      */
     public function downloadFile($resourceId, $fileId)
@@ -1252,42 +1250,34 @@ class ResourceController extends Controller
         $all_attachments = $resource->attachments;
         $attachment = null;
         foreach ($all_attachments as $attach) {
-            if ($attach->id == $fileId)
-            {
-                $attachment = $attach;
-            }
+            if ($attach->id == $fileId) $attachment = $attach;
         }
-        if (!$attachment) {
-            abort(404);
-        }
+        if (!$attachment) abort(404);
 
         $file_name = $attachment->file_name;
-
-        // Fetch file from an external source
-        $pdf_file = Storage::disk('s3')->get('resources/'.$file_name);
-        if (! $pdf_file) {
-            abort('404');
-        }
-        
-        /* Tabling this until we can get poppler-utils installed in out systems */
-        /*
-        $temp_file = tempnam(
-            sys_get_temp_dir(), $file_name . '_'
-        );
-        file_put_contents($temp_file, $pdf_file);
-
-        if (! $attachment->file_watermarked) {
-            WatermarkPDF::dispatch($attachment, $temp_file, $resource);
-        }
+        $file_mime = $attachment->file_mime;
 
         $headers = [
-            'Content-Type' => 'application/pdf',
+            'Content-Type' => $file_mime,
             'Content-Description' => 'File Transfer',
             'Content-Disposition' => "attachment; filename={$file_name}",
             'filename'=> $file_name
         ];
+
+        $file = Storage::disk('s3')->get('resources/'.$file_name);
+
+        if (! $file) abort('404');
+
+        $temp_file = tempnam(
+            sys_get_temp_dir(), $file_name . '_'
+        );
+        file_put_contents($temp_file, $file);
+
+        if (! $attachment->file_watermarked && $file_mime == 'application/pdf') {
+            WatermarkPDF::dispatch($attachment, $temp_file, $resource);
+        }
+
         return response()->download($temp_file, $file_name, $headers);
-        */
     }
 
     /**

@@ -122,49 +122,45 @@
         </article>
         <article class="resource-view-details">
             <div class="resource-view-download">
-            <h3 style="display: inline;">@lang('Please click the button(s) below to download the resource(s)')</h3>
-            <a href="{{ URL::to('glossary') }}" class="glossary-icon"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text">&nbsp;@lang('Glossary')</span> </i></a>
+                <h3 style="display: inline;">@lang('Please click the button(s) below to download the resource(s)')</h3>
+                <a href="{{ URL::to('glossary') }}" class="glossary-icon"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text">&nbsp;@lang('Glossary')</span> </i></a>
             </div>
             <div class="download-box">
-                @if (Auth::check() && auth()->user()->hasVerifiedEmail())
-                    @if($resource->attachments)
-                        @foreach($resource->attachments as $file)
-                            <h4>@lang('File :id', ['id' => $loop->iteration])</h4>
-                            <h4>
-                            <span class="badge badge-secondary">
-                                @php
-                                    /* @var $file */
-                                    echo(pathinfo($file->file_name, PATHINFO_EXTENSION));
-                                @endphp
-                            </span>
-                            </h4>
-                            @if($file->file_mime=="application/pdf")
-                                <iframe src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}#toolbar=0" height="500" width="100%"></iframe>
-                            @elseif($file->file_mime == "application/msword" || $file->file_mime == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
-                                <iframe src="{{ URL::to(config('constants.google_doc_viewer_url').config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name.'&embedded=true') }}" height="500" width="100%"></iframe>
-                            @elseif($file->file_mime == "audio/mpeg")
-                                <span class="download-item">
+                @if($resource->attachments)
+                    @foreach($resource->attachments as $file)
+                        <h4>@lang('File :id', ['id' => $loop->iteration])</h4>
+                        <h4>
+                        <span class="badge badge-secondary">
+                            @php
+                                /* @var $file */
+                                echo(pathinfo($file->file_name, PATHINFO_EXTENSION));
+                            @endphp
+                        </span>
+                        </h4>
+                        @if($file->file_mime == "application/pdf")
+                            <iframe src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}#toolbar=0" height="500" width="100%"></iframe>
+                        @elseif($file->file_mime == "application/msword" || $file->file_mime == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
+                            <iframe src="{{ URL::to(config('constants.google_doc_viewer_url').config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name.'&embedded=true') }}" height="500" width="100%"></iframe>
+                        @elseif($file->file_mime == "audio/mpeg")
+                            <span class="download-item">
                                 <audio controls>
                                     <source src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}" type="audio/mpeg">
                                 </audio>
                             </span>
-                            @else
-                                <span class="download-item no-preview">@lang('No preview available.')</span>
-                            @endif
+                        @else
+                            <span class="download-item no-preview">@lang('No preview available.')</span>
+                        @endif
 
-                            {{-- revert to older direct download format until we have the correct packages installed for PDF watermarking <span class="download-item"><a class="btn btn-primary"
-                                                            href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}"><i
-                                class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a>
-                            <br>
-                            <hr>
-                            </span>--}}
-                            <span class="download-item"><a class="btn btn-primary" href="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}"><i class="fa fa-download" aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})</a><br></span>
-                        @endforeach
-                    @endif
-                @elseif(Auth::check() && !auth()->user()->hasVerifiedEmail())
-                    <h4 class="download-resource">@lang('Please <a href="'. URL::to('email/verify')  .'">verify</a> your email to view or download this resource.')</h4>
-                @else
-                    <h4 class="download-resource">@lang('Please login to download this resource.')</h4>
+                        <span class="download-item">
+                            <a class="btn btn-primary"
+                               href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}">
+                                <i class="fa fa-download"
+                                   aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})
+                            </a>
+                        <br>
+                        <hr>
+                        </span>
+                    @endforeach
                 @endif
             </div>
         </article><br>
@@ -284,10 +280,16 @@
             <br>
             <form method="post" action="{{ route('updatetid', $resource->id) }}">
             @csrf
-            If this resource is translated, write down the translated resource id and click submit:
-            <input type="number" name="link" class="form-control tnid-input">
+            If this resource is translated, enter the translated resource id and click submit:
+            <input type="number" name="link" min=0 class="form-control tnid-input"><br>
             <input type="submit" class="form-control normalButton" value="Submit">
             </form>
+            @if($translations)
+                <br><b>Linked resources:</b>
+                @foreach($translations as $resource)
+                    <a href="{{ URL::to($resource->language . '/resource/' . $resource->id) }}" target="_blank">{{ $resource->id }} ({{ $resource->language }})</a>@if(!$loop->last),@endif
+                @endforeach
+            @endif
         </div>
         @endif
     </aside>
