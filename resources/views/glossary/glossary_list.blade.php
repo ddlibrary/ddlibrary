@@ -108,13 +108,13 @@ DDL Glossary
                             _token: '{{ csrf_token() }}',
                             data: data,
                         },
-                        success: function(data) {
+                        success: function() {
                             let div = $('#success_msg');
                             div.html("Updated successfully!").fadeIn('slow');
                             div.delay(5000).fadeOut('slow');
                         },
-                        error: function(data) {
-                            console.log('Request to update glossary item failed. File a bug request.')
+                        error: function() {
+                            console.log("Request to update glossary item failed. File a bug request.")
                         }
                     });
 
@@ -123,7 +123,7 @@ DDL Glossary
                 }
             });
             $(".glossary_delete").click(function (event){
-                if(confirm('Are you sure you would like to delete the glossary item?')) {
+                if(confirm("Are you sure you would like to delete the glossary item?")) {
                     let source = event.currentTarget;
                     let id = parseInt(source.getAttribute('data-id'));
                     $.ajax({
@@ -132,13 +132,13 @@ DDL Glossary
                         data: {
                             _token: '{{ csrf_token() }}',
                         },
-                        success: function(data) {
+                        success: function() {
                             let div = $('#success_msg');
                             div.html("Item deleted successfully! Page will reload now.").fadeIn('slow');
                             div.delay(5000).fadeOut('slow');
                             location.reload();
                         },
-                        error: function(data) {
+                        error: function() {
                             console.log('Request to delete glossary item failed. File a bug request.')
                         }
                     });
@@ -153,14 +153,14 @@ DDL Glossary
                     data: {
                         _token: '{{ csrf_token() }}',
                     },
-                    success: function(data) {
+                    success: function() {
                         let div = $('#success_msg');
                         div.html("Item approved! Page will reload now.").fadeIn('slow');
                         div.delay(5000).fadeOut('slow');
                         location.reload();
                     },
-                    error: function(data) {
-                        console.log('Request to approve glossary item failed. File a bug request.')
+                    error: function() {
+                        console.log("Request to approve glossary item failed. File a bug request.");
                     }
                 });
             });
