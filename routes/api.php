@@ -20,6 +20,10 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
 
 // Login
 Route::post('/login', 'ApiController@login');
+
+// Register
+Route::post('/register', 'ApiController@register');
+
 // Pages route
 Route::get('/pages/{lang?}', 'ApiController@pages');
 Route::get('/page/{id}', 'ApiController@page');
