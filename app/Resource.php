@@ -13,7 +13,7 @@ use Spatie\Activitylog\Traits\CausesActivity;
  * @method static find($resourceId)
  * @method static findOrFail($resourceId)
  * @method static published()
- * @method static where(string $string, int|null $id)
+ * @method static select(string $string)
  */
 class Resource extends Model
 {

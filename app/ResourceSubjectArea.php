@@ -4,6 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static where(string $string, int|string $id)
+ */
 class ResourceSubjectArea extends Model
 {
     /**
@@ -14,7 +17,7 @@ class ResourceSubjectArea extends Model
     public $timestamps = false;
 
     protected $fillable = ['resource_id','tid'];
-    
+
     public function resource()
     {
         return $this->belongsTo(Resource::class);
