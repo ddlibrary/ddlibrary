@@ -1,15 +1,4 @@
 <?php
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-// app/Http/routes.php
 use Spatie\Honeypot\ProtectAgainstSpam;
 
 if (env('APP_ENV') === 'production') {
@@ -46,6 +35,10 @@ Route::group(
     Route::get('admin/resources', 'ResourceController@index')->middleware('auth');
     Route::post('admin/resources', 'ResourceController@index')->name('resources')->middleware('admin');
     Route::any('resources/list', 'ResourceController@list')->name('resourceList');
+    Route::get('resources/priorities', 'ReportController@resourcePriorities');
+    Route::get('resources/priorities/exclusion', 'ReportController@resourcePrioritiesExclusion')->middleware('LibraryManager');
+    Route::post('resources/priorities/exclusion/add/{id}', 'ReportController@resourcePrioritiesExclusionModify')->middleware('LibraryManager');
+    Route::post('resources/priorities/exclusion/remove/{id}', 'ReportController@resourcePrioritiesExclusionModify')->middleware('LibraryManager');
     Route::get('resource/{resourceId}', 'ResourceController@viewPublicResource');
     Route::get('resource/{resourceId}/download/{fileId}', 'ResourceController@downloadFile')->name('download-file')->middleware('auth')->middleware('verified');
     Route::get('resources', 'ResourceController@list');
