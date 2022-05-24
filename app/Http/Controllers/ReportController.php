@@ -7,23 +7,42 @@ use App\Resource;
 use App\ResourceLevel;
 use App\ResourceSubjectArea;
 use App\TaxonomyTerm;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Spatie\Analytics\Period;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ReportController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    private static function subjectSort($a, $b): int
     {
-        $this->middleware('admin');
+        return $a['count'] <=> $b['count'];
+    }
+
+    /**
+     * @param $subjects
+     * @return array
+     */
+    private static function getSubjects_list($subjects, $language = false): array
+    {
+        $subjects_list = [];
+        foreach ($subjects as $subject) {
+            $subjects_list[$subject->id]['id'] = $subject->id;
+            $subjects_list[$subject->id]['name'] = $subject->name;
+            if ($language) {
+                $supported_locales = \LaravelLocalization::getSupportedLocales();
+                $subjects_list[$subject->id]['language'] = $supported_locales[$subject->language]['native'];
+            }
+        }
+
+        foreach ($subjects_list as $subject_id => $name) {
+            $subject_resources = ResourceSubjectArea::where('tid', $subject_id)->get();
+            $subjects_list[$subject_id]['count'] = $subject_resources->count();
+        }
+        return $subjects_list;
     }
 
     public function gaReport()
@@ -187,5 +206,48 @@ class ReportController extends Controller
         fclose($file);
 
         return response()->download($filename, "resource_language_report.csv", $headers);
+    }
+
+    public function resourcePriorities(): Factory|View|Application
+    {
+        $language = app()->getLocale();
+
+        $subjects = TaxonomyTerm::where([
+            ['vid', '=', 8],  // 8 = Subject
+            ['language', '=', $language],
+            ['excluded', '=', false]
+        ])->get();
+
+        $subjects_list = self::getSubjects_list($subjects);
+
+        usort($subjects_list, 'self::subjectSort');
+
+        return view('reports.priorities', compact('subjects_list'));
+    }
+
+    public function resourcePrioritiesExclusion(): Factory|View|Application
+    {
+        $subjects = TaxonomyTerm::where([
+            ['vid', '=', 8],  // 8 = Subject
+            ['excluded', '=', true]
+        ])->get();
+
+        $subjects_list = self::getSubjects_list($subjects, true);
+
+        return view('reports.exclusion', compact('subjects_list'));
+    }
+
+    public function resourcePrioritiesExclusionModify($id): JsonResponse
+    {
+        $subject = TaxonomyTerm::where('id', '=', $id)->first();
+
+        if (!$subject) {
+            return response()->json(array('msg'=> 'error'), 400);
+        }
+
+        $subject->excluded ? $subject->excluded = false : $subject->excluded = true;
+        $subject->save();
+
+        return response()->json(array('msg'=> 'success'));
     }
 }
