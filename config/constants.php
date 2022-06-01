@@ -10,7 +10,7 @@ return [
     'storyweaver_funny' => 'https://ddl.storyweaver.org.in/stories?category=Funny&query=&sort=Ratings',
     'storyweaver_dari' => 'https://ddl.storyweaver.org.in/translate?target_language=Farsi',
     'storyweaver_pashto' => 'https://ddl.storyweaver.org.in/translate?target_language=Pashto',
-    'ddlmain_s3_file_storage_url' => 'https://ddl-resources.s3-ap-southeast-1.amazonaws.com' ,
+    'ddlmain_s3_file_storage_url' => 'https://ddl-resources.s3-ap-south-1.amazonaws.com' ,
     'google_doc_viewer_url' => 'https://docs.google.com/gview?url='
 
 ];
