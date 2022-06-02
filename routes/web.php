@@ -40,8 +40,8 @@ Route::group(
     Route::post('resources/priorities/exclusion/add/{id}', 'ReportController@resourcePrioritiesExclusionModify')->middleware('LibraryManager');
     Route::post('resources/priorities/exclusion/remove/{id}', 'ReportController@resourcePrioritiesExclusionModify')->middleware('LibraryManager');
     Route::get('resource/{resourceId}', 'ResourceController@viewPublicResource');
-    Route::get('resource/view/{fileId}/{time}/{hash}', 'ResourceController@viewFile');
-    Route::get('resource/{resourceId}/download/{fileId}/{time}/{hash}', 'ResourceController@downloadFile')->name('download-file')->middleware('auth')->middleware('verified');
+    Route::get('resource/view/{fileId}/{key}', 'ResourceController@viewFile');
+    Route::get('resource/{resourceId}/download/{fileId}/{hash}', 'ResourceController@downloadFile')->name('download-file')->middleware('auth')->middleware('verified');
     Route::get('resources', 'ResourceController@list');
     Route::get('resources/add/step1', 'ResourceController@createStepOne')->name('step1')->middleware('auth')->middleware('verified');
     Route::post('resources/add/step1', 'ResourceController@postStepOne');

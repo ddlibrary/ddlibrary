@@ -156,7 +156,6 @@ class ResourceController extends Controller
     {
         //setting the search session empty
         DDLClearSession();
-        
         $myResources = new Resource();
 
         $resource = Resource::findOrFail($resourceId);
@@ -176,6 +175,7 @@ class ResourceController extends Controller
 
         $this->resourceViewCounter($request, $resourceId);
         Carbon::setLocale(app()->getLocale());
+
         return view('resources.resources_view', compact(
             'resource',
             'relatedItems',
@@ -1246,10 +1246,11 @@ class ResourceController extends Controller
      * @return BinaryFileResponse
      * @throws FileNotFoundException
      */
-    public function downloadFile($resourceId, $fileId, $time, $hash)
+    public function downloadFile($resourceId, $fileId, $hash)
     {
         $secret = config('s3.config.secret');
-        $calculated_hash = hash('sha256', $secret * $time);
+        $user = Auth::id();
+        $calculated_hash = hash('sha256', $secret * $user);
         if ($calculated_hash == $hash) {
             $resource = Resource::findOrFail($resourceId);
             $all_attachments = $resource->attachments;
@@ -1306,11 +1307,14 @@ class ResourceController extends Controller
         return $validatedData;
     }
 
-    public function viewFile($fileId, $time, $hash)
+    public function viewFile($fileId, $key)
     {
         $secret = config('s3.config.secret');
-        $calculated_hash = hash('sha256', $secret * $time);
-        if ($calculated_hash == $hash) {
+        $decrypted_key = decrypt($key);
+        $received_time = $decrypted_key / $secret;
+        $current_time = time();
+
+        if ($current_time - $received_time < 300) { // 300 - tolerance of 5 minutes
             $resourceAttachment = ResourceAttachment::findOrFail($fileId);
             try {
                 $file = Storage::disk('s3')->get('resources/'.$resourceAttachment->file_name);
