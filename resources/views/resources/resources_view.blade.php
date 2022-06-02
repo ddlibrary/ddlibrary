@@ -134,17 +134,20 @@
                             @php
                                 /* @var $file */
                                 echo(pathinfo($file->file_name, PATHINFO_EXTENSION));
+                                $time = time();
+                                $hash = hash('sha256', config('s3.config.secret') * $time);
                             @endphp
                         </span>
                         </h4>
+
                         @if($file->file_mime == "application/pdf")
-                            <iframe src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}#toolbar=0" height="500" width="100%"></iframe>
+                            <iframe src="{{ URL::to('/resource/view/' . $file->id . '/' . $time . '/' . $hash) }}#toolbar=0" height="500" width="100%"></iframe>
                         @elseif($file->file_mime == "application/msword" || $file->file_mime == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
-                            <iframe src="{{ URL::to(config('constants.google_doc_viewer_url').config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name.'&embedded=true') }}" height="500" width="100%"></iframe>
+                            <iframe src="{{ URL::to(config('constants.google_doc_viewer_url') . URL::to('/resource/view/' . $file->id . '/' . $time . '/' . $hash) .'&embedded=true') }}" height="500" width="100%"></iframe>
                         @elseif($file->file_mime == "audio/mpeg")
                             <span class="download-item">
                                 <audio controls>
-                                    <source src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/resources/'.$file->file_name) }}" type="audio/mpeg">
+                                    <source src="{{ URL::to('/resource/view/' . $file->id . '/' . $time . '/' . $hash) }}" type="audio/mpeg">
                                 </audio>
                             </span>
                         @else
@@ -153,7 +156,7 @@
 
                         <span class="download-item">
                             <a class="btn btn-primary"
-                               href="{{ URL::to('resource/'.$resource->id.'/download/'.$file->id) }}">
+                               href="{{ URL::to('resource/' . $resource->id. '/download/' . $file->id . '/' . $time . '/' . $hash) }}">
                                 <i class="fa fa-download"
                                    aria-hidden="true"></i> @lang('Download') ({{ formatBytes($file->file_size) }})
                             </a>
