@@ -35,10 +35,10 @@ use App\ResourceView;
 use App\ResourceFlag;
 use App\ResourceFavorite;
 
-use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -1238,46 +1238,53 @@ class ResourceController extends Controller
     /**
      * Download a watermarked file attached to a resource
      *
-     * @param $fileId
      * @param $resourceId
      *
+     * @param $fileId
+     * @param $time
+     * @param $hash
      * @return BinaryFileResponse
      * @throws FileNotFoundException
      */
-    public function downloadFile($resourceId, $fileId)
+    public function downloadFile($resourceId, $fileId, $time, $hash)
     {
-        $resource = Resource::findOrFail($resourceId);
-        $all_attachments = $resource->attachments;
-        $attachment = null;
-        foreach ($all_attachments as $attach) {
-            if ($attach->id == $fileId) $attachment = $attach;
+        $secret = config('s3.config.secret');
+        $calculated_hash = hash('sha256', $secret * $time);
+        if ($calculated_hash == $hash) {
+            $resource = Resource::findOrFail($resourceId);
+            $all_attachments = $resource->attachments;
+            $attachment = null;
+            foreach ($all_attachments as $attach) {
+                if ($attach->id == $fileId) $attachment = $attach;
+            }
+            if (!$attachment) abort(404);
+
+            $file_name = $attachment->file_name;
+            $file_mime = $attachment->file_mime;
+
+            $headers = [
+                'Content-Type' => $file_mime,
+                'Content-Description' => 'File Transfer',
+                'Content-Disposition' => "attachment; filename={$file_name}",
+                'filename'=> $file_name
+            ];
+
+            $file = Storage::disk('s3')->get('resources/'.$file_name);
+
+            if (! $file) abort('404');
+
+            $temp_file = tempnam(
+                sys_get_temp_dir(), $file_name . '_'
+            );
+            file_put_contents($temp_file, $file);
+
+            if (! $attachment->file_watermarked && $file_mime == 'application/pdf') {
+                WatermarkPDF::dispatch($attachment, $temp_file, $resource);
+            }
+
+            return response()->download($temp_file, $file_name, $headers);
         }
-        if (!$attachment) abort(404);
-
-        $file_name = $attachment->file_name;
-        $file_mime = $attachment->file_mime;
-
-        $headers = [
-            'Content-Type' => $file_mime,
-            'Content-Description' => 'File Transfer',
-            'Content-Disposition' => "attachment; filename={$file_name}",
-            'filename'=> $file_name
-        ];
-
-        $file = Storage::disk('s3')->get('resources/'.$file_name);
-
-        if (! $file) abort('404');
-
-        $temp_file = tempnam(
-            sys_get_temp_dir(), $file_name . '_'
-        );
-        file_put_contents($temp_file, $file);
-
-        if (! $attachment->file_watermarked && $file_mime == 'application/pdf') {
-            WatermarkPDF::dispatch($attachment, $temp_file, $resource);
-        }
-
-        return response()->download($temp_file, $file_name, $headers);
+        else abort(403);
     }
 
     /**
@@ -1297,5 +1304,28 @@ class ResourceController extends Controller
             }
         }
         return $validatedData;
+    }
+
+    public function viewFile($fileId, $time, $hash)
+    {
+        $secret = config('s3.config.secret');
+        $calculated_hash = hash('sha256', $secret * $time);
+        if ($calculated_hash == $hash) {
+            $resourceAttachment = ResourceAttachment::findOrFail($fileId);
+            try {
+                $file = Storage::disk('s3')->get('resources/'.$resourceAttachment->file_name);
+            } catch (FileNotFoundException $e) {
+                Log::error($e);
+                abort(404);
+            }
+            $temp_file = tempnam(
+                sys_get_temp_dir(), $resourceAttachment->file_name . '_'
+            );
+            file_put_contents($temp_file, $file);
+            return response()
+                ->download($temp_file, '', [], 'inline')
+                ->deleteFileAfterSend();
+        }
+        else abort(403);
     }
 }

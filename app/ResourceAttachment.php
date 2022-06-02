@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static find($fileId)
+ * @method static findOrFail($fileId)
  * @property bool|mixed file_watermarked
  * @property mixed      file_name
  */
