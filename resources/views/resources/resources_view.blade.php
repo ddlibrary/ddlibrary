@@ -158,7 +158,7 @@
                             @if (Auth::check())
                                 @php
                                     $user = Auth::id();
-                                    $hash = hash('sha256', config('s3.config.secret') * $user);
+                                    $hash = hash('sha256', config('s3.config.secret') * ($user + $resource->id + $file->id));
                                 @endphp
                                 <a class="btn btn-primary"
                                    href="{{ URL::to('resource/' . $resource->id . '/download/' . $file->id . '/' . $hash) }}">

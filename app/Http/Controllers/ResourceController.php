@@ -1250,7 +1250,7 @@ class ResourceController extends Controller
     {
         $secret = config('s3.config.secret');
         $user = Auth::id();
-        $calculated_hash = hash('sha256', $secret * $user);
+        $calculated_hash = hash('sha256', $secret * ($user + $resourceId + $fileId));
         if ($calculated_hash == $hash) {
             $resource = Resource::findOrFail($resourceId);
             $all_attachments = $resource->attachments;
