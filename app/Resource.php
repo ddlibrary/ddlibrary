@@ -392,7 +392,8 @@ class Resource extends Model
             })
             ->where('rs.language', Config::get('app.locale'))
             ->where('rs.status', 1)
-            ->orderBy('rs.published_at','desc')
+            ->where('rs.id', '<', 10378)  // TODO: remove after restoration
+            ->orderBy('rs.created_at','desc')
             ->groupBy(
                 'rs.id',
                 'rs.language', 
