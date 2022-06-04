@@ -154,34 +154,37 @@ class ResourceController extends Controller
 
     public function viewPublicResource(Request $request, $resourceId): Factory|View|Application
     {
-        //setting the search session empty
-        DDLClearSession();
-        $myResources = new Resource();
+        if ($resourceId >= 10378 and Auth::check()) {  // TODO: remove after restoration
+            //setting the search session empty
+            DDLClearSession();
+            $myResources = new Resource();
 
-        $resource = Resource::findOrFail($resourceId);
+            $resource = Resource::findOrFail($resourceId);
 
-        if ($resource->status == 0 && !(isAdmin() || isLibraryManager()))  // We don't want anyone else to unpublished resources
-            abort(403);
+            if ($resource->status == 0 && !(isAdmin() || isLibraryManager()))  // We don't want anyone else to unpublished resources
+                abort(403);
 
-        $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
-        $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
+            $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
+            $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
 
-        $translation_id = $resource->tnid;
-        if($translation_id){
-            $translations = $myResources->getResourceTranslations($translation_id);
-        }else{
-            $translations = array();
-        }
+            $translation_id = $resource->tnid;
+            if($translation_id){
+                $translations = $myResources->getResourceTranslations($translation_id);
+            }else{
+                $translations = array();
+            }
 
-        $this->resourceViewCounter($request, $resourceId);
-        Carbon::setLocale(app()->getLocale());
+            $this->resourceViewCounter($request, $resourceId);
+            Carbon::setLocale(app()->getLocale());
 
-        return view('resources.resources_view', compact(
-            'resource',
-            'relatedItems',
-            'comments',
-            'translations'
-        ));   
+            return view('resources.resources_view', compact(
+                'resource',
+                'relatedItems',
+                'comments',
+                'translations'
+            ));
+        else
+            return redirect('/login');
     }
 
     public function createStepOne(Request $request): Factory|View|Application
