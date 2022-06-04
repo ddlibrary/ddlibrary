@@ -1287,7 +1287,9 @@ class ResourceController extends Controller
                 WatermarkPDF::dispatch($attachment, $temp_file, $resource);
             }
 
-            return response()->download($temp_file, $file_name, $headers);
+            return response()
+                ->download($temp_file, $file_name, $headers)
+                ->deleteFileAfterSend();
         }
         else abort(403);
     }
