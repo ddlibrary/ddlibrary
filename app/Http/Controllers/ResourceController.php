@@ -152,7 +152,7 @@ class ResourceController extends Controller
         ));
     }
 
-    public function viewPublicResource(Request $request, $resourceId): Factory|View|Application
+    public function viewPublicResource(Request $request, $resourceId): View|Factory|Redirector|RedirectResponse|Application
     {
         if ($resourceId >= 10378 and Auth::check()) {  // TODO: remove after restoration
             //setting the search session empty
