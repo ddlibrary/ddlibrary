@@ -1333,7 +1333,7 @@ class ResourceController extends Controller
             );
             file_put_contents($temp_file, $file);
             return response()
-                ->download($temp_file, '', [], 'inline')
+                ->download($temp_file, $resourceAttachment->file_name, [], 'inline')
                 ->deleteFileAfterSend();
         }
         else abort(403);
