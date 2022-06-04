@@ -183,6 +183,7 @@ class ResourceController extends Controller
                 'comments',
                 'translations'
             ));
+        }
         else
             return redirect('/login');
     }
