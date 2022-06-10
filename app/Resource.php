@@ -393,7 +393,7 @@ class Resource extends Model
             ->where('rs.language', Config::get('app.locale'))
             ->where('rs.status', 1)
             ->where(function ($query) {
-                $query->where('rs.id', '=', 11479)
+                $query->where('rs.id', '>=', 11479)
                       ->orWhere('rs.id', '<', 10378);// TODO: remove after restoration
             })
             ->orderBy('rs.created_at','desc')
