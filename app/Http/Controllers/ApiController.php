@@ -7,10 +7,13 @@ namespace App\Http\Controllers;
 use App\UserProfile;
 use App\UserRole;
 use Carbon\Carbon;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -380,4 +383,24 @@ class ApiController extends Controller
             'comments'
         );
     }
+
+    // Send Resource Attachment
+    public function getFile($fileId){
+
+        $resourceAttachment = ResourceAttachment::where('resource_id',$fileId)->firstOrFail();
+        try {
+            $file = Storage::disk('s3')->get('resources/'.$resourceAttachment->file_name);
+        } catch (FileNotFoundException $e) {
+            Log::error($e);
+            abort(404);
+        }
+        $temp_file = tempnam(
+            sys_get_temp_dir(), $resourceAttachment->file_name . '_'
+        );
+        file_put_contents($temp_file, $file);
+        return response()
+            ->download($temp_file, $resourceAttachment->file_name, [], 'inline')
+            ->deleteFileAfterSend();
+    }
+
 }
