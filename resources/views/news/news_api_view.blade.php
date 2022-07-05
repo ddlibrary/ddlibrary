@@ -37,4 +37,4 @@
         $('#fb-root').hide(); // hide facebook chat box
     });
 </script>
-@endsection 
+@endsection
