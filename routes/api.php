@@ -42,3 +42,5 @@ Route::get('/resource_attributes/{id}', 'ApiController@resourceAttributes');
 Route::get('/resources/{lang}/{offset}', 'ApiController@resourceOffset');
 Route::get('/featured_resources/{lang?}', 'ApiController@featuredResources');
 Route::get('/filter_resources/{lang?}', 'ApiController@filterResources');
+Route::get('/resource/getFile/{fileId}', 'ApiController@getFile');
+

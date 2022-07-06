@@ -9,7 +9,7 @@
 {{ asset('storage/files/logo-dd.png') }}
 @endsection
 @section('content')
-<section class="general-content">
+<section dir="@if ($news->language!='en'){{"rtl"}}@endif" class="general-content">
     <header>
         <h1>{{ $news->title }}</h1>
     </header>
@@ -25,12 +25,16 @@
     .header{
         display:none;
     }
+    img{
+        max-width: 100%;
+    }
 </style>
 
 <script>
     $('document').ready(function(){
         $('footer').remove();
         $('.hr-class').remove();
+        $('#fb-root').hide(); // hide facebook chat box
     });
 </script>
-@endsection 
+@endsection
