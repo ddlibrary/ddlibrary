@@ -80,6 +80,17 @@
                                 </tr>
                                 <tr>
                                     <td>
+                                        <strong>Status</strong>
+                                    </td>
+                                    <td>
+                                        <select name="status" id="status">
+                                            <option value="0" {{ ($details->status==0?"selected":"") }}>Hidden</option>
+                                            <option value="1" {{ ($details->status==1?"selected":"") }}>Visible</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
                                         <strong>Weight</strong>
                                     </td>
                                     <td>

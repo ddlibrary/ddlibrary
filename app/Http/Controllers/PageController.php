@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 use App\Page;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Auth;
 
@@ -42,17 +45,19 @@ class PageController extends Controller
             ->make(true);
     }
 
-    function view($pageId)
+    function view($pageId): Factory|View|Application
     {
         //setting the search session empty
         DDLClearSession();
         
-        $page = Page::find($pageId);
+        $page = Page::findOrFail($pageId);
+        if ($page->status == 0 && !(isAdmin() || isLibraryManager()))  // We don't want anyone else to access unpublished pages
+            abort(403);
 
         $translation_id = $page->tnid;
-        if($translation_id){
+        if($translation_id) {
             $translations = Page::where('tnid',$translation_id)->get();
-        }else{
+        } else {
             $translations = array();
         }
 

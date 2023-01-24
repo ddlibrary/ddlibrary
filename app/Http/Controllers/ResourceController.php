@@ -161,7 +161,7 @@ class ResourceController extends Controller
 
             $resource = Resource::findOrFail($resourceId);
 
-            if ($resource->status == 0 && !(isAdmin() || isLibraryManager()))  // We don't want anyone else to unpublished resources
+            if ($resource->status == 0 && !(isAdmin() || isLibraryManager()))  // We don't want anyone else to access unpublished resources
                 abort(403);
 
             $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);

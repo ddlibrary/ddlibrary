@@ -71,6 +71,7 @@ class MenuController extends Controller
                 'location' => 'required',
                 'path' => 'required',
                 'parent' => 'nullable',
+                'status' => 'required',
                 'language' => 'required',
                 'weight' => 'required'
             ]
@@ -86,6 +87,7 @@ class MenuController extends Controller
         if($request->filled('parent')){
             $menu->parent = $request->input('parent');
         }
+        $menu->status = (int)$request->input('status');
         $menu->language = $request->input('language');
         $menu->weight = $request->input('weight');
 
@@ -112,6 +114,7 @@ class MenuController extends Controller
             'location'   => 'required',
             'path'    => 'required',
             'parent'       => 'nullable',
+            'status' => 'required',
             'language'  => 'required',
             'weight'  => 'required'
         ]);
@@ -123,6 +126,7 @@ class MenuController extends Controller
         if($request->filled('parent')){
             $menu->parent = $request->input('parent');
         }
+        $menu->status = (int)$request->input('status');
         $menu->language = $request->input('language');
         $menu->weight = $request->input('weight');
         //inserting
