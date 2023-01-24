@@ -207,7 +207,7 @@
         <hr>
         <nav class="latest-content">
             <ul>
-                @foreach ($menu->where('location', 'bottom-menu')->where('language', app()->getLocale()) as $bmenu)
+                @foreach ($menu->where('location', 'bottom-menu')->where('status', 1)->where('language', app()->getLocale()) as $bmenu)
                 <li>
                     <a href="{{ URL::to($bmenu->path) }}" title="{{ $bmenu->title }}">{{ $bmenu->title }}</a>
                 </li>

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
  * @property array|mixed|string|null     language
  * @property array|mixed|string|null     weight
  * @property array|int|mixed|string|null tnid  // translation id (translations are chained)
+ * @property mixed $status
  */
 class Menu extends Model
 {
