@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -21,6 +22,8 @@ use Illuminate\Support\Facades\DB;
  */
 class Menu extends Model
 {
+    use HasFactory;
+    
     public function scopeMenu()
     {
         $records = DB::table('menus')
