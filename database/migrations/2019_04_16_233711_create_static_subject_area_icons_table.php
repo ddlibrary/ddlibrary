@@ -22,8 +22,8 @@ class CreateStaticSubjectAreaIconsTable extends Migration {
 			$table->string('file_mime')->nullable();
 			$table->string('file_size')->nullable();
 			$table->index(array('aux_id'));
-			$table->dropPrimary();
-			$table->primary('tid');
+			// $table->dropPrimary();
+			// $table->primary('tid');
 		});
 	}
 
