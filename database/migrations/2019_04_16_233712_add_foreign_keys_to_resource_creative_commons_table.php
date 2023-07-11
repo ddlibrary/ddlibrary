@@ -29,8 +29,10 @@ class AddForeignKeysToResourceCreativeCommonsTable extends Migration {
 	{
 		Schema::table('resource_creative_commons', function(Blueprint $table)
 		{
-			$table->dropForeign('resource_creative_commons_ibfk_1');
-			$table->dropForeign('resource_creative_commons_ibfk_2');
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropForeign('resource_creative_commons_ibfk_1');
+				$table->dropForeign('resource_creative_commons_ibfk_2');
+			}
 		});
 	}
 

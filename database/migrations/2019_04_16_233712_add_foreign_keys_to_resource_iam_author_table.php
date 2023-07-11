@@ -28,7 +28,9 @@ class AddForeignKeysToResourceIamAuthorTable extends Migration {
 	{
 		Schema::table('resource_iam_author', function(Blueprint $table)
 		{
-			$table->dropForeign('resource_iam_author_ibfk_1');
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropForeign('resource_iam_author_ibfk_1');
+			}
 		});
 	}
 

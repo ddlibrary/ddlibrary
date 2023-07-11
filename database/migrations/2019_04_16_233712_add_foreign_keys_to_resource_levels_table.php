@@ -29,8 +29,10 @@ class AddForeignKeysToResourceLevelsTable extends Migration {
 	{
 		Schema::table('resource_levels', function(Blueprint $table)
 		{
-			$table->dropForeign('resource_levels_ibfk_1');
-			$table->dropForeign('resource_levels_ibfk_2');
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropForeign('resource_levels_ibfk_1');
+				$table->dropForeign('resource_levels_ibfk_2');
+			}
 		});
 	}
 

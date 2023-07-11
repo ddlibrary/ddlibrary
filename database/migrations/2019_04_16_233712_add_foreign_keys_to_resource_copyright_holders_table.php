@@ -28,7 +28,9 @@ class AddForeignKeysToResourceCopyrightHoldersTable extends Migration {
 	{
 		Schema::table('resource_copyright_holders', function(Blueprint $table)
 		{
-			$table->dropForeign('resource_copyright_holders_ibfk_1');
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropForeign('resource_copyright_holders_ibfk_1');
+			}
 		});
 	}
 

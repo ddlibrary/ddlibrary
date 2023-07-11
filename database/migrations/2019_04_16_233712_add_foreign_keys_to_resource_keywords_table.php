@@ -29,8 +29,10 @@ class AddForeignKeysToResourceKeywordsTable extends Migration {
 	{
 		Schema::table('resource_keywords', function(Blueprint $table)
 		{
-			$table->dropForeign('resource_keywords_ibfk_1');
-			$table->dropForeign('resource_keywords_ibfk_2');
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropForeign('resource_keywords_ibfk_1');
+				$table->dropForeign('resource_keywords_ibfk_2');
+			}
 		});
 	}
 

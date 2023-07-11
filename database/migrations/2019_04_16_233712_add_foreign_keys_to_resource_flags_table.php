@@ -29,8 +29,10 @@ class AddForeignKeysToResourceFlagsTable extends Migration {
 	{
 		Schema::table('resource_flags', function(Blueprint $table)
 		{
-			$table->dropForeign('resource_flags_ibfk_1');
-			$table->dropForeign('resource_flags_ibfk_2');
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropForeign('resource_flags_ibfk_1');
+				$table->dropForeign('resource_flags_ibfk_2');
+			}
 		});
 	}
 

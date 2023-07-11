@@ -28,7 +28,9 @@ class AddForeignKeysToResourceViewsTable extends Migration {
 	{
 		Schema::table('resource_views', function(Blueprint $table)
 		{
+			if (DB::getDriverName() !== 'sqlite') {
 			$table->dropForeign('resource_views_ibfk_1');
+			}
 		});
 	}
 

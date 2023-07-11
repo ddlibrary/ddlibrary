@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 
 class AddForeignKeysToSurveyQuestionOptionsTable extends Migration {
 
@@ -28,7 +29,9 @@ class AddForeignKeysToSurveyQuestionOptionsTable extends Migration {
 	{
 		Schema::table('survey_question_options', function(Blueprint $table)
 		{
+			if (DB::getDriverName() !== 'sqlite') {
 			$table->dropForeign('survey_question_options_question_id_foreign');
+			}
 		});
 	}
 

@@ -29,8 +29,10 @@ class AddForeignKeysToResourceSubjectAreasTable extends Migration {
 	{
 		Schema::table('resource_subject_areas', function(Blueprint $table)
 		{
-			$table->dropForeign('resource_subject_areas_ibfk_1');
-			$table->dropForeign('resource_subject_areas_ibfk_2');
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropForeign('resource_subject_areas_ibfk_1');
+				$table->dropForeign('resource_subject_areas_ibfk_2');
+			}
 		});
 	}
 

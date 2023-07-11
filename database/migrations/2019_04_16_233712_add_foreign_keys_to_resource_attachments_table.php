@@ -28,7 +28,9 @@ class AddForeignKeysToResourceAttachmentsTable extends Migration {
 	{
 		Schema::table('resource_attachments', function(Blueprint $table)
 		{
-			$table->dropForeign('resource_attachments_ibfk_1');
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropForeign('resource_attachments_ibfk_1');
+			}
 		});
 	}
 

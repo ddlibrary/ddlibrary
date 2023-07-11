@@ -28,7 +28,9 @@ class AddForeignKeysToUserProfilesTable extends Migration {
 	{
 		Schema::table('user_profiles', function(Blueprint $table)
 		{
+			if (DB::getDriverName() !== 'sqlite') {
 			$table->dropForeign('user_profiles_ibfk_1');
+			}
 		});
 	}
 

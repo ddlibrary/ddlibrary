@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 
 class AddForeignKeysToUserRolesTable extends Migration {
 
@@ -29,8 +30,10 @@ class AddForeignKeysToUserRolesTable extends Migration {
 	{
 		Schema::table('user_roles', function(Blueprint $table)
 		{
-			$table->dropForeign('user_roles_ibfk_2');
-			$table->dropForeign('user_roles_ibfk_3');
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropForeign('user_roles_ibfk_2');
+				$table->dropForeign('user_roles_ibfk_3');
+            }
 		});
 	}
 
