@@ -27,7 +27,9 @@ class ChangeGlossarySubjectsType extends Migration
     {
         Schema::table('glossary', function (Blueprint $table) {
             $table->string('subject')->change();
-            $table->dropForeign('glossary_subject_foreign');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('glossary_subject_foreign');
+            }
         });
     }
 }
