@@ -18,7 +18,7 @@ class CreateMenusTable extends Migration {
 			$table->string('title')->nullable();
 			$table->string('location')->nullable();
 			$table->string('path')->nullable();
-			$table->integer('parent')->nullable()->default(0)->index('parent');
+			$table->integer('parent')->nullable()->default(0)->index();
 			$table->string('language', 12)->nullable();
 			$table->integer('weight')->nullable()->index('weight');
 			$table->integer('tnid')->nullable();

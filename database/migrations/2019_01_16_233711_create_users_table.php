@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration {
 			$table->boolean('status')->nullable()->default(0);
 			$table->string('language', 12)->nullable()->default('en');
 			$table->string('remember_token', 100)->nullable();
-			$table->dateTime('accessed_at')->nullable()->index('access');
+			$table->dateTime('accessed_at')->nullable()->index();
 			$table->timestamps();
 		});
 	}

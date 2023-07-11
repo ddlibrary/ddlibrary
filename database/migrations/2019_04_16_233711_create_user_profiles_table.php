@@ -15,7 +15,7 @@ class CreateUserProfilesTable extends Migration {
 		Schema::create('user_profiles', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('user_id')->unsigned()->index('userid');
+			$table->integer('user_id')->unsigned()->index();
 			$table->string('first_name')->nullable();
 			$table->string('last_name')->nullable();
 			$table->string('gender', 11)->nullable();

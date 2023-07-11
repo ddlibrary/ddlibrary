@@ -15,8 +15,8 @@ class CreateResourceFavoritesTable extends Migration {
 		Schema::create('resource_favorites', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('resource_id')->unsigned()->nullable()->index('resource_id');
-			$table->integer('user_id')->unsigned()->nullable()->index('user_id');
+			$table->integer('resource_id')->unsigned()->nullable()->index();
+			$table->integer('user_id')->unsigned()->nullable()->index();
 			$table->timestamps();
 		});
 	}

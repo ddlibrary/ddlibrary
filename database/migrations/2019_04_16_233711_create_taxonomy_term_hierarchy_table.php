@@ -17,7 +17,7 @@ class CreateTaxonomyTermHierarchyTable extends Migration {
 			$table->uuid('id');
 			$table->increments('aux_id');
 			$table->integer('tid')->unsigned()->default(0);
-			$table->integer('parent')->unsigned()->default(0)->index('parent');
+			$table->integer('parent')->unsigned()->default(0)->index();
 			$table->index(array('aux_id'));
 			$table->dropPrimary();
 			$table->primary(['tid','parent']);

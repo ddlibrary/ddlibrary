@@ -15,8 +15,8 @@ class CreateResourceLearningResourceTypesTable extends Migration {
 		Schema::create('resource_learning_resource_types', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('resource_id')->unsigned()->index('resourceid');
-			$table->integer('tid')->unsigned()->nullable()->index('tid');
+			$table->integer('resource_id')->unsigned()->index();
+			$table->integer('tid')->unsigned()->nullable()->index();
 		});
 	}
 
