@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-
 class HomePageTest extends TestCase
 {
     
