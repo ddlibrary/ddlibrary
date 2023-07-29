@@ -28,7 +28,6 @@
                                             <option value="">- Choose -</option>
                                             <option value="dd">DDL</option>
                                             <option value="ga">Google Analytics</option>
-                                            <option value="fb">Facebook</option>
                                             <option value="tw">Twitter</option>
                                         </select>
                                     </td>
