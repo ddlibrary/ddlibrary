@@ -27,8 +27,6 @@
                                         <select class="form-control" name="source" required>
                                             <option value="">- Choose -</option>
                                             <option value="dd">DDL</option>
-                                            <option value="ga">Google Analytics</option>
-                                            <option value="tw">Twitter</option>
                                         </select>
                                     </td>
                                     <td>From</td>
