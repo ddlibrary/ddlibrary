@@ -23,7 +23,7 @@ class AnalyticsController extends Controller
         $date_from = $request->filled('date_from')?request('date_from'):"";
         $date_to = $request->filled('date_to')?request('date_to'):"";
 
-        if($request->filled('type') && ($request->filled('source') && request('source') == "dd")) {
+        if($request->filled('type')) {
             $usersModel     = new User();
             $resourceModel  = new Resource();
             if(request('type') == "gender") {

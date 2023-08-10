@@ -22,23 +22,6 @@
                             @csrf
                             <table class="table table-bordered" width="100%" cellspacing="0">
                                 <tr>
-                                    <td>Source</td>
-                                    <td>
-                                        <select class="form-control" name="source" required>
-                                            <option value="">- Choose -</option>
-                                            <option value="dd">DDL</option>
-                                        </select>
-                                    </td>
-                                    <td>From</td>
-                                    <td>
-                                        <input class="form-control" type="date" name="date_from">
-                                    </td>
-                                    <td>To</td>
-                                    <td>
-                                        <input class="form-control" type="date" name="date_to">
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td>Type</td>
                                     <td>
                                         <select class="form-control" name="type">
@@ -56,7 +39,16 @@
                                             <option value="download_count">Downloaded Resources Count</option>
                                         </select>
                                     </td>
-
+                                    <td>From</td>
+                                    <td>
+                                        <input class="form-control" type="date" name="date_from">
+                                    </td>
+                                    <td>To</td>
+                                    <td>
+                                        <input class="form-control" type="date" name="date_to">
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td>Language</td>
                                     <td>
                                         <select class="form-control" name="language">
@@ -66,7 +58,7 @@
                                             @endforeach
                                         </select>
                                     </td>
-                                    <td colspan="2">
+                                    <td colspan="4">
                                         <input class="btn btn-primary float-right" type="submit" value="Generate">
                                     </td>
                                 </tr>
