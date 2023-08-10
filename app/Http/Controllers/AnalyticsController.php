@@ -7,7 +7,6 @@ use App\User;
 use App\DownloadCount;
 use App\ResourceView;
 use App\Resource;
-use Facebook\Facebook;
 
 class AnalyticsController extends Controller
 {
@@ -23,7 +22,7 @@ class AnalyticsController extends Controller
         $date_from = $request->filled('date_from')?request('date_from'):"";
         $date_to = $request->filled('date_to')?request('date_to'):"";
 
-        if($request->filled('type') && ($request->filled('source') && request('source') == "dd")) {
+        if($request->filled('type')) {
             $usersModel     = new User();
             $resourceModel  = new Resource();
             if(request('type') == "gender") {
@@ -62,26 +61,6 @@ class AnalyticsController extends Controller
                 $downloadsCount = $resourceModel->downloadCounts($date_from, $date_to);
                 return view('admin.analytics.resource_downloads_count', compact('downloadsCount')); 
             } 
-        } else if(request('source') == "fb") {
-            $fb = new Facebook();
-            /* PHP SDK v5.0.0 */
-            /* make the API call */
-            try {
-                // Returns a `Facebook\FacebookResponse` object
-                $response = $fb->get(
-                '1540661852875335/insights/page_impressions,page_engaged_users,page_fans,page_views_total,post_impressions',
-                env('FACEBOOK_PAGE_TOKEN')
-                );
-            } catch(Facebook\Exceptions\FacebookResponseException $e) {
-                echo 'Graph returned an error: ' . $e->getMessage();
-                exit;
-            } catch(Facebook\Exceptions\FacebookSDKException $e) {
-                echo 'Facebook SDK returned an error: ' . $e->getMessage();
-                exit;
-            }
-            $fbRecords = $response->getGraphEdge();
-            /* handle the result */
-            return view('admin.analytics.facebook_data', compact('fbRecords')); 
         } else {
             return view('admin.analytics.analytics_main', compact('request'));
         }
