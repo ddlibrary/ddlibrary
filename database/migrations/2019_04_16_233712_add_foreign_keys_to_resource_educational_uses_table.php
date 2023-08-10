@@ -29,8 +29,10 @@ class AddForeignKeysToResourceEducationalUsesTable extends Migration {
 	{
 		Schema::table('resource_educational_uses', function(Blueprint $table)
 		{
-			$table->dropForeign('resource_educational_uses_ibfk_1');
-			$table->dropForeign('resource_educational_uses_ibfk_2');
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropForeign('resource_educational_uses_ibfk_1');
+				$table->dropForeign('resource_educational_uses_ibfk_2');
+			}
 		});
 	}
 

@@ -15,7 +15,7 @@ class CreateResourceTranslatorsTable extends Migration {
 		Schema::create('resource_translators', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('resource_id')->unsigned()->index('resourceid');
+			$table->integer('resource_id')->unsigned()->index();
 			$table->integer('tid')->unsigned()->nullable();
 		});
 	}

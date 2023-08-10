@@ -28,7 +28,9 @@ class AddForeignKeysToResourceTranslationRightsTable extends Migration {
 	{
 		Schema::table('resource_translation_rights', function(Blueprint $table)
 		{
-			$table->dropForeign('resource_translation_rights_ibfk_1');
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropForeign('resource_translation_rights_ibfk_1');
+			}
 		});
 	}
 

@@ -15,7 +15,7 @@ class CreateResourceCopyrightHoldersTable extends Migration {
 		Schema::create('resource_copyright_holders', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('resource_id')->unsigned()->index('resourceid');
+			$table->integer('resource_id')->unsigned()->index();
 			$table->string('value')->nullable();
 		});
 	}

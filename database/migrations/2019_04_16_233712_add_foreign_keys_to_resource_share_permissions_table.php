@@ -29,8 +29,10 @@ class AddForeignKeysToResourceSharePermissionsTable extends Migration {
 	{
 		Schema::table('resource_share_permissions', function(Blueprint $table)
 		{
-			$table->dropForeign('resource_share_permissions_ibfk_1');
-			$table->dropForeign('resource_share_permissions_ibfk_2');
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropForeign('resource_share_permissions_ibfk_1');
+				$table->dropForeign('resource_share_permissions_ibfk_2');
+			}
 		});
 	}
 

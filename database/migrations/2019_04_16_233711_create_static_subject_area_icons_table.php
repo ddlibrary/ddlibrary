@@ -3,7 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateStaticSubjectAreaIconsTable extends Migration {
+class CreateStaticSubjectAreaIconsTable extends Migration
+{
 
 	/**
 	 * Run the migrations.
@@ -22,8 +23,11 @@ class CreateStaticSubjectAreaIconsTable extends Migration {
 			$table->string('file_mime')->nullable();
 			$table->string('file_size')->nullable();
 			$table->index(array('aux_id'));
-			$table->dropPrimary();
-			$table->primary('tid');
+
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropPrimary();
+				$table->primary('tid');
+			}
 		});
 	}
 
@@ -37,5 +41,4 @@ class CreateStaticSubjectAreaIconsTable extends Migration {
 	{
 		Schema::drop('static_subject_area_icons');
 	}
-
 }

@@ -28,7 +28,9 @@ class AddForeignKeysToResourceCommentsTable extends Migration {
 	{
 		Schema::table('resource_comments', function(Blueprint $table)
 		{
-			$table->dropForeign('resource_comments_ibfk_1');
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropForeign('resource_comments_ibfk_1');
+			}
 		});
 	}
 

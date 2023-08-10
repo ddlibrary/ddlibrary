@@ -15,7 +15,7 @@ class CreateResourceAttachmentsTable extends Migration {
 		Schema::create('resource_attachments', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('resource_id')->unsigned()->index('resourceid');
+			$table->integer('resource_id')->unsigned()->index();
 			$table->string('file_name')->nullable();
 			$table->string('file_mime')->nullable();
 			$table->string('file_size')->nullable();

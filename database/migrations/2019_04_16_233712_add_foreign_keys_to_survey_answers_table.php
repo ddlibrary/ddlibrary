@@ -29,8 +29,11 @@ class AddForeignKeysToSurveyAnswersTable extends Migration {
 	{
 		Schema::table('survey_answers', function(Blueprint $table)
 		{
-			$table->dropForeign('survey_answers_answer_id_foreign');
-			$table->dropForeign('survey_answers_question_id_foreign');
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropForeign('survey_answers_answer_id_foreign');
+				$table->dropForeign('survey_answers_question_id_foreign');
+			}
+			
 		});
 	}
 

@@ -18,7 +18,7 @@ class CreateResourcesTable extends Migration {
 			$table->string('title')->nullable();
 			$table->text('abstract', 65535)->nullable();
 			$table->string('language', 12)->nullable();
-			$table->integer('user_id')->unsigned()->default(0)->index('userid');
+			$table->integer('user_id')->unsigned()->default(0)->index();
 			$table->integer('status')->nullable()->default(0)->index('status')->comment('0: not published, 1: published');
 			$table->integer('tnid')->nullable();
 			$table->timestamps();

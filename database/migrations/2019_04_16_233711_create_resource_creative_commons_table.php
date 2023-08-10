@@ -15,8 +15,8 @@ class CreateResourceCreativeCommonsTable extends Migration {
 		Schema::create('resource_creative_commons', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('resource_id')->unsigned()->nullable()->index('resource_id');
-			$table->integer('tid')->unsigned()->nullable()->index('tid');
+			$table->integer('resource_id')->unsigned()->nullable()->index();
+			$table->integer('tid')->unsigned()->nullable()->index();
 		});
 	}
 

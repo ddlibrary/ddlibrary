@@ -29,8 +29,10 @@ class AddForeignKeysToResourceAuthorsTable extends Migration {
 	{
 		Schema::table('resource_authors', function(Blueprint $table)
 		{
-			$table->dropForeign('resource_authors_ibfk_1');
-			$table->dropForeign('resource_authors_ibfk_2');
+			if (DB::getDriverName() !== 'sqlite') {
+				$table->dropForeign('resource_authors_ibfk_1');
+				$table->dropForeign('resource_authors_ibfk_2');
+			}
 		});
 	}
 

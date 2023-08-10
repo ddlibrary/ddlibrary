@@ -92,16 +92,19 @@
                 131  => 'fa-upload'
             );
             ?>
-            @foreach ($menu->where('location', 'top-menu')->where('language', app()->getLocale()) as $tmenu)
-            <li>
-                <a href="{{ URL::to($tmenu->path) }}" title="{{ $tmenu->title }}"><i class="fas {{ $classNames[$tmenu->tnid]}} fa-lg icons"></i>{{ $tmenu->title }}</a>
-            </li>
-            @if ($loop->index == 1) {{-- where 0 is Home, 1 is DDL Library. We want it next to DDL Library. --}}
-                <li>
-                    <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}" title="StoryWeaver"><img src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/public/img/storyweaver-logo.svg') }}" class="storyweaver-logo" alt="StoryWeaver logo"> @lang('StoryWeaver Library')</a>
-                </li>
+            @if($menu)
+                @foreach ($menu->where('location', 'top-menu')->where('language', app()->getLocale()) as $tmenu)
+                    <li>
+                        <a href="{{ URL::to($tmenu->path) }}" title="{{ $tmenu->title }}"><i class="fas {{ $classNames[$tmenu->tnid]}} fa-lg icons"></i>{{ $tmenu->title }}</a>
+                    </li>
+                    @if ($loop->index == 1) {{-- where 0 is Home, 1 is DDL Library. We want it next to DDL Library. --}}
+                        <li>
+                            <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}" title="StoryWeaver"><img src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/public/img/storyweaver-logo.svg') }}" class="storyweaver-logo" alt="StoryWeaver logo"> @lang('StoryWeaver Library')</a>
+                        </li>
+                    @endif
+                @endforeach
             @endif
-            @endforeach
+            
             @if (Auth::check())
             <li>
                 <a href="{{ URL::to('logout') }}" title="@lang('Log Out')"><i class="fas fa-sign-in-alt fa-lg icons"></i>@lang('Log Out')</a>     
