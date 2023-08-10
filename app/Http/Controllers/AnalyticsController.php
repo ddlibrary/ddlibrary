@@ -7,7 +7,6 @@ use App\User;
 use App\DownloadCount;
 use App\ResourceView;
 use App\Resource;
-use Facebook\Facebook;
 
 class AnalyticsController extends Controller
 {
