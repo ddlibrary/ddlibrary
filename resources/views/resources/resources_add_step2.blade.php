@@ -207,13 +207,17 @@
 
             });
 
+            // Check file size and type
             function checkFile(event){
                 let file = event.target.files[0];
                 let currentFileSizeInMB = Math.ceil(file.size / 1048576);
+
+                // Check file size
                 if( currentFileSizeInMB > 128){
                     alert(`Your file is ${currentFileSizeInMB}MB but You can not upload more the 128MB`)
                 }
 
+                // Allowed file types
                 const fileTypes = [
                     'image/png',
                     'image/jpeg',
@@ -232,6 +236,7 @@
                     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                 ];
 
+                // Check file type
                 if(!fileTypes.includes(file.type)){
                     alert('Please select a valid file. \nYou can upload these files only [xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3]');
                     const fileInput = document.getElementById(event.target.id);
@@ -239,6 +244,7 @@
                 }
             }
 
+            // Reset file input
             function resetFileInput(inputElement) {
                 inputElement.value = null;
             }
