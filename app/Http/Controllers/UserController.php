@@ -95,7 +95,7 @@ class UserController extends Controller
     {
         $request->validate([
             'email' => 'email|required',
-            'password' => 'confirmed|required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',
+            'password' => 'nullable|confirmed|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',
             'username' => 'required',
         ]);
 
@@ -107,9 +107,11 @@ class UserController extends Controller
             $user->password = Hash::make($request->input('password'));
         }
 
-        $user->save();
+        if($user->save()){
+            return redirect(URL('user/profile'))->with('success', 'Your data successfully updated.');
+        }
 
-        return redirect(URL('user/profile'));
+        return redirect(URL('user/profile'))->with('warning', 'Sorry! your data was not updated.');
     }
 
     /**
