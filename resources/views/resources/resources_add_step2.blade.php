@@ -214,7 +214,7 @@
 
                 // Check file size
                 if( currentFileSizeInMB > 128){
-                    alert(`Your file is ${currentFileSizeInMB}MB but You can not upload more the 128MB`)
+                    alert(`{{ __('Sorry! you can not upload a file more the 128MB') }}`)
                 }
 
                 // Allowed file types
@@ -238,7 +238,7 @@
 
                 // Check file type
                 if(!fileTypes.includes(file.type)){
-                    alert('Please select a valid file. \nYou can upload these files only [xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3]');
+                    alert("{{ __('Please select a valid file.You can upload these files only') }} [xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3]");
                     const fileInput = document.getElementById(event.target.id);
                     resetFileInput(fileInput);
                 }
