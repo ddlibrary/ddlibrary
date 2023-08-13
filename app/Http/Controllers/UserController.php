@@ -14,6 +14,7 @@ use App\ResourceFavorite;
 use App\Role;
 use App\UserRole;
 use Illuminate\Routing\Redirector;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -100,6 +101,8 @@ class UserController extends Controller
         ]);
 
         $user = User::find(Auth::id());
+
+        $userEmail = $user->email;
         $user->username = $request->input('username');
         $user->email = $request->input('email');
 
@@ -108,6 +111,11 @@ class UserController extends Controller
         }
 
         if($user->save()){
+            if ($userEmail != $request->input('email')){
+                $user->email_verified_at = null;
+                $user->save();
+                event(new Registered($user));
+            }
             return redirect(URL('user/profile'))->with('success', 'Your data successfully updated.');
         }
 
