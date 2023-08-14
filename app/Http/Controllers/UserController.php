@@ -14,6 +14,7 @@ use App\ResourceFavorite;
 use App\Role;
 use App\UserRole;
 use Illuminate\Routing\Redirector;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -95,11 +96,13 @@ class UserController extends Controller
     {
         $request->validate([
             'email' => 'email|required',
-            'password' => 'confirmed|required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',
+            'password' => 'nullable|confirmed|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',
             'username' => 'required',
         ]);
 
         $user = User::find(Auth::id());
+
+        $userEmail = $user->email;
         $user->username = $request->input('username');
         $user->email = $request->input('email');
 
@@ -107,9 +110,16 @@ class UserController extends Controller
             $user->password = Hash::make($request->input('password'));
         }
 
-        $user->save();
+        if($user->save()){
+            if ($userEmail != $request->input('email')){
+                $user->email_verified_at = null;
+                $user->save();
+                event(new Registered($user));
+            }
+            return redirect(URL('user/profile'))->with('success', 'Your data successfully updated.');
+        }
 
-        return redirect(URL('user/profile'));
+        return redirect(URL('user/profile'))->with('warning', 'Sorry! your data was not updated.');
     }
 
     /**
