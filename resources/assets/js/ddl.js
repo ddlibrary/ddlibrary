@@ -2,8 +2,14 @@
 if(window.jQuery){
     $(document).ready(function(){
         $('.add_more').click(function(e){
+            let randomNumber = Math.ceil(Math.random() * 1000)
             e.preventDefault();
-            $(this).before("<br><input name='attachments[]' type='file'/>");
+            $(this).before(`
+                <input name='attachments[]'
+                    id="resource-file-${randomNumber}"
+                    onchange="checkFile(event)"
+                    type='file' class='form-control mt-1' 
+                />`);
         });
 
         $('.fa-share-square').click(function(e){

@@ -17,6 +17,7 @@ mix.styles([
    'resources/assets/css/ddl.css',
    'resources/assets/css/survey.css',
    'resources/assets/css/fontawesome-all.min.css',
+   'resources/assets/css/style.css'
 ], 'public/css/all.css');
 
 
@@ -25,7 +26,7 @@ mix.styles('resources/assets/css/local.css', 'public/css/local.css');
 mix.babel([
    'resources/assets/js/ddl.js',
    'resources/assets/js/lazysizes.min.js',
-   'resources/assets/js/boostrap.min.js',
+   'resources/assets/js/bootstrap.min.js',
    ], 'public/js/all.js');
 
 /*
