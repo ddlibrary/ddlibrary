@@ -6,9 +6,14 @@ use App\Http\Controllers\Controller;
 use App\UserProfile;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
 use App\User;
+use App\UserRole;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -40,6 +45,80 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback()
+    {
+        $googleUser = Socialite::driver('google')->user();
+
+        $user = DB::table('users')->where('email', $googleUser->email)->first();
+
+        if (!$user) {
+            $user = $this->registerUser($googleUser);
+        }
+
+        Auth::loginUsingId($user->id);
+
+        return redirect('/');
+    }
+
+    private function getUserName($email){
+        $username = substr($email, 0, strrpos($email, '@'));
+        if(DB::table('users')->where('username', $username)->exists()){
+            return $username.time();
+        }
+
+        return $username;
+    }
+
+    private function registerUser($data){
+        $user = new User();
+        $user->username = $this->getUserName($data->email);
+        $user->email = $data->email;
+        $user->status = 1;
+        $user->accessed_at = Carbon::now();
+        $user->language = Config::get('app.locale');
+        $user->email_verified_at = Carbon::now();
+        $user->save();
+
+        // Create user profile
+        $userProfile = new UserProfile();
+        $userProfile->user_id       = $user->id;
+        $userProfile->first_name    = $data->name;
+        $userProfile->save();
+
+        // Create user role
+        $userRole = new UserRole();
+        $userRole->user_id = $user->id;
+        $userRole->role_id = 6; //library user from roles table
+        $userRole->save();
+
+        return $user;
+    }
+
+    public function redirectToFacebook()
+    {
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    public function handleFacebookCallback()
+    {
+        $facebookUser = Socialite::driver('facebook')->user();
+
+        $user = DB::table('users')->where('email', $facebookUser->email)->first();
+
+        if (!$user) {
+            $user = $this->registerUser($facebookUser);
+        }
+
+        Auth::loginUsingId($user->id);
+
+        return redirect('/');
     }
 
     //Overwriting the AuthenticatesUsers trait login method
