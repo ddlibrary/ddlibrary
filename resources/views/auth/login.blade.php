@@ -12,7 +12,7 @@
     <style>
         .divider {
             display: flex;
-            margin: 16px 0;
+            margin: 30px 0;
             color: #151429;
             font-weight: 500;
             font-size: 16px;
@@ -39,7 +39,8 @@
             transform: translateY(50%);
             content: '';
         }
-        .socialite{
+
+        .socialite {
             display: flex;
             justify-content: space-between;
         }
@@ -75,8 +76,14 @@
                             </span>
                         @endif
                     </div>
+                    <div class="form-item text-start">
+                        <label id="remember-me">
+                            <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                            <span class="">{{ __('Remember me') }}</span>
+                        </label>
+                    </div>
                     <div class="form-item">
-                        <input class="form-control login-submit btn btn-primary" type="submit" value="@lang('Log in')">
+                        <input class="btn btn-primary btn-md btn-block" type="submit" value="@lang('Log in')">
                     </div>
                     <div class="form-item">
 
@@ -85,27 +92,27 @@
                         </div>
                     </div>
                     <div class="socialite">
-                        <a href="{{ route('login.google') }}" class="form-control login-submit btn btn-primary">Login with
+                        {{-- <a href="{{ route('login.google') }}" class="form-control login-submit btn btn-primary">Login with
                             Google</a>
                         <a href="{{ route('login.facebook') }}" class="form-control login-submit btn btn-primary">Login with
-                            Facebook</a>
+                            Facebook</a> --}}
+                        <a href="{{ route('login.google') }}" class="btn btn-outline-secondary btn-md" type="submit">
+                            <i class="fab fa-google"></i>
+                            <span class="oauth-icon-separator"></span>
+                            @lang('Log in with Google')
+                        </a>
+                        <a href="{{ route('login.facebook') }}" class="btn btn-outline-secondary btn-md float-xl-right"
+                            type="submit">
+                            <i class="fab fa-facebook-f"></i>
+                            <span class="oauth-icon-separator"></span>
+                            @lang('Log in with Facebook')
+                        </a>
                     </div>
-                    <div class="form-item">
-                        <label id="remember-me">
-                            <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                            {{ __('Remember me') }}
-                        </label>
-                    </div>
-                    <div class="form-item">
-                        <div class="btn-div">
-                            <a href="{{ route('password.request') }}">
-                                {{ __('Forgot password?') }}
-                            </a>
-                            <span aria-hidden="true">&bull;</span>
-                            <a href="{{ route('register') }}">
-                                @lang('Register an account')
-                            </a>
-                        </div>
+
+
+                    <div class="form-group text-start" style="margin-top: 20px;">
+                        <a href="{{ route('register') }}" style="margin-right: 25px;">@lang('Sign up')</a>
+                        <a href="{{ route('password.request') }}">{{ __('Forgot your password?') }}</a>
                     </div>
                 </form>
             </div>
