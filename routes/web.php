@@ -1,5 +1,6 @@
 <?php
 use Spatie\Honeypot\ProtectAgainstSpam;
+use Laravel\Socialite\Facades\Socialite;
 
 if (env('APP_ENV') === 'production') {
     \URL::forceScheme('https');
@@ -16,8 +17,15 @@ Route::group(
 ],
     function()
 {
+    
+    
+    Route::get('login/google', 'Auth\LoginController@redirectToGoogle')->name('login.google');
+    Route::get('login/google/callback', 'Auth\LoginController@handleGoogleCallback');
+
+    Route::get('login/facebook', 'Auth\LoginController@redirectToFacebook')->name('login.facebook');
+    Route::get('login/facebook/callback', 'Auth\LoginController@handleFacebookCallback');
     /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
-    Route::get('/', 'HomeController@index');
+    Route::get('/', 'HomeController@index');    
     Route::get('/admin', 'DashboardController@index')->middleware('admin');
     //Users
     Route::get('admin/users', 'UserController@index')->middleware('admin');
