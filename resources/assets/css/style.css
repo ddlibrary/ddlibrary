@@ -2,3 +2,8 @@
 .mt-1{ margin-top:4px !important}
 .mt-2{ margin-top:8px !important}
 .d-block{ display:block !important}
+.btn-outline-secondary{
+    border-color: #6c757d !important;
+}
+.text-start{ text-align: start;}
+.text-end{ text-align: end;}
