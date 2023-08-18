@@ -9,42 +9,6 @@
     {{ asset('storage/files/logo-dd.png') }}
 @endsection
 @section('content')
-    <style>
-        .divider {
-            display: flex;
-            margin: 30px 0;
-            color: #151429;
-            font-weight: 500;
-            font-size: 16px;
-            white-space: nowrap;
-            text-align: center;
-            border-top: 0;
-            border-top-color: rgba(0, 0, 0, 0.06);
-        }
-
-        .divider-inner-text {
-            display: inline-block;
-            padding: 0 1em;
-        }
-
-        .divider::after,
-        .divider::before {
-            position: relative;
-            top: 50%;
-            width: 50%;
-            border-top: 1px solid transparent;
-            border-top-color: inherit;
-            border-bottom: 0;
-            -webkit-transform: translateY(50%);
-            transform: translateY(50%);
-            content: '';
-        }
-
-        .socialite {
-            display: flex;
-            justify-content: space-between;
-        }
-    </style>
     <section class="ddl-forms login">
         <div>
             <header>
@@ -83,19 +47,15 @@
                         </label>
                     </div>
                     <div class="form-item">
-                        <input class="btn btn-primary btn-md btn-block" type="submit" value="@lang('Log in')">
+                        <input class="form-control login-submit btn btn-primary w-100" type="submit"
+                            value="@lang('Log in')">
                     </div>
                     <div class="form-item">
-
                         <div class="divider">
-                            <span class="divider-inner-text">or</span>
+                            <span class="divider-inner-text">{{ __('or') }}</span>
                         </div>
                     </div>
                     <div class="socialite">
-                        {{-- <a href="{{ route('login.google') }}" class="form-control login-submit btn btn-primary">Login with
-                            Google</a>
-                        <a href="{{ route('login.facebook') }}" class="form-control login-submit btn btn-primary">Login with
-                            Facebook</a> --}}
                         <a href="{{ route('login.google') }}" class="btn btn-outline-secondary btn-md" type="submit">
                             <i class="fab fa-google"></i>
                             <span class="oauth-icon-separator"></span>
@@ -108,10 +68,8 @@
                             @lang('Log in with Facebook')
                         </a>
                     </div>
-
-
                     <div class="form-group text-start" style="margin-top: 20px;">
-                        <a href="{{ route('register') }}" style="margin-right: 25px;">@lang('Sign up')</a>
+                        <a href="{{ route('register') }}" style="margin-inline-end: 25px;">@lang('Sign up')</a>
                         <a href="{{ route('password.request') }}">{{ __('Forgot your password?') }}</a>
                     </div>
                 </form>
