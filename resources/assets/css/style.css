@@ -4,6 +4,48 @@
 .d-block{ display:block !important}
 .btn-outline-secondary{
     border-color: #6c757d !important;
+    color: #6c757d !important;
+}
+.btn-outline-secondary:hover{
+    border-color: #ffa800 !important;
+    color: #ffa800 !important;
 }
 .text-start{ text-align: start;}
 .text-end{ text-align: end;}
+.w-100{width:100% !important;}
+
+/* Login page */
+.divider {
+    display: flex;
+    margin: 30px 0;
+    color: #151429;
+    font-weight: 500;
+    font-size: 16px;
+    white-space: nowrap;
+    text-align: center;
+    border-top: 0;
+    border-top-color: rgba(0, 0, 0, 0.06);
+}
+
+.divider-inner-text {
+    display: inline-block;
+    padding: 0 1em;
+}
+
+.divider::after,
+.divider::before {
+    position: relative;
+    top: 50%;
+    width: 50%;
+    border-top: 1px solid transparent;
+    border-top-color: inherit;
+    border-bottom: 0;
+    -webkit-transform: translateY(50%);
+    transform: translateY(50%);
+    content: '';
+}
+
+.socialite {
+    display: flex;
+    justify-content: space-between;
+}
