@@ -56,13 +56,14 @@
                         </div>
                     </div>
                     <div class="socialite">
-                        <a href="{{ route('login.google') }}" class="btn btn-outline-secondary btn-md" type="submit">
+                        <a href="{{ env('LOGIN_WITH_GOOGLE') == 'no' ? 'javascript:void(0)' : route('login.google') }}"
+                            class="btn btn-outline-secondary btn-md  @if(env('LOGIN_WITH_GOOGLE') == 'no') disabled-link @endif" type="submit">
                             <i class="fab fa-google"></i>
                             <span class="oauth-icon-separator"></span>
                             @lang('Log in with Google')
                         </a>
-                        <a href="{{ route('login.facebook') }}" class="btn btn-outline-secondary btn-md float-xl-right"
-                            type="submit">
+                        <a href="{{ env('LOGIN_WITH_FACEBOOK') == 'no' ? 'javascript:void(0)' : route('login.facebook') }}"
+                            class="btn btn-outline-secondary btn-md float-xl-right @if(env('LOGIN_WITH_FACEBOOK') == 'no') disabled-link @endif" type="submit">
                             <i class="fab fa-facebook-f"></i>
                             <span class="oauth-icon-separator"></span>
                             @lang('Log in with Facebook')
@@ -70,7 +71,8 @@
                     </div>
                     <div class="form-group text-start" style="margin-top: 20px;">
                         <a href="{{ route('register') }}" style="margin-inline-end: 25px;">@lang('Sign up')</a>
-                        <a href="{{ route('password.request') }}">{{ __('Forgot your password?') }}</a>
+                        <a href="{{ route('password.request') }}"
+                            @disabled(true)>{{ __('Forgot your password?') }}</a>
                     </div>
                 </form>
             </div>
