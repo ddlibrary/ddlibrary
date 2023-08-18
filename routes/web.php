@@ -25,7 +25,7 @@ Route::group(
     Route::get('login/facebook', 'Auth\LoginController@redirectToFacebook')->name('login.facebook');
     Route::get('login/facebook/callback', 'Auth\LoginController@handleFacebookCallback');
     /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
-    Route::get('/', 'HomeController@index');    
+    Route::get('/', 'HomeController@index');
     Route::get('/admin', 'DashboardController@index')->middleware('admin');
     //Users
     Route::get('admin/users', 'UserController@index')->middleware('admin');
