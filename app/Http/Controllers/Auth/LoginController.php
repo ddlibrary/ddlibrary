@@ -80,6 +80,7 @@ class LoginController extends Controller
         $user = new User();
         $user->username = $this->getUserName($data->email);
         $user->email = $data->email;
+        $user->avatar = $data->avatar;
         $user->status = 1;
         $user->accessed_at = Carbon::now();
         $user->language = Config::get('app.locale');
