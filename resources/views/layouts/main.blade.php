@@ -19,7 +19,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="shortcut icon" href="{{ asset('storage/files/favicon.ico') }}">
-
+    
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 
     @if(Lang::locale() != 'en')

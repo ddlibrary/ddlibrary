@@ -334,11 +334,12 @@ footer i:hover, footer i:active, footer i:focus {
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
+    border-radius: 10px;
 }
 
 .ddl-forms.login input.form-control {
     display: inline;
-    width: 377px;
+    max-width: 377px;
     box-sizing: border-box;
 }
 
