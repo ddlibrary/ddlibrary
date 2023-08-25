@@ -26,6 +26,8 @@ class UserProfile extends Model
      */
     public $timestamps = false;
 
+    protected $guarded = [];
+
     public function getUserProfile(array $credentials)
     {
         return DB::table('user_profiles')
