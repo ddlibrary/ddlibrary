@@ -17,8 +17,10 @@ use Illuminate\Http\Request;
 use App\Resource;
 use App\UserProfile;
 use App\UserRole;
+use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -62,8 +64,8 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         $myResources = new Resource();
-        $countries = $myResources->resourceAttributesList('taxonomy_term_data',15);
-        $provinces = $myResources->resourceAttributesList('taxonomy_term_data',12)->all();
+        $countries = $myResources->resourceAttributesList('taxonomy_term_data', 15);
+        $provinces = $myResources->resourceAttributesList('taxonomy_term_data', 12)->all();
         $gmail_signup_url = 'https://accounts.google.com/signup';
         return view('auth.register', compact('countries', 'provinces', 'gmail_signup_url'));
     }
@@ -81,74 +83,59 @@ class RegisterController extends Controller
             [
                 'email' => 'required_without:phone|string|email|max:255|unique:users|nullable|regex:/^([a-zA-Z\d\._-]+)@(?!fmail.com)/', //Regex to block fmail.com domain
                 'username' => 'required|string|max:255',
-                'password' => 'confirmed|required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',  // Regex for at least one digit and one special character
+                'password' => 'confirmed|required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/', // Regex for at least one digit and one special character
                 'first_name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
                 'phone' => 'required_without:email|max:20|unique:user_profiles|nullable',
                 'gender' => 'required',
                 'country' => 'required',
                 'city' => 'nullable',
-                'g-recaptcha-response' => 'required|captcha'
+                'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', 'captcha'],
             ],
             [
                 'phone.unique' => __('The phone number has already been taken.'),
                 'password.regex' => __('The password you entered doesn\'t have any special characters (!@#$%^&.) and (or) digits (0-9).'),
-                'email.regex' => __('Please enter a valid email.')
-            ]
+                'email.regex' => __('Please enter a valid email.'),
+            ],
         );
     }
-
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param array $data
-     * @return array
+     * @param Request $request
+     * @return User $user
      */
-    protected function create(array $data): array
+    protected function create($request)
     {
         $user = new User();
-        $user->username = $data['username'];
-        $user->password = Hash::make($data['password']);
-        $user->email = $data['email'];
+        $user->username = $request['username'];
+        $user->password = Hash::make($request['password']);
+        $user->email = $request['email'];
         $user->status = 1;
         $user->accessed_at = Carbon::now();
         $user->language = Config::get('app.locale');
 
-        $using_email = True;
         if ($user->email == null) {
             $user->email_verified_at = Carbon::now(); // This is a hack for the duration, until we can verify phone numbers as well
-            $using_email = False;
         }
+
         $user->save();
 
-        if ($using_email)
-            event(new Registered($user));
+        return $user;
+    }
 
-        if(isset($data['city'])){
-            $city = $data['city'];
-        }elseif(isset($data['city_other'])){
-            $city = $data['city_other'];
-        }else{
-            $city = NULL;
-        }
-
-        $userProfile = new UserProfile();
-        $userProfile->user_id       = $user->id;
-        $userProfile->first_name    = $data['first_name'];
-        $userProfile->last_name     = $data['last_name'];
-        $userProfile->country       = $data['country'];
-        $userProfile->city          = $city;
-        $userProfile->gender        = $data['gender'];
-        $userProfile->phone         = $data['phone'];
-        $userProfile->save();
-
-        $userRole = new UserRole;
-        $userRole->user_id = $user->id;
-        $userRole->role_id = 6; //library user from roles table
-        $userRole->save();
-
-        return array($user->id, $using_email);
+    private function storeUserProfile($data, $user)
+    {
+        UserProfile::create([
+            'user_id' => $user->id,
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'country' => $data['country'],
+            'city' => $data['city'] ? $data['city'] : ($data['city_other'] ? $data['city_other'] : null),
+            'gender' => $data['gender'],
+            'phone' => $data['phone'],
+        ]);
     }
 
     /**
@@ -161,18 +148,44 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        $this->validator($request->all())->validate();
+        try {
+            
+            DB::beginTransaction();
+            
+            $this->validator($request->all())->validate();
 
-        list($userId, $using_email) = $this->create($request->all());
+            // Create user
+            $user = $this->create($request->all());
 
-        Auth::loginUsingId($userId);
+            // Send email verification
+            if (env('SEND_EMAIL') && env('SEND_EMAIL') != 'no') {
+                if ($user->email) {
+                    event(new Registered($user));
+                }
+            } else {
+                $user->email_verified_at = Carbon::now();
+                $user->save();
+            }
 
-        if ($using_email) {
-            return redirect('email/verify');
+            // Add user profile
+            $this->storeUserProfile($request, $user);
+
+            // Assign role to user
+            $user->roles()->attach(6); //6 is library user from roles table
+
+            DB::commit();
+
+            Auth::loginUsingId($user->id);
+
+            if ($user->email) {
+                return redirect('email/verify');
+            }
+
+            return $this->registered($request, $user->id) ?: redirect($this->redirectPath());
+        } catch (Exception $e) {
+            DB::rollback();
         }
 
-        return $this->registered($request, $userId)
-                        ?: redirect($this->redirectPath());
+        return back()->with('error', 'Sorry! Your account has not been created.');
     }
 }
-
