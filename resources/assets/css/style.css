@@ -49,4 +49,14 @@
     display: flex;
     justify-content: space-between;
 }
-.disabled-link{pointer-events: none;}
+.disabled-link{
+    pointer-events: none;
+}
+
+.display-none{
+    display: none !important;
+}
+
+.flex-grow-1{
+    flex-grow: 1;
+}
