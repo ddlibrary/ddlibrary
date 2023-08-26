@@ -57,13 +57,13 @@
                     </div>
                     <div class="socialite">
                         <a href="{{ env('LOGIN_WITH_GOOGLE') == 'no' ? 'javascript:void(0)' : route('login.google') }}"
-                            class="btn btn-outline-secondary btn-md  @if(env('LOGIN_WITH_GOOGLE') == 'no') disabled-link @endif" type="submit">
+                            class="btn btn-outline-secondary btn-md  @if(env('LOGIN_WITH_GOOGLE') == 'no') disabled-link display-none @endif @if(env('LOGIN_WITH_FACEBOOK') == 'no') flex-grow-1 @endif" type="submit">
                             <i class="fab fa-google"></i>
                             <span class="oauth-icon-separator"></span>
                             @lang('Log in with Google')
                         </a>
                         <a href="{{ env('LOGIN_WITH_FACEBOOK') == 'no' ? 'javascript:void(0)' : route('login.facebook') }}"
-                            class="btn btn-outline-secondary btn-md float-xl-right @if(env('LOGIN_WITH_FACEBOOK') == 'no') disabled-link @endif" type="submit">
+                            class=" btn btn-outline-secondary btn-md float-xl-right @if(env('LOGIN_WITH_FACEBOOK') == 'no') disabled-link display-none @endif @if(env('LOGIN_WITH_GOOGLE') == 'no') flex-grow-1 @endif" type="submit">
                             <i class="fab fa-facebook-f"></i>
                             <span class="oauth-icon-separator"></span>
                             @lang('Log in with Facebook')
