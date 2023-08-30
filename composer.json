@@ -21,7 +21,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "league/flysystem-aws-s3-v3": "^1.0",
-        "mcamara/laravel-localization": "^1.6",
+        "mcamara/laravel-localization": "^1.8",
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.3",
         "shvetsgroup/laravel-email-database-log": "^8.0.0",
