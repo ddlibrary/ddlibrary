@@ -8,9 +8,10 @@ use Tests\TestCase;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class HomePageTest extends TestCase
+
 {
     
-    use RefreshDatabase, DatabaseMigrations;
+   use RefreshDatabase; //DatabaseMigrations;
     
     /** @test */
     public function user_can_visit_english_home_page()

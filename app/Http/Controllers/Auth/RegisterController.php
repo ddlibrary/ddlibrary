@@ -88,7 +88,7 @@ class RegisterController extends Controller
                 'gender' => 'required',
                 'country' => 'required',
                 'city' => 'nullable',
-                'g-recaptcha-response' => 'required|captcha'
+              //  'g-recaptcha-response' => 'required|captcha'
             ],
             [
                 'phone.unique' => __('The phone number has already been taken.'),
@@ -122,8 +122,8 @@ class RegisterController extends Controller
         }
         $user->save();
 
-        if ($using_email)
-            event(new Registered($user));
+        // if ($using_email)
+        //     event(new Registered($user));
 
         if(isset($data['city'])){
             $city = $data['city'];
