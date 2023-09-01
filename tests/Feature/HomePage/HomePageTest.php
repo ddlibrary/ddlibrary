@@ -5,7 +5,6 @@ namespace Tests\Feature\HomePage;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class HomePageTest extends TestCase
 {
@@ -15,153 +14,99 @@ class HomePageTest extends TestCase
     /** @test */
     public function user_can_visit_english_home_page()
     {
-        LaravelLocalization::setLocale('en');
-       // Send a GET request to the root URL of the web application
-        $response = $this->get('/');
+        $this->refreshApplicationWithLocale('en');
 
-        // Get the redirect URL from the response headers
-        $redirectUrl = $response->headers->get('Location');
+        $response = $this->get('/en');
 
-        // Assert that the redirect URL is correct
-        $this->assertEquals('http://localhost/en', $redirectUrl);
-
-        // Assert that the response is a redirect to /en
-        $response->assertRedirect('/en');
+        $response->assertStatus(200)
+            ->assertViewIs('home');
     }
 
     /** @test */
     public function user_can_visit_farsi_home_page()
     {
-        LaravelLocalization::setLocale('fa');
-       // Send a GET request to the root URL of the web application
-        $response = $this->get('/');
+        $this->refreshApplicationWithLocale('fa');
 
-        // Get the redirect URL from the response headers
-        $redirectUrl = $response->headers->get('Location');
+        $response = $this->get('/fa');
 
-        // Assert that the redirect URL is correct
-        $this->assertEquals('http://localhost/fa', $redirectUrl);
-
-        // Assert that the response is a redirect to /fa
-        $response->assertRedirect('/fa');
+        $response->assertStatus(200)
+            ->assertViewIs('home');
     }
 
     /** @test */
     public function user_can_visit_pashto_home_page()
     {
-        LaravelLocalization::setLocale('ps');
-       // Send a GET request to the root URL of the web application
-        $response = $this->get('/');
+        $this->refreshApplicationWithLocale('ps');
 
-        // Get the redirect URL from the response headers
-        $redirectUrl = $response->headers->get('Location');
+        $response = $this->get('/ps');
 
-        // Assert that the redirect URL is correct
-        $this->assertEquals('http://localhost/ps', $redirectUrl);
-
-        // Assert that the response is a redirect to /ps
-        $response->assertRedirect('/ps');
+        $response->assertStatus(200)
+            ->assertViewIs('home');
     }
 
     /** @test */
-    public function user_can_visit_usbaki_home_page()
+    public function user_can_visit_uzbaki_home_page()
     {
-        LaravelLocalization::setLocale('uz');
-       // Send a GET request to the root URL of the web application
-        $response = $this->get('/');
+        $this->refreshApplicationWithLocale('uz');
 
-        // Get the redirect URL from the response headers
-        $redirectUrl = $response->headers->get('Location');
+        $response = $this->get('/uz');
 
-        // Assert that the redirect URL is correct
-        $this->assertEquals('http://localhost/uz', $redirectUrl);
-
-        // Assert that the response is a redirect to /uz
-        $response->assertRedirect('/uz');
+        $response->assertStatus(200)
+            ->assertViewIs('home');
     }
 
     /** @test */
     public function user_can_visit_munji_home_page()
     {
-        LaravelLocalization::setLocale('mj');
-       // Send a GET request to the root URL of the web application
-        $response = $this->get('/');
+        $this->refreshApplicationWithLocale('mj');
 
-        // Get the redirect URL from the response headers
-        $redirectUrl = $response->headers->get('Location');
+        $response = $this->get('/mj');
 
-        // Assert that the redirect URL is correct
-        $this->assertEquals('http://localhost/mj', $redirectUrl);
-
-        // Assert that the response is a redirect to /mj
-        $response->assertRedirect('/mj');
+        $response->assertStatus(200)
+            ->assertViewIs('home');
     }
 
     /** @test */
     public function user_can_visit_noorestani_home_page()
     {
-        LaravelLocalization::setLocale('no');
-       // Send a GET request to the root URL of the web application
-        $response = $this->get('/');
+        $this->refreshApplicationWithLocale('no');
 
-        // Get the redirect URL from the response headers
-        $redirectUrl = $response->headers->get('Location');
+        $response = $this->get('/no');
 
-        // Assert that the redirect URL is correct
-        $this->assertEquals('http://localhost/no', $redirectUrl);
-
-        // Assert that the response is a redirect to /no
-        $response->assertRedirect('/no');
+        $response->assertStatus(200)
+            ->assertViewIs('home');
     }
 
     /** @test */
     public function user_can_visit_sowji_home_page()
     {
-        LaravelLocalization::setLocale('sw');
-       // Send a GET request to the root URL of the web application
-        $response = $this->get('/');
+        $this->refreshApplicationWithLocale('sw');
 
-        // Get the redirect URL from the response headers
-        $redirectUrl = $response->headers->get('Location');
+        $response = $this->get('/sw');
 
-        // Assert that the redirect URL is correct
-        $this->assertEquals('http://localhost/sw', $redirectUrl);
-
-        // Assert that the response is a redirect to /sw
-        $response->assertRedirect('/sw');
+        $response->assertStatus(200)
+            ->assertViewIs('home');
     }
 
     /** @test */
     public function user_can_visit_shafnani_home_page()
     {
-        LaravelLocalization::setLocale('sh');
-       // Send a GET request to the root URL of the web application
-        $response = $this->get('/');
+        $this->refreshApplicationWithLocale('sh');
 
-        // Get the redirect URL from the response headers
-        $redirectUrl = $response->headers->get('Location');
+        $response = $this->get('/sh');
 
-        // Assert that the redirect URL is correct
-        $this->assertEquals('http://localhost/sh', $redirectUrl);
-
-        // Assert that the response is a redirect to /sh
-        $response->assertRedirect('/sh');
+        $response->assertStatus(200)
+            ->assertViewIs('home');
     }
 
     /** @test */
     public function user_can_visit_pashaiee_home_page()
     {
-        LaravelLocalization::setLocale('pa');
-       // Send a GET request to the root URL of the web application
-        $response = $this->get('/');
+        $this->refreshApplicationWithLocale('pa');
 
-        // Get the redirect URL from the response headers
-        $redirectUrl = $response->headers->get('Location');
+        $response = $this->get('/pa');
 
-        // Assert that the redirect URL is correct
-        $this->assertEquals('http://localhost/pa', $redirectUrl);
-
-        // Assert that the response is a redirect to /pa
-        $response->assertRedirect('/pa');
+        $response->assertStatus(200)
+            ->assertViewIs('home');
     }
 }
