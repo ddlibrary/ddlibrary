@@ -11,9 +11,9 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class UserRegisterationPageTest extends TestCase
 {
+
    use RefreshDatabase, DatabaseMigrations;
     
-
  /** @test */
     public function user_can_visit_english_register_page(){
       $this->refreshApplicationWithLocale('en');

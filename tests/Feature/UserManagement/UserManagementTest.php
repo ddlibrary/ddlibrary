@@ -13,13 +13,14 @@ class UserManagementTest extends TestCase
 {
     
     use RefreshDatabase,DatabaseMigrations;
+
        /** @test */
        public function user_can_loged_in_successfully() {
         $csrfToken = Session::token();
         
         $response = $this->post('/login',[
                    '_token' => Session::token(), 
-                   'user-field'=>'administrator',
+                   'username'=>'administrator',
                    'password' => 'test@1234'
   
         ]);
@@ -27,6 +28,23 @@ class UserManagementTest extends TestCase
         $response-> assertRedirect('/');
 
       }
+
+       /** @test */
+       public function user_cannot_login_becasue_user_does_not_exists() {
+         $csrfToken = Session::token();
+         
+         $response = $this->post('/login',[
+                    '_token' => Session::token(), 
+                    'user-field'=>'naweedAhmad',
+                    'password' => 'test@1234'
+   
+         ]);
+         $response-> assertStatus(status:302);
+         $response = $this->withSession(['message'])->get('/en/login');
+
+ 
+       }
+
          /** @test */ 
        public function user_login_validation_error_redirects_back_with_errors() {
 
@@ -52,11 +70,11 @@ class UserManagementTest extends TestCase
             'password' => 'test@12345',
             'password_confirmation'=>'test@12345',
             'email' => 'test@gmail.com',
-            "first_name" => 'test',
-             "last_name" => 'test',
-              "gender" => 'Male',
-             "country" => "256",
-              "city" => ''
+            'first_name' => 'test',
+             'last_name' => 'test',
+              'gender' => 'Male',
+             'country' => '256',
+              'city' => ''
 
         ]);
         $response-> assertStatus(status:302);
@@ -72,11 +90,11 @@ class UserManagementTest extends TestCase
                     'password' => 'test@12345',
                     'password_confirmation'=>'test@12345',
                     'email' => 'test@gmail.com',
-                    "first_name" => 'test',
-                     "last_name" => 'test',
-                      "gender" => 'Male',
-                     "country" => 'Afghanistan',
-                      "city" => ''
+                    'first_name' => 'test',
+                     'last_name' => 'test',
+                      'gender' => 'Male',
+                     'country' => 'Afghanistan',
+                      'city' => ''
           
                 ]);
                 $response->assertStatus(status:302);
