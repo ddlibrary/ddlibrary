@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-//use Illuminate\Support\Facades\Session;
+use App\User;
 use Illuminate\Support\Facades\Session;
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -16,23 +16,28 @@ class UserManagementTest extends TestCase
 
        /** @test */
        public function user_can_loged_in_successfully() {
-        $csrfToken = Session::token();
-        
+        $user = User::factory()->create([
+          'username' => 'testuser',
+          'password' => bcrypt('password'),
+          'email' =>'test@gmail.com',
+          'status' => 1,
+          'language'=> 'en',
+
+      ]);
         $response = $this->post('/login',[
                    '_token' => Session::token(), 
-                   'username'=>'administrator',
-                   'password' => 'test@1234'
+                   'user-field'=>'testuser',
+                   'password' => 'password'
   
-        ]);
+        ]);  
         $response-> assertStatus(status:302);
-        $response-> assertRedirect('/');
+        $response->assertRedirect('/home');
+        $this->assertAuthenticatedAs($user);
 
       }
 
        /** @test */
-       public function user_cannot_login_becasue_user_does_not_exists() {
-         $csrfToken = Session::token();
-         
+       public function user_cannot_login_because_user_does_not_exists() {
          $response = $this->post('/login',[
                     '_token' => Session::token(), 
                     'user-field'=>'naweedAhmad',
@@ -41,14 +46,11 @@ class UserManagementTest extends TestCase
          ]);
          $response-> assertStatus(status:302);
          $response = $this->withSession(['message'])->get('/en/login');
-
  
        }
 
          /** @test */ 
        public function user_login_validation_error_redirects_back_with_errors() {
-
-        $csrfToken = Session::token();
         $response = $this->post('/login',[
                    '_token' => Session::token(), 
                    'user-field'=>'',
@@ -63,7 +65,6 @@ class UserManagementTest extends TestCase
 
        /** @test */
       public function user_can_register_successfully(){
-         $csrfToken = Session::token();
         $response = $this->post('register',[
             '_token' => Session::token(),  
             'username' => 'test',
@@ -71,10 +72,10 @@ class UserManagementTest extends TestCase
             'password_confirmation'=>'test@12345',
             'email' => 'test@gmail.com',
             'first_name' => 'test',
-             'last_name' => 'test',
-              'gender' => 'Male',
-             'country' => '256',
-              'city' => ''
+            'last_name' => 'test',
+            'gender' => 'Male',
+            'country' => '256',
+            'city' => ''
 
         ]);
         $response-> assertStatus(status:302);
@@ -83,7 +84,6 @@ class UserManagementTest extends TestCase
 
       /** @test */ 
      public function user_register_validation_error_redirects_back_with_errors() {
-        $csrfToken = Session::token();
         $response = $this->post('/register',[
                     '_token' => Session::token(),  
                     'username' => '',
@@ -91,19 +91,17 @@ class UserManagementTest extends TestCase
                     'password_confirmation'=>'test@12345',
                     'email' => 'test@gmail.com',
                     'first_name' => 'test',
-                     'last_name' => 'test',
-                      'gender' => 'Male',
-                     'country' => 'Afghanistan',
-                      'city' => ''
+                    'last_name' => 'test',
+                    'gender' => 'Male',
+                    'country' => 'Afghanistan',
+                    'city' => ''
           
                 ]);
                 $response->assertStatus(status:302);
                 $response = $this->withSession(['username'])->get('/en/register');
                               
-        
-     }
+           }
 
 
-     
 
-}
+ }
