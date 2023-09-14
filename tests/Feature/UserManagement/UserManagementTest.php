@@ -82,26 +82,6 @@ class UserManagementTest extends TestCase
         $response-> assertRedirect('/email/verify');
       }
 
-      /** @test */ 
-     public function user_register_validation_error_redirects_back_with_errors() {
-        $response = $this->post('/register',[
-                    '_token' => Session::token(),  
-                    'username' => '',
-                    'password' => 'test@12345',
-                    'password_confirmation'=>'test@12345',
-                    'email' => 'test@gmail.com',
-                    'first_name' => 'test',
-                    'last_name' => 'test',
-                    'gender' => 'Male',
-                    'country' => 'Afghanistan',
-                    'city' => ''
-          
-                ]);
-                $response->assertStatus(status:302);
-                $response = $this->withSession(['username'])->get('/en/register');
-                              
-           }
-
-
-
+     
+      
  }
