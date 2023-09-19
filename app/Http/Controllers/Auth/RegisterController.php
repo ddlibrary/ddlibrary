@@ -149,11 +149,9 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+        $this->validator($request->all())->validate();
         try {
-            
             DB::beginTransaction();
-            
-            $this->validator($request->all())->validate();
 
             // Create user
             $user = $this->create($request->all());
@@ -185,6 +183,7 @@ class RegisterController extends Controller
             return $this->registered($request, $user->id) ?: redirect($this->redirectPath());
         } catch (Exception $e) {
             DB::rollback();
+            dd($e);
         }
 
         return back()->with('error', 'Sorry! Your account has not been created.');
