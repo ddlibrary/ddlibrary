@@ -55,7 +55,6 @@ class GlossaryListTest extends TestCase
         $response->assertStatus(200)
             ->assertViewIs('glossary.glossary_list');
     }
-
         
      /** @test */
     public function user_can_visit_noristani_glossary_page(){
@@ -84,7 +83,7 @@ class GlossaryListTest extends TestCase
             ->assertViewIs('glossary.glossary_list');
     }
 
-          /** @test */
+      /** @test */
     public function user_can_visit_pashai_glossary_page(){
         $this->refreshApplicationWithLocale('pa');
   
