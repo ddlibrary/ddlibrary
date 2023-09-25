@@ -1,5 +1,4 @@
-<hr class="hr-class">
-<footer>
+<footer class="border-top-gray">
     <nav>
         @if($menu)
             @foreach ($menu->where('location', 'footer-menu')->where('language', app()->getLocale()) as $fmenu)

@@ -30,14 +30,5 @@ class SubjectAreaSeeder extends Seeder
         ];
 
         DB::table('taxonomy_term_data')->insert($data);
-
-
-        $rows = DB::table('taxonomy_term_data')->where('vid', 8)->get();
-        foreach ($rows as $row) {
-            DB::table('resource_subject_areas')->insert([
-                'resource_id' => 1, 
-                'tid' => $row->id
-            ]);
-        }
     }
 }

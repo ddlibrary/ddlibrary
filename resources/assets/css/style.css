@@ -2,6 +2,7 @@
 .mt-1{ margin-top:4px !important}
 .mt-2{ margin-top:8px !important}
 .d-block{ display:block !important}
+.d-inline-block{ display:inline-block !important}
 .btn-outline-secondary{
     border-color: #6c757d !important;
     color: #6c757d !important;
@@ -12,6 +13,7 @@
 }
 .text-start{ text-align: start;}
 .text-end{ text-align: end;}
+.text-center{text-align: center !important;}
 .w-100{width:100% !important;}
 
 /* Login page */
@@ -47,7 +49,15 @@
 
 .socialite {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.socialite a{
+    flex: 1;
+}
+.space-evenly{
+    justify-content: space-evenly !important;
 }
 .disabled-link{
     pointer-events: none;
@@ -59,4 +69,30 @@
 
 .flex-grow-1{
     flex-grow: 1;
+}
+
+.position-relative{
+    position: relative;
+}
+
+.position-relative input {
+    padding-inline-end: 30px;;
+}
+
+.password-toggle-icon, .confirm-password-toggle-icon{
+    position: absolute;
+    top: 10px;
+    cursor: pointer;
+}
+[dir="rtl"] .password-toggle-icon, [dir="rtl"] .confirm-password-toggle-icon{
+    left: 9px;
+}
+[dir="ltr"] .password-toggle-icon, [dir="ltr"]  .confirm-password-toggle-icon{
+    right: 9px;
+}
+.border-top-gray{
+    border-top: 1px solid gray;
+}
+.socialite-container{
+    padding:0px 20px;
 }
