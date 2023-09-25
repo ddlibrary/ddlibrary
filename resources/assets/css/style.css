@@ -90,3 +90,6 @@
 [dir="ltr"] .password-toggle-icon, [dir="ltr"]  .confirm-password-toggle-icon{
     right: 9px;
 }
+.border-top-gray{
+    border-top: 1px solid gray;
+}
