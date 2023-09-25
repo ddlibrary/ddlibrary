@@ -82,7 +82,6 @@ class RegisterController extends Controller
             $data,
             [
                 'email' => 'required_without:phone|string|email|max:255|unique:users|nullable|regex:/^([a-zA-Z\d\._-]+)@(?!fmail.com)/', //Regex to block fmail.com domain
-                'username' => 'required|string|max:255',
                 'password' => 'confirmed|required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/', // Regex for at least one digit and one special character
                 'first_name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
@@ -109,7 +108,7 @@ class RegisterController extends Controller
     protected function create($request)
     {
         $user = new User();
-        $user->username = $request['username'];
+        $user->username = $this->getUserName($request['email']);
         $user->password = Hash::make($request['password']);
         $user->email = $request['email'];
         $user->status = 1;
@@ -187,5 +186,14 @@ class RegisterController extends Controller
         }
 
         return back()->with('error', 'Sorry! Your account has not been created.');
+    }
+
+    private function getUserName($email){
+        $username = substr($email, 0, strrpos($email, '@'));
+        if(DB::table('users')->where('username', $username)->exists()){
+            return $username.time();
+        }
+
+        return $username;
     }
 }
