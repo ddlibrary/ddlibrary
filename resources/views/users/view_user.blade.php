@@ -57,7 +57,7 @@
                     </label>
                     <div class="position-relative d-inline-block">
 
-                        <input class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" name="password"
+                        <input class="form-control user-password {{ $errors->has('password') ? ' is-invalid' : '' }}" name="password"
                             type="password" size="38" placeholder="@lang('Only fill this if you want to change your password')" autocomplete="off">
                         <span class="fa fa-eye-slash password-toggle-icon" aria-hidden="true"
                             onclick="togglePassword()"></span>
