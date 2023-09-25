@@ -190,6 +190,7 @@ class RegisterController extends Controller
 
     private function getUserName($email){
         $username = substr($email, 0, strrpos($email, '@'));
+        
         if(DB::table('users')->where('username', $username)->exists()){
             return $username.time();
         }
