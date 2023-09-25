@@ -86,7 +86,12 @@
                             <strong>@lang('Password')</strong>
                             <span class="form-required" title="This field is required.">*</span>
                         </label>
-                        <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" name="password" type="password" required>
+                        <div class="position-relative d-inline-block">
+
+                            <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}  user-password" id="password" name="password" type="password" required>
+                            <span class="fa fa-eye-slash password-toggle-icon" aria-hidden="true"
+                            onclick="togglePassword()"></span>
+                        </div>
                         @if ($errors->has('password'))
                             <span class="invalid-feedback">
                                 <strong>{{ $errors->first('password') }}</strong>
@@ -103,7 +108,11 @@
                             <strong>@lang('Confirm password')</strong>
                             <span class="form-required" title="This field is required.">*</span>
                         </label>
-                        <input class="form-control" id="password_confirmation" name="password_confirmation" type="password" required>
+                        <div class="position-relative d-inline-block">
+                            <input class="form-control confirm-user-password" id="password_confirmation" name="password_confirmation" type="password" required>
+                            <span class="fa fa-eye-slash confirm-password-toggle-icon" aria-hidden="true"
+                            onclick="togglePassword('confirm-password-toggle-icon', 'confirm-user-password')"></span>
+                        </div>
                     </div>
                 </div>
                 <div class="right-side">
