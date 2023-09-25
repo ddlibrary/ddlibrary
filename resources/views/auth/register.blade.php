@@ -21,7 +21,7 @@
                 @honeypot
                 @csrf
                 {{-- Login via socialate --}}
-                <div style="padding:20px;">
+                <div class="socialite-container">
                     <div class="socialite justify-content-center">
     
                         {{-- Gmail --}}
