@@ -256,3 +256,18 @@ function bringMeAttr(id, url)
         }
     });
 }
+
+function togglePassword(icon='password-toggle-icon', input = 'user-password') {
+    let toggleIcon = document.querySelector(`.${icon}`);
+    let passwordInput = document.querySelector(`.${input}`);
+
+    if (toggleIcon.classList.contains('fa-eye')) {
+        toggleIcon.classList.add("fa-eye-slash");
+        toggleIcon.classList.remove("fa-eye");
+        passwordInput.setAttribute("type", "password");
+    } else {
+        toggleIcon.classList.remove("fa-eye-slash");
+        toggleIcon.classList.add("fa-eye");
+        passwordInput.setAttribute("type", "text");
+    }
+}
