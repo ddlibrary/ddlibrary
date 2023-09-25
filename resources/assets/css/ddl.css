@@ -300,6 +300,9 @@ footer i:hover, footer i:active, footer i:focus {
     flex-wrap: wrap;
     padding: 1rem;
     background-color: white;
+    margin: 20px;
+    border-radius: 10px;
+    padding: 30px 100px;
 }
 
 .ddl-forms header {
@@ -427,13 +430,22 @@ select.form-control:focus::-ms-value {
 .personal-information {
     display: flex;
     flex-wrap: wrap;
+    margin: auto;
 }
 
-.personal-information .right-side {
-    flex: 1 1 45%;
+.register-form-item  {
+    flex:1 1 50%; 
+    box-sizing: border-box;
+    padding:0px 20px;
 }
-.personal-information .left-side {
-    flex: 1 1 55%;
+
+@media (max-width: 768px) {
+    .register-form-item  {
+      flex-basis: 100%;
+    }
+    .ddl-forms {
+        padding:30px !important;
+    }
 }
 
 .register-form input:not(.submit-button),
