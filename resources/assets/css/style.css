@@ -2,6 +2,7 @@
 .mt-1{ margin-top:4px !important}
 .mt-2{ margin-top:8px !important}
 .d-block{ display:block !important}
+.d-inline-block{ display:inline-block !important}
 .btn-outline-secondary{
     border-color: #6c757d !important;
     color: #6c757d !important;
@@ -59,4 +60,24 @@
 
 .flex-grow-1{
     flex-grow: 1;
+}
+
+.position-relative{
+    position: relative;
+}
+
+.position-relative input {
+    padding-inline-end: 30px;;
+}
+
+.password-toggle-icon, .confirm-password-toggle-icon{
+    position: absolute;
+    top: 10px;
+    cursor: pointer;
+}
+[dir="rtl"] .password-toggle-icon, [dir="rtl"] .confirm-password-toggle-icon{
+    left: 9px;
+}
+[dir="ltr"] .password-toggle-icon, [dir="ltr"]  .confirm-password-toggle-icon{
+    right: 9px;
 }
