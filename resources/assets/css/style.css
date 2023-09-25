@@ -13,6 +13,7 @@
 }
 .text-start{ text-align: start;}
 .text-end{ text-align: end;}
+.text-center{text-align: center !important;}
 .w-100{width:100% !important;}
 
 /* Login page */
@@ -48,7 +49,15 @@
 
 .socialite {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.socialite a{
+    flex: 1;
+}
+.space-evenly{
+    justify-content: space-evenly !important;
 }
 .disabled-link{
     pointer-events: none;
