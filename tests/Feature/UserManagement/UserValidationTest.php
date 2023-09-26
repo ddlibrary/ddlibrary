@@ -3,8 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -51,8 +49,9 @@ class UserValidationTest extends TestCase {
 
     /** @test */
     public function username_is_required() {
+        $username = '';
         $userData = UserValidationTest::userFakeData();
-        $userData['username'] = '';
+        $userData['username'] = $username;
 
         $response = $this->post('/register', $userData);
         $response->assertStatus(status: 302);
@@ -87,8 +86,9 @@ class UserValidationTest extends TestCase {
 
     /** @test */
     public function email_field_is_required() {
+        $email = '';
         $userData = UserValidationTest::userFakeData();
-        $userData['email'] = '';
+        $userData['email'] = $email;
 
         $response = $this->post('/register', $userData);
         $response->assertStatus(status: 302);
