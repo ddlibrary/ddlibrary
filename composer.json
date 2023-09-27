@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^8.1",
+        "php": "^8.0",
         "anhskohbo/no-captcha": "^3.0",
         "aws/aws-sdk-php": "^3.190",
         "barryvdh/laravel-translation-manager": "^0.6.2",
