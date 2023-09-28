@@ -24,8 +24,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
-class RegisterController extends Controller
-{
+class RegisterController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Register Controller
@@ -51,8 +50,7 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('guest');
     }
 
@@ -61,8 +59,7 @@ class RegisterController extends Controller
      *
      * @return Factory|\Illuminate\Contracts\Foundation\Application|View
      */
-    public function showRegistrationForm()
-    {
+    public function showRegistrationForm() {
         $myResources = new Resource();
         $countries = $myResources->resourceAttributesList('taxonomy_term_data', 15);
         $provinces = $myResources->resourceAttributesList('taxonomy_term_data', 12)->all();
@@ -76,9 +73,8 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data): \Illuminate\Contracts\Validation\Validator
-    {
-       
+    protected function validator(array $data): \Illuminate\Contracts\Validation\Validator {
+
         return Validator::make(
             $data,
             [
@@ -107,8 +103,7 @@ class RegisterController extends Controller
      * @param Request $request
      * @return User $user
      */
-    protected function create($request)
-    {
+    protected function create($request) {
         $user = new User();
         $user->username = $request['username'];
         $user->password = Hash::make($request['password']);
@@ -126,8 +121,7 @@ class RegisterController extends Controller
         return $user;
     }
 
-    private function storeUserProfile($data, $user)
-    {
+    private function storeUserProfile($data, $user) {
         UserProfile::create([
             'user_id' => $user->id,
             'first_name' => $data['first_name'],
@@ -147,8 +141,7 @@ class RegisterController extends Controller
      * @return Application|RedirectResponse|Redirector
      * @throws ValidationException
      */
-    public function register(Request $request)
-    {
+    public function register(Request $request) {
         $this->validator($request->all())->validate();
         try {
             DB::beginTransaction();
