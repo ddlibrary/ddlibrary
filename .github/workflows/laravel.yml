@@ -2,9 +2,9 @@ name: Laravel
 
 on:
   push:
-    branches: ["createTestingCI"]
+    branches: ["master"]
   pull_request:
-    branches: ["createTestingCI"]
+    branches: ["master"]
 
 jobs:
   laravel-tests:
