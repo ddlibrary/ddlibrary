@@ -3,10 +3,7 @@
 /public/js
 /public/hot
 /public/storage
-/storage/*.key
 /storage
-/public/css
-/public/js
 /vendor
 /.idea
 /.vscode
