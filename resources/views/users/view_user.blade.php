@@ -59,7 +59,7 @@
 
                         <input class="form-control user-password {{ $errors->has('password') ? ' is-invalid' : '' }}" name="password"
                             type="password" size="38" placeholder="@lang('Only fill this if you want to change your password')" autocomplete="off">
-                        <span class="fa fa-eye-slash password-toggle-icon" aria-hidden="true"
+                        <span class="fa fa-eye-slash password-toggle-icon text-gray" aria-hidden="true"
                             onclick="togglePassword()"></span>
                     </div>
                     @if ($errors->has('password'))

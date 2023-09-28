@@ -121,7 +121,7 @@
                                     class="form-control  w-100{{ $errors->has('password') ? ' is-invalid' : '' }}  user-password"
                                     id="password" name="password" type="password" required placeholder="********"
                                     title="@lang('Choose a strong password with a minimum of eight characters, <br>combining at least one special character (!@#$%^&.) and a digit (0-9).')">
-                                <span class="fa fa-eye-slash password-toggle-icon" aria-hidden="true"
+                                <span class="fa fa-eye-slash password-toggle-icon text-gray" aria-hidden="true"
                                     onclick="togglePassword()"></span>
                             </div>
                             @if ($errors->has('password'))
@@ -142,7 +142,7 @@
                             <div class="position-relative">
                                 <input class="form-control  w-100 confirm-user-password" placeholder="********"
                                     id="password_confirmation" name="password_confirmation" type="password" required>
-                                <span class="fa fa-eye-slash confirm-password-toggle-icon" aria-hidden="true"
+                                <span class="fa fa-eye-slash confirm-password-toggle-icon text-gray" aria-hidden="true"
                                     onclick="togglePassword('confirm-password-toggle-icon', 'confirm-user-password')"></span>
                             </div>
                         </div>
@@ -185,15 +185,16 @@
                 {{-- Google Captcha --}}
                 @if (Config::get('captcha.captcha') == 'yes')
                     <div class="register-form-item">
-                        <div class="form-item">
+                        <div class="form-item overflow-x">
                             {!! NoCaptcha::display() !!}
                         </div>
                     </div>
                 @endif
 
                 {{-- Submit --}}
-                <div class="register-form-item">
+                <div class="register-form-item register-form-submit-btn">
                     <input class="form-control submit-button btn btn-primary" type="submit" value="@lang('Submit')">
+                    <a href="{{ route('login') }}">@lang('Sign in')</a>
                 </div>
             </form>
         </div>

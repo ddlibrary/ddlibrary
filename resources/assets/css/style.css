@@ -96,3 +96,16 @@
 .socialite-container{
     padding:0px 20px;
 }
+.overflow-x{
+    overflow-x: auto;
+}
+.text-gray{
+    color:gray;
+}
+.register-form-submit-btn{
+    display: flex;
+    justify-content:space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+

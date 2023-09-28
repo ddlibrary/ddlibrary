@@ -38,7 +38,7 @@
                             class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} user-password"
                             id="password" name="password" autocomplete="current-password" spellcheck="false"
                             placeholder="@lang('Password')" size="40" required>
-                        <span class="fa fa-eye-slash password-toggle-icon" aria-hidden="true"
+                        <span class="fa fa-eye-slash password-toggle-icon text-gray" aria-hidden="true"
                             onclick="togglePassword()"></span>
                         @if ($errors->has('password'))
                             <span class="invalid-feedback text-start">
