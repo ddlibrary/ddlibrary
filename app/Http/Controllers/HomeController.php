@@ -38,7 +38,7 @@ class HomeController extends Controller
         $resources = new Resource();
 
         //latest news for the homepage
-        $latestNews         = News::where('language',Config::get('app.locale'))->orderBy('id','desc')->take(4)->get();
+        $latestNews         = News::where('language',Config::get('app.locale'))->where('status', 1)->orderBy('id','desc')->take(4)->get();
         $subjectAreas       = $resources->subjectIconsAndTotal();
         $featured           = $resources->featuredCollections();
         $latestResources    = Resource::published()->where('language',Config::get('app.locale'))->orderBy('id','desc')->take(4)->get();
