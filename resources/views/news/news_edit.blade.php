@@ -64,8 +64,12 @@
             <label for="published"> 
                 <strong>@lang('Published?')</strong>
             </label>
-            <input type="radio" name="published" {{ ($news->status  == 1)?"checked":""}} value="1"> @lang('Yes')
-            <input type="radio" name="published" {{ ($news->status == 0)?"checked":""}} value="0"> @lang('No')
+            <label>
+                <input type="radio" name="published" {{ ($news->status  == 1)?"checked":""}} value="1"> @lang('Yes')
+            </label>
+            <label>
+                <input type="radio" name="published" {{ ($news->status == 0)?"checked":""}} value="0"> @lang('No')
+            </label>
         </div>
         <div class="left-side">
             <input class="form-control normalButton" type="submit" value="@lang('Submit')">
