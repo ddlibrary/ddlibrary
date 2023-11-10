@@ -14,13 +14,6 @@
 @section('content')
 <section class="main-section">
     @include('layouts.messages')
-    <div id="simple-banner" class="simple-banner">
-        <div class="simple-banner-text">
-            <span>
-                تمام کورس ها و پروگرام های آکادمی درخت دانش رایگان هستند. ما هرگز از شما درخواست پول نمی کنیم. اگر کسی از شما خواسته است تا به او پولی بفرستید، این یک کلاهبرداری است. هیچ گونه پرداختی ارسال نکنید و لطفاً بلافاصله به ما اطلاع دهید - <a href="https://cw4wafghan.ca/scam-warning-cw4wafghan-and-mcgill-university/#fa">بیشتر بخوانید</a>
-            </span>
-        </div>
-    </div><br>
     <div class="ddl-top-news">
         <div>
             <p>@lang("Access children's storybooks through Storyweaver, click here"): 
