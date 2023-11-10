@@ -8,7 +8,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "axios": "^0.21.4",
+        "axios": "^1.6.0",
         "bootstrap": "^4.5.3",
         "copy-webpack-plugin": "^9.0",
         "cross-env": "^5.2.1",
