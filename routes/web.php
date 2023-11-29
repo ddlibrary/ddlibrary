@@ -79,7 +79,7 @@ Route::group(
         Route::get('admin/reports/ga', 'ReportController@gaReport')->middleware('admin');
         Route::get('admin/reports/resources', 'ReportController@resourceReport')->middleware('admin');
         Route::get('admin/reports/resources/subjects', 'ReportController@resourceSubjectReport')->middleware('admin');
-        Route::get('admin/reports/resources/languages', 'ReportController@resourceLanguageReport')->middleware('admin');
+        Route::get('admin/reports/languages', 'ReportController@resourceLanguageReport')->middleware('admin');
         //Downloads
         Route::get('admin/reports/downloads', 'DownloadController@index')->middleware('admin');
         Route::post('admin/reports/downloads', 'DownloadController@index')->name('downloads')->middleware('admin');
