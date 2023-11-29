@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateResourceEducationalResourcesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -28,4 +28,4 @@ class CreateResourceEducationalResourcesTable extends Migration
     {
         Schema::drop('resource_educational_resources');
     }
-}
+};
