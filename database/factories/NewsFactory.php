@@ -23,7 +23,7 @@ class NewsFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->name,
+            'title' => $this->faker->name(),
             'summary' => $this->faker->paragraph(),
             'body' => $this->faker->paragraph(3),
             'language' => 'en',
