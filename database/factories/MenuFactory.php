@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Menu;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MenuFactory extends Factory

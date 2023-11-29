@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\FileController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\Auth;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\FlagController;
 use App\Http\Controllers\GlossaryController;
 use App\Http\Controllers\GlossarySubjectController;
@@ -41,221 +41,221 @@ if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
 
 Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedirect', 'localizationRedirect', 'localeViewPath')->group(function () {
 
-        Route::get('login/google', [Auth\LoginController::class, 'redirectToGoogle'])->name('login.google');
-        Route::get('login/google/callback', [Auth\LoginController::class, 'handleGoogleCallback']);
+    Route::get('login/google', [Auth\LoginController::class, 'redirectToGoogle'])->name('login.google');
+    Route::get('login/google/callback', [Auth\LoginController::class, 'handleGoogleCallback']);
 
-        Route::get('login/facebook', [Auth\LoginController::class, 'redirectToFacebook'])->name('login.facebook');
-        Route::get('login/facebook/callback', [Auth\LoginController::class, 'handleFacebookCallback']);
-        /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
-        Route::get('/', [HomeController::class, 'index']);
-        Route::get('/admin', [DashboardController::class, 'index'])->middleware('admin');
-        //Users
-        Route::get('admin/users', [UserController::class, 'index'])->middleware('admin');
-        Route::post('admin/users', [UserController::class, 'index'])->name('user')->middleware('admin');
-        Route::get('admin/users/users-data', [UserController::class, 'usersData'])->middleware('admin');
-        Route::get('user/profile', [UserController::class, 'viewUser'])->where('userId', '[0-9]+')->name('user-view');
-        Route::get('user/favorites', [UserController::class, 'favorites'])->where('userId', '[0-9]+')->name('user-favorites');
-        Route::get('user/uploaded-resources', [UserController::class, 'uploadedResources'])->where('userId', '[0-9]+')->name('user-uploaded-resources');
-        Route::post('user/update_profile', [UserController::class, 'updateProfile'])->name('user-profile-update');
-        Route::get('admin/user/edit/{userId}', [UserController::class, 'edit'])->name('edit_user')->middleware('admin');
-        Route::post('admin/user/update/{userId}', [UserController::class, 'update'])->name('update_user')->middleware('admin');
-        Route::get('admin/user/delete/{userId}', [UserController::class, 'deleteUser'])->middleware('admin');
-        Route::get('admin/user/export', [UserController::class, 'exportUsers'])->middleware('admin');
-        //Resources
-        Route::get('admin/resources', [ResourceController::class, 'index'])->middleware('auth');
-        Route::post('admin/resources', [ResourceController::class, 'index'])->name('resources')->middleware('admin');
-        Route::any('resources/list', [ResourceController::class, 'list'])->name('resourceList');
-        Route::get('resources/priorities', [ReportController::class, 'resourcePriorities']);
-        Route::get('resources/priorities/exclusion', [ReportController::class, 'resourcePrioritiesExclusion'])->middleware('LibraryManager');
-        Route::post('resources/priorities/exclusion/add/{id}', [ReportController::class, 'resourcePrioritiesExclusionModify'])->middleware('LibraryManager');
-        Route::post('resources/priorities/exclusion/remove/{id}', [ReportController::class, 'resourcePrioritiesExclusionModify'])->middleware('LibraryManager');
-        Route::get('resource/{resourceId}', [ResourceController::class, 'viewPublicResource']);
-        Route::get('resource/view/{fileId}/{key}', [ResourceController::class, 'viewFile']);
-        Route::get('resource/{resourceId}/download/{fileId}/{hash}', [ResourceController::class, 'downloadFile'])->name('download-file')->middleware('auth')->middleware('verified');
-        Route::get('resources', [ResourceController::class, 'list']);
-        Route::get('resources/add/step1', [ResourceController::class, 'createStepOne'])->name('step1')->middleware('auth')->middleware('verified');
-        Route::post('resources/add/step1', [ResourceController::class, 'postStepOne']);
-        Route::get('resources/add/step2', [ResourceController::class, 'createStepTwo'])->name('step2')->middleware('auth')->middleware('verified');
-        Route::post('resources/add/step2', [ResourceController::class, 'postStepTwo']);
-        Route::get('resources/add/step3', [ResourceController::class, 'createStepThree'])->name('step3')->middleware('auth')->middleware('verified');
-        Route::post('resources/add/step3', [ResourceController::class, 'postStepThree'])->middleware(ProtectAgainstSpam::class);
-        Route::get('resources/attributes/{entity}', [ResourceController::class, 'attributes']);
-        Route::post('resources/flag', [ResourceController::class, 'flag'])->name('flag');
-        Route::post('resources/comment', [ResourceController::class, 'comment'])->name('comment')->middleware('auth')->middleware('verified');
-        Route::get('admin/resource/published/{resourceId}', [ResourceController::class, 'published']);
-        Route::get('admin/resource/delete/{resourceId}', [ResourceController::class, 'deleteResource'])->middleware('admin');
-        Route::get('resources/edit/step1/{resourceId}', [ResourceController::class, 'createStepOneEdit'])->name('edit1')->middleware('LibraryManager');
-        Route::post('resources/edit/step1/{resourceId}', [ResourceController::class, 'postStepOneEdit'])->middleware('LibraryManager');
-        Route::get('resources/edit/step2/{resourceId}', [ResourceController::class, 'createStepTwoEdit'])->name('edit2')->middleware('LibraryManager');
-        Route::post('resources/edit/step2/{resourceId}', [ResourceController::class, 'postStepTwoEdit'])->middleware('LibraryManager');
-        Route::get('resources/edit/step3/{resourceId}', [ResourceController::class, 'createStepThreeEdit'])->name('edit3')->middleware('LibraryManager');
-        Route::post('resources/edit/step3/{resourceId}', [ResourceController::class, 'postStepThreeEdit'])->middleware('LibraryManager');
-        Route::post('resource/{resourceId}', [ResourceController::class, 'updateTid'])->middleware('admin')->name('updatetid');
-        //delete file
-        Route::get('delete/file/{resourceId}/{fileName}', [ResourceController::class, 'deleteFile'])->name('delete-file');
-        //Contact
-        Route::get('contact-us', [ContactController::class, 'create']);
-        Route::post('contact-us', [ContactController::class, 'store'])->name('contact')->middleware(ProtectAgainstSpam::class);
-        Route::get('admin/contacts', [ContactController::class, 'index'])->middleware('admin');
-        Route::get('admin/contacts/read/{id}', [ContactController::class, 'read'])->middleware('admin');
-        Route::get('admin/contacts/delete/{id}', [ContactController::class, 'delete'])->middleware('admin');
-        //Report
-        Route::get('admin/reports/ga', [ReportController::class, 'gaReport'])->middleware('admin');
-        Route::get('admin/reports/resources', [ReportController::class, 'resourceReport'])->middleware('admin');
-        Route::get('admin/reports/resources/subjects', [ReportController::class, 'resourceSubjectReport'])->middleware('admin');
-        Route::get('admin/reports/languages', [ReportController::class, 'resourceLanguageReport'])->middleware('admin');
-        //Downloads
-        Route::get('admin/reports/downloads', [DownloadController::class, 'index'])->middleware('admin');
-        Route::post('admin/reports/downloads', [DownloadController::class, 'index'])->name('downloads')->middleware('admin');
-        //Pages
-        Route::get('admin/pages', [PageController::class, 'index'])->middleware('admin');
-        Route::get('admin/get-pages', [PageController::class, 'getPages'])->name('getpages')->middleware('admin');
-        Route::get('admin/pages/view/{pageId}', [PageController::class, 'view'])->middleware('admin');
-        Route::get('page/{pageId}', [PageController::class, 'view'])->where('pageId', '[0-9]+');
-        Route::get('/about-education-afghanistan', function () {
-            return redirect('page/22');
-        });
-        Route::get('page/edit/{pageId}', [PageController::class, 'edit'])->middleware('admin');
-        Route::post('page/update/{pageId}', [PageController::class, 'update'])->name('update_page')->middleware('admin');
-        Route::get('page/create', [PageController::class, 'create'])->middleware('admin');
-        Route::post('page/store', [PageController::class, 'store'])->name('add_page')->middleware('admin');
-        Route::get('page/translate/{pageId}/{pageTnid}', [PageController::class, 'translate'])->middleware('admin');
-        Route::get('page/add/translate/{pageId}/{lang}', [PageController::class, 'addTranslate'])->middleware('admin');
-        Route::post('page/add/translate/{pageId}/{lang}', [PageController::class, 'addPostTranslate'])->name('add_page_translate')->middleware('admin');
-        //News
-        Route::get('admin/news', [NewsController::class, 'index'])->middleware('admin');
-        Route::get('admin/get-news', [NewsController::class, 'getNews'])->name('getnews')->middleware('admin');
-        Route::get('news/{newsId}', [NewsController::class, 'view'])->where('newsId', '[0-9]+');
-        Route::get('news/edit/{newsId}', [NewsController::class, 'edit'])->middleware('admin');
-        Route::post('news/update/{newsId}', [NewsController::class, 'update'])->name('update_news')->middleware('admin');
-        Route::get('news/create', [NewsController::class, 'create'])->middleware('admin');
-        Route::post('news/store', [NewsController::class, 'store'])->name('add_news')->middleware('admin');
-        Route::get('news/translate/{newsId}/{newsTnid}', [NewsController::class, 'translate'])->middleware('admin');
-        Route::get('news/add/translate/{newsId}/{lang}', [NewsController::class, 'addTranslate'])->middleware('admin');
-        Route::post('news/add/translate/{newsId}/{lang}', [NewsController::class, 'addPostTranslate'])->name('add_news_translate')->middleware('admin');
-        //Menu
-        Route::get('admin/menu', [MenuController::class, 'index'])->middleware('admin');
-        Route::post('admin/menu', [MenuController::class, 'index'])->middleware('admin')->name('menulist');
-        Route::get('admin/menu/add/{menuId}', [MenuController::class, 'create'])->middleware('admin');
-        Route::post('admin/menu/store', [MenuController::class, 'store'])->name('store_menu')->middleware('admin');
-        Route::get('admin/menu/edit/{menuId}', [MenuController::class, 'edit'])->middleware('admin');
-        Route::post('admin/menu/update/{menuId}', [MenuController::class, 'update'])->name('update_menu')->middleware('admin');
-        Route::get('admin/menu/translate/{menuId}', [MenuController::class, 'translate'])->middleware('admin');
-        Route::post('admin/menu/translate/{menuId}', [MenuController::class, 'translate_menu'])->name('translateMenu')->middleware('admin');
-        Route::get('admin/menu/sort', [MenuController::class, 'sort'])->name('sort_menu')->middleware('admin');
-        Route::get('admin/menu/ajax_get_parents', [MenuController::class, 'ajax_get_parents'])->name('ajax_get_parents')->middleware('admin');
-        //Settings
-        Route::get('admin/settings', [SettingController::class, 'edit'])->middleware('admin');
-        Route::post('admin/settings', [SettingController::class, 'update'])->name('settings');
-        //Comments
-        Route::get('admin/comments', [CommentController::class, 'index'])->middleware('admin');
-        Route::get('admin/comments/delete/{commentId}', [CommentController::class, 'delete'])->middleware('admin');
-        Route::get('admin/comments/published/{commentId}', [CommentController::class, 'published']);
-        //Flags
-        Route::get('admin/flags', [FlagController::class, 'index'])->middleware('admin');
-        //Taxonomy
-        Route::get('admin/taxonomy', [TaxonomyController::class, 'index'])->name('taxonomylist')->middleware('admin');
-        Route::post('admin/taxonomy', [TaxonomyController::class, 'index'])->name('taxonomylist')->middleware('admin');
-        Route::get('admin/taxonomy/edit/{vid}/{tid}', [TaxonomyController::class, 'edit'])->name('taxonomyedit')->middleware('admin');
-        Route::post('admin/taxonomy/edit/{vid}/{tid}', [TaxonomyController::class, 'update'])->name('taxonomyedit')->middleware('admin');
-        Route::get('admin/taxonomy/translate/{tid}', [TaxonomyController::class, 'translate'])->middleware('admin');
-        Route::get('admin/taxonomy/create', [TaxonomyController::class, 'create'])->name('taxonomycreate')->middleware('admin');
-        Route::post('admin/taxonomy/store', [TaxonomyController::class, 'store'])->name('taxonomystore')->middleware('admin');
-        Route::get('admin/taxonomy/create-translate/{tid}/{tnid}/{lang}', [TaxonomyController::class, 'createTranslate'])->name('taxonomytranslatecreate')->middleware('admin');
-        Route::post('admin/taxonomy/store-translate/{tnid}', [TaxonomyController::class, 'storeTranslate'])->name('taxonomytranslatestore')->middleware('admin');
-        //Taxonomy Vocabulary
-        Route::get('admin/vocabulary', [VocabularyController::class, 'index'])->name('vocabularylist')->middleware('admin');
-        Route::get('admin/vocabularies', [VocabularyController::class, 'getVocabularies'])->name('getvocabularies')->middleware('admin');
-        Route::get('admin/vocabulary/create', [VocabularyController::class, 'create'])->name('vocabularycreate')->middleware('admin');
-        Route::post('admin/vocabulary/store', [VocabularyController::class, 'store'])->name('vocabularystore')->middleware('admin');
-        Route::get('admin/vocabulary/edit/{vid}', [VocabularyController::class, 'edit'])->name('vocabularyedit')->middleware('admin');
-        Route::post('admin/vocabulary/edit/{vid}', [VocabularyController::class, 'update'])->name('vocabularyedit')->middleware('admin');
-        //Sync
-        Route::get('/admin/sync', [SyncController::class, 'index']);
-        Route::get('/admin/run_sync', [SyncController::class, 'SyncIt']);
-        //Glossary
-        Route::get('glossary', [GlossaryController::class, 'index']);
-        Route::post('glossary', [GlossaryController::class, 'index'])->name('glossary');
-        Route::get('glossary/create', [GlossaryController::class, 'create'])->name('glossary_create')->middleware('LibraryManager');
-        Route::post('glossary/store', [GlossaryController::class, 'store'])->name('glossary_store')->middleware('LibraryManager');
-        Route::post('glossary/update', [GlossaryController::class, 'update'])->name('glossary_update')->middleware('LibraryManager');
-        Route::post('glossary/delete/{id}', [GlossaryController::class, 'destroy'])->name('glossary_delete')->middleware('LibraryManager');
-        Route::post('glossary/approve/{id}', [GlossaryController::class, 'approve'])->name('glossary_approve')->middleware('LibraryManager');
-        //Impact Page
-        Route::get('/impact', [ImpactController::class, 'index']);
-
-        //admin, survey
-        Route::get('admin/surveys', [SurveyController::class, 'index']);
-        Route::get('admin/survey/edit/{id}', [SurveyController::class, 'edit']);
-        Route::get('admin/survey/view/{id}/{tnid}', [SurveyController::class, 'view']);
-        Route::get('admin/survey/report/{id}', [SurveyController::class, 'report'])->middleware('admin');
-        Route::get('admin/survey/add/translate/{id}/{lang}', [SurveyController::class, 'addTranslate']);
-        Route::get('admin/survey/create', [SurveyController::class, 'create']);
-        Route::get('admin/survey/delete/{id}', [SurveyController::class, 'delete']);
-        Route::post('admin/update_survey/{id}', [SurveyController::class, 'update'])->name('update_survey');
-        Route::post('admin/survey/create', [SurveyController::class, 'store'])->name('create_survey');
-        //question
-        Route::get('admin/survey/questions/{id}', [SurveyQuestionController::class, 'index']);
-        Route::get('admin/survey/{surveyid}/question/view/{id}/{tnid}', [SurveyQuestionController::class, 'view']);
-        Route::get('admin/survey/question/add/translate/{id}/{lang}', [SurveyQuestionController::class, 'addTranslate']);
-        Route::post('admin/survey/question/add', [SurveyQuestionController::class, 'store'])->name('create_question');
-        Route::get('admin/survey/question/add/{id}', [SurveyQuestionController::class, 'create']);
-        Route::get('admin/survey/question/delete/{id}', [SurveyQuestionController::class, 'delete']);
-        //option
-        Route::get('admin/survey/question/option/delete/{id}', [SurveyQuestionOptionController::class, 'delete']);
-        Route::get('admin/survey/{survey_id}/question/{id}/view_options', [SurveyQuestionOptionController::class, 'index']);
-        Route::get('admin/survey/question/{questionid}/option/{optionid}/view/{tnid}', [SurveyQuestionOptionController::class, 'view']);
-        Route::get('admin/survey/question/option/add/translate/{id}/{lang}', [SurveyQuestionOptionController::class, 'addTranslate']);
-        Route::get('admin/survey/{survey_id}/question/{id}/option/create', [SurveyQuestionOptionController::class, 'create']);
-        Route::post('admin/survey/question/option/add', [SurveyQuestionOptionController::class, 'store'])->name('create_option');
-        //result
-        Route::get('admin/survey_questions', [SurveyAnswerController::class, 'allQuestions']);
-        Route::get('admin/survey_question/answers/{id}', [SurveyAnswerController::class, 'questionAnswers']);
-        Route::post('/survey/store', [SurveyAnswerController::class, 'storeUserSurvey'])->name('survey');
-        //setting
-        Route::get('admin/survey_time', [SurveySettingController::class, 'getSurveyModalTime']);
-        Route::get('admin/edit_survey_modal_time', [SurveySettingController::class, 'editSurveyModalTime']);
-        Route::post('admin/update_survey_modal_time/{id}', [SurveySettingController::class, 'updateSurveyModalTime'])->name('update_survey_modal_time');
-        Route::get('admin/create_survey_modal_time', [SurveySettingController::class, 'createSurveyModalTime']);
-        Route::post('admin/store_survey_modal_time', [SurveySettingController::class, 'storeSurveyModalTime'])->name('store_survey_modal_time');
-        //Analytics
-        Route::get('/admin/analytics', [AnalyticsController::class, 'index'])->middleware('admin');
-        Route::post('/admin/analytics', [AnalyticsController::class, 'show'])->name('analytics')->middleware('admin');
-        //admin, glossary
-        Route::get('admin/glossary_subjects', [GlossarySubjectController::class, 'index'])->middleware('admin')->name('glossary_subjects_list');
-        Route::get('admin/glossary_subjects/create', [GlossarySubjectController::class, 'create'])->middleware('admin');
-        Route::get('admin/glossary_subjects/edit/{id}', [GlossarySubjectController::class, 'edit'])->middleware('admin');
-        Route::post('admin/glossary_subjects/update', [GlossarySubjectController::class, 'update'])->middleware('admin')->name('glossary_subjects_update');
-        //StoryWeaver
-        Route::get('/storyweaver/confirm/{landing_page}', [StoryWeaverController::class, 'storyWeaverConfirmation'])->name('storyweaver-confirm')->middleware('auth')->middleware('verified');
-        Route::get('/storyweaver/auth', [StoryWeaverController::class, 'storyWeaverAuth'])->name('storyweaver-auth')->middleware('auth')->middleware('verified');
-        //Adding old DDL routes
-        Route::get('/user/register', [Auth\RegisterController::class, 'showRegistrationForm']);
-        Route::get('/user', [Auth\LoginController::class, 'showLoginForm']);
-        Route::get('/access-library', [ResourceController::class, 'createStepOne'])->middleware('auth')->middleware('verified');
-        Route::get('/node/add', [ResourceController::class, 'createStepOne'])->middleware('auth')->middleware('verified');
-        Route::get('/node/add/resourcefile', [ResourceController::class, 'createStepOne'])->middleware('auth')->middleware('verified');
-        Route::get('/add/resourcefile', [ResourceController::class, 'createStepOne'])->middleware('auth')->middleware('verified');
-        Route::get('/node/{resourceId}', [ResourceController::class, 'viewPublicResource']);
-        Route::get('/user/logout', [Auth\LoginController::class, 'logout']);
-        Route::get('/user/password', [Auth\ForgotPasswordController::class, 'showLinkRequestForm']);
-        Route::get('/volunteer', function () {
-            return redirect('page/1532');
-        });
-        Route::get('/support-library', function () {
-            return redirect('page/21');
-        });
-        //Auth
-        Route::middleware(ProtectAgainstSpam::class)->group(function () {
-            Auth::routes(['verify' => true]);
-        });
-        Route::get('/logout', function () {
-            Auth::logout();
-
-            return redirect('/home');
-        });
-        Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('login/facebook', [Auth\LoginController::class, 'redirectToFacebook'])->name('login.facebook');
+    Route::get('login/facebook/callback', [Auth\LoginController::class, 'handleFacebookCallback']);
+    /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
+    Route::get('/', [HomeController::class, 'index']);
+    Route::get('/admin', [DashboardController::class, 'index'])->middleware('admin');
+    //Users
+    Route::get('admin/users', [UserController::class, 'index'])->middleware('admin');
+    Route::post('admin/users', [UserController::class, 'index'])->name('user')->middleware('admin');
+    Route::get('admin/users/users-data', [UserController::class, 'usersData'])->middleware('admin');
+    Route::get('user/profile', [UserController::class, 'viewUser'])->where('userId', '[0-9]+')->name('user-view');
+    Route::get('user/favorites', [UserController::class, 'favorites'])->where('userId', '[0-9]+')->name('user-favorites');
+    Route::get('user/uploaded-resources', [UserController::class, 'uploadedResources'])->where('userId', '[0-9]+')->name('user-uploaded-resources');
+    Route::post('user/update_profile', [UserController::class, 'updateProfile'])->name('user-profile-update');
+    Route::get('admin/user/edit/{userId}', [UserController::class, 'edit'])->name('edit_user')->middleware('admin');
+    Route::post('admin/user/update/{userId}', [UserController::class, 'update'])->name('update_user')->middleware('admin');
+    Route::get('admin/user/delete/{userId}', [UserController::class, 'deleteUser'])->middleware('admin');
+    Route::get('admin/user/export', [UserController::class, 'exportUsers'])->middleware('admin');
+    //Resources
+    Route::get('admin/resources', [ResourceController::class, 'index'])->middleware('auth');
+    Route::post('admin/resources', [ResourceController::class, 'index'])->name('resources')->middleware('admin');
+    Route::any('resources/list', [ResourceController::class, 'list'])->name('resourceList');
+    Route::get('resources/priorities', [ReportController::class, 'resourcePriorities']);
+    Route::get('resources/priorities/exclusion', [ReportController::class, 'resourcePrioritiesExclusion'])->middleware('LibraryManager');
+    Route::post('resources/priorities/exclusion/add/{id}', [ReportController::class, 'resourcePrioritiesExclusionModify'])->middleware('LibraryManager');
+    Route::post('resources/priorities/exclusion/remove/{id}', [ReportController::class, 'resourcePrioritiesExclusionModify'])->middleware('LibraryManager');
+    Route::get('resource/{resourceId}', [ResourceController::class, 'viewPublicResource']);
+    Route::get('resource/view/{fileId}/{key}', [ResourceController::class, 'viewFile']);
+    Route::get('resource/{resourceId}/download/{fileId}/{hash}', [ResourceController::class, 'downloadFile'])->name('download-file')->middleware('auth')->middleware('verified');
+    Route::get('resources', [ResourceController::class, 'list']);
+    Route::get('resources/add/step1', [ResourceController::class, 'createStepOne'])->name('step1')->middleware('auth')->middleware('verified');
+    Route::post('resources/add/step1', [ResourceController::class, 'postStepOne']);
+    Route::get('resources/add/step2', [ResourceController::class, 'createStepTwo'])->name('step2')->middleware('auth')->middleware('verified');
+    Route::post('resources/add/step2', [ResourceController::class, 'postStepTwo']);
+    Route::get('resources/add/step3', [ResourceController::class, 'createStepThree'])->name('step3')->middleware('auth')->middleware('verified');
+    Route::post('resources/add/step3', [ResourceController::class, 'postStepThree'])->middleware(ProtectAgainstSpam::class);
+    Route::get('resources/attributes/{entity}', [ResourceController::class, 'attributes']);
+    Route::post('resources/flag', [ResourceController::class, 'flag'])->name('flag');
+    Route::post('resources/comment', [ResourceController::class, 'comment'])->name('comment')->middleware('auth')->middleware('verified');
+    Route::get('admin/resource/published/{resourceId}', [ResourceController::class, 'published']);
+    Route::get('admin/resource/delete/{resourceId}', [ResourceController::class, 'deleteResource'])->middleware('admin');
+    Route::get('resources/edit/step1/{resourceId}', [ResourceController::class, 'createStepOneEdit'])->name('edit1')->middleware('LibraryManager');
+    Route::post('resources/edit/step1/{resourceId}', [ResourceController::class, 'postStepOneEdit'])->middleware('LibraryManager');
+    Route::get('resources/edit/step2/{resourceId}', [ResourceController::class, 'createStepTwoEdit'])->name('edit2')->middleware('LibraryManager');
+    Route::post('resources/edit/step2/{resourceId}', [ResourceController::class, 'postStepTwoEdit'])->middleware('LibraryManager');
+    Route::get('resources/edit/step3/{resourceId}', [ResourceController::class, 'createStepThreeEdit'])->name('edit3')->middleware('LibraryManager');
+    Route::post('resources/edit/step3/{resourceId}', [ResourceController::class, 'postStepThreeEdit'])->middleware('LibraryManager');
+    Route::post('resource/{resourceId}', [ResourceController::class, 'updateTid'])->middleware('admin')->name('updatetid');
+    //delete file
+    Route::get('delete/file/{resourceId}/{fileName}', [ResourceController::class, 'deleteFile'])->name('delete-file');
+    //Contact
+    Route::get('contact-us', [ContactController::class, 'create']);
+    Route::post('contact-us', [ContactController::class, 'store'])->name('contact')->middleware(ProtectAgainstSpam::class);
+    Route::get('admin/contacts', [ContactController::class, 'index'])->middleware('admin');
+    Route::get('admin/contacts/read/{id}', [ContactController::class, 'read'])->middleware('admin');
+    Route::get('admin/contacts/delete/{id}', [ContactController::class, 'delete'])->middleware('admin');
+    //Report
+    Route::get('admin/reports/ga', [ReportController::class, 'gaReport'])->middleware('admin');
+    Route::get('admin/reports/resources', [ReportController::class, 'resourceReport'])->middleware('admin');
+    Route::get('admin/reports/resources/subjects', [ReportController::class, 'resourceSubjectReport'])->middleware('admin');
+    Route::get('admin/reports/languages', [ReportController::class, 'resourceLanguageReport'])->middleware('admin');
+    //Downloads
+    Route::get('admin/reports/downloads', [DownloadController::class, 'index'])->middleware('admin');
+    Route::post('admin/reports/downloads', [DownloadController::class, 'index'])->name('downloads')->middleware('admin');
+    //Pages
+    Route::get('admin/pages', [PageController::class, 'index'])->middleware('admin');
+    Route::get('admin/get-pages', [PageController::class, 'getPages'])->name('getpages')->middleware('admin');
+    Route::get('admin/pages/view/{pageId}', [PageController::class, 'view'])->middleware('admin');
+    Route::get('page/{pageId}', [PageController::class, 'view'])->where('pageId', '[0-9]+');
+    Route::get('/about-education-afghanistan', function () {
+        return redirect('page/22');
     });
+    Route::get('page/edit/{pageId}', [PageController::class, 'edit'])->middleware('admin');
+    Route::post('page/update/{pageId}', [PageController::class, 'update'])->name('update_page')->middleware('admin');
+    Route::get('page/create', [PageController::class, 'create'])->middleware('admin');
+    Route::post('page/store', [PageController::class, 'store'])->name('add_page')->middleware('admin');
+    Route::get('page/translate/{pageId}/{pageTnid}', [PageController::class, 'translate'])->middleware('admin');
+    Route::get('page/add/translate/{pageId}/{lang}', [PageController::class, 'addTranslate'])->middleware('admin');
+    Route::post('page/add/translate/{pageId}/{lang}', [PageController::class, 'addPostTranslate'])->name('add_page_translate')->middleware('admin');
+    //News
+    Route::get('admin/news', [NewsController::class, 'index'])->middleware('admin');
+    Route::get('admin/get-news', [NewsController::class, 'getNews'])->name('getnews')->middleware('admin');
+    Route::get('news/{newsId}', [NewsController::class, 'view'])->where('newsId', '[0-9]+');
+    Route::get('news/edit/{newsId}', [NewsController::class, 'edit'])->middleware('admin');
+    Route::post('news/update/{newsId}', [NewsController::class, 'update'])->name('update_news')->middleware('admin');
+    Route::get('news/create', [NewsController::class, 'create'])->middleware('admin');
+    Route::post('news/store', [NewsController::class, 'store'])->name('add_news')->middleware('admin');
+    Route::get('news/translate/{newsId}/{newsTnid}', [NewsController::class, 'translate'])->middleware('admin');
+    Route::get('news/add/translate/{newsId}/{lang}', [NewsController::class, 'addTranslate'])->middleware('admin');
+    Route::post('news/add/translate/{newsId}/{lang}', [NewsController::class, 'addPostTranslate'])->name('add_news_translate')->middleware('admin');
+    //Menu
+    Route::get('admin/menu', [MenuController::class, 'index'])->middleware('admin');
+    Route::post('admin/menu', [MenuController::class, 'index'])->middleware('admin')->name('menulist');
+    Route::get('admin/menu/add/{menuId}', [MenuController::class, 'create'])->middleware('admin');
+    Route::post('admin/menu/store', [MenuController::class, 'store'])->name('store_menu')->middleware('admin');
+    Route::get('admin/menu/edit/{menuId}', [MenuController::class, 'edit'])->middleware('admin');
+    Route::post('admin/menu/update/{menuId}', [MenuController::class, 'update'])->name('update_menu')->middleware('admin');
+    Route::get('admin/menu/translate/{menuId}', [MenuController::class, 'translate'])->middleware('admin');
+    Route::post('admin/menu/translate/{menuId}', [MenuController::class, 'translate_menu'])->name('translateMenu')->middleware('admin');
+    Route::get('admin/menu/sort', [MenuController::class, 'sort'])->name('sort_menu')->middleware('admin');
+    Route::get('admin/menu/ajax_get_parents', [MenuController::class, 'ajax_get_parents'])->name('ajax_get_parents')->middleware('admin');
+    //Settings
+    Route::get('admin/settings', [SettingController::class, 'edit'])->middleware('admin');
+    Route::post('admin/settings', [SettingController::class, 'update'])->name('settings');
+    //Comments
+    Route::get('admin/comments', [CommentController::class, 'index'])->middleware('admin');
+    Route::get('admin/comments/delete/{commentId}', [CommentController::class, 'delete'])->middleware('admin');
+    Route::get('admin/comments/published/{commentId}', [CommentController::class, 'published']);
+    //Flags
+    Route::get('admin/flags', [FlagController::class, 'index'])->middleware('admin');
+    //Taxonomy
+    Route::get('admin/taxonomy', [TaxonomyController::class, 'index'])->name('taxonomylist')->middleware('admin');
+    Route::post('admin/taxonomy', [TaxonomyController::class, 'index'])->name('taxonomylist')->middleware('admin');
+    Route::get('admin/taxonomy/edit/{vid}/{tid}', [TaxonomyController::class, 'edit'])->name('taxonomyedit')->middleware('admin');
+    Route::post('admin/taxonomy/edit/{vid}/{tid}', [TaxonomyController::class, 'update'])->name('taxonomyedit')->middleware('admin');
+    Route::get('admin/taxonomy/translate/{tid}', [TaxonomyController::class, 'translate'])->middleware('admin');
+    Route::get('admin/taxonomy/create', [TaxonomyController::class, 'create'])->name('taxonomycreate')->middleware('admin');
+    Route::post('admin/taxonomy/store', [TaxonomyController::class, 'store'])->name('taxonomystore')->middleware('admin');
+    Route::get('admin/taxonomy/create-translate/{tid}/{tnid}/{lang}', [TaxonomyController::class, 'createTranslate'])->name('taxonomytranslatecreate')->middleware('admin');
+    Route::post('admin/taxonomy/store-translate/{tnid}', [TaxonomyController::class, 'storeTranslate'])->name('taxonomytranslatestore')->middleware('admin');
+    //Taxonomy Vocabulary
+    Route::get('admin/vocabulary', [VocabularyController::class, 'index'])->name('vocabularylist')->middleware('admin');
+    Route::get('admin/vocabularies', [VocabularyController::class, 'getVocabularies'])->name('getvocabularies')->middleware('admin');
+    Route::get('admin/vocabulary/create', [VocabularyController::class, 'create'])->name('vocabularycreate')->middleware('admin');
+    Route::post('admin/vocabulary/store', [VocabularyController::class, 'store'])->name('vocabularystore')->middleware('admin');
+    Route::get('admin/vocabulary/edit/{vid}', [VocabularyController::class, 'edit'])->name('vocabularyedit')->middleware('admin');
+    Route::post('admin/vocabulary/edit/{vid}', [VocabularyController::class, 'update'])->name('vocabularyedit')->middleware('admin');
+    //Sync
+    Route::get('/admin/sync', [SyncController::class, 'index']);
+    Route::get('/admin/run_sync', [SyncController::class, 'SyncIt']);
+    //Glossary
+    Route::get('glossary', [GlossaryController::class, 'index']);
+    Route::post('glossary', [GlossaryController::class, 'index'])->name('glossary');
+    Route::get('glossary/create', [GlossaryController::class, 'create'])->name('glossary_create')->middleware('LibraryManager');
+    Route::post('glossary/store', [GlossaryController::class, 'store'])->name('glossary_store')->middleware('LibraryManager');
+    Route::post('glossary/update', [GlossaryController::class, 'update'])->name('glossary_update')->middleware('LibraryManager');
+    Route::post('glossary/delete/{id}', [GlossaryController::class, 'destroy'])->name('glossary_delete')->middleware('LibraryManager');
+    Route::post('glossary/approve/{id}', [GlossaryController::class, 'approve'])->name('glossary_approve')->middleware('LibraryManager');
+    //Impact Page
+    Route::get('/impact', [ImpactController::class, 'index']);
+
+    //admin, survey
+    Route::get('admin/surveys', [SurveyController::class, 'index']);
+    Route::get('admin/survey/edit/{id}', [SurveyController::class, 'edit']);
+    Route::get('admin/survey/view/{id}/{tnid}', [SurveyController::class, 'view']);
+    Route::get('admin/survey/report/{id}', [SurveyController::class, 'report'])->middleware('admin');
+    Route::get('admin/survey/add/translate/{id}/{lang}', [SurveyController::class, 'addTranslate']);
+    Route::get('admin/survey/create', [SurveyController::class, 'create']);
+    Route::get('admin/survey/delete/{id}', [SurveyController::class, 'delete']);
+    Route::post('admin/update_survey/{id}', [SurveyController::class, 'update'])->name('update_survey');
+    Route::post('admin/survey/create', [SurveyController::class, 'store'])->name('create_survey');
+    //question
+    Route::get('admin/survey/questions/{id}', [SurveyQuestionController::class, 'index']);
+    Route::get('admin/survey/{surveyid}/question/view/{id}/{tnid}', [SurveyQuestionController::class, 'view']);
+    Route::get('admin/survey/question/add/translate/{id}/{lang}', [SurveyQuestionController::class, 'addTranslate']);
+    Route::post('admin/survey/question/add', [SurveyQuestionController::class, 'store'])->name('create_question');
+    Route::get('admin/survey/question/add/{id}', [SurveyQuestionController::class, 'create']);
+    Route::get('admin/survey/question/delete/{id}', [SurveyQuestionController::class, 'delete']);
+    //option
+    Route::get('admin/survey/question/option/delete/{id}', [SurveyQuestionOptionController::class, 'delete']);
+    Route::get('admin/survey/{survey_id}/question/{id}/view_options', [SurveyQuestionOptionController::class, 'index']);
+    Route::get('admin/survey/question/{questionid}/option/{optionid}/view/{tnid}', [SurveyQuestionOptionController::class, 'view']);
+    Route::get('admin/survey/question/option/add/translate/{id}/{lang}', [SurveyQuestionOptionController::class, 'addTranslate']);
+    Route::get('admin/survey/{survey_id}/question/{id}/option/create', [SurveyQuestionOptionController::class, 'create']);
+    Route::post('admin/survey/question/option/add', [SurveyQuestionOptionController::class, 'store'])->name('create_option');
+    //result
+    Route::get('admin/survey_questions', [SurveyAnswerController::class, 'allQuestions']);
+    Route::get('admin/survey_question/answers/{id}', [SurveyAnswerController::class, 'questionAnswers']);
+    Route::post('/survey/store', [SurveyAnswerController::class, 'storeUserSurvey'])->name('survey');
+    //setting
+    Route::get('admin/survey_time', [SurveySettingController::class, 'getSurveyModalTime']);
+    Route::get('admin/edit_survey_modal_time', [SurveySettingController::class, 'editSurveyModalTime']);
+    Route::post('admin/update_survey_modal_time/{id}', [SurveySettingController::class, 'updateSurveyModalTime'])->name('update_survey_modal_time');
+    Route::get('admin/create_survey_modal_time', [SurveySettingController::class, 'createSurveyModalTime']);
+    Route::post('admin/store_survey_modal_time', [SurveySettingController::class, 'storeSurveyModalTime'])->name('store_survey_modal_time');
+    //Analytics
+    Route::get('/admin/analytics', [AnalyticsController::class, 'index'])->middleware('admin');
+    Route::post('/admin/analytics', [AnalyticsController::class, 'show'])->name('analytics')->middleware('admin');
+    //admin, glossary
+    Route::get('admin/glossary_subjects', [GlossarySubjectController::class, 'index'])->middleware('admin')->name('glossary_subjects_list');
+    Route::get('admin/glossary_subjects/create', [GlossarySubjectController::class, 'create'])->middleware('admin');
+    Route::get('admin/glossary_subjects/edit/{id}', [GlossarySubjectController::class, 'edit'])->middleware('admin');
+    Route::post('admin/glossary_subjects/update', [GlossarySubjectController::class, 'update'])->middleware('admin')->name('glossary_subjects_update');
+    //StoryWeaver
+    Route::get('/storyweaver/confirm/{landing_page}', [StoryWeaverController::class, 'storyWeaverConfirmation'])->name('storyweaver-confirm')->middleware('auth')->middleware('verified');
+    Route::get('/storyweaver/auth', [StoryWeaverController::class, 'storyWeaverAuth'])->name('storyweaver-auth')->middleware('auth')->middleware('verified');
+    //Adding old DDL routes
+    Route::get('/user/register', [Auth\RegisterController::class, 'showRegistrationForm']);
+    Route::get('/user', [Auth\LoginController::class, 'showLoginForm']);
+    Route::get('/access-library', [ResourceController::class, 'createStepOne'])->middleware('auth')->middleware('verified');
+    Route::get('/node/add', [ResourceController::class, 'createStepOne'])->middleware('auth')->middleware('verified');
+    Route::get('/node/add/resourcefile', [ResourceController::class, 'createStepOne'])->middleware('auth')->middleware('verified');
+    Route::get('/add/resourcefile', [ResourceController::class, 'createStepOne'])->middleware('auth')->middleware('verified');
+    Route::get('/node/{resourceId}', [ResourceController::class, 'viewPublicResource']);
+    Route::get('/user/logout', [Auth\LoginController::class, 'logout']);
+    Route::get('/user/password', [Auth\ForgotPasswordController::class, 'showLinkRequestForm']);
+    Route::get('/volunteer', function () {
+        return redirect('page/1532');
+    });
+    Route::get('/support-library', function () {
+        return redirect('page/21');
+    });
+    //Auth
+    Route::middleware(ProtectAgainstSpam::class)->group(function () {
+        Auth::routes(['verify' => true]);
+    });
+    Route::get('/logout', function () {
+        Auth::logout();
+
+        return redirect('/home');
+    });
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+});
 Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
