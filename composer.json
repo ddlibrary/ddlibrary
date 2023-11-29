@@ -1,7 +1,10 @@
 {
     "name": "laravel/laravel",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -20,7 +23,7 @@
         "laravel/socialite": "^5.8",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
-        "league/flysystem-aws-s3-v3": "^1.0",
+        "league/flysystem-aws-s3-v3": "^3.0",
         "mcamara/laravel-localization": "^1.8",
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.3",
@@ -58,8 +61,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         }
     },
     "scripts": {
