@@ -14,7 +14,7 @@ class SurveyQuestion extends Model
      */
     public function survey()
     {
-        return $this->belongsTo('App\Survey');
+        return $this->belongsTo(\App\Survey::class);
     }
 
     /**
@@ -22,7 +22,7 @@ class SurveyQuestion extends Model
      */
     public function options()
     {
-        return $this->hasMany('App\SurveyQuestionOption', 'question_id');
+        return $this->hasMany(\App\SurveyQuestionOption::class, 'question_id');
     }
 
     /**
