@@ -12,7 +12,7 @@
 */
 
 // Protected Routes
-Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user', 'ApiController@user');
     Route::post('/logout', 'ApiController@logout');
     Route::post('/favorites', 'ApiController@favorites');

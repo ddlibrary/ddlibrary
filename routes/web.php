@@ -10,12 +10,7 @@ if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
     error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 }
 
-Route::group(
-    [
-        'prefix' => LaravelLocalization::setLocale(),
-        'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'],
-    ],
-    function () {
+Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedirect', 'localizationRedirect', 'localeViewPath')->group(function () {
 
         Route::get('login/google', 'Auth\LoginController@redirectToGoogle')->name('login.google');
         Route::get('login/google/callback', 'Auth\LoginController@handleGoogleCallback');
@@ -232,7 +227,7 @@ Route::group(
         });
         Route::get('/home', 'HomeController@index')->name('home');
     });
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
 /** OTHER PAGES THAT SHOULD NOT BE LOCALIZED **/
