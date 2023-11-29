@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Page;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Yajra\Datatables\Datatables;
-use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Yajra\Datatables\Datatables;
 
 class PageController extends Controller
 {
@@ -19,49 +19,52 @@ class PageController extends Controller
      */
     public function __construct()
     {
-        
+
     }
-    
-    function index ()
+
+    public function index()
     {
         return view('admin.pages.pages_list');
     }
+
     //Ajax get pages Function
     public function getPages()
     {
         $page = Page::select(['id', 'title', 'language', 'created_at', 'updated_at']);
+
         return Datatables::of($page)
             ->addColumn('action', function ($page) {
-                return '<a href="' . URL($page->language . '/page/edit/' . $page->id) .'" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>';
+                return '<a href="'.URL($page->language.'/page/edit/'.$page->id).'" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>';
             })
             ->editColumn('language', '{{fixLanguage($language)}}')
-            ->addColumn('created_at', function($page) {
+            ->addColumn('created_at', function ($page) {
                 return $page->created_at->diffForHumans();
             })
-            ->addColumn('updated_at', function($page) {
+            ->addColumn('updated_at', function ($page) {
                 return $page->updated_at->diffForHumans();
             })
             ->orderColumn('id', '-id $1')
             ->make(true);
     }
 
-    function view($pageId): Factory|View|Application
+    public function view($pageId): Factory|View|Application
     {
         //setting the search session empty
         DDLClearSession();
-        
-        $page = Page::findOrFail($pageId);
-        if ($page->status == 0 && !(isAdmin() || isLibraryManager()))  // We don't want anyone else to access unpublished pages
-            abort(403);
 
-        $translation_id = $page->tnid;
-        if($translation_id) {
-            $translations = Page::where('tnid',$translation_id)->get();
-        } else {
-            $translations = array();
+        $page = Page::findOrFail($pageId);
+        if ($page->status == 0 && ! (isAdmin() || isLibraryManager())) {  // We don't want anyone else to access unpublished pages
+            abort(403);
         }
 
-        return view('pages.pages_view', compact('page','translations'));
+        $translation_id = $page->tnid;
+        if ($translation_id) {
+            $translations = Page::where('tnid', $translation_id)->get();
+        } else {
+            $translations = [];
+        }
+
+        return view('pages.pages_view', compact('page', 'translations'));
     }
 
     public function create()
@@ -75,11 +78,11 @@ class PageController extends Controller
     public function store(Request $request, Page $page)
     {
         $this->validate($request, [
-            'title'      => 'required',
-            'language'   => 'required',
-            'summary'    => 'required',
-            'body'       => 'required',
-            'published'  => 'integer'
+            'title' => 'required',
+            'language' => 'required',
+            'summary' => 'required',
+            'body' => 'required',
+            'published' => 'integer',
         ]);
 
         $page->title = $request->input('title');
@@ -102,17 +105,18 @@ class PageController extends Controller
     public function edit(Page $page, $id)
     {
         $page = $page->find($id);
+
         return view('pages.page_edit', compact('page'));
     }
 
     public function update(Request $request, Page $page, $id)
     {
         $this->validate($request, [
-            'title'      => 'required',
-            'language'   => 'required',
-            'summary'    => 'required',
-            'body'       => 'required',
-            'published'  => 'integer'
+            'title' => 'required',
+            'language' => 'required',
+            'summary' => 'required',
+            'body' => 'required',
+            'published' => 'integer',
         ]);
 
         $page = Page::find($id);
@@ -129,25 +133,26 @@ class PageController extends Controller
     }
 
     public function translate(Page $page, $id, $tnid)
-    {   
+    {
         $page = $page->where('tnid', $tnid)->get();
         $page_self = $page->find($id);
-        return view('pages.page_translate', compact('page', 'page_self'));    
+
+        return view('pages.page_translate', compact('page', 'page_self'));
     }
 
     public function addTranslate($tnid, $lang)
     {
-        return view('pages.page_add_translate', compact('tnid', 'lang'));   
+        return view('pages.page_add_translate', compact('tnid', 'lang'));
     }
 
     public function addPostTranslate(Request $request, Page $page, $tnid, $lang)
     {
         $this->validate($request, [
-            'title'      => 'required',
-            'language'   => 'nullable',
-            'summary'    => 'required',
-            'body'       => 'required',
-            'published'  => 'integer'
+            'title' => 'required',
+            'language' => 'nullable',
+            'summary' => 'required',
+            'body' => 'required',
+            'published' => 'integer',
         ]);
 
         $page->title = $request->input('title');
@@ -160,6 +165,6 @@ class PageController extends Controller
         //inserting
         $page->save();
 
-        return redirect('page/'.$page->id)->with('success', 'Item successfully updated!');    
+        return redirect('page/'.$page->id)->with('success', 'Item successfully updated!');
     }
 }

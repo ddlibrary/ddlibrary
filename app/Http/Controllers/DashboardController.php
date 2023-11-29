@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\User;
-use App\Resource;
-use App\Page;
 use App\News;
+use App\Page;
+use App\Resource;
+use App\User;
 
 class DashboardController extends Controller
 {
@@ -19,29 +18,30 @@ class DashboardController extends Controller
     {
         $this->middleware('admin');
     }
-    
+
     public function index()
     {
         DDLClearSession();
-        
+
         //total users in number for the dashboard
-        $totalUsers         = User::count();
+        $totalUsers = User::count();
         //latest users for the dashboard
-        $latestUsers        = User::orderBy('id','desc')->take(5)->get();
+        $latestUsers = User::orderBy('id', 'desc')->take(5)->get();
         //total resources in number for the dashboard
-        $totalResources     = Resource::count();
+        $totalResources = Resource::count();
         //latest resources for the dashboard
-        $latestResources    = Resource::orderBy('id','desc')->take(5)->get();
-        $totalNews          = News::count();
+        $latestResources = Resource::orderBy('id', 'desc')->take(5)->get();
+        $totalNews = News::count();
         //latest news for the dashboard
-        $latestNews         = News::orderBy('id','desc')->take(5)->get();
-        $totalPages         = Page::count();
+        $latestNews = News::orderBy('id', 'desc')->take(5)->get();
+        $totalPages = Page::count();
         //latest pages for the dashboard
-        $latestPages        = Page::orderBy('id','desc')->take(5)->get();
+        $latestPages = Page::orderBy('id', 'desc')->take(5)->get();
+
         return view('admin.main', compact(
-            'totalUsers', 
-            'latestUsers', 
-            'totalResources', 
+            'totalUsers',
+            'latestUsers',
+            'totalResources',
             'latestResources',
             'totalNews',
             'latestNews',

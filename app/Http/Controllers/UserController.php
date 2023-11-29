@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Resource;
+use App\ResourceFavorite;
+use App\Role;
+use App\User;
+use App\UserProfile;
+use App\UserRole;
 use BladeView;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\User;
-use App\Resource;
-use App\UserProfile;
-use App\ResourceFavorite;
-use App\Role;
-use App\UserRole;
 use Illuminate\Routing\Redirector;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -27,7 +27,7 @@ class UserController extends Controller
      * Showing the list of users in the admin panel
      *
      * @return BladeView|false|Application|Factory|View
-     */   
+     */
     public function index(Request $request)
     {
         $this->middleware('admin');
@@ -41,7 +41,7 @@ class UserController extends Controller
 
         $filters = $request->session()->get('filters');
 
-        return view('admin.users.users',compact('users','roles', 'filters'));
+        return view('admin.users.users', compact('users', 'roles', 'filters'));
     }
 
     /**
@@ -53,8 +53,8 @@ class UserController extends Controller
     {
         $user = User::users()->where('id', Auth::id())->first();
 
-
         $page = 'profile';
+
         return view('users.view_user', compact('page', 'user'));
     }
 
@@ -68,8 +68,9 @@ class UserController extends Controller
         $user = User::users()->where('id', Auth::id())->first();
         $favorites = ResourceFavorite::where('user_id', Auth::id())->pluck('resource_id');
         $resources = Resource::find($favorites);
-        
+
         $page = 'favorites';
+
         return view('users.favorites', compact('user', 'page', 'resources'));
     }
 
@@ -82,8 +83,9 @@ class UserController extends Controller
     {
         $user = User::users()->where('id', Auth::id())->first();
         $resources = Resource::where('user_id', Auth::id())->get();
-        
+
         $page = 'uploaded-resources';
+
         return view('users.uploaded-resources', compact('user', 'page', 'resources'));
     }
 
@@ -106,16 +108,17 @@ class UserController extends Controller
         $user->username = $request->input('username');
         $user->email = $request->input('email');
 
-        if($request->filled('password')){
+        if ($request->filled('password')) {
             $user->password = Hash::make($request->input('password'));
         }
 
-        if($user->save()){
-            if ($userEmail != $request->input('email')){
+        if ($user->save()) {
+            if ($userEmail != $request->input('email')) {
                 $user->email_verified_at = null;
                 $user->save();
                 event(new Registered($user));
             }
+
             return redirect(URL('user/profile'))->with('success', 'Your data successfully updated.');
         }
 
@@ -131,64 +134,64 @@ class UserController extends Controller
     {
         $this->middleware('admin');
         $myResources = new Resource();
-        $user = User::where('id',$userId)->first();
-        $countries = $myResources->resourceAttributesList('taxonomy_term_data',15);
-        $provinces = $myResources->resourceAttributesList('taxonomy_term_data',12);
+        $user = User::where('id', $userId)->first();
+        $countries = $myResources->resourceAttributesList('taxonomy_term_data', 15);
+        $provinces = $myResources->resourceAttributesList('taxonomy_term_data', 12);
         $userRoles = UserRole::where('user_id', $userId)->get();
         $roles = Role::all();
+
         return view('admin.users.edit_user', compact(
             'user',
             'countries',
             'provinces',
             'userRoles',
             'roles'
-        ));    
+        ));
     }
 
     /**
      * Edit a user details
      *
-     * @param Request $request
-     * @param         $userId
      *
      * @return Application|Redirector|RedirectResponse
+     *
      * @throws ValidationException
      */
     public function update(Request $request, $userId)
     {
         $this->validate($request, [
-            'username'      => 'required',
-            'password'      => 'nullable',
-            'email'         => 'required_without:phone|nullable',
-            'status'        => 'required',
-            'first_name'    => 'required',
-            'last_name'     => 'required',
-            'gender'        => 'required',
-            'role'          => 'required',
-            'phone'         => 'required_without:email|nullable',
-            'country'       => 'required',
-            'city'          => 'nullable',
+            'username' => 'required',
+            'password' => 'nullable',
+            'email' => 'required_without:phone|nullable',
+            'status' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'gender' => 'required',
+            'role' => 'required',
+            'phone' => 'required_without:email|nullable',
+            'country' => 'required',
+            'city' => 'nullable',
         ]);
 
-        if($request->filled('city')){
+        if ($request->filled('city')) {
             $city = $request->input('city');
-        }elseif($request->filled('city_other')){
+        } elseif ($request->filled('city_other')) {
             $city = $request->input('city_other');
-        }else{
-            $city = NULL;
+        } else {
+            $city = null;
         }
 
         //Saving contact info to the database
         $user = User::find($userId);
         $user->username = $request->input('username');
-        if($request->filled('password')){
+        if ($request->filled('password')) {
             $user->password = Hash::make($request->input('password'));
         }
         $user->email = $request->input('email');
         $user->status = $request->input('status');
         $user->save();
 
-        $userProfile = UserProfile::where('user_id',$userId)->first();
+        $userProfile = UserProfile::where('user_id', $userId)->first();
         $userProfile->first_name = $request->input('first_name');
         $userProfile->last_name = $request->input('last_name');
         $userProfile->gender = $request->input('gender');
@@ -205,12 +208,12 @@ class UserController extends Controller
         $userRole->role_id = $request->input('role');
         $userRole->save();
 
-        return redirect('/admin/user/edit/'.$userId)->with('success', 'User details updated successfully!');   
+        return redirect('/admin/user/edit/'.$userId)->with('success', 'User details updated successfully!');
     }
 
     /**
-    * Delete a user
-    */
+     * Delete a user
+     */
     public function deleteUser($userId): RedirectResponse
     {
         $user = User::find($userId);
@@ -220,17 +223,17 @@ class UserController extends Controller
     }
 
     /**
-    * Export the user list to CSV
-    */
+     * Export the user list to CSV
+     */
     public function exportUsers()
     {
         $users = User::get(); // All users
         // $userProfiles = UserProfile::with('first_name','last_name')->get();
         $csvExporter = new Export();
         $csvExporter->build($users, [
-            'email' =>'Email Address', 
-            'profile.first_name' => 'First Name', 
-            'profile.last_name' => 'Last Name'
+            'email' => 'Email Address',
+            'profile.first_name' => 'First Name',
+            'profile.last_name' => 'Last Name',
         ])->download();
     }
 }

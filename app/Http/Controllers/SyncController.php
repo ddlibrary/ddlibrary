@@ -2,30 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Sync;
 use App\DdlFile;
 use App\News;
 use App\Page;
 use App\Resource;
-use App\ResourceLevel;
 use App\ResourceAttachment;
-use App\ResourceSubjectArea;
-use App\TaxonomyTerm;
-use App\TaxonomyVocabulary;
-use App\TaxonomyHierarchy;
-use App\ResourceKeyword;
-use App\ResourceLearningResourceType;
-use App\ResourceEducationalUse;
-use App\ResourceTranslationRight;
-use App\ResourceEducationalResource;
+use App\ResourceAuthor;
 use App\ResourceCopyrightHolder;
 use App\ResourceCreativeCommon;
-use App\ResourceSharePermission;
-use App\ResourceAuthor;
-use App\ResourcePublisher;
-use App\ResourceTranslator;
+use App\ResourceEducationalResource;
+use App\ResourceEducationalUse;
 use App\ResourceIamAuthor;
+use App\ResourceKeyword;
+use App\ResourceLearningResourceType;
+use App\ResourceLevel;
+use App\ResourcePublisher;
+use App\ResourceSharePermission;
+use App\ResourceSubjectArea;
+use App\ResourceTranslationRight;
+use App\ResourceTranslator;
+use App\TaxonomyHierarchy;
+use App\TaxonomyTerm;
+use App\TaxonomyVocabulary;
 
 class SyncController extends Controller
 {
@@ -63,7 +61,6 @@ class SyncController extends Controller
         $diffNewsRecords = $rmNewsRecords->diffAssoc($NewsRecords);
         $diffPageRecords = $rmPageRecords->diffAssoc($PageRecords);
         $diffTaxonomyTermRecords = $rmTaxonomyTermRecords->diffAssoc($TaxonomyTermRecords);
-        
 
         $countResourceRecords = count($diffResourceRecords);
         $countDdlFileRecords = count($diffDdlFileRecords);
@@ -201,7 +198,7 @@ class SyncController extends Controller
         $diffResourceIamAuthorRecords = $rmResourceIamAuthorRecords->diffAssoc($ResourceIamAuthorRecords);
 
         //Resources
-        foreach($diffResourceRecords as $ResourceRecord){
+        foreach ($diffResourceRecords as $ResourceRecord) {
             $newInstance = Resource::findOrNew($ResourceRecord->id);
             $newInstance->title = $ResourceRecord->title;
             $newInstance->abstract = $ResourceRecord->abstract;
@@ -216,7 +213,7 @@ class SyncController extends Controller
         }
 
         //Images
-        foreach($diffDdlFileRecords as $DdlFileRecord){
+        foreach ($diffDdlFileRecords as $DdlFileRecord) {
             $newInstance = DdlFile::findOrNew($DdlFileRecord->id);
             $newInstance->name = $DdlFileRecord->name;
             $newInstance->url = $DdlFileRecord->url;
@@ -230,11 +227,11 @@ class SyncController extends Controller
         }
 
         //News
-        foreach($diffNewsRecords as $NewsRecord){
+        foreach ($diffNewsRecords as $NewsRecord) {
             $newInstance = News::findOrNew($NewsRecord->id);
             $newInstance->title = $NewsRecord->title;
             $newInstance->summary = $NewsRecord->summary;
-            $newInstance->body = $NewsRecord->body  ;
+            $newInstance->body = $NewsRecord->body;
             $newInstance->language = $NewsRecord->language;
             $newInstance->user_id = $NewsRecord->user_id;
             $newInstance->tnid = $NewsRecord->tnid;
@@ -246,11 +243,11 @@ class SyncController extends Controller
         }
 
         //Pages
-        foreach($diffPageRecords as $PageRecord){
+        foreach ($diffPageRecords as $PageRecord) {
             $newInstance = News::findOrNew($PageRecord->id);
             $newInstance->title = $PageRecord->title;
             $newInstance->summary = $PageRecord->summary;
-            $newInstance->body = $PageRecord->body  ;
+            $newInstance->body = $PageRecord->body;
             $newInstance->language = $PageRecord->language;
             $newInstance->user_id = $PageRecord->user_id;
             $newInstance->tnid = $PageRecord->tnid;
@@ -262,7 +259,7 @@ class SyncController extends Controller
         }
 
         //Resource Levels
-        foreach($diffResourceLevelRecords as $ResourceLevelRecord){
+        foreach ($diffResourceLevelRecords as $ResourceLevelRecord) {
             $newInstance = ResourceLevel::findOrNew($ResourceLevelRecord->id);
             $newInstance->resource_id = $ResourceLevelRecord->resource_id;
             $newInstance->tid = $ResourceLevelRecord->tid;
@@ -271,7 +268,7 @@ class SyncController extends Controller
         }
 
         //Resource Attachments
-        foreach($diffResourceAttachmentRecords as $ResourceAttachmentRecord){
+        foreach ($diffResourceAttachmentRecords as $ResourceAttachmentRecord) {
             $newInstance = ResourceAttachment::findOrNew($ResourceAttachmentRecord->id);
             $newInstance->resource_id = $ResourceAttachmentRecord->resource_id;
             $newInstance->file_name = $ResourceAttachmentRecord->file_name;
@@ -282,7 +279,7 @@ class SyncController extends Controller
         }
 
         //Resource Subject Areas
-        foreach($diffResourceSubjectAreaRecords as $ResourceSubjectAreaRecord){
+        foreach ($diffResourceSubjectAreaRecords as $ResourceSubjectAreaRecord) {
             $newInstance = ResourceSubjectArea::findOrNew($ResourceSubjectAreaRecord->id);
             $newInstance->resource_id = $ResourceSubjectAreaRecord->resource_id;
             $newInstance->tid = $ResourceSubjectAreaRecord->tid;
@@ -291,7 +288,7 @@ class SyncController extends Controller
         }
 
         //Resource Taxonomy Terms
-        foreach($diffTaxonomyTermRecords as $TaxonomyTermRecord){
+        foreach ($diffTaxonomyTermRecords as $TaxonomyTermRecord) {
             $newInstance = TaxonomyTerm::findOrNew($TaxonomyTermRecord->id);
             $newInstance->vid = $TaxonomyTermRecord->vid;
             $newInstance->name = $TaxonomyTermRecord->name;
@@ -303,7 +300,7 @@ class SyncController extends Controller
         }
 
         //Resource Taxonomy Vocabulary
-        foreach($diffTaxonomyVocabularyRecords as $TaxonomyVocabularyRecord){
+        foreach ($diffTaxonomyVocabularyRecords as $TaxonomyVocabularyRecord) {
             $newInstance = TaxonomyVocabulary::findOrNew($TaxonomyVocabularyRecord->id);
             $newInstance->name = $TaxonomyVocabularyRecord->name;
             $newInstance->weight = $TaxonomyVocabularyRecord->weight;
@@ -313,7 +310,7 @@ class SyncController extends Controller
         }
 
         //Resource Taxonomy Hierarchy
-        foreach($diffTaxonomyHierarchyRecords as $TaxonomyHierarchyRecord){
+        foreach ($diffTaxonomyHierarchyRecords as $TaxonomyHierarchyRecord) {
             $newInstance = TaxonomyHierarchy::findOrNew($TaxonomyHierarchyRecord->id);
             $newInstance->tid = $TaxonomyHierarchyRecord->tid;
             $newInstance->parent = $TaxonomyHierarchyRecord->parent;
@@ -322,7 +319,7 @@ class SyncController extends Controller
         }
 
         //Resource Keywords
-        foreach($diffResourceKeywordRecords as $ResourceKeywordRecord){
+        foreach ($diffResourceKeywordRecords as $ResourceKeywordRecord) {
             $newInstance = ResourceKeyword::findOrNew($ResourceKeywordRecord->id);
             $newInstance->resource_id = $ResourceKeywordRecord->resource_id;
             $newInstance->tid = $ResourceKeywordRecord->tid;
@@ -331,7 +328,7 @@ class SyncController extends Controller
         }
 
         //Resource Learning Resource Types
-        foreach($diffResourceLearningResourceTypeRecords as $ResourceLearningResourceTypeRecord){
+        foreach ($diffResourceLearningResourceTypeRecords as $ResourceLearningResourceTypeRecord) {
             $newInstance = ResourceLearningResourceType::findOrNew($ResourceLearningResourceTypeRecord->id);
             $newInstance->resource_id = $ResourceLearningResourceTypeRecord->resource_id;
             $newInstance->tid = $ResourceLearningResourceTypeRecord->tid;
@@ -340,7 +337,7 @@ class SyncController extends Controller
         }
 
         //Resource Learning Resource Types
-        foreach($diffResourceEducationalUseRecords as $ResourceEducationalUseRecord){
+        foreach ($diffResourceEducationalUseRecords as $ResourceEducationalUseRecord) {
             $newInstance = ResourceEducationalUse::findOrNew($ResourceEducationalUseRecord->id);
             $newInstance->resource_id = $ResourceEducationalUseRecord->resource_id;
             $newInstance->tid = $ResourceEducationalUseRecord->tid;
@@ -349,7 +346,7 @@ class SyncController extends Controller
         }
 
         //Resource Translation Rights
-        foreach($diffResourceTranslationRightRecords as $ResourceTranslationRightRecord){
+        foreach ($diffResourceTranslationRightRecords as $ResourceTranslationRightRecord) {
             $newInstance = ResourceTranslationRight::findOrNew($ResourceTranslationRightRecord->id);
             $newInstance->resource_id = $ResourceTranslationRightRecord->resource_id;
             $newInstance->tid = $ResourceTranslationRightRecord->tid;
@@ -358,7 +355,7 @@ class SyncController extends Controller
         }
 
         //Resource Educational Resource Records
-        foreach($diffResourceEducationalResourceRecords as $ResourceEducationalResourceRecord){
+        foreach ($diffResourceEducationalResourceRecords as $ResourceEducationalResourceRecord) {
             $newInstance = ResourceEducationalResource::findOrNew($ResourceEducationalResourceRecord->id);
             $newInstance->resource_id = $ResourceEducationalResourceRecord->resource_id;
             $newInstance->tid = $ResourceEducationalResourceRecord->tid;
@@ -367,7 +364,7 @@ class SyncController extends Controller
         }
 
         //Resource Copyright holders
-        foreach($diffResourceCopyrightHolderRecords as $ResourceCopyrightHolderRecord){
+        foreach ($diffResourceCopyrightHolderRecords as $ResourceCopyrightHolderRecord) {
             $newInstance = ResourceEducationalResource::findOrNew($ResourceCopyrightHolderRecord->id);
             $newInstance->resource_id = $ResourceCopyrightHolderRecord->resource_id;
             $newInstance->tid = $ResourceCopyrightHolderRecord->tid;
@@ -376,7 +373,7 @@ class SyncController extends Controller
         }
 
         //Resource Creative Commons
-        foreach($diffResourceCreativeCommonRecords as $ResourceCreativeCommonRecord){
+        foreach ($diffResourceCreativeCommonRecords as $ResourceCreativeCommonRecord) {
             $newInstance = ResourceCreativeCommon::findOrNew($ResourceCreativeCommonRecord->id);
             $newInstance->resource_id = $ResourceCreativeCommonRecord->resource_id;
             $newInstance->tid = $ResourceCreativeCommonRecord->tid;
@@ -385,7 +382,7 @@ class SyncController extends Controller
         }
 
         //Resource Share Permission
-        foreach($diffResourceSharePermissionRecords as $ResourceSharePermissionRecord){
+        foreach ($diffResourceSharePermissionRecords as $ResourceSharePermissionRecord) {
             $newInstance = ResourceSharePermission::findOrNew($ResourceSharePermissionRecord->id);
             $newInstance->resource_id = $ResourceSharePermissionRecord->resource_id;
             $newInstance->tid = $ResourceSharePermissionRecord->tid;
@@ -394,7 +391,7 @@ class SyncController extends Controller
         }
 
         //Resource Author
-        foreach($diffResourceAuthorRecords as $ResourceAuthorRecord){
+        foreach ($diffResourceAuthorRecords as $ResourceAuthorRecord) {
             $newInstance = ResourceAuthor::findOrNew($ResourceAuthorRecord->id);
             $newInstance->resource_id = $ResourceAuthorRecord->resource_id;
             $newInstance->tid = $ResourceAuthorRecord->tid;
@@ -403,7 +400,7 @@ class SyncController extends Controller
         }
 
         //Resource Publisher
-        foreach($diffResourcePublisherRecords as $ResourcePublisherRecord){
+        foreach ($diffResourcePublisherRecords as $ResourcePublisherRecord) {
             $newInstance = ResourcePublisher::findOrNew($ResourcePublisherRecord->id);
             $newInstance->resource_id = $ResourcePublisherRecord->resource_id;
             $newInstance->tid = $ResourcePublisherRecord->tid;
@@ -412,7 +409,7 @@ class SyncController extends Controller
         }
 
         //Resource Translators
-        foreach($diffResourceTranslatorRecords as $ResourceTranslatorRecord){
+        foreach ($diffResourceTranslatorRecords as $ResourceTranslatorRecord) {
             $newInstance = ResourceTranslator::findOrNew($ResourceTranslatorRecord->id);
             $newInstance->resource_id = $ResourceTranslatorRecord->resource_id;
             $newInstance->tid = $ResourceTranslatorRecord->tid;
@@ -421,7 +418,7 @@ class SyncController extends Controller
         }
 
         //Resource Translators
-        foreach($diffResourceIamAuthorRecords as $ResourceIamAuthorRecord){
+        foreach ($diffResourceIamAuthorRecords as $ResourceIamAuthorRecord) {
             $newInstance = ResourceTranslator::findOrNew($ResourceIamAuthorRecord->id);
             $newInstance->resource_id = $ResourceIamAuthorRecord->resource_id;
             $newInstance->tid = $ResourceIamAuthorRecord->tid;

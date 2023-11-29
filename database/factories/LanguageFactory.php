@@ -11,7 +11,6 @@ class LanguageFactory extends Factory
      *
      * @var string
      */
-
     protected $model = Menu::class;
 
     /**
@@ -26,7 +25,7 @@ class LanguageFactory extends Factory
             'location' => $this->faker->address,
             'path' => $this->faker->url,
             'language' => 'en',
-            'weight' => $this->faker->numberBetween(1,200),
+            'weight' => $this->faker->numberBetween(1, 200),
         ];
     }
 }

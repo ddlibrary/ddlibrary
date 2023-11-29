@@ -3,8 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
-use App\Resource;
 
 class Sync extends Model
 {
@@ -12,6 +10,7 @@ class Sync extends Model
     {
         $remoteResources = new Resource();
         $remoteResources->setConnection('mysql_remote');
+
         return $remoteResources->all();
     }
 }

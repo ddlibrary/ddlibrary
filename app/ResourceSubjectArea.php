@@ -16,7 +16,7 @@ class ResourceSubjectArea extends Model
      */
     public $timestamps = false;
 
-    protected $fillable = ['resource_id','tid'];
+    protected $fillable = ['resource_id', 'tid'];
 
     public function resource()
     {

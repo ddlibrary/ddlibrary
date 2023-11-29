@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\ResourceComment;
 
 class CommentController extends Controller
@@ -10,6 +9,7 @@ class CommentController extends Controller
     public function index()
     {
         $comments = ResourceComment::orderBy('id', 'DESC')->paginate(10);
+
         return view('admin.comments.comments_list', compact('comments'));
     }
 
@@ -18,12 +18,12 @@ class CommentController extends Controller
         $this->middleware('admin');
 
         $rs = ResourceComment::find($commentId);
-        if($rs->status == 1){
+        if ($rs->status == 1) {
             $rs->status = 0;
             $rs->save();
-        }else{
+        } else {
             $rs->status = 1;
-            $rs->save();   
+            $rs->save();
         }
 
         return back();
@@ -33,6 +33,7 @@ class CommentController extends Controller
     {
         $comment = ResourceComment::findOrFail($commentId);
         $comment->delete();
+
         return redirect()->back()->with('success', 'Comment has been deleted successfully!');
     }
 }

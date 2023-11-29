@@ -10,19 +10,14 @@ class RedirectIfAdmin
 {
     /**
      * Handle an incoming request.
-     *
-     * @param Request $request
-     * @param Closure $next
-     * @param string|null $guard
-     * @return mixed
      */
     public function handle(Request $request, Closure $next, string $guard = null): mixed
     {
         if (Auth::guard($guard)->check()) {
-            if(!isAdmin()){
+            if (! isAdmin()) {
                 return redirect('/home');
             }
-        }else{
+        } else {
             return redirect('/login');
         }
 

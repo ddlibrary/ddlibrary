@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\UserProfile;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Http\Request;
 use App\User;
+use App\UserProfile;
 use App\UserRole;
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
@@ -58,7 +58,7 @@ class LoginController extends Controller
 
         $user = DB::table('users')->where('email', $googleUser->email)->first();
 
-        if (!$user) {
+        if (! $user) {
             $user = $this->registerUser($googleUser);
         }
 
@@ -67,16 +67,18 @@ class LoginController extends Controller
         return redirect('/');
     }
 
-    private function getUserName($email){
+    private function getUserName($email)
+    {
         $username = substr($email, 0, strrpos($email, '@'));
-        if(DB::table('users')->where('username', $username)->exists()){
+        if (DB::table('users')->where('username', $username)->exists()) {
             return $username.time();
         }
 
         return $username;
     }
 
-    private function registerUser($data){
+    private function registerUser($data)
+    {
         $user = new User();
         $user->username = $this->getUserName($data->email);
         $user->email = $data->email;
@@ -89,8 +91,8 @@ class LoginController extends Controller
 
         // Create user profile
         $userProfile = new UserProfile();
-        $userProfile->user_id       = $user->id;
-        $userProfile->first_name    = $data->name;
+        $userProfile->user_id = $user->id;
+        $userProfile->first_name = $data->name;
         $userProfile->save();
 
         // Create user role
@@ -113,7 +115,7 @@ class LoginController extends Controller
 
         $user = DB::table('users')->where('email', $facebookUser->email)->first();
 
-        if (!$user) {
+        if (! $user) {
             $user = $this->registerUser($facebookUser);
         }
 
@@ -132,6 +134,7 @@ class LoginController extends Controller
         // the IP address of the client making these requests into this application.
         if ($this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
+
             return $this->sendLockoutResponse($request);
         }
 
@@ -141,7 +144,7 @@ class LoginController extends Controller
         $userInstance = new User();
         $authUser = $userInstance->oneUser($credentials);
 
-        if (!$authUser) {
+        if (! $authUser) {
             $userProfileInstance = new UserProfile();
             $authUserProfile = $userProfileInstance
                 ->getUserProfile($credentials);
@@ -151,33 +154,36 @@ class LoginController extends Controller
             }
         }
 
-        if($authUser){
-            if(checkUserPassword($credentials['password'], $authUser->password)){
+        if ($authUser) {
+            if (checkUserPassword($credentials['password'], $authUser->password)) {
                 $user = new User();
-                if($user->updateUser(array('password' => Hash::make($credentials['password'])), $credentials)){
-                    if($this->attemptLogin($request, $authUser)){
+                if ($user->updateUser(['password' => Hash::make($credentials['password'])], $credentials)) {
+                    if ($this->attemptLogin($request, $authUser)) {
                         return $this->sendLoginResponse($request);
-                    }else{
+                    } else {
                         $this->incrementLoginAttempts($request);
+
                         return $this->sendFailedLoginResponse($request);
                     }
-                }else{
+                } else {
                     // If the login attempt was unsuccessful we will increment the number of attempts
                     // to login and redirect the user back to the login form. Of course, when this
                     // user surpasses their maximum number of attempts they will get locked out.
                     $this->incrementLoginAttempts($request);
+
                     return $this->sendFailedLoginResponse($request);
                 }
-            }else if ($this->attemptLogin($request, $authUser)){
-                return $this->sendLoginResponse($request);     
-            }else{
+            } elseif ($this->attemptLogin($request, $authUser)) {
+                return $this->sendLoginResponse($request);
+            } else {
                 // If the login attempt was unsuccessful we will increment the number of attempts
                 // to login and redirect the user back to the login form. Of course, when this
                 // user surpasses their maximum number of attempts they will get locked out.
                 $this->incrementLoginAttempts($request);
+
                 return $this->sendFailedLoginResponse($request);
             }
-        }else{
+        } else {
             return $this->sendFailedLoginResponse($request);
         }
     }
@@ -185,7 +191,6 @@ class LoginController extends Controller
     /**
      * Validate the user login request.
      *
-     * @param Request $request
      *
      * @return void
      */
@@ -200,19 +205,20 @@ class LoginController extends Controller
     /**
      * Get the needed authorization credentials from the request.
      *
-     * @param Request $request
      * @return array
      */
     protected function credentials(Request $request)
     {
-        $requestArray = $request->only('user-field','password');
-        if(filter_var($requestArray['user-field'], FILTER_VALIDATE_EMAIL)){
+        $requestArray = $request->only('user-field', 'password');
+        if (filter_var($requestArray['user-field'], FILTER_VALIDATE_EMAIL)) {
             $requestArray['email'] = $requestArray['user-field'];
             unset($requestArray['user-field']);
+
             return $requestArray;
-        }else{
+        } else {
             $requestArray['username'] = $requestArray['user-field'];
             unset($requestArray['user-field']);
+
             return $requestArray;
         }
     }
@@ -220,8 +226,6 @@ class LoginController extends Controller
     /**
      * Attempt to log the user into the application.
      *
-     * @param Request                  $request
-     * @param                          $authUser
      *
      * @return bool
      */
@@ -230,29 +234,30 @@ class LoginController extends Controller
         $auth_status = $this->guard()->attempt(
             $this->credentials($request), $request->filled('remember')
         );
-        if (! $auth_status and $authUser ) {
+        if (! $auth_status and $authUser) {
             $user_id = $authUser->id;
             $username = $authUser->username;
             $password = $request->only('password');
+
             return $this->guard()->attempt(
                 [
                     'id' => $user_id,
                     'username' => $username,
-                    'password' => $password['password']
+                    'password' => $password['password'],
                 ],
                 $request->filled('remember')
             );
-        }
-        else {
+        } else {
             return $auth_status;
         }
     }
 
-    public function authenticated(Request $request, $user) 
+    public function authenticated(Request $request, $user)
     {
         $theUser = User::find(Auth::id());
         $theUser->accessed_at = \Carbon\Carbon::now();
         $theUser->save();
+
         return redirect()->intended('home');
     }
 
@@ -260,6 +265,7 @@ class LoginController extends Controller
     public function logMeout(Request $request)
     {
         $this->logout($request);
+
         return redirect('/home');
     }
 }

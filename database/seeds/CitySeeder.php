@@ -21,7 +21,7 @@ class CitySeeder extends Seeder
                 'name' => 'Badakhshan',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '261'
+                'tnid' => '261',
             ],
             [
                 'id' => '2',
@@ -29,7 +29,7 @@ class CitySeeder extends Seeder
                 'name' => 'Badghis',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '263'
+                'tnid' => '263',
             ],
             [
                 'id' => '3',
@@ -37,7 +37,7 @@ class CitySeeder extends Seeder
                 'name' => 'Baghlan',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '265'
+                'tnid' => '265',
             ],
             [
                 'id' => '4',
@@ -45,7 +45,7 @@ class CitySeeder extends Seeder
                 'name' => 'Balkh',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '267'
+                'tnid' => '267',
             ],
             [
                 'id' => '5',
@@ -53,7 +53,7 @@ class CitySeeder extends Seeder
                 'name' => 'Bamyan',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '269'
+                'tnid' => '269',
             ],
             [
                 'id' => '6',
@@ -61,7 +61,7 @@ class CitySeeder extends Seeder
                 'name' => 'Daykundi',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '271'
+                'tnid' => '271',
             ],
             [
                 'id' => '7',
@@ -69,7 +69,7 @@ class CitySeeder extends Seeder
                 'name' => 'Farah',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '273'
+                'tnid' => '273',
             ],
             [
                 'id' => '8',
@@ -77,7 +77,7 @@ class CitySeeder extends Seeder
                 'name' => 'Faryab',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '274'
+                'tnid' => '274',
             ],
             [
                 'id' => '9',
@@ -85,7 +85,7 @@ class CitySeeder extends Seeder
                 'name' => 'Ghazni',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '275'
+                'tnid' => '275',
             ],
             [
                 'id' => '10',
@@ -93,7 +93,7 @@ class CitySeeder extends Seeder
                 'name' => 'Ghor',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '276'
+                'tnid' => '276',
             ],
             [
                 'id' => '11',
@@ -101,7 +101,7 @@ class CitySeeder extends Seeder
                 'name' => 'Helmand',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '277'
+                'tnid' => '277',
             ],
             [
                 'id' => '12',
@@ -109,7 +109,7 @@ class CitySeeder extends Seeder
                 'name' => 'Herat',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '278'
+                'tnid' => '278',
             ],
             [
                 'id' => '13',
@@ -117,7 +117,7 @@ class CitySeeder extends Seeder
                 'name' => 'Jowzjan',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '279'
+                'tnid' => '279',
             ],
             [
                 'id' => '14',
@@ -125,7 +125,7 @@ class CitySeeder extends Seeder
                 'name' => 'Kabul',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '280'
+                'tnid' => '280',
             ],
             [
                 'id' => '15',
@@ -133,7 +133,7 @@ class CitySeeder extends Seeder
                 'name' => 'Kandahar',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '281'
+                'tnid' => '281',
             ],
             [
                 'id' => '16',
@@ -141,7 +141,7 @@ class CitySeeder extends Seeder
                 'name' => 'Kapisa',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '282'
+                'tnid' => '282',
             ],
             [
                 'id' => '17',
@@ -149,7 +149,7 @@ class CitySeeder extends Seeder
                 'name' => 'Khost',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '283'
+                'tnid' => '283',
             ],
             [
                 'id' => '18',
@@ -157,7 +157,7 @@ class CitySeeder extends Seeder
                 'name' => 'Kunar',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '284'
+                'tnid' => '284',
             ],
             [
                 'id' => '19',
@@ -165,7 +165,7 @@ class CitySeeder extends Seeder
                 'name' => 'Kunduz',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '285'
+                'tnid' => '285',
             ],
             [
                 'id' => '20',
@@ -173,7 +173,7 @@ class CitySeeder extends Seeder
                 'name' => 'Laghman',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '286'
+                'tnid' => '286',
             ],
             [
                 'id' => '21',
@@ -181,7 +181,7 @@ class CitySeeder extends Seeder
                 'name' => 'Logar',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '287'
+                'tnid' => '287',
             ],
             [
                 'id' => '22',
@@ -189,7 +189,7 @@ class CitySeeder extends Seeder
                 'name' => 'Nangarhar',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '288'
+                'tnid' => '288',
             ],
             [
                 'id' => '23',
@@ -197,7 +197,7 @@ class CitySeeder extends Seeder
                 'name' => 'Nimruz',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '289'
+                'tnid' => '289',
             ],
             [
                 'id' => '24',
@@ -205,7 +205,7 @@ class CitySeeder extends Seeder
                 'name' => 'Nuristan',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '290'
+                'tnid' => '290',
             ],
             [
                 'id' => '25',
@@ -213,7 +213,7 @@ class CitySeeder extends Seeder
                 'name' => 'Paktia',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '291'
+                'tnid' => '291',
             ],
             [
                 'id' => '26',
@@ -221,7 +221,7 @@ class CitySeeder extends Seeder
                 'name' => 'Paktika',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '292'
+                'tnid' => '292',
             ],
             [
                 'id' => '27',
@@ -229,7 +229,7 @@ class CitySeeder extends Seeder
                 'name' => 'Panjshir',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '293'
+                'tnid' => '293',
             ],
             [
                 'id' => '28',
@@ -237,7 +237,7 @@ class CitySeeder extends Seeder
                 'name' => 'Parwan',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '294'
+                'tnid' => '294',
             ],
             [
                 'id' => '29',
@@ -245,7 +245,7 @@ class CitySeeder extends Seeder
                 'name' => 'Samangan',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '295'
+                'tnid' => '295',
             ],
             [
                 'id' => '30',
@@ -253,7 +253,7 @@ class CitySeeder extends Seeder
                 'name' => 'Sar-e Pol',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '296'
+                'tnid' => '296',
             ],
             [
                 'id' => '31',
@@ -261,7 +261,7 @@ class CitySeeder extends Seeder
                 'name' => 'Takhar',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '297'
+                'tnid' => '297',
             ],
             [
                 'id' => '32',
@@ -269,7 +269,7 @@ class CitySeeder extends Seeder
                 'name' => 'Uruzgan',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '298'
+                'tnid' => '298',
             ],
             [
                 'id' => '33',
@@ -277,8 +277,8 @@ class CitySeeder extends Seeder
                 'name' => 'Zabul',
                 'weight' => '0',
                 'language' => 'en',
-                'tnid' => '300'
-            ]
+                'tnid' => '300',
+            ],
         ];
 
         DB::table('taxonomy_term_data')->insert($data);

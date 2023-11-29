@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property mixed     user_id
  * @property int|mixed role_id
+ *
  * @method static where(string $string, $userId)
  */
 class UserRole extends Model
@@ -17,6 +18,7 @@ class UserRole extends Model
      * @var bool
      */
     public $timestamps = false;
+
     /**
      * The users that belong to the role.
      */

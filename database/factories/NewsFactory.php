@@ -13,14 +13,13 @@ class NewsFactory extends Factory
      *
      * @var string
      */
-
     protected $model = News::class;
 
     /**
-      * Define the model's default state.
-      *
-      * @return array
-      */
+     * Define the model's default state.
+     *
+     * @return array
+     */
     public function definition()
     {
         return [
@@ -28,9 +27,9 @@ class NewsFactory extends Factory
             'summary' => $this->faker->paragraph(),
             'body' => $this->faker->paragraph(3),
             'language' => 'en',
-            'tnid' => $this->faker->numberBetween(1,200),
-            'status' => $this->faker->numberBetween(1,3),
-            'user_id' => User::factory()
+            'tnid' => $this->faker->numberBetween(1, 200),
+            'status' => $this->faker->numberBetween(1, 3),
+            'user_id' => User::factory(),
         ];
     }
 }

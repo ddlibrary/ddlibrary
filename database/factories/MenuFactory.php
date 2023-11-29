@@ -7,13 +7,11 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MenuFactory extends Factory
 {
-
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-
     protected $model = Menu::class;
 
     /**
@@ -28,7 +26,7 @@ class MenuFactory extends Factory
             'location' => $this->faker->address,
             'path' => $this->faker->url,
             'language' => 'en',
-            'weight' => $this->faker->numberBetween(1,200),
+            'weight' => $this->faker->numberBetween(1, 200),
         ];
     }
 }

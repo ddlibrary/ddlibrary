@@ -12,7 +12,7 @@
 */
 
 // Protected Routes
-Route::group(['middleware' => ['auth:sanctum']], function(){
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/user', 'ApiController@user');
     Route::post('/logout', 'ApiController@logout');
     Route::post('/favorites', 'ApiController@favorites');
@@ -43,4 +43,3 @@ Route::get('/resources/{lang}/{offset}', 'ApiController@resourceOffset');
 Route::get('/featured_resources/{lang?}', 'ApiController@featuredResources');
 Route::get('/filter_resources/{lang?}', 'ApiController@filterResources');
 Route::get('/resource/getFile/{fileId}', 'ApiController@getFile');
-

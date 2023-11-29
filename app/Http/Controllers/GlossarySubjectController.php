@@ -21,6 +21,7 @@ class GlossarySubjectController extends Controller
     public function index()
     {
         $glossary_subjects = GlossarySubject::orderBy('id', 'DESC')->paginate(10);
+
         return view('admin.glossary.glossary_subject_list', compact('glossary_subjects'));
     }
 
@@ -32,13 +33,13 @@ class GlossarySubjectController extends Controller
     public function create()
     {
         $glossary_subject = null;
+
         return view('admin.glossary.glossary_subject_edit', compact('glossary_subject'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
      * @return void
      */
     public function store(Request $request)
@@ -60,40 +61,40 @@ class GlossarySubjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
      * @return BladeView|false|Factory|Application|View
      */
     public function edit(int $id)
     {
         $glossary_subject = GlossarySubject::findOrFail($id);
+
         return view('admin.glossary.glossary_subject_edit', compact('glossary_subject'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
      * @return Application|RedirectResponse|Redirector
      */
     public function update(Request $request)
     {
         $validatedData = $request->validate([
-            'english'       =>  'required',
-            'farsi'         =>  'required',
-            'pashto'        =>  'required',
-            'munji'         =>  'required',
-            'nuristani'     =>  'required',
-            'pashayi'       =>  'required',
-            'shughni'       =>  'required',
-            'swahili'       =>  'required',
-            'uzbek'         =>  'required',
-            'id'            =>  'required'
+            'english' => 'required',
+            'farsi' => 'required',
+            'pashto' => 'required',
+            'munji' => 'required',
+            'nuristani' => 'required',
+            'pashayi' => 'required',
+            'shughni' => 'required',
+            'swahili' => 'required',
+            'uzbek' => 'required',
+            'id' => 'required',
         ]);
 
-        if($validatedData['id'] == "new")
+        if ($validatedData['id'] == 'new') {
             $glossary_subject = new GlossarySubject();
-        else
+        } else {
             $glossary_subject = GlossarySubject::findOrFail($validatedData['id']);
+        }
 
         $glossary_subject->en = $validatedData['english'];
         $glossary_subject->fa = $validatedData['farsi'];
@@ -112,7 +113,6 @@ class GlossarySubjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param $id
      * @return void
      */
     public function destroy($id)

@@ -2,12 +2,12 @@
 
 namespace App;
 
+use Config;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Config;
 use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\Traits\CausesActivity;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @method static find($resourceId)
@@ -151,8 +151,8 @@ class Resource extends Model
             ->LeftJoin('resource_levels AS rl', 'rl.resource_id', '=', 'rs.id')
             ->LeftJoin('resource_learning_resource_types AS rlrt', 'rlrt.resource_id', '=', 'rs.id')
             ->LeftJoin('resource_attachments AS ra', 'ra.resource_id', '=', 'rs.id')
-            ->when(!empty($requestArray['title']), function ($query) use ($requestArray) {
-                return $query->where('rs.title', 'like', '%' . $requestArray['title'] . '%');
+            ->when(! empty($requestArray['title']), function ($query) use ($requestArray) {
+                return $query->where('rs.title', 'like', '%'.$requestArray['title'].'%');
             })
             ->when(isset($requestArray['status']), function ($query) use ($requestArray) {
                 return $query->where('rs.status', $requestArray['status']);
@@ -196,26 +196,28 @@ class Resource extends Model
     public function resourceAttributes($resourceId, $tableName, $fieldName, $staticTable)
     {
         $records = DB::table($tableName)
-            ->select($staticTable . '.name', $staticTable . '.id')
-            ->join($staticTable, $staticTable . '.id', '=', $tableName . '.' . $fieldName)
+            ->select($staticTable.'.name', $staticTable.'.id')
+            ->join($staticTable, $staticTable.'.id', '=', $tableName.'.'.$fieldName)
             ->where('resource_id', $resourceId)
             ->get();
+
         return $records;
     }
 
     public function searchResourceAttributes($keyword, $staticTable, $vid)
     {
         $records = DB::table($staticTable)
-            ->select($staticTable . '.name AS value')
-            ->where($staticTable . '.name', 'like', '%' . $keyword . '%')
-            ->where($staticTable . '.vid', $vid)
+            ->select($staticTable.'.name AS value')
+            ->where($staticTable.'.name', 'like', '%'.$keyword.'%')
+            ->where($staticTable.'.vid', $vid)
             ->get();
+
         return $records;
     }
 
     public function resourceAttributesList($tableName, $vid)
     {
-        $records = DB::table($tableName . ' AS ttd')
+        $records = DB::table($tableName.' AS ttd')
             ->select('ttd.id', 'ttd.name', 'tth.parent', 'ttd.tnid')
             ->leftJoin('taxonomy_term_hierarchy AS tth', 'tth.tid', '=', 'ttd.id')
             ->where('vid', $vid)
@@ -223,6 +225,7 @@ class Resource extends Model
             ->orderBy('ttd.name')
             ->orderBy('ttd.weight', 'desc')
             ->get();
+
         return $records;
     }
 
@@ -233,6 +236,7 @@ class Resource extends Model
             ->select('rs.language', DB::raw('count(rs.id) as total'))
             ->groupBy('rs.language')
             ->get();
+
         return $records;
     }
 
@@ -251,6 +255,7 @@ class Resource extends Model
             ->groupBy('ttd.name', 'ttd.id', 'ttd.language', 'ttd.tnid')
             ->orderBy('total', 'DESC')
             ->get();
+
         return $records;
     }
 
@@ -303,11 +308,11 @@ class Resource extends Model
                     ->leftJoin('taxonomy_term_data AS ttdt', 'ttdt.id', '=', 'rt.tid') // translator
                     ->where(function ($query) use ($searchQuery) {
                         return $query
-                            ->where('rs.title', 'like', '%' . $searchQuery . '%')
-                            ->orwhere('rs.abstract', 'like', '%' . $searchQuery . '%')
-                            ->orwhere('ttd.name', 'like', '%' . $searchQuery . '%')
-                            ->orwhere('ttdp.name', 'like', '%' . $searchQuery . '%')
-                            ->orwhere('ttdt.name', 'like', '%' . $searchQuery . '%');
+                            ->where('rs.title', 'like', '%'.$searchQuery.'%')
+                            ->orwhere('rs.abstract', 'like', '%'.$searchQuery.'%')
+                            ->orwhere('ttd.name', 'like', '%'.$searchQuery.'%')
+                            ->orwhere('ttdp.name', 'like', '%'.$searchQuery.'%')
+                            ->orwhere('ttdt.name', 'like', '%'.$searchQuery.'%');
                     })
                     ->where('rs.status', 1);
             })
@@ -341,6 +346,7 @@ class Resource extends Model
             ->groupBy('ttd.name', 'ttd.id', 'ttd.language')
             ->orderBy('total', 'DESC')
             ->get();
+
         return $records;
     }
 
@@ -356,6 +362,7 @@ class Resource extends Model
             ->groupBy('ttd.id', 'ttd.name', 'ttd.language')
             ->orderBy('total', 'DESC')
             ->get();
+
         return $records;
     }
 
@@ -370,6 +377,7 @@ class Resource extends Model
             ->orderby('rs.language')
             ->orderBy('total', 'DESC')
             ->get();
+
         return $records;
     }
 
@@ -382,6 +390,7 @@ class Resource extends Model
                 return $query->whereBetween('created_at', [$date_from, $date_to]);
             })
             ->first()->total;
+
         return $downloads;
     }
 
@@ -407,7 +416,7 @@ class Resource extends Model
 
     public function subjectIconsAndTotal($lang = '')
     {
-        $lang = !$lang ? Config::get('app.locale') : $lang;
+        $lang = ! $lang ? Config::get('app.locale') : $lang;
 
         $records = DB::table('resource_subject_areas AS sarea')
             ->select('sticons.file_name', 'ttd.name', 'ttd.id', 'sarea.tid AS subject_area')
@@ -418,6 +427,7 @@ class Resource extends Model
             ->where('ttd.language', $lang)
             ->groupBy('sarea.tid', 'sticons.file_name', 'ttd.name', 'ttd.id')
             ->get();
+
         return $records;
     }
 
@@ -435,7 +445,7 @@ class Resource extends Model
 
     public function featuredCollections($lang = '')
     {
-        $lang = !$lang ? Config::get('app.locale') : $lang;
+        $lang = ! $lang ? Config::get('app.locale') : $lang;
 
         $records = DB::table('featured_collections AS fcid')
             ->select('fcid.id', 'ttd.name', 'fcid.icon', 'ttd.language', 'fu.url', 'frt.type_id', 'frs.subject_id', 'frls.level_id')
@@ -460,6 +470,7 @@ class Resource extends Model
             ->select('*')
             ->where('ra.resource_id', $resourceId)
             ->get();
+
         return $records;
     }
 
@@ -469,6 +480,7 @@ class Resource extends Model
             ->select('rs.id', 'rs.language')
             ->where('rs.tnid', $resourceId)
             ->get();
+
         return $record;
     }
 
@@ -485,9 +497,6 @@ class Resource extends Model
         ]);
     }
 
-    /**
-     * @return LogOptions
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()->logOnly(['title', 'created_at']);

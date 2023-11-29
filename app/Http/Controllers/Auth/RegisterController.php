@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
 use App\Http\Controllers\Controller;
+use App\Resource;
+use App\User;
+use App\UserProfile;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Resource;
-use App\UserProfile;
-use App\UserRole;
-use Exception;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -67,14 +66,12 @@ class RegisterController extends Controller
         $countries = $myResources->resourceAttributesList('taxonomy_term_data', 15);
         $provinces = $myResources->resourceAttributesList('taxonomy_term_data', 12)->all();
         $gmail_signup_url = 'https://accounts.google.com/signup';
+
         return view('auth.register', compact('countries', 'provinces', 'gmail_signup_url'));
     }
 
     /**
      * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data): \Illuminate\Contracts\Validation\Validator
     {
@@ -102,7 +99,7 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return User $user
      */
     protected function create($request)
@@ -140,17 +137,17 @@ class RegisterController extends Controller
     /**
      * Handle a registration request for the application.
      *
-     * @param Request $request
      *
      * @return Application|RedirectResponse|Redirector
+     *
      * @throws ValidationException
      */
     public function register(Request $request)
     {
         try {
-            
+
             DB::beginTransaction();
-            
+
             $this->validator($request->all())->validate();
 
             // Create user
@@ -188,10 +185,11 @@ class RegisterController extends Controller
         return back()->with('error', 'Sorry! Your account has not been created.');
     }
 
-    private function getUserName($email){
+    private function getUserName($email)
+    {
         $username = substr($email, 0, strrpos($email, '@'));
-        
-        if(DB::table('users')->where('username', $username)->exists()){
+
+        if (DB::table('users')->where('username', $username)->exists()) {
             return $username.time();
         }
 

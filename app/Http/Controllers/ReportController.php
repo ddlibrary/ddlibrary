@@ -22,10 +22,6 @@ class ReportController extends Controller
         return $a['count'] <=> $b['count'];
     }
 
-    /**
-     * @param $subjects
-     * @return array
-     */
     private static function getSubjects_list($subjects, $language = false): array
     {
         $subjects_list = [];
@@ -42,18 +38,19 @@ class ReportController extends Controller
             $subject_resources = ResourceSubjectArea::where('tid', $subject_id)->get();
             $subjects_list[$subject_id]['count'] = $subject_resources->count();
         }
+
         return $subjects_list;
     }
 
     public function gaReport()
     {
         //retrieve visitors and pageview data for the current day and the last seven days
-        $totalVisitorsAndPageViews  = Analytics::fetchTotalVisitorsAndPageViews(Period::days(30));
-        $mostVisitedPages           = Analytics::fetchMostVisitedPages(Period::days(30), 10);
-        $topReferrers               = Analytics::fetchTopReferrers(Period::days(30), 10);
-        $userTypes                  = Analytics::fetchUserTypes(Period::days(30));
-        $topBrowsers                = Analytics::fetchTopBrowsers(Period::days(30), 10);
-        $topCountries               = Analytics::performQuery(Period::days(30), "ga:sessions");
+        $totalVisitorsAndPageViews = Analytics::fetchTotalVisitorsAndPageViews(Period::days(30));
+        $mostVisitedPages = Analytics::fetchMostVisitedPages(Period::days(30), 10);
+        $topReferrers = Analytics::fetchTopReferrers(Period::days(30), 10);
+        $userTypes = Analytics::fetchUserTypes(Period::days(30));
+        $topBrowsers = Analytics::fetchTopBrowsers(Period::days(30), 10);
+        $topCountries = Analytics::performQuery(Period::days(30), 'ga:sessions');
 
         return view('admin.reports.reportsga', compact(
             'totalVisitorsAndPageViews',
@@ -67,6 +64,7 @@ class ReportController extends Controller
     public function resourceReport(): Factory|View|Application
     {
         $supported_locales = \LaravelLocalization::getSupportedLocales();
+
         return view('admin.reports.resource_reports', compact('supported_locales'));
     }
 
@@ -76,7 +74,7 @@ class ReportController extends Controller
 
         $subjects = TaxonomyTerm::where([
             ['vid', '=', 8],  // 8 = Subject
-            ['language', '=', $language]
+            ['language', '=', $language],
         ])->get();
 
         $subjects_list = [];
@@ -86,7 +84,7 @@ class ReportController extends Controller
 
         $levels = TaxonomyTerm::where([
             ['vid', '=', 13],  // 13 = Grade level
-            ['language', '=', $language]
+            ['language', '=', $language],
         ])->get();
 
         $levels_list = [];
@@ -95,29 +93,29 @@ class ReportController extends Controller
             $levels_list[$level->id]['count'] = 0;
         }
 
-        $headers = array(
+        $headers = [
             'Content-Type' => 'text/csv',
-            "Content-Disposition" => "attachment; filename=theincircle_csv.csv",
-            "Pragma" => "no-cache",
-            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
-            "Expires" => "0"
-        );
+            'Content-Disposition' => 'attachment; filename=theincircle_csv.csv',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
 
         $filename = tempnam('/tmp', 'csv_');
         $file = fopen($filename, 'w');
         fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
 
         fputcsv($file, [
-            "Subject name",
-            "Resource Level",
-            "# of resources",
+            'Subject name',
+            'Resource Level',
+            '# of resources',
         ]);
 
         foreach ($subjects_list as $subject_id => $name) {
             $subject_resources = ResourceSubjectArea::where('tid', $subject_id)->get();
             fputcsv($file, [
                 $name,
-                "",
+                '',
                 $subject_resources->count(),
             ]);
 
@@ -128,9 +126,9 @@ class ReportController extends Controller
                 }
             }
             foreach ($levels_list as $level_id => $level) {
-                if ($level['count'] != 0 && $level['name'] != "") {
+                if ($level['count'] != 0 && $level['name'] != '') {
                     fputcsv($file, [
-                        "",
+                        '',
                         $level['name'],
                         $level['count'],
                     ]);
@@ -141,7 +139,7 @@ class ReportController extends Controller
 
         fclose($file);
 
-        return response()->download($filename, "resource_subject_report.csv", $headers);
+        return response()->download($filename, 'resource_subject_report.csv', $headers);
     }
 
     public function resourceLanguageReport(): BinaryFileResponse
@@ -156,7 +154,7 @@ class ReportController extends Controller
             )->get()->count();
             $levels = TaxonomyTerm::where([
                 ['vid', '=', 13],  // 13 = Grade level
-                ['language', '=', $language->language]
+                ['language', '=', $language->language],
             ])->get();
             foreach ($levels as $level) {
                 $levels_count = ResourceLevel::where('tid', '=', $level->id)->get()->count();
@@ -164,22 +162,22 @@ class ReportController extends Controller
             }
         }
 
-        $headers = array(
+        $headers = [
             'Content-Type' => 'text/csv',
-            "Content-Disposition" => "attachment; filename=theincircle_csv.csv",
-            "Pragma" => "no-cache",
-            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
-            "Expires" => "0"
-        );
+            'Content-Disposition' => 'attachment; filename=theincircle_csv.csv',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
 
         $filename = tempnam('/tmp', 'csv_');
         $file = fopen($filename, 'w');
         fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
 
         fputcsv($file, [
-            "Language",
-            "Resource Level",
-            "# of resources",
+            'Language',
+            'Resource Level',
+            '# of resources',
         ]);
 
         $supported_locales = \LaravelLocalization::getSupportedLocales();
@@ -187,14 +185,14 @@ class ReportController extends Controller
         foreach ($languages_list as $language => $counts) {
             fputcsv($file, [
                 $supported_locales[$language]['native'],
-                "",
+                '',
                 $counts['language_resources_count'],
             ]);
             foreach ($counts as $count) {
                 if (is_array($count)) {
                     foreach ($count as $level_name => $level_resources_count) {
                         fputcsv($file, [
-                            "",
+                            '',
                             $level_name,
                             $level_resources_count,
                         ]);
@@ -205,7 +203,7 @@ class ReportController extends Controller
 
         fclose($file);
 
-        return response()->download($filename, "resource_language_report.csv", $headers);
+        return response()->download($filename, 'resource_language_report.csv', $headers);
     }
 
     public function resourcePriorities(): Factory|View|Application
@@ -215,7 +213,7 @@ class ReportController extends Controller
         $subjects = TaxonomyTerm::where([
             ['vid', '=', 8],  // 8 = Subject
             ['language', '=', $language],
-            ['excluded', '=', false]
+            ['excluded', '=', false],
         ])->get();
 
         $subjects_list = self::getSubjects_list($subjects);
@@ -229,7 +227,7 @@ class ReportController extends Controller
     {
         $subjects = TaxonomyTerm::where([
             ['vid', '=', 8],  // 8 = Subject
-            ['excluded', '=', true]
+            ['excluded', '=', true],
         ])->get();
 
         $subjects_list = self::getSubjects_list($subjects, true);
@@ -241,13 +239,13 @@ class ReportController extends Controller
     {
         $subject = TaxonomyTerm::where('id', '=', $id)->first();
 
-        if (!$subject) {
-            return response()->json(array('msg'=> 'error'), 400);
+        if (! $subject) {
+            return response()->json(['msg' => 'error'], 400);
         }
 
         $subject->excluded ? $subject->excluded = false : $subject->excluded = true;
         $subject->save();
 
-        return response()->json(array('msg'=> 'success'));
+        return response()->json(['msg' => 'success']);
     }
 }

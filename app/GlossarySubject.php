@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @method static orderBy(string $string, string $string1)
  * @method static findOrFail(int $id)
+ *
  * @property mixed en (English)
  * @property mixed fa (Farsi)
  * @property mixed ps (Pashto)
@@ -19,5 +20,5 @@ use Illuminate\Database\Eloquent\Model;
  */
 class GlossarySubject extends Model
 {
-    protected $table = "glossary_subjects";
+    protected $table = 'glossary_subjects';
 }

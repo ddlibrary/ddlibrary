@@ -6,13 +6,12 @@ use App\Contact;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ContactPage extends Mailable
 {
     use Queueable, SerializesModels;
 
-    Public $contact;
+    public $contact;
 
     /**
      * Create a new message instance.

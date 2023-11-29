@@ -15,7 +15,7 @@ class ResourceLevel extends Model
      * @var bool
      */
     public $timestamps = false;
-    
+
     public function resource()
     {
         return $this->belongsTo(Resource::class);

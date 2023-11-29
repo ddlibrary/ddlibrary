@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Resources\Menu;
 use Database\Seeders\CitySeeder;
 use Database\Seeders\CountrySeeder;
 use Database\Seeders\EducationUseSeeder;

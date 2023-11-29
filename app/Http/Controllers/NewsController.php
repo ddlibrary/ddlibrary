@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\News;
-use Yajra\Datatables\Datatables;
-use Illuminate\Support\Facades\Auth;
 
+use App\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Yajra\Datatables\Datatables;
 
 class NewsController extends Controller
 {
@@ -16,10 +16,10 @@ class NewsController extends Controller
      */
     public function __construct()
     {
-        
+
     }
-    
-    public function index ()
+
+    public function index()
     {
         return view('admin.news.news_list');
     }
@@ -28,15 +28,16 @@ class NewsController extends Controller
     public function getNews()
     {
         $news = News::select(['id', 'title', 'language', 'created_at', 'updated_at']);
+
         return Datatables::of($news)
             ->addColumn('action', function ($news) {
-                return '<a href="' . URL($news->language . '/news/edit/' . $news->id) .'" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>';
+                return '<a href="'.URL($news->language.'/news/edit/'.$news->id).'" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>';
             })
             ->editColumn('language', '{{fixLanguage($language)}}')
-            ->addColumn('created_at', function($page) {
+            ->addColumn('created_at', function ($page) {
                 return $page->created_at->diffForHumans();
             })
-            ->addColumn('updated_at', function($page) {
+            ->addColumn('updated_at', function ($page) {
                 return $page->updated_at->diffForHumans();
             })
             ->orderColumn('id', '-id $1')
@@ -52,30 +53,31 @@ class NewsController extends Controller
 
         $news = News::find($newsId);
         $translation_id = $news->tnid;
-        if($translation_id){
-            $translations = News::where('tnid',$translation_id)->get();
-        }else{
-            $translations = array();
+        if ($translation_id) {
+            $translations = News::where('tnid', $translation_id)->get();
+        } else {
+            $translations = [];
         }
-        return view('news.news_view', compact('news','translations'));
+
+        return view('news.news_view', compact('news', 'translations'));
     }
 
     public function create()
     {
         //setting the search session empty
         DDLClearSession();
-        
+
         return view('news.news_create');
     }
 
     public function store(Request $request, News $news)
     {
         $this->validate($request, [
-            'title'      => 'required',
-            'language'   => 'required',
-            'summary'    => 'required',
-            'body'       => 'required',
-            'published'  => 'integer'
+            'title' => 'required',
+            'language' => 'required',
+            'summary' => 'required',
+            'body' => 'required',
+            'published' => 'integer',
         ]);
 
         $news->title = $request->input('title');
@@ -98,17 +100,18 @@ class NewsController extends Controller
     public function edit(News $news, $id)
     {
         $news = $news->find($id);
+
         return view('news.news_edit', compact('news'));
     }
 
     public function update(Request $request, News $news, $id)
     {
         $this->validate($request, [
-            'title'      => 'required',
-            'language'   => 'required',
-            'summary'    => 'required',
-            'body'       => 'required',
-            'published'  => 'integer'
+            'title' => 'required',
+            'language' => 'required',
+            'summary' => 'required',
+            'body' => 'required',
+            'published' => 'integer',
         ]);
 
         $news = News::find($id);
@@ -125,25 +128,26 @@ class NewsController extends Controller
     }
 
     public function translate(News $news, $id, $tnid)
-    {   
+    {
         $news = $news->where('tnid', $tnid)->get();
         $news_self = $news->find($id);
-        return view('news.news_translate', compact('news', 'news_self'));    
+
+        return view('news.news_translate', compact('news', 'news_self'));
     }
 
     public function addTranslate($tnid, $lang)
     {
-        return view('news.news_add_translate', compact('tnid', 'lang'));   
+        return view('news.news_add_translate', compact('tnid', 'lang'));
     }
 
     public function addPostTranslate(Request $request, News $news, $tnid, $lang)
     {
         $this->validate($request, [
-            'title'      => 'required',
-            'language'   => 'nullable',
-            'summary'    => 'required',
-            'body'       => 'required',
-            'published'  => 'integer'
+            'title' => 'required',
+            'language' => 'nullable',
+            'summary' => 'required',
+            'body' => 'required',
+            'published' => 'integer',
         ]);
 
         $news->title = $request->input('title');
@@ -156,6 +160,6 @@ class NewsController extends Controller
         //inserting
         $news->save();
 
-        return redirect('news/'.$news->id)->with('success', 'Item successfully updated!');    
+        return redirect('news/'.$news->id)->with('success', 'Item successfully updated!');
     }
 }
