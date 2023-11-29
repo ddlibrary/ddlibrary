@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateGlossarySubjects extends Migration
 {
@@ -14,7 +14,7 @@ class CreateGlossarySubjects extends Migration
     public function up()
     {
         Schema::create('glossary_subjects', function (Blueprint $table) {
-            $table->engine = "InnoDB";
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('en', 100)->nullable()->default('');
             $table->string('fa', 100)->nullable()->default('');

@@ -17,28 +17,28 @@ class RoleSeeder extends Seeder
         $data = [
             [
                 'id' => '1',
-                'name' => 'anonymous user'
+                'name' => 'anonymous user',
             ],
             [
                 'id' => '2',
-                'name' => 'authenticated user'
+                'name' => 'authenticated user',
             ],
             [
                 'id' => '3',
-                'name' => 'library manager'
+                'name' => 'library manager',
             ],
             [
                 'id' => '4',
-                'name' => 'library teacher'
+                'name' => 'library teacher',
             ],
             [
                 'id' => '5',
-                'name' => 'site administrator'
+                'name' => 'site administrator',
             ],
             [
                 'id' => '6',
-                'name' => 'library user'
-            ]
+                'name' => 'library user',
+            ],
         ];
 
         DB::table('roles')->insert($data);

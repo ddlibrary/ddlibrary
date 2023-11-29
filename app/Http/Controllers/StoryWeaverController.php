@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpUnhandledExceptionInspection */
+<?php
+
+/** @noinspection PhpUnhandledExceptionInspection */
 
 /** @noinspection PhpComposerExtensionStubsInspection */
 
@@ -14,7 +16,7 @@ use Illuminate\Support\Facades\URL;
 
 class StoryWeaverController extends Controller
 {
-    function storyWeaverConfirmation($landing_page = 'storyweaver_default')
+    public function storyWeaverConfirmation($landing_page = 'storyweaver_default')
     {
         $user_profile = UserProfile::where('user_id', auth()->id())->first();
 
@@ -22,7 +24,7 @@ class StoryWeaverController extends Controller
         session(
             [
                 'previous_url' => $previous_url,
-                'landing_page' => $landing_page
+                'landing_page' => $landing_page,
             ]
         );
 
@@ -37,14 +39,13 @@ class StoryWeaverController extends Controller
         return view('storyweaver.confirmation', compact('email', 'landing_page'));
     }
 
-    function storyWeaverAuth()
+    public function storyWeaverAuth()
     {
         $user_profile = UserProfile::where('user_id', auth()->id())->first();
         $user_profile->visited_storyweaver_disclaimer = true;
         $user_profile->save();
         $storyweaver_url = config('constants.storyweaver_url');
         $secret = config('storyweaver.config.secret');
-
 
         if (! $storyweaver_url or ! $secret) {
             Log::info(
@@ -73,9 +74,10 @@ class StoryWeaverController extends Controller
         $landing_page = session()->pull('landing_page');
         if ($landing_page) {
             if (array_key_exists($landing_page, config('constants'))) {
-                $landing_page = config('constants.' . $landing_page);
+                $landing_page = config('constants.'.$landing_page);
+            } else {
+                $landing_page = config('constants.storyweaver_default');
             }
-            else $landing_page = config('constants.storyweaver_default');
         }
 
         $client = new Client();
@@ -84,52 +86,52 @@ class StoryWeaverController extends Controller
                 'POST', $storyweaver_url, [
                     'multipart' => [
                         [
-                            'name'    => 'org_token',
-                            'contents' => $secret
+                            'name' => 'org_token',
+                            'contents' => $secret,
                         ],
                         [
                             'name' => 'firstname',
-                            'contents' => $first_name
+                            'contents' => $first_name,
                         ],
                         [
                             'name' => 'lastname',
-                            'contents' => $last_name
+                            'contents' => $last_name,
                         ],
                         [
                             'name' => 'email',
-                            'contents' => $user_email
+                            'contents' => $user_email,
                         ],
                         [
                             'name' => 'language_preferences',
-                            'contents' => $language
+                            'contents' => $language,
                         ],
                         [
                             'name' => 'locale_preferences',
-                            'contents' => $language
+                            'contents' => $language,
                         ],
                         [
                             'name' => 'landing_page',
-                            'contents' => $landing_page
+                            'contents' => $landing_page,
                         ],
                         [
                             'name' => 'redirect_home',
-                            'contents' => $redirect_home
+                            'contents' => $redirect_home,
                         ],
-                    ]
+                    ],
                 ]
             );
         } catch (ClientException $e) {
-            if  ($e->getResponse()->getStatusCode() == 422) {
+            if ($e->getResponse()->getStatusCode() == 422) {
                 Log::info(
-                    $first_name . ' ' . $last_name . ' was unable to authenticate to StoryWeaver.
-                    Email: ' . $user_email . ' and user id: ' . $user_id .'. Response: 422.'
+                    $first_name.' '.$last_name.' was unable to authenticate to StoryWeaver.
+                    Email: '.$user_email.' and user id: '.$user_id.'. Response: 422.'
                 );
                 abort(422, __('Something went wrong while redirecting you to StoryWeaver.'));
             }
 
         } catch (TransferException $e) {
             Log::info(
-                $first_name . ' ' . $last_name . ' was unable to authenticate to StoryWeaver. 
+                $first_name.' '.$last_name.' was unable to authenticate to StoryWeaver. 
                 Server 500.'
             );
             abort(500);
@@ -146,11 +148,11 @@ class StoryWeaverController extends Controller
         }
 
         Log::info(
-            $first_name . ' ' . $last_name . ' was not redirected to StoryWeaver.
-                    Email: ' . $user_email . ' and user id: ' . $user_id . '. 
-                    Status code: ' . $response->getStatusCode() . '
-                    Status: ' . $response_contents->status . '
-                    Redirect URL: ' . $response_contents->redirect_url
+            $first_name.' '.$last_name.' was not redirected to StoryWeaver.
+                    Email: '.$user_email.' and user id: '.$user_id.'. 
+                    Status code: '.$response->getStatusCode().'
+                    Status: '.$response_contents->status.'
+                    Redirect URL: '.$response_contents->redirect_url
         );
 
         return redirect(route('home'));

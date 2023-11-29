@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
  * @method static find(string $id)
  * @method distinct()
  * @method static max(string $string)
+ *
  * @property array|mixed|string|null     title
  * @property array|mixed|string|null     parent
  * @property array|mixed|string|null     path
@@ -23,7 +24,7 @@ use Illuminate\Support\Facades\DB;
 class Menu extends Model
 {
     use HasFactory;
-    
+
     public function scopeMenu()
     {
         $records = DB::table('menus')
@@ -37,26 +38,27 @@ class Menu extends Model
                 'updated'
             )
             ->paginate(20);
+
         return $records;
     }
 
     public function scopeTitle($query, $title)
     {
-        if (!is_null($title)) {
-            return $query->where('title','like', '%'.$title.'%');
+        if (! is_null($title)) {
+            return $query->where('title', 'like', '%'.$title.'%');
         }
     }
 
     public function scopeLocation($query, $location)
     {
-        if (!is_null($location)) {
+        if (! is_null($location)) {
             return $query->where('location', $location);
         }
     }
 
     public function scopeLanguage($query, $language)
     {
-        if (!is_null($language)) {
+        if (! is_null($language)) {
             return $query->where('language', $language);
         }
     }

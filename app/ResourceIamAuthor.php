@@ -13,8 +13,8 @@ class ResourceIamAuthor extends Model
      */
     public $timestamps = false;
 
-    protected $table = "resource_iam_author";
-    
+    protected $table = 'resource_iam_author';
+
     public function resource()
     {
         return $this->belongsTo(Resource::class);

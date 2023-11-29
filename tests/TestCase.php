@@ -8,11 +8,11 @@ use Mcamara\LaravelLocalization\LaravelLocalization;
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
-    
+
     protected function refreshApplicationWithLocale($locale)
     {
         self::tearDown();
-        putenv(LaravelLocalization::ENV_ROUTE_KEY . '=' . $locale);
+        putenv(LaravelLocalization::ENV_ROUTE_KEY.'='.$locale);
         self::setUp();
     }
 

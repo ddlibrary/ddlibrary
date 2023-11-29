@@ -135,7 +135,7 @@ class TaxonomyTermDataSeeder extends Seeder
                 'name' => 'Share Permission',
                 'weight' => '0',
                 'language' => 'und',
-            ]
+            ],
         ];
 
         DB::table('taxonomy_vocabulary')->insert($data);

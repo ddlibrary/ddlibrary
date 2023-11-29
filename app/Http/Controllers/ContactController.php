@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contact;
+use App\Mail\ContactPage;
 use App\Setting;
 use App\User;
 use BladeView;
@@ -10,11 +11,9 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Mail\ContactPage;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -28,33 +27,28 @@ class ContactController extends Controller
     public function index()
     {
         $this->middleware('admin');
-        
-        $records = Contact::orderBy('id','desc')->paginate(10);
+
+        $records = Contact::orderBy('id', 'desc')->paginate(10);
+
         return view('admin.contacts.contact_list', compact('records'));
     }
 
-    /**
-     * @param $id
-     * @return RedirectResponse
-     */
     public function read($id): RedirectResponse
     {
         $contact = Contact::find($id);
-        if($contact->isread == 0){
+        if ($contact->isread == 0) {
             $contact->isread = 1;
             $contact->save();
+
             return back()->with('success', 'You marked the message as read!');
-        }else{
+        } else {
             $contact->isread = 0;
-            $contact->save();   
+            $contact->save();
+
             return back()->with('success', 'You marked the message as unread!');
         }
     }
 
-    /**
-     * @param $id
-     * @return RedirectResponse
-     */
     public function delete($id): RedirectResponse
     {
         $contact = Contact::find($id);
@@ -74,35 +68,37 @@ class ContactController extends Controller
             //Get the currently authenticated user details...
             //get login email details using Auth facade
 
-            if($email = Auth::user()->email){
+            if ($email = Auth::user()->email) {
                 $profile = User::users()->where('id', Auth::id())->first();
                 $firstname = $profile->first_name;
                 $lastname = $profile->last_name;
-                $fullname = $firstname." ".$lastname;
-                return view('contacts.contacts_view', ['email'=>$email, 'fullname'=>$fullname]);
+                $fullname = $firstname.' '.$lastname;
+
+                return view('contacts.contacts_view', ['email' => $email, 'fullname' => $fullname]);
             }
 
         }
         //setting the search session empty
         DDLClearSession();
+
         return view('contacts.contacts_view');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
      * @return Application|Redirector|RedirectResponse
+     *
      * @throws ValidationException
      */
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name'      => 'required',
-            'email'     => 'required|email',
-            'subject'   => 'required',
-            'message'   => 'required',
-            'g-recaptcha-response' => 'required|captcha'
+            'name' => 'required',
+            'email' => 'required|email',
+            'subject' => 'required',
+            'message' => 'required',
+            'g-recaptcha-response' => 'required|captcha',
         ]);
 
         //Saving contact info to the database
@@ -114,11 +110,10 @@ class ContactController extends Controller
 
         $contact->save();
 
-        if(config('mail.send_email') == 'yes'){
+        if (config('mail.send_email') == 'yes') {
             Mail::to(Setting::find(1)->website_email)->send(new ContactPage($contact));
         }
 
         return redirect('/contact-us')->with('success', __('We received your message and will contact you back soon!'));
     }
-
 }

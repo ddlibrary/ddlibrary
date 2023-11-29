@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Facebook\Facebook;
+use Illuminate\Support\ServiceProvider;
 
 class FacebookServiceProvider extends ServiceProvider
 {

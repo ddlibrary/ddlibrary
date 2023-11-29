@@ -4,6 +4,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Menu;
+use App\News;
+use App\Page;
+use App\Resource;
+use App\ResourceAttachment;
+use App\ResourceComment;
+use App\ResourceFavorite;
+use App\ResourceView;
+use App\User;
 use App\UserProfile;
 use App\UserRole;
 use Carbon\Carbon;
@@ -15,43 +24,35 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
-
-use App\Resource;
-use App\User;
-use App\News;
-use App\Page;
-use App\Menu;
-use App\ResourceAttachment;
-use App\ResourceAuthor;
-use App\ResourceComment;
-use App\ResourceView;
-use App\ResourceFlag;
-use App\ResourceFavorite;
 
 class ApiController extends Controller
 {
     // User Profile
-    public function user(){
+    public function user()
+    {
         return auth()->user();
     }
 
     // Logout
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         auth()->user()->tokens()->delete();
 
-        return [ 'message' => 'Logged out!' ];
+        return ['message' => 'Logged out!'];
     }
 
     // Favorites
-    public function favorites(){
+    public function favorites()
+    {
         $favorites = ResourceFavorite::where('user_id', auth()->user()->id)->get(['resource_id']);
         $resources = Resource::whereIn('id', $favorites)->get();
+
         return $resources;
     }
 
     // Login
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
@@ -59,30 +60,31 @@ class ApiController extends Controller
         ]);
 
         if ($validator->fails()) {
-             return [ 'message' => 'Email and password are required'];
+            return ['message' => 'Email and password are required'];
         }
-    
+
         $user = User::where('email', $request->email)->first();
-    
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return [ 'message' => 'Wrong email or password!' ];
+
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            return ['message' => 'Wrong email or password!'];
         }
 
         auth()->login($user);
 
-        return ["token"=>$user->createToken($user->username)->plainTextToken,"user"=>$user->username];
+        return ['token' => $user->createToken($user->username)->plainTextToken, 'user' => $user->username];
     }
 
     // Register
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|unique:users|nullable|regex:/^([a-zA-Z\d\._-]+)@(?!fmail.com)/', //Regex to block fmail.com domain
             'username' => 'required|string|max:255',
             'password' => 'required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',
-        ],[
+        ], [
             'password.regex' => __('The password you entered doesn\'t have any special characters (!@#$%^&.) and (or) digits (0-9).'),
-            'email.regex' => __('Please enter a valid email.')
+            'email.regex' => __('Please enter a valid email.'),
         ]);
 
         if ($validator->fails()) {
@@ -102,7 +104,7 @@ class ApiController extends Controller
         auth()->login($user);
 
         $userProfile = new UserProfile();
-        $userProfile->user_id       = $user->id;
+        $userProfile->user_id = $user->id;
         $userProfile->save();
 
         $userRole = new UserRole;
@@ -110,58 +112,65 @@ class ApiController extends Controller
         $userRole->role_id = 6; //library user from roles table
         $userRole->save();
 
-        return ["token"=>$user->createToken($user->username)->plainTextToken,"user"=>$user->username];
+        return ['token' => $user->createToken($user->username)->plainTextToken, 'user' => $user->username];
 
     }
 
-
     // Pages
-    public function pages($lang="en") {
+    public function pages($lang = 'en')
+    {
         return Page::where('status', 1)->where('language', $lang)->paginate(32);
     }
 
     // Page
-    public function page($id) {
+    public function page($id)
+    {
         return Page::where('id', $id)->get();
     }
 
     // Page view
-    public function pageView($id) {
+    public function pageView($id)
+    {
         $page = Page::find($id);
-    
+
         $translation_id = $page->tnid;
-        $translations = ($translation_id) ? Page::where('tnid', $translation_id)->get() : array();
-    
-        return view('pages.page_app_view', compact('page','translations'));
+        $translations = ($translation_id) ? Page::where('tnid', $translation_id)->get() : [];
+
+        return view('pages.page_app_view', compact('page', 'translations'));
     }
 
     // News List
-    public function newsList($lang="en") {
+    public function newsList($lang = 'en')
+    {
         return News::where('status', 1)->where('language', $lang)->orderBy('id', 'desc')->paginate(32);
     }
 
     // News
-    public function news($id) {
+    public function news($id)
+    {
         return News::where('id', $id)->get();
     }
 
     // News View
-    public function newsView($id) {
+    public function newsView($id)
+    {
         //setting the search session empty
         DDLClearSession();
-    
+
         $news = News::find($id);
         $translation_id = $news->tnid;
-        if($translation_id){
-            $translations = News::where('tnid',$translation_id)->get();
-        }else{
-            $translations = array();
+        if ($translation_id) {
+            $translations = News::where('tnid', $translation_id)->get();
+        } else {
+            $translations = [];
         }
-        return view('news.news_api_view', compact('news','translations'));
+
+        return view('news.news_api_view', compact('news', 'translations'));
     }
 
     // Links
-    public function links($lang="en") {
+    public function links($lang = 'en')
+    {
         return Menu::select(['id', 'title', 'path'])
             ->where('language', $lang)
             ->where('location', 'bottom-menu')
@@ -170,56 +179,61 @@ class ApiController extends Controller
     }
 
     // Resources
-    public function resources($lang="en") {
+    public function resources($lang = 'en')
+    {
         return Resource::where('status', 1)->where('language', $lang)->paginate(32);
     }
 
     // Single Resource
-    public function resource($id) {
-        return Resource::where('id',$id)->get();
+    public function resource($id)
+    {
+        return Resource::where('id', $id)->get();
     }
 
     // Resource Categories
-    public function resourceCategories($lang="en") {
+    public function resourceCategories($lang = 'en')
+    {
         $resource = new Resource();
+
         return $resource->subjectIconsAndTotal($lang);
     }
 
     // Resource Attributes
-    public function resourceAttributes($resourceId) {
+    public function resourceAttributes($resourceId)
+    {
         //setting the search session empty
         DDLClearSession();
-        
+
         $myResources = new Resource();
         $views = new ResourceView();
-    
+
         $attachments = new ResourceAttachment();
         $attachments = $attachments->where('resource_id', $resourceId)->get();
-    
+
         $resource = Resource::findOrFail($resourceId);
         $authors = $resource->authors;
-    
+
         $result = [];
-    
+
         $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
         $comments = ResourceComment::select(
             'comment',
             'u.username'
         )
-        ->leftJoin('users as u','u.id','=','resource_comments.user_id')
-        ->where('resource_id', $resourceId)
-        ->where('resource_comments.status', 1)
-        ->get();
-    
-        if($resource){
+            ->leftJoin('users as u', 'u.id', '=', 'resource_comments.user_id')
+            ->where('resource_id', $resourceId)
+            ->where('resource_comments.status', 1)
+            ->get();
+
+        if ($resource) {
             $translation_id = $resource->tnid;
-            if($translation_id){
+            if ($translation_id) {
                 $translations = $myResources->getResourceTranslations($translation_id);
-            }else{
-                $translations = array();
+            } else {
+                $translations = [];
             }
         }
-    
+
         $result['authors'] = $authors;
         $result['levels'] = $resource->levels;
         $result['subjects'] = $resource->subjects;
@@ -231,137 +245,142 @@ class ApiController extends Controller
         $result['related_items'] = $relatedItems;
         $result['comments'] = $comments;
         $result['views'] = $views->resourceCount($resourceId);
-        
+
         return $result;
     }
 
     // Resource Offset
-    public function resourceOffset(Request $request, $lang="en", $offset=0) {
+    public function resourceOffset(Request $request, $lang = 'en', $offset = 0)
+    {
 
         $searchQuery = $request['search'];
-    
+
         $subjectAreaIds = $request['subject_area'];
         $levelIds = $request['level'];
         $typeIds = $request['type'];
-    
+
         $resources = DB::table('resources AS rs')
-        ->select(
-            'rs.id',
-            'rs.language', 
-            'rs.abstract',
-            'rs.title',
-            'rs.status'
-        )
-        ->when($subjectAreaIds, function($query) use($subjectAreaIds){
-            return $query->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
-                    ->join('taxonomy_term_hierarchy AS tth','tth.tid','=','rsa.tid')
+            ->select(
+                'rs.id',
+                'rs.language',
+                'rs.abstract',
+                'rs.title',
+                'rs.status'
+            )
+            ->when($subjectAreaIds, function ($query) use ($subjectAreaIds) {
+                return $query->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
+                    ->join('taxonomy_term_hierarchy AS tth', 'tth.tid', '=', 'rsa.tid')
                     ->where('tth.parent', $subjectAreaIds)
                     ->orWhere('tth.tid', $subjectAreaIds)
                     ->groupBy('tth.tid');
-        })
-        ->when($levelIds, function($query)  use($levelIds){
-            return $query->join('resource_levels AS rl', function ($join) use($levelIds) {
-                $join->on('rl.resource_id', '=', 'rs.id')
-                    ->where('rl.tid', $levelIds);
-            });
-        })
-        ->when($typeIds, function($query)  use($typeIds){
-            return $query->join('resource_learning_resource_types AS rlrt', function ($join) use($typeIds) {
-                $join->on('rlrt.resource_id', '=', 'rs.id')
+            })
+            ->when($levelIds, function ($query) use ($levelIds) {
+                return $query->join('resource_levels AS rl', function ($join) use ($levelIds) {
+                    $join->on('rl.resource_id', '=', 'rs.id')
+                        ->where('rl.tid', $levelIds);
+                });
+            })
+            ->when($typeIds, function ($query) use ($typeIds) {
+                return $query->join('resource_learning_resource_types AS rlrt', function ($join) use ($typeIds) {
+                    $join->on('rlrt.resource_id', '=', 'rs.id')
                         ->where('rlrt.tid', $typeIds);
                 });
-        })
-        ->when($searchQuery, function($query)  use($searchQuery){
-            return $query->leftJoin('resource_authors AS ra','ra.resource_id','=','rs.id')
-                ->leftJoin('resource_publishers AS rp','rp.resource_id','=','rs.id')
-                ->leftJoin('taxonomy_term_data AS ttd','ttd.id','=','ra.tid')
-                ->leftJoin('taxonomy_term_data AS ttdp','ttdp.id','=','rp.tid')
-                ->where('rs.title','like','%'.$searchQuery.'%')
-                ->orwhere('rs.abstract', 'like' , '%'.$searchQuery.'%')
-                ->orwhere('ttd.name', 'like' , '%'.$searchQuery.'%')
-                ->orwhere('ttdp.name', 'like' , '%'.$searchQuery.'%');
-        })
-        ->when($request->filled('publisher'), function($query) use($request){
-            return $query->leftJoin('resource_publishers AS rpub','rpub.resource_id','=','rs.id')
-                ->where('rpub.tid', $request['publisher']);
-        })
-        ->where('rs.language', $lang)
-        ->where('rs.status', 1)
-        ->orderBy('rs.created_at','desc')
-        ->groupBy(
-            'rs.id',
-            'rs.language', 
-            'rs.title',
-            'rs.abstract',
-            'rs.created_at'
-        )
-        ->limit(32)
-        ->offset($offset)
-        ->get();
-    
+            })
+            ->when($searchQuery, function ($query) use ($searchQuery) {
+                return $query->leftJoin('resource_authors AS ra', 'ra.resource_id', '=', 'rs.id')
+                    ->leftJoin('resource_publishers AS rp', 'rp.resource_id', '=', 'rs.id')
+                    ->leftJoin('taxonomy_term_data AS ttd', 'ttd.id', '=', 'ra.tid')
+                    ->leftJoin('taxonomy_term_data AS ttdp', 'ttdp.id', '=', 'rp.tid')
+                    ->where('rs.title', 'like', '%'.$searchQuery.'%')
+                    ->orwhere('rs.abstract', 'like', '%'.$searchQuery.'%')
+                    ->orwhere('ttd.name', 'like', '%'.$searchQuery.'%')
+                    ->orwhere('ttdp.name', 'like', '%'.$searchQuery.'%');
+            })
+            ->when($request->filled('publisher'), function ($query) use ($request) {
+                return $query->leftJoin('resource_publishers AS rpub', 'rpub.resource_id', '=', 'rs.id')
+                    ->where('rpub.tid', $request['publisher']);
+            })
+            ->where('rs.language', $lang)
+            ->where('rs.status', 1)
+            ->orderBy('rs.created_at', 'desc')
+            ->groupBy(
+                'rs.id',
+                'rs.language',
+                'rs.title',
+                'rs.abstract',
+                'rs.created_at'
+            )
+            ->limit(32)
+            ->offset($offset)
+            ->get();
+
         $results = [];
-    
-        foreach($resources->unique('id') as $resource)
-        {
+
+        foreach ($resources->unique('id') as $resource) {
             $res['id'] = $resource->id;
             $res['title'] = $resource->title;
             $res['abstract'] = $resource->abstract;
             $res['img'] = getImagefromResource($resource->abstract);
-            
-            if($lang == $resource->language)
-            array_push($results, $res);
+
+            if ($lang == $resource->language) {
+                array_push($results, $res);
+            }
         }
-    
+
         return $results;
     }
 
     // Featured Resources
-    public function featuredResources($lang="en") {
+    public function featuredResources($lang = 'en')
+    {
         $resource = new Resource();
+
         return $resource->featuredCollections($lang);
     }
 
     // Filter Resources
-    public function filterResources(Request $request) {
+    public function filterResources(Request $request)
+    {
         $myResources = new Resource();
-    
+
         //Getting all whatever in the parameterBag
         $everything = $request->all();
-    
-        if(isset($everything['search'])){
+
+        if (isset($everything['search'])) {
             session(['search' => $everything['search']]);
         }
-    
-        $subjectAreaIds = array();
-        $levelIds = array();
-        $typeIds = array();
-    
+
+        $subjectAreaIds = [];
+        $levelIds = [];
+        $typeIds = [];
+
         //if subject_area exists in the request
-        if($request->filled('subject_area')){
+        if ($request->filled('subject_area')) {
             $subjectAreaIds = $everything['subject_area'];
         }
-    
+
         //if level exists in the request
-        if($request->filled('level')){
+        if ($request->filled('level')) {
             $levelIds = $everything['level'];
         }
-    
+
         //if type exists
-        if($request->filled('type')){
+        if ($request->filled('type')) {
             $typeIds = $everything['type'];
         }
-    
+
         $views = new ResourceView();
         $favorites = new ResourceFavorite();
         $comments = new ResourceComment();
         $resources = $myResources->paginateResourcesBy($request);
-    
-        $subjects = $myResources->resourceAttributesList('taxonomy_term_data',8);
+
+        $subjects = $myResources->resourceAttributesList('taxonomy_term_data', 8);
         $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
         $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
-        
+
         if ($request->ajax()) {
             $resources = $myResources->paginateResourcesBy($request);
+
             return view('resources.resources_list_content', compact(
                 'resources',
                 'views',
@@ -369,7 +388,7 @@ class ApiController extends Controller
                 'comments'
             ));
         }
-    
+
         return compact(
             'resources',
             'subjects',
@@ -385,9 +404,10 @@ class ApiController extends Controller
     }
 
     // Send Resource Attachment
-    public function getFile($fileId){
+    public function getFile($fileId)
+    {
 
-        $resourceAttachment = ResourceAttachment::where('resource_id',$fileId)->firstOrFail();
+        $resourceAttachment = ResourceAttachment::where('resource_id', $fileId)->firstOrFail();
         try {
             $file = Storage::disk('s3')->get('resources/'.$resourceAttachment->file_name);
         } catch (FileNotFoundException $e) {
@@ -395,12 +415,12 @@ class ApiController extends Controller
             abort(404);
         }
         $temp_file = tempnam(
-            sys_get_temp_dir(), $resourceAttachment->file_name . '_'
+            sys_get_temp_dir(), $resourceAttachment->file_name.'_'
         );
         file_put_contents($temp_file, $file);
+
         return response()
             ->download($temp_file, $resourceAttachment->file_name, [], 'inline')
             ->deleteFileAfterSend();
     }
-
 }

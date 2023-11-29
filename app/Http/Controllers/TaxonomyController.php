@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\TaxonomyHierarchy;
 use App\TaxonomyTerm;
 use App\TaxonomyVocabulary;
-use App\TaxonomyHierarchy;
-
 use Illuminate\Http\Request;
 
 class TaxonomyController extends Controller
@@ -12,23 +12,24 @@ class TaxonomyController extends Controller
     public function index(Request $request)
     {
         $this->middleware('admin');
-        
-        $terms = TaxonomyTerm::orderBy('vid','desc')->orderBy('weight')
-        ->name(request('term'))
-        ->vocabulary(request('vocabulary'))
-        ->language(request('language'))
-        ->paginate(10);
 
-        $vocabulary = TaxonomyVocabulary::all('vid AS val','name');
+        $terms = TaxonomyTerm::orderBy('vid', 'desc')->orderBy('weight')
+            ->name(request('term'))
+            ->vocabulary(request('vocabulary'))
+            ->language(request('language'))
+            ->paginate(10);
 
-        $args = array(
-            'route'         => 'taxonomylist',
-            'filters'       => $request,
-            'vocabulary'    => $vocabulary
-        );
+        $vocabulary = TaxonomyVocabulary::all('vid AS val', 'name');
+
+        $args = [
+            'route' => 'taxonomylist',
+            'filters' => $request,
+            'vocabulary' => $vocabulary,
+        ];
         //creating search bar
         $createSearchBar = new SearchController();
         $searchBar = $createSearchBar->searchBar($args);
+
         return view('admin.taxonomy.taxonomy_list', compact('terms', 'searchBar'));
     }
 
@@ -36,23 +37,24 @@ class TaxonomyController extends Controller
     {
         $term = TaxonomyTerm::find($tid);
         $vocabulary = TaxonomyVocabulary::all();
-        $parents = TaxonomyTerm::where('vid',$vid)->get();
+        $parents = TaxonomyTerm::where('vid', $vid)->get();
         $theParent = TaxonomyHierarchy::where('tid', $tid)->first();
-        if(isset($theParent->parent)){
+        if (isset($theParent->parent)) {
             $theParent = $theParent->parent;
-        }else{
+        } else {
             $theParent = 0;
         }
+
         return view('admin.taxonomy.taxonomy_edit', compact('term', 'vocabulary', 'parents', 'theParent'));
     }
 
     public function update(Request $request, $vid, $tid)
     {
         $this->validate($request, [
-            'vid'           => 'required',
-            'name'          => 'required',
-            'weight'        => 'required',
-            'language'      => 'required'
+            'vid' => 'required',
+            'name' => 'required',
+            'weight' => 'required',
+            'language' => 'required',
         ]);
 
         //Saving contact info to the database
@@ -62,7 +64,7 @@ class TaxonomyController extends Controller
         $term->weight = $request->input('weight');
         $term->language = $request->input('language');
 
-        if($term->tnid == 0){
+        if ($term->tnid == 0) {
             $term->tnid = $tid;
         }
 
@@ -81,35 +83,36 @@ class TaxonomyController extends Controller
     public function translate($tid)
     {
         $tnid = TaxonomyTerm::find($tid)->tnid;
-        if($tnid){
+        if ($tnid) {
             $translations = TaxonomyTerm::where('tnid', $tnid)->get();
-        }else{
-            $translations = NULL;
+        } else {
+            $translations = null;
         }
 
         $locals = \LaravelLocalization::getSupportedLocales();
-        $supportedLocals = array();
+        $supportedLocals = [];
 
-        foreach($locals as $key=>$value){
+        foreach ($locals as $key => $value) {
             array_push($supportedLocals, $key);
         }
 
-        return view('admin.taxonomy.taxonomy_translate', compact('translations','supportedLocals','tnid','tid'));
+        return view('admin.taxonomy.taxonomy_translate', compact('translations', 'supportedLocals', 'tnid', 'tid'));
     }
 
     public function create()
     {
         $vocabulary = TaxonomyVocabulary::all();
-        return view('admin.taxonomy.taxonomy_create',compact('vocabulary'));
+
+        return view('admin.taxonomy.taxonomy_create', compact('vocabulary'));
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'vid'           => 'required',
-            'name'          => 'required',
-            'weight'        => 'required',
-            'language'      => 'required'
+            'vid' => 'required',
+            'name' => 'required',
+            'weight' => 'required',
+            'language' => 'required',
         ]);
 
         //Saving contact info to the database
@@ -131,23 +134,24 @@ class TaxonomyController extends Controller
     public function createTranslate($tid, $tnid, $lang)
     {
         $vocabulary = TaxonomyVocabulary::all();
-        $vid = TaxonomyTerm::where('tnid',$tnid)->first()->vid;
+        $vid = TaxonomyTerm::where('tnid', $tnid)->first()->vid;
         $weight = TaxonomyTerm::where('tnid', $tnid)->first()->weight;
-        $parents = TaxonomyTerm::where('vid',$vid)->get();
+        $parents = TaxonomyTerm::where('vid', $vid)->get();
         $sourceParent = TaxonomyHierarchy::where('tid', $tid)->first()->parent;
-        if($sourceParent) {
+        if ($sourceParent) {
             $parentTermTnid = TaxonomyTerm::where('id', $sourceParent)->first()->tnid;
-            $parentTranslation = TaxonomyTerm::where('tnid',$parentTermTnid)->where('language', $lang)->first();
+            $parentTranslation = TaxonomyTerm::where('tnid', $parentTermTnid)->where('language', $lang)->first();
             //If the parent is translated in current language
-            if($parentTranslation){
+            if ($parentTranslation) {
                 $theParent = $parentTranslation->id;
-            }else{
-                return "First translate the parent";
+            } else {
+                return 'First translate the parent';
             }
         } else {
             $theParent = 0;
         }
-        return view('admin.taxonomy.taxonomy_create_translate',compact(
+
+        return view('admin.taxonomy.taxonomy_create_translate', compact(
             'vocabulary',
             'tnid',
             'vid',
@@ -161,13 +165,11 @@ class TaxonomyController extends Controller
     public function storeTranslate(Request $request, $tnid)
     {
         $this->validate($request, [
-            'vid'           => 'required',
-            'name'          => 'required',
-            'weight'        => 'required',
-            'language'      => 'required'
+            'vid' => 'required',
+            'name' => 'required',
+            'weight' => 'required',
+            'language' => 'required',
         ]);
-
-        
 
         //Saving contact info to the database
         $term = new TaxonomyTerm;
@@ -180,7 +182,7 @@ class TaxonomyController extends Controller
 
         $parent = new TaxonomyHierarchy();
         $parent->tid = $term->id;
-        $parent->parent = $request->input('parent');;
+        $parent->parent = $request->input('parent');
         $parent->save();
 
         return redirect('/admin/taxonomy')->with('success', 'Taxonomy item added successfully!');

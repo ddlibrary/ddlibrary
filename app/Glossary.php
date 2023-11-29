@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @method static orderBy(string $string, string $string1)
  * @method static where(string $string, $id)
+ *
  * @property mixed name_en
  * @property mixed name_fa
  * @property mixed name_ps
@@ -15,6 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Glossary extends Model
 {
-    protected $table = "glossary";
+    protected $table = 'glossary';
     //
 }

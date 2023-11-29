@@ -12,7 +12,9 @@ class TaxonomyVocabulary extends Model
      * @var bool
      */
     public $timestamps = false;
+
     protected $primaryKey = 'vid';
+
     protected $table = 'taxonomy_vocabulary';
 
     public function term()
