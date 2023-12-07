@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Resource;
+use App\Subscriber;
 use App\User;
 use App\UserProfile;
 use Carbon\Carbon;
@@ -144,11 +145,10 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+        $this->validator($request->all())->validate();
+        
         try {
-
             DB::beginTransaction();
-
-            $this->validator($request->all())->validate();
 
             // Create user
             $user = $this->create($request->all());
@@ -168,6 +168,11 @@ class RegisterController extends Controller
 
             // Assign role to user
             $user->roles()->attach(6); //6 is library user from roles table
+
+            // Subscribe
+            if($user->email && $request->subscribe){
+                Subscriber::create(['email' => $user->email]);
+            }
 
             DB::commit();
 
