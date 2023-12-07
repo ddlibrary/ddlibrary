@@ -235,6 +235,7 @@ Route::group(
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
+Route::post('/subscribe', 'SubscribeController@subscribe')->name('subscribe');
 /** OTHER PAGES THAT SHOULD NOT BE LOCALIZED **/
 Route::post('resources/favorite', 'ResourceController@resourceFavorite');
 Route::get('/storage/{resource_id}/{file_id}/{file_name}', 'FileController')->where(['file_name' => '.*']);
