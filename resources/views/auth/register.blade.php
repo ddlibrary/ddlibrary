@@ -180,6 +180,19 @@
                                 style="display:none;">
                         </div>
                     </div>
+
+                    {{-- Subscribe --}}
+                    <div class="register-form-item">
+                        <div class="form-item">
+                            <label>
+
+                                <input type="checkbox" class="m-0 submit-btn" checked style="width: auto;" name="subscribe" >
+                                <small style="color:gray">
+                                    @lang("Receive our occasional newsletters and announcements (your email will be shared with MailChimp)")
+                                </small>
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
                 {{-- Google Captcha --}}
