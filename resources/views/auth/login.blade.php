@@ -96,7 +96,7 @@
 
                         {{-- Forgot password --}}
                         <a href="{{ route('password.request') }}"
-                            @disabled(true)>{{ __('Forgot your password?') }}</a>
+                            @@disabled(true)>{{ __('Forgot your password?') }}</a>
                     </div>
                 </form>
             </div>
