@@ -41,7 +41,6 @@ class WatermarkPDF implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @return void
      *
      * @throws FileNotFoundException
      */

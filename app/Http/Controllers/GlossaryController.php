@@ -98,8 +98,6 @@ class GlossaryController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return JsonResponse
      */
     public function update(Request $request): JsonResponse
     {
@@ -137,7 +135,6 @@ class GlossaryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  null  $glossary_id
-     * @return JsonResponse
      */
     public function destroy($glossary_id = null): JsonResponse
     {

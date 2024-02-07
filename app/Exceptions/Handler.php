@@ -24,7 +24,6 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  Exception  $exception
      * @return void
      *
      * @throws Exception
@@ -38,7 +37,6 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param  Request  $request
-     * @param  Exception  $exception
      * @return JsonResponse|Response|\Symfony\Component\HttpFoundation\Response
      *
      * @throws Throwable

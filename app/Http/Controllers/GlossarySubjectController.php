@@ -50,7 +50,6 @@ class GlossarySubjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return void
      */
     public function show(int $id)

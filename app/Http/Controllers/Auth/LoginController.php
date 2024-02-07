@@ -191,9 +191,6 @@ class LoginController extends Controller
 
     /**
      * Validate the user login request.
-     *
-     *
-     * @return void
      */
     protected function validateLogin(Request $request): void
     {
@@ -205,8 +202,6 @@ class LoginController extends Controller
 
     /**
      * Get the needed authorization credentials from the request.
-     *
-     * @return array
      */
     protected function credentials(Request $request): array
     {
@@ -226,9 +221,6 @@ class LoginController extends Controller
 
     /**
      * Attempt to log the user into the application.
-     *
-     *
-     * @return bool
      */
     protected function attemptLogin(Request $request, $authUser): bool
     {

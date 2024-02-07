@@ -1260,7 +1260,6 @@ class ResourceController extends Controller
      *
      *
      * @param $time
-     * @return BinaryFileResponse
      *
      * @throws FileNotFoundException
      */
