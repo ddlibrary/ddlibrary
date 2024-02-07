@@ -8,37 +8,37 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^8.0",
-        "anhskohbo/no-captcha": "^3.4",
+        "php": "^8.1",
+        "anhskohbo/no-captcha": "^3.5",
         "aws/aws-sdk-php": "^3.190",
         "barryvdh/laravel-translation-manager": "^0.6.2",
-        "doctrine/dbal": "^3.3",
+        "doctrine/dbal": "^3.5",
         "facebook/graph-sdk": "~5.0",
         "fakerphp/faker": "^1.23",
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^9.52",
-        "laravel/helpers": "^1.5",
-        "laravel/sanctum": "^3.0",
+        "laravel/framework": "^10.43",
+        "laravel/helpers": "^1.6",
+        "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.8",
-        "laravel/tinker": "^2.7",
-        "laravel/ui": "^3.3",
+        "laravel/tinker": "^2.8",
+        "laravel/ui": "^4.2",
         "league/flysystem-aws-s3-v3": "^3.0",
         "mcamara/laravel-localization": "^1.8",
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.3",
-        "spatie/laravel-activitylog": "^4.4",
+        "spatie/laravel-activitylog": "^4.7",
         "spatie/laravel-analytics": "^4.1",
-        "spatie/laravel-honeypot": "^4.1",
-        "unisharp/laravel-filemanager": "^2.4",
+        "spatie/laravel-honeypot": "^4.3",
+        "unisharp/laravel-filemanager": "^2.6",
         "usmanhalalit/laracsv": "^2.1",
-        "yajra/laravel-datatables-oracle": "^9.19"
+        "yajra/laravel-datatables-oracle": "^10.3"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^2.12",
+        "barryvdh/laravel-ide-helper": "^2.13",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.3",
         "phpunit/phpunit": "^9.5.10",
-        "spatie/laravel-ignition": "^1.4"
+        "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
         "files": [
@@ -84,6 +84,6 @@
         "optimize-autoloader": true,
         "process-timeout": 3600
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
