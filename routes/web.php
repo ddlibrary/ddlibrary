@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AnalyticsController;
-use App\Http\Controllers\Auth;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
@@ -29,6 +28,7 @@ use App\Http\Controllers\TaxonomyController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VocabularyController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Honeypot\ProtectAgainstSpam;
 
 if (env('APP_ENV') === 'production') {
