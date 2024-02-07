@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\TaxonomyHierarchy;
 use App\TaxonomyTerm;
 use App\TaxonomyVocabulary;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class TaxonomyController extends Controller
 {

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\News;
 use App\Resource;
 use App\Survey;
@@ -13,6 +12,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\View\View;
 
 class HomeController extends Controller
 {

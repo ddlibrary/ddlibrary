@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App;
 use App\Resource;
 use App\ResourceView;
 use App\TaxonomyTerm;
+use Illuminate\View\View;
 
 class ImpactController extends Controller
 {

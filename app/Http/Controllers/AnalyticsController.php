@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\DownloadCount;
 use App\Resource;
 use App\ResourceView;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class AnalyticsController extends Controller
 {

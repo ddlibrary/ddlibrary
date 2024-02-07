@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 use App\DdlFile;
 use App\News;
 use App\Page;
@@ -26,6 +24,8 @@ use App\ResourceTranslator;
 use App\TaxonomyHierarchy;
 use App\TaxonomyTerm;
 use App\TaxonomyVocabulary;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class SyncController extends Controller
 {

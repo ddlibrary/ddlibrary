@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use App\Survey;
 use App\SurveyQuestion;
 use App\SurveyQuestionOption;
 use Config;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Redirect;
 
 class SurveyQuestionOptionController extends Controller

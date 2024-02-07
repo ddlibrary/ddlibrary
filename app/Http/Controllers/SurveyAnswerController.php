@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\View\View;
 use App\SurveyAnswer;
 use App\SurveyQuestion;
 use App\SurveyQuestionOption;
 use Config;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class SurveyAnswerController extends Controller
 {
