@@ -28,7 +28,7 @@ class UserController extends Controller
      *
      * @return BladeView|false|Application|Factory|View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $this->middleware('admin');
 
@@ -49,7 +49,7 @@ class UserController extends Controller
      *
      * @return Application|BladeView|Factory|false|View
      */
-    public function viewUser()
+    public function viewUser(): View
     {
         $user = User::users()->where('id', Auth::id())->first();
 
@@ -63,7 +63,7 @@ class UserController extends Controller
      *
      * @return Application|BladeView|Factory|false|View
      */
-    public function favorites()
+    public function favorites(): View
     {
         $user = User::users()->where('id', Auth::id())->first();
         $favorites = ResourceFavorite::where('user_id', Auth::id())->pluck('resource_id');
@@ -79,7 +79,7 @@ class UserController extends Controller
      *
      * @return Application|BladeView|Factory|false|View
      */
-    public function uploadedResources()
+    public function uploadedResources(): View
     {
         $user = User::users()->where('id', Auth::id())->first();
         $resources = Resource::where('user_id', Auth::id())->get();
@@ -94,7 +94,7 @@ class UserController extends Controller
      *
      * @return Application|RedirectResponse|Redirector
      */
-    public function updateProfile(Request $request)
+    public function updateProfile(Request $request): RedirectResponse
     {
         $request->validate([
             'email' => 'email|required',
@@ -130,7 +130,7 @@ class UserController extends Controller
      *
      * @return Application|BladeView|Factory|false|View
      */
-    public function edit($userId)
+    public function edit($userId): View
     {
         $this->middleware('admin');
         $myResources = new Resource();
@@ -157,7 +157,7 @@ class UserController extends Controller
      *
      * @throws ValidationException
      */
-    public function update(Request $request, $userId)
+    public function update(Request $request, $userId): RedirectResponse
     {
         $this->validate($request, [
             'username' => 'required',

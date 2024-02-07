@@ -4,6 +4,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\Response;
 use App\Menu;
 use App\News;
 use App\Page;
@@ -129,7 +131,7 @@ class ApiController extends Controller
     }
 
     // Page view
-    public function pageView($id)
+    public function pageView($id): View
     {
         $page = Page::find($id);
 
@@ -152,7 +154,7 @@ class ApiController extends Controller
     }
 
     // News View
-    public function newsView($id)
+    public function newsView($id): View
     {
         //setting the search session empty
         DDLClearSession();
@@ -404,7 +406,7 @@ class ApiController extends Controller
     }
 
     // Send Resource Attachment
-    public function getFile($fileId)
+    public function getFile($fileId): Response
     {
 
         $resourceAttachment = ResourceAttachment::where('resource_id', $fileId)->firstOrFail();

@@ -60,7 +60,7 @@ class RegisterController extends Controller
      *
      * @return Factory|\Illuminate\Contracts\Foundation\Application|View
      */
-    public function showRegistrationForm()
+    public function showRegistrationForm(): View
     {
         $myResources = new Resource();
         $countries = $myResources->resourceAttributesList('taxonomy_term_data', 15);
@@ -102,7 +102,7 @@ class RegisterController extends Controller
      * @param  Request  $request
      * @return User $user
      */
-    protected function create($request)
+    protected function create(Request $request): User
     {
         $user = new User();
         $user->username = $this->getUserName($request['email']);

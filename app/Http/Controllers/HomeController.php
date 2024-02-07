@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\News;
 use App\Resource;
 use App\Survey;
@@ -30,7 +31,7 @@ class HomeController extends Controller
      *
      * @return Application|BladeView|Factory|false
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         //setting the search session empty
         DDLClearSession();

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\ResourceComment;
 
 class CommentController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $comments = ResourceComment::orderBy('id', 'DESC')->paginate(10);
 
@@ -29,7 +31,7 @@ class CommentController extends Controller
         return back();
     }
 
-    public function delete($commentId)
+    public function delete($commentId): RedirectResponse
     {
         $comment = ResourceComment::findOrFail($commentId);
         $comment->delete();

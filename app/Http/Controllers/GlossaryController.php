@@ -20,7 +20,7 @@ class GlossaryController extends Controller
      *
      * @return Application|BladeView|Factory|false|View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $glossary_flagged = null;
 
@@ -61,7 +61,7 @@ class GlossaryController extends Controller
      *
      * @return BladeView|false|Factory|Application|View
      */
-    public function create()
+    public function create(): View
     {
         $locale = app()->getLocale();
         $glossary_subjects = GlossarySubject::orderBy('id')->pluck($locale, 'id');
@@ -74,7 +74,7 @@ class GlossaryController extends Controller
      *
      * @return Application|RedirectResponse|Redirector|void
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
             'english' => 'required_without_all:farsi,pashto',
@@ -101,7 +101,7 @@ class GlossaryController extends Controller
      *
      * @return JsonResponse
      */
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $data = $request['data'];
         $glossary_id = (int) $data[0];  // id of the glossary item
@@ -139,7 +139,7 @@ class GlossaryController extends Controller
      * @param  null  $glossary_id
      * @return JsonResponse
      */
-    public function destroy($glossary_id = null)
+    public function destroy($glossary_id = null): JsonResponse
     {
         $glossary = Glossary::where('id', $glossary_id)->first();
         if (! $glossary) {
@@ -150,7 +150,7 @@ class GlossaryController extends Controller
         return response()->json(['msg' => 'success'], 200);
     }
 
-    public function approve($glossary_id = null)
+    public function approve($glossary_id = null): JsonResponse
     {
         $glossary = Glossary::where('id', $glossary_id)->first();
         if (! $glossary) {

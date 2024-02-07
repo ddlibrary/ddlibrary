@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Survey;
 use App\SurveyQuestion;
 use App\SurveyQuestionOption;
@@ -11,7 +13,7 @@ use Redirect;
 
 class SurveyQuestionOptionController extends Controller
 {
-    public function index($survey_id, $id)
+    public function index($survey_id, $id): View
     {
         $lang = Config::get('app.locale');
         $question_self = SurveyQuestion::find($id);
@@ -26,7 +28,7 @@ class SurveyQuestionOptionController extends Controller
         return view('admin.surveys.option.list', compact('question_self', 'questin_options', 'survey'));
     }
 
-    public function view(SurveyQuestionOption $options, $questionid, $id, $tnid)
+    public function view(SurveyQuestionOption $options, $questionid, $id, $tnid): View
     {
         $question = SurveyQuestion::find($questionid);
         $survey = Survey::find($question->survey_id);
@@ -36,7 +38,7 @@ class SurveyQuestionOptionController extends Controller
         return view('admin.surveys.option.view', compact('options', 'option_self', 'question', 'survey'));
     }
 
-    public function create($survey_id, $question_id)
+    public function create($survey_id, $question_id): View
     {
         $survey = Survey::find($survey_id);
         $question = SurveyQuestion::find($question_id);
@@ -44,7 +46,7 @@ class SurveyQuestionOptionController extends Controller
         return view('admin.surveys.option.create', compact('survey', 'question'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $option = new SurveyQuestionOption();
         $option->question_id = $request['question_id'];
@@ -64,7 +66,7 @@ class SurveyQuestionOptionController extends Controller
         return Redirect::back()->with('status', 'Question Option Created!');
     }
 
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         $option = SurveyQuestionOption::find($id);
         $option->delete();
@@ -72,7 +74,7 @@ class SurveyQuestionOptionController extends Controller
         return Redirect::back()->with('status', 'Question\'s Option Deleted!');
     }
 
-    public function addTranslate($tnid, $lang)
+    public function addTranslate($tnid, $lang): View
     {
         $option = SurveyQuestionOption::where('id', $tnid)->first();
         $question = SurveyQuestion::where(['tnid' => $option->question_id, 'language' => $lang])->first();

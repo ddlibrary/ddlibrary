@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +21,7 @@ class NewsController extends Controller
 
     }
 
-    public function index()
+    public function index(): View
     {
         return view('admin.news.news_list');
     }
@@ -44,7 +46,7 @@ class NewsController extends Controller
             ->make(true);
     }
 
-    public function view($newsId)
+    public function view($newsId): View
     {
         //setting the search session empty
         DDLClearSession();
@@ -62,7 +64,7 @@ class NewsController extends Controller
         return view('news.news_view', compact('news', 'translations'));
     }
 
-    public function create()
+    public function create(): View
     {
         //setting the search session empty
         DDLClearSession();
@@ -70,7 +72,7 @@ class NewsController extends Controller
         return view('news.news_create');
     }
 
-    public function store(Request $request, News $news)
+    public function store(Request $request, News $news): RedirectResponse
     {
         $this->validate($request, [
             'title' => 'required',
@@ -97,14 +99,14 @@ class NewsController extends Controller
         return redirect('news/'.$news->id)->with('success', 'Item successfully created!');
     }
 
-    public function edit(News $news, $id)
+    public function edit(News $news, $id): View
     {
         $news = $news->find($id);
 
         return view('news.news_edit', compact('news'));
     }
 
-    public function update(Request $request, News $news, $id)
+    public function update(Request $request, News $news, $id): RedirectResponse
     {
         $this->validate($request, [
             'title' => 'required',
@@ -127,7 +129,7 @@ class NewsController extends Controller
         return redirect('news/'.$id)->with('success', 'Item successfully updated!');
     }
 
-    public function translate(News $news, $id, $tnid)
+    public function translate(News $news, $id, $tnid): View
     {
         $news = $news->where('tnid', $tnid)->get();
         $news_self = $news->find($id);
@@ -135,12 +137,12 @@ class NewsController extends Controller
         return view('news.news_translate', compact('news', 'news_self'));
     }
 
-    public function addTranslate($tnid, $lang)
+    public function addTranslate($tnid, $lang): View
     {
         return view('news.news_add_translate', compact('tnid', 'lang'));
     }
 
-    public function addPostTranslate(Request $request, News $news, $tnid, $lang)
+    public function addPostTranslate(Request $request, News $news, $tnid, $lang): RedirectResponse
     {
         $this->validate($request, [
             'title' => 'required',

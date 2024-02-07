@@ -6,6 +6,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\UserProfile;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -39,7 +40,7 @@ class StoryWeaverController extends Controller
         return view('storyweaver.confirmation', compact('email', 'landing_page'));
     }
 
-    public function storyWeaverAuth()
+    public function storyWeaverAuth(): RedirectResponse
     {
         $user_profile = UserProfile::where('user_id', auth()->id())->first();
         $user_profile->visited_storyweaver_disclaimer = true;

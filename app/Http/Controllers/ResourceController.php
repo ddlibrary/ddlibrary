@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Response;
 use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
 use App\Resource;
@@ -1263,7 +1264,7 @@ class ResourceController extends Controller
      *
      * @throws FileNotFoundException
      */
-    public function downloadFile($resourceId, $fileId, $hash)
+    public function downloadFile($resourceId, $fileId, $hash): Response
     {
         $secret = config('s3.config.secret');
         $user = Auth::id();
@@ -1329,7 +1330,7 @@ class ResourceController extends Controller
         return $validatedData;
     }
 
-    public function viewFile($fileId, $key)
+    public function viewFile($fileId, $key): Response
     {
         $secret = config('s3.config.secret');
         $decrypted_key = decrypt($key);

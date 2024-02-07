@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\DownloadCount;
 use Illuminate\Http\Request;
 
 class DownloadController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $this->middleware('admin');
         if ($request->has('date_from') && $request->has('date_to')) {

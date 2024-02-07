@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\News;
 use App\Page;
 use App\Resource;
@@ -19,7 +20,7 @@ class DashboardController extends Controller
         $this->middleware('admin');
     }
 
-    public function index()
+    public function index(): View
     {
         DDLClearSession();
 

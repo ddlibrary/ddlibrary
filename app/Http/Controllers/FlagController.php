@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
 use App\ResourceFlag;
 
 class FlagController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $flags = ResourceFlag::paginate(10);
 

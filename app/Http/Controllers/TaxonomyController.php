@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\TaxonomyHierarchy;
 use App\TaxonomyTerm;
 use App\TaxonomyVocabulary;
@@ -9,7 +11,7 @@ use Illuminate\Http\Request;
 
 class TaxonomyController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $this->middleware('admin');
 
@@ -33,7 +35,7 @@ class TaxonomyController extends Controller
         return view('admin.taxonomy.taxonomy_list', compact('terms', 'searchBar'));
     }
 
-    public function edit($vid, $tid)
+    public function edit($vid, $tid): View
     {
         $term = TaxonomyTerm::find($tid);
         $vocabulary = TaxonomyVocabulary::all();
@@ -48,7 +50,7 @@ class TaxonomyController extends Controller
         return view('admin.taxonomy.taxonomy_edit', compact('term', 'vocabulary', 'parents', 'theParent'));
     }
 
-    public function update(Request $request, $vid, $tid)
+    public function update(Request $request, $vid, $tid): RedirectResponse
     {
         $this->validate($request, [
             'vid' => 'required',
@@ -80,7 +82,7 @@ class TaxonomyController extends Controller
         return redirect('/admin/taxonomy')->with('success', 'Taxonomy item updated successfully!');
     }
 
-    public function translate($tid)
+    public function translate($tid): View
     {
         $tnid = TaxonomyTerm::find($tid)->tnid;
         if ($tnid) {
@@ -99,14 +101,14 @@ class TaxonomyController extends Controller
         return view('admin.taxonomy.taxonomy_translate', compact('translations', 'supportedLocals', 'tnid', 'tid'));
     }
 
-    public function create()
+    public function create(): View
     {
         $vocabulary = TaxonomyVocabulary::all();
 
         return view('admin.taxonomy.taxonomy_create', compact('vocabulary'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $this->validate($request, [
             'vid' => 'required',
@@ -162,7 +164,7 @@ class TaxonomyController extends Controller
         ));
     }
 
-    public function storeTranslate(Request $request, $tnid)
+    public function storeTranslate(Request $request, $tnid): RedirectResponse
     {
         $this->validate($request, [
             'vid' => 'required',

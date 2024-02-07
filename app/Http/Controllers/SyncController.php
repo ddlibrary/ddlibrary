@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\DdlFile;
 use App\News;
 use App\Page;
@@ -27,7 +29,7 @@ use App\TaxonomyVocabulary;
 
 class SyncController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $this->middleware('admin');
 
@@ -77,7 +79,7 @@ class SyncController extends Controller
         ));
     }
 
-    public function SyncIt()
+    public function SyncIt(): RedirectResponse
     {
         $this->middleware('admin');
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\UserProfile;
@@ -52,7 +53,7 @@ class LoginController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-    public function handleGoogleCallback()
+    public function handleGoogleCallback(): RedirectResponse
     {
         $googleUser = Socialite::driver('google')->user();
 
@@ -109,7 +110,7 @@ class LoginController extends Controller
         return Socialite::driver('facebook')->redirect();
     }
 
-    public function handleFacebookCallback()
+    public function handleFacebookCallback(): RedirectResponse
     {
         $facebookUser = Socialite::driver('facebook')->user();
 
@@ -194,7 +195,7 @@ class LoginController extends Controller
      *
      * @return void
      */
-    protected function validateLogin(Request $request)
+    protected function validateLogin(Request $request): void
     {
         $this->validate($request, [
             'user-field' => 'required|string',
@@ -207,7 +208,7 @@ class LoginController extends Controller
      *
      * @return array
      */
-    protected function credentials(Request $request)
+    protected function credentials(Request $request): array
     {
         $requestArray = $request->only('user-field', 'password');
         if (filter_var($requestArray['user-field'], FILTER_VALIDATE_EMAIL)) {
@@ -229,7 +230,7 @@ class LoginController extends Controller
      *
      * @return bool
      */
-    protected function attemptLogin(Request $request, $authUser)
+    protected function attemptLogin(Request $request, $authUser): bool
     {
         $auth_status = $this->guard()->attempt(
             $this->credentials($request), $request->filled('remember')
@@ -252,7 +253,7 @@ class LoginController extends Controller
         }
     }
 
-    public function authenticated(Request $request, $user)
+    public function authenticated(Request $request, $user): RedirectResponse
     {
         $theUser = User::find(Auth::id());
         $theUser->accessed_at = \Carbon\Carbon::now();
@@ -262,7 +263,7 @@ class LoginController extends Controller
     }
 
     //Doesn't work here, but for future use
-    public function logMeout(Request $request)
+    public function logMeout(Request $request): RedirectResponse
     {
         $this->logout($request);
 

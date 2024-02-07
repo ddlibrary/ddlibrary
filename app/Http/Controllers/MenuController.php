@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -18,7 +20,7 @@ class MenuController extends Controller
         $this->middleware('admin');
     }
 
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         //setting the search session empty
         DDLClearSession();
@@ -43,7 +45,7 @@ class MenuController extends Controller
         return view('admin.menu.menu_list', compact('menuRecords', 'searchBar'));
     }
 
-    public function create($id)
+    public function create($id): View
     {
         $menu = Menu::find($id);
         $new_menu = false;
@@ -63,7 +65,7 @@ class MenuController extends Controller
         );
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         try {
             $this->validate(
@@ -100,7 +102,7 @@ class MenuController extends Controller
         return redirect('admin/menu')->with('success', 'Menu translation or new menu successfully added!');
     }
 
-    public function edit(Menu $menu, $menuId)
+    public function edit(Menu $menu, $menuId): View
     {
         $details = $menu->find($menuId);
         $locations = $details->distinct()->pluck('location');
@@ -109,7 +111,7 @@ class MenuController extends Controller
         return view('admin.menu.menu_edit', compact('details', 'locations', 'parents'));
     }
 
-    public function update(Request $request, $menuId)
+    public function update(Request $request, $menuId): RedirectResponse
     {
         $this->validate($request, [
             'title' => 'required',
@@ -181,7 +183,7 @@ class MenuController extends Controller
         echo $data;
     }
 
-    public function translate($id = '')
+    public function translate($id = ''): View
     {
         $tnid = Menu::find($id)->tnid;
 

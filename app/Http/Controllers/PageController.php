@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Page;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -22,7 +23,7 @@ class PageController extends Controller
 
     }
 
-    public function index()
+    public function index(): \Illuminate\View\View
     {
         return view('admin.pages.pages_list');
     }
@@ -67,7 +68,7 @@ class PageController extends Controller
         return view('pages.pages_view', compact('page', 'translations'));
     }
 
-    public function create()
+    public function create(): \Illuminate\View\View
     {
         //setting the search session empty
         DDLClearSession();
@@ -75,7 +76,7 @@ class PageController extends Controller
         return view('pages.page_create');
     }
 
-    public function store(Request $request, Page $page)
+    public function store(Request $request, Page $page): RedirectResponse
     {
         $this->validate($request, [
             'title' => 'required',
@@ -102,14 +103,14 @@ class PageController extends Controller
         return redirect('page/'.$page->id)->with('success', 'Item successfully created!');
     }
 
-    public function edit(Page $page, $id)
+    public function edit(Page $page, $id): \Illuminate\View\View
     {
         $page = $page->find($id);
 
         return view('pages.page_edit', compact('page'));
     }
 
-    public function update(Request $request, Page $page, $id)
+    public function update(Request $request, Page $page, $id): RedirectResponse
     {
         $this->validate($request, [
             'title' => 'required',
@@ -132,7 +133,7 @@ class PageController extends Controller
         return redirect('page/'.$id)->with('success', 'Item successfully updated!');
     }
 
-    public function translate(Page $page, $id, $tnid)
+    public function translate(Page $page, $id, $tnid): \Illuminate\View\View
     {
         $page = $page->where('tnid', $tnid)->get();
         $page_self = $page->find($id);
@@ -140,12 +141,12 @@ class PageController extends Controller
         return view('pages.page_translate', compact('page', 'page_self'));
     }
 
-    public function addTranslate($tnid, $lang)
+    public function addTranslate($tnid, $lang): \Illuminate\View\View
     {
         return view('pages.page_add_translate', compact('tnid', 'lang'));
     }
 
-    public function addPostTranslate(Request $request, Page $page, $tnid, $lang)
+    public function addPostTranslate(Request $request, Page $page, $tnid, $lang): RedirectResponse
     {
         $this->validate($request, [
             'title' => 'required',
