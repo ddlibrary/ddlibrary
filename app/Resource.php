@@ -2,6 +2,10 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Config;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +26,7 @@ class Resource extends Model
 
     protected static $logAttributes = ['*'];
 
-    public function levels()
+    public function levels(): BelongsToMany
     {
         return $this->belongsToMany(TaxonomyTerm::class, 'resource_levels', 'resource_id', 'tid');
     }
@@ -32,92 +36,92 @@ class Resource extends Model
         return $this->HasOne(ResourceIamAuthor::class);
     }
 
-    public function keywords()
+    public function keywords(): HasMany
     {
         return $this->hasMany(ResourceKeyword::class);
     }
 
-    public function LearningResourceTypes()
+    public function LearningResourceTypes(): BelongsToMany
     {
         return $this->belongsToMany(TaxonomyTerm::class, 'resource_learning_resource_types', 'resource_id', 'tid');
     }
 
-    public function publishers()
+    public function publishers(): BelongsToMany
     {
         return $this->belongsToMany(TaxonomyTerm::class, 'resource_publishers', 'resource_id', 'tid');
     }
 
-    public function SharePermissions()
+    public function SharePermissions(): HasOne
     {
         return $this->hasOne(ResourceSharePermission::class);
     }
 
-    public function subjects()
+    public function subjects(): BelongsToMany
     {
         return $this->belongsToMany(TaxonomyTerm::class, 'resource_subject_areas', 'resource_id', 'tid');
     }
 
-    public function subjectsIcons()
+    public function subjectsIcons(): BelongsToMany
     {
         return $this->belongsToMany(StaticSubjectIcon::class, 'resource_subject_areas', 'resource_id', 'tid');
     }
 
-    public function TranslationRights()
+    public function TranslationRights(): HasOne
     {
         return $this->hasOne(ResourceTranslationRight::class);
     }
 
-    public function views()
+    public function views(): HasMany
     {
         return $this->hasMany(ResourceView::class);
     }
 
-    public function attachments()
+    public function attachments(): HasMany
     {
         return $this->hasMany(ResourceAttachment::class);
     }
 
-    public function authors()
+    public function authors(): BelongsToMany
     {
         return $this->belongsToMany(TaxonomyTerm::class, 'resource_authors', 'resource_id', 'tid');
     }
 
-    public function translators()
+    public function translators(): BelongsToMany
     {
         return $this->belongsToMany(TaxonomyTerm::class, 'resource_translators', 'resource_id', 'tid');
     }
 
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(ResourceComment::class);
     }
 
-    public function CopyrightHolder()
+    public function CopyrightHolder(): HasOne
     {
         return $this->hasOne(ResourceCopyrightHolder::class);
     }
 
-    public function creativeCommons()
+    public function creativeCommons(): BelongsToMany
     {
         return $this->belongsToMany(TaxonomyTerm::class, 'resource_creative_commons', 'resource_id', 'tid');
     }
 
-    public function EducationalResources()
+    public function EducationalResources(): HasMany
     {
         return $this->hasMany(ResourceEducationalResource::class);
     }
 
-    public function favorites()
+    public function favorites(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'resource_favorites', 'resource_id', 'user_id');
     }
 
-    public function flags()
+    public function flags(): HasMany
     {
         return $this->hasMany(ResourceFlag::class);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

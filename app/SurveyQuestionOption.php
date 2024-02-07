@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -12,7 +13,7 @@ class SurveyQuestionOption extends Model
     /**
      * Get the question that owns the option.
      */
-    public function question()
+    public function question(): BelongsTo
     {
         return $this->belongsTo(\App\SurveyQuestion::class);
     }

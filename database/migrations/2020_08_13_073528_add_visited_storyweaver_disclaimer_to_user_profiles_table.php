@@ -11,7 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('user_profiles', function (Blueprint $table) {
             $table->boolean('visited_storyweaver_disclaimer')->default(0)->nullable();
@@ -23,7 +23,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('user_profiles', function (Blueprint $table) {
             $table->dropColumn('visited_storyweaver_disclaimer');

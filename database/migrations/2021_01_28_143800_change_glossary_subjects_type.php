@@ -11,7 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('glossary', function (Blueprint $table) {
             $table->foreign('subject')->references('id')->on('glossary_subjects')->onDelete('cascade');
@@ -23,7 +23,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('glossary', function (Blueprint $table) {
             $table->string('subject')->change();

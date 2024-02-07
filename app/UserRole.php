@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -22,12 +24,12 @@ class UserRole extends Model
     /**
      * The users that belong to the role.
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function role()
+    public function role(): HasOne
     {
         return $this->hasOne(Role::class, 'id', 'role_id');
     }

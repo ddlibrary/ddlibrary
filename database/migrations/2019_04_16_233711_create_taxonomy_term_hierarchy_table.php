@@ -10,7 +10,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('taxonomy_term_hierarchy', function (Blueprint $table) {
             $table->uuid('id')->primary();
@@ -26,7 +26,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('taxonomy_term_hierarchy');
     }

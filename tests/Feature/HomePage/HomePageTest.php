@@ -11,7 +11,7 @@ class HomePageTest extends TestCase
     use DatabaseMigrations, RefreshDatabase;
 
     /** @test */
-    public function user_can_visit_english_home_page()
+    public function user_can_visit_english_home_page(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -22,7 +22,7 @@ class HomePageTest extends TestCase
     }
 
     /** @test */
-    public function user_can_visit_farsi_home_page()
+    public function user_can_visit_farsi_home_page(): void
     {
         $this->refreshApplicationWithLocale('fa');
 
@@ -33,7 +33,7 @@ class HomePageTest extends TestCase
     }
 
     /** @test */
-    public function user_can_visit_pashto_home_page()
+    public function user_can_visit_pashto_home_page(): void
     {
         $this->refreshApplicationWithLocale('ps');
 
@@ -44,7 +44,7 @@ class HomePageTest extends TestCase
     }
 
     /** @test */
-    public function user_can_visit_uzbaki_home_page()
+    public function user_can_visit_uzbaki_home_page(): void
     {
         $this->refreshApplicationWithLocale('uz');
 
@@ -55,7 +55,7 @@ class HomePageTest extends TestCase
     }
 
     /** @test */
-    public function user_can_visit_munji_home_page()
+    public function user_can_visit_munji_home_page(): void
     {
         $this->refreshApplicationWithLocale('mj');
 
@@ -66,7 +66,7 @@ class HomePageTest extends TestCase
     }
 
     /** @test */
-    public function user_can_visit_noorestani_home_page()
+    public function user_can_visit_noorestani_home_page(): void
     {
         $this->refreshApplicationWithLocale('no');
 
@@ -77,7 +77,7 @@ class HomePageTest extends TestCase
     }
 
     /** @test */
-    public function user_can_visit_sowji_home_page()
+    public function user_can_visit_sowji_home_page(): void
     {
         $this->refreshApplicationWithLocale('sw');
 
@@ -88,7 +88,7 @@ class HomePageTest extends TestCase
     }
 
     /** @test */
-    public function user_can_visit_shafnani_home_page()
+    public function user_can_visit_shafnani_home_page(): void
     {
         $this->refreshApplicationWithLocale('sh');
 
@@ -99,7 +99,7 @@ class HomePageTest extends TestCase
     }
 
     /** @test */
-    public function user_can_visit_pashaiee_home_page()
+    public function user_can_visit_pashaiee_home_page(): void
     {
         $this->refreshApplicationWithLocale('pa');
 

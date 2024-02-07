@@ -11,7 +11,7 @@ class GlossaryListTest extends TestCase
     use DatabaseMigrations, RefreshDatabase;
 
     /** @test */
-    public function user_can_visit_glossary_page()
+    public function user_can_visit_glossary_page(): void
     {
         $this->refreshApplicationWithLocale('en');
 

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
 class ResourceTranslationRight extends Model
@@ -13,7 +14,7 @@ class ResourceTranslationRight extends Model
      */
     public $timestamps = false;
 
-    public function resource()
+    public function resource(): BelongsTo
     {
         return $this->belongsTo(Resource::class);
     }

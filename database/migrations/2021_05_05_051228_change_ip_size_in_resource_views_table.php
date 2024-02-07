@@ -10,7 +10,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('resource_views', function ($table) {
             $table->string('ip', 64)->change();
@@ -22,7 +22,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('resource_views', function ($table) {
             $table->string('ip', 32)->change();

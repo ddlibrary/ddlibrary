@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,12 +20,12 @@ class ResourceSubjectArea extends Model
 
     protected $fillable = ['resource_id', 'tid'];
 
-    public function resource()
+    public function resource(): BelongsTo
     {
         return $this->belongsTo(Resource::class);
     }
 
-    public function icon()
+    public function icon(): HasOne
     {
         return $this->hasOne(StaticSubjectIcon::class, 'tid', 'tid');
     }

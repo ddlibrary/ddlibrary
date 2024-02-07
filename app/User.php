@@ -2,6 +2,9 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,7 +33,7 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    public function resource()
+    public function resource(): HasMany
     {
         return $this->hasMany(Resource::class);
     }
@@ -38,12 +41,12 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * The roles that belong to the user.
      */
-    public function role()
+    public function role(): HasOne
     {
         return $this->hasOne(UserRole::class);
     }
 
-    public function roles()
+    public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'user_roles');
     }
@@ -51,7 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * The user's profile
      */
-    public function profile()
+    public function profile(): HasOne
     {
         return $this->hasOne(UserProfile::class);
     }

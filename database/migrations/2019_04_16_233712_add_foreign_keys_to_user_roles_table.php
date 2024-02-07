@@ -11,7 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('user_roles', function (Blueprint $table) {
             $table->foreign('role_id', 'user_roles_ibfk_2')->references('id')->on('roles')->onUpdate('CASCADE')->onDelete('RESTRICT');
@@ -24,7 +24,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('user_roles', function (Blueprint $table) {
             if (DB::getDriverName() !== 'sqlite') {

@@ -14,7 +14,7 @@ class ComposerServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }
@@ -24,7 +24,7 @@ class ComposerServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         if (Schema::hasTable('menus')) {
             View::share('menu', Menu::orderBy('weight')->get());
