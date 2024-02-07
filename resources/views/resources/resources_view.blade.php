@@ -222,8 +222,8 @@
             <h3>@lang('Languages Available')</h3>
         
             <?php
-            $supportedLocals = array();
-            $newId = array();
+            $supportedLocals = [];
+            $newId = [];
                 foreach(config('laravellocalization.localesOrder') as $localeCode)
                 {
                     $supportedLocals[] = $localeCode;

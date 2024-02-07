@@ -1,42 +1,44 @@
 {
     "name": "laravel/laravel",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
         "php": "^8.0",
-        "anhskohbo/no-captcha": "^3.0",
+        "anhskohbo/no-captcha": "^3.4",
         "aws/aws-sdk-php": "^3.190",
         "barryvdh/laravel-translation-manager": "^0.6.2",
-        "doctrine/dbal": "^2.13",
+        "doctrine/dbal": "^3.3",
         "facebook/graph-sdk": "~5.0",
         "fakerphp/faker": "^1.23",
-        "fideloper/proxy": "^4.3",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.0",
-        "laravel/helpers": "^1.4",
-        "laravel/sanctum": "^2.11",
+        "guzzlehttp/guzzle": "^7.2",
+        "laravel/framework": "^9.52",
+        "laravel/helpers": "^1.5",
+        "laravel/sanctum": "^3.0",
         "laravel/socialite": "^5.8",
-        "laravel/tinker": "^2.0",
-        "laravel/ui": "^3.0",
-        "league/flysystem-aws-s3-v3": "^1.0",
+        "laravel/tinker": "^2.7",
+        "laravel/ui": "^3.3",
+        "league/flysystem-aws-s3-v3": "^3.0",
         "mcamara/laravel-localization": "^1.8",
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.3",
-        "shvetsgroup/laravel-email-database-log": "^8.0.0",
-        "spatie/laravel-activitylog": "^4.1",
-        "spatie/laravel-analytics": "^4.0",
-        "spatie/laravel-honeypot": "^4.0",
-        "unisharp/laravel-filemanager": "~2.2",
+        "spatie/laravel-activitylog": "^4.4",
+        "spatie/laravel-analytics": "^4.1",
+        "spatie/laravel-honeypot": "^4.1",
+        "unisharp/laravel-filemanager": "^2.4",
         "usmanhalalit/laracsv": "^2.1",
-        "yajra/laravel-datatables-oracle": "9.*"
+        "yajra/laravel-datatables-oracle": "^9.19"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^2.10",
-        "mockery/mockery": "^1.0",
-        "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.0"
+        "barryvdh/laravel-ide-helper": "^2.12",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^6.3",
+        "phpunit/phpunit": "^9.5.10",
+        "spatie/laravel-ignition": "^1.4"
     },
     "autoload": {
         "files": [
@@ -58,8 +60,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         }
     },
     "scripts": {
@@ -72,12 +73,16 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ]
     },
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "process-timeout": 3600
     },
     "minimum-stability": "dev",
     "prefer-stable": true

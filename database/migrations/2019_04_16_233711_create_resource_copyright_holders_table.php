@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateResourceCopyrightHoldersTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -28,4 +28,4 @@ class CreateResourceCopyrightHoldersTable extends Migration
     {
         Schema::drop('resource_copyright_holders');
     }
-}
+};

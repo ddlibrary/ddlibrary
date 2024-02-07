@@ -21,9 +21,9 @@ class LanguageFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->name,
-            'location' => $this->faker->address,
-            'path' => $this->faker->url,
+            'title' => $this->faker->name(),
+            'location' => $this->faker->address(),
+            'path' => $this->faker->url(),
             'language' => 'en',
             'weight' => $this->faker->numberBetween(1, 200),
         ];
