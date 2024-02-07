@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class HomePageTest extends TestCase
 {
-    use RefreshDatabase, DatabaseMigrations;
+    use DatabaseMigrations, RefreshDatabase;
 
     /** @test */
     public function user_can_visit_english_home_page()

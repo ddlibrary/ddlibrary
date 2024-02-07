@@ -27,8 +27,8 @@ use App\Http\Controllers\SyncController;
 use App\Http\Controllers\TaxonomyController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VocabularyController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Spatie\Honeypot\ProtectAgainstSpam;
 
 if (env('APP_ENV') === 'production') {

@@ -11,7 +11,7 @@ class RedirectIfAdmin
     /**
      * Handle an incoming request.
      */
-    public function handle(Request $request, Closure $next, string $guard = null): mixed
+    public function handle(Request $request, Closure $next, ?string $guard = null): mixed
     {
         if (Auth::guard($guard)->check()) {
             if (! isAdmin()) {
