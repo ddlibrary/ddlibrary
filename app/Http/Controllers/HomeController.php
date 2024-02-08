@@ -12,6 +12,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\View\View;
 
 class HomeController extends Controller
 {
@@ -30,7 +31,7 @@ class HomeController extends Controller
      *
      * @return Application|BladeView|Factory|false
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         //setting the search session empty
         DDLClearSession();

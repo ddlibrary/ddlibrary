@@ -8,10 +8,8 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('resource_attachments', function (Blueprint $table) {
             $table->boolean('file_watermarked')
@@ -22,10 +20,8 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('resource_attachments', function (Blueprint $table) {
             $table->dropColumn('file_watermarked');

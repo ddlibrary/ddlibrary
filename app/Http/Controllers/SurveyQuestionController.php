@@ -6,12 +6,14 @@ use App\Survey;
 use App\SurveyQuestion;
 use App\SurveyQuestionOption;
 use Config;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Redirect;
 
 class SurveyQuestionController extends Controller
 {
-    public function index($id)
+    public function index($id): View
     {
         $lang = Config::get('app.locale');
         $survey = Survey::find($id);
@@ -20,7 +22,7 @@ class SurveyQuestionController extends Controller
         return view('admin.surveys.question.list', compact('survey', 'survey_questions'));
     }
 
-    public function view(SurveyQuestion $questions, $surveyid, $id, $tnid)
+    public function view(SurveyQuestion $questions, $surveyid, $id, $tnid): View
     {
         $survey = Survey::find($surveyid);
         $questions = $questions->where('tnid', $tnid)->get();
@@ -29,14 +31,14 @@ class SurveyQuestionController extends Controller
         return view('admin.surveys.question.view', compact('questions', 'question_self', 'survey'));
     }
 
-    public function create($id)
+    public function create($id): View
     {
         $survey = Survey::find($id);
 
         return view('admin.surveys.question.create', compact('survey'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $question = new SurveyQuestion();
         $question->text = $request['text'];
@@ -75,7 +77,7 @@ class SurveyQuestionController extends Controller
         return Redirect::back()->with('status', 'Question Added!');
     }
 
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         $question = SurveyQuestion::find($id);
         $question->delete();
@@ -83,7 +85,7 @@ class SurveyQuestionController extends Controller
         return Redirect::back()->with('status', 'Survey\'s Question Deleted!');
     }
 
-    public function addTranslate($tnid, $lang)
+    public function addTranslate($tnid, $lang): View
     {
         $question = SurveyQuestion::where('id', $tnid)->first();
         $survey = Survey::find($question->survey_id);

@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Survey;
 use App\SurveyQuestion;
 use Config;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Redirect;
 
 class SurveyController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $lang = Config::get('app.locale');
         $surveys = Survey::where('language', $lang)->get();
@@ -18,7 +20,7 @@ class SurveyController extends Controller
         return view('admin.surveys.survey.list', compact('surveys'));
     }
 
-    public function view(Survey $surveys, $id, $tnid)
+    public function view(Survey $surveys, $id, $tnid): View
     {
         $surveys = $surveys->where('tnid', $tnid)->get();
         $survey_self = $surveys->find($id);
@@ -26,12 +28,12 @@ class SurveyController extends Controller
         return view('admin.surveys.survey.view', compact('surveys', 'survey_self'));
     }
 
-    public function create()
+    public function create(): View
     {
         return view('admin.surveys.survey.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $survey = new Survey();
         $survey->name = $request['name'];
@@ -51,14 +53,14 @@ class SurveyController extends Controller
         return Redirect::back()->with('status', 'Survey Created!');
     }
 
-    public function edit($id)
+    public function edit($id): View
     {
         $survey = Survey::find($id);
 
         return view('admin.surveys.survey.edit', compact('survey'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, Request $request): RedirectResponse
     {
         $survey = Survey::find($id);
         $survey->name = $request['name'];
@@ -69,7 +71,7 @@ class SurveyController extends Controller
         return Redirect::back()->with('status', 'Survey Updated!');
     }
 
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         $survey = Survey::find($id);
         $survey->delete();
@@ -77,12 +79,12 @@ class SurveyController extends Controller
         return Redirect::back()->with('status', 'Survey Deleted!');
     }
 
-    public function addTranslate($tnid, $lang)
+    public function addTranslate($tnid, $lang): View
     {
         return view('admin.surveys.survey.add_translation', compact('tnid', 'lang'));
     }
 
-    public function report($id)
+    public function report($id): View
     {
         $lang = Config::get('app.locale');
         $survey = Survey::find($id);

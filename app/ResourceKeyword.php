@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ResourceKeyword extends Model
 {
@@ -13,7 +14,7 @@ class ResourceKeyword extends Model
      */
     public $timestamps = false;
 
-    public function resource()
+    public function resource(): BelongsTo
     {
         return $this->belongsTo(Resource::class);
     }

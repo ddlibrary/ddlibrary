@@ -24,7 +24,7 @@ class ContactController extends Controller
      *
      * @return Application|BladeView|Factory|false|View
      */
-    public function index()
+    public function index(): View
     {
         $this->middleware('admin');
 
@@ -62,7 +62,7 @@ class ContactController extends Controller
      *
      * @return Application|BladeView|Factory|false|View
      */
-    public function create()
+    public function create(): View
     {
         if (Auth::check()) {
             //Get the currently authenticated user details...
@@ -91,7 +91,7 @@ class ContactController extends Controller
      *
      * @throws ValidationException
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $this->validate($request, [
             'name' => 'required',

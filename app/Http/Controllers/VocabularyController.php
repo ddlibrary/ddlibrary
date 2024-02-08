@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\TaxonomyVocabulary;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Yajra\Datatables\Datatables;
 
 class VocabularyController extends Controller
 {
     //Index Function
-    public function index()
+    public function index(): View
     {
         return view('admin.vocabulary.vocabulary_list');
     }
@@ -29,13 +31,13 @@ class VocabularyController extends Controller
     }
 
     //Vocabulary Create Function
-    public function create()
+    public function create(): View
     {
         return view('admin.vocabulary.vocabulary_create');
     }
 
     //Vocabulary Store Function
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $attr = $this->validate($request, [
             'name' => 'required',
@@ -52,7 +54,7 @@ class VocabularyController extends Controller
     }
 
     //Vocabulary Edit Function
-    public function edit($vid)
+    public function edit($vid): View
     {
         $vocabulary = TaxonomyVocabulary::find($vid);
 
@@ -60,7 +62,7 @@ class VocabularyController extends Controller
     }
 
     //Vocabulary Update Function
-    public function update(Request $request, $vid)
+    public function update(Request $request, $vid): RedirectResponse
     {
         $this->validate($request, [
             'name' => 'required',

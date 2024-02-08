@@ -41,11 +41,10 @@ class WatermarkPDF implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @return void
      *
      * @throws FileNotFoundException
      */
-    public function handle()
+    public function handle(): void
     {
         $temp_file = $this->temp_file;
         $attachment = $this->attachment;

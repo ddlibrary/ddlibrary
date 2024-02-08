@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @method static findOrFail($id)
@@ -18,7 +19,7 @@ class TaxonomyTerm extends Model
 
     protected $table = 'taxonomy_term_data';
 
-    public function vocabulary()
+    public function vocabulary(): HasOne
     {
         return $this->hasOne(TaxonomyVocabulary::class, 'vid', 'vid');
     }

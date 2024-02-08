@@ -7,10 +7,11 @@ use App\SurveyQuestion;
 use App\SurveyQuestionOption;
 use Config;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class SurveyAnswerController extends Controller
 {
-    public function allQuestions()
+    public function allQuestions(): View
     {
         $this->middleware('admin');
         $lang = Config::get('app.locale');
@@ -19,7 +20,7 @@ class SurveyAnswerController extends Controller
         return view('admin.surveys.result.view', compact('survey_questions'));
     }
 
-    public function questionAnswers($id)
+    public function questionAnswers($id): View
     {
         $this->middleware('admin');
         $question = SurveyQuestion::find($id);

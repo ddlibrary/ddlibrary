@@ -59,7 +59,7 @@ class SettingController extends Controller
      *
      * @return BladeView|Factory|false|Application|View
      */
-    public function edit(Setting $setting)
+    public function edit(Setting $setting): View
     {
         $setting = $setting->find(1);
         if ($setting == null) {
@@ -76,7 +76,7 @@ class SettingController extends Controller
      *
      * @throws ValidationException
      */
-    public function update(Request $request, Setting $setting)
+    public function update(Request $request, Setting $setting): RedirectResponse
     {
         $this->validate($request, [
             'website_name' => 'required',

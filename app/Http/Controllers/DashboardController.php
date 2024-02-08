@@ -6,6 +6,7 @@ use App\News;
 use App\Page;
 use App\Resource;
 use App\User;
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
@@ -19,7 +20,7 @@ class DashboardController extends Controller
         $this->middleware('admin');
     }
 
-    public function index()
+    public function index(): View
     {
         DDLClearSession();
 

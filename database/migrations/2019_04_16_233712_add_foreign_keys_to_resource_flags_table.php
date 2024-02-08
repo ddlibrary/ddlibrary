@@ -7,10 +7,8 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('resource_flags', function (Blueprint $table) {
             $table->foreign('resource_id', 'resource_flags_ibfk_1')->references('id')->on('resources')->onUpdate('CASCADE')->onDelete('CASCADE');
@@ -20,10 +18,8 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('resource_flags', function (Blueprint $table) {
             if (DB::getDriverName() !== 'sqlite') {

@@ -42,7 +42,7 @@ class ReportController extends Controller
         return $subjects_list;
     }
 
-    public function gaReport()
+    public function gaReport(): \Illuminate\View\View
     {
         //retrieve visitors and pageview data for the current day and the last seven days
         $totalVisitorsAndPageViews = Analytics::fetchTotalVisitorsAndPageViews(Period::days(30));

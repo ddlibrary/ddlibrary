@@ -24,10 +24,12 @@ use App\ResourceTranslator;
 use App\TaxonomyHierarchy;
 use App\TaxonomyTerm;
 use App\TaxonomyVocabulary;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class SyncController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $this->middleware('admin');
 
@@ -77,7 +79,7 @@ class SyncController extends Controller
         ));
     }
 
-    public function SyncIt()
+    public function SyncIt(): RedirectResponse
     {
         $this->middleware('admin');
 

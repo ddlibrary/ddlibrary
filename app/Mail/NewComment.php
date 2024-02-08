@@ -23,10 +23,8 @@ class NewComment extends Mailable
 
     /**
      * Build the message.
-     *
-     * @return $this
      */
-    public function build()
+    public function build(): static
     {
         return $this->view('comments.email');
     }

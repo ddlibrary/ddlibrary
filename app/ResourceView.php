@@ -3,16 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class ResourceView extends Model
 {
-    public function resource()
+    public function resource(): BelongsTo
     {
         return $this->belongsTo(Resource::class);
     }
 
-    public function getCount()
+    public function getCount(): Collection
     {
         return DB::table('resource_views AS rv')
             ->select(

@@ -8,14 +8,12 @@ use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
-    use RefreshDatabase, DatabaseMigrations;
+    use DatabaseMigrations, RefreshDatabase;
 
     /**
      * A basic test example.
-     *
-     * @return void
      */
-    public function testBasicTest()
+    public function testBasicTest(): void
     {
         $response = $this->get('/');
 

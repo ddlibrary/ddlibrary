@@ -18,7 +18,7 @@ class GlossarySubjectController extends Controller
      *
      * @return BladeView|false|Factory|Application|View
      */
-    public function index()
+    public function index(): View
     {
         $glossary_subjects = GlossarySubject::orderBy('id', 'DESC')->paginate(10);
 
@@ -30,7 +30,7 @@ class GlossarySubjectController extends Controller
      *
      * @return BladeView|false|Factory|Application|View
      */
-    public function create()
+    public function create(): View
     {
         $glossary_subject = null;
 
@@ -50,10 +50,9 @@ class GlossarySubjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return void
      */
-    public function show($id)
+    public function show(int $id)
     {
         //
     }
@@ -63,7 +62,7 @@ class GlossarySubjectController extends Controller
      *
      * @return BladeView|false|Factory|Application|View
      */
-    public function edit(int $id)
+    public function edit(int $id): View
     {
         $glossary_subject = GlossarySubject::findOrFail($id);
 
@@ -75,7 +74,7 @@ class GlossarySubjectController extends Controller
      *
      * @return Application|RedirectResponse|Redirector
      */
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
             'english' => 'required',

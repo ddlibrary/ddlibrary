@@ -255,7 +255,7 @@ if (! function_exists('encodeUrl')) {
  * @link https://github.com/donatj/PhpUserAgent
  * @link http://donatstudios.com/PHP-Parser-HTTP_USER_AGENT
  */
-function parse_user_agent(string $u_agent = null): array
+function parse_user_agent(?string $u_agent = null): array
 {
     if (is_null($u_agent)) {
         if (isset($_SERVER['HTTP_USER_AGENT'])) {

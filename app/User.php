@@ -4,9 +4,16 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -30,7 +37,7 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    public function resource()
+    public function resource(): HasMany
     {
         return $this->hasMany(Resource::class);
     }
@@ -38,12 +45,12 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * The roles that belong to the user.
      */
-    public function role()
+    public function role(): HasOne
     {
         return $this->hasOne(UserRole::class);
     }
 
-    public function roles()
+    public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'user_roles');
     }
@@ -51,7 +58,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * The user's profile
      */
-    public function profile()
+    public function profile(): HasOne
     {
         return $this->hasOne(UserProfile::class);
     }
@@ -59,7 +66,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the list of users to display as a table in the admin/users
      */
-    public function scopeUsers($query)
+    public function scopeUsers($query): Collection
     {
         return DB::table('users')
             ->select(
@@ -96,7 +103,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the list of users to display as a table in the admin/users
      */
-    public function filterUsers($requestArray)
+    public function filterUsers($requestArray): LengthAwarePaginator
     {
         return DB::table('users')
             ->select(
@@ -150,7 +157,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ->paginate(10);
     }
 
-    public function oneUser($credentials)
+    public function oneUser($credentials): Model|Builder|null
     {
         return DB::table('users')
             ->select(
@@ -169,7 +176,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     //Total users based on gender
-    public function totalUsersByGender($request)
+    public function totalUsersByGender($request): Collection
     {
         $start = Carbon::parse($request->date_from)->startOfDay();  //2016-09-29 00:00:00.000000
         $end = Carbon::parse($request->date_to)->endOfDay(); //2016-09-29 23:59:59.000000
@@ -187,7 +194,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     //Total users based on country
-    public function totalUsersByCountry()
+    public function totalUsersByCountry(): Collection
     {
         return DB::table('user_profiles AS up')
             ->select(
@@ -202,7 +209,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     //Total users based on roles
-    public function totalResourcesByRoles()
+    public function totalResourcesByRoles(): Collection
     {
         return DB::table('roles')
             ->select('roles.name', 'roles.id')
@@ -213,7 +220,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ->get();
     }
 
-    public function updateUser($newPassword, $credentials)
+    public function updateUser($newPassword, $credentials): int
     {
         return DB::table('users')
             ->where('email', $credentials['user-field'])

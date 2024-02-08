@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @method static where(string $string, int $int)
@@ -12,7 +14,7 @@ class SurveyQuestion extends Model
     /**
      * Get the survey that owns the question.
      */
-    public function survey()
+    public function survey(): BelongsTo
     {
         return $this->belongsTo(\App\Survey::class);
     }
@@ -20,7 +22,7 @@ class SurveyQuestion extends Model
     /**
      * Get the options for the question.
      */
-    public function options()
+    public function options(): HasMany
     {
         return $this->hasMany(\App\SurveyQuestionOption::class, 'question_id');
     }

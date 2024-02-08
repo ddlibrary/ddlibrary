@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TaxonomyVocabulary extends Model
 {
@@ -17,7 +18,7 @@ class TaxonomyVocabulary extends Model
 
     protected $table = 'taxonomy_vocabulary';
 
-    public function term()
+    public function term(): BelongsTo
     {
         return $this->belongsTo(TaxonomyTerm::class);
     }

@@ -10,9 +10,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('resource_views', function ($table) {
-            $table->string('ip', 64)->change();
-        });
+        Schema::rename('password_resets', 'password_reset_tokens');
     }
 
     /**
@@ -20,8 +18,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('resource_views', function ($table) {
-            $table->string('ip', 32)->change();
-        });
+        Schema::rename('password_reset_tokens', 'password_resets');
     }
 };
