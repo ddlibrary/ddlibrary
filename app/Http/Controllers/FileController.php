@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DownloadCount;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FileController extends Controller
 {
@@ -13,7 +14,7 @@ class FileController extends Controller
         //$this->middleware('auth');
     }
 
-    public function __invoke($resource_id, $file_id, $file_path)
+    public function __invoke($resource_id, $file_id, $file_path): BinaryFileResponse
     {
         $this->fileDownloadCounter($resource_id, $file_id);
         if (! Storage::disk('private')->exists($file_path)) {

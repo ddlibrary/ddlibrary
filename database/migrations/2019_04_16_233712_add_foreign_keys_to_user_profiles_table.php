@@ -3,14 +3,12 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class AddForeignKeysToUserProfilesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('user_profiles', function (Blueprint $table) {
             $table->foreign('user_id', 'user_profiles_ibfk_1')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
@@ -19,10 +17,8 @@ class AddForeignKeysToUserProfilesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('user_profiles', function (Blueprint $table) {
             if (DB::getDriverName() !== 'sqlite') {
@@ -30,4 +26,4 @@ class AddForeignKeysToUserProfilesTable extends Migration
             }
         });
     }
-}
+};

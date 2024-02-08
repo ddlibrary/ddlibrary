@@ -7,15 +7,16 @@ use App\Resource;
 use App\ResourceView;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class AnalyticsController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         return view('admin.analytics.analytics_main');
     }
 
-    public function show(Request $request)
+    public function show(Request $request): View
     {
         //if language is present in the request, otherwise default it to English
         $lang = $request->filled('language') ? request('language') : 'en';

@@ -15,15 +15,13 @@ class LanguageFactory extends Factory
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'title' => $this->faker->name,
-            'location' => $this->faker->address,
-            'path' => $this->faker->url,
+            'title' => $this->faker->name(),
+            'location' => $this->faker->address(),
+            'path' => $this->faker->url(),
             'language' => 'en',
             'weight' => $this->faker->numberBetween(1, 200),
         ];

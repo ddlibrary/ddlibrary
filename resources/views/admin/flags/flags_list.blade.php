@@ -38,10 +38,10 @@
             </tfoot>
             <tbody>
             <?php 
-            $flagTypes = array(1 => "Graphic Violence",
+            $flagTypes = [1 => "Graphic Violence",
                             2=>"Graphic Sexual Content",
                             3=>"Spam, Scam or Fraud",
-                            4=>"Broken or Empty Data");
+                            4=>"Broken or Empty Data"];
             ?>
             @foreach ($flags as $indexkey => $flag)
               <tr>

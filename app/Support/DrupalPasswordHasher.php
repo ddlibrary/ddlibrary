@@ -359,6 +359,7 @@ function user_needs_new_hash($account)
     }
     // Ensure that $count_log2 is within set bounds.
     $count_log2 = _password_enforce_log2_boundaries(variable_get('password_count_log2', DRUPAL_HASH_COUNT));
+
     // Check whether the iteration count used differs from the standard number.
     return _password_get_count_log2($account->pass) !== $count_log2;
 }

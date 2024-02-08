@@ -61,7 +61,7 @@ class RegisterController extends Controller
      *
      * @return Factory|\Illuminate\Contracts\Foundation\Application|View
      */
-    public function showRegistrationForm()
+    public function showRegistrationForm(): View
     {
         $myResources = new Resource();
         $countries = $myResources->resourceAttributesList('taxonomy_term_data', 15);
@@ -100,10 +100,9 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  Request  $request
      * @return User $user
      */
-    protected function create($request)
+    protected function create(Request $request): User
     {
         $user = new User();
         $user->username = $this->getUserName($request['email']);
@@ -151,7 +150,7 @@ class RegisterController extends Controller
             DB::beginTransaction();
 
             // Create user
-            $user = $this->create($request->all());
+            $user = $this->create($request);
 
             // Send email verification
             if (env('SEND_EMAIL') && env('SEND_EMAIL') != 'no') {

@@ -4,14 +4,12 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 
-class AddForeignKeysToSurveyQuestionOptionsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('survey_question_options', function (Blueprint $table) {
             $table->foreign('question_id')->references('id')->on('survey_questions')->onUpdate('RESTRICT')->onDelete('CASCADE');
@@ -20,10 +18,8 @@ class AddForeignKeysToSurveyQuestionOptionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('survey_question_options', function (Blueprint $table) {
             if (DB::getDriverName() !== 'sqlite') {
@@ -31,4 +27,4 @@ class AddForeignKeysToSurveyQuestionOptionsTable extends Migration
             }
         });
     }
-}
+};

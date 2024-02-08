@@ -3,14 +3,12 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 
-class ChangeIpSizeInResourceViewsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('resource_views', function ($table) {
             $table->string('ip', 64)->change();
@@ -19,13 +17,11 @@ class ChangeIpSizeInResourceViewsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('resource_views', function ($table) {
             $table->string('ip', 32)->change();
         });
     }
-}
+};

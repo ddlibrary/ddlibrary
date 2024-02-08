@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ResourceIamAuthor extends Model
 {
@@ -15,7 +16,7 @@ class ResourceIamAuthor extends Model
 
     protected $table = 'resource_iam_author';
 
-    public function resource()
+    public function resource(): BelongsTo
     {
         return $this->belongsTo(Resource::class);
     }

@@ -3,14 +3,12 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class AddForeignKeysToResourceCommentsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('resource_comments', function (Blueprint $table) {
             $table->foreign('resource_id', 'resource_comments_ibfk_1')->references('id')->on('resources')->onUpdate('CASCADE')->onDelete('CASCADE');
@@ -19,10 +17,8 @@ class AddForeignKeysToResourceCommentsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('resource_comments', function (Blueprint $table) {
             if (DB::getDriverName() !== 'sqlite') {
@@ -30,4 +26,4 @@ class AddForeignKeysToResourceCommentsTable extends Migration
             }
         });
     }
-}
+};

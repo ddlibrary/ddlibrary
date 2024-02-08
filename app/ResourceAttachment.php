@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @method static find($fileId)
@@ -22,7 +23,7 @@ class ResourceAttachment extends Model
 
     protected $fillable = ['resource_id', 'file_name', 'file_mime', 'file_size', 'file_watermarked'];
 
-    public function resource()
+    public function resource(): BelongsTo
     {
         return $this->belongsTo(Resource::class);
     }

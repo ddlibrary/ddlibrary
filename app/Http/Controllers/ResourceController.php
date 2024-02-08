@@ -33,6 +33,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -40,7 +41,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Session;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
 
 class ResourceController extends Controller
@@ -1259,11 +1259,10 @@ class ResourceController extends Controller
      *
      *
      * @param $time
-     * @return BinaryFileResponse
      *
      * @throws FileNotFoundException
      */
-    public function downloadFile($resourceId, $fileId, $hash)
+    public function downloadFile($resourceId, $fileId, $hash): Response
     {
         $secret = config('s3.config.secret');
         $user = Auth::id();
@@ -1329,7 +1328,7 @@ class ResourceController extends Controller
         return $validatedData;
     }
 
-    public function viewFile($fileId, $key)
+    public function viewFile($fileId, $key): Response
     {
         $secret = config('s3.config.secret');
         $decrypted_key = decrypt($key);

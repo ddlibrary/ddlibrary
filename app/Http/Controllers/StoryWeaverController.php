@@ -10,6 +10,7 @@ use App\UserProfile;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\TransferException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
@@ -39,7 +40,7 @@ class StoryWeaverController extends Controller
         return view('storyweaver.confirmation', compact('email', 'landing_page'));
     }
 
-    public function storyWeaverAuth()
+    public function storyWeaverAuth(): RedirectResponse
     {
         $user_profile = UserProfile::where('user_id', auth()->id())->first();
         $user_profile->visited_storyweaver_disclaimer = true;

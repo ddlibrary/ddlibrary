@@ -4,14 +4,12 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 
-class AddForeignKeysToUserRolesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('user_roles', function (Blueprint $table) {
             $table->foreign('role_id', 'user_roles_ibfk_2')->references('id')->on('roles')->onUpdate('CASCADE')->onDelete('RESTRICT');
@@ -21,10 +19,8 @@ class AddForeignKeysToUserRolesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('user_roles', function (Blueprint $table) {
             if (DB::getDriverName() !== 'sqlite') {
@@ -33,4 +29,4 @@ class AddForeignKeysToUserRolesTable extends Migration
             }
         });
     }
-}
+};

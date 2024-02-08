@@ -38,8 +38,8 @@
             </li>
             @endif
             <?php
-            $supportedLocals = array();
-            $newId = array();
+            $supportedLocals = [];
+            $newId = [];
                 foreach(config('laravellocalization.localesOrder') as $localeCode)
                 {
                     $supportedLocals[] = $localeCode;
@@ -86,11 +86,11 @@
         </ul>
         <ul class="main-navigation">
             <?php
-            $classNames = array(
+            $classNames = [
                 125  => 'fa-home',
                 566  => 'fa-align-justify',
                 131  => 'fa-upload'
-            );
+            ];
             ?>
             @if($menu)
                 @foreach ($menu->where('location', 'top-menu')->where('language', app()->getLocale()) as $tmenu)

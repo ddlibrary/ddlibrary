@@ -3,14 +3,12 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateFeaturedResourceLevelsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('featured_resource_levels', function (Blueprint $table) {
             $table->increments('id');
@@ -21,11 +19,9 @@ class CreateFeaturedResourceLevelsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('featured_resource_levels');
     }
-}
+};

@@ -18,12 +18,14 @@ use App\UserRole;
 use Carbon\Carbon;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class ApiController extends Controller
 {
@@ -129,7 +131,7 @@ class ApiController extends Controller
     }
 
     // Page view
-    public function pageView($id)
+    public function pageView($id): View
     {
         $page = Page::find($id);
 
@@ -152,7 +154,7 @@ class ApiController extends Controller
     }
 
     // News View
-    public function newsView($id)
+    public function newsView($id): View
     {
         //setting the search session empty
         DDLClearSession();
@@ -404,7 +406,7 @@ class ApiController extends Controller
     }
 
     // Send Resource Attachment
-    public function getFile($fileId)
+    public function getFile($fileId): Response
     {
 
         $resourceAttachment = ResourceAttachment::where('resource_id', $fileId)->firstOrFail();

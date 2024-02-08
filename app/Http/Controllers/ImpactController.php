@@ -6,10 +6,11 @@ use App;
 use App\Resource;
 use App\ResourceView;
 use App\TaxonomyTerm;
+use Illuminate\View\View;
 
 class ImpactController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         //total resources in number for the dashboard
         $totalResources = Resource::count();
