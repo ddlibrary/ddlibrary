@@ -150,7 +150,7 @@ class RegisterController extends Controller
             $this->validator($request->all())->validate();
 
             // Create user
-            $user = $this->create($request->all());
+            $user = $this->create($request);
 
             // Send email verification
             if (env('SEND_EMAIL') && env('SEND_EMAIL') != 'no') {
