@@ -3,11 +3,14 @@
 namespace App;
 
 use Config;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\CausesActivity;
@@ -148,7 +151,7 @@ class Resource extends Model
 
     public function filterResources($requestArray)
     {
-        $resources = DB::table('resources AS rs')
+        return DB::table('resources AS rs')
             ->select('rs.id', 'rs.language', 'rs.title', 'rs.abstract', 'rs.user_id', 'rs.tnid', 'users.username AS addedby', 'rs.status', 'rs.created_at', 'rs.updated_at')
             ->LeftJoin('users', 'users.id', '=', 'rs.user_id')
             ->LeftJoin('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
@@ -179,13 +182,11 @@ class Resource extends Model
             ->orderBy('rs.created_at', 'desc')
             ->groupBy('rs.id', 'rs.language', 'rs.title', 'rs.abstract', 'rs.user_id', 'users.username', 'rs.status', 'rs.updated_at', 'rs.tnid', 'rs.created_at')
             ->paginate(10);
-
-        return $resources;
     }
 
-    public function paginateResources()
+    public function paginateResources(): LengthAwarePaginator
     {
-        $users = DB::table('resources AS rs')
+        return DB::table('resources AS rs')
             ->select('rs.id', 'rs.language', 'rs.title', 'rs.abstract', 'rs.user_id', 'users.username AS author', 'rs.status', 'rs.updated_at')
             ->join('users', 'users.id', '=', 'rs.user_id')
             ->where('rs.language', Config::get('app.locale'))
@@ -193,35 +194,29 @@ class Resource extends Model
             ->orderBy('rs.created', 'desc')
             ->groupBy('rs.id', 'rs.language', 'rs.title', 'rs.abstract', 'rs.user_id', 'users.username', 'rs.status', 'rs.updated_at', 'rs.created_at')
             ->paginate(32);
-
-        return $users;
     }
 
-    public function resourceAttributes($resourceId, $tableName, $fieldName, $staticTable)
+    public function resourceAttributes($resourceId, $tableName, $fieldName, $staticTable): Collection
     {
-        $records = DB::table($tableName)
+        return DB::table($tableName)
             ->select($staticTable.'.name', $staticTable.'.id')
             ->join($staticTable, $staticTable.'.id', '=', $tableName.'.'.$fieldName)
             ->where('resource_id', $resourceId)
             ->get();
-
-        return $records;
     }
 
-    public function searchResourceAttributes($keyword, $staticTable, $vid)
+    public function searchResourceAttributes($keyword, $staticTable, $vid): Collection
     {
-        $records = DB::table($staticTable)
+        return DB::table($staticTable)
             ->select($staticTable.'.name AS value')
             ->where($staticTable.'.name', 'like', '%'.$keyword.'%')
             ->where($staticTable.'.vid', $vid)
             ->get();
-
-        return $records;
     }
 
-    public function resourceAttributesList($tableName, $vid)
+    public function resourceAttributesList($tableName, $vid): Collection
     {
-        $records = DB::table($tableName.' AS ttd')
+        return DB::table($tableName.' AS ttd')
             ->select('ttd.id', 'ttd.name', 'tth.parent', 'ttd.tnid')
             ->leftJoin('taxonomy_term_hierarchy AS tth', 'tth.tid', '=', 'ttd.id')
             ->where('vid', $vid)
@@ -229,25 +224,21 @@ class Resource extends Model
             ->orderBy('ttd.name')
             ->orderBy('ttd.weight', 'desc')
             ->get();
-
-        return $records;
     }
 
     //Total resources based on language
-    public function totalResourcesByLanguage()
+    public function totalResourcesByLanguage(): Collection
     {
-        $records = DB::table('resources AS rs')
+        return DB::table('resources AS rs')
             ->select('rs.language', DB::raw('count(rs.id) as total'))
             ->groupBy('rs.language')
             ->get();
-
-        return $records;
     }
 
     //Total resources based on subject area List
-    public function totalResourcesBySubject($lang = 'en', $date_from = '', $date_to = '')
+    public function totalResourcesBySubject($lang = 'en', $date_from = '', $date_to = ''): Collection
     {
-        $records = DB::table('resource_subject_areas AS rsa')
+        return DB::table('resource_subject_areas AS rsa')
             ->select('ttd.id', 'ttd.name', 'ttd.language', 'ttd.tnid', DB::raw('count(rsa.id) as total'))
             ->LeftJoin('taxonomy_term_data AS ttd', function ($join) {
                 $join->on('ttd.id', '=', 'rsa.tid')->where('ttd.vid', 8);
@@ -259,11 +250,9 @@ class Resource extends Model
             ->groupBy('ttd.name', 'ttd.id', 'ttd.language', 'ttd.tnid')
             ->orderBy('total', 'DESC')
             ->get();
-
-        return $records;
     }
 
-    public function paginateResourcesBy($request)
+    public function paginateResourcesBy($request): LengthAwarePaginator
     {
         $subjectAreaIds = $request['subject_area'];
         $levelIds = $request['level'];
@@ -275,7 +264,7 @@ class Resource extends Model
             $searchQuery = $request->input('search');
         }
 
-        $records = DB::table('resources AS rs')
+        return DB::table('resources AS rs')
             ->select('rs.id', 'rs.language', 'rs.abstract', 'rs.title', 'rs.status')
             ->when($subjectAreaIds != null, function ($query) use ($subjectAreaIds) {
                 return $query
@@ -334,14 +323,12 @@ class Resource extends Model
             ->orderBy('rs.created_at', 'desc')
             ->groupBy('rs.id', 'rs.language', 'rs.title', 'rs.abstract', 'rs.created_at')
             ->paginate(32);
-
-        return $records;
     }
 
     //Total resources based on level
-    public function totalResourcesByLevel($lang = 'en')
+    public function totalResourcesByLevel($lang = 'en'): Collection
     {
-        $records = DB::table('resource_levels AS rl')
+        return DB::table('resource_levels AS rl')
             ->select('ttd.id', 'ttd.name', 'ttd.language', DB::Raw('count(rl.id) as total'))
             ->join('taxonomy_term_data AS ttd', function ($join) {
                 $join->on('ttd.id', '=', 'rl.tid')->where('ttd.vid', 13);
@@ -350,14 +337,12 @@ class Resource extends Model
             ->groupBy('ttd.name', 'ttd.id', 'ttd.language')
             ->orderBy('total', 'DESC')
             ->get();
-
-        return $records;
     }
 
     //Total resources based on Resource Type
-    public function totalResourcesByType($lang = 'en')
+    public function totalResourcesByType($lang = 'en'): Collection
     {
-        $records = DB::table('resource_learning_resource_types AS rlrt')
+        return DB::table('resource_learning_resource_types AS rlrt')
             ->select('ttd.id', 'ttd.name', 'ttd.language', DB::Raw('count(rlrt.id) as total'))
             ->join('taxonomy_term_data AS ttd', function ($join) {
                 $join->on('ttd.id', '=', 'rlrt.tid')->where('ttd.vid', 7);
@@ -366,14 +351,12 @@ class Resource extends Model
             ->groupBy('ttd.id', 'ttd.name', 'ttd.language')
             ->orderBy('total', 'DESC')
             ->get();
-
-        return $records;
     }
 
     //Total resources by attachment type (format)
-    public function totalResourcesByFormat($lang = 'en')
+    public function totalResourcesByFormat($lang = 'en'): Collection
     {
-        $records = DB::table('resources AS rs')
+        return DB::table('resources AS rs')
             ->select('ra.file_mime', 'rs.language', DB::raw('count(rs.id) as total'))
             ->join('resource_attachments AS ra', 'ra.resource_id', '=', 'rs.id')
             ->where('rs.language', $lang)
@@ -381,31 +364,27 @@ class Resource extends Model
             ->orderby('rs.language')
             ->orderBy('total', 'DESC')
             ->get();
-
-        return $records;
     }
 
     //Total resources by attachment type (format)
     public function downloadCounts($date_from, $date_to)
     {
-        $downloads = DB::table('download_counts')
+        return DB::table('download_counts')
             ->select(DB::raw('count(id) as total'))
             ->when($date_from, function ($query) use ($date_from, $date_to) {
                 return $query->whereBetween('created_at', [$date_from, $date_to]);
             })
             ->first()->total;
-
-        return $downloads;
     }
 
-    public function getRelatedResources($resourceId, $subjectAreas)
+    public function getRelatedResources($resourceId, $subjectAreas): Collection
     {
         $ids = [];
         foreach ($subjectAreas as $item) {
-            array_push($ids, $item->id);
+            $ids[] = $item->id;
         }
 
-        $records = DB::table('resources AS rs')
+        return DB::table('resources AS rs')
             ->select('rs.id', 'rs.title', 'rs.abstract')
             ->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
             //not to include the record itself in the related items part
@@ -414,15 +393,13 @@ class Resource extends Model
             ->whereIn('rsa.tid', $ids)
             ->limit(5)
             ->get();
-
-        return $records;
     }
 
-    public function subjectIconsAndTotal($lang = '')
+    public function subjectIconsAndTotal($lang = ''): Collection
     {
         $lang = ! $lang ? Config::get('app.locale') : $lang;
 
-        $records = DB::table('resource_subject_areas AS sarea')
+        return DB::table('resource_subject_areas AS sarea')
             ->select('sticons.file_name', 'ttd.name', 'ttd.id', 'sarea.tid AS subject_area')
             ->leftJoin('taxonomy_term_data AS ttd', function ($join) {
                 $join->on('ttd.id', '=', 'sarea.tid')->where('ttd.vid', 8);
@@ -431,11 +408,9 @@ class Resource extends Model
             ->where('ttd.language', $lang)
             ->groupBy('sarea.tid', 'sticons.file_name', 'ttd.name', 'ttd.id')
             ->get();
-
-        return $records;
     }
 
-    public static function countSubjectAreas($sId)
+    public static function countSubjectAreas($sId): Model|Builder|null
     {
         return DB::table('resource_subject_areas AS rsa')
             ->select(DB::raw('count(rsa.tid) AS total'))
@@ -447,11 +422,11 @@ class Resource extends Model
             ->first();
     }
 
-    public function featuredCollections($lang = '')
+    public function featuredCollections($lang = ''): Collection
     {
         $lang = ! $lang ? Config::get('app.locale') : $lang;
 
-        $records = DB::table('featured_collections AS fcid')
+        return DB::table('featured_collections AS fcid')
             ->select('fcid.id', 'ttd.name', 'fcid.icon', 'ttd.language', 'fu.url', 'frt.type_id', 'frs.subject_id', 'frls.level_id')
             ->leftJoin('taxonomy_term_data AS ttd', function ($join) {
                 $join->on('ttd.id', '=', 'fcid.name_tid')->where('ttd.vid', 21);
@@ -464,31 +439,25 @@ class Resource extends Model
             ->where('ttd.language', $lang)
             ->orderBy('fcid.id')
             ->get();
-
-        return $records;
     }
 
-    public function resourceAttachments($resourceId)
+    public function resourceAttachments($resourceId): Collection
     {
-        $records = DB::table('resource_attachments AS ra')
+        return DB::table('resource_attachments AS ra')
             ->select('*')
             ->where('ra.resource_id', $resourceId)
             ->get();
-
-        return $records;
     }
 
-    public function getResourceTranslations($resourceId)
+    public function getResourceTranslations($resourceId): Collection
     {
-        $record = DB::table('resources AS rs')
+        return DB::table('resources AS rs')
             ->select('rs.id', 'rs.language')
             ->where('rs.tnid', $resourceId)
             ->get();
-
-        return $record;
     }
 
-    public function updateResourceCounter($data)
+    public function updateResourceCounter($data): int
     {
         return DB::table('resource_views')->insertGetId([
             'resource_id' => $data['resource_id'],

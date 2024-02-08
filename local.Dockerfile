@@ -49,4 +49,3 @@ COPY --chown=www:www . /var/www/html
 
 # Change current user to www
 USER www
-

@@ -12,18 +12,13 @@ return new class extends Migration
     {
         Schema::create('static_subject_area_icons', function (Blueprint $table) {
             $table->uuid('id');
-            $table->increments('aux_id');
-            $table->integer('tid')->unsigned();
+            $table->unsignedBigInteger('aux_id');
+            $table->integer('tid')->unsigned()->primary();
             $table->string('file_name')->nullable();
             $table->string('file_url')->nullable();
             $table->string('file_mime')->nullable();
             $table->string('file_size')->nullable();
             $table->index(['aux_id']);
-
-            if (DB::getDriverName() !== 'sqlite') {
-                $table->dropPrimary();
-                $table->primary('tid');
-            }
         });
     }
 
