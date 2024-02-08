@@ -410,7 +410,7 @@ class Resource extends Model
             ->get();
     }
 
-    public static function countSubjectAreas($sId): Model|Builder|null
+    public static function countSubjectAreas($sId): object|null
     {
         return DB::table('resource_subject_areas AS rsa')
             ->select(DB::raw('count(rsa.tid) AS total'))
