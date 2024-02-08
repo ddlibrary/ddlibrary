@@ -154,8 +154,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     //Flags
     Route::get('admin/flags', [FlagController::class, 'index'])->middleware('admin');
     //Taxonomy
-    Route::get('admin/taxonomy', [TaxonomyController::class, 'index'])->name('taxonomylist')->middleware('admin');
-    Route::post('admin/taxonomy', [TaxonomyController::class, 'index'])->name('taxonomylist')->middleware('admin');
+    Route::get('admin/taxonomy', [TaxonomyController::class, 'index'])->name('gettaxonomylist')->middleware('admin');
+    Route::post('admin/taxonomy', [TaxonomyController::class, 'index'])->name('posttaxonomylist')->middleware('admin');
     Route::get('admin/taxonomy/edit/{vid}/{tid}', [TaxonomyController::class, 'edit'])->name('taxonomyedit')->middleware('admin');
     Route::post('admin/taxonomy/edit/{vid}/{tid}', [TaxonomyController::class, 'update'])->name('taxonomyedit')->middleware('admin');
     Route::get('admin/taxonomy/translate/{tid}', [TaxonomyController::class, 'translate'])->middleware('admin');

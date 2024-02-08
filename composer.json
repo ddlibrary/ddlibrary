@@ -82,7 +82,10 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true,
-        "process-timeout": 3600
+        "process-timeout": 3600,
+        "platform": {
+            "php": "8.1"
+        }
     },
     "minimum-stability": "stable",
     "prefer-stable": true
