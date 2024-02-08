@@ -13,7 +13,6 @@
         "aws/aws-sdk-php": "^3.190",
         "barryvdh/laravel-translation-manager": "^0.6.2",
         "doctrine/dbal": "^3.5",
-        "facebook/graph-sdk": "~5.0",
         "fakerphp/faker": "^1.23",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.43",
