@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\HomePage;
+namespace Tests\Feature\Glossary;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
