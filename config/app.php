@@ -145,8 +145,6 @@ return [
          * Package Service Providers...
          */
         'Barryvdh\TranslationManager\ManagerServiceProvider',
-        Intervention\Image\ImageServiceProvider::class,
-        UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
 
         /*
@@ -174,7 +172,6 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'Redis' => Illuminate\Support\Facades\Redis::class,
-        'Image' => Intervention\Image\Facades\Image::class,
     ])->toArray(),
 
 ];
