@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
@@ -41,11 +42,11 @@ if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
 
 Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedirect', 'localizationRedirect', 'localeViewPath')->group(function () {
 
-    Route::get('login/google', [Auth\LoginController::class, 'redirectToGoogle'])->name('login.google');
-    Route::get('login/google/callback', [Auth\LoginController::class, 'handleGoogleCallback']);
+    Route::get('login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
+    Route::get('login/google/callback', [LoginController::class, 'handleGoogleCallback']);
 
-    Route::get('login/facebook', [Auth\LoginController::class, 'redirectToFacebook'])->name('login.facebook');
-    Route::get('login/facebook/callback', [Auth\LoginController::class, 'handleFacebookCallback']);
+    Route::get('login/facebook', [LoginController::class, 'redirectToFacebook'])->name('login.facebook');
+    Route::get('login/facebook/callback', [LoginController::class, 'handleFacebookCallback']);
     /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
     Route::get('/', [HomeController::class, 'index']);
     Route::get('/admin', [DashboardController::class, 'index'])->middleware('admin');
