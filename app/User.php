@@ -157,7 +157,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ->paginate(10);
     }
 
-    public function oneUser($credentials): Model|Builder|null
+    public function oneUser($credentials): object|null
     {
         return DB::table('users')
             ->select(
