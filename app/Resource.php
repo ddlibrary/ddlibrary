@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
@@ -410,7 +409,7 @@ class Resource extends Model
             ->get();
     }
 
-    public static function countSubjectAreas($sId): object|null
+    public static function countSubjectAreas($sId): ?object
     {
         return DB::table('resource_subject_areas AS rsa')
             ->select(DB::raw('count(rsa.tid) AS total'))
