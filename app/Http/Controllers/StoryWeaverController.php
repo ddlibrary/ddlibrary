@@ -6,7 +6,7 @@
 
 namespace App\Http\Controllers;
 
-use App\UserProfile;
+use App\Models\UserProfile;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\TransferException;

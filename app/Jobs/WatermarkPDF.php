@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Resource;
-use App\ResourceAttachment;
+use App\Models\Resource;
+use App\Models\ResourceAttachment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Queue\ShouldQueue;

@@ -78,7 +78,7 @@
 
         <?php
         $lang = Config::get('app.locale');
-        $questions_count = \App\SurveyQuestion::getPublishedQuestions($lang)->count();
+        $questions_count = \App\Models\SurveyQuestion::getPublishedQuestions($lang)->count();
         ?>
         @if ($questions_count != 0)
             @if (Request::is(Lang::locale().'/home'))

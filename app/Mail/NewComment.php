@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\ResourceComment;
+use App\Models\ResourceComment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;

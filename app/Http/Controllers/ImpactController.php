@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App;
-use App\Resource;
-use App\ResourceView;
-use App\TaxonomyTerm;
+use App\Models\Resource;
+use App\Models\ResourceView;
+use App\Models\TaxonomyTerm;
 use Illuminate\View\View;
 
 class ImpactController extends Controller

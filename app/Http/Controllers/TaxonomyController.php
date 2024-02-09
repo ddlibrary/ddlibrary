@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\TaxonomyHierarchy;
-use App\TaxonomyTerm;
-use App\TaxonomyVocabulary;
+use App\Models\TaxonomyHierarchy;
+use App\Models\TaxonomyTerm;
+use App\Models\TaxonomyVocabulary;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
