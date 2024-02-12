@@ -1,8 +1,10 @@
 @extends('layouts.main')
-{!! NoCaptcha::renderJs() !!}
+<script src="https://www.google.com/recaptcha/api.js"></script>
 @section('title')
-    @lang('Register an account') - @lang('Darakht-e Danesh Library')
-@endsection
+    @push('test-push')
+
+        @lang('Register an account') - @lang('Darakht-e Danesh Library')
+    @endsection
 @section('description')
     @lang('The Darakht-e Danesh Online Library for Educators is a repository of open educational resources for teachers, teacher trainers, school administrators, literacy workers and others involved in furthering education in Afghanistan.')
 @endsection
@@ -10,10 +12,10 @@
     {{ asset('storage/files/logo-dd.png') }}
 @endsection
 @section('content')
-<header>
-    <br>
-    <h1 class="text-center">@lang('Register an account')</h1>
-</header>
+    <header>
+        <br>
+        <h1 class="text-center">@lang('Register an account')</h1>
+    </header>
     <section class="ddl-forms register-form">
         <div class="content-body">
             @include('layouts.messages')
@@ -23,7 +25,7 @@
                 {{-- Login via socialate --}}
                 <div class="socialite-container">
                     <div class="socialite justify-content-center">
-    
+
                         {{-- Gmail --}}
                         <a href="{{ env('LOGIN_WITH_GOOGLE') == 'no' ? 'javascript:void(0)' : route('login.google') }}"
                             class="btn btn-outline-secondary btn-md  @if (env('LOGIN_WITH_GOOGLE') == 'no') disabled-link display-none @endif @if (env('LOGIN_WITH_FACEBOOK') == 'no') flex-grow-1 @endif"
@@ -32,7 +34,7 @@
                             <span class="oauth-icon-separator"></span>
                             @lang('Sign Up with Google')
                         </a>
-    
+
                         {{-- Facebook --}}
                         <a href="{{ env('LOGIN_WITH_FACEBOOK') == 'no' ? 'javascript:void(0)' : route('login.facebook') }}"
                             class=" btn btn-outline-secondary btn-md float-xl-right @if (env('LOGIN_WITH_FACEBOOK') == 'no') disabled-link display-none @endif @if (env('LOGIN_WITH_GOOGLE') == 'no') flex-grow-1 @endif"
@@ -59,8 +61,8 @@
                                 <strong>@lang('First name')</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
-                            <input class="form-control  w-100" placeholder="@lang('First name')" id="first_name" name="first_name" value="{{ old('first_name') }}"
-                                type="text" required>
+                            <input class="form-control  w-100" placeholder="@lang('First name')" id="first_name"
+                                name="first_name" value="{{ old('first_name') }}" type="text" required>
                         </div>
                     </div>
 
@@ -71,8 +73,9 @@
                                 <strong>@lang('Last name')</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
-                            <input class="form-control  w-100{{ $errors->has('last_name') ? ' is-invalid' : '' }}" id="last_name"
-                                name="last_name" value="{{ old('last_name') }}" type="text" placeholder="@lang('Last name')" required>
+                            <input class="form-control  w-100{{ $errors->has('last_name') ? ' is-invalid' : '' }}"
+                                id="last_name" name="last_name" value="{{ old('last_name') }}" type="text"
+                                placeholder="@lang('Last name')" required>
                         </div>
                     </div>
 
@@ -96,8 +99,8 @@
                                 <strong>@lang('Gender')</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
-                            <select class="form-control  w-100{{ $errors->has('gender') ? ' is-invalid' : '' }}" name="gender"
-                                id="gender" required>
+                            <select class="form-control  w-100{{ $errors->has('gender') ? ' is-invalid' : '' }}"
+                                name="gender" id="gender" required>
                                 <option value="">- @lang('None') -</option>
                                 <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>@lang('Male')
                                 </option>
@@ -155,8 +158,9 @@
                                 <strong>@lang('Country')</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
-                            <select class="form-control  w-100{{ $errors->has('country') ? ' is-invalid' : '' }}" name="country"
-                                id="country" onchange="populate(this,'city', {{ json_encode($provinces) }})" required>
+                            <select class="form-control  w-100{{ $errors->has('country') ? ' is-invalid' : '' }}"
+                                name="country" id="country"
+                                onchange="populate(this,'city', {{ json_encode($provinces) }})" required>
                                 <option value="">- @lang('None') -</option>
                                 @foreach ($countries as $cn)
                                     <option value="{{ $cn->tnid }}"
@@ -172,8 +176,8 @@
                             <label for="city">
                                 <strong>@lang('City')</strong>
                             </label>
-                            <select class="form-control  w-100{{ $errors->has('city') ? ' is-invalid' : '' }}" name="city"
-                                id="city">
+                            <select class="form-control  w-100{{ $errors->has('city') ? ' is-invalid' : '' }}"
+                                name="city" id="city">
                                 <option value="">- @lang('None') -</option>
                             </select>
                             <input type="text" class="form-control" name="city_other" id="js-text-city"
@@ -186,9 +190,10 @@
                         <div class="form-item">
                             <label>
 
-                                <input type="checkbox" class="m-0 submit-btn" checked style="width: auto;" name="subscribe" >
+                                <input type="checkbox" class="m-0 submit-btn" checked style="width: auto;"
+                                    name="subscribe">
                                 <small style="color:gray">
-                                    @lang("Receive our occasional newsletters and announcements (your email will be shared with MailChimp)")
+                                    @lang('Receive our occasional newsletters and announcements (your email will be shared with MailChimp)')
                                 </small>
                             </label>
                         </div>
