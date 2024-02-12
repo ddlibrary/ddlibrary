@@ -41,6 +41,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Session;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
 
 class ResourceController extends Controller
@@ -1328,7 +1329,7 @@ class ResourceController extends Controller
         return $validatedData;
     }
 
-    public function viewFile($fileId, $key): Response
+    public function viewFile($fileId, $key): BinaryFileResponse
     {
         $secret = config('s3.config.secret');
         $decrypted_key = decrypt($key);

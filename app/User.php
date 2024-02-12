@@ -228,29 +228,29 @@ class User extends Authenticatable implements MustVerifyEmail
             ->update($newPassword);
     }
 
-    public function isAdministrator($userid): ?\stdClass
+    public function isAdministrator($userId): ?\stdClass
     {
         return DB::table('users')
             ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
-            ->where('users.id', $userid)
+            ->where('users.id', $userId)
             ->where('user_roles.role_id', 5)
             ->first();
     }
 
-    public function isNormalUser($userid): ?\stdClass
+    public function isNormalUser($userId): ?\stdClass
     {
         return DB::table('users')
             ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
-            ->where('users.id', $userid)
+            ->where('users.id', $userId)
             ->where('user_roles.role_id', 2)
             ->first();
     }
 
-    public function isLibraryManager($userid): ?\stdClass
+    public function isLibraryManager($userId): ?\stdClass
     {
         return DB::table('users')
             ->join('user_roles', 'user_roles.user_id', '=', 'users.id')
-            ->where('users.id', $userid)
+            ->where('users.id', $userId)
             ->where('user_roles.role_id', 3)
             ->first();
     }
