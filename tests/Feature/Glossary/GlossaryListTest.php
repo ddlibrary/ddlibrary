@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class GlossaryListTest extends TestCase
 {
-    use DatabaseMigrations, RefreshDatabase;
+    use RefreshDatabase;
 
     /** @test */
     public function user_can_visit_glossary_page(): void
