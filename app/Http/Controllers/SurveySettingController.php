@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\SurveySetting;
+use App\Models\SurveySetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;

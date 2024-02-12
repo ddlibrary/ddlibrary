@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Glossary;
-use App\GlossarySubject;
+use App\Models\Glossary;
+use App\Models\GlossarySubject;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;

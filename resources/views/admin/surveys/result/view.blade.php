@@ -41,7 +41,7 @@
                     @else
                       <td>Descriptive</td>
                     @endif
-                    <td>{{\App\Survey::find($survey_question->survey_id)->name }}</td>
+                    <td>{{\App\Models\Survey::find($survey_question->survey_id)->name }}</td>
                     <td><a href="{{ URL::to('admin/survey_question/answers/'.$survey_question->id) }}" class="badge badge-success">View Answers</a></td>
                   </tr>
                 @endforeach

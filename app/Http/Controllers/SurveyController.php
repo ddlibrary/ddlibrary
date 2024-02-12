@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Survey;
-use App\SurveyQuestion;
+use App\Models\Survey;
+use App\Models\SurveyQuestion;
 use Config;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

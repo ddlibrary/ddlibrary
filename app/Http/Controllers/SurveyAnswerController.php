@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\SurveyAnswer;
-use App\SurveyQuestion;
-use App\SurveyQuestionOption;
+use App\Models\SurveyAnswer;
+use App\Models\SurveyQuestion;
+use App\Models\SurveyQuestionOption;
 use Config;
 use Illuminate\Http\Request;
 use Illuminate\View\View;

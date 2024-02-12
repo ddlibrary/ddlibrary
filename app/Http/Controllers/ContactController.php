@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Contact;
+use App\Models\Contact;
 use App\Mail\ContactPage;
-use App\Setting;
-use App\User;
+use App\Models\Setting;
+use App\Models\User;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;

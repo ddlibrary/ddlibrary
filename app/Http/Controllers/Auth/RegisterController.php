@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Resource;
-use App\User;
-use App\UserProfile;
+use App\Models\Resource;
+use App\Models\User;
+use App\Models\UserProfile;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Auth\Events\Registered;
