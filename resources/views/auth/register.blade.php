@@ -1,5 +1,7 @@
 @extends('layouts.main')
+@if (Config::get('captcha.captcha') == 'yes')
 <script src="https://www.google.com/recaptcha/api.js"></script>
+@endif
 @section('title')
     @push('test-push')
 
@@ -19,7 +21,7 @@
     <section class="ddl-forms register-form">
         <div class="content-body">
             @include('layouts.messages')
-            <form method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('register') }}" id="registration-form">
                 @honeypot
                 @csrf
                 {{-- Login via socialate --}}
@@ -200,18 +202,18 @@
                     </div>
                 </div>
 
-                {{-- Google Captcha --}}
-                @if (Config::get('captcha.captcha') == 'yes')
-                    <div class="register-form-item">
-                        <div class="form-item overflow-x">
-                            {!! NoCaptcha::display() !!}
-                        </div>
-                    </div>
-                @endif
+
 
                 {{-- Submit --}}
                 <div class="register-form-item register-form-submit-btn">
-                    <input class="form-control submit-button btn btn-primary" type="submit" value="@lang('Submit')">
+                    @if (Config::get('captcha.captcha') == 'yes')
+                        <button class="g-recaptcha form-control submit-button btn btn-primary"
+                            data-sitekey="{{ config('services.recaptcha_v3.site_key') }}" data-callback='onSubmit'
+                            data-action='register'>@lang('Submit')</button>
+                    @else
+                        <button class="form-control submit-button btn btn-primary">@lang('Submit')</button>
+                    @endif
+
                     <a href="{{ route('login') }}">@lang('Sign in')</a>
                 </div>
             </form>
@@ -220,6 +222,10 @@
     @push('scripts')
         <script src="{{ asset('js/ddl.js') }}"></script>
         <script>
+            function onSubmit(token) {
+                document.getElementById("registration-form").submit();
+            }
+
             function showDiv() {
                 document.getElementById('phone').required = true;
                 document.getElementById('email').required = false;
