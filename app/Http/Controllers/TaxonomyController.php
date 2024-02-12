@@ -24,7 +24,7 @@ class TaxonomyController extends Controller
         $vocabulary = TaxonomyVocabulary::all('vid AS val', 'name');
 
         $args = [
-            'route' => 'taxonomylist',
+            'route' => 'gettaxonomylist',
             'filters' => $request,
             'vocabulary' => $vocabulary,
         ];
