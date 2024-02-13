@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Analytics;
-use App\Resource;
-use App\ResourceLevel;
-use App\ResourceSubjectArea;
-use App\TaxonomyTerm;
+use App\Models\Resource;
+use App\Models\ResourceLevel;
+use App\Models\ResourceSubjectArea;
+use App\Models\TaxonomyTerm;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;

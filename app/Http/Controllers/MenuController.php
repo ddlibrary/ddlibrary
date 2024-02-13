@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Menu;
+use App\Models\Menu;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;

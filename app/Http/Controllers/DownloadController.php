@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\DownloadCount;
+use App\Models\DownloadCount;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 

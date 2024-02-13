@@ -1,6 +1,6 @@
 <?php
 
-use App\User;
+use App\Models\User;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use setasign\Fpdi\Fpdi;
@@ -171,7 +171,7 @@ if (! function_exists('checkUserPassword')) {
 if (! function_exists('getCountry')) {
     function getCountry($tnid)
     {
-        $term = App\TaxonomyTerm::where('tnid', $tnid)->
+        $term = App\Models\TaxonomyTerm::where('tnid', $tnid)->
             where('language', 'en')->
             where('vid', 15)->
             first();
@@ -443,9 +443,9 @@ if (! function_exists('en')) {
 if (! function_exists('termEn')) {
     function termEn($id = ''): string
     {
-        $tnid = App\TaxonomyTerm::where('id', $id)->first()->tnid;
+        $tnid = App\Models\TaxonomyTerm::where('id', $id)->first()->tnid;
 
-        $term = App\TaxonomyTerm::where('tnid', $tnid)->where('language', 'en')->first();
+        $term = App\Models\TaxonomyTerm::where('tnid', $tnid)->where('language', 'en')->first();
 
         return ($term != null) ? ' ('.$term->name.')' : '';
     }

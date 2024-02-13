@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\ResourceComment;
+use App\Models\ResourceComment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\DownloadCount;
-use App\Resource;
-use App\ResourceView;
-use App\User;
+use App\Models\DownloadCount;
+use App\Models\Resource;
+use App\Models\ResourceView;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 

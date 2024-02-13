@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\News;
-use App\Resource;
-use App\Survey;
-use App\SurveyQuestion;
-use App\SurveyQuestionOption;
+use App\Models\News;
+use App\Models\Resource;
+use App\Models\Survey;
+use App\Models\SurveyQuestion;
+use App\Models\SurveyQuestionOption;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;

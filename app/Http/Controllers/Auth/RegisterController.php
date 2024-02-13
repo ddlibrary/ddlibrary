@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Resource;
-use App\Rules\RecaptchaRule;
-use App\Subscriber;
-use App\User;
-use App\UserProfile;
+use App\Models\Resource;
+use App\Models\User;
+use App\Models\UserProfile;
 use Carbon\Carbon;
-use Closure;
+use App\Rules\RecaptchaRule;
+use App\Models\Subscriber;
 use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\View\Factory;
