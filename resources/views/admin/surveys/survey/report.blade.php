@@ -58,7 +58,7 @@
                       @endif
                     </td>
                     <td>
-                        @foreach(\App\SurveyAnswer::getQuestionOptions($survey_question->id) as $qoption)
+                        @foreach(\App\Models\SurveyAnswer::getQuestionOptions($survey_question->id) as $qoption)
                         <i class="badge badge-primary">{{ ($survey_question->type != 'descriptive') ? $qoption->text : '' }}</i> <br>
                         @endforeach
                     </td>
@@ -66,13 +66,13 @@
                     <td>                            
                         @if($survey_question->type != 'descriptive')
 
-                            @foreach(\App\SurveyAnswer::getQuestionOptions($survey_question->id) as $qoption)
-                              <?php $data = (\App\SurveyAnswer::getAnswerAmount($survey_question->id, $qoption->id, $lang)); ?>
+                            @foreach(\App\Models\SurveyAnswer::getQuestionOptions($survey_question->id) as $qoption)
+                              <?php $data = (\App\Models\SurveyAnswer::getAnswerAmount($survey_question->id, $qoption->id, $lang)); ?>
                               {{ ($data) ? $data->total : 0 }}<br>
                             @endforeach
 
                         @else
-                            <?php $data = (\App\SurveyAnswer::getDescriptiveAnswers($survey_question->id, $lang)); ?>
+                            <?php $data = (\App\Models\SurveyAnswer::getDescriptiveAnswers($survey_question->id, $lang)); ?>
                             {{ ($data) ? $data->total : 0 }}<br>
                         @endif
                     </td>

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\ResourceFlag;
+use App\Models\ResourceFlag;
 use Illuminate\View\View;
 
 class FlagController extends Controller
