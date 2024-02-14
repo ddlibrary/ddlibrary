@@ -19,6 +19,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StoryWeaverController;
+use App\Http\Controllers\SubscribeController;
 use App\Http\Controllers\SurveyAnswerController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\SurveyQuestionController;
@@ -260,7 +261,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
 Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
-Route::post('/subscribe', 'SubscribeController@subscribe')->name('subscribe');
+Route::post('/subscribe', [SubscribeController::class, 'subscribe'])->name('subscribe');
 /** OTHER PAGES THAT SHOULD NOT BE LOCALIZED **/
 Route::post('resources/favorite', [ResourceController::class, 'resourceFavorite']);
 Route::get('/storage/{resource_id}/{file_id}/{file_name}', FileController::class)->where(['file_name' => '.*']);
