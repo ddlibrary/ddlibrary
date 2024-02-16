@@ -257,11 +257,15 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         return redirect('/home');
     });
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::prefix('subscribe')->controller(SubscribeController::class)->group(function(){
+        Route::get('/', 'index');
+        Route::post('', 'store');
+    });
 });
 Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
-Route::post('/subscribe', [SubscribeController::class, 'subscribe'])->name('subscribe');
+
 /** OTHER PAGES THAT SHOULD NOT BE LOCALIZED **/
 Route::post('resources/favorite', [ResourceController::class, 'resourceFavorite']);
 Route::get('/storage/{resource_id}/{file_id}/{file_name}', FileController::class)->where(['file_name' => '.*']);
