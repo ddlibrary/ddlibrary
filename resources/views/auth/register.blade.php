@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@if (Config::get('captcha.captcha') == 'yes')
+@if (env('CAPTCHA') == 'yes')
     <script src="https://www.google.com/recaptcha/api.js"></script>
 @endif
 @section('title')
@@ -202,7 +202,7 @@
                 {{-- Submit --}}
                 <div class="register-form-item register-form-submit-btn">
                     <div>
-                        @if (Config::get('captcha.captcha') == 'yes')
+                        @if (env('CAPTCHA') == 'yes')
                             <button class="g-recaptcha form-control submit-button btn btn-primary"
                                 data-sitekey="{{ config('services.recaptcha_v3.site_key') }}" data-callback='onSubmit'
                                 data-action='register'>@lang('Submit')</button>
