@@ -69,14 +69,20 @@
                     <div id="editor">
                         <textarea class="w-100 form-control{{ $errors->has('message') ? ' is-invalid' : '' }}" name="message"
                             style="height: 200px; width: 350px" required>{{ old('message') }}</textarea>
+                        @if ($errors->has('message'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('message') }}</strong>
+                            </span><br>
+                        @endif
+                        @if ($errors->has('g-recaptcha-response'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                            </span><br>
+                        @endif
+
                     </div>
-                    @if ($errors->has('message'))
-                        <span class="invalid-feedback">
-                            <strong>{{ $errors->first('message') }}</strong>
-                        </span><br>
-                    @endif
                 </div>
-               
+
                 <div class="left-side">
                     <div>
                         @if (Config::get('captcha.captcha') == 'yes')
@@ -86,14 +92,6 @@
                         @else
                             <button class="form-control login-submit btn btn-primary">@lang('Send')</button>
                         @endif
-                        @if ($errors->has('g-recaptcha-response'))
-                            <div>
-                                <span class="invalid-feedback text-start">
-                                    <span>{{ $errors->first('g-recaptcha-response') }}</span>
-                                </span>
-                            </div>
-                        @endif
-                        
                     </div>
                 </div>
             </form>
