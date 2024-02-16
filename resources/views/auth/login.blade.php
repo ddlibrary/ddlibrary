@@ -1,4 +1,7 @@
 @extends('layouts.main')
+@if (Config::get('captcha.captcha') == 'yes')
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+@endif
 @section('title')
     @lang('Log in to Darakht-e Danesh Library') - @lang('Darakht-e Danesh Library')
 @endsection
@@ -15,7 +18,7 @@
                 <h3>@lang('Log in to Darakht-e Danesh Library')</h3>
             </header>
             <div>
-                <form method="POST" action="{{ route('login') }}">
+                <form method="POST" action="{{ route('login') }}" id="login-form">
                     @honeypot
                     @csrf
 
@@ -57,8 +60,24 @@
 
                     {{-- Submit Button --}}
                     <div class="form-item">
-                        <input class="form-control login-submit btn btn-primary w-100" type="submit"
-                            value="@lang('Log in')">
+
+                        <div>
+                            @if (Config::get('captcha.captcha') == 'yes')
+                                <button class="g-recaptcha form-control login-submit btn btn-primary w-100"
+                                    data-sitekey="{{ config('services.recaptcha_v3.site_key') }}" data-callback='onSubmit'
+                                    data-action='register'>@lang('Log in')</button>
+                            @else
+                                <button class="form-control login-submit btn btn-primary w-100">@lang('Log in')</button>
+                            @endif
+                            @if ($errors->has('g-recaptcha-response'))
+                                <div>
+                                    <span class="invalid-feedback text-start">
+                                        <span>{{ $errors->first('g-recaptcha-response') }}</span>
+                                    </span>
+                                </div>
+                            @endif
+                            
+                        </div>
                     </div>
 
                     <div class="form-item">
@@ -102,4 +121,11 @@
             </div>
         </div>
     </section>
+    @push('scripts')
+        <script>
+            function onSubmit(token) {
+                document.getElementById("login-form").submit();
+            }
+        </script>
+    @endpush
 @endsection
