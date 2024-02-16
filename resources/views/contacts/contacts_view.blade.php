@@ -11,7 +11,6 @@
 @section('page_image')
     {{ asset('storage/files/logo-dd.png') }}
 @endsection
-{!! NoCaptcha::renderJs() !!}
 @section('content')
     <section class="ddl-forms">
         <header>
@@ -79,7 +78,6 @@
                                 <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
                             </span><br>
                         @endif
-
                     </div>
                 </div>
 
