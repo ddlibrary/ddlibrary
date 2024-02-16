@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @if (Config::get('captcha.captcha') == 'yes')
-<script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 @endif
 @section('title')
     @push('test-push')
@@ -191,7 +191,6 @@
                     <div class="register-form-item">
                         <div class="form-item">
                             <label>
-
                                 <input type="checkbox" class="m-0 submit-btn" checked style="width: auto;"
                                     name="subscribe">
                                 <small style="color:gray">
@@ -202,19 +201,21 @@
                     </div>
                 </div>
 
-
-
                 {{-- Submit --}}
                 <div class="register-form-item register-form-submit-btn">
-                    @if (Config::get('captcha.captcha') == 'yes')
-                        <button class="g-recaptcha form-control submit-button btn btn-primary"
-                            data-sitekey="{{ config('services.recaptcha_v3.site_key') }}" data-callback='onSubmit'
-                            data-action='register'>@lang('Submit')</button>
-                    @else
-                        <button class="form-control submit-button btn btn-primary">@lang('Submit')</button>
-                    @endif
+                    <div>
+                        @if (Config::get('captcha.captcha') == 'yes')
+                            <button class="g-recaptcha form-control submit-button btn btn-primary"
+                                data-sitekey="{{ config('services.recaptcha_v3.site_key') }}" data-callback='onSubmit'
+                                data-action='register'>@lang('Submit')</button>
+                        @else
+                            <button class="form-control submit-button btn btn-primary">@lang('Submit')</button>
+                        @endif
+                    </div>
+                    <div>
+                        <a href="{{ route('login') }}">@lang('Sign in')</a>
+                    </div>
 
-                    <a href="{{ route('login') }}">@lang('Sign in')</a>
                 </div>
             </form>
         </div>
