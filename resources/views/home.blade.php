@@ -214,14 +214,11 @@
                         </li>
                     @endforeach
                 @endif
+                <li>
+                    <a href="{{ url('subscribe')}}" title="@lang('Subscribe')">@lang('Subscribe')</a>
+                </li>
             </ul>
         </nav>
-
-        <div>
-            <a href="{{ url('subscribe')}}">
-                <button type="submit" class="form-control w-100 submit-button btn btn-primary  display-inline-block p-7"> @lang("Subscribe") </button>
-            </a>
-        </div>
     </div>
 </section>
 
