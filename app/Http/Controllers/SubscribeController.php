@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SubscribeRequest;
 use App\Models\Subscriber;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -13,7 +12,9 @@ class SubscribeController extends Controller
 {
     public function index(): View
     {
-        return view('subscribe.index');
+        $subscriber = Auth::check() ? Subscriber::whereUserId(auth()->id())->first() : null;
+
+        return view('subscribe.index', compact('subscriber'));
     }
 
     public function store(SubscribeRequest $request): RedirectResponse
