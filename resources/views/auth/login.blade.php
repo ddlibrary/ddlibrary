@@ -21,7 +21,7 @@
 
                     {{-- Username --}}
                     <div class="form-item">
-                        <input type="text" class="form-control{{ $errors->has('user-field') ? ' is-invalid' : '' }}"
+                        <input type="text" class="form-control w-100 {{ $errors->has('user-field') ? ' is-invalid' : '' }}"
                             id="user-field" name="user-field" autocomplete="username" spellcheck="false"
                             placeholder="@lang('Email or username or phone')" size="40" value="{{ old('user-field') }}" required
                             autofocus>
