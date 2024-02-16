@@ -277,5 +277,6 @@
     "Your email will be shared with MailChimp. their privacy policy": "ایمیل شما با MailChimp به اشتراک گذاشته خواهد شد. <br> <a href='https://mailchimp.com/legal/'>سیاست حفظ حریم خصوصی آنها",
     "Subscribe to our newsletter":"خبرنامه ما را سابسکرایب کنید",
     "You already subscribed our newsletter.": "شما قبلاً خبرنامه ما را سابسکرایب کرده‌اید،",
-    "Thank you": "خیلی ممنون"
+    "Thank you": "خیلی ممنون",
+    "If you registered using a phone number, please contact us.": "اگر با شماره مبایل راجستر کرده اید، لطفاً <a href='/contact-us'> با ما تماس شوید</a>."
 }

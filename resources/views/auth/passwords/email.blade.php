@@ -1,8 +1,10 @@
 @extends('layouts.main')
+@if (Config::get('captcha.captcha') == 'yes')
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+@endif
 @section('title')
     @lang('Reset your password') - @lang('Darakht-e Danesh Library')
 @endsection
-{!! NoCaptcha::renderJs() !!}
 @section('content')
 <section class="ddl-forms">
     <header>
@@ -17,7 +19,7 @@
             @endif
             @include('layouts.messages')
 
-            <form method="POST" action="{{ route('password.email') }}">
+            <form method="POST" action="{{ route('password.email') }}" id="reset-password-form">
                 @honeypot
                 @csrf
 
@@ -25,7 +27,7 @@
                     <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Your email address') }}</label>
 
                     <div class="col-md-8">
-                        <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" style="width: 377px;" name="email" value="{{ old('email') }}" required>
+                        <input id="email" placeholder="@lang('Please enter your email')" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" style="width: 377px;" name="email" value="{{ old('email') }}" required>
 
                         @if ($errors->has('email'))
                             <span class="invalid-feedback">
@@ -35,20 +37,27 @@
                     </div>
                 </div>
 
-                @if(Config::get('captcha.captcha') == 'yes')
-                    <div class="form-item">
-                        {!! NoCaptcha::display() !!}
-                    </div>
-                @endif
-
                 <div class="form-item">
-                    <input type="submit" class="form-control" value="{{ __('Send password reset link') }}" onclick="this.style.display='none';document.getElementById('wait').style.display='block'" ondblclick="this.style.display='display';document.getElementById('wait').style.display='block'">
-
-                    <input type="button" class="form-control" id="wait" value="@lang('Please wait..')" style="color:red;display:none" disabled>
+                    <div>
+                        @if (Config::get('captcha.captcha') == 'yes')
+                            <button class="g-recaptcha form-control submit-button btn btn-primary"
+                                data-sitekey="{{ config('services.recaptcha_v3.site_key') }}" data-callback='onSubmit'
+                                data-action='register'>@lang('Send password reset link')</button>
+                        @else
+                            <button class="form-control submit-button btn btn-primary">@lang('Send password reset link')</button>
+                        @endif
+                    </div>
                 </div>
             </form>
-            <span style="font-size: 0.9rem;">@lang('If you registered using a phone number, please <a href="'.URL::to('contact-us').'">contact us</a>.')</span>
+            <span style="font-size: 0.9rem;">@lang('If you registered using a phone number, please contact us.')</span>
         </div>
     </div>
 </section>
+@push('scripts')
+        <script>
+            function onSubmit(token) {
+                document.getElementById("reset-password-form").submit();
+            }
+        </script>
+    @endpush
 @endsection
