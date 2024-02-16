@@ -23,7 +23,7 @@ class RecaptchaRule implements ValidationRule
 
         if(!$googleResponse->json('success')){
 
-            $fail("The {$attribute} is invalid.");
+            $fail("We have noticed some unusual usage patterns. Please try again later.");
         }
     }
 }
