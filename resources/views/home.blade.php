@@ -218,11 +218,9 @@
         </nav>
 
         <div>
-            <form action="{{ route('subscribe') }}" method="POST">
-                @csrf
-                <input type="email" name="email" placeholder="@lang('Enter Your Email')" class="form-control display-inline-block">
-                <button type="submit" class="form-control submit-button btn btn-primary  display-inline-block p-7"> @lang("Subscribe") </button>
-            </form>
+            <a href="{{ url('subscribe')}}">
+                <button type="submit" class="form-control w-100 submit-button btn btn-primary  display-inline-block p-7"> @lang("Subscribe") </button>
+            </a>
         </div>
     </div>
 </section>
