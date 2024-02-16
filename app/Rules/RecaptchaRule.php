@@ -21,7 +21,9 @@ class RecaptchaRule implements ValidationRule
             'remoteip' => request()->id,
         ]);
 
-        if(!$googleResponse->json('success')){
+        $recaptchaResult = json_decode($googleResponse);
+
+        if (!$recaptchaResult->success || (isset($recaptchaResult->score) && $recaptchaResult->score < 0.5)) {
 
             $fail("We have noticed some unusual usage patterns. Please try again later.");
         }
