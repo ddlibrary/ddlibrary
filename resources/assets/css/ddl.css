@@ -343,6 +343,10 @@ footer i:hover, footer i:active, footer i:focus {
     margin-bottom: 20px;
 }
 
+.p-20{
+    padding:20px 40px !important;
+}
+
 .content-body {
     width: 100%;
 }

@@ -22,8 +22,10 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (Schema::hasTable('menus')) {
-            View::share('menu', Menu::orderBy('weight')->get());
+        try {
+            \DB::connection()->getPDO();
+            View::share('menu', Menu::query()->orderBy('weight')->get());
+            } catch (\Exception $e) {
         }
     }
 }

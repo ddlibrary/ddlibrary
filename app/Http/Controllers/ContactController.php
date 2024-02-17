@@ -6,6 +6,7 @@ use App\Models\Contact;
 use App\Mail\ContactPage;
 use App\Models\Setting;
 use App\Models\User;
+use App\Rules\RecaptchaRule;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -98,7 +99,7 @@ class ContactController extends Controller
             'email' => 'required|email',
             'subject' => 'required',
             'message' => 'required',
-            'g-recaptcha-response' => 'required|captcha',
+            'g-recaptcha-response' => ['required', new RecaptchaRule()],
         ]);
 
         //Saving contact info to the database

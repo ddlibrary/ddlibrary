@@ -53,4 +53,10 @@ return [
         'redirect' => 'https://library.darakhtdanesh.org/login/google/callback/',
     ],
 
+    // Configure Google ReCAPTCHA v3 key+secret
+    'recaptcha_v3' => [
+        'site_key' => env('RECAPTCHAV3_SITEKEY'),
+        'secret_key' => env('RECAPTCHAV3_SECRET'),
+    ]
+
 ];
