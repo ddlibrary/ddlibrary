@@ -1,14 +1,13 @@
 <?php
 
-namespace Tests\Feature\HomePage;
+namespace Tests\Feature\Glossary;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class GlossaryListTest extends TestCase
 {
-    use DatabaseMigrations, RefreshDatabase;
+    use RefreshDatabase;
 
     /** @test */
     public function user_can_visit_glossary_page(): void

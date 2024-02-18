@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Resource;
-use App\Subscriber;
-use App\User;
-use App\UserProfile;
+use App\Models\Resource;
+use App\Models\User;
+use App\Models\UserProfile;
 use Carbon\Carbon;
+use App\Rules\RecaptchaRule;
+use App\Models\Subscriber;
 use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\View\Factory;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -87,7 +89,7 @@ class RegisterController extends Controller
                 'gender' => 'required',
                 'country' => 'required',
                 'city' => 'nullable',
-                'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', 'captcha'],
+                'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule()],
             ],
             [
                 'phone.unique' => __('The phone number has already been taken.'),

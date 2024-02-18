@@ -2,21 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Subscriber;
-use Illuminate\Http\Request;
+use App\Http\Requests\SubscribeRequest;
+use App\Models\Subscriber;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class SubscribeController extends Controller
 {
-    public function subscribe(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email|unique:subscribers,email'
-    ]);
+    public function index(): View
+    {
+        $subscriber = Auth::check() ? Subscriber::whereUserId(auth()->id())->first() : null;
 
-    Subscriber::create([
-        'email' => $request->email
-    ]);
+        return view('subscribe.index', compact('subscriber'));
+    }
 
-    return redirect()->back()->with('success', 'Thank you for subscribing!');
-}
+    public function store(SubscribeRequest $request): RedirectResponse
+    {
+        Subscriber::create([
+            'email' => $request->email,
+            'name' => $request->name,
+            'user_id' => Auth::check() ? Auth::id() : null,
+        ]);
+
+        return back()->with('success', 'Thank you for subscribing!');
+    }
 }

@@ -8,7 +8,7 @@
 <!-- Modal content -->
 <?php 
     $lang = Config::get('app.locale'); 
-    $questions_count = \App\SurveyQuestion::getPublishedQuestions($lang)->count();
+    $questions_count = \App\Models\SurveyQuestion::getPublishedQuestions($lang)->count();
 ?>
 
 <div id="surveyModal" class="modal" dir="@if ($lang != 'en')rtl@else ltr@endif">
@@ -32,7 +32,7 @@
                         <div class="navbar-inner">
                             <ul class="nav nav-pills">
                                 <?php $i = 1; ?>
-                                @foreach(\App\SurveyQuestion::getPublishedQuestions($lang) as $question)
+                                @foreach(\App\Models\SurveyQuestion::getPublishedQuestions($lang) as $question)
                                     @if ($i == 1)
                                         <li class="active"><a href="#{{$question->id}}" data-toggle="tab" data-step="{{$i}}">{{$question->name}}</a></li>
                                     @else
@@ -48,7 +48,7 @@
                         @csrf
                         <div class="tab-content">
                             <?php  $a = 1; ?>
-                            @foreach(\App\SurveyQuestion::getPublishedQuestions($lang) as $question)
+                            @foreach(\App\Models\SurveyQuestion::getPublishedQuestions($lang) as $question)
                                 @if ($a == 1)
                                     <div class="tab-pane fade in active" id="{{$question->id}}">
                                         <div class="well">
@@ -138,7 +138,7 @@
 
 
 {{-- Survey pop up time/start  --}}
-<span class="pop_up_time" id="{{ \App\SurveySetting::first() }}"></span>
+<span class="pop_up_time" id="{{ \App\Models\SurveySetting::first() }}"></span>
 
 <script>
     var pop_up_time = document.querySelector('.pop_up_time').id

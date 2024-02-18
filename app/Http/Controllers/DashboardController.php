@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\News;
-use App\Page;
-use App\Resource;
-use App\User;
+use App\Models\News;
+use App\Models\Page;
+use App\Models\Resource;
+use App\Models\User;
 use Illuminate\View\View;
 
 class DashboardController extends Controller

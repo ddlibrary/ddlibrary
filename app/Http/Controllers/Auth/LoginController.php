@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\User;
-use App\UserProfile;
-use App\UserRole;
+use App\Models\User;
+use App\Models\UserProfile;
+use App\Models\UserRole;
+use App\Rules\RecaptchaRule;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\RedirectResponse;
@@ -197,6 +198,7 @@ class LoginController extends Controller
         $this->validate($request, [
             'user-field' => 'required|string',
             'password' => 'required|string',
+            'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule()],
         ]);
     }
 

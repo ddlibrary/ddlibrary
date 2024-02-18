@@ -39,7 +39,7 @@
 
               <tbody>
                 @if ($question->type != "descriptive")
-                  @foreach (\App\SurveyAnswer::getAnswersByOption($question->id) as $option)
+                  @foreach (\App\Models\SurveyAnswer::getAnswersByOption($question->id) as $option)
                     <tr>
                       <td>{{ $option->text }}</td>
                       <td>{{ fixLanguage($option->language) }}</td>

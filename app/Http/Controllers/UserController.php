@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Resource;
-use App\ResourceFavorite;
-use App\Role;
-use App\User;
-use App\UserProfile;
-use App\UserRole;
+use App\Models\Resource;
+use App\Models\ResourceFavorite;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\UserProfile;
+use App\Models\UserRole;
 use BladeView;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Foundation\Application;

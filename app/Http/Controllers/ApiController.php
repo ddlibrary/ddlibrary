@@ -4,17 +4,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Menu;
-use App\News;
-use App\Page;
-use App\Resource;
-use App\ResourceAttachment;
-use App\ResourceComment;
-use App\ResourceFavorite;
-use App\ResourceView;
-use App\User;
-use App\UserProfile;
-use App\UserRole;
+use App\Models\Menu;
+use App\Models\News;
+use App\Models\Page;
+use App\Models\Resource;
+use App\Models\ResourceAttachment;
+use App\Models\ResourceComment;
+use App\Models\ResourceFavorite;
+use App\Models\ResourceView;
+use App\Models\User;
+use App\Models\UserProfile;
+use App\Models\UserRole;
 use Carbon\Carbon;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;

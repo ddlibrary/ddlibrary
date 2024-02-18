@@ -68,8 +68,8 @@
         attribution=setup_tool
         page_id="1540661852875335"
         theme_color="#ffa800"
-        logged_in_greeting="به کتاب‌خانه درخت دانش خوش آمدید. چگونه می‌توانیم به شما کمک کنیم؟"
-        logged_out_greeting="به کتاب‌خانه درخت دانش خوش آمدید. چگونه می‌توانیم به شما کمک کنیم؟">
+        logged_in_greeting="به کتابخانه درخت دانش خوش آمدید. چگونه می توانیم به شما کمک کنیم؟"
+        logged_out_greeting="به کتابخانه درخت دانش خوش آمدید. چگونه می توانیم به شما کمک کنیم؟">
     </div>
     <!-- Facebook Chat Integration - End -->
     @include('layouts.banner')
@@ -78,7 +78,7 @@
 
         <?php
         $lang = Config::get('app.locale');
-        $questions_count = \App\SurveyQuestion::getPublishedQuestions($lang)->count();
+        $questions_count = \App\Models\SurveyQuestion::getPublishedQuestions($lang)->count();
         ?>
         @if ($questions_count != 0)
             @if (Request::is(Lang::locale().'/home'))
