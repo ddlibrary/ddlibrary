@@ -69,8 +69,8 @@ class LoginTest extends TestCase
         $response->assertRedirect('/en/login');
         $response->assertSessionHasErrors('email');
         $response->assertSessionHasErrors();
+        $response->assertSessionHasErrors(['email' => "These credentials do not match our records."]);
 
-        $this->assertEquals(session('errors')->get('email')[0], "These credentials do not match our records.");
         $this->assertFalse(session()->hasOldInput('password'));
         $this->assertGuest();
     }
@@ -89,8 +89,8 @@ class LoginTest extends TestCase
         $response->assertRedirect('/en/login');
         $response->assertSessionHasErrors('email');
         $response->assertSessionHasErrors();
+        $response->assertSessionHasErrors(['email' => "These credentials do not match our records."]);
 
-        $this->assertEquals(session('errors')->get('email')[0], "These credentials do not match our records.");
         $this->assertFalse(session()->hasOldInput('password'));
         $this->assertGuest();
     }
@@ -156,8 +156,8 @@ class LoginTest extends TestCase
         $response->assertRedirect('/fa/login');
         $response->assertSessionHasErrors('email');
         $response->assertSessionHasErrors();
-
-        $this->assertEquals(session('errors')->get('email')[0], "اطلاعات وارد شده غلط میباشد.");
+        $response->assertSessionHasErrors(['email' => "اطلاعات وارد شده غلط میباشد."]);
+        
         $this->assertFalse(session()->hasOldInput('password'));
         $this->assertGuest();
     }
@@ -176,8 +176,8 @@ class LoginTest extends TestCase
         $response->assertRedirect('/fa/login');
         $response->assertSessionHasErrors('email');
         $response->assertSessionHasErrors();
-
-        $this->assertEquals(session('errors')->get('email')[0], "اطلاعات وارد شده غلط میباشد.");
+        $response->assertSessionHasErrors(['email' => "اطلاعات وارد شده غلط میباشد."]);
+        
         $this->assertFalse(session()->hasOldInput('password'));
         $this->assertGuest();
     }
