@@ -406,7 +406,7 @@ class ApiController extends Controller
     }
 
     // Send Resource Attachment
-    public function getFile($fileId): Response
+    public function getFile($fileId): BinaryFileResponse
     {
 
         $resourceAttachment = ResourceAttachment::where('resource_id', $fileId)->firstOrFail();
