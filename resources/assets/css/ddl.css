@@ -180,12 +180,13 @@ input[type=search] {
     background-color: #dddddd;
 }
 .ddl-top-news {
-    padding: 5px;
+    padding: 20px;
     max-width: 1170px;
     margin: 0 auto;
     text-align: center;
     background-color: #ffa800; 
     margin-bottom: 15px;
+    border-radius: 10px 10px 0px 0px;
 }
 .ddl-top-news a {
     font-weight: bold;
@@ -1192,6 +1193,3 @@ tr:nth-child(even){background-color: #f2f2f2}
         display: none;
     }
 }
-
-
-
