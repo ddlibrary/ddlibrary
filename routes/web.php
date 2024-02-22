@@ -43,6 +43,7 @@ if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
 
 Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedirect', 'localizationRedirect', 'localeViewPath')->group(function () {
 
+    session()->put('locale', 'fa');
     Route::get('login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
     Route::get('login/google/callback', [LoginController::class, 'handleGoogleCallback']);
 
@@ -257,10 +258,12 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         return redirect('/home');
     });
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::prefix('subscribe')->controller(SubscribeController::class)->group(function(){
-        Route::get('/', 'index');
-        Route::post('', 'store');
-    });
+   Route::middleware('auth')->group(function(){
+        Route::prefix('subscribe')->controller(SubscribeController::class)->group(function(){
+            Route::get('/', 'index');
+            Route::post('', 'store')->name('subscribe.store');
+        });
+   });
 });
 Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
