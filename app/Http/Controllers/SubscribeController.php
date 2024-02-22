@@ -28,7 +28,7 @@ class SubscribeController extends Controller
 
         Session::flash('alert', [
             'message' => trans('Thank you for subscribing to our newsletter! You will now receive updates and news directly in your inbox.'),
-            'level' => 'danger'
+            'level' => 'success'
         ]);
 
         return back();
