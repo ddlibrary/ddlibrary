@@ -215,7 +215,12 @@
                     @endforeach
                 @endif
                 <li>
-                    <a href="{{ url('subscribe')}}" title="@lang('Subscribe')">@lang('Subscribe')</a>
+
+                    <a href="{{ url('subscribe')}}" title="@lang('Subscribe Our Newsletter')">
+                        <button class="btn btn-outline-secondary btn-md flex-grow-1 ">
+                            @lang('Subscribe Our Newsletter')
+                        </button>
+                    </a>
                 </li>
             </ul>
         </nav>
