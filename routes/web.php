@@ -260,7 +260,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('/home', [HomeController::class, 'index'])->name('home');
    Route::middleware('auth')->group(function(){
         Route::prefix('subscribe')->controller(SubscribeController::class)->group(function(){
-            Route::get('/', 'index');
+            Route::get('/', 'index')->name('subscribe.index');
             Route::post('', 'store')->name('subscribe.store');
         });
    });
