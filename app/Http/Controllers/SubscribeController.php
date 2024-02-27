@@ -31,6 +31,6 @@ class SubscribeController extends Controller
             'level' => 'success'
         ]);
 
-        return back();
+        return redirect('subscribe');
     }
 }
