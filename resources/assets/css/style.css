@@ -229,7 +229,8 @@ text-decoration: none;
     transition: transform 200ms ease-in-out;
 }
 .image-link:hover img{
-    transform: scale(1.04)
+    transform: scale(1.04);
+    opacity:0.8;
 }
 .overflow-hidden{
     overflow: hidden;
