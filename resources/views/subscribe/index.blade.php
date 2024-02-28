@@ -32,7 +32,7 @@
                             <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}"
                                 id="name" name="name" autocomplete="username" spellcheck="false"
                                 placeholder="@lang('Please enter your name')" size="40"
-                                value="{{ auth()->check() ? auth()->user()->username : '' }}" autofocus>
+                                value="{{ auth()->check() ? auth()->user()->username : '' }}" autofocus required>
                             @if ($errors->has('name'))
                                 <span class="invalid-feedback text-start">
                                     <span>{{ $errors->first('name') }}</span>
@@ -42,10 +42,10 @@
 
                         {{-- Email --}}
                         <div class="form-item">
-                            <input type="text"
+                            <input type="email"
                                 class="form-control w-100 {{ $errors->has('email') ? ' is-invalid' : '' }}" id="email"
                                 name="email" autocomplete="email" spellcheck="false" placeholder="@lang('Please enter your email')"
-                                size="40" value="{{ auth()->check() ? auth()->user()->email : '' }}" autofocus>
+                                size="40" value="{{ auth()->check() ? auth()->user()->email : '' }}" required>
                             @if ($errors->has('email'))
                                 <span class="invalid-feedback text-start">
                                     <span>{{ $errors->first('email') }}</span>
@@ -63,9 +63,9 @@
                         </div>
 
                         {{-- Mailchimp --}}
-                        <small style="color:gray">
-                            @lang('Your email will be shared with MailChimp. their privacy policy')
-                        </small>
+                        <p style="color:gray; font-size: 12px;">
+                            @lang('Your email will be shared with MailChimp.')
+                        </p>
 
                     </form>
                 </div>
