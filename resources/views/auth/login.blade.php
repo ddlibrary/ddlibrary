@@ -17,7 +17,7 @@
     <section class="p-8 d-block ddl-forms register-form">
         <div>
             <header>
-                <h3>@lang('Log in to Darakht-e Danesh Library')</h3>
+                <h3 class="text-center">@lang('Log in to Darakht-e Danesh Library')</h3>
             </header>
             <div>
                 <form method="POST" action="{{ route('login') }}" id="login-form">
@@ -52,11 +52,11 @@
                         @endif
                     </div>
 
-                    {{-- Remember me --}}
+                    {{-- Remember Me --}}
                     <div class="form-item text-start">
                         <label id="remember-me">
                             <input type="checkbox" name="remember" class="display-inline-block submit-button" {{ old('remember') ? 'checked' : '' }}>
-                            <span class="">{{ __('Remember me') }}</span>
+                            <span class="">{{ __('Remember Me') }}</span>
                         </label>
                     </div>
 
