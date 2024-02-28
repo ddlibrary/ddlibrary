@@ -12,7 +12,9 @@
     {{ asset('storage/files/logo-dd.png') }}
 @endsection
 @section('content')
-    <section class="ddl-forms login">
+<div class="display-flex justify-content-center">
+
+    <section class="p-8 d-block ddl-forms register-form">
         <div>
             <header>
                 <h3>@lang('Log in to Darakht-e Danesh Library')</h3>
@@ -38,7 +40,7 @@
                     {{-- Password --}}
                     <div class="form-item position-relative">
                         <input type="password"
-                            class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} user-password"
+                            class="form-control w-100 {{ $errors->has('password') ? ' is-invalid' : '' }} user-password"
                             id="password" name="password" autocomplete="current-password" spellcheck="false"
                             placeholder="@lang('Password')" size="40" required>
                         <span class="fa fa-eye-slash password-toggle-icon text-gray" aria-hidden="true"
@@ -53,7 +55,7 @@
                     {{-- Remember me --}}
                     <div class="form-item text-start">
                         <label id="remember-me">
-                            <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                            <input type="checkbox" name="remember" class="display-inline-block submit-button" {{ old('remember') ? 'checked' : '' }}>
                             <span class="">{{ __('Remember me') }}</span>
                         </label>
                     </div>
@@ -121,6 +123,7 @@
             </div>
         </div>
     </section>
+</div>
     @push('scripts')
         <script>
             function onSubmit(token) {
