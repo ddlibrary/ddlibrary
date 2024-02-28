@@ -207,3 +207,36 @@
     background:#eee;
     padding:40px 0px;
 }
+.resource-items{
+    display: flex;height:100%;
+    flex-direction: column;
+    align-items: center;
+    border:1px solid #eec67b;
+    justify-content: space-between
+}
+
+a.resource-link:active,
+a.resource-link:visited,
+a.resource-link:link {
+color: inherit;
+text-decoration: none;
+}
+.resource-link:hover {
+    color:#ffa800;
+} 
+.image-link img
+{
+    transition: transform 200ms ease-in-out;
+}
+.image-link:hover img{
+    transform: scale(1.04)
+}
+.overflow-hidden{
+    overflow: hidden;
+}
+.flex-1{
+    flex:1;
+}
+.p-1{
+    padding:4px;
+}  
