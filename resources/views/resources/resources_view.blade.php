@@ -342,7 +342,3 @@
         @endif
 </section>
 @endsection
-
-
-
-
