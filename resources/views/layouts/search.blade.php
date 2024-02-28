@@ -10,11 +10,10 @@
             @csrf
 
             <div class="relative-div">
-                <input type="search" name="search" class="form-control search-input" value="{{ session('search') }}"
+                <input type="text" name="search" class="form-control search-input" value="{{ session('search') }}"
                     placeholder="@lang('SEARCH OUR GROWING LIBRARY!')" autofocus>
                 <i class="fa fa-search fa-2x search-icon {{ Lang::locale() == 'en' ? 'search-icon-right' : 'search-icon-left' }}"
                     onclick="submitForm()"></i>
-                {{-- <input type="submit" class="search-button" value="@lang('Go')"> --}}
             </div>
         </form>
     </div>
