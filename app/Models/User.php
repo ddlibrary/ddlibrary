@@ -252,4 +252,10 @@ class User extends Authenticatable implements MustVerifyEmail
             ->where('user_roles.role_id', 3)
             ->first();
     }
+
+    // Get user subscriber
+    public function subscriber(): HasOne 
+    {
+        return $this->hasOne(Subscriber::class);
+    }
 }
