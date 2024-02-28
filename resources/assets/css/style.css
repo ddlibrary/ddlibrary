@@ -203,3 +203,7 @@
 .relative-div{
     position: relative !important;
 }
+.search-section{
+    background:#eee;
+    padding:40px 0px;
+}
