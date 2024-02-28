@@ -12,7 +12,7 @@ class SubscriberTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function authenticated_user_can_visit_subscribe_page(): void
+    public function en_authenticated_user_can_visit_subscribe_page(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -23,7 +23,7 @@ class SubscriberTest extends TestCase
     }
 
     /** @test */
-    public function unauthenticated_user_is_redirected_to_login_page(): void
+    public function en_unauthenticated_user_is_redirected_to_login_page(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -33,7 +33,7 @@ class SubscriberTest extends TestCase
     }
 
     /** @test */
-    public function authenticated_user_can_subscribe()
+    public function en_authenticated_user_can_subscribe()
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
@@ -45,10 +45,12 @@ class SubscriberTest extends TestCase
             'name' => 'New User',
             'email' => 'azizullahsaeidi@email.com',
         ]);
+
+        $this->assertEquals($user->subscriber->name, 'New User');
     }
 
     /** @test */
-    public function name_field_is_required()
+    public function en_name_field_is_required()
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
@@ -64,7 +66,7 @@ class SubscriberTest extends TestCase
     }
 
     /** @test */
-    public function email_field_is_required()
+    public function en_email_field_is_required()
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
@@ -80,7 +82,7 @@ class SubscriberTest extends TestCase
     }
 
     /** @test */
-    public function email_should_be_a_valid_email()
+    public function en_email_should_be_a_valid_email()
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
@@ -96,7 +98,7 @@ class SubscriberTest extends TestCase
     }
 
     /** @test */
-    public function email_field_is_unique()
+    public function en_email_field_is_unique()
     {
         $this->refreshApplicationWithLocale('en');
 
