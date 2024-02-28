@@ -279,5 +279,7 @@
     "Thank you": "خیلی ممنون",
     "If you registered using a phone number, please contact us.": "اگر با شماره مبایل راجستر کرده اید، لطفاً <a href='/contact-us'> با ما تماس شوید</a>.",
     "Subscribe Our Newsletter": "خبرنامه ما را سابسکرایب کنید",
-    "Thank you for subscribing to our newsletter! You will now receive updates and news directly in your inbox.": "با تشکر از سابسکرایب شما در خبرنامه ما! اکنون شما به‌طور مستقیم به ایمیل خود به‌روزرسانی‌ها و اخبار را دریافت خواهید کرد."
+    "Thank you for subscribing to our newsletter! You will now receive updates and news directly in your inbox.": "با تشکر از سابسکرایب شما در خبرنامه ما! اکنون شما به‌طور مستقیم به ایمیل خود به‌روزرسانی‌ها و اخبار را دریافت خواهید کرد.",
+    "Your data successfully updated.":"عملیه ویرایش موفقانه انجام شد",
+    "Sorry! your data was not updated.":"ببخشید! عملیه ویرایش صورت نگرفت"
 }
