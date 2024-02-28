@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Laracsv\Export;
@@ -118,11 +119,19 @@ class UserController extends Controller
                 $user->save();
                 event(new Registered($user));
             }
+            Session::flash('alert', [
+                'message' => __('Your data successfully updated.'),
+                'level' => 'success'
+            ]);
 
-            return redirect(URL('user/profile'))->with('success', 'Your data successfully updated.');
+            return redirect(URL('user/profile'));
         }
+        Session::flash('alert', [
+            'message' => __('Sorry! your data was not updated.'),
+            'level' => 'danger'
+        ]);
 
-        return redirect(URL('user/profile'))->with('warning', 'Sorry! your data was not updated.');
+        return redirect(URL('user/profile'));
     }
 
     /**
