@@ -1,5 +1,5 @@
 <section class="banner">
-    <div class="main-section" style="background:#eee; border:1px dotted gray;padding:40px 0px;">
+    <div class="main-section search-section">
         @if (session()->has('alert'))
             <x-alert :message="Session::get('alert.message')" :level="Session::get('alert.level')" />
         @endif
