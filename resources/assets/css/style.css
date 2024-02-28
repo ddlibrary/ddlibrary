@@ -238,6 +238,32 @@ text-decoration: none;
 .flex-1{
     flex:1;
 }
+.flex-5{
+    flex:5;
+}
 .p-1{
     padding:4px;
+} 
+.p-5{
+    padding:20px;
 }  
+.gap-5{
+    gap: 20px;
+}
+.flex-direction-column{
+    flex-direction: column;
+}
+.user-state{
+    display:inline-block;
+    padding:2px 10px;
+    border-radius:3px;
+    color:#fff;
+}
+.border-yellow{
+    border:1px solid #ffa800;
+}
+.border-radius-5{
+    border-radius: 5px;
+}
+.bg-red-300{ background:#c54242;}
+.bg-lightseagreen{ background:lightseagreen;}
