@@ -62,6 +62,22 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Number of resources downloaded by this user.
+     */
+    public function downloads(): HasMany
+    {
+        return $this->hasMany(DownloadCount::class);
+    }
+
+    /**
+     * The user's newsletter subscription
+     */
+    public function subscription(): HasOne
+    {
+        return $this->hasOne(Subscriber::class);
+    }
+
+    /**
      * Get the list of users to display as a table in the admin/users
      */
     public function scopeUsers($query): Collection

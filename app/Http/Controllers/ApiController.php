@@ -18,7 +18,7 @@ use App\Models\UserRole;
 use Carbon\Carbon;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -34,6 +34,34 @@ class ApiController extends Controller
     public function user()
     {
         return auth()->user();
+    }
+
+    // Delete
+    public function delete()
+    {
+        $id = Auth::id();
+
+        $user = User::find($id);
+        $user->username = 'deleted_user_' . time();
+        $user->email = NULL;
+        $user->status = 0;
+        $user->save();
+
+        $userProfile = UserProfile::where('user_id', $id)->first();
+        $userProfile->first_name = NULL;
+        $userProfile->last_name = NULL;
+        $userProfile->gender = NULL;
+        $userProfile->country = NULL;
+        $userProfile->city = NULL;
+        $userProfile->phone = NULL;
+        $userProfile->save();
+
+        $subscription = $user->subscription;
+        if($subscription) $subscription->delete();
+
+        auth()->user()->tokens()->delete();
+
+        return ['message' => 'User deleted successfully!'];
     }
 
     // Logout

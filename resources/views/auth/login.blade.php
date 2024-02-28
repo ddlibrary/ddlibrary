@@ -24,28 +24,23 @@
 
                     {{-- Username --}}
                     <div class="form-item">
-                        <input type="text" class="form-control w-100 {{ $errors->has('user-field') ? ' is-invalid' : '' }}"
+                        <input type="text" class="form-control w-100 {{ $errors->has('email') ? ' is-invalid' : '' }}"
                             id="user-field" name="user-field" autocomplete="username" spellcheck="false"
                             placeholder="@lang('Email or username or phone')" size="40" value="{{ old('user-field') }}" required
                             autofocus>
-                        @if ($errors->has('user-field'))
-                            <span class="invalid-feedback text-start">
-                                <span>{{ $errors->first('user-field') }}</span>
-                            </span>
-                        @endif
                     </div>
 
                     {{-- Password --}}
                     <div class="form-item position-relative">
                         <input type="password"
-                            class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} user-password"
+                            class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} user-password"
                             id="password" name="password" autocomplete="current-password" spellcheck="false"
                             placeholder="@lang('Password')" size="40" required>
                         <span class="fa fa-eye-slash password-toggle-icon text-gray" aria-hidden="true"
                             onclick="togglePassword()"></span>
-                        @if ($errors->has('password'))
+                        @if ($errors->has('email'))
                             <span class="invalid-feedback text-start">
-                                <span>{{ $errors->first('password') }}</span>
+                                <span>{{ $errors->first('email') }}</span>
                             </span>
                         @endif
                     </div>
