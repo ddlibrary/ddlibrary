@@ -156,7 +156,8 @@ class LoginController extends Controller
             }
         }
 
-        if ($authUser) {
+        // If the status of the user is not 1 we assume the user is deleted, or in some cases, inactive
+        if ($authUser && $authUser->status == 1) {
             if (checkUserPassword($credentials['password'], $authUser->password)) {
                 $user = new User();
                 if ($user->updateUser(['password' => Hash::make($credentials['password'])], $credentials)) {
