@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 // Protected Routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user', [ApiController::class, 'user']);
+    Route::post('/user/delete', [ApiController::class, 'delete']);
     Route::post('/logout', [ApiController::class, 'logout']);
     Route::post('/favorites', [ApiController::class, 'favorites']);
 });
