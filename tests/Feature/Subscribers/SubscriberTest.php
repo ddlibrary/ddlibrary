@@ -115,6 +115,111 @@ class SubscriberTest extends TestCase
         $response->assertSessionHasErrors(['email' => 'The email has already been taken.']);
     }
 
+    // Farsi
+    /** @test */
+    public function fa_authenticated_user_can_visit_subscribe_page(): void
+    {
+        $this->refreshApplicationWithLocale('fa');
+
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->get('/fa/subscribe');
+
+        $response->assertStatus(200)->assertViewIs('subscribe.index');
+    }
+
+    /** @test */
+    public function fa_unauthenticated_user_is_redirected_to_login_page(): void
+    {
+        $this->refreshApplicationWithLocale('fa');
+
+        $response = $this->get('/fa/subscribe');
+
+        $response->assertStatus(302)->assertRedirect('/fa/login');
+    }
+
+    /** @test */
+    public function fa_authenticated_user_can_subscribe()
+    {
+        $this->refreshApplicationWithLocale('fa');
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post('/fa/subscribe', $this->data(['name' => 'New User', '_method' => 'post']));
+        $response->assertStatus(302)->assertRedirect('/subscribe');
+
+        $this->assertDatabaseHas('subscribers', [
+            'name' => 'New User',
+            'email' => 'azizullahsaeidi@email.com',
+        ]);
+
+        $this->assertEquals($user->subscriber->name, 'New User');
+    }
+
+    /** @test */
+    public function fa_name_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('fa');
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post(
+            '/fa/subscribe',
+            $this->data([
+                'name' => '',
+            ]),
+        );
+
+        $response->assertSessionHasErrors(['name' => 'فیلد نام الزامی است']);
+    }
+
+    /** @test */
+    public function fa_email_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('fa');
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post(
+            '/fa/subscribe',
+            $this->data([
+                'email' => '',
+            ]),
+        );
+
+        $response->assertSessionHasErrors(['email' => 'فیلد ایمیل آدرس الزامی است']);
+    }
+
+    /** @test */
+    public function fa_email_should_be_a_valid_email()
+    {
+        $this->refreshApplicationWithLocale('fa');
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post(
+            '/fa/subscribe',
+            $this->data([
+                'email' => 'email',
+            ]),
+        );
+
+        $response->assertSessionHasErrors(['email' => 'فرمت ایمیل آدرس معتبر نیست.']);
+    }
+
+    /** @test */
+    public function fa_email_field_is_unique()
+    {
+        $this->refreshApplicationWithLocale('fa');
+
+        $user = User::factory()->create();
+        Subscriber::factory()->create(['email' => 'test@email.com']);
+
+        $response = $this->actingAs($user)->post(
+            '/fa/subscribe',
+            $this->data([
+                'email' => 'test@email.com',
+            ]),
+        );
+
+        $response->assertSessionHasErrors(['email' => 'ایمیل آدرس قبلا انتخاب شده است.']);
+    }
+
     protected function data($merge = [])
     {
         return array_merge(
