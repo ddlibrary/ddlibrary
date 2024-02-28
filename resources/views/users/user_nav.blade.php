@@ -1,33 +1,35 @@
-<style>
-    .user-nav {
-        display: flex;
-        background: lightseagreen;
-        margin-bottom: 10px;
-    }
-
-    .user-nav a {
-        padding: 20px;
-        color: #fff;
-    }
-
-    .user-nav .active {
-        background: #000;
-    }
-
-    .user-nav a:not(.active):hover {
-        background: #318984;
-    }
-
-    @media only screen and (max-width: 600px) {
+@push('styles')
+    <style>
         .user-nav {
-            flex-wrap: wrap;
+            display: flex;
+            background: #ffa800;
+            margin-bottom: 10px;
         }
 
         .user-nav a {
-            flex-grow: 1;
+            padding: 20px;
+            color: #000;
         }
-    }
-</style>
+
+        .user-nav .active {
+            background: #000;
+            color: #fff;
+        }
+
+        .user-nav a:not(.active):hover {
+            background: #ebb344;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .user-nav {
+                flex-wrap: wrap;
+            }
+            .user-nav a {
+                flex-grow: 1;
+            }
+        }
+    </style>
+@endpush
 
 <nav class="user-nav" style="">
     <a href="{{ URL::to('user/profile') }}" title="@lang('Personal Information')"
