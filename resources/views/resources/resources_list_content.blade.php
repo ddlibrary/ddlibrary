@@ -8,8 +8,10 @@
                         <div class="p-1 w-100">
                             <a href="{{ URL::to('resource/' . $resource->id) }}" target="_blank" class="image-link">
                                 <div class="overflow-hidden w-100">
-                                    <img class="w-100 book-cover lazyload"
-                                        data-src="{{ getImagefromResource($resource->abstract) }}" alt="Resource Image">
+                                    <div class="display-flex">
+                                        <img class="w-100 book-cover lazyload"
+                                            data-src="{{ getImagefromResource($resource->abstract) }}" alt="Resource Image">
+                                    </div>
                                 </div>
                             </a>
                         </div>
