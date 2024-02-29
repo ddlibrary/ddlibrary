@@ -4,7 +4,7 @@
         @foreach ($resources->unique('id') as $resource)
             @if ($resource->status)
                 <article class="">
-                    <div class="resource-items">
+                    <div class="resource-items border-radius-5 no-border book-items">
                         <div class="p-1 w-100">
                             <a href="{{ URL::to('resource/' . $resource->id) }}" target="_blank" class="image-link">
                                 <div class="overflow-hidden w-100">

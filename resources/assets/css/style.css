@@ -219,11 +219,11 @@
 a.resource-link:active,
 a.resource-link:visited,
 a.resource-link:link {
-color: inherit;
+color: #888;
 text-decoration: none;
 }
 .resource-link:hover {
-    color:#ffa800;
+    color:#ffa800 !important;
 } 
 .image-link img
 {
@@ -315,3 +315,6 @@ text-decoration: none;
 .resource-details article:hover i {
     color: #ffa800;
 }
+
+.no-border{ border:none !important}
+.book-items{box-shadow: 0px 1px 2px 2px lightgray}
