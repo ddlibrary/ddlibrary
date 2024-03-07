@@ -13,7 +13,6 @@
 @endsection
 @section('content')
 <section class="main-section">
-    @include('layouts.messages')
     <div class="ddl-top-news">
         <div>
             <p>@lang("Access children's storybooks through Storyweaver, click here"): 

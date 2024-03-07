@@ -39,8 +39,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use Session;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
 
@@ -554,12 +554,25 @@ class ResourceController extends Controller
         });
 
         if ($result and isAdmin()) {
-            return redirect('/home')->with('success', __('Resource successfully added!'));
+            Session::flash('alert', [
+                'message' => __('Resource successfully added!'),
+                'level' => 'success'
+            ]);
+            return redirect('/home');
         } elseif ($result) {
-            return redirect('/home')->with('success', __('Resource successfully added! It will be published after review.'));
+            Session::flash('alert', [
+                'message' => __('Resource successfully added! It will be published after review.'),
+                'level' => 'success'
+            ]);
+            return redirect('/home');
         }
 
-        return redirect('/home')->with('error', __('Resource couldn\'t be added.'));
+        Session::flash('alert', [
+            'message' => __('Resource couldn\'t be added.'),
+            'level' => 'danger'
+        ]);
+        return redirect('/home');
+
     }
 
     public function attributes($entity, Request $request)
