@@ -189,6 +189,7 @@ return [
     'attributes' => [
         "name" => "نام",
         "username" => "نام کاربری",
+        "user-field" => "نام کاربری",
         "email" => "ایمیل آدرس",
         "first_name" => "نام",
         "last_name" => "نام خانوادگی",
