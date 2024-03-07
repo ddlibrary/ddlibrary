@@ -25,6 +25,6 @@ class SubscribeController extends Controller
             'user_id' => Auth::check() ? Auth::id() : null,
         ]);
 
-        return back()->with('success', 'Thank you for subscribing!');
+        return redirect('subscribe')->with('success', 'Thank you for subscribing!');
     }
 }
