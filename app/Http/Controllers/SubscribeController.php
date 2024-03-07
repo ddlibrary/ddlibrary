@@ -6,6 +6,7 @@ use App\Http\Requests\SubscribeRequest;
 use App\Models\Subscriber;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
 class SubscribeController extends Controller
@@ -25,6 +26,11 @@ class SubscribeController extends Controller
             'user_id' => Auth::check() ? Auth::id() : null,
         ]);
 
-        return back()->with('success', 'Thank you for subscribing!');
+        Session::flash('alert', [
+            'message' => trans('Thank you for subscribing to our newsletter! You will now receive updates and news directly in your inbox.'),
+            'level' => 'success'
+        ]);
+
+        return redirect('subscribe');
     }
 }
