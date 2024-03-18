@@ -127,8 +127,9 @@ class UserController extends Controller
 
             return redirect(URL('user/profile'));
         }
+        
         Session::flash('alert', [
-            'message' => __('Sorry! your data was not updated.'),
+            'message' => __('Error updating data. Please contact us.'),
             'level' => 'danger'
         ]);
 
