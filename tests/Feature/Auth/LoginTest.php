@@ -46,6 +46,21 @@ class LoginTest extends TestCase
         
     }
 
+    /** @test */
+    public function en_disable_user_cannot_login_with_valid_credential()
+    {
+        $this->refreshApplicationWithLocale('en');
+        User::factory()->create(['email' => 'disable_user@email.com', 'password' => bcrypt('Pass@123'), 'status' => false]);
+
+        $response = $this->from('en/login')->post('en/login', [
+            'user-field' => 'disable_user@email.com',
+            'password' => 'Pass@123',
+        ]);
+
+        $response->assertRedirect('/en/login');
+        $response->assertSessionHasErrors(['email' => "These credentials do not match our records."]);
+    }
+
     public function en_user_cannot_view_a_login_form_when_authenticated()
     {
         $this->refreshApplicationWithLocale('en');
