@@ -261,8 +261,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     });
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::prefix('subscribe')->controller(SubscribeController::class)->group(function(){
-        Route::get('/', 'index');
-        Route::post('', 'store');
+        Route::get('/', 'index')->middleware('auth')->middleware('verified');
+        Route::post('', 'store')->middleware('auth')->middleware('verified');;
     });
 });
 Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {

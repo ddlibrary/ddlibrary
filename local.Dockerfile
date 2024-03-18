@@ -7,8 +7,7 @@ FROM php:$PHP_VERSION-fpm
 WORKDIR /var/www/html
 
 # Install dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
+RUN apt-get update && apt-get install -yq --no-install-recommends \
     libpng-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
@@ -22,17 +21,22 @@ RUN apt-get update && apt-get install -y \
     curl \
     wget \
     unzip \
-    nodejs npm \
     imagemagick \
     ghostscript \
     poppler-utils
+
+RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - && \
+    apt-get install -y nodejs \
+    build-essential && \
+    node --version && \
+    npm --version
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install extensions
 RUN docker-php-ext-configure intl
-RUN docker-php-ext-install pdo pdo_mysql zip exif pcntl intl
+RUN docker-php-ext-install pdo pdo_mysql zip exif pcntl intl gd
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

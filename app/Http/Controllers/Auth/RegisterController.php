@@ -171,9 +171,13 @@ class RegisterController extends Controller
             $user->roles()->attach(6); //6 is library user from roles table
 
             // Subscribe
+            /* TODO: Insert name and user_id into the table as well */
+            /* TODO: Verify emails before inserting them into the table - perhaps this isn't the best place for that */
+            /*
             if($user->email && $request->subscribe){
                 Subscriber::create(['email' => $user->email]);
             }
+            */
 
             DB::commit();
 
