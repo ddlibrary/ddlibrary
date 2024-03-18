@@ -11,9 +11,18 @@ use Illuminate\View\View;
 
 class SubscribeController extends Controller
 {
-    public function index(): View
+    public function index(): View | RedirectResponse
     {
         $subscriber = Auth::check() ? Subscriber::whereUserId(auth()->id())->first() : null;
+
+        if ($subscriber) {
+            Session::flash('alert', [
+                'message' => trans('You are already subscribed to our newsletter.'),
+                'level' => 'success',
+            ]);
+
+            return redirect('/home');
+        }
 
         return view('subscribe.index', compact('subscriber'));
     }
@@ -28,9 +37,9 @@ class SubscribeController extends Controller
 
         Session::flash('alert', [
             'message' => trans('Thank you for subscribing to our newsletter! You will now receive updates and news directly in your inbox.'),
-            'level' => 'success'
+            'level' => 'success',
         ]);
 
-        return redirect('subscribe');
+        return redirect('home');
     }
 }
