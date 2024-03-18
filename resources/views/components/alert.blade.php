@@ -1,4 +1,4 @@
-<div style="position: absolute; display: none;" id="alert-message">
+<div style="position: absolute; display: none;z-index:2" id="alert-message">
     <div class="alert alert-{{ $level }}">
         <p>
             {{ $message }}
