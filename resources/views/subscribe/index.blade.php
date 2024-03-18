@@ -75,11 +75,10 @@
                     @else
                         {{-- Already Subscribed --}}
                         <header>
-                            <h2 class="text-center">@lang('Thank you')</h2>
-                            <p class="text-center">@lang('You subscribed our newsletter.')</p>
+                            <p class="text-center">@lang('You are already subscribed to our newsletter')</p>
                             <p class="text-center">
                                 <br>
-                                <a href="{{ url('/') }}">@lang('Home') <i class="fas fa-home fa-lg icons"></i></a>
+                                <a href="{{ url('/home') }}">@lang('Home') <i class="fas fa-home fa-lg icons"></i></a>
                             </p>
                         </header>
                     @endif
