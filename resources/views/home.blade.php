@@ -214,7 +214,7 @@
                     @endforeach
                 @endif
                 <li>
-                    <a href="{{ url('subscribe')}}" title="@lang('Subscribe')">@lang('Subscribe')</a>
+                    <a href="{{ url('subscribe')}}" class="btn btn-outline-secondary btn-md float-xl-right" title="@lang('Subscribe')">@lang('Subscribe')</a>
                 </li>
             </ul>
         </nav>
