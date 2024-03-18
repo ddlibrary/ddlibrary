@@ -148,6 +148,21 @@ class LoginTest extends TestCase
         
     }
 
+    /** @test */
+    public function fa_disable_user_cannot_login_with_valid_credential()
+    {
+        $this->refreshApplicationWithLocale('fa');
+        User::factory()->create(['email' => 'fa_disable_user@email.com', 'password' => bcrypt('Pass@123'), 'status' => false]);
+
+        $response = $this->from('fa/login')->post('fa/login', [
+            'user-field' => 'fa_disable_user@email.com',
+            'password' => 'Pass@123',
+        ]);
+
+        $response->assertRedirect('/fa/login');
+        $response->assertSessionHasErrors(['email' => "اطلاعات وارد شده غلط میباشد."]);
+    }
+
     public function fa_user_cannot_view_a_login_form_when_authenticated()
     {
         $this->refreshApplicationWithLocale('fa');
