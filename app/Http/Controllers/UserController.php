@@ -121,7 +121,7 @@ class UserController extends Controller
             }
 
             Session::flash('alert', [
-                'message' => __('Your data successfully updated.'),
+                'message' => __('Your data has been updated successfully.'),
                 'level' => 'success'
             ]);
 
