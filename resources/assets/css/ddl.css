@@ -627,10 +627,6 @@ aside .sub-subject-show {
     align-content: flex-start;
 }
 
-.resource-information-section .resource-article:hover {
-    cursor: pointer;
-}
-
 .resource-list .resource-information {
     flex-basis: auto;
     box-shadow: 0 2px 5px #ccc;
