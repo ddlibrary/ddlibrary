@@ -10,9 +10,9 @@
     {{ asset('storage/files/logo-dd.png') }}
 @endsection
 @section('content')
-@if (session()->has('alert'))
-    <x-alert :message="Session::get('alert.message')" :level="Session::get('alert.level')" />
-@endif
+    @if (session()->has('alert'))
+        <x-alert :message="Session::get('alert.message')" :level="Session::get('alert.level')" />
+    @endif
 
     <div class="display-flex justify-content-center">
         <div>
@@ -22,66 +22,55 @@
             </header>
             <section class="p-8 d-block ddl-forms register-form">
                 <div>
-                    @if (!$subscriber)
-                        <div>
-                            <form method="POST" action="{{ route('subscribe.store') }}" id="subscribe-form">
-                                @csrf
-                                @honeypot
+                    <div>
+                        <form method="POST" action="{{ route('subscribe.store') }}" id="subscribe-form">
+                            @csrf
+                            @honeypot
 
-                                {{-- Name --}}
-                                <div class="form-item">
-                                    <input type="text"
-                                        class="form-control w-100 {{ $errors->has('name') ? ' is-invalid' : '' }}"
-                                        id="name" name="name" autocomplete="username" spellcheck="false"
-                                        placeholder="@lang('Please enter your name')" size="40"
-                                        value="{{ auth()->check() ? auth()->user()->username : '' }}" autofocus>
-                                    @if ($errors->has('name'))
-                                        <span class="invalid-feedback text-start">
-                                            <span>{{ $errors->first('name') }}</span>
-                                        </span>
-                                    @endif
-                                </div>
+                            {{-- Name --}}
+                            <div class="form-item">
+                                <input type="text"
+                                    class="form-control w-100 {{ $errors->has('name') ? ' is-invalid' : '' }}" id="name"
+                                    name="name" autocomplete="username" spellcheck="false"
+                                    placeholder="@lang('Please enter your name')" size="40"
+                                    value="{{ auth()->check() ? auth()->user()->username : '' }}" autofocus>
+                                @if ($errors->has('name'))
+                                    <span class="invalid-feedback text-start">
+                                        <span>{{ $errors->first('name') }}</span>
+                                    </span>
+                                @endif
+                            </div>
 
-                                {{-- Email --}}
-                                <div class="form-item">
-                                    <input type="text"
-                                        class="form-control w-100 {{ $errors->has('email') ? ' is-invalid' : '' }}"
-                                        id="email" name="email" autocomplete="email" spellcheck="false"
-                                        placeholder="@lang('Please enter your email')" size="40"
-                                        value="{{ auth()->check() ? auth()->user()->email : '' }}" autofocus>
-                                    @if ($errors->has('email'))
-                                        <span class="invalid-feedback text-start">
-                                            <span>{{ $errors->first('email') }}</span>
-                                        </span>
-                                    @endif
-                                </div>
+                            {{-- Email --}}
+                            <div class="form-item">
+                                <input type="text"
+                                    class="form-control w-100 {{ $errors->has('email') ? ' is-invalid' : '' }}"
+                                    id="email" name="email" autocomplete="email" spellcheck="false"
+                                    placeholder="@lang('Please enter your email')" size="40"
+                                    value="{{ auth()->check() ? auth()->user()->email : '' }}" autofocus>
+                                @if ($errors->has('email'))
+                                    <span class="invalid-feedback text-start">
+                                        <span>{{ $errors->first('email') }}</span>
+                                    </span>
+                                @endif
+                            </div>
 
-                                {{-- Submit Button --}}
-                                <div class="form-item">
-                                    <input type="submit" value="@lang('Subscribe')"
-                                        class="g-recaptcha form-control login-submit btn btn-primary w-100"
-                                        data-sitekey="{{ config('services.recaptcha_v3.site_key') }}"
-                                        data-callback='onSubmit' data-action='subscribe'>
+                            {{-- Submit Button --}}
+                            <div class="form-item">
+                                <input type="submit" value="@lang('Subscribe')"
+                                    class="g-recaptcha form-control login-submit btn btn-primary w-100"
+                                    data-sitekey="{{ config('services.recaptcha_v3.site_key') }}" data-callback='onSubmit'
+                                    data-action='subscribe'>
 
-                                </div>
+                            </div>
 
-                                {{-- Mailchimp --}}
-                                <small style="color:gray">
-                                    @lang('Your email will be shared with MailChimp. their privacy policy')
-                                </small>
+                            {{-- Mailchimp --}}
+                            <small style="color:gray">
+                                @lang('Your email will be shared with MailChimp. their privacy policy')
+                            </small>
+                        </form>
+                    </div>
 
-                            </form>
-                        </div>
-                    @else
-                        {{-- Already Subscribed --}}
-                        <header>
-                            <p class="text-center">@lang('You are already subscribed to our newsletter')</p>
-                            <p class="text-center">
-                                <br>
-                                <a href="{{ url('/home') }}">@lang('Home') <i class="fas fa-home fa-lg icons"></i></a>
-                            </p>
-                        </header>
-                    @endif
                 </div>
             </section>
         </div>
@@ -94,5 +83,4 @@
             }
         </script>
     @endpush
-
 @endsection
