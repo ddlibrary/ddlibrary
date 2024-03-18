@@ -89,10 +89,8 @@
                                 <strong>@lang('Status'):</strong>
                             </div>
                             <div class="flex-5">
-                                @if ($user->status == 0)
-                                    <span class="user-state bg-red-300">Disabled
-                                        <span class="fa fa-times-circle"></span></span>
-                                @else
+                                
+                                @if ($user->status == 1)
                                     <span class="user-state bg-lightseagreen">Active
                                         <span class="fa fa-check-circle"></span></span>
                                 @endif
