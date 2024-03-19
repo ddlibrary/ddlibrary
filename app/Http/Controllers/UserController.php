@@ -113,24 +113,17 @@ class UserController extends Controller
             $user->password = Hash::make($request->input('password'));
         }
 
-        if ($user->save()) {
-            if ($userEmail != $request->input('email')) {
-                $user->email_verified_at = null;
-                $user->save();
-                event(new Registered($user));
-            }
-
-            Session::flash('alert', [
-                'message' => __('Your data has been updated successfully.'),
-                'level' => 'success'
-            ]);
-
-            return redirect(URL('user/profile'));
+        if ($userEmail != $request->input('email')) {
+            $user->email_verified_at = null;
+            $user->save();
+            event(new Registered($user));
+        } else {
+            $user->save();
         }
-        
+
         Session::flash('alert', [
-            'message' => __('Error updating data. Please contact us.'),
-            'level' => 'danger'
+            'message' => __('Your data has been updated successfully.'),
+            'level' => 'success',
         ]);
 
         return redirect(URL('user/profile'));
@@ -151,13 +144,7 @@ class UserController extends Controller
         $userRoles = UserRole::where('user_id', $userId)->get();
         $roles = Role::all();
 
-        return view('admin.users.edit_user', compact(
-            'user',
-            'countries',
-            'provinces',
-            'userRoles',
-            'roles'
-        ));
+        return view('admin.users.edit_user', compact('user', 'countries', 'provinces', 'userRoles', 'roles'));
     }
 
     /**
@@ -219,7 +206,7 @@ class UserController extends Controller
         $userRole->role_id = $request->input('role');
         $userRole->save();
 
-        return redirect('/admin/user/edit/'.$userId)->with('success', 'User details updated successfully!');
+        return redirect('/admin/user/edit/' . $userId)->with('success', 'User details updated successfully!');
     }
 
     /**
@@ -241,10 +228,12 @@ class UserController extends Controller
         $users = User::get(); // All users
         // $userProfiles = UserProfile::with('first_name','last_name')->get();
         $csvExporter = new Export();
-        $csvExporter->build($users, [
-            'email' => 'Email Address',
-            'profile.first_name' => 'First Name',
-            'profile.last_name' => 'Last Name',
-        ])->download();
+        $csvExporter
+            ->build($users, [
+                'email' => 'Email Address',
+                'profile.first_name' => 'First Name',
+                'profile.last_name' => 'Last Name',
+            ])
+            ->download();
     }
 }
