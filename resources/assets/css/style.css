@@ -143,6 +143,7 @@
     border-radius: 0.25rem;
     margin:10px;
     top:0;
+    min-width: 250px;
     max-width: 350px;
 }
 
@@ -322,9 +323,6 @@ text-decoration: none;
 .ml-2{ margin-left: 8px;}
 .mr-2{ margin-right: 8px;}
 .pointer{cursor: pointer;}
-.position-left-0{
-    left: 0;
-}
-.position-right-0{
-    right: 0;
-}
+.position-left-0{left: 0;}
+.position-right-0{right: 0;}
+.z-index-2{z-index: 2 !important;}

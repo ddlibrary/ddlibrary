@@ -1,17 +1,27 @@
-<div style="position: absolute; display: none;z-index:2" id="alert-message">
-    <div class="alert alert-{{ $level }}">
-        <p>
-            {{ $message }}
-        <div class="progress-bar progress-bar-{{$level}}"></div>
-        </p>
+<div id="alert-message" class="z-index-2 display-none">
+    <div class="alert alert-{{ $level }} {{ Lang::locale() == 'en' ? 'position-left-0' : 'position-right-0' }}">
+        <div>
+            <div class="display-flex">
+                <div class="{{ Lang::locale() == 'en' ? 'mr-2' : 'ml-2' }}">
+                    <span class="pointer" onclick="alertBox()" aria-hidden="true">&times;</span>
+                </div>
+                <div>
+                    {{ $message }}
+                </div>
+            </div>
+            <div class="progress-bar progress-bar-{{ $level }}"></div>
+        </div>
     </div>
 </div>
 <script>
     window.onload = function() {
-        var successMessageElement = document.getElementById('alert-message');
-        successMessageElement.style.display = 'block';
+        alertBox('block');
         setTimeout(function() {
-            successMessageElement.style.display = 'none';
+            alertBox()
         }, 10000);
     };
+
+    function alertBox(display = 'none') {
+        document.getElementById('alert-message').setAttribute('style', `display:${display} !important`);
+    }
 </script>
