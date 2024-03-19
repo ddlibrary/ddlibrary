@@ -2,6 +2,5 @@
     "Receive our occasional newsletters and announcements (your email will be shared with MailChimp).":"Receive our occasional newsletters and announcements (your email will be shared with <a href='<a href='https://mailchimp.com/legal/'>MailChimp</a>).",
     "Your email will be shared with MailChimp.": "Your email will be shared with MailChimp. <br> <a href='https://mailchimp.com/legal/'> Their Privacy Policy",
     "You'll receive our monthly newsletter with our latest updates, highlights, top resources, educational content and other relevant news.": "You'll receive our monthly newsletter with<br> our latest updates, highlights, top resources,<br> educational content and other relevant news.",
-    "If you registered using a phone number, please contact us.": "If you registered using a phone number, please <a href='/contact-us'>contact us</a>.",
-    "Error updating data. Please contact us.": "Error updating data. Please <a href='/contact-us'>contact us</a>."
+    "If you registered using a phone number, please contact us.": "If you registered using a phone number, please <a href='/contact-us'>contact us</a>."
 }
