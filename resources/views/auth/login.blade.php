@@ -26,9 +26,14 @@
                         {{-- Username --}}
                         <div class="form-item">
                             <input type="text" class="form-control w-100 {{ $errors->has('email') ? ' is-invalid' : '' }}"
-                                id="user-field" name="user-field" autocomplete="username" spellcheck="false"
-                                placeholder="@lang('Email or username or phone')" size="40" value="{{ old('user-field') }}" required
+                                id="email" name="email" autocomplete="username" spellcheck="false"
+                                placeholder="@lang('Email or username or phone')" size="40" value="{{ old('email') }}" required
                                 autofocus>
+                            @if ($errors->has('email'))
+                                <span class="invalid-feedback text-start">
+                                    <span>{{ $errors->first('email') }}</span>
+                                </span>
+                            @endif
                         </div>
 
                         {{-- Password --}}
