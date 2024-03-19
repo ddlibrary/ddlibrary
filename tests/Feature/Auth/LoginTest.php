@@ -10,7 +10,6 @@ class LoginTest extends TestCase
 {
     use RefreshDatabase;
 
-
     /** @test */
     public function en_guest_can_visit_login_page()
     {
@@ -35,7 +34,7 @@ class LoginTest extends TestCase
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create(['email' => 'user@email.com', 'password' => bcrypt('Pass@123')]);
-        
+
         $response = $this->from('en/login')->post('en/login', [
             'user-field' => 'user@email.com',
             'password' => 'Pass@123',
@@ -43,7 +42,6 @@ class LoginTest extends TestCase
 
         $response->assertRedirect('home');
         $this->assertAuthenticatedAs($user);
-        
     }
 
     /** @test */
@@ -58,7 +56,7 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertRedirect('/en/login');
-        $response->assertSessionHasErrors(['email' => "These credentials do not match our records."]);
+        $response->assertSessionHasErrors(['email' => 'These credentials do not match our records.']);
     }
 
     public function en_user_cannot_view_a_login_form_when_authenticated()
@@ -75,16 +73,16 @@ class LoginTest extends TestCase
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create(['password' => bcrypt('Pass@123')]);
-        
+
         $response = $this->from('en/login')->post('en/login', [
             'user-field' => $user->email,
             'password' => 'Invalid@123',
         ]);
-        
+
         $response->assertRedirect('/en/login');
         $response->assertSessionHasErrors('email');
         $response->assertSessionHasErrors();
-        $response->assertSessionHasErrors(['email' => "These credentials do not match our records."]);
+        $response->assertSessionHasErrors(['email' => 'These credentials do not match our records.']);
 
         $this->assertFalse(session()->hasOldInput('password'));
         $this->assertGuest();
@@ -98,18 +96,17 @@ class LoginTest extends TestCase
 
         $response = $this->from('en/login')->post('en/login', [
             'user-field' => 'invalid@mail.com',
-            'password' => "Pass@123",
+            'password' => 'Pass@123',
         ]);
 
         $response->assertRedirect('/en/login');
         $response->assertSessionHasErrors('email');
         $response->assertSessionHasErrors();
-        $response->assertSessionHasErrors(['email' => "These credentials do not match our records."]);
+        $response->assertSessionHasErrors(['email' => 'These credentials do not match our records.']);
 
         $this->assertFalse(session()->hasOldInput('password'));
         $this->assertGuest();
     }
-
 
     // Farsi
 
@@ -129,7 +126,7 @@ class LoginTest extends TestCase
         $response->assertSee('گذرواژه');
         $response->assertSee('مرا به خاطر بسپار');
         $response->assertSee('گذرواژه را فراموش کردم');
-        $response->assertSee("ورود به کتاب‌خانه درخت دانش");
+        $response->assertSee('ورود به کتاب‌خانه درخت دانش');
     }
 
     /** @test */
@@ -137,7 +134,7 @@ class LoginTest extends TestCase
     {
         $this->refreshApplicationWithLocale('fa');
         $user = User::factory()->create(['email' => 'fa@email.com', 'password' => bcrypt('Pass@123')]);
-        
+
         $response = $this->from('fa/login')->post('fa/login', [
             'user-field' => 'fa@email.com',
             'password' => 'Pass@123',
@@ -145,7 +142,6 @@ class LoginTest extends TestCase
 
         $response->assertRedirect('home');
         $this->assertAuthenticatedAs($user);
-        
     }
 
     /** @test */
@@ -160,7 +156,7 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertRedirect('/fa/login');
-        $response->assertSessionHasErrors(['email' => "اطلاعات وارد شده غلط میباشد."]);
+        $response->assertSessionHasErrors(['email' => 'اطلاعات وارد شده غلط میباشد.']);
     }
 
     public function fa_user_cannot_view_a_login_form_when_authenticated()
@@ -177,17 +173,17 @@ class LoginTest extends TestCase
     {
         $this->refreshApplicationWithLocale('fa');
         $user = User::factory()->create(['password' => bcrypt('Pass@123')]);
-        
+
         $response = $this->from('fa/login')->post('fa/login', [
             'user-field' => $user->email,
             'password' => 'Invalid@123',
         ]);
-        
+
         $response->assertRedirect('/fa/login');
         $response->assertSessionHasErrors('email');
         $response->assertSessionHasErrors();
-        $response->assertSessionHasErrors(['email' => "اطلاعات وارد شده غلط میباشد."]);
-        
+        $response->assertSessionHasErrors(['email' => 'اطلاعات وارد شده غلط میباشد.']);
+
         $this->assertFalse(session()->hasOldInput('password'));
         $this->assertGuest();
     }
@@ -200,16 +196,40 @@ class LoginTest extends TestCase
 
         $response = $this->from('fa/login')->post('fa/login', [
             'user-field' => 'invalid@mail.com',
-            'password' => "Pass@123",
+            'password' => 'Pass@123',
         ]);
 
         $response->assertRedirect('/fa/login');
         $response->assertSessionHasErrors('email');
         $response->assertSessionHasErrors();
-        $response->assertSessionHasErrors(['email' => "اطلاعات وارد شده غلط میباشد."]);
-        
+        $response->assertSessionHasErrors(['email' => 'اطلاعات وارد شده غلط میباشد.']);
+
         $this->assertFalse(session()->hasOldInput('password'));
         $this->assertGuest();
     }
 
+    /** @test */
+    public function test_has_too_many_login_attempts()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $user = User::factory()->create();
+
+        // Make 5 requests
+        for ($i = 0; $i < 5; ++$i) {
+            $response = $this->from('en/login')->post('en/login', [
+                'user-field' => $user->email,
+                'password' => 'wrong',
+            ]);
+
+            $response->assertSessionHasErrors(['email' => 'These credentials do not match our records.']);
+        }
+
+        // Getting 'Too many login attempts' message on the 6th login attempt.
+        $this->from('en/login')->post('en/login', [
+            'user-field' => $user->email,
+            'password' => 'wrong',
+        ]);
+
+        $response->assertSessionHasErrors('email', 'Too many login attempts. Please try again in 58 seconds.');
+    }
 }
