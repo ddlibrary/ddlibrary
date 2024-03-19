@@ -61,6 +61,6 @@ class ForgotPasswordTest extends TestCase
 
         $response = $this->post('/fa/password/email', ['email' => 'invalid@mail.com']);
 
-        $response->assertSessionHasErrors(['email' => "کاربری با این ایمیل یافت نشد."]);
+        $response->assertSessionHasErrors(['email' => "اگر کاربر در سیستم موجود باشد، ما برای شما ایمیل میفرستیم."]);
     }
 }
