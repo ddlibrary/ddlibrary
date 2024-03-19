@@ -136,13 +136,14 @@
 
 /* alert */
 .alert {
-    position: absolute;
+    position: fixed;
     padding: 0.75rem 1.25rem;
     margin-bottom: 1rem;
     border: 1px solid transparent;
     border-radius: 0.25rem;
-    margin:10px 0px;
-    min-width: 300px;
+    margin:10px;
+    top:0;
+    max-width: 350px;
 }
 
 .alert-success {
@@ -318,3 +319,12 @@ text-decoration: none;
 
 .no-border{ border:none !important}
 .book-items{box-shadow: 0px 1px 2px 2px lightgray}
+.ml-2{ margin-left: 8px;}
+.mr-2{ margin-right: 8px;}
+.pointer{cursor: pointer;}
+.position-left-0{
+    left: 0;
+}
+.position-right-0{
+    right: 0;
+}
