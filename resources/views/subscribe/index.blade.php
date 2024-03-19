@@ -63,7 +63,11 @@
 
                             {{-- Mailchimp --}}
                             <small style="color:gray">
-                                @lang('Your email will be shared with MailChimp. their privacy policy')
+                                <p>
+
+                                    @lang('Your email will be shared with MailChimp.')
+                                </p>
+                                <a href="https://mailchimp.com/legal/">@lang('Their Privacy Policy')</a>
                             </small>
                         </form>
                     </div>
