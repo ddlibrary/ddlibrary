@@ -1,9 +1,7 @@
 @extends('layouts.main')
 @section('content')
     <section class="general-content">
-        @if (session()->has('alert'))
-            <x-alert :message="Session::get('alert.message')" :level="Session::get('alert.level')" />
-        @endif
+        
         <header>
             <h1>@lang('Users Details for') <strong>{{ $user->username }}</strong></h1>
         </header>

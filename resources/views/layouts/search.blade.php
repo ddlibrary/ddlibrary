@@ -1,8 +1,5 @@
 <section class="banner">
     <div class="main-section search-section">
-        @if (session()->has('alert'))
-            <x-alert :message="Session::get('alert.message')" :level="Session::get('alert.level')" />
-        @endif
         <header>
             <h1>@lang('Free and open educational resources for Afghanistan')</h1>
         </header>

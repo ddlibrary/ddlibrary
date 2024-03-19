@@ -10,9 +10,6 @@
     {{ asset('storage/files/logo-dd.png') }}
 @endsection
 @section('content')
-    @if (session()->has('alert'))
-        <x-alert :message="Session::get('alert.message')" :level="Session::get('alert.level')" />
-    @endif
 
     <div class="display-flex justify-content-center">
         <div>
