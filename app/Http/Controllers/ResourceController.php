@@ -1276,7 +1276,7 @@ class ResourceController extends Controller
      *
      * @throws FileNotFoundException
      */
-    public function downloadFile($resourceId, $fileId, $hash): Response
+    public function downloadFile($resourceId, $fileId, $hash): BinaryFileResponse
     {
         $secret = config('s3.config.secret');
         $user = Auth::id();
