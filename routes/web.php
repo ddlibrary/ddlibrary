@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
@@ -31,6 +33,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VocabularyController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Spatie\Honeypot\ProtectAgainstSpam;
 
 if (env('APP_ENV') === 'production') {
@@ -232,15 +235,15 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('/storyweaver/confirm/{landing_page}', [StoryWeaverController::class, 'storyWeaverConfirmation'])->name('storyweaver-confirm')->middleware('auth')->middleware('verified');
     Route::get('/storyweaver/auth', [StoryWeaverController::class, 'storyWeaverAuth'])->name('storyweaver-auth')->middleware('auth')->middleware('verified');
     //Adding old DDL routes
-    Route::get('/user/register', [Auth\RegisterController::class, 'showRegistrationForm']);
-    Route::get('/user', [Auth\LoginController::class, 'showLoginForm']);
+    Route::get('/user/register', [RegisterController::class, 'showRegistrationForm']);
+    Route::get('/user', [LoginController::class, 'showLoginForm']);
     Route::get('/access-library', [ResourceController::class, 'createStepOne'])->middleware('auth')->middleware('verified');
     Route::get('/node/add', [ResourceController::class, 'createStepOne'])->middleware('auth')->middleware('verified');
     Route::get('/node/add/resourcefile', [ResourceController::class, 'createStepOne'])->middleware('auth')->middleware('verified');
     Route::get('/add/resourcefile', [ResourceController::class, 'createStepOne'])->middleware('auth')->middleware('verified');
     Route::get('/node/{resourceId}', [ResourceController::class, 'viewPublicResource']);
-    Route::get('/user/logout', [Auth\LoginController::class, 'logout']);
-    Route::get('/user/password', [Auth\ForgotPasswordController::class, 'showLinkRequestForm']);
+    Route::get('/user/logout', [LoginController::class, 'logout']);
+    Route::get('/user/password', [ForgotPasswordController::class, 'showLinkRequestForm']);
     Route::get('/volunteer', function () {
         return redirect('page/1532');
     });
