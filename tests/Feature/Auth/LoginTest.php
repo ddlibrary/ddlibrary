@@ -24,7 +24,7 @@ class LoginTest extends TestCase
         $response->assertSee('Email');
         $response->assertSee('Sign up');
         $response->assertSee('Password');
-        $response->assertSee('Remember me');
+        $response->assertSee('Remember Me');
         $response->assertSee('Forgot your password?');
         $response->assertSee('Log in to Darakht-e Danesh Library');
     }
@@ -36,7 +36,7 @@ class LoginTest extends TestCase
         $user = User::factory()->create(['email' => 'user@email.com', 'password' => bcrypt('Pass@123')]);
 
         $response = $this->from('en/login')->post('en/login', [
-            'user-field' => 'user@email.com',
+            'email' => 'user@email.com',
             'password' => 'Pass@123',
         ]);
 
@@ -51,7 +51,7 @@ class LoginTest extends TestCase
         User::factory()->create(['email' => 'disable_user@email.com', 'password' => bcrypt('Pass@123'), 'status' => false]);
 
         $response = $this->from('en/login')->post('en/login', [
-            'user-field' => 'disable_user@email.com',
+            'email' => 'disable_user@email.com',
             'password' => 'Pass@123',
         ]);
 
@@ -75,7 +75,7 @@ class LoginTest extends TestCase
         $user = User::factory()->create(['password' => bcrypt('Pass@123')]);
 
         $response = $this->from('en/login')->post('en/login', [
-            'user-field' => $user->email,
+            'email' => $user->email,
             'password' => 'Invalid@123',
         ]);
 
@@ -95,7 +95,7 @@ class LoginTest extends TestCase
         User::factory()->create(['email' => 'email@mail.com', 'password' => bcrypt('Pass@123')]);
 
         $response = $this->from('en/login')->post('en/login', [
-            'user-field' => 'invalid@mail.com',
+            'email' => 'invalid@mail.com',
             'password' => 'Pass@123',
         ]);
 
@@ -136,7 +136,7 @@ class LoginTest extends TestCase
         $user = User::factory()->create(['email' => 'fa@email.com', 'password' => bcrypt('Pass@123')]);
 
         $response = $this->from('fa/login')->post('fa/login', [
-            'user-field' => 'fa@email.com',
+            'email' => 'fa@email.com',
             'password' => 'Pass@123',
         ]);
 
@@ -151,7 +151,7 @@ class LoginTest extends TestCase
         User::factory()->create(['email' => 'fa_disable_user@email.com', 'password' => bcrypt('Pass@123'), 'status' => false]);
 
         $response = $this->from('fa/login')->post('fa/login', [
-            'user-field' => 'fa_disable_user@email.com',
+            'email' => 'fa_disable_user@email.com',
             'password' => 'Pass@123',
         ]);
 
@@ -175,7 +175,7 @@ class LoginTest extends TestCase
         $user = User::factory()->create(['password' => bcrypt('Pass@123')]);
 
         $response = $this->from('fa/login')->post('fa/login', [
-            'user-field' => $user->email,
+            'email' => $user->email,
             'password' => 'Invalid@123',
         ]);
 
@@ -195,7 +195,7 @@ class LoginTest extends TestCase
         User::factory()->create(['email' => 'email@mail.com', 'password' => bcrypt('Pass@123')]);
 
         $response = $this->from('fa/login')->post('fa/login', [
-            'user-field' => 'invalid@mail.com',
+            'email' => 'invalid@mail.com',
             'password' => 'Pass@123',
         ]);
 
@@ -217,7 +217,7 @@ class LoginTest extends TestCase
         // Make 5 requests
         for ($i = 0; $i < 5; ++$i) {
             $response = $this->from('en/login')->post('en/login', [
-                'user-field' => $user->email,
+                'email' => $user->email,
                 'password' => 'wrong',
             ]);
 
@@ -226,7 +226,7 @@ class LoginTest extends TestCase
 
         // Getting 'Too many login attempts' message on the 6th login attempt.
         $this->from('en/login')->post('en/login', [
-            'user-field' => $user->email,
+            'email' => $user->email,
             'password' => 'wrong',
         ]);
 
