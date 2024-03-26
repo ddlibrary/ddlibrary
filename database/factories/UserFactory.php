@@ -21,7 +21,7 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('secret'),
             'language' => 'en',
-            'status' => $this->faker->numberBetween(1, 3),
+            'status' => true,
             'remember_token' => str_random(10),
             'accessed_at' => now(),
         ];
