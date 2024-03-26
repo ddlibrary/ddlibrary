@@ -1,5 +1,5 @@
 <div id="alert-message" class="z-index-2 display-none">
-    <div class="alert alert-{{ $level }} {{ Lang::locale() == 'en' ? 'position-left-0' : 'position-right-0' }}">
+    <div class="alert alert-{{ $level }} {{ Lang::locale() == 'en' ? 'position-right-0' : 'position-left-0' }}">
         <div>
             <div class="display-flex">
                 <div class="{{ Lang::locale() == 'en' ? 'mr-2' : 'ml-2' }}">
