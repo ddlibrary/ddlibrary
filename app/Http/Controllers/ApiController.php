@@ -130,7 +130,7 @@ class ApiController extends Controller
         $user->email = $request->email;
         $user->status = 1;
         $user->accessed_at = Carbon::now();
-        $user->language = Config::get('app.locale');
+        $user->language = config('app.locale');
 
         $user->save();
 

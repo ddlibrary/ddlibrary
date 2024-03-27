@@ -111,7 +111,7 @@ class RegisterController extends Controller
         $user->email = $request['email'];
         $user->status = 1;
         $user->accessed_at = Carbon::now();
-        $user->language = Config::get('app.locale');
+        $user->language = config('app.locale');
 
         if ($user->email == null) {
             $user->email_verified_at = Carbon::now(); // This is a hack for the duration, until we can verify phone numbers as well
