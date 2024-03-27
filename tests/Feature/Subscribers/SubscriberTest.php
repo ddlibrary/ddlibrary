@@ -46,7 +46,24 @@ class SubscriberTest extends TestCase
             'email' => 'azizullahsaeidi@email.com',
         ]);
 
+        $user->refresh();
+
+        $this->assertEquals(1, $user->subscription()->count());
         $this->assertEquals($user->subscription->name, 'New User');
+    }
+
+    /** @test */
+    public function en_unverified_user_can_not_subscribe()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $user = User::factory()->create(['email_verified_at' => null]);
+
+        $response = $this->actingAs($user)->post('/en/subscribe', $this->data(['_method' => 'post']));
+        $response->assertStatus(302)->assertRedirect('en/email/verify');
+
+        $user->refresh();
+
+        $this->assertEquals(0, $user->subscription()->count());
     }
 
     /** @test */
@@ -151,7 +168,24 @@ class SubscriberTest extends TestCase
             'email' => 'azizullahsaeidi@email.com',
         ]);
 
+        $user->refresh();
+
+        $this->assertEquals(1, $user->subscription()->count());
         $this->assertEquals($user->subscription->name, 'New User');
+    }
+
+    /** @test */
+    public function fa_unverified_user_can_not_subscribe()
+    {
+        $this->refreshApplicationWithLocale('fa');
+        $user = User::factory()->create(['email_verified_at' => null]);
+
+        $response = $this->actingAs($user)->post('/fa/subscribe', $this->data(['_method' => 'post']));
+        $response->assertStatus(302)->assertRedirect('fa/email/verify');
+
+        $user->refresh();
+
+        $this->assertEquals(0, $user->subscription()->count());
     }
 
     /** @test */
