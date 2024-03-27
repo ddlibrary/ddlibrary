@@ -3,9 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class ForgotPasswordTest extends TestCase
@@ -35,7 +33,7 @@ class ForgotPasswordTest extends TestCase
 
         $response = $this->post('/en/password/email', ['email' => 'invalid@mail.com']);
 
-        $response->assertSessionHasErrors(['email' => "if the user exists in our system, we will send an email"]);
+        $response->assertSessionHasErrors(['email' => 'if the user exists in our system, we will send an email']);
     }
 
     /** @test */
@@ -61,6 +59,6 @@ class ForgotPasswordTest extends TestCase
 
         $response = $this->post('/fa/password/email', ['email' => 'invalid@mail.com']);
 
-        $response->assertSessionHasErrors(['email' => "اگر کاربر در سیستم موجود باشد، ما برای شما ایمیل میفرستیم."]);
+        $response->assertSessionHasErrors(['email' => 'اگر کاربر در سیستم موجود باشد، ما برای شما ایمیل میفرستیم.']);
     }
 }
