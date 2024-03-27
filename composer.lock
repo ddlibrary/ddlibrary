@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "55b93155e74c550d594bb0a0f33d9a1f",
+    "content-hash": "ec76591d448e9f8ad0e70177df7e1a30",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -8766,6 +8766,56 @@
             "time": "2020-07-09T08:09:16+00:00"
         },
         {
+            "name": "jasonmccreary/laravel-test-assertions",
+            "version": "v2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jasonmccreary/laravel-test-assertions.git",
+                "reference": "e506c4eb57816e036b143bd1c64589e1d013337d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jasonmccreary/laravel-test-assertions/zipball/e506c4eb57816e036b143bd1c64589e1d013337d",
+                "reference": "e506c4eb57816e036b143bd1c64589e1d013337d",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/testing": "^10.0|^11.0",
+                "mockery/mockery": "^1.4.4",
+                "php": "^8.1",
+                "phpunit/phpunit": "^10.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "JMac\\Testing\\AdditionalAssertionsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JMac\\Testing\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jason McCreary",
+                    "email": "jason@pureconcepts.net"
+                }
+            ],
+            "description": "A set of helpful assertions when testing Laravel applications.",
+            "support": {
+                "issues": "https://github.com/jasonmccreary/laravel-test-assertions/issues",
+                "source": "https://github.com/jasonmccreary/laravel-test-assertions/tree/v2.4.0"
+            },
+            "time": "2024-02-29T19:39:03+00:00"
+        },
+        {
             "name": "mockery/mockery",
             "version": "1.6.10",
             "source": {
@@ -10986,5 +11036,5 @@
     "platform-overrides": {
         "php": "8.1"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
