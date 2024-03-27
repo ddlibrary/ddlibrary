@@ -128,7 +128,14 @@
     @push('scripts')
         <script>
             function onSubmit(token) {
-                document.getElementById("login-form").submit();
+                let form = document.getElementById("login-form");
+                
+                if (form.checkValidity()) {
+                    form.submit();
+                } else {
+                    grecaptcha.reset();
+                    form.reportValidity();
+                }
             }
         </script>
     @endpush
