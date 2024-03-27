@@ -260,9 +260,9 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         return redirect('/home');
     });
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::prefix('subscribe')->controller(SubscribeController::class)->group(function(){
-        Route::get('/', 'index')->middleware('auth')->middleware('verified');
-        Route::post('', 'store')->middleware('auth')->middleware('verified');;
+    Route::prefix('subscribe')->middleware(['auth', 'verified'])->controller(SubscribeController::class)->group(function(){
+        Route::get('/', 'index')->name('subscribe.index');
+        Route::post('', 'store')->name('subscribe.store');
     });
 });
 Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {

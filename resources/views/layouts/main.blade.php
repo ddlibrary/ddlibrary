@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ LaravelLocalization::getCurrentLocaleDirection() }}">
+
 <head>
     <title>@yield('title')</title>
     <meta charset="utf-8">
@@ -19,29 +20,34 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="shortcut icon" href="{{ asset('storage/files/favicon.ico') }}">
-    
+
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 
-    @if(Lang::locale() != 'en')
-    <link rel="stylesheet" href="{{ asset('css/local.css') }}">
+    @if (Lang::locale() != 'en')
+        <link rel="stylesheet" href="{{ asset('css/local.css') }}">
     @endif
 
     @stack('styles')
-    @if(App::environment('production'))
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-6207513-43"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+    @if (App::environment('production'))
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-6207513-43"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
 
-        gtag('config', 'UA-6207513-43');
-    </script>
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+
+            gtag('config', 'UA-6207513-43');
+        </script>
     @endif
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
 </head>
+
 <body>
+
 
     <!-- Facebook Chat Integration - Start -->
     <!-- Load Facebook SDK for JavaScript -->
@@ -49,25 +55,23 @@
     <script>
         window.fbAsyncInit = function() {
             FB.init({
-            xfbml            : true,
-            version          : 'v3.2'
+                xfbml: true,
+                version: 'v3.2'
             });
         };
 
         (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
-        fjs.parentNode.insertBefore(js, fjs);
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     </script>
 
     <!-- Your customer chat code -->
-    <div class="fb-customerchat"
-        attribution=setup_tool
-        page_id="1540661852875335"
-        theme_color="#ffa800"
+    <div class="fb-customerchat" attribution=setup_tool page_id="1540661852875335" theme_color="#ffa800"
         logged_in_greeting="به کتابخانه درخت دانش خوش آمدید. چگونه می توانیم به شما کمک کنیم؟"
         logged_out_greeting="به کتابخانه درخت دانش خوش آمدید. چگونه می توانیم به شما کمک کنیم؟">
     </div>
@@ -81,23 +85,26 @@
         $questions_count = \App\Models\SurveyQuestion::getPublishedQuestions($lang)->count();
         ?>
         @if ($questions_count != 0)
-            @if (Request::is(Lang::locale().'/home'))
+            @if (Request::is(Lang::locale() . '/home'))
                 @include('../survey/survey_view')
             @elseif (Request::is(Lang::locale()))
                 @include('../survey/survey_view')
-            @elseif (Request::is(Lang::locale().'/resource/*'))
+            @elseif (Request::is(Lang::locale() . '/resource/*'))
                 @include('../survey/survey_view')
-            @elseif (Request::is(Lang::locale().'/resources/*'))
+            @elseif (Request::is(Lang::locale() . '/resources/*'))
                 @include('../survey/survey_view')
             @endif
         @endif
-        
-        @yield('content')
 
+        @yield('content')
+        @if (session()->has('alert'))
+            <x-alert :message="Session::get('alert.message')" :level="Session::get('alert.level')" />
+        @endif
     </main>
     @include('layouts.footer')
     <!-- Optional JavaScript -->
     <script async src="{{ asset('js/all.js') }}"></script>
-    @stack('scripts')   
+    @stack('scripts')
 </body>
+
 </html>
