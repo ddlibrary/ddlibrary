@@ -206,7 +206,7 @@ class UserController extends Controller
         $userRole->role_id = $request->input('role');
         $userRole->save();
 
-        return redirect('/admin/user/edit/' . $userId)->with('success', 'User details updated successfully!');
+        return redirect('/admin/user/edit/'.$userId)->with('success', 'User details updated successfully!');
     }
 
     /**

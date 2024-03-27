@@ -33,7 +33,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -556,21 +555,24 @@ class ResourceController extends Controller
         if ($result and isAdmin()) {
             Session::flash('alert', [
                 'message' => __('Resource successfully added!'),
-                'level' => 'success'
+                'level' => 'success',
             ]);
+
             return redirect('/home');
         } elseif ($result) {
             Session::flash('alert', [
                 'message' => __('Resource successfully added! It will be published after review.'),
-                'level' => 'success'
+                'level' => 'success',
             ]);
+
             return redirect('/home');
         }
 
         Session::flash('alert', [
             'message' => __('Resource couldn\'t be added.'),
-            'level' => 'danger'
+            'level' => 'danger',
         ]);
+
         return redirect('/home');
 
     }
@@ -1272,7 +1274,7 @@ class ResourceController extends Controller
      * Download a watermarked file attached to a resource
      *
      *
-     * @param $time
+     * @param  $time
      *
      * @throws FileNotFoundException
      */
