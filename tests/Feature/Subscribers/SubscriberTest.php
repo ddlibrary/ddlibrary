@@ -33,13 +33,13 @@ class SubscriberTest extends TestCase
     }
 
     /** @test */
-    public function en_authenticated_user_can_subscribe()
+    public function en_authenticated_and_verified_user_can_subscribe()
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/en/subscribe', $this->data(['name' => 'New User', '_method' => 'post']));
-        $response->assertStatus(302)->assertRedirect('/subscribe');
+        $response->assertStatus(302)->assertRedirect('home');
 
         $this->assertDatabaseHas('subscribers', [
             'name' => 'New User',
@@ -138,13 +138,13 @@ class SubscriberTest extends TestCase
     }
 
     /** @test */
-    public function fa_authenticated_user_can_subscribe()
+    public function fa_authenticated_and_verified_user_can_subscribe()
     {
         $this->refreshApplicationWithLocale('fa');
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/fa/subscribe', $this->data(['name' => 'New User', '_method' => 'post']));
-        $response->assertStatus(302)->assertRedirect('/subscribe');
+        $response->assertStatus(302)->assertRedirect('home');
 
         $this->assertDatabaseHas('subscribers', [
             'name' => 'New User',
