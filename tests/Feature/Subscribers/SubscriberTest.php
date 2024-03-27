@@ -46,7 +46,7 @@ class SubscriberTest extends TestCase
             'email' => 'azizullahsaeidi@email.com',
         ]);
 
-        $this->assertEquals($user->subscriber->name, 'New User');
+        $this->assertEquals($user->subscription->name, 'New User');
     }
 
     /** @test */
@@ -151,7 +151,7 @@ class SubscriberTest extends TestCase
             'email' => 'azizullahsaeidi@email.com',
         ]);
 
-        $this->assertEquals($user->subscriber->name, 'New User');
+        $this->assertEquals($user->subscription->name, 'New User');
     }
 
     /** @test */
