@@ -34,7 +34,7 @@ class UserProfile extends Model
             ->select(
                 'user_id'
             )
-            ->where('phone', $credentials['user-field'])
+            ->where('phone', $credentials['email'])
             ->first();
     }
 }

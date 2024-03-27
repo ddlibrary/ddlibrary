@@ -12,114 +12,130 @@
     {{ asset('storage/files/logo-dd.png') }}
 @endsection
 @section('content')
-    <section class="ddl-forms login">
-        <div>
-            <header>
-                <h3>@lang('Log in to Darakht-e Danesh Library')</h3>
-            </header>
+    <div class="display-flex justify-content-center">
+        <section class="p-8 d-block ddl-forms register-form">
             <div>
-                <form method="POST" action="{{ route('login') }}" id="login-form">
-                    @honeypot
-                    @csrf
+                <header>
+                    <h3 class="text-center">@lang('Log in to Darakht-e Danesh Library')</h3>
+                </header>
+                <div>
+                    <form method="POST" action="{{ route('login') }}" id="login-form">
+                        @honeypot
+                        @csrf
 
-                    {{-- Username --}}
-                    <div class="form-item">
-                        <input type="text" class="form-control w-100 {{ $errors->has('email') ? ' is-invalid' : '' }}"
-                            id="user-field" name="user-field" autocomplete="username" spellcheck="false"
-                            placeholder="@lang('Email or username or phone')" size="40" value="{{ old('user-field') }}" required
-                            autofocus>
-                    </div>
-
-                    {{-- Password --}}
-                    <div class="form-item position-relative">
-                        <input type="password"
-                            class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} user-password"
-                            id="password" name="password" autocomplete="current-password" spellcheck="false"
-                            placeholder="@lang('Password')" size="40" required>
-                        <span class="fa fa-eye-slash password-toggle-icon text-gray" aria-hidden="true"
-                            onclick="togglePassword()"></span>
-                        @if ($errors->has('email'))
-                            <span class="invalid-feedback text-start">
-                                <span>{{ $errors->first('email') }}</span>
-                            </span>
-                        @endif
-                    </div>
-
-                    {{-- Remember me --}}
-                    <div class="form-item text-start">
-                        <label id="remember-me">
-                            <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                            <span class="">{{ __('Remember me') }}</span>
-                        </label>
-                    </div>
-
-                    {{-- Submit Button --}}
-                    <div class="form-item">
-
-                        <div>
-                            @if (env('CAPTCHA') == 'yes')
-                                <button class="g-recaptcha form-control login-submit btn btn-primary w-100"
-                                    data-sitekey="{{ config('services.recaptcha_v3.site_key') }}" data-callback='onSubmit'
-                                    data-action='register'>@lang('Log in')</button>
-                            @else
-                                <button class="form-control login-submit btn btn-primary w-100">@lang('Log in')</button>
+                        {{-- Username --}}
+                        <div class="form-item">
+                            <input type="text" class="form-control w-100 {{ $errors->has('email') ? ' is-invalid' : '' }}"
+                                id="email" name="email" autocomplete="username" spellcheck="false"
+                                placeholder="@lang('Email or username or phone')" size="40" value="{{ old('email') }}" required
+                                autofocus>
+                            @if ($errors->has('email'))
+                                <span class="invalid-feedback text-start">
+                                    <span>{{ $errors->first('email') }}</span>
+                                </span>
                             @endif
-                            @if ($errors->has('g-recaptcha-response'))
-                                <div>
-                                    <span class="invalid-feedback text-start">
-                                        <span>{{ $errors->first('g-recaptcha-response') }}</span>
-                                    </span>
-                                </div>
+                        </div>
+
+                        {{-- Password --}}
+                        <div class="form-item position-relative">
+                            <input type="password"
+                                class="form-control w-100 {{ $errors->has('password') ? ' is-invalid' : '' }} user-password"
+                                id="password" name="password" autocomplete="current-password" spellcheck="false"
+                                placeholder="@lang('Password')" size="40" required>
+                            <span class="fa fa-eye-slash password-toggle-icon text-gray" aria-hidden="true"
+                                onclick="togglePassword()"></span>
+                            @if ($errors->has('password'))
+                                <span class="invalid-feedback text-start">
+                                    <span>{{ $errors->first('password') }}</span>
+                                </span>
                             @endif
-                            
                         </div>
-                    </div>
 
-                    <div class="form-item">
-                        <div class="divider">
-                            <span class="divider-inner-text">{{ __('or') }}</span>
+                        {{-- Remember Me --}}
+                        <div class="form-item text-start">
+                            <label id="remember-me">
+                                <input type="checkbox" name="remember" class="display-inline-block submit-button"
+                                    {{ old('remember') ? 'checked' : '' }}>
+                                <span class="">{{ __('Remember Me') }}</span>
+                            </label>
                         </div>
-                    </div>
 
-                    {{-- Login via socialate --}}
-                    <div class="socialite">
+                        {{-- Submit Button --}}
+                        <div class="form-item">
 
-                        {{-- Gmail --}}
-                        <a href="{{ env('LOGIN_WITH_GOOGLE') == 'no' ? 'javascript:void(0)' : route('login.google') }}"
-                            class="btn btn-outline-secondary btn-md  @if (env('LOGIN_WITH_GOOGLE') == 'no') disabled-link display-none @endif @if (env('LOGIN_WITH_FACEBOOK') == 'no') flex-grow-1 @endif"
-                            type="submit">
-                            <i class="fab fa-google"></i>
-                            <span class="oauth-icon-separator"></span>
-                            @lang('Log in with Google')
-                        </a>
+                            <div>
+                                @if (env('CAPTCHA') == 'yes')
+                                    <button class="g-recaptcha form-control login-submit btn btn-primary w-100"
+                                        data-sitekey="{{ config('services.recaptcha_v3.site_key') }}"
+                                        data-callback='onSubmit' data-action='register'>@lang('Log in')</button>
+                                @else
+                                    <button
+                                        class="form-control login-submit btn btn-primary w-100">@lang('Log in')</button>
+                                @endif
+                                @if ($errors->has('g-recaptcha-response'))
+                                    <div>
+                                        <span class="invalid-feedback text-start">
+                                            <span>{{ $errors->first('g-recaptcha-response') }}</span>
+                                        </span>
+                                    </div>
+                                @endif
 
-                        {{-- Facebook --}}
-                        <a href="{{ env('LOGIN_WITH_FACEBOOK') == 'no' ? 'javascript:void(0)' : route('login.facebook') }}"
-                            class=" btn btn-outline-secondary btn-md float-xl-right @if (env('LOGIN_WITH_FACEBOOK') == 'no') disabled-link display-none @endif @if (env('LOGIN_WITH_GOOGLE') == 'no') flex-grow-1 @endif"
-                            type="submit">
-                            <i class="fab fa-facebook-f"></i>
-                            <span class="oauth-icon-separator"></span>
-                            @lang('Log in with Facebook')
-                        </a>
-                    </div>
+                            </div>
+                        </div>
 
-                    <div class="form-group text-start" style="margin-top: 20px;">
+                        <div class="form-item">
+                            <div class="divider">
+                                <span class="divider-inner-text">{{ __('or') }}</span>
+                            </div>
+                        </div>
 
-                        {{-- Sign up link --}}
-                        <a href="{{ route('register') }}" style="margin-inline-end: 25px;">@lang('Sign up')</a>
+                        {{-- Login via socialate --}}
+                        <div class="socialite">
 
-                        {{-- Forgot password --}}
-                        <a href="{{ route('password.request') }}"
-                            @@disabled(true)>{{ __('Forgot your password?') }}</a>
-                    </div>
-                </form>
+                            {{-- Gmail --}}
+                            <a href="{{ env('LOGIN_WITH_GOOGLE') == 'no' ? 'javascript:void(0)' : route('login.google') }}"
+                                class="btn btn-outline-secondary btn-md  @if (env('LOGIN_WITH_GOOGLE') == 'no') disabled-link display-none @endif @if (env('LOGIN_WITH_FACEBOOK') == 'no') flex-grow-1 @endif"
+                                type="submit">
+                                <i class="fab fa-google"></i>
+                                <span class="oauth-icon-separator"></span>
+                                @lang('Log in with Google')
+                            </a>
+
+                            {{-- Facebook --}}
+                            <a href="{{ env('LOGIN_WITH_FACEBOOK') == 'no' ? 'javascript:void(0)' : route('login.facebook') }}"
+                                class=" btn btn-outline-secondary btn-md float-xl-right @if (env('LOGIN_WITH_FACEBOOK') == 'no') disabled-link display-none @endif @if (env('LOGIN_WITH_GOOGLE') == 'no') flex-grow-1 @endif"
+                                type="submit">
+                                <i class="fab fa-facebook-f"></i>
+                                <span class="oauth-icon-separator"></span>
+                                @lang('Log in with Facebook')
+                            </a>
+                        </div>
+
+                        <div class="form-group text-start" style="margin-top: 20px;">
+
+                            {{-- Sign up link --}}
+                            <a href="{{ route('register') }}" style="margin-inline-end: 25px;">@lang('Sign up')</a>
+
+                            {{-- Forgot password --}}
+                            <a href="{{ route('password.request') }}"
+                                @@disabled(true)>{{ __('Forgot your password?') }}</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
     @push('scripts')
         <script>
             function onSubmit(token) {
-                document.getElementById("login-form").submit();
+                let form = document.getElementById("login-form");
+                
+                if (form.checkValidity()) {
+                    form.submit();
+                } else {
+                    grecaptcha.reset();
+                    form.reportValidity();
+                }
             }
         </script>
     @endpush
