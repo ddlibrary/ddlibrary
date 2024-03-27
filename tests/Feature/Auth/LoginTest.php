@@ -126,7 +126,7 @@ class LoginTest extends TestCase
         $response->assertSee('گذرواژه');
         $response->assertSee('مرا به خاطر بسپار');
         $response->assertSee('گذرواژه را فراموش کردم');
-        $response->assertSee('ورود به کتاب‌خانه درخت دانش');
+        $response->assertSee('ورود به کتابخانه درخت دانش');
     }
 
     /** @test */
