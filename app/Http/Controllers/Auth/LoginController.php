@@ -140,7 +140,7 @@ class LoginController extends Controller
             return $this->sendLockoutResponse($request);
         }
 
-        $credentials = $request->only('user-field', 'password');
+        $credentials = $request->only('email', 'password');
         $credentials['user-id'] = null;
         //Checking if user exists
         $userInstance = new User();
@@ -197,7 +197,7 @@ class LoginController extends Controller
     protected function validateLogin(Request $request): void
     {
         $this->validate($request, [
-            'user-field' => 'required|string',
+            'email' => 'required|string',
             'password' => 'required|string',
             'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule()],
         ]);
@@ -208,15 +208,15 @@ class LoginController extends Controller
      */
     protected function credentials(Request $request): array
     {
-        $requestArray = $request->only('user-field', 'password');
-        if (filter_var($requestArray['user-field'], FILTER_VALIDATE_EMAIL)) {
-            $requestArray['email'] = $requestArray['user-field'];
-            unset($requestArray['user-field']);
+        $requestArray = $request->only('email', 'password');
+        if (filter_var($requestArray['email'], FILTER_VALIDATE_EMAIL)) {
+            $requestArray['email'] = $requestArray['email'];
+            unset($requestArray['email']);
 
             return $requestArray;
         } else {
-            $requestArray['username'] = $requestArray['user-field'];
-            unset($requestArray['user-field']);
+            $requestArray['username'] = $requestArray['email'];
+            unset($requestArray['email']);
 
             return $requestArray;
         }

@@ -183,8 +183,8 @@ class User extends Authenticatable implements MustVerifyEmail
                 'users.created_at',
                 'users.accessed_at'
             )
-            ->where('email', $credentials['user-field'])
-            ->orWhere('username', $credentials['user-field'])
+            ->where('email', $credentials['email'])
+            ->orWhere('username', $credentials['email'])
             ->orWhere('id', $credentials['user-id'])
             ->first();
     }
@@ -237,8 +237,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function updateUser($newPassword, $credentials): int
     {
         return DB::table('users')
-            ->where('email', $credentials['user-field'])
-            ->orWhere('username', $credentials['user-field'])
+            ->where('email', $credentials['email'])
+            ->orWhere('username', $credentials['email'])
             ->update($newPassword);
     }
 
