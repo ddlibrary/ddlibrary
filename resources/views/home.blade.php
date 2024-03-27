@@ -13,7 +13,6 @@
 @endsection
 @section('content')
 <section class="main-section">
-    @include('layouts.messages')
     <div class="ddl-top-news">
         <div>
             <p>@lang("Access children's storybooks through Storyweaver, click here"): 
@@ -215,7 +214,7 @@
                     @endforeach
                 @endif
                 <li>
-                    <a href="{{ url('subscribe')}}" title="@lang('Subscribe')">@lang('Subscribe')</a>
+                    <a href="{{ url('subscribe')}}" class="btn btn-outline-secondary btn-md float-xl-right" title="@lang('Subscribe')">@lang('Subscribe')</a>
                 </li>
             </ul>
         </nav>

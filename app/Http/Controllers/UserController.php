@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Laracsv\Export;
@@ -112,17 +113,20 @@ class UserController extends Controller
             $user->password = Hash::make($request->input('password'));
         }
 
-        if ($user->save()) {
-            if ($userEmail != $request->input('email')) {
-                $user->email_verified_at = null;
-                $user->save();
-                event(new Registered($user));
-            }
-
-            return redirect(URL('user/profile'))->with('success', 'Your data successfully updated.');
+        if ($userEmail != $request->input('email')) {
+            $user->email_verified_at = null;
+            $user->save();
+            event(new Registered($user));
+        } else {
+            $user->save();
         }
 
-        return redirect(URL('user/profile'))->with('warning', 'Sorry! your data was not updated.');
+        Session::flash('alert', [
+            'message' => __('Your data has been updated successfully.'),
+            'level' => 'success',
+        ]);
+
+        return redirect(URL('user/profile'));
     }
 
     /**
@@ -140,13 +144,7 @@ class UserController extends Controller
         $userRoles = UserRole::where('user_id', $userId)->get();
         $roles = Role::all();
 
-        return view('admin.users.edit_user', compact(
-            'user',
-            'countries',
-            'provinces',
-            'userRoles',
-            'roles'
-        ));
+        return view('admin.users.edit_user', compact('user', 'countries', 'provinces', 'userRoles', 'roles'));
     }
 
     /**
@@ -208,7 +206,7 @@ class UserController extends Controller
         $userRole->role_id = $request->input('role');
         $userRole->save();
 
-        return redirect('/admin/user/edit/'.$userId)->with('success', 'User details updated successfully!');
+        return redirect('/admin/user/edit/' . $userId)->with('success', 'User details updated successfully!');
     }
 
     /**
@@ -230,10 +228,12 @@ class UserController extends Controller
         $users = User::get(); // All users
         // $userProfiles = UserProfile::with('first_name','last_name')->get();
         $csvExporter = new Export();
-        $csvExporter->build($users, [
-            'email' => 'Email Address',
-            'profile.first_name' => 'First Name',
-            'profile.last_name' => 'Last Name',
-        ])->download();
+        $csvExporter
+            ->build($users, [
+                'email' => 'Email Address',
+                'profile.first_name' => 'First Name',
+                'profile.last_name' => 'Last Name',
+            ])
+            ->download();
     }
 }

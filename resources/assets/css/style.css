@@ -2,6 +2,7 @@
 .mt-0{ margin-top:0px !important}
 .mt-1{ margin-top:4px !important}
 .mt-2{ margin-top:8px !important}
+.mt-5{ margin-top:20px !important}
 .d-block{ display:block !important}
 .d-inline-block{ display:inline-block !important}
 .btn-outline-secondary{
@@ -16,6 +17,7 @@
 .text-end{ text-align: end;}
 .text-center{text-align: center !important;}
 .w-100{width:100% !important;}
+.h-100{height:100% !important;}
 
 /* Login page */
 .divider {
@@ -118,3 +120,208 @@
     padding-top: 7px;
     padding-bottom: 7px;
 }
+
+.display-flex{
+    display: flex !important;
+}
+.justify-content-space-between{
+    justify-content:space-between !important;
+}
+.justify-content-center{
+    justify-content: center !important;
+}
+.p-8{
+    padding: 32px !important;
+}
+
+/* alert */
+.alert {
+    position: absolute;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    margin:90px 10px;
+    top:0;
+    min-width: 312px;
+    max-width: 350px;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+.progress-bar-success{
+    background-color: lightseagreen;
+}
+
+.progress-bar-danger{
+    background-color: #f79898;
+}
+.progress-bar {
+    height: 5px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    animation: progress 10s linear forwards;
+}
+
+@keyframes progress {
+    0% {
+        width: 100%;
+    }
+
+    100% {
+        width: 0%;
+    }
+}
+
+.search-icon{
+    color: #ffa300;
+    display: block !important;
+    position: absolute !important;
+    top: 14px !important;
+    cursor: pointer;
+}
+
+.search-icon-left{
+    left: 9.5% !important;
+}
+
+.search-icon-right{
+    right: 9.5% !important;
+}
+.search-input{
+    width: 80% !important;
+    padding:16px !important;
+}
+.relative-div{
+    position: relative !important;
+}
+.search-section{
+    background:#eee;
+    padding:40px 0px;
+}
+.resource-items{
+    display: flex;height:100%;
+    flex-direction: column;
+    align-items: center;
+    border:1px solid #eec67b;
+    justify-content: space-between
+}
+
+a.resource-link:active,
+a.resource-link:visited,
+a.resource-link:link {
+color: #888;
+text-decoration: none;
+}
+.resource-link:hover {
+    color:#ffa800 !important;
+} 
+.image-link img
+{
+    transition: transform 500ms ease-in-out;
+}
+.image-link:hover img{
+    transform: scale(1.04);
+    opacity:0.8;
+}
+.overflow-hidden{
+    overflow: hidden;
+}
+.flex-1{
+    flex:1;
+}
+.flex-5{
+    flex:5;
+}
+.p-1{
+    padding:4px;
+} 
+.p-5{
+    padding:20px;
+}  
+.gap-5{
+    gap: 20px;
+}
+.flex-direction-column{
+    flex-direction: column;
+}
+.user-state{
+    display:inline-block;
+    padding:2px 10px;
+    border-radius:3px;
+    color:#fff;
+}
+.border-yellow{
+    border:1px solid #ffa800;
+}
+.border-radius-5{
+    border-radius: 5px;
+}
+.bg-red-300{ background:#c54242;}
+.bg-lightseagreen{ background:lightseagreen;}
+.book-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    padding: 5px;
+}
+
+.book-cover {
+    object-fit: cover;
+    height: 220px
+}
+
+@media screen and (max-width: 1200px) {
+    .book-list {
+        grid-template-columns: repeat(3, 1fr);
+        /* Display 3 columns */
+    }
+
+    .book-cover {
+        height: 250px
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .book-list {
+        grid-template-columns: repeat(2, 1fr);
+
+    }
+    .book-cover {
+        height: 350px
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .book-list {
+        grid-template-columns: repeat(1, 1fr);
+        /* Display 1 column */
+    }
+    .book-cover {
+        height: 400px
+    }
+}
+
+.resource-details article:hover span,
+.resource-details article:hover i {
+    color: #ffa800;
+}
+
+.no-border{ border:none !important}
+.book-items{box-shadow: 0px 1px 2px 2px lightgray}
+.ml-2{ margin-left: 8px;}
+.mr-2{ margin-right: 8px;}
+.pointer{cursor: pointer;}
+.position-left-0{left: 0;}
+.position-right-0{right: 0;}
+.z-index-2{z-index: 2 !important;}
