@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,8 @@ class SubscriberFactory extends Factory
     {
         return [
             'name' => $this->faker->userName(),
-            'email' => $this->faker->unique()->safeEmail()
+            'email' => $this->faker->unique()->safeEmail(),
+            'user_id' => User::factory()->create(),
         ];
     }
 }
