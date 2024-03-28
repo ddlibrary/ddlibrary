@@ -14,20 +14,20 @@
 @section('content')
 
 <section class="resource-list">
-    <aside>
+    <aside class="p-1">
         <form method="GET" id="side-form" action="{{ route('resourceList') }}">
             <input class="form-control normalButton" style="display:none;" id="side-submit" type="submit" value="@lang('Filter')">
         <fieldset>
-            <legend class="accordion" id="resource-subjects">@lang('Resource Subject Areas')</legend>
-            <ul class="panel">
+            <legend class="accordion mb-1 bg-yellow black display-flex justify-content-space-between" id="resource-subjects">@lang('Resource Subject Areas')</legend>
+            <ul class="panel resource-category">
                 @foreach($subjects AS $subject)
                     @if($subject->parent == 0)
-                    <li style="line-height: 2;" value="{{ $subject->id }}" data-type="subject" data-link="{{ route('resourceList', ['subject_area' => $subject->id])}}"><strong>{{ ucwords(strtolower($subject->name)) }}</strong></li>
+                    <li style="line-height: 2;" class="p-2" value="{{ $subject->id }}" data-type="subject" data-link="{{ route('resourceList', ['subject_area' => $subject->id])}}"><strong>{{ ucwords(strtolower($subject->name)) }}</strong></li>
 
                     <?php $sub_subjects = $subjects->where('parent', $subject->id); ?>
-                    <div id="subject-{{ $subject->id }}" style="display: none;">
+                    <div id="subject-{{ $subject->id }}" class="mt-1" style="display: none;">
                         @foreach($sub_subjects AS $subject)
-                        <li style="padding:0 10px 0 10px;" value="{{ $subject->id }}" data-type="subject" data-link="{{ route('resourceList', ['subject_area' => $subject->id])}}">{{ ucwords(strtolower($subject->name)) }}</li>
+                        <li class="p-2" value="{{ $subject->id }}" data-type="subject" data-link="{{ route('resourceList', ['subject_area' => $subject->id])}}">{{ ucwords(strtolower($subject->name)) }}</li>
                         @endforeach
                     </div>
 
@@ -36,26 +36,26 @@
             </ul>
         </fieldset>
         <fieldset>
-            <legend class="accordion">@lang('Resource Types')</legend>
-            <ul class="panel">
+            <legend class="accordion mb-1 bg-yellow black display-flex justify-content-space-between">@lang('Resource Types')</legend>
+            <ul class="panel resource-category">
                 @foreach($types AS $type)
-                    <li value="{{ $type->id }}" data-type="type" data-link="{{ route('resourceList', ['type' => $type->id])}}">{{ $type->name }}</li>
+                    <li value="{{ $type->id }}" class="p-2" data-type="type" data-link="{{ route('resourceList', ['type' => $type->id])}}">{{ $type->name }}</li>
                 @endforeach
             </ul>
         </fieldset>
         <fieldset>
-        <legend class="accordion">@lang('Resource Levels')</legend>
-        <ul class="panel">
+        <legend class="accordion mb-1 bg-yellow black display-flex justify-content-space-between">@lang('Resource Levels')</legend>
+        <ul class="panel resource-category">
             @foreach($levels AS $level)
                 @if($level->parent == 0)
-                    <li value="{{ $level->id }}" data-type="level" data-link="{{ route('resourceList', ['level' => $subject->id])}}">{{ $level->name }}</li>
+                    <li class="p-2" value="{{ $level->id }}" data-type="level" data-link="{{ route('resourceList', ['level' => $subject->id])}}">{{ $level->name }}</li>
                 @endif
             @endforeach
         </ul>
         </fieldset>
         <fieldset>
-            <legend class="glossary-accordion">
-                <a href="/glossary" class="glossary-icon-sidebar"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text-sidebar">&nbsp;@lang('Glossary')</span> </i></a>
+            <legend class="glossary-accordion mb-1 bg-yellow black display-flex justify-content-space-between">
+                <a href="/glossary" class="glossary-icon-sidebar black"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text-sidebar">&nbsp;@lang('Glossary')</span> </i></a>
             </legend>
         </fieldset>
         </form>
