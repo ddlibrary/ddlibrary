@@ -575,7 +575,7 @@ select.form-control:focus::-ms-value {
 .resource-list .accordion:after {
     content: '\02795'; /* Unicode character for "plus" sign (+) */
     font-size: 13px;
-    color: #777;
+    color: #000;
     margin-left: 5px;
 }
 
@@ -593,7 +593,7 @@ select.form-control:focus::-ms-value {
 }
 
 .resource-list .active-header {
-    background-color: #afaaaa;
+    background-color: #f8c45b;
 }
 
 /* Paste this css to your style sheet file or under head tag */
@@ -658,7 +658,6 @@ aside .sub-subject-show {
 
 .resource-list .resource-details article {
     display: flex;
-    flex-direction: column;
     padding: 2px;
     margin: 2px;
 }
