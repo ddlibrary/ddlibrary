@@ -87,7 +87,7 @@ class LoginController extends Controller
         $user->avatar = $data->avatar;
         $user->status = 1;
         $user->accessed_at = Carbon::now();
-        $user->language = Config::get('app.locale');
+        $user->language = config('app.locale');
         $user->email_verified_at = Carbon::now();
         $user->save();
 

@@ -7,7 +7,7 @@
 @endif
 <!-- Modal content -->
 <?php 
-    $lang = Config::get('app.locale'); 
+    $lang = config('app.locale'); 
     $questions_count = \App\Models\SurveyQuestion::getPublishedQuestions($lang)->count();
 ?>
 

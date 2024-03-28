@@ -66,7 +66,7 @@ class StoryWeaverController extends Controller
         $first_name = $user->first_name;
         $last_name = $user->last_name;
 
-        $language = Config::get('app.locale');
+        $language = config('app.locale');
         $redirect_home = session()->pull('previous_url');
         if (! $redirect_home) {
             $redirect_home = URL::to('/');

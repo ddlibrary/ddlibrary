@@ -2,8 +2,6 @@
 
 return [
 
-    'driver' => env('MAIL_MAILER', 'smtp'),
-
     /*
     |--------------------------------------------------------------------------
     | Default Mailer
@@ -132,7 +130,5 @@ return [
             resource_path('views/vendor/mail'),
         ],
     ],
-
-    'send_email' => env('SEND_EMAIL', 'no'),
 
 ];

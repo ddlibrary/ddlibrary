@@ -47,10 +47,10 @@ function _password_itoa64()
 /**
  * Encodes bytes into printable base 64 using the *nix standard from crypt().
  *
- * @param $input
- *   The string containing bytes to encode.
- * @param $count
- *   The number of characters (bytes) to encode.
+ * @param  $input
+ *                The string containing bytes to encode.
+ * @param  $count
+ *                The number of characters (bytes) to encode.
  * @return
  *   Encoded string
  */
@@ -91,9 +91,9 @@ function _password_base64_encode($input, $count)
  *  - The ability to determine whether two users have the same (or different)
  *    password without actually having to guess one of the passwords.
  *
- * @param $count_log2
- *   Integer that determines the number of iterations used in the hashing
- *   process. A larger value is more secure, but takes more time to complete.
+ * @param  $count_log2
+ *                     Integer that determines the number of iterations used in the hashing
+ *                     process. A larger value is more secure, but takes more time to complete.
  * @return
  *   A 12 character string containing the iteration count and a random salt.
  */
@@ -114,9 +114,9 @@ function _password_generate_salt($count_log2)
 /**
  * Ensures that $count_log2 is within set bounds.
  *
- * @param $count_log2
- *   Integer that determines the number of iterations used in the hashing
- *   process. A larger value is more secure, but takes more time to complete.
+ * @param  $count_log2
+ *                     Integer that determines the number of iterations used in the hashing
+ *                     process. A larger value is more secure, but takes more time to complete.
  * @return
  *   Integer within set bounds that is closest to $count_log2.
  */
@@ -139,13 +139,13 @@ function _password_enforce_log2_boundaries($count_log2)
  * for an attacker to try to break the hash by brute-force computation of the
  * hashes of a large number of plain-text words or strings to find a match.
  *
- * @param $algo
- *   The string name of a hashing algorithm usable by hash(), like 'sha256'.
- * @param $password
- *   Plain-text password up to 512 bytes (128 to 512 UTF-8 characters) to hash.
- * @param $setting
- *   An existing hash or the output of _password_generate_salt().  Must be
- *   at least 12 characters (the settings and salt).
+ * @param  $algo
+ *               The string name of a hashing algorithm usable by hash(), like 'sha256'.
+ * @param  $password
+ *                   Plain-text password up to 512 bytes (128 to 512 UTF-8 characters) to hash.
+ * @param  $setting
+ *                  An existing hash or the output of _password_generate_salt().  Must be
+ *                  at least 12 characters (the settings and salt).
  * @return
  *   A string containing the hashed password (and salt) or FALSE on failure.
  *   The return string will be truncated at DRUPAL_HASH_LENGTH characters max.
@@ -271,11 +271,11 @@ function variable_get($name, $default = null)
 /**
  * Hash a password using a secure hash.
  *
- * @param $password
- *   A plain-text password.
- * @param $count_log2
- *   Optional integer to specify the iteration count. Generally used only during
- *   mass operations where a value less than the default is needed for speed.
+ * @param  $password
+ *                   A plain-text password.
+ * @param  $count_log2
+ *                     Optional integer to specify the iteration count. Generally used only during
+ *                     mass operations where a value less than the default is needed for speed.
  * @return
  *   A string containing the hashed password (and a salt), or FALSE on failure.
  */
@@ -296,10 +296,10 @@ function user_hash_password($password, $count_log2 = 0)
  * $account object, for example the uid to look up the hash in a custom table
  * or remote database.
  *
- * @param $password
- *   A plain-text password
- * @param $account
- *   A user object with at least the fields from the {users} table.
+ * @param  $password
+ *                   A plain-text password
+ * @param  $account
+ *                  A user object with at least the fields from the {users} table.
  * @return
  *   TRUE or FALSE.
  */
@@ -346,8 +346,8 @@ function user_check_password($planePassword, $userPassword)
  * Alternative implementations of this function might use other criteria based
  * on the fields in $account.
  *
- * @param $account
- *   A user object with at least the fields from the {users} table.
+ * @param  $account
+ *                  A user object with at least the fields from the {users} table.
  * @return
  *   TRUE or FALSE.
  */

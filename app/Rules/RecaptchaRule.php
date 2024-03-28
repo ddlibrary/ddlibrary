@@ -23,9 +23,9 @@ class RecaptchaRule implements ValidationRule
 
         $recaptchaResult = json_decode($googleResponse);
 
-        if (!$recaptchaResult->success || (isset($recaptchaResult->score) && $recaptchaResult->score < 0.5)) {
+        if (! $recaptchaResult->success || (isset($recaptchaResult->score) && $recaptchaResult->score < 0.5)) {
 
-            $fail("We have noticed some unusual usage patterns. Please try again later.");
+            $fail('We have noticed some unusual usage patterns. Please try again later.');
         }
     }
 }

@@ -11,7 +11,7 @@ use Illuminate\View\View;
 
 class SubscribeController extends Controller
 {
-    public function index(): View | RedirectResponse
+    public function index(): View|RedirectResponse
     {
         $subscriber = Auth::check() ? Subscriber::whereUserId(auth()->id())->first() : null;
 

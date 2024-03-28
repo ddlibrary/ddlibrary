@@ -39,10 +39,10 @@ class HomeController extends Controller
         $resources = new Resource();
 
         //latest news for the homepage
-        $latestNews = News::where('language', Config::get('app.locale'))->where('status', 1)->orderBy('id', 'desc')->take(4)->get();
+        $latestNews = News::where('language', config('app.locale'))->where('status', 1)->orderBy('id', 'desc')->take(4)->get();
         $subjectAreas = $resources->subjectIconsAndTotal();
         $featured = $resources->featuredCollections();
-        $latestResources = Resource::published()->where('language', Config::get('app.locale'))->orderBy('id', 'desc')->take(4)->get();
+        $latestResources = Resource::published()->where('language', config('app.locale'))->orderBy('id', 'desc')->take(4)->get();
         \Carbon\Carbon::setLocale(app()->getLocale());
         $surveys = Survey::find(1);
         $surveyQuestions = SurveyQuestion::where('survey_id', 1)->first();

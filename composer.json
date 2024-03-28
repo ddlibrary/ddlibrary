@@ -44,10 +44,6 @@
             "app/Support/Helpers.php",
             "app/Support/DrupalPasswordHasher.php"
         ],
-        "classmap": [
-            "database/seeds",
-            "database/factories"
-        ],
         "psr-4": {
             "App\\": "app/"
         }

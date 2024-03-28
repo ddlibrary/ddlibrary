@@ -215,7 +215,7 @@ class LoginTest extends TestCase
         $user = User::factory()->create();
 
         // Make 5 requests
-        for ($i = 0; $i < 5; ++$i) {
+        for ($i = 0; $i < 5; $i++) {
             $response = $this->from('en/login')->post('en/login', [
                 'email' => $user->email,
                 'password' => 'wrong',

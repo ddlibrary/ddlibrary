@@ -245,7 +245,7 @@ if (! function_exists('encodeUrl')) {
 /**
  * Parses a user agent string into its important parts
  *
- * @param  string|null  $u_agent User agent string to parse or null. Uses $_SERVER['HTTP_USER_AGENT'] on NULL
+ * @param  string|null  $u_agent  User agent string to parse or null. Uses $_SERVER['HTTP_USER_AGENT'] on NULL
  * @return string[] an array with browser, version and platform keys
  *
  * @throws InvalidArgumentException on not having a proper user agent to parse.
