@@ -345,3 +345,15 @@ text-decoration: none;
     border-radius: 5px;
     cursor: pointer;
 }
+.resource-icons{
+    padding:10px 0px
+}
+.resource-icon article i{
+    line-height: inherit;
+}
+
+.resource-icon article span{
+    font-size: 15px;
+    display:inline-block;
+    padding:0px 2px;
+}

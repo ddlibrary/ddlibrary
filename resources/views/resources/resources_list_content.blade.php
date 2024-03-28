@@ -5,33 +5,34 @@
             @if ($resource->status)
                 <article class="">
                     <div class="resource-items border-radius-5 no-border book-items">
-                        <div class="p-1 w-100">
+                        <div class="w-100">
                             <a href="{{ URL::to('resource/' . $resource->id) }}" target="_blank" class="image-link">
-                                <div class="overflow-hidden w-100">
+                                <div class="overflow-hidden w-100" style="border-radius: 5px 5px 0px 0px">
                                     <div class="display-flex">
                                         <img class="w-100 book-cover lazyload"
-                                            data-src="{{ getImagefromResource($resource->abstract) }}" alt="Resource Image">
+                                            data-src="{{ getImagefromResource($resource->abstract) }}"
+                                            alt="Resource Image">
                                     </div>
                                 </div>
                             </a>
                         </div>
-                        <div class="resource-title flex-1 w-100">
+                        <div class="resource-title flex-1 w-100" style="padding:15px 10px">
                             <a href="{{ URL::to('resource/' . $resource->id) }}" target="_blank" class="resource-link">
                                 {{ $resource->title }}
                             </a>
                         </div>
-                        <div class="resource-details w-100">
+                        <div class="resource-details resource-icons w-100">
                             <article>
-                                <i
-                                    class="fas fa-eye"></i><span>{{ $views->where('resource_id', $resource->id)->count() }}</span>
+                                <i class="fas fa-eye yellow"></i> <span class="yellow">
+                                    {{ $views->where('resource_id', $resource->id)->count() }}</span>
                             </article>
                             <article>
-                                <i
-                                    class="fas fa-star"></i><span>{{ $favorites->where('resource_id', $resource->id)->count() }}</span>
+                                <i class="fas fa-star yellow"></i> <span class="yellow">
+                                    {{ $favorites->where('resource_id', $resource->id)->count() }}</span>
                             </article>
                             <article>
-                                <i
-                                    class="fas fa-comment"></i><span>{{ $comments->where('resource_id', $resource->id)->count() }}</span>
+                                <i class="fas fa-comment yellow"></i> <span class="yellow">
+                                    {{ $comments->where('resource_id', $resource->id)->count() }}</span>
                             </article>
                         </div>
                     </div>
