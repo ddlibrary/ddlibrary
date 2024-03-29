@@ -52,7 +52,7 @@
                             </tbody>
                         </table>
                     </div>
-                    {{ $subscribers->links() }}
+                    {{ $subscribers->appends(['search' => request()->query('search')])->links() }}
                 </div>
             </div>
         </div>
