@@ -43,7 +43,7 @@ class SubscriberTest extends TestCase
 
         $this->assertDatabaseHas('subscribers', [
             'name' => 'New User',
-            'email' => 'azizullahsaeidi@email.com',
+            'email' => 'library@email.com',
         ]);
 
         $user->refresh();
@@ -165,7 +165,7 @@ class SubscriberTest extends TestCase
 
         $this->assertDatabaseHas('subscribers', [
             'name' => 'New User',
-            'email' => 'azizullahsaeidi@email.com',
+            'email' => 'library@email.com',
         ]);
 
         $user->refresh();
@@ -258,8 +258,8 @@ class SubscriberTest extends TestCase
     {
         return array_merge(
             [
-                'name' => 'Azizullah Saeidi',
-                'email' => 'azizullahsaeidi@email.com',
+                'name' => 'Library',
+                'email' => 'library@email.com',
             ],
             $merge,
         );
