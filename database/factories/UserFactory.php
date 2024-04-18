@@ -23,6 +23,7 @@ class UserFactory extends Factory
             'language' => 'en',
             'status' => true,
             'remember_token' => str_random(10),
+            'email_verified_at' => now(),
             'accessed_at' => now(),
         ];
     }
