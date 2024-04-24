@@ -26,6 +26,13 @@ class LibraryAnalyticsController extends Controller
         $totalResources = Resource::where(function($query) use ($request){
             if($request->date_from && $request->date_to){
                 $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
+                
+            }
+
+            if ($request->gender) {
+                $query->whereHas('user.profile', function ($query) use ($request) {
+                    $query->where('gender', $request->gender);
+                });
             }
         })->groupBy('language')->select('language', DB::raw('count(*) as count'))->get();
 
