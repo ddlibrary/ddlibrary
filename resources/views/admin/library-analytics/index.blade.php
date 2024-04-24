@@ -11,7 +11,7 @@
             </ol>
             <!-- Example DataTables Card-->
             <div class="pb-4">
-                <form method="get" action="{{ route('downloads') }}">
+                <form method="get" action="{{ url('admin/library-analytics') }}">
                     @csrf
                     <div class="row">
                         <div class="col-md-2">
