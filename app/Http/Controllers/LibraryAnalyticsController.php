@@ -23,7 +23,11 @@ class LibraryAnalyticsController extends Controller
 
         $genders = $this->genders();
 
-        $totalResources = Resource::groupBy('language')->select('language', DB::raw('count(*) as count'))->get();
+        $totalResources = Resource::where(function($query) use ($request){
+            if($request->date_from && $request->date_to){
+                $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
+            }
+        })->groupBy('language')->select('language', DB::raw('count(*) as count'))->get();
 
         return view('admin.library-analytics.index', compact(['records', 'genders', 'languages', 'reportType', 'totalResources']));
     }
