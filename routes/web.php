@@ -14,6 +14,7 @@ use App\Http\Controllers\GlossaryController;
 use App\Http\Controllers\GlossarySubjectController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImpactController;
+use App\Http\Controllers\LibraryAnalyticsController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
@@ -226,6 +227,12 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     //Analytics
     Route::get('/admin/analytics', [AnalyticsController::class, 'index'])->middleware('admin');
     Route::post('/admin/analytics', [AnalyticsController::class, 'show'])->name('analytics')->middleware('admin');
+
+    // Library Analytics
+    Route::prefix('admin')->middleware('admin')->controller(LibraryAnalyticsController::class)->group(function(){
+        Route::get('library-analytics', 'index');
+    });
+
     //admin, glossary
     Route::get('admin/glossary_subjects', [GlossarySubjectController::class, 'index'])->middleware('admin')->name('glossary_subjects_list');
     Route::get('admin/glossary_subjects/create', [GlossarySubjectController::class, 'create'])->middleware('admin');
