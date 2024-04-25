@@ -53,6 +53,20 @@ class LibraryAnalyticsController extends Controller
             ->select('language', DB::raw('count(*) as count'))
             ->get();
 
-        return view('admin.library-analytics.index', compact(['records', 'genders', 'languages', 'reportType', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes']));
+        $publishers = $this->getTop10AuthorsOrPublishers($request, 9);
+        $authors = $this->getTop10AuthorsOrPublishers($request, 24);
+
+        return view('admin.library-analytics.index', compact(['records', 'genders', 'languages', 'reportType', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 'authors', 'publishers']));
+    }
+
+    private function getTop10AuthorsOrPublishers($request, $vid)
+    {
+        $query = TaxonomyTerm::query()->select('name', TaxonomyTerm::raw('COUNT(*) as resource_count'))->where('vid', $vid);
+
+        if ($request->language) {
+            $query->where('language', $request->language);
+        }
+
+        return $query->groupBy('name')->orderByRaw('resource_count DESC')->limit(10)->get();
     }
 }
