@@ -100,6 +100,36 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <div class="card border-secondary mb-3">
+                                <div class="card-header">10 Top Authors</div>
+                                <div class="card-body text-secondary">
+                                    <div class="card-text">
+                                        @foreach ($authors as $author)
+                                            <span class="badge badge-info">
+                                                {{ $author->name }}:
+                                                {{ number_format($author->resource_count) }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <div class="card border-secondary mb-3">
+                                <div class="card-header">10 Top Publisher</div>
+                                <div class="card-body text-secondary">
+                                    <div class="card-text">
+                                        @foreach ($publishers as $publisher)
+                                            <span class="badge badge-info">
+                                                {{ $publisher->name }}:
+                                                {{ number_format($publisher->resource_count) }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
