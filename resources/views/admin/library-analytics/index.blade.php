@@ -2,13 +2,7 @@
 @section('admin.content')
     <div class="content-wrapper">
         <div class="container-fluid">
-            <!-- Breadcrumbs-->
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="{{ URL::to('admin') }}">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item active">Downloads</li>
-            </ol>
+
             <!-- Example DataTables Card-->
             <div class="pb-4">
                 <form method="get" action="{{ url('admin/library-analytics') }}">
@@ -73,26 +67,40 @@
             </div>
             <div class="card mb-3">
                 <div class="card-header">
-                    <i class="fa fa-table"></i> Library Analytics
+                    <i class="fa fa-table"></i> Resource Analytics
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
-                            <div class="card border-secondary mb-3" style="max-width: 18rem;">
+                            <div class="card border-secondary mb-3">
                                 <div class="card-header">Resouces base on Language</div>
                                 <div class="card-body text-secondary">
                                     <div class="card-text">
                                         @foreach ($totalResources as $totalResource)
-                                            
-                                        <span class="badge badge-info">{{ $totalResource->language }}: {{ $totalResource->count}}</span>
+                                            <span class="badge badge-info">
+                                                {{ $totalResource->language }}:
+                                                {{ number_format($totalResource->count) }}
+                                            </span>
                                         @endforeach
-                                        <span class="badge badge-info">Total Resources: {{ $totalResources->sum('count')}}</span>
-
+                                        <span class="badge badge-info">Total Resources:
+                                            {{ number_format($totalResources->sum('count')) }}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <div class="card border-secondary mb-3">
+                                <div class="card-header">Downloaded File Sizes</div>
+                                <div class="card-body text-secondary">
+                                    <div class="card-text">
+                                        <span class="badge badge-info">
+                                            {{ number_format(round($sumOfAllIndividualDownloadedFileSizes, 0)) }} MB</span>
+                                            <p>Sum of all individual downloaded file sizes</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
