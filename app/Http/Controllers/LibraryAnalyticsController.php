@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DownloadCount;
 use App\Models\Resource;
+use App\Models\ResourceAttachment;
 use App\Models\TaxonomyTerm;
 use App\Traits\GenderTrait;
 use App\Traits\LanguageTrait;
@@ -17,16 +18,15 @@ class LibraryAnalyticsController extends Controller
 
     public function index(Request $request): View
     {
-
-
-        $languages = $this->getLanguages();
-
+        
         $genders = $this->genders();
+        $languages = $this->getLanguages();
+        $sumOfAllIndividualDownloadedFileSizes = ResourceAttachment::sum('file_size') / (1024 * 1024); // Change to MB size
 
+        // Total Resources base on Language
         $totalResources = Resource::where(function($query) use ($request){
             if($request->date_from && $request->date_to){
                 $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
-                
             }
 
             if ($request->gender) {
@@ -36,6 +36,6 @@ class LibraryAnalyticsController extends Controller
             }
         })->groupBy('language')->select('language', DB::raw('count(*) as count'))->get();
 
-        return view('admin.library-analytics.index', compact(['records', 'genders', 'languages', 'reportType', 'totalResources']));
+        return view('admin.library-analytics.index', compact(['records', 'genders', 'languages', 'reportType', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes']));
     }
 }
