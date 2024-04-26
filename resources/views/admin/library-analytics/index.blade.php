@@ -36,31 +36,9 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-2">
-                            <label>Report Type</label>
-                            <select class="form-control" name="report_type">
-                                <option value="">...</option>
-
-                                <option value="top-10-downloaded-resources" @selected(request()->report_type == 'top-10-downloaded-resources')>Top 10
-                                    downloaded resources</option>
-                                <option value="top-10-downloaded-resource-by-file-size" @selected(request()->report_type == 'top-10-downloaded-resource-by-file-size')>Top 10
-                                    downloaded resources by file size</option>
-                                <option value="top-10-authors-and-publishers" @selected(request()->report_type == 'top-10-authors-and-publishers')>Top 10
-                                    authors and publishers</option>
-                                <option value="sum-of-all-individual-downloaded-file-sizes" @selected(request()->report_type == 'sum-of-all-individual-downloaded-file-sizes')>Sum
-                                    of all individual downloaded file sizes
-                                </option>
-
-                                <option value="top-10-viewed-resources" @selected(request()->report_type == 'top-10-viewed-resources')>Top 10
-                                    Viewed resources</option>
-                                <option value="resource-view" @selected(request()->report_type == 'resource-view')>Resource View
-                                </option>
-                            </select>
-                        </div>
                         <div class="col-md-2" style="align-self: flex-end">
                             <input class="btn btn-primary" type="submit" value="Filter">
                         </div>
-
                     </div>
 
                 </form>
@@ -71,10 +49,12 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
+
+                        {{-- Resouces base on Language --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
                                 <div class="card-header">Resouces base on Language</div>
-                                
+
                                 <div class="card-body text-secondary p-2">
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="badge badge-info">Date <span class="fa fa-check"></span> </span>
@@ -84,13 +64,11 @@
                                     @foreach ($totalResources as $totalResource)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
-                                                {{$loop->iteration }}. 
+                                                {{ $loop->iteration }}.
                                                 {{ $totalResource->language }}
                                             </div>
                                             <div class="p-1">
-
                                                 <span class="badge badge-info">
-
                                                     {{ number_format($totalResource->count) }}
                                                 </span>
                                             </div>
@@ -101,15 +79,18 @@
                                             Total Resources
                                         </div>
                                         <span class="badge badge-info">
-                                            {{ number_format($totalResources->sum('count')) }}</span>
+                                            {{ number_format($totalResources->sum('count')) }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        {{-- Top 10 downloaded resources --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
                                 <div class="card-header">Top 10 downloaded resources</div>
-                                
+
                                 <div class="card-body text-secondary p-2">
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="badge badge-info">Date <span class="fa fa-check"></span> </span>
@@ -119,13 +100,11 @@
                                     @foreach ($top10DownloadedResources as $top10DownloadedResource)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
-                                                {{$loop->iteration }}. 
+                                                {{ $loop->iteration }}.
                                                 {{ $top10DownloadedResource->title }}
                                             </div>
                                             <div class="p-1">
-
                                                 <span class="badge badge-info">
-
                                                     {{ number_format($top10DownloadedResource->downloads_count) }}
                                                 </span>
                                             </div>
@@ -134,6 +113,38 @@
                                 </div>
                             </div>
                         </div>
+
+                        {{-- Top 10 downloaded resources by file size --}}
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="card border-secondary mb-3">
+                                <div class="card-header">Top 10 downloaded resources by file size</div>
+
+                                <div class="card-body text-secondary p-2">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="badge badge-info">Date <span class="fa fa-check"></span> </span>
+                                        <span class="badge badge-info">Gender <span class="fa fa-check"></span> </span>
+                                        <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
+                                    </div>
+
+                                    @foreach ($top10DownloadedResourcesByFileSizes as $top10DownloadedResourcesByFileSize)
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1">
+                                                {{ $loop->iteration }}.
+                                                {{ $top10DownloadedResourcesByFileSize->title }}
+                                            </div>
+                                            <div class="p-1">
+                                                <span class="badge badge-info">
+                                                    {{ number_format($top10DownloadedResourcesByFileSize->downloads_count / (1024 * 1024 * 1024), 2) }}
+                                                    GB
+                                                </span>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Sum of all individual downloaded file sizes --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
                                 <div class="card-header">Downloaded File Sizes</div>
@@ -141,29 +152,41 @@
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="badge badge-danger">Date <span class="fa fa-times"></span> </span>
                                         <span class="badge badge-danger">Gender <span class="fa fa-times"></span> </span>
-                                        <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
+                                        <span class="badge badge-danger">Language <span class="fa fa-times"></span>
+                                        </span>
                                     </div>
                                     <div class="card-text">
-                                        <span class="badge badge-info">
-                                            {{ number_format(round($sumOfAllIndividualDownloadedFileSizes, 0)) }} MB</span>
-                                        <p>Sum of all individual downloaded file sizes</p>
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                Sum of all individual downloaded file sizes
+                                            </div>
+                                            <div>
+                                                <span class="badge badge-info">
+                                                    {{ number_format($sumOfAllIndividualDownloadedFileSizes / (1024 * 1024 * 1024), 2) }}
+                                                    GB
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <p></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        {{-- Top 10 Authors --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">10 Top Authors</div>
+                                <div class="card-header">Top 10 Authors</div>
                                 <div class="card-body text-secondary p-2">
                                     <div class="d-flex justify-content-between mb-2">
-                                        <span class="badge badge-danger">Date <span class="fa fa-times"></span> </span>
+                                        <span class="badge badge-info">Date <span class="fa fa-check"></span> </span>
                                         <span class="badge badge-danger">Gender <span class="fa fa-times"></span> </span>
                                         <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
                                     </div>
                                     @foreach ($authors as $author)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
-                                                {{$loop->iteration }}. 
+                                                {{ $loop->iteration }}.
                                                 {{ $author->name }}
                                             </div>
                                             <div class="p-1">
@@ -178,19 +201,21 @@
                                 </div>
                             </div>
                         </div>
+
+                        {{-- Top 10 Publishers --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">10 Top Publisher</div>
+                                <div class="card-header">Top 10 Publisher</div>
                                 <div class="card-body text-secondary p-2">
                                     <div class="d-flex justify-content-between mb-2">
-                                        <span class="badge badge-danger">Date <span class="fa fa-times"></span> </span>
+                                        <span class="badge badge-info">Date <span class="fa fa-check"></span> </span>
                                         <span class="badge badge-danger">Gender <span class="fa fa-times"></span> </span>
                                         <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
                                     </div>
                                     @foreach ($publishers as $publisher)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
-                                                {{$loop->iteration }}. 
+                                                {{ $loop->iteration }}.
                                                 {{ $publisher->name }}
                                             </div>
                                             <div class="p-1">
