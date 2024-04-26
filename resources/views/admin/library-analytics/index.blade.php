@@ -71,70 +71,118 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
                                 <div class="card-header">Resouces base on Language</div>
-                                <div class="card-body text-secondary">
-                                    <div class="card-text">
-                                        @foreach ($totalResources as $totalResource)
-                                            <span class="badge badge-info">
-                                                {{ $totalResource->language }}:
-                                                {{ number_format($totalResource->count) }}
-                                            </span>
-                                        @endforeach
-                                        <span class="badge badge-info">Total Resources:
+                                
+                                <div class="card-body text-secondary p-2">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="badge badge-info">Date <span class="fa fa-check"></span> </span>
+                                        <span class="badge badge-info">Gender <span class="fa fa-check"></span> </span>
+                                        <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
+                                    </div>
+                                    @foreach ($totalResources as $totalResource)
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1">
+                                                {{$loop->iteration }}. 
+                                                {{ $totalResource->language }}
+                                            </div>
+                                            <div class="p-1">
+
+                                                <span class="badge badge-info">
+
+                                                    {{ number_format($totalResource->count) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            Total Resources
+                                        </div>
+                                        <span class="badge badge-info">
                                             {{ number_format($totalResources->sum('count')) }}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
                                 <div class="card-header">Downloaded File Sizes</div>
-                                <div class="card-body text-secondary">
+                                <div class="card-body text-secondary p-2">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="badge badge-danger">Date <span class="fa fa-times"></span> </span>
+                                        <span class="badge badge-danger">Gender <span class="fa fa-times"></span> </span>
+                                        <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
+                                    </div>
                                     <div class="card-text">
                                         <span class="badge badge-info">
                                             {{ number_format(round($sumOfAllIndividualDownloadedFileSizes, 0)) }} MB</span>
-                                            <p>Sum of all individual downloaded file sizes</p>
+                                        <p>Sum of all individual downloaded file sizes</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
                                 <div class="card-header">10 Top Authors</div>
-                                <div class="card-body text-secondary">
-                                    <div class="card-text">
-                                        @foreach ($authors as $author)
-                                            <span class="badge badge-info">
-                                                {{ $author->name }}:
-                                                {{ number_format($author->resource_count) }}
-                                            </span>
-                                        @endforeach
+                                <div class="card-body text-secondary p-2">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="badge badge-danger">Date <span class="fa fa-times"></span> </span>
+                                        <span class="badge badge-danger">Gender <span class="fa fa-times"></span> </span>
+                                        <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
                                     </div>
+                                    @foreach ($authors as $author)
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1">
+                                                {{$loop->iteration }}. 
+                                                {{ $author->name }}
+                                            </div>
+                                            <div class="p-1">
+
+                                                <span class="badge badge-info">
+
+                                                    {{ number_format($author->resource_count) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
                                 <div class="card-header">10 Top Publisher</div>
-                                <div class="card-body text-secondary">
-                                    <div class="card-text">
-                                        @foreach ($publishers as $publisher)
-                                            <span class="badge badge-info">
-                                                {{ $publisher->name }}:
-                                                {{ number_format($publisher->resource_count) }}
-                                            </span>
-                                        @endforeach
+                                <div class="card-body text-secondary p-2">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="badge badge-danger">Date <span class="fa fa-times"></span> </span>
+                                        <span class="badge badge-danger">Gender <span class="fa fa-times"></span> </span>
+                                        <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
                                     </div>
+                                    @foreach ($publishers as $publisher)
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1">
+                                                {{$loop->iteration }}. 
+                                                {{ $publisher->name }}
+                                            </div>
+                                            <div class="p-1">
+
+                                                <span class="badge badge-info">
+
+                                                    {{ number_format($publisher->resource_count) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
                 </div>
             </div>
         </div>
-        <!-- /.container-fluid-->
-        <!-- /.content-wrapper-->
-    @endsection
+    </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+@endsection
