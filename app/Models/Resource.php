@@ -477,4 +477,8 @@ class Resource extends Model
     public function downloads(){
         return $this->hasMany(DownloadCount::class);
     }
+
+    public function resourceViews(){
+        return $this->hasMany(ResourceView::class);
+    }
 }
