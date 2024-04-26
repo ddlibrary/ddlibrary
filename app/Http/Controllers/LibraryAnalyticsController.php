@@ -51,10 +51,11 @@ class LibraryAnalyticsController extends Controller
             })
             ->groupBy('language')
             ->select('language', DB::raw('count(*) as count'))
+            ->orderBy('count', 'desc')
             ->get();
 
-        $publishers = $this->getTop10AuthorsOrPublishers($request, 9);
-        $authors = $this->getTop10AuthorsOrPublishers($request, 24);
+        $publishers = $this->getTop10AuthorsOrPublishers($request, 9); // Get top 10 publishers
+        $authors = $this->getTop10AuthorsOrPublishers($request, 24); // Get top 10 authors
 
         return view('admin.library-analytics.index', compact(['records', 'genders', 'languages', 'reportType', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 'authors', 'publishers']));
     }
@@ -69,4 +70,5 @@ class LibraryAnalyticsController extends Controller
 
         return $query->groupBy('name')->orderByRaw('resource_count DESC')->limit(10)->get();
     }
+
 }
