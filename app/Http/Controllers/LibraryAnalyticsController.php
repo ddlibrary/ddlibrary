@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\DownloadCount;
 use App\Models\Resource;
-use App\Models\ResourceAttachment;
-use App\Models\TaxonomyTerm;
 use App\Traits\GenderTrait;
 use App\Traits\LanguageTrait;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -21,74 +20,152 @@ class LibraryAnalyticsController extends Controller
         $genders = $this->genders();
         $languages = $this->getLanguages();
 
-        // Sum of all individual downloaded file sizes
-        $sumOfAllIndividualDownloadedFileSizes =
-            ResourceAttachment::where(function ($query) use ($request) {
+        $totalResources = $this->getTotalResouceBaseOnLanguage($request); // Total Resources base on Language
+        $authors = $this->getTop10AuthorsOrPublishers($request, 'resource_authors'); // Get top 10 authors
+        $publishers = $this->getTop10AuthorsOrPublishers($request, 'resource_publishers'); // Get top 10 publishers
+        $top10DownloadedResources = $this->getTop10DownloadedResources($request); // Get top 10 downloaded resources
+        $top10DownloadedResourcesByFileSizes = $this->getTop10DownloadedResourcesByFileSize($request); // Get top 10 downloaded resources by file size
+        $sumOfAllIndividualDownloadedFileSizes = $this->getSumOfAllIndividualDownloadedFileSizes($request); // Sum of all individual downloaded file sizes
+
+        return view('admin.library-analytics.index', compact([
+            'records', 'genders', 'languages', 'reportType', 
+            'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 
+            'authors', 'publishers', 'top10DownloadedResources', 'top10DownloadedResourcesByFileSizes'
+        ]));
+    }
+
+    private function getSumOfAllIndividualDownloadedFileSizes($request): Collection{
+        return DownloadCount::leftJoin(
+            "resource_attachments",
+            "download_counts.file_id",
+            "=",
+            "resource_attachments.id"
+            )
+            ->select(
+                DB::raw(
+                "COALESCE(SUM(resource_attachments.file_size), 0) as total_file_size"
+                )
+            )
+            ->value("total_file_size");
+    }
+
+    private function getTotalResouceBaseOnLanguage($request): Collection
+    {
+        return Resource::where(function ($query) use ($request) {
+
+            // Date
+            if ($request->date_from && $request->date_to) {
+                $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
+            }
+
+            // Language
+            if ($request->language) {
+                $query->where('language', $request->language);
+            }
+
+            // Gender
+            if ($request->gender) {
+                $query->whereHas('user.profile', function ($query) use ($request) {
+                    $query->where('gender', $request->gender);
+                });
+            }
+        })
+        ->groupBy('language')
+        ->select('language', DB::raw('count(*) as count'))
+        ->orderBy('count', 'desc')
+        ->get();
+    }
+
+    private function getTop10AuthorsOrPublishers($request, $table): Collection{
+        return Resource::select(
+                "taxonomy_term_data.name AS name",
+                DB::raw("COUNT(resources.id)  resource_count")
+            )
+            ->join(
+              "$table",
+              "resources.id",
+              "=",
+              "$table.resource_id"
+            )
+            ->join(
+              "taxonomy_term_data",
+              "$table.tid",
+              "=",
+              "taxonomy_term_data.id"
+            )
+            ->where(function($query) use($request){
+
+                // Date
+                if ($request->date_from && $request->date_to) {
+                    $query->whereBetween('resources.created_at', [$request->date_from, $request->date_to]);
+                }
+
                 // Language
                 if ($request->language) {
-                    $query->whereHas('resource', function ($query) use ($request) {
-                        $query->where('language', $request->language);
-                    });
+                    $query->where('resources.language', $request->language);
                 }
-            })->sum('file_size') /
-            (1024 * 1024); // Change to MB size
+            })
+            ->groupBy("taxonomy_term_data.name")
+            ->orderByDesc("resource_count")
+            ->limit(10)
+            ->get();
+    }
 
-        // Total Resources base on Language
-        $totalResources = Resource::where(function ($query) use ($request) {
-                if ($request->date_from && $request->date_to) {
-                    $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
-                }
+    private function getTop10DownloadedResourcesByFileSize($request): Collection
+    {
+        return Resource::select(
+            "resources.title",
+            DB::raw("SUM(resource_attachments.file_size) AS downloads_count")
+          )
+            ->join("download_counts", "resources.id", "=", "download_counts.resource_id")
+            ->join(
+              "resource_attachments",
+              "download_counts.file_id",
+              "=",
+              "resource_attachments.id"
+            )
+            ->where(function($query) use ($request){
 
+                // Language
                 if ($request->language) {
                     $query->where('language', $request->language);
                 }
 
-                if ($request->gender) {
-                    $query->whereHas('user.profile', function ($query) use ($request) {
+                // Date
+                $query->whereHas('downloads', function ($query) use ($request) {
+                    if ($request->date_from && $request->date_to) {
+                        $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
+                    }
+                })
+
+                // Gender 
+                ->whereHas('user.profile', function ($query) use ($request) {
+                    if($request->gender){
                         $query->where('gender', $request->gender);
-                    });
-                }
+                    }
+                });
             })
-            ->groupBy('language')
-            ->select('language', DB::raw('count(*) as count'))
-            ->orderBy('count', 'desc')
+            ->groupBy("resources.title")
+            ->orderByDesc("downloads_count")
+
+            ->limit(10)
             ->get();
-
-        $publishers = $this->getTop10AuthorsOrPublishers($request, 9); // Get top 10 publishers
-        $authors = $this->getTop10AuthorsOrPublishers($request, 24); // Get top 10 authors
-        $top10DownloadedResources = $this->getTop10DownloadedResources($request);
-
-
-        return view('admin.library-analytics.index', compact(['records', 'genders', 'languages', 'reportType', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 'authors', 'publishers', 'top10DownloadedResources']));
     }
 
-    private function getTop10AuthorsOrPublishers($request, $vid)
+    private function getTop10DownloadedResources($request): Collection
     {
-        $query = TaxonomyTerm::query()->select('name', TaxonomyTerm::raw('COUNT(*) as resource_count'))->where('vid', $vid);
-
-        if ($request->language) {
-            $query->where('language', $request->language);
-        }
-
-        return $query->groupBy('name')->orderByRaw('resource_count DESC')->limit(10)->get();
-    }
-
-    private function getTop10DownloadedResources($request)
-    {
-        $query = Resource::query()->select(['id', 'title', 'user_id'])
+        $query = Resource::query()
+            ->select(['id', 'title', 'language'])
             ->whereHas('downloads', function ($query) use ($request) {
-                if ($request->date_from && $request->date_to) {
-                    $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
 
-                }
-            })
-            ->whereHas('user.profile', function ($query) use ($request) {
-                if($request->gender){
-                    $query->where('gender', $request->gender);
+                // Date
+                if($request->date_from && $request->date_to){
+                    $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
                 }
             })
             ->withCount('downloads');
 
+        // Language
         if ($request->language) {
             $query->where('language', $request->language);
         }
