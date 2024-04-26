@@ -56,8 +56,10 @@ class LibraryAnalyticsController extends Controller
 
         $publishers = $this->getTop10AuthorsOrPublishers($request, 9); // Get top 10 publishers
         $authors = $this->getTop10AuthorsOrPublishers($request, 24); // Get top 10 authors
+        $top10DownloadedResources = $this->getTop10DownloadedResources($request);
 
-        return view('admin.library-analytics.index', compact(['records', 'genders', 'languages', 'reportType', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 'authors', 'publishers']));
+
+        return view('admin.library-analytics.index', compact(['records', 'genders', 'languages', 'reportType', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 'authors', 'publishers', 'top10DownloadedResources']));
     }
 
     private function getTop10AuthorsOrPublishers($request, $vid)
@@ -71,4 +73,26 @@ class LibraryAnalyticsController extends Controller
         return $query->groupBy('name')->orderByRaw('resource_count DESC')->limit(10)->get();
     }
 
+    private function getTop10DownloadedResources($request)
+    {
+        $query = Resource::query()->select(['id', 'title', 'user_id'])
+            ->whereHas('downloads', function ($query) use ($request) {
+                if ($request->date_from && $request->date_to) {
+                    $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
+
+                }
+            })
+            ->whereHas('user.profile', function ($query) use ($request) {
+                if($request->gender){
+                    $query->where('gender', $request->gender);
+                }
+            })
+            ->withCount('downloads');
+
+        if ($request->language) {
+            $query->where('language', $request->language);
+        }
+
+        return $query->orderBy('downloads_count', 'desc')->take(10)->get();
+    }
 }
