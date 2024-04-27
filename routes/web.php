@@ -230,7 +230,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
 
     // Library Analytics
     Route::prefix('admin')->middleware('admin')->controller(LibraryAnalyticsController::class)->group(function(){
-        Route::get('resouce-analytics', 'index');
+        Route::get('resource-analytics', 'index');
     });
 
     //admin, glossary
