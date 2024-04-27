@@ -115,7 +115,7 @@ class LibraryAnalyticsController extends Controller
     {
         return Resource::select(
             "resources.title",
-            DB::raw("SUM(resource_attachments.file_size) AS downloads_count")
+            DB::raw("SUM(resource_attachments.file_size) AS file_size")
           )
             ->join("download_counts", "resources.id", "=", "download_counts.resource_id")
             ->join(
@@ -146,7 +146,7 @@ class LibraryAnalyticsController extends Controller
                 });
             })
             ->groupBy("resources.title")
-            ->orderByDesc("downloads_count")
+            ->orderByDesc("file_size")
 
             ->limit(10)
             ->get();

@@ -5,7 +5,7 @@
 
             <!-- Example DataTables Card-->
             <div class="pb-4">
-                <form method="get" action="{{ url('admin/library-analytics') }}">
+                <form method="get" action="{{ url('admin/resource-analytics') }}">
                     @csrf
                     <div class="row">
                         <div class="col-md-2">
@@ -134,7 +134,7 @@
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($top10DownloadedResourcesByFileSize->downloads_count / (1024 * 1024 * 1024), 2) }}
+                                                    {{ number_format($top10DownloadedResourcesByFileSize->file_size / (1024 * 1024 * 1024), 2) }}
                                                     GB
                                                 </span>
                                             </div>
