@@ -34,7 +34,7 @@ class LibraryAnalyticsController extends Controller
         ]));
     }
 
-    private function getSumOfAllIndividualDownloadedFileSizes($request): Collection{
+    private function getSumOfAllIndividualDownloadedFileSizes($request){
         return DownloadCount::leftJoin(
             "resource_attachments",
             "download_counts.file_id",
