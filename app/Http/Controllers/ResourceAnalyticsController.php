@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
-class LibraryAnalyticsController extends Controller
+class ResourceAnalyticsController extends Controller
 {
     use LanguageTrait, GenderTrait;
 

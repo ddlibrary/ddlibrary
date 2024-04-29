@@ -14,11 +14,11 @@ use App\Http\Controllers\GlossaryController;
 use App\Http\Controllers\GlossarySubjectController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImpactController;
-use App\Http\Controllers\LibraryAnalyticsController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ResourceAnalyticsController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StoryWeaverController;
@@ -229,7 +229,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::post('/admin/analytics', [AnalyticsController::class, 'show'])->name('analytics')->middleware('admin');
 
     // Library Analytics
-    Route::prefix('admin')->middleware('admin')->controller(LibraryAnalyticsController::class)->group(function(){
+    Route::prefix('admin')->middleware('admin')->controller(ResourceAnalyticsController::class)->group(function(){
         Route::get('resource-analytics', 'index');
     });
 
