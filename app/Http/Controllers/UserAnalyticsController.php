@@ -14,8 +14,7 @@ class UserAnalyticsController extends Controller
     public function index(Request $request): View
     {
         $roles = $this->getTotalUsersBaseOnRole($request);
-        $totalRegisteredUsers = $this->getTotalRegisteredUsers();
-
+        $totalRegisteredUsers = $this->getTotalRegisteredUsers($request);
         $totalUsersBaseOnGenders = $this->getTotalUsersBaseOnGender($request);
 
         return view('admin.analytics.users.index', compact(['roles', 'totalUsersBaseOnGenders', 'totalRegisteredUsers']));
@@ -38,7 +37,7 @@ class UserAnalyticsController extends Controller
     {
         return User::select(['user_profiles.gender', DB::raw('COUNT(users.id) as users_count')])
             ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
-            ->where(function($query) use ($request){
+            ->where(function ($query) use ($request) {
                 if ($request->date_from && $request->date_to) {
                     $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
                 }
@@ -49,7 +48,7 @@ class UserAnalyticsController extends Controller
 
     private function getTotalRegisteredUsers($request): Collection
     {
-        return User::where(function($query) use ($request){
+        return User::where(function ($query) use ($request) {
             if ($request->date_from && $request->date_to) {
                 $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
             }
