@@ -25,7 +25,7 @@ class ResourceAnalyticsController extends Controller
         $publishers = $this->getTop10AuthorsOrPublishers($request, 'resource_publishers'); // Get top 10 publishers
         $top10DownloadedResources = $this->getTop10DownloadedResources($request); // Get top 10 downloaded resources
         $top10DownloadedResourcesByFileSizes = $this->getTop10DownloadedResourcesByFileSize($request); // Get top 10 downloaded resources by file size
-        $sumOfAllIndividualDownloadedFileSizes = $this->getSumOfAllIndividualDownloadedFileSizes($request); // Sum of all individual downloaded file sizes
+        $sumOfAllIndividualDownloadedFileSizes = $this->getSumOfAllIndividualDownloadedFileSizes(); // Sum of all individual downloaded file sizes
 
         return view('admin.library-analytics.index', compact([
             'records', 'genders', 'languages', 'reportType', 
@@ -34,7 +34,7 @@ class ResourceAnalyticsController extends Controller
         ]));
     }
 
-    private function getSumOfAllIndividualDownloadedFileSizes($request){
+    private function getSumOfAllIndividualDownloadedFileSizes(): float{
         return DownloadCount::leftJoin(
             "resource_attachments",
             "download_counts.file_id",

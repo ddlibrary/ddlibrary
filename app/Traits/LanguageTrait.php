@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use App\Models\DownloadCount;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 trait LanguageTrait
