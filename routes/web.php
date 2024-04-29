@@ -29,6 +29,7 @@ use App\Http\Controllers\SurveyQuestionOptionController;
 use App\Http\Controllers\SurveySettingController;
 use App\Http\Controllers\SyncController;
 use App\Http\Controllers\TaxonomyController;
+use App\Http\Controllers\UserAnalyticsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VocabularyController;
 use Illuminate\Support\Facades\Auth;
@@ -264,6 +265,10 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::get('/', 'index')->name('subscribe.index');
         Route::post('', 'store')->name('subscribe.store');
     });
+
+    // User Analytics
+    Route::get('admin/user-analytics',  [UserAnalyticsController::class, 'index'])->middleware('admin');
+
 });
 Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
