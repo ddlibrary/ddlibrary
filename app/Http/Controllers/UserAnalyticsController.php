@@ -28,9 +28,7 @@ class UserAnalyticsController extends Controller
                     $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
                 }
             },
-        ])
-            //->where('id', '>', 2)
-            ->get();
+        ])->get();
     }
 
     private function getTotalUsersBaseOnGender($request): Collection
@@ -46,7 +44,7 @@ class UserAnalyticsController extends Controller
             ->get();
     }
 
-    private function getTotalRegisteredUsers($request)
+    private function getTotalRegisteredUsers($request): float
     {
         return User::where(function ($query) use ($request) {
             if ($request->date_from && $request->date_to) {
