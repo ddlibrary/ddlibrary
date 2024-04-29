@@ -29,7 +29,7 @@ class UserAnalyticsController extends Controller
                 }
             },
         ])
-            ->where('id', '>', 2)
+            //->where('id', '>', 2)
             ->get();
     }
 
@@ -46,7 +46,7 @@ class UserAnalyticsController extends Controller
             ->get();
     }
 
-    private function getTotalRegisteredUsers($request): Collection
+    private function getTotalRegisteredUsers($request)
     {
         return User::where(function ($query) use ($request) {
             if ($request->date_from && $request->date_to) {
