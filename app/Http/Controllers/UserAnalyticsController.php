@@ -16,8 +16,11 @@ class UserAnalyticsController extends Controller
         $roles = $this->getTotalUsersBaseOnRole($request);
         $totalRegisteredUsers = $this->getTotalRegisteredUsers($request);
         $totalUsersBaseOnGenders = $this->getTotalUsersBaseOnGender($request);
+        $totalUsers = $this->getTotalUsersBaseOnRegistrationSource($request);
+        $totalGoogleUsers = $this->getTotalUsersBaseOnRegistrationSource($request, 'google');
+        $totalFacebookUsers = $this->getTotalUsersBaseOnRegistrationSource($request, 'facebook');
 
-        return view('admin.analytics.users.index', compact(['roles', 'totalUsersBaseOnGenders', 'totalRegisteredUsers']));
+        return view('admin.analytics.users.index', compact(['roles', 'totalUsersBaseOnGenders', 'totalRegisteredUsers', 'totalUsers', 'totalGoogleUsers', 'totalFacebookUsers']));
     }
 
     private function getTotalUsersBaseOnRole($request): Collection
@@ -51,5 +54,21 @@ class UserAnalyticsController extends Controller
                 $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
             }
         })->count();
+    }
+
+    private function getTotalUsersBaseOnRegistrationSource($request, $providerName = null): float
+    {
+        $query = User::query()
+            ->when($providerName, function ($query, $providerName) {
+                return $query->whereProviderName($providerName);
+            })
+            ->unless($providerName, function ($query) {
+                return $query->whereNull('provider_name');
+            })
+            ->when($request->date_from && $request->date_to, function ($query) use ($request) {
+                return $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
+            });
+
+        return $query->count();
     }
 }
