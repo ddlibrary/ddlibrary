@@ -48,6 +48,77 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="card border-secondary mb-3">
+                                <div class="card-header">Total users base on registration source </div>
+                                <div class="card-body text-secondary p-2">
+                                    <div class="card-text">
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1 text-capitalize">
+                                                1. Manual Users
+                                            </div>
+                                            <div class="p-1">
+                                                <span class="badge badge-info">
+                                                    {{ number_format($totalUsers) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1 text-capitalize">
+                                                2. Google
+                                            </div>
+                                            <div class="p-1">
+                                                <span class="badge badge-info">
+                                                    {{ number_format($totalGoogleUsers) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1 text-capitalize">
+                                                3. Facebook
+                                            </div>
+                                            <div class="p-1">
+                                                <span class="badge badge-info">
+                                                    {{ number_format($totalFacebookUsers) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1 text-capitalize">
+                                                Total Users
+                                            </div>
+                                            <div class="p-1">
+                                                <span class="badge badge-info">
+                                                    {{ number_format($totalFacebookUsers + $totalGoogleUsers + $totalUsers) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Top 10 active users  --}}
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="card border-secondary mb-3">
+                                <div class="card-header">Top 10 active users </div>
+                                <div class="card-body text-secondary p-2">
+                                    <div class="card-text">
+                                        @foreach ($top10ActiveUsers as $top10ActiveUser)
+                                            <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                                <div class="p-1 text-capitalize">
+                                                    {{ $loop->iteration }}.
+                                                    {{ $top10ActiveUser->first_name }} {{ $top10ActiveUser->last_name }}
+                                                </div>
+                                                <div class="p-1">
+                                                    <span class="badge badge-info">
+                                                        {{ number_format($top10ActiveUser->activity_count) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         {{-- List the total admins/managers/translators.  --}}
@@ -100,57 +171,6 @@
                                             <div class="p-1">
                                                 <span class="badge badge-info">
                                                     {{ number_format($totalUsersBaseOnGenders->sum('users_count')) }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- Total users base on registration source  --}}
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <div class="card border-secondary mb-3">
-                                <div class="card-header">Total users base on registration source </div>
-                                <div class="card-body text-secondary p-2">
-                                    <div class="card-text">
-                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
-                                            <div class="p-1 text-capitalize">
-                                                1. Manual Users
-                                            </div>
-                                            <div class="p-1">
-                                                <span class="badge badge-info">
-                                                    {{ number_format($totalUsers) }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
-                                            <div class="p-1 text-capitalize">
-                                                2. Google
-                                            </div>
-                                            <div class="p-1">
-                                                <span class="badge badge-info">
-                                                    {{ number_format($totalGoogleUsers) }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
-                                            <div class="p-1 text-capitalize">
-                                                3. Facebook
-                                            </div>
-                                            <div class="p-1">
-                                                <span class="badge badge-info">
-                                                    {{ number_format($totalFacebookUsers) }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
-                                            <div class="p-1 text-capitalize">
-                                                Total Users
-                                            </div>
-                                            <div class="p-1">
-                                                <span class="badge badge-info">
-                                                    {{ number_format($totalFacebookUsers + $totalGoogleUsers + $totalUsers) }}
                                                 </span>
                                             </div>
                                         </div>
