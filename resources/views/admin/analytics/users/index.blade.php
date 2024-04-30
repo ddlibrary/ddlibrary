@@ -107,6 +107,57 @@
                                 </div>
                             </div>
                         </div>
+
+                        {{-- Total users base on registration source  --}}
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="card border-secondary mb-3">
+                                <div class="card-header">Total users base on registration source </div>
+                                <div class="card-body text-secondary p-2">
+                                    <div class="card-text">
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1 text-capitalize">
+                                                1. Manual Users
+                                            </div>
+                                            <div class="p-1">
+                                                <span class="badge badge-info">
+                                                    {{ number_format($totalUsers) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1 text-capitalize">
+                                                2. Google
+                                            </div>
+                                            <div class="p-1">
+                                                <span class="badge badge-info">
+                                                    {{ number_format($totalGoogleUsers) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1 text-capitalize">
+                                                3. Facebook
+                                            </div>
+                                            <div class="p-1">
+                                                <span class="badge badge-info">
+                                                    {{ number_format($totalFacebookUsers) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1 text-capitalize">
+                                                Total Users
+                                            </div>
+                                            <div class="p-1">
+                                                <span class="badge badge-info">
+                                                    {{ number_format($totalFacebookUsers + $totalGoogleUsers + $totalUsers) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
