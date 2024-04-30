@@ -13,8 +13,8 @@ class UserAnalyticsController extends Controller
 {
     public function index(Request $request): View
     {
-        $top10ActiveUsers = $this->getTop10ActiveUsers($request);
         $roles = $this->getTotalUsersBaseOnRole($request);
+        $top10ActiveUsers = $this->getTop10ActiveUsers($request);
         $totalRegisteredUsers = $this->getTotalRegisteredUsers($request);
         $totalUsersBaseOnGenders = $this->getTotalUsersBaseOnGender($request);
         $totalUsers = $this->getTotalUsersBaseOnRegistrationSource($request);
@@ -39,10 +39,8 @@ class UserAnalyticsController extends Controller
     {
         return User::select(['user_profiles.gender', DB::raw('COUNT(users.id) as users_count')])
             ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
-            ->where(function ($query) use ($request) {
-                if ($request->date_from && $request->date_to) {
-                    $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
-                }
+            ->when($request->date_from && $request->date_to, function ($query) use ($request) {
+                $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
             })
             ->groupBy('user_profiles.gender')
             ->get();
@@ -50,10 +48,8 @@ class UserAnalyticsController extends Controller
 
     private function getTotalRegisteredUsers($request): float
     {
-        return User::where(function ($query) use ($request) {
-            if ($request->date_from && $request->date_to) {
-                $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
-            }
+        return User::when($request->date_from && $request->date_to, function ($query) use ($request) {
+            $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
         })->count();
     }
 
@@ -73,22 +69,13 @@ class UserAnalyticsController extends Controller
         return $query->count();
     }
 
-    private function getTop10ActiveUsers($request){
-        $query = DB::table("activity_log")
-        ->select(
-            "user_profiles.first_name",
-            "user_profiles.last_name",
-            DB::raw("count(*) as activity_count")
-        )
-        ->join("users", "users.id", "=", "activity_log.causer_id")
-        ->join("user_profiles", "user_profiles.user_id", "=", "users.id")
-        ->groupBy("users.id", "user_profiles.last_name", "user_profiles.first_name")
-        ->orderByDesc("activity_count")
-        ->limit(10);
+    private function getTop10ActiveUsers($request)
+    {
+        $query = DB::table('activity_log')->select('user_profiles.first_name', 'user_profiles.last_name', DB::raw('count(*) as activity_count'))->join('users', 'users.id', '=', 'activity_log.causer_id')->join('user_profiles', 'user_profiles.user_id', '=', 'users.id')->groupBy('users.id', 'user_profiles.last_name', 'user_profiles.first_name')->orderByDesc('activity_count')->limit(10);
 
-        if($request->date_from && $request->date_to) {
+        if ($request->date_from && $request->date_to) {
             $query->whereBetween('activity_log.created_at', [$request->date_from, $request->date_to]);
-        };
+        }
 
         return $query->get();
     }
