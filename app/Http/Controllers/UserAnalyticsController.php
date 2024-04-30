@@ -69,7 +69,7 @@ class UserAnalyticsController extends Controller
         return $query->count();
     }
 
-    private function getTop10ActiveUsers($request)
+    private function getTop10ActiveUsers($request): object
     {
         $query = DB::table('activity_log')->select('user_profiles.first_name', 'user_profiles.last_name', DB::raw('count(*) as activity_count'))->join('users', 'users.id', '=', 'activity_log.causer_id')->join('user_profiles', 'user_profiles.user_id', '=', 'users.id')->groupBy('users.id', 'user_profiles.last_name', 'user_profiles.first_name')->orderByDesc('activity_count')->limit(10);
 
