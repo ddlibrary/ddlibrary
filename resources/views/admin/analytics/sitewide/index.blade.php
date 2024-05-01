@@ -37,10 +37,10 @@
                 <div class="card-body">
                     <div class="row">
 
-                        {{-- Total registered users  --}}
+                        {{-- Top 10 viewed resources  --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Total users base on registration source </div>
+                                <div class="card-header">Top 10 viewed resources</div>
                                 <div class="card-body text-secondary p-2">
                                     <div class="card-text">
                                         @foreach ($top10ViewedResources as $top10ViewedResource)
