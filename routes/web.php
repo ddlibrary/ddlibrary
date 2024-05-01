@@ -20,6 +20,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SitewideAnalyticsController;
 use App\Http\Controllers\StoryWeaverController;
 use App\Http\Controllers\SubscribeController;
 use App\Http\Controllers\SurveyAnswerController;
@@ -264,6 +265,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::get('/', 'index')->name('subscribe.index');
         Route::post('', 'store')->name('subscribe.store');
     });
+
+    Route::get('admin/sitewide-analytics', [SitewideAnalyticsController::class, 'index'])->middleware('admin');
 });
 Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
