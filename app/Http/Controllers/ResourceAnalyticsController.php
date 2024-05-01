@@ -114,6 +114,7 @@ class ResourceAnalyticsController extends Controller
     private function getTop10DownloadedResourcesByFileSize($request): Collection
     {
         return Resource::select(
+            "resources.id",
             "resources.title",
             DB::raw("SUM(resource_attachments.file_size) AS file_size")
           )
@@ -145,7 +146,7 @@ class ResourceAnalyticsController extends Controller
                     }
                 });
             })
-            ->groupBy("resources.title")
+            ->groupBy("resources.id")
             ->orderByDesc("file_size")
 
             ->limit(10)
