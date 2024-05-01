@@ -6,14 +6,20 @@
                 <form method="get" action="{{ url('admin/resource-analytics') }}">
                     @csrf
                     <div class="row">
+
+                        {{-- From Date --}}
                         <div class="col-md-2">
                             <label>From Date</label>
                             <input type="date" value="{{ request()->date_from }}" class="form-control" name="date_from">
                         </div>
+
+                        {{-- To Date --}}
                         <div class="col-md-2">
                             <label>To Date</label>
                             <input type="date" value="{{ request()->date_to }}" class="form-control" name="date_to">
                         </div>
+
+                        {{-- Gender --}}
                         <div class="col-md-2">
                             <label>Gender</label>
                             <select class="form-control" name="gender">
@@ -24,6 +30,8 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        {{-- Language --}}
                         <div class="col-md-2">
                             <label>Language</label>
                             <select class="form-control" name="language">
@@ -34,6 +42,8 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        {{-- Filter button --}}
                         <div class="col-md-2" style="align-self: flex-end">
                             <input class="btn btn-primary" type="submit" value="Filter">
                         </div>
@@ -218,9 +228,7 @@
                                                 {{ $publisher->name }}
                                             </div>
                                             <div class="p-1">
-
                                                 <span class="badge badge-info">
-
                                                     {{ number_format($publisher->resource_count) }}
                                                 </span>
                                             </div>
