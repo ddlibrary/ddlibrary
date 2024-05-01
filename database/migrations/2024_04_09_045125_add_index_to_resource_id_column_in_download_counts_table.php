@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('download_counts', function (Blueprint $table) {
             $table->index('resource_id');
+            $table->index(['resource_id', 'file_id']);
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('download_counts', function (Blueprint $table) {
             $table->dropIndex(['resource_id']);
+            $table->dropIndex(['resource_id', 'file_id']);
         });
     }
 };
