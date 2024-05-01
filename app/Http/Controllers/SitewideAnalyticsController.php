@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Resource;
 use App\Models\ResourceView;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -21,7 +22,7 @@ class SitewideAnalyticsController extends Controller
         return view('admin.analytics.sitewide.index', compact('languages', 'top10ViewedResources', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews'));
     }
 
-    private function getTop10ViewedResources($request)
+    private function getTop10ViewedResources($request): Collection
     {
         return Resource::select(['id', 'title'])
             ->withCount([
@@ -39,7 +40,7 @@ class SitewideAnalyticsController extends Controller
             ->get();
     }
 
-    private function getTotalViews($request, $isGuest = null)
+    private function getTotalViews($request, $isGuest = null): float
     {
         $query = ResourceView::query();
 
