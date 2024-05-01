@@ -27,7 +27,7 @@ class ResourceAnalyticsController extends Controller
         $top10DownloadedResourcesByFileSizes = $this->getTop10DownloadedResourcesByFileSize($request); // Get top 10 downloaded resources by file size
         $sumOfAllIndividualDownloadedFileSizes = $this->getSumOfAllIndividualDownloadedFileSizes(); // Sum of all individual downloaded file sizes
 
-        return view('admin.library-analytics.index', compact([
+        return view("admin.analytics.resource-analytics.index", compact([
             'records', 'genders', 'languages', 'reportType', 
             'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 
             'authors', 'publishers', 'top10DownloadedResources', 'top10DownloadedResourcesByFileSizes'
