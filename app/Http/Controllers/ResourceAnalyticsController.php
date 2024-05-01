@@ -19,7 +19,6 @@ class ResourceAnalyticsController extends Controller
     {
         $genders = $this->genders();
         $languages = $this->getLanguages();
-
         $totalResources = $this->getTotalResouceBaseOnLanguage($request); // Total Resources base on Language
         $authors = $this->getTop10AuthorsOrPublishers($request, 'resource_authors'); // Get top 10 authors
         $publishers = $this->getTop10AuthorsOrPublishers($request, 'resource_publishers'); // Get top 10 publishers
@@ -148,7 +147,6 @@ class ResourceAnalyticsController extends Controller
             })
             ->groupBy("resources.id")
             ->orderByDesc("file_size")
-
             ->limit(10)
             ->get();
     }
