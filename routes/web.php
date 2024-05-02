@@ -266,8 +266,12 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::post('', 'store')->name('subscribe.store');
     });
 
-    Route::get('admin/sitewide-analytics', [SitewideAnalyticsController::class, 'index'])->middleware('admin');
+    Route::prefix('admin')->middleware('admin')->controller(SitewideAnalyticsController::class)->group(function(){
+        Route::get('sitewide-analytics', 'index');
+        Route::get('reports/sitewide', 'viewResource');
+    });
 });
+
 Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
