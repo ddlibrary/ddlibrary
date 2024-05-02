@@ -55,9 +55,28 @@ class SitewideAnalyticsController extends Controller
         }
 
         if ($isGuest) {
-            $query->where('resource_views.user_id', ($isGuest == 'no') ? '>' : '=', 0);
+            $query->where('resource_views.user_id', $isGuest == 'no' ? '>' : '=', 0);
         }
 
         return $query->count();
+    }
+
+    public function viewResource(Request $request)
+    {
+        $languages = \LaravelLocalization::getSupportedLocales();
+        $resourceViews = ResourceView::with(['resource:id,title,language', 'user:id', 'user.profile:id,user_id,first_name,last_name'])
+            ->when($request->language, function ($query) use ($request) {
+                $query->whereHas('resource', function ($query) use ($request) {
+                    $query->where('language', $request->language);
+                });
+            })
+            ->when($request->date_from && $request->date_to, function ($query) use ($request) {
+                $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
+            })
+            ->orderByDesc('id')
+            ->paginate()
+            ->withQueryString();
+
+        return view('admin.analytics.sitewide.get-views', compact(['resourceViews', 'languages']));
     }
 }
