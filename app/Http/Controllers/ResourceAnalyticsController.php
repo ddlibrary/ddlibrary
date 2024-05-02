@@ -132,18 +132,16 @@ class ResourceAnalyticsController extends Controller
                 }
 
                 // Date
-                $query->whereHas('downloads', function ($query) use ($request) {
-                    if ($request->date_from && $request->date_to) {
-                        $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
-                    }
-                })
+                if ($request->date_from && $request->date_to) {
+                    $query->whereBetween('download_counts.created_at', [$request->date_from, $request->date_to]);
+                }
 
                 // Gender 
-                ->whereHas('user.profile', function ($query) use ($request) {
-                    if($request->gender){
+                if($request->gender){
+                    $query->whereHas('user.profile', function ($query) use ($request) {
                         $query->where('gender', $request->gender);
-                    }
-                });
+                    });
+                }
             })
             ->groupBy("resources.id")
             ->orderByDesc("file_size")
