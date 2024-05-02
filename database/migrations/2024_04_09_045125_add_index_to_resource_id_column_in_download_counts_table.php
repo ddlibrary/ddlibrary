@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('download_counts', function (Blueprint $table) {
+            $table->index('created_at');
             $table->index('resource_id');
             $table->index(['resource_id', 'file_id']);
+            $table->index(['resource_id', 'file_id', 'created_at']);
         });
     }
 
@@ -23,8 +25,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('download_counts', function (Blueprint $table) {
+            $table->dropIndex(['created_at']);
             $table->dropIndex(['resource_id']);
             $table->dropIndex(['resource_id', 'file_id']);
+            $table->dropIndex(['resource_id', 'file_id', 'created_at']);
         });
     }
 };
