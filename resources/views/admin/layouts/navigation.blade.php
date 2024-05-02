@@ -93,8 +93,9 @@
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Reports</h6>
         <a class="collapse-item" href="{{ URL::to('admin/reports/downloads') }}">Downloads</a>
-        <a class="collapse-item" href="{{ URL::to('admin/reports/ga') }}">Google Analytics</a>
+        <a class="collapse-item" href="{{ URL::to('admin/reports/downloads') }}">Downloads</a>
         <a class="collapse-item" href="{{ URL::to('admin/reports/resources') }}">Resource Analytics</a>
+        <a class="collapse-item" href="{{ URL::to('admin/reports/sitewide') }}">Resource View</a>
         <div class="collapse-divider"></div>
         <h6 class="collapse-header">Analytics</h6>
         <a class="collapse-item" href="{{ URL::to('admin/sitewide-analytics') }}">Sitewide Analytics</a>
