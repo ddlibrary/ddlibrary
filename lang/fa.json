@@ -283,5 +283,7 @@
     "Subscribe Our Newsletter": "خبرنامه ما را سابسکرایب کنید",
     "Thank you for subscribing to our newsletter! You will now receive updates and news directly in your inbox.": "با تشکر از سابسکرایب شما در خبرنامه ما! اکنون شما به‌طور مستقیم به ایمیل خود به‌روزرسانی‌ها و اخبار را دریافت خواهید کرد.",
     "Your data successfully updated.":"عملیه ویرایش موفقانه انجام شد",
-    "Sorry! your data was not updated.":"ببخشید! عملیه ویرایش صورت نگرفت"
+    "Sorry! your data was not updated.":"ببخشید! عملیه ویرایش صورت نگرفت",
+    "If this resource is translated, enter the translated resource id and click submit:": "اگر این منبع ترجمه شده است. آی دی منبع ترجمه شده را وارد کنید و روی دکمه ثبت کلیک کنید.",
+    "Enter the translated resource id": "آی دی منبع ترجمه شده را وارد کنید"
 }
