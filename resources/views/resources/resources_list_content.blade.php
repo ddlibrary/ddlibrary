@@ -22,15 +22,15 @@
                             </a>
                         </div>
                         <div class="resource-details resource-icons w-100">
-                            <article>
+                            <article class="align-items-center gap-1">
                                 <i class="fas fa-eye yellow"></i> <span class="yellow">
                                     {{ $views->where('resource_id', $resource->id)->count() }}</span>
                             </article>
-                            <article>
+                            <article class="align-items-center gap-1">
                                 <i class="fas fa-star yellow"></i> <span class="yellow">
                                     {{ $favorites->where('resource_id', $resource->id)->count() }}</span>
                             </article>
-                            <article>
+                            <article class="align-items-center gap-1">
                                 <i class="fas fa-comment yellow"></i> <span class="yellow">
                                     {{ $comments->where('resource_id', $resource->id)->count() }}</span>
                             </article>
