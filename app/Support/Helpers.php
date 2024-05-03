@@ -127,10 +127,8 @@ if (! function_exists('getImagefromResource')) {
                 $absArray = explode('/', $absStr);
                 $imageName = last($absArray);
                 if (Storage::disk('public')->exists($imageName)) {
-                    $fixedImage = Storage::disk('public')->url($imageName);
+                    return Storage::disk('public')->url($imageName);
                 }
-
-                return $fixedImage;
             }
         }
 
