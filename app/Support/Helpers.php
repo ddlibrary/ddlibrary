@@ -128,17 +128,13 @@ if (! function_exists('getImagefromResource')) {
                 $imageName = last($absArray);
                 if (Storage::disk('public')->exists($imageName)) {
                     $fixedImage = Storage::disk('public')->url($imageName);
-                } else {
-                    return asset('storage/files/placeholder_image.png');
                 }
 
                 return $fixedImage;
-            } else {
-                return asset('storage/files/placeholder_image.png');
             }
-        } else {
-            return asset('storage/files/placeholder_image.png');
         }
+
+        return asset('storage/files/placeholder_image.png');
     }
 }
 
