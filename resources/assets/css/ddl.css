@@ -825,14 +825,19 @@ aside .sub-subject-show {
 
 .resource-view .resource-related-items-box {
     border: 1px solid #eee;
-    padding: 5px; 
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-radius: 5px;
 }
 
 .resource-related-items-box .related-item {
     padding: 2px;
-    margin: 2px;
     display: flex;
     flex-wrap: wrap;
+    background: #f1eded;
+    border-radius: 5px;
 }
 
 .resource-related-items-box .related-item span {
