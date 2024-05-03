@@ -73,9 +73,8 @@ class SitewideAnalyticsController extends Controller
             ->when($request->date_from && $request->date_to, function ($query) use ($request) {
                 $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
             })
-            ->orderByDesc('id')
             ->paginate()
-            ->withQueryString();
+            ->appends($request->except(['page']));
 
         return view('admin.analytics.sitewide.get-views', compact(['resourceViews', 'languages']));
     }
