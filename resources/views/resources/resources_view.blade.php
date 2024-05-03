@@ -199,98 +199,101 @@
                         @endif
                     </div>
                 </article><br>
-                <h3 style="background-color: #77777742;" class="p-2">@lang('About this resource')</h3>
-                @if ($resource->authors)
+                <div style="border:1px solid lightgray;" class="p-2 border-radius-5">
+
+                    <h3 class="bg-yellow p-2">@lang('About this resource')</h3>
+                    @if ($resource->authors)
+                        <article class="resource-view-details">
+                            <h3>@lang('Author')</h3>
+                            @foreach ($resource->authors as $author)
+                                <p>{{ $author->name }}</p>
+                            @endforeach
+                        </article>
+                    @endif
+    
+                    @if ($resource->translators)
+                        <article class="resource-view-details">
+                            <h3>@lang('Translator')</h3>
+                            @foreach ($resource->translators as $translator)
+                                <p>{{ $translator->name }}</p>
+                            @endforeach
+                        </article>
+                    @endif
+    
                     <article class="resource-view-details">
-                        <h3>@lang('Author')</h3>
-                        @foreach ($resource->authors as $author)
-                            <p>{{ $author->name }}</p>
+                        <h3>@lang('Resource Level')</h3>
+                        @foreach ($resource->levels as $level)
+                            <p><a href="{{ URL::to('resources/list?level=' . $level->id) }}"
+                                    title="{{ $level->name }}">{{ $level->name }}</a></p>
                         @endforeach
                     </article>
-                @endif
-
-                @if ($resource->translators)
                     <article class="resource-view-details">
-                        <h3>@lang('Translator')</h3>
-                        @foreach ($resource->translators as $translator)
-                            <p>{{ $translator->name }}</p>
+                        <h3>@lang('Subject Area')</h3>
+                        @foreach ($resource->subjects as $subject)
+                            <p><a href="{{ URL::to('resources/list?subject_area=' . $subject->id) }}"
+                                    title="{{ $subject->name }}">{{ $subject->name }}</a></p>
                         @endforeach
                     </article>
-                @endif
-
-                <article class="resource-view-details">
-                    <h3>@lang('Resource Level')</h3>
-                    @foreach ($resource->levels as $level)
-                        <p><a href="{{ URL::to('resources/list?level=' . $level->id) }}"
-                                title="{{ $level->name }}">{{ $level->name }}</a></p>
-                    @endforeach
-                </article>
-                <article class="resource-view-details">
-                    <h3>@lang('Subject Area')</h3>
-                    @foreach ($resource->subjects as $subject)
-                        <p><a href="{{ URL::to('resources/list?subject_area=' . $subject->id) }}"
-                                title="{{ $subject->name }}">{{ $subject->name }}</a></p>
-                    @endforeach
-                </article>
-                <article class="resource-view-details">
-                    <h3>@lang('Learning Resource Type')</h3>
-                    @foreach ($resource->LearningResourceTypes as $ltype)
-                        <p><a href="{{ URL::to('resources/list?type=' . $ltype->id) }}"
-                                title="{{ $ltype->name }}">{{ $ltype->name }}</a></p>
-                    @endforeach
-                </article>
-                <article class="resource-view-details">
-                    <h3>@lang('Publisher')</h3>
-                    @foreach ($resource->publishers as $publisher)
-                        <p><a href="{{ URL::to('resources/list?publisher=' . $publisher->id) }}"
-                                title="{{ $publisher->name }}">{{ $publisher->name }}</a></p>
-                    @endforeach
-                </article>
-                <article class="resource-view-details">
-                    <h3>@lang('Languages Available')</h3>
-
-                    <?php
-                    $supportedLocals = [];
-                    $newId = [];
-                    foreach (config('laravellocalization.localesOrder') as $localeCode) {
-                        $supportedLocals[] = $localeCode;
-                    }
-                    
-                    if (isset($translations)) {
-                        foreach ($translations as $tr) {
-                            if (in_array($tr->language, $supportedLocals)) {
-                                $newId[$tr->language] = $tr->id;
+                    <article class="resource-view-details">
+                        <h3>@lang('Learning Resource Type')</h3>
+                        @foreach ($resource->LearningResourceTypes as $ltype)
+                            <p><a href="{{ URL::to('resources/list?type=' . $ltype->id) }}"
+                                    title="{{ $ltype->name }}">{{ $ltype->name }}</a></p>
+                        @endforeach
+                    </article>
+                    <article class="resource-view-details">
+                        <h3>@lang('Publisher')</h3>
+                        @foreach ($resource->publishers as $publisher)
+                            <p><a href="{{ URL::to('resources/list?publisher=' . $publisher->id) }}"
+                                    title="{{ $publisher->name }}">{{ $publisher->name }}</a></p>
+                        @endforeach
+                    </article>
+                    <article class="resource-view-details">
+                        <h3>@lang('Languages Available')</h3>
+    
+                        <?php
+                        $supportedLocals = [];
+                        $newId = [];
+                        foreach (config('laravellocalization.localesOrder') as $localeCode) {
+                            $supportedLocals[] = $localeCode;
+                        }
+                        
+                        if (isset($translations)) {
+                            foreach ($translations as $tr) {
+                                if (in_array($tr->language, $supportedLocals)) {
+                                    $newId[$tr->language] = $tr->id;
+                                }
                             }
                         }
-                    }
-                    ?>
-                    <div class="display-flex gap-2" style="flex-wrap: wrap">
-
-                        @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                            @if (isset($newId[$localeCode]) && $newId != 0)
-                                <?php
-                                $currentUrl = explode('/', url()->current());
-                                $index = count($currentUrl) - 1;
-                                $value = $currentUrl[$index];
-                                $currentUrl[$index] = $newId[$localeCode];
-                                $newUrl = implode('/', $currentUrl);
-                                ?>
-                                <p class="bg-lightseagreen p-2 border-radius-5 white">
-                                    {{ $properties['native'] }}
-                                    <span class="fa fa-check-circle"></span>
-                                </p>
-                            @else
-                                <p class="bg-red-300 p-2 border-radius-5 white">
-                                    {{ $properties['native'] }}
-                                </p>
-                            @endif
-                        @endforeach
-                    </div>
-                </article>
-                <article class="resource-view-details">
-                    <h3>@lang('License')</h3>
-                    <p>{{ $resource->creativeCommons ? $resource->creativeCommons[0]->name : '' }}</p>
-                </article>
+                        ?>
+                        <div class="display-flex gap-2" style="flex-wrap: wrap">
+    
+                            @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                @if (isset($newId[$localeCode]) && $newId != 0)
+                                    <?php
+                                    $currentUrl = explode('/', url()->current());
+                                    $index = count($currentUrl) - 1;
+                                    $value = $currentUrl[$index];
+                                    $currentUrl[$index] = $newId[$localeCode];
+                                    $newUrl = implode('/', $currentUrl);
+                                    ?>
+                                    <p class="bg-lightseagreen p-2 border-radius-5 white">
+                                        {{ $properties['native'] }}
+                                        <span class="fa fa-check-circle"></span>
+                                    </p>
+                                @else
+                                    <p class="bg-red-300 p-2 border-radius-5 white">
+                                        {{ $properties['native'] }}
+                                    </p>
+                                @endif
+                            @endforeach
+                        </div>
+                    </article>
+                    <article class="resource-view-details">
+                        <h3>@lang('License')</h3>
+                        <p>{{ $resource->creativeCommons ? $resource->creativeCommons[0]->name : '' }}</p>
+                    </article>
+                </div>
             </section>
             <aside>
                 <img class="resource-view-img" src="{{ getImagefromResource($resource->abstract, '282x254') }}"
@@ -307,23 +310,21 @@
                                     alt="Resource Image">
                                 <span><a title="{{ $item->abstract }}"
                                         href="{{ URL::to('resource/' . $item->id) }}">{{ $item->title }}</a><br />
-                                        <small>
-                                            {!! str_limit(strip_tags($item->abstract), 25) !!}
-                                        </small>
+                                    <small>
+                                        {!! str_limit(strip_tags($item->abstract), 25) !!}
+                                    </small>
                                 </span>
                             </div>
                         @endforeach
                     </div>
                 </div>
                 @if (isAdmin() && $resource->user)
-                <br>
+                    <br>
                     <div class="translated-resource-id">
                         <div>
-                            @lang('Added by'): 
+                            @lang('Added by'):
                         </div>
-                        <a
-                        class="flex-1"
-                            href="">
+                        <a class="flex-1" href="">
                             {{ $resource->user->profile?->first_name }}
                             {{ $resource->user->profile?->last_name }}
                         </a>
@@ -334,9 +335,11 @@
                         <form method="post" action="{{ route('updatetid', $resource->id) }}">
                             @csrf
                             <div class="translated-resource-id">
-                                {{ __("If this resource is translated, enter the translated resource id and click submit:") }}
+                                {{ __('If this resource is translated, enter the translated resource id and click submit:') }}
                                 <div class="display-flex gap-1 mt-2">
-                                    <input type="number" class="flex-1 border-radius-5 border-0" name="link" min=0 placeholder=" {{ __('Enter the translated resource id') }} " class="form-control tnid-input">
+                                    <input type="number" class="flex-1 border-radius-5 border-0" name="link" min=0
+                                        placeholder=" {{ __('Enter the translated resource id') }} "
+                                        class="form-control tnid-input">
                                     <input type="submit" class="form-control normalButton" value="{{ __('Submit') }}">
                                 </div>
                             </div>
@@ -355,9 +358,9 @@
                 @endif
             </aside>
             <section class="resource-view-comment">
-                <header>
-                    <h2>@lang('Comments')</h2>
-                    <h2>{{ count($comments) }} @lang('comment(s) so far')</h2>
+                <header class="bg-yellow">
+                    <h2> @lang('Comments') </h2>
+                    <h2> {{ count($comments) }} @lang('comment(s) so far') </h2>
                 </header>
                 @foreach ($comments as $cm)
                     <article style="border:1px solid #f1f1f1; border-radius: 5px;" class="p-2">
