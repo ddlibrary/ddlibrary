@@ -357,3 +357,10 @@ text-decoration: none;
     display:inline-block;
     padding:0px 2px;
 }
+
+.align-items-center{
+    align-items: center !important;
+}
+.gap-1{
+    gap: 4px;
+}
