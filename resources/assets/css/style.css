@@ -375,3 +375,10 @@ text-decoration: none;
     aspect-ratio: 1;
     border-radius: 50%;
 }
+
+.translated-resource-id{
+    padding: 10px;
+    background: #f1eded;
+    border-radius: 5px;
+}
+.border-0 {border: 0px !important}
