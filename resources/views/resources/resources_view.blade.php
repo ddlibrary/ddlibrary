@@ -194,13 +194,12 @@
                                         @lang('Please login to download this file.')
                                     @endif
                                     <br>
-                                    <hr>
                                 </span>
                             @endforeach
                         @endif
                     </div>
                 </article><br>
-                <h3 style="background-color: #77777742; padding: 0 7px 0 7px;">@lang('About this resource')</h3>
+                <h3 style="background-color: #77777742;" class="p-2">@lang('About this resource')</h3>
                 @if ($resource->authors)
                     <article class="resource-view-details">
                         <h3>@lang('Author')</h3>
@@ -306,25 +305,41 @@
                             <div class="related-item">
                                 <img class="related-items-img" src="{{ getImagefromResource($item->abstract, '55x50') }}"
                                     alt="Resource Image">
-                                <span><a title="Resource Title"
+                                <span><a title="{{ $item->abstract }}"
                                         href="{{ URL::to('resource/' . $item->id) }}">{{ $item->title }}</a><br />
-                                    {!! str_limit(strip_tags($item->abstract), 25) !!}</span>
+                                        <small>
+                                            {!! str_limit(strip_tags($item->abstract), 25) !!}
+                                        </small>
+                                </span>
                             </div>
                         @endforeach
                     </div>
                 </div>
-                @if (isAdmin())
-                    <p>@lang('Added by'): <a
-                            href="{{ route('user-view', isset($resource->user) ? $resource->user->id : '') }}">{{ isset($resource->user) ? $resource->user->username : '' }}</a>
+                @if (isAdmin() && $resource->user)
+                <br>
+                    <div class="translated-resource-id">
+                        <div>
+                            @lang('Added by'): 
+                        </div>
+                        <a
+                        class="flex-1"
+                            href="">
+                            {{ $resource->user->profile?->first_name }}
+                            {{ $resource->user->profile?->last_name }}
+                        </a>
+                    </div>
                 @endif
                 @if (isAdmin())
-                    <div>
-                        <br>
+                    <div class="mt-1">
                         <form method="post" action="{{ route('updatetid', $resource->id) }}">
                             @csrf
-                            If this resource is translated, enter the translated resource id and click submit:
-                            <input type="number" name="link" min=0 class="form-control tnid-input"><br>
-                            <input type="submit" class="form-control normalButton" value="Submit">
+                            <div class="translated-resource-id">
+                                {{ __("If this resource is translated, enter the translated resource id and click submit:") }}
+                                <div class="display-flex gap-1 mt-2">
+                                    <input type="number" class="flex-1 border-radius-5 border-0" name="link" min=0 placeholder=" {{ __('Enter the translated resource id') }} " class="form-control tnid-input">
+                                    <input type="submit" class="form-control normalButton" value="{{ __('Submit') }}">
+                                </div>
+                            </div>
                         </form>
                         @if ($translations)
                             <br><b>Linked resources:</b>
