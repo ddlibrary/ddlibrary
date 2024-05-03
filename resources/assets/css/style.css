@@ -255,6 +255,9 @@ text-decoration: none;
 .gap-5{
     gap: 20px;
 }
+.gap-2{
+    gap: 8px;
+}
 .flex-direction-column{
     flex-direction: column;
 }
@@ -363,4 +366,12 @@ text-decoration: none;
 }
 .gap-1{
     gap: 4px;
+}
+.white {
+    color: white;
+}
+.user-profile-avatar {
+    height: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
 }
