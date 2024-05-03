@@ -155,26 +155,27 @@
                                         @endphp
                                     </span>
                                 </h4>
-
-                                @if ($file->file_mime == 'application/pdf')
-                                    <iframe src="{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}#toolbar=0"
-                                        height="500" width="100%"></iframe>
-                                @elseif(
-                                    $file->file_mime == 'application/msword' ||
-                                        $file->file_mime == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-                                    <iframe
-                                        src="{{ URL::to(config('constants.google_doc_viewer_url') . URL::to('/resource/view/' . $file->id . '/' . $key) . '&embedded=true') }}"
-                                        height="500" width="100%"></iframe>
-                                @elseif($file->file_mime == 'audio/mpeg')
-                                    <span class="download-item">
-                                        <audio controls>
-                                            <source src="{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}"
-                                                type="audio/mpeg">
-                                        </audio>
-                                    </span>
-                                @else
-                                    <span class="download-item no-preview">@lang('No preview available.')</span>
-                                @endif
+                                <div class="mt-2 w-100">
+                                    @if ($file->file_mime == 'application/pdf')
+                                        <iframe src="{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}#toolbar=0"
+                                            height="500" width="100%"></iframe>
+                                    @elseif(
+                                        $file->file_mime == 'application/msword' ||
+                                            $file->file_mime == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                                        <iframe
+                                            src="{{ URL::to(config('constants.google_doc_viewer_url') . URL::to('/resource/view/' . $file->id . '/' . $key) . '&embedded=true') }}"
+                                            height="500" width="100%"></iframe>
+                                    @elseif($file->file_mime == 'audio/mpeg')
+                                        <span class="download-item">
+                                            <audio controls>
+                                                <source src="{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}"
+                                                    type="audio/mpeg">
+                                            </audio>
+                                        </span>
+                                    @else
+                                        <span class="download-item no-preview">@lang('No preview available.')</span>
+                                    @endif
+                                </div>
 
                                 <span class="download-item">
                                     @if (Auth::check())
