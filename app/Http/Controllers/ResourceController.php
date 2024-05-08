@@ -671,8 +671,12 @@ class ResourceController extends Controller
             Mail::to(Setting::find(1)->website_email)->send(new NewComment($comment));
         }
 
-        return redirect('resource/'.$resourceId)
-            ->with('success', 'Your comment is successfully registered. We will publish it after review.');
+        Session::flash('alert', [
+            'message' => __('Your comment is successfully registered. We will publish it after review.'),
+            'level' => 'success',
+        ]);
+
+        return redirect('resource/'.$resourceId);
     }
 
     public function resourceViewCounter(Request $request, $resourceId)
