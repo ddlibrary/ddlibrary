@@ -16,7 +16,6 @@
         @if ($resource)
             <section class="resource-view-information-section">
                 <article class="resource-view-title-box">
-                    @include('layouts.messages')
                     <div class="resource-view-title">
                         <header>
                             <h2>{{ $resource->title }}</h2>
@@ -202,8 +201,8 @@
                 </article><br>
                 <div style="border:1px solid lightgray;" class="p-2 border-radius-5">
 
-                    <h3 class="bg-yellow p-2">@lang('About this resource')</h3>
-                    @if ($resource->authors)
+                    <h3 class="bg-yellow-600 p-2 border-radius-top-5 black-400">@lang('About this resource')</h3>
+                    @if (count($resource->authors))
                         <article class="resource-view-details">
                             <h3>@lang('Author')</h3>
                             @foreach ($resource->authors as $author)
@@ -211,8 +210,8 @@
                             @endforeach
                         </article>
                     @endif
-    
-                    @if ($resource->translators)
+
+                    @if (count($resource->translators))
                         <article class="resource-view-details">
                             <h3>@lang('Translator')</h3>
                             @foreach ($resource->translators as $translator)
@@ -220,7 +219,7 @@
                             @endforeach
                         </article>
                     @endif
-    
+
                     <article class="resource-view-details">
                         <h3>@lang('Resource Level')</h3>
                         @foreach ($resource->levels as $level)
@@ -251,7 +250,7 @@
                     </article>
                     <article class="resource-view-details">
                         <h3>@lang('Languages Available')</h3>
-    
+
                         <?php
                         $supportedLocals = [];
                         $newId = [];
@@ -268,7 +267,7 @@
                         }
                         ?>
                         <div class="display-flex gap-2" style="flex-wrap: wrap">
-    
+
                             @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                                 @if (isset($newId[$localeCode]) && $newId != 0)
                                     <?php
@@ -358,10 +357,10 @@
                     </div>
                 @endif
             </aside>
-            <section class="resource-view-comment">
-                <header class="bg-yellow">
-                    <h2> @lang('Comments') </h2>
-                    <h2> {{ count($comments) }} @lang('comment(s) so far') </h2>
+            <section class="resource-view-comment border-radius-5">
+                <header class="bg-yellow-600 align-items-center border-radius-top-5">
+                    <h2 class="black-400"> @lang('Comments') </h2>
+                    <h3 class="black-400"> {{ count($comments) }} @lang('comment(s) so far') </h3>
                 </header>
                 @foreach ($comments as $cm)
                     <article style="border:1px solid #f1f1f1; border-radius: 5px;" class="p-2">
@@ -376,7 +375,7 @@
                                         {{ $cm->user->profile->last_name }}
                                     </strong>
                                     <div>
-                                        <span style="font-size: 10px; color: #8795a1;">
+                                        <span class="time">
                                             {{ $cm->created_at->diffForHumans() }}
                                         </span>
                                     </div>
