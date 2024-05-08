@@ -3,6 +3,7 @@
 .mt-1{ margin-top:4px !important}
 .mt-2{ margin-top:8px !important}
 .mt-5{ margin-top:20px !important}
+.mb-2{ margin-bottom:8px !important}
 .d-block{ display:block !important}
 .d-inline-block{ display:inline-block !important}
 .btn-outline-secondary{
@@ -273,6 +274,10 @@ text-decoration: none;
 .border-radius-5{
     border-radius: 5px;
 }
+.border-radius-top-5{
+    border-radius: 5px 5px 0px 0px;
+    
+}
 .bg-red-300{ background:#c54242;}
 .bg-lightseagreen{ background:lightseagreen;}
 .book-list {
@@ -337,6 +342,7 @@ text-decoration: none;
 .mt-1 { margin-top: 4px !important;}
 .mt-1 { margin-top: 4px !important;}
 .bg-yellow { background-color: #ffa800 !important;}
+.bg-yellow-600 { background-color: #ffa80052 !important;}
 .p-2-1{
     padding:16px 8px !important;
 }
@@ -382,3 +388,9 @@ text-decoration: none;
     border-radius: 5px;
 }
 .border-0 {border: 0px !important}
+.black-400 {color:#0f2100f7;}
+.border-b-lightgray { border-bottom: 1px solid #d3d3d373 !important;}
+.home-header{ padding: 8px 20px !important}
+.padding-b{ padding-bottom: 0px !important}
+.padding-t{ padding-top: 0px !important}
+.time {font-size: 10px; color: #8795a1;}
