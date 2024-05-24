@@ -220,7 +220,7 @@
 a.resource-link:active,
 a.resource-link:visited,
 a.resource-link:link {
-color: #888;
+color: #000;
 text-decoration: none;
 }
 .resource-link:hover {
@@ -246,6 +246,9 @@ text-decoration: none;
 .p-1{
     padding:4px;
 } 
+.p-2{
+    padding:8px;
+}
 .p-5{
     padding:20px;
 }  
@@ -271,8 +274,8 @@ text-decoration: none;
 .bg-lightseagreen{ background:lightseagreen;}
 .book-list {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
     padding: 5px;
 }
 
@@ -325,3 +328,32 @@ text-decoration: none;
 .position-left-0{left: 0;}
 .position-right-0{right: 0;}
 .z-index-2{z-index: 2 !important;}
+.black { color: #000 !important}
+.yellow { color: #ffa800 !important;}
+.mb-1 { margin-bottom: 4px !important;}
+.mt-1 { margin-top: 4px !important;}
+.mt-1 { margin-top: 4px !important;}
+.bg-yellow { background-color: #ffa800 !important;}
+.p-2-1{
+    padding:16px 8px !important;
+}
+.resource-category li{
+    margin: 2px 0px !important;
+}
+.resource-category li:hover{
+    background-color: #f8c45b !important;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.resource-icons{
+    padding:10px 0px
+}
+.resource-icon article i{
+    line-height: inherit;
+}
+
+.resource-icon article span{
+    font-size: 15px;
+    display:inline-block;
+    padding:0px 2px;
+}

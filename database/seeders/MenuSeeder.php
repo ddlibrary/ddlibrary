@@ -1911,7 +1911,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 'id' => '8451',
-                'title' => 'در مورد دسترسی به مطالب کتاب‌خانه',
+                'title' => 'در مورد دسترسی به مطالب کتابخانه',
                 'location' => 'footer-menu',
                 'path' => '/fa/page/4139',
                 'parent' => '0',

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\SubscriberController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -139,45 +140,59 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('news/add/translate/{newsId}/{lang}', [NewsController::class, 'addTranslate'])->middleware('admin');
     Route::post('news/add/translate/{newsId}/{lang}', [NewsController::class, 'addPostTranslate'])->name('add_news_translate')->middleware('admin');
     //Menu
-    Route::get('admin/menu', [MenuController::class, 'index'])->middleware('admin');
-    Route::post('admin/menu', [MenuController::class, 'index'])->middleware('admin')->name('menulist');
-    Route::get('admin/menu/add/{menuId}', [MenuController::class, 'create'])->middleware('admin');
-    Route::post('admin/menu/store', [MenuController::class, 'store'])->name('store_menu')->middleware('admin');
-    Route::get('admin/menu/edit/{menuId}', [MenuController::class, 'edit'])->middleware('admin');
-    Route::post('admin/menu/update/{menuId}', [MenuController::class, 'update'])->name('update_menu')->middleware('admin');
-    Route::get('admin/menu/translate/{menuId}', [MenuController::class, 'translate'])->middleware('admin');
-    Route::post('admin/menu/translate/{menuId}', [MenuController::class, 'translate_menu'])->name('translateMenu')->middleware('admin');
-    Route::get('admin/menu/sort', [MenuController::class, 'sort'])->name('sort_menu')->middleware('admin');
-    Route::get('admin/menu/ajax_get_parents', [MenuController::class, 'ajax_get_parents'])->name('ajax_get_parents')->middleware('admin');
-    //Settings
-    Route::get('admin/settings', [SettingController::class, 'edit'])->middleware('admin');
-    Route::post('admin/settings', [SettingController::class, 'update'])->name('settings');
-    //Comments
-    Route::get('admin/comments', [CommentController::class, 'index'])->middleware('admin');
-    Route::get('admin/comments/delete/{commentId}', [CommentController::class, 'delete'])->middleware('admin');
-    Route::get('admin/comments/published/{commentId}', [CommentController::class, 'published']);
-    //Flags
-    Route::get('admin/flags', [FlagController::class, 'index'])->middleware('admin');
-    //Taxonomy
-    Route::get('admin/taxonomy', [TaxonomyController::class, 'index'])->name('gettaxonomylist')->middleware('admin');
-    Route::post('admin/taxonomy', [TaxonomyController::class, 'index'])->name('posttaxonomylist')->middleware('admin');
-    Route::get('admin/taxonomy/edit/{vid}/{tid}', [TaxonomyController::class, 'edit'])->name('taxonomyedit')->middleware('admin');
-    Route::post('admin/taxonomy/edit/{vid}/{tid}', [TaxonomyController::class, 'update'])->name('taxonomyedit')->middleware('admin');
-    Route::get('admin/taxonomy/translate/{tid}', [TaxonomyController::class, 'translate'])->middleware('admin');
-    Route::get('admin/taxonomy/create', [TaxonomyController::class, 'create'])->name('taxonomycreate')->middleware('admin');
-    Route::post('admin/taxonomy/store', [TaxonomyController::class, 'store'])->name('taxonomystore')->middleware('admin');
-    Route::get('admin/taxonomy/create-translate/{tid}/{tnid}/{lang}', [TaxonomyController::class, 'createTranslate'])->name('taxonomytranslatecreate')->middleware('admin');
-    Route::post('admin/taxonomy/store-translate/{tnid}', [TaxonomyController::class, 'storeTranslate'])->name('taxonomytranslatestore')->middleware('admin');
-    //Taxonomy Vocabulary
-    Route::get('admin/vocabulary', [VocabularyController::class, 'index'])->name('vocabularylist')->middleware('admin');
-    Route::get('admin/vocabularies', [VocabularyController::class, 'getVocabularies'])->name('getvocabularies')->middleware('admin');
-    Route::get('admin/vocabulary/create', [VocabularyController::class, 'create'])->name('vocabularycreate')->middleware('admin');
-    Route::post('admin/vocabulary/store', [VocabularyController::class, 'store'])->name('vocabularystore')->middleware('admin');
-    Route::get('admin/vocabulary/edit/{vid}', [VocabularyController::class, 'edit'])->name('vocabularyedit')->middleware('admin');
-    Route::post('admin/vocabulary/edit/{vid}', [VocabularyController::class, 'update'])->name('vocabularyedit')->middleware('admin');
-    //Sync
-    Route::get('/admin/sync', [SyncController::class, 'index']);
-    Route::get('/admin/run_sync', [SyncController::class, 'SyncIt']);
+    Route::prefix('admin')->middleware('admin')->group(function(){
+        Route::controller(MenuController::class)->group(function(){
+            Route::get('menu', 'index');
+            Route::post('menu', 'index')->name('menulist');
+            Route::get('menu/add/{menuId}', 'create');
+            Route::post('menu/store', 'store')->name('store_menu');
+            Route::get('menu/edit/{menuId}', 'edit');
+            Route::post('menu/update/{menuId}', 'update')->name('update_menu');
+            Route::get('menu/translate/{menuId}', 'translate');
+            Route::post('menu/translate/{menuId}', 'translate_menu')->name('translateMenu');
+            Route::get('menu/sort', 'sort')->name('sort_menu');
+            Route::get('menu/ajax_get_parents', 'ajax_get_parents')->name('ajax_get_parents');
+        });
+
+        //Settings
+        Route::controller(SettingController::class)->group(function(){
+            Route::get('settings', 'edit');
+            Route::post('settings', 'update')->name('settings');
+        });
+
+        Route::resource('subscribers', SubscriberController::class)->only('index', 'destroy');
+
+        //Comments
+        Route::prefix('comments')->controller(CommentController::class)->group(function(){
+            Route::get('/', 'index');
+            Route::get('delete/{commentId}', 'delete');
+            Route::get('published/{commentId}', 'published');
+        });
+
+        //Flags
+        Route::get('flags', [FlagController::class, 'index']);
+        //Taxonomy
+        Route::get('taxonomy', [TaxonomyController::class, 'index'])->name('gettaxonomylist');
+        Route::post('taxonomy', [TaxonomyController::class, 'index'])->name('posttaxonomylist');
+        Route::get('taxonomy/edit/{vid}/{tid}', [TaxonomyController::class, 'edit'])->name('taxonomyedit');
+        Route::post('taxonomy/edit/{vid}/{tid}', [TaxonomyController::class, 'update'])->name('taxonomyedit');
+        Route::get('taxonomy/translate/{tid}', [TaxonomyController::class, 'translate']);
+        Route::get('taxonomy/create', [TaxonomyController::class, 'create'])->name('taxonomycreate');
+        Route::post('taxonomy/store', [TaxonomyController::class, 'store'])->name('taxonomystore');
+        Route::get('taxonomy/create-translate/{tid}/{tnid}/{lang}', [TaxonomyController::class, 'createTranslate'])->name('taxonomytranslatecreate');
+        Route::post('taxonomy/store-translate/{tnid}', [TaxonomyController::class, 'storeTranslate'])->name('taxonomytranslatestore');
+        //Taxonomy Vocabulary
+        Route::get('vocabulary', [VocabularyController::class, 'index'])->name('vocabularylist');
+        Route::get('vocabularies', [VocabularyController::class, 'getVocabularies'])->name('getvocabularies');
+        Route::get('vocabulary/create', [VocabularyController::class, 'create'])->name('vocabularycreate');
+        Route::post('vocabulary/store', [VocabularyController::class, 'store'])->name('vocabularystore');
+        Route::get('vocabulary/edit/{vid}', [VocabularyController::class, 'edit'])->name('vocabularyedit');
+        Route::post('vocabulary/edit/{vid}', [VocabularyController::class, 'update'])->name('vocabularyedit');
+        //Sync
+        Route::get('/sync', [SyncController::class, 'index']);
+        Route::get('/run_sync', [SyncController::class, 'SyncIt']);
+    });
+
     //Glossary
     Route::get('glossary', [GlossaryController::class, 'index']);
     Route::post('glossary', [GlossaryController::class, 'index'])->name('glossary');
