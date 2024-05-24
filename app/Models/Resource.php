@@ -481,4 +481,9 @@ class Resource extends Model
     public function resourceViews(){
         return $this->hasMany(ResourceView::class);
     }
+
+    public function resourceFavorites(): HasMany
+    {
+        return $this->hasMany(ResourceFavorite::class);
+    }
 }
