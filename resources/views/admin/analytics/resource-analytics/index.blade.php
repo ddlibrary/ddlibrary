@@ -101,7 +101,7 @@
                                 <div class="card-body text-secondary p-2">
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="badge badge-info">Date <span class="fa fa-check"></span> </span>
-                                        <span class="badge badge-info">Gender <span class="fa fa-check"></span> </span>
+                                        <span class="badge badge-danger">Gender <span class="fa fa-times"></span> </span>
                                         <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
                                     </div>
 
@@ -114,6 +114,35 @@
                                             <div class="p-1">
                                                 <span class="badge badge-info">
                                                     {{ number_format($top10DownloadedResource->downloads_count) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    @endforeach
+
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Top 10 favorite resources --}}
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="card border-secondary mb-3">
+                                <div class="card-header">Top 10 favorite resources</div>
+                                <div class="card-body text-secondary p-2">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="badge badge-info">Date <span class="fa fa-check"></span> </span>
+                                        <span class="badge badge-danger">Gender <span class="fa fa-times"></span> </span>
+                                        <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
+                                    </div>
+
+                                    @foreach ($top10FavoriteResources as $top10FavoriteResource)
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1">
+                                                {{ $loop->iteration }}.
+                                                {{ $top10FavoriteResource->title }}
+                                            </div>
+                                            <div class="p-1">
+                                                <span class="badge badge-info">
+                                                    {{ number_format($top10FavoriteResource->resource_favorites_count) }}
                                                 </span>
                                             </div>
                                         </div>
