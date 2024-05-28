@@ -87,7 +87,7 @@ class HomePageTest extends TestCase
     }
 
     /** @test */
-    public function user_can_visit_shafnani_home_page(): void
+    public function user_can_visit_shaghnani_home_page(): void
     {
         $this->refreshApplicationWithLocale('sh');
 

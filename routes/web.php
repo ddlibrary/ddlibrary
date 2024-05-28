@@ -282,7 +282,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         return redirect('/home');
     });
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::prefix('subscribe')->middleware(['auth', 'verified'])->controller(SubscribeController::class)->group(function(){
+    Route::prefix('subscribe')->middleware(['auth', 'verified'])->controller(SubscribeController::class)->group(function () {
         Route::get('/', 'index')->name('subscribe.index');
         Route::post('', 'store')->name('subscribe.store');
     });

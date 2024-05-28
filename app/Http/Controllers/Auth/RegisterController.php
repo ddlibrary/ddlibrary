@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Resource;
+use App\Models\Subscriber;
 use App\Models\User;
 use App\Models\UserProfile;
-use Carbon\Carbon;
 use App\Rules\RecaptchaRule;
-use App\Models\Subscriber;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\View\Factory;
@@ -21,7 +21,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -112,7 +111,7 @@ class RegisterController extends Controller
         $user->email = $request['email'];
         $user->status = 1;
         $user->accessed_at = Carbon::now();
-        $user->language = Config::get('app.locale');
+        $user->language = config('app.locale');
 
         if ($user->email == null) {
             $user->email_verified_at = Carbon::now(); // This is a hack for the duration, until we can verify phone numbers as well
@@ -147,7 +146,7 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
-        
+
         try {
             DB::beginTransaction();
 

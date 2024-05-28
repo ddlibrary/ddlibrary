@@ -42,22 +42,24 @@ class ApiController extends Controller
         $id = Auth::id();
 
         $user = User::find($id);
-        $user->username = 'deleted_user_' . time();
-        $user->email = NULL;
+        $user->username = 'deleted_user_'.time();
+        $user->email = null;
         $user->status = 0;
         $user->save();
 
         $userProfile = UserProfile::where('user_id', $id)->first();
-        $userProfile->first_name = NULL;
-        $userProfile->last_name = NULL;
-        $userProfile->gender = NULL;
-        $userProfile->country = NULL;
-        $userProfile->city = NULL;
-        $userProfile->phone = NULL;
+        $userProfile->first_name = null;
+        $userProfile->last_name = null;
+        $userProfile->gender = null;
+        $userProfile->country = null;
+        $userProfile->city = null;
+        $userProfile->phone = null;
         $userProfile->save();
 
         $subscription = $user->subscription;
-        if($subscription) $subscription->delete();
+        if ($subscription) {
+            $subscription->delete();
+        }
 
         auth()->user()->tokens()->delete();
 
@@ -128,7 +130,7 @@ class ApiController extends Controller
         $user->email = $request->email;
         $user->status = 1;
         $user->accessed_at = Carbon::now();
-        $user->language = Config::get('app.locale');
+        $user->language = config('app.locale');
 
         $user->save();
 

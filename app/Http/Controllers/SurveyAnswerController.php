@@ -14,7 +14,7 @@ class SurveyAnswerController extends Controller
     public function allQuestions(): View
     {
         $this->middleware('admin');
-        $lang = Config::get('app.locale');
+        $lang = config('app.locale');
         $survey_questions = SurveyQuestion::where('language', $lang)->get();
 
         return view('admin.surveys.result.view', compact('survey_questions'));
