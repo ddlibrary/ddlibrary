@@ -76,7 +76,7 @@ return [
 
         'redis' => [
             'driver' => 'redis',
-            'connection' => 'default',
+            'connection' => 'cache',
             'lock_connection' => 'default',
         ],
 

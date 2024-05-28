@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Database\Seeders\CitySeeder;
 use Database\Seeders\CountrySeeder;
 use Database\Seeders\EducationUseSeeder;
