@@ -7,15 +7,15 @@
                     @csrf
                     <div class="row">
 
-                        {{-- From Date --}}
+                        {{-- From  --}}
                         <div class="col-md-2">
-                            <label>From Date</label>
+                            <label>From </label>
                             <input type="date" value="{{ request()->date_from }}" class="form-control" name="date_from">
                         </div>
 
-                        {{-- To Date --}}
+                        {{-- To --}}
                         <div class="col-md-2">
-                            <label>To Date</label>
+                            <label>To</label>
                             <input type="date" value="{{ request()->date_to }}" class="form-control" name="date_to">
                         </div>
 
@@ -49,6 +49,26 @@
                         </div>
                     </div>
                 </form>
+                <div>
+                    <div class="d-flex p-2">
+                        <div style="width: 50px">
+                            <span class="fa fa-calendar"></span>
+                        </div>
+                        <div>Date</div>
+                    </div>
+                    <div class="d-flex p-2">
+                        <div style="width: 50px">
+                            <span class="fa fa-female"></span>
+                        </div>
+                        <div>Gender</div>
+                    </div>
+                    <div class="d-flex p-2">
+                        <div style="width: 50px">
+                            <span class="fa fa-language"></span>
+                        </div>
+                        <div>Language</div>
+                    </div>
+                </div>
             </div>
             <div class="card mb-3">
                 <div class="card-header">
@@ -57,18 +77,19 @@
                 <div class="card-body">
                     <div class="row">
 
-                        {{-- Resouces base on Language --}}
+                        {{-- Total resources by languages --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Resouces base on Language</div>
-                                <div class="card-body text-secondary p-2">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span class="badge badge-info">Date <span class="fa fa-check"></span> </span>
-                                        <span class="badge badge-info">Gender <span class="fa fa-check"></span> </span>
-                                        <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
+                                <div class="card-header">Total resources by languages
+                                    <div class="display-inline-block float-right">
+                                        <span class="fa fa-calendar"></span>
+                                        <span class="fa fa-female"></span>
+                                        <span class="fa fa-language"></span>
                                     </div>
+                                </div>
+                                <div class="card-body text-secondary p-2">
 
-                                    @foreach ($totalResources as $totalResource)
+                                    @forelse ($totalResources as $totalResource)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
@@ -80,7 +101,9 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    @endforeach
+                                    @empty
+                                        <h2 class="alert alert-danger">not available</h2>
+                                    @endforelse
 
                                     <div class="d-flex justify-content-between">
                                         <div>
@@ -97,15 +120,16 @@
                         {{-- Top 10 downloaded resources --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Top 10 downloaded resources</div>
-                                <div class="card-body text-secondary p-2">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span class="badge badge-info">Date <span class="fa fa-check"></span> </span>
-                                        <span class="badge badge-danger">Gender <span class="fa fa-times"></span> </span>
-                                        <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
-                                    </div>
+                                <div class="card-header">Top 10 downloaded resources
 
-                                    @foreach ($top10DownloadedResources as $top10DownloadedResource)
+                                    <div class="display-inline-block float-right">
+                                        <span class="fa fa-calendar"></span>
+                                        <span class="fa fa-language"></span>
+                                    </div>
+                                </div>
+                                <div class="card-body text-secondary p-2">
+
+                                    @forelse ($top10DownloadedResources as $top10DownloadedResource)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
@@ -117,24 +141,26 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    @endforeach
+                                    @empty
+                                        <h2 class="alert alert-danger">not available</h2>
+                                    @endforelse
 
                                 </div>
                             </div>
                         </div>
 
-                        {{-- Top 10 favorite resources --}}
+                        {{-- Top 10 favorited resources --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Top 10 favorite resources</div>
-                                <div class="card-body text-secondary p-2">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span class="badge badge-info">Date <span class="fa fa-check"></span> </span>
-                                        <span class="badge badge-danger">Gender <span class="fa fa-times"></span> </span>
-                                        <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
+                                <div class="card-header">Top 10 favorited resources
+                                    <div class="display-inline-block float-right">
+                                        <span class="fa fa-calendar"></span>
+                                        <span class="fa fa-language"></span>
                                     </div>
+                                </div>
+                                <div class="card-body text-secondary p-2">
 
-                                    @foreach ($top10FavoriteResources as $top10FavoriteResource)
+                                    @forelse ($top10FavoriteResources as $top10FavoriteResource)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
@@ -146,7 +172,9 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    @endforeach
+                                    @empty
+                                        <h2 class="alert alert-danger">not available</h2>
+                                    @endforelse
 
                                 </div>
                             </div>
@@ -155,15 +183,16 @@
                         {{-- Top 10 downloaded resources by file size --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Top 10 downloaded resources by file size</div>
-                                <div class="card-body text-secondary p-2">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span class="badge badge-info">Date <span class="fa fa-check"></span> </span>
-                                        <span class="badge badge-info">Gender <span class="fa fa-check"></span> </span>
-                                        <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
+                                <div class="card-header">Top 10 downloaded resources by file size
+                                    <div class="display-inline-block float-right">
+                                        <span class="fa fa-calendar"></span>
+                                        <span class="fa fa-female"></span>
+                                        <span class="fa fa-language"></span>
                                     </div>
+                                </div>
+                                <div class="card-body text-secondary p-2">
 
-                                    @foreach ($top10DownloadedResourcesByFileSizes as $top10DownloadedResourcesByFileSize)
+                                    @forelse ($top10DownloadedResourcesByFileSizes as $top10DownloadedResourcesByFileSize)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
@@ -176,23 +205,20 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    @endforeach
+                                    @empty
+                                        <h2 class="alert alert-danger">not available</h2>
+                                    @endforelse
 
                                 </div>
                             </div>
                         </div>
 
-                        {{-- Sum of all individual downloaded file sizes --}}
+                        {{-- Sum of all individual Total data downloaded --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Downloaded File Sizes</div>
+                                <div class="card-header">Total data downloaded</div>
                                 <div class="card-body text-secondary p-2">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span class="badge badge-danger">Date <span class="fa fa-times"></span> </span>
-                                        <span class="badge badge-danger">Gender <span class="fa fa-times"></span> </span>
-                                        <span class="badge badge-danger">Language <span class="fa fa-times"></span>
-                                        </span>
-                                    </div>
+
                                     <div class="card-text">
                                         <div class="d-flex justify-content-between">
                                             <div>
@@ -213,15 +239,15 @@
                         {{-- Top 10 Authors --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Top 10 Authors</div>
-                                <div class="card-body text-secondary p-2">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span class="badge badge-info">Date <span class="fa fa-check"></span> </span>
-                                        <span class="badge badge-danger">Gender <span class="fa fa-times"></span> </span>
-                                        <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
+                                <div class="card-header">Top 10 authors
+                                    <div class="display-inline-block float-right">
+                                        <span class="fa fa-calendar"></span>
+                                        <span class="fa fa-language"></span>
                                     </div>
+                                </div>
+                                <div class="card-body text-secondary p-2">
 
-                                    @foreach ($authors as $author)
+                                    @forelse ($authors as $author)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
@@ -233,7 +259,9 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    @endforeach
+                                    @empty
+                                        <h2 class="alert alert-danger">not available</h2>
+                                    @endforelse
 
                                 </div>
                             </div>
@@ -242,15 +270,15 @@
                         {{-- Top 10 Publishers --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Top 10 Publisher</div>
-                                <div class="card-body text-secondary p-2">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span class="badge badge-info">Date <span class="fa fa-check"></span> </span>
-                                        <span class="badge badge-danger">Gender <span class="fa fa-times"></span> </span>
-                                        <span class="badge badge-info">Language <span class="fa fa-check"></span> </span>
+                                <div class="card-header">Top 10 publisher
+                                    <div class="display-inline-block float-right">
+                                        <span class="fa fa-calendar"></span>
+                                        <span class="fa fa-language"></span>
                                     </div>
+                                </div>
+                                <div class="card-body text-secondary p-2">
 
-                                    @foreach ($publishers as $publisher)
+                                    @forelse ($publishers as $publisher)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
@@ -262,7 +290,9 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    @endforeach
+                                    @empty
+                                        <h2 class="alert alert-danger">not available</h2>
+                                    @endforelse
 
                                 </div>
                             </div>
