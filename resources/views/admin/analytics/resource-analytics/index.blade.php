@@ -80,8 +80,11 @@
                         {{-- Total resources by languages --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Total resources by languages
-                                    <div class="display-inline-block float-right">
+                                <div class="card-header d-flex justify-content-between">
+                                    <div>
+                                        Total resources by languages
+                                    </div>
+                                    <div class="display-inline-block text-right">
                                         <span class="fa fa-calendar"></span>
                                         <span class="fa fa-female"></span>
                                         <span class="fa fa-language"></span>
@@ -120,9 +123,11 @@
                         {{-- Top 10 downloaded resources --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Top 10 downloaded resources
-
-                                    <div class="display-inline-block float-right">
+                                <div class="card-header d-flex justify-content-between gap-5">
+                                    <div>
+                                        Top 10 downloaded resources
+                                    </div>
+                                    <div class="display-inline-block text-right">
                                         <span class="fa fa-calendar"></span>
                                         <span class="fa fa-language"></span>
                                     </div>
@@ -152,8 +157,11 @@
                         {{-- Top 10 favorited resources --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Top 10 favorited resources
-                                    <div class="display-inline-block float-right">
+                                <div class="card-header d-flex justify-content-between">
+                                    <div>
+                                        Top 10 favorited resources
+                                    </div>
+                                    <div class="display-inline-block text-right">
                                         <span class="fa fa-calendar"></span>
                                         <span class="fa fa-language"></span>
                                     </div>
@@ -183,8 +191,11 @@
                         {{-- Top 10 downloaded resources by file size --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Top 10 downloaded resources by file size
-                                    <div class="display-inline-block float-right">
+                                <div class="card-header d-flex justify-content-between">
+                                    <div>
+                                        Top 10 downloaded resources by file size
+                                    </div>
+                                    <div class="display-inline-block text-right">
                                         <span class="fa fa-calendar"></span>
                                         <span class="fa fa-female"></span>
                                         <span class="fa fa-language"></span>
@@ -239,8 +250,11 @@
                         {{-- Top 10 Authors --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Top 10 authors
-                                    <div class="display-inline-block float-right">
+                                <div class="card-header d-flex justify-content-between">
+                                    <div>
+                                        Top 10 authors
+                                    </div>
+                                    <div class="display-inline-block text-right">
                                         <span class="fa fa-calendar"></span>
                                         <span class="fa fa-language"></span>
                                     </div>
@@ -270,8 +284,11 @@
                         {{-- Top 10 Publishers --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Top 10 publisher
-                                    <div class="display-inline-block float-right">
+                                <div class="card-header d-flex justify-content-between">
+                                    <div>    
+                                        Top 10 publisher
+                                    </div>
+                                    <div class="display-inline-block text-right">
                                         <span class="fa fa-calendar"></span>
                                         <span class="fa fa-language"></span>
                                     </div>
