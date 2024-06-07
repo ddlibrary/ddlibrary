@@ -9,19 +9,19 @@
 
                         {{-- From  --}}
                         <div class="col-md-2">
-                            <label>From </label>
+                            <label>From <span class="fa fa-calendar"></span></label>
                             <input type="date" value="{{ request()->date_from }}" class="form-control" name="date_from">
                         </div>
 
                         {{-- To --}}
                         <div class="col-md-2">
-                            <label>To</label>
+                            <label>To <span class="fa fa-calendar"></span></label>
                             <input type="date" value="{{ request()->date_to }}" class="form-control" name="date_to">
                         </div>
 
                         {{-- Gender --}}
                         <div class="col-md-2">
-                            <label>Gender</label>
+                            <label>Gender <span class="fa fa-female"></span></label>
                             <select class="form-control" name="gender">
                                 <option value="">...</option>
                                 @foreach ($genders as $gender)
@@ -33,7 +33,7 @@
 
                         {{-- Language --}}
                         <div class="col-md-2">
-                            <label>Language</label>
+                            <label>Language <span class="fa fa-language"></span></label>
                             <select class="form-control" name="language">
                                 <option value="">...</option>
                                 @foreach ($languages as $key => $value)
@@ -49,26 +49,6 @@
                         </div>
                     </div>
                 </form>
-                <div>
-                    <div class="d-flex p-2">
-                        <div style="width: 50px">
-                            <span class="fa fa-calendar"></span>
-                        </div>
-                        <div>Date</div>
-                    </div>
-                    <div class="d-flex p-2">
-                        <div style="width: 50px">
-                            <span class="fa fa-female"></span>
-                        </div>
-                        <div>Gender</div>
-                    </div>
-                    <div class="d-flex p-2">
-                        <div style="width: 50px">
-                            <span class="fa fa-language"></span>
-                        </div>
-                        <div>Language</div>
-                    </div>
-                </div>
             </div>
             <div class="card mb-3">
                 <div class="card-header">
@@ -285,7 +265,7 @@
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
                                 <div class="card-header d-flex justify-content-between">
-                                    <div>    
+                                    <div>
                                         Top 10 publisher
                                     </div>
                                     <div class="display-inline-block text-right">
