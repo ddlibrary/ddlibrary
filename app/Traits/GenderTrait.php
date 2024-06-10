@@ -10,9 +10,9 @@ trait GenderTrait
     public function genders(): array
     {
         return [
-            'Male' => 'Male',
-            'Female' => 'Female',
-            'None' => 'None'
+            'male' => 'Male',
+            'female' => 'Female',
+            'none' => 'None'
         ];
     }
 }
