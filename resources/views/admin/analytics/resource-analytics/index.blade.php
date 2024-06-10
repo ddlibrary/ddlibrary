@@ -275,15 +275,15 @@
                                 </div>
                                 <div class="card-body text-secondary p-2">
 
-                                    @forelse ($publishers as $publisher)
+                                    @forelse ($top10Publishers as $top10Publisher)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
-                                                {{ $publisher->name }}
+                                                {{ $top10Publisher->name }}
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($publisher->resource_count) }}
+                                                    {{ number_format($top10Publisher->resource_count) }}
                                                 </span>
                                             </div>
                                         </div>

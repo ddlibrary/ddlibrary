@@ -23,12 +23,12 @@ class ResourceAnalyticsController extends Controller
         $top10Authors = $this->getTop10AuthorsOrPublishers($request, 'resource_authors'); // Get top 10 authors
         $totalResources = $this->getTotalResouceBaseOnLanguage($request); // Total Resources base on Language
         $top10FavoriteResources = $this->getTop10FavoriteResources($request); // Get top 10 favorite resources
-        $publishers = $this->getTop10AuthorsOrPublishers($request, 'resource_publishers'); // Get top 10 publishers
+        $top10Publishers = $this->getTop10AuthorsOrPublishers($request, 'resource_publishers'); // Get top 10 publishers
         $top10DownloadedResources = $this->getTop10DownloadedResources($request); // Get top 10 downloaded resources
         $top10DownloadedResourcesByFileSizes = $this->getTop10DownloadedResourcesByFileSize($request); // Get top 10 downloaded resources by file size
         $sumOfAllIndividualDownloadedFileSizes = $this->getSumOfAllIndividualDownloadedFileSizes(); // Sum of all individual downloaded file sizes
 
-        return view('admin.analytics.resource-analytics.index', compact(['records', 'genders', 'languages', 'reportType', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 'top10Authors', 'publishers', 'top10DownloadedResources', 'top10DownloadedResourcesByFileSizes', 'top10FavoriteResources']));
+        return view('admin.analytics.resource-analytics.index', compact(['records', 'genders', 'languages', 'reportType', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 'top10Authors', 'top10Publishers', 'top10DownloadedResources', 'top10DownloadedResourcesByFileSizes', 'top10FavoriteResources']));
     }
 
     private function getSumOfAllIndividualDownloadedFileSizes(): float
