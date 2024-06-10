@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\LanguageEnum;
 use App\Models\DownloadCount;
 use App\Models\Resource;
 use App\Traits\GenderTrait;
@@ -22,6 +23,7 @@ class ResourceAnalyticsController extends Controller
 
         $top10Authors = $this->getTop10AuthorsOrPublishers($request, 'resource_authors'); // Get top 10 authors
         $totalResources = $this->getTotalResouceBaseOnLanguage($request); // Total Resources base on Language
+
         $top10FavoriteResources = $this->getTop10FavoriteResources($request); // Get top 10 favorite resources
         $top10Publishers = $this->getTop10AuthorsOrPublishers($request, 'resource_publishers'); // Get top 10 publishers
         $top10DownloadedResources = $this->getTop10DownloadedResources($request); // Get top 10 downloaded resources
@@ -38,7 +40,7 @@ class ResourceAnalyticsController extends Controller
 
     private function getTotalResouceBaseOnLanguage($request): Collection
     {
-        return Resource::where(function ($query) use ($request) {
+        $totalResources = Resource::where(function ($query) use ($request) {
             // Date
             if ($request->date_from && $request->date_to) {
                 $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
@@ -60,6 +62,11 @@ class ResourceAnalyticsController extends Controller
             ->select('language', DB::raw('count(*) as count'))
             ->orderBy('count', 'desc')
             ->get();
+
+        return $totalResources->map(function ($item) {
+            $item['language'] = LanguageEnum::tryFrom($item['language'])?->name ?? $item['language'];
+            return $item;
+        });
     }
 
     private function getTop10AuthorsOrPublishers($request, $table): Collection
