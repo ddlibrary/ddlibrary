@@ -76,7 +76,7 @@
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
-                                                {{ $totalResource->language }}
+                                                {{ $totalResource->language ? $totalResource->language : 'not available' }}
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
