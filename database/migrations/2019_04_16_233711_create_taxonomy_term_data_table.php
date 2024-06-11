@@ -12,7 +12,7 @@ return new class extends Migration
     {
         Schema::create('taxonomy_term_data', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('vid')->unsigned()->default(0);
+            $table->integer('vid')->unsigned()->default(0); // Taxonomy Vocabulary -> taxonomy_vocabulary table
             $table->string('name')->default('')->index('name');
             $table->integer('weight')->default(0)->comment('The weight of this term in relation to other terms.');
             $table->string('language', 12)->default('und');

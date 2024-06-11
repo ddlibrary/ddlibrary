@@ -103,7 +103,7 @@
                                 <div class="card-header">Top 10 active users </div>
                                 <div class="card-body text-secondary p-2">
                                     <div class="card-text">
-                                        @foreach ($top10ActiveUsers as $top10ActiveUser)
+                                        @forelse ($top10ActiveUsers as $top10ActiveUser)
                                             <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                                 <div class="p-1 text-capitalize">
                                                     {{ $loop->iteration }}.
@@ -115,7 +115,9 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                        @endforeach
+                                        @empty
+                                            <h2 class="alert alert-danger">not available</h2>
+                                        @endforelse
                                     </div>
                                 </div>
                             </div>
@@ -151,7 +153,7 @@
                                 <div class="card-header">Total users base on gender </div>
                                 <div class="card-body text-secondary p-2">
                                     <div class="card-text">
-                                        @foreach ($totalUsersBaseOnGenders as $totalUsersBaseOnGender)
+                                        @forelse ($totalUsersBaseOnGenders as $totalUsersBaseOnGender)
                                             <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                                 <div class="p-1 text-capitalize">
                                                     {{ $loop->iteration }}.
@@ -163,7 +165,9 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                        @endforeach
+                                        @empty
+                                            <h2 class="alert alert-danger">not available</h2>
+                                        @endforelse
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1 text-capitalize">
                                                 Total Users

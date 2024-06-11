@@ -97,6 +97,7 @@
         <a class="collapse-item" href="{{ URL::to('admin/reports/resources') }}">Resource Analytics</a>
         <div class="collapse-divider"></div>
         <h6 class="collapse-header">Analytics</h6>
+        <a class="collapse-item" href="{{ url('admin/resource-analytics') }}">Resource Analytics</a>
         <a class="collapse-item" href="{{ URL::to('admin/user-analytics') }}">User Analytics</a>
         <a class="collapse-item" href="{{ URL::to('admin/analytics') }}">DDL Analytics</a>
     </div>
@@ -112,6 +113,7 @@
     <div id="settings" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Settings</h6>
+        <a class="collapse-item" href="{{ URL::to('admin/subscribers') }}">Subscribers</a>
         <a class="collapse-item" href="{{ URL::to('admin/contacts') }}">Contacts</a>
         <a class="collapse-item" href="{{ URL::to('admin/menu') }}">Menu</a>
         <a class="collapse-item" href="{{ URL::to('admin/taxonomy') }}">Taxonomys</a>
