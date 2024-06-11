@@ -19,6 +19,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ResourceAnalyticsController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StoryWeaverController;
@@ -241,6 +242,12 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     //Analytics
     Route::get('/admin/analytics', [AnalyticsController::class, 'index'])->middleware('admin');
     Route::post('/admin/analytics', [AnalyticsController::class, 'show'])->name('analytics')->middleware('admin');
+
+    // Library Analytics
+    Route::prefix('admin')->middleware('admin')->controller(ResourceAnalyticsController::class)->group(function(){
+        Route::get('resource-analytics', 'index');
+    });
+
     //admin, glossary
     Route::get('admin/glossary_subjects', [GlossarySubjectController::class, 'index'])->middleware('admin')->name('glossary_subjects_list');
     Route::get('admin/glossary_subjects/create', [GlossarySubjectController::class, 'create'])->middleware('admin');
