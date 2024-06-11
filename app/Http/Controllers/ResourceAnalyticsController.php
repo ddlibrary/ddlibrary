@@ -22,7 +22,7 @@ class ResourceAnalyticsController extends Controller
         $languages = $this->getLanguages();
 
         $top10Authors = $this->getTop10AuthorsOrPublishers($request, 'resource_authors'); // Get top 10 authors
-        $totalResources = $this->getTotalResouceBaseOnLanguage($request); // Total Resources base on Language
+        $totalResources = $this->getTotalResourcesBasedOnLanguage($request); // Total Resources base on Language
 
         $top10FavoriteResources = $this->getTop10FavoriteResources($request); // Get top 10 favorite resources
         $top10Publishers = $this->getTop10AuthorsOrPublishers($request, 'resource_publishers'); // Get top 10 publishers
@@ -38,7 +38,7 @@ class ResourceAnalyticsController extends Controller
         return DownloadCount::leftJoin('resource_attachments', 'download_counts.file_id', '=', 'resource_attachments.id')->select(DB::raw('COALESCE(SUM(resource_attachments.file_size), 0) as total_file_size'))->value('total_file_size');
     }
 
-    private function getTotalResouceBaseOnLanguage($request): Collection
+    private function getTotalResourcesBasedOnLanguage($request): Collection
     {
         $totalResources = Resource::where(function ($query) use ($request) {
             // Date
@@ -71,7 +71,7 @@ class ResourceAnalyticsController extends Controller
 
     private function getTop10AuthorsOrPublishers($request, $table): Collection
     {
-        return Resource::select('taxonomy_term_data.name AS name', DB::raw('COUNT(resources.id)  resource_count'))
+        return Resource::select('taxonomy_term_data.id AS id', 'taxonomy_term_data.name AS name', DB::raw('COUNT(resources.id)  resource_count'))
             ->join("$table", 'resources.id', '=', "$table.resource_id")
             ->join('taxonomy_term_data', "$table.tid", '=', 'taxonomy_term_data.id')
             ->where(function ($query) use ($request) {
@@ -85,7 +85,7 @@ class ResourceAnalyticsController extends Controller
                     $query->where('resources.language', $request->language);
                 }
             })
-            ->groupBy('taxonomy_term_data.name')
+            ->groupBy('taxonomy_term_data.id')
             ->orderByDesc('resource_count')
             ->limit(10)
             ->get();
@@ -93,7 +93,7 @@ class ResourceAnalyticsController extends Controller
 
     private function getTop10DownloadedResourcesByFileSize($request): Collection
     {
-        return Resource::select('resources.id', 'resources.title', DB::raw('SUM(resource_attachments.file_size) AS file_size'))
+        return Resource::select('resources.id', 'resources.title', DB::raw('MAX(resource_attachments.file_size) AS file_size'))
             ->join('download_counts', 'resources.id', '=', 'download_counts.resource_id')
             ->join('resource_attachments', 'download_counts.file_id', '=', 'resource_attachments.id')
             ->where(function ($query) use ($request) {
@@ -115,7 +115,6 @@ class ResourceAnalyticsController extends Controller
                 }
             })
             ->groupBy('resources.id')
-            ->orderByDesc('file_size')
             ->limit(10)
             ->get();
     }

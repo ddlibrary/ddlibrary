@@ -72,20 +72,20 @@
                                 </div>
                                 <div class="card-body text-secondary p-2">
 
-                                    @forelse ($totalResources as $totalResource)
+                                    @forelse ($totalResources as $resource)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
-                                                {{ $totalResource->language ? $totalResource->language : 'No language' }}
+                                                {{ $resource->language ?  : '<no language>' }}
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($totalResource->count) }}
+                                                    {{ number_format($resource->count) }}
                                                 </span>
                                             </div>
                                         </div>
                                     @empty
-                                        <h2 class="alert alert-danger">not available</h2>
+                                        <h2 class="alert alert-danger">N/A</h2>
                                     @endforelse
 
                                     <div class="d-flex justify-content-between">
@@ -114,20 +114,21 @@
                                 </div>
                                 <div class="card-body text-secondary p-2">
 
-                                    @forelse ($top10DownloadedResources as $top10DownloadedResource)
+                                    @forelse ($top10DownloadedResources as $resource)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
-                                                {{ $top10DownloadedResource->title }}
+                                                <a href="{{ URL::to('resource/' . $resource->id) }}"
+                                                   target="_blank">{{ $resource->title }}</a>
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($top10DownloadedResource->downloads_count) }}
+                                                    {{ number_format($resource->downloads_count) }}
                                                 </span>
                                             </div>
                                         </div>
                                     @empty
-                                        <h2 class="alert alert-danger">not available</h2>
+                                        <h2 class="alert alert-danger">N/A</h2>
                                     @endforelse
 
                                 </div>
@@ -148,20 +149,21 @@
                                 </div>
                                 <div class="card-body text-secondary p-2">
 
-                                    @forelse ($top10FavoriteResources as $top10FavoriteResource)
+                                    @forelse ($top10FavoriteResources as $resource)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
-                                                {{ $top10FavoriteResource->title }}
+                                                <a href="{{ URL::to('resource/' . $resource->id) }}"
+                                                   target="_blank">{{ $resource->title }}</a>
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($top10FavoriteResource->resource_favorites_count) }}
+                                                    {{ number_format($resource->resource_favorites_count) }}
                                                 </span>
                                             </div>
                                         </div>
                                     @empty
-                                        <h2 class="alert alert-danger">not available</h2>
+                                        <h2 class="alert alert-danger">N/A</h2>
                                     @endforelse
 
                                 </div>
@@ -183,21 +185,22 @@
                                 </div>
                                 <div class="card-body text-secondary p-2">
 
-                                    @forelse ($top10DownloadedResourcesByFileSizes as $top10DownloadedResourcesByFileSize)
+                                    @forelse ($top10DownloadedResourcesByFileSizes as $resource)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
-                                                {{ $top10DownloadedResourcesByFileSize->title }}
+                                                <a href="{{ URL::to('resource/' . $resource->id) }}"
+                                                   target="_blank">{{ $resource->title }}</a>
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($top10DownloadedResourcesByFileSize->file_size / (1024 * 1024 * 1024), 2) }}
-                                                    GB
+                                                    {{ number_format($resource->file_size / (1024 * 1024), 2) }}
+                                                    MB
                                                 </span>
                                             </div>
                                         </div>
                                     @empty
-                                        <h2 class="alert alert-danger">not available</h2>
+                                        <h2 class="alert alert-danger">N/A</h2>
                                     @endforelse
 
                                 </div>
@@ -241,20 +244,20 @@
                                 </div>
                                 <div class="card-body text-secondary p-2">
 
-                                    @forelse ($top10Authors as $top10Author)
+                                    @forelse ($top10Authors as $author)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
-                                                {{ $top10Author->name }}
+                                                {{ $author->name ?  : '<no author>' }}
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($top10Author->resource_count) }}
+                                                    {{ number_format($author->resource_count) }}
                                                 </span>
                                             </div>
                                         </div>
                                     @empty
-                                        <h2 class="alert alert-danger">not available</h2>
+                                        <h2 class="alert alert-danger">N/A</h2>
                                     @endforelse
 
                                 </div>
@@ -266,7 +269,7 @@
                             <div class="card border-secondary mb-3">
                                 <div class="card-header d-flex justify-content-between">
                                     <div>
-                                        Top 10 publisher
+                                        Top 10 publishers
                                     </div>
                                     <div class="display-inline-block text-right">
                                         <span class="fa fa-calendar"></span>
@@ -275,20 +278,25 @@
                                 </div>
                                 <div class="card-body text-secondary p-2">
 
-                                    @forelse ($top10Publishers as $top10Publisher)
+                                    @forelse ($top10Publishers as $publisher)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
-                                                {{ $top10Publisher->name }}
+                                                @if ($publisher->name)
+                                                    <a href="{{ URL::route('resourceList', ['publisher' => $publisher->id]) }}"
+                                                       target="_blank">{{ $publisher->name }}</a>
+                                                @else
+                                                    <no publisher>
+                                                @endif
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($top10Publisher->resource_count) }}
+                                                    {{ number_format($publisher->resource_count) }}
                                                 </span>
                                             </div>
                                         </div>
                                     @empty
-                                        <h2 class="alert alert-danger">not available</h2>
+                                        <h2 class="alert alert-danger">N/A</h2>
                                     @endforelse
 
                                 </div>

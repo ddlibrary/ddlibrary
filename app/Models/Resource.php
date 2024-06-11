@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Config;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +18,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static find($resourceId)
  * @method static findOrFail($resourceId)
  * @method static published()
- * @method static select(string $string)
  */
 class Resource extends Model
 {
