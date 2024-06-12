@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRoleEnum;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -25,13 +26,15 @@ class UserAnalyticsController extends Controller
 
     private function getTotalUsersBasedOnRole($request): Collection
     {
-        return Role::withCount([
-            'users' => function ($query) use ($request) {
-                if ($request->date_from && $request->date_to) {
-                    $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
-                }
-            },
-        ])->get();
+        return Role::whereNotIn('id', [UserRoleEnum::AnonymousUser, UserRoleEnum::AuthenticatedUser])
+            ->withCount([
+                'users' => function ($query) use ($request) {
+                    if ($request->date_from && $request->date_to) {
+                        $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
+                    }
+                },
+            ])
+            ->get();
     }
 
     private function getTotalUsersBasedOnGender($request): Collection
