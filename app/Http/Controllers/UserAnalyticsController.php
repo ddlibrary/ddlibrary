@@ -17,9 +17,9 @@ class UserAnalyticsController extends Controller
         $top10ActiveUsers = $this->getTop10ActiveUsers($request);
         $totalRegisteredUsers = $this->getTotalRegisteredUsers($request);
         $totalUsersBaseOnGenders = $this->getTotalUsersBaseOnGender($request);
-        $totalUsers = $this->getTotalUsersBaseOnRegistrationSource($request);
-        $totalGoogleUsers = $this->getTotalUsersBaseOnRegistrationSource($request, 'google');
-        $totalFacebookUsers = $this->getTotalUsersBaseOnRegistrationSource($request, 'facebook');
+        $totalUsers = $this->getTotalUsersBasedOnRegistrationSource($request);
+        $totalGoogleUsers = $this->getTotalUsersBasedOnRegistrationSource($request, 'google');
+        $totalFacebookUsers = $this->getTotalUsersBasedOnRegistrationSource($request, 'facebook');
 
         return view('admin.analytics.users.index', compact(['roles', 'totalUsersBaseOnGenders', 'totalRegisteredUsers', 'totalUsers', 'totalGoogleUsers', 'totalFacebookUsers', 'top10ActiveUsers']));
     }
@@ -53,7 +53,7 @@ class UserAnalyticsController extends Controller
         })->count();
     }
 
-    private function getTotalUsersBaseOnRegistrationSource($request, $providerName = null): float
+    private function getTotalUsersBasedOnRegistrationSource($request, $providerName = null): float
     {
         $query = User::query()
             ->when($providerName, function ($query, $providerName) {
