@@ -103,15 +103,15 @@
                                 <div class="card-header">Top 10 active users </div>
                                 <div class="card-body text-secondary p-2">
                                     <div class="card-text">
-                                        @forelse ($top10ActiveUsers as $top10ActiveUser)
+                                        @forelse ($top10ActiveUsers as $user)
                                             <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                                 <div class="p-1 text-capitalize">
                                                     {{ $loop->iteration }}.
-                                                    {{ $top10ActiveUser->first_name }} {{ $top10ActiveUser->last_name }}
+                                                    {{ $user->first_name }} {{ $user->last_name }}
                                                 </div>
                                                 <div class="p-1">
                                                     <span class="badge badge-info">
-                                                        {{ number_format($top10ActiveUser->activity_count) }}
+                                                        {{ number_format($user->activity_count) }}
                                                     </span>
                                                 </div>
                                             </div>
