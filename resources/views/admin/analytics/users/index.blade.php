@@ -97,10 +97,10 @@
                             </div>
                         </div>
 
-                        {{-- List the total admins/managers/translators.  --}}
+                        {{-- Total users based on their roles  --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">List the total admins/managers/translators. </div>
+                                <div class="card-header">Total users based on their roles </div>
                                 <div class="card-body text-secondary p-2">
                                     <div class="card-text">
                                         @foreach ($roles as $role)
