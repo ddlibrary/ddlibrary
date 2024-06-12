@@ -16,7 +16,7 @@ class UserAnalyticsController extends Controller
         $roles = $this->getTotalUsersBasedOnRole($request);
         $top10ActiveUsers = $this->getTop10ActiveUsers($request);
         $totalRegisteredUsers = $this->getTotalRegisteredUsers($request);
-        $totalUsersBaseOnGenders = $this->getTotalUsersBaseOnGender($request);
+        $totalUsersBaseOnGenders = $this->getTotalUsersBasedOnGender($request);
         $totalUsers = $this->getTotalUsersBasedOnRegistrationSource($request);
         $totalGoogleUsers = $this->getTotalUsersBasedOnRegistrationSource($request, 'google');
         $totalFacebookUsers = $this->getTotalUsersBasedOnRegistrationSource($request, 'facebook');
@@ -35,7 +35,7 @@ class UserAnalyticsController extends Controller
         ])->get();
     }
 
-    private function getTotalUsersBaseOnGender($request): Collection
+    private function getTotalUsersBasedOnGender($request): Collection
     {
         return User::select(['user_profiles.gender', DB::raw('COUNT(users.id) as users_count')])
             ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
