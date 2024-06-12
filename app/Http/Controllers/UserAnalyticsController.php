@@ -14,14 +14,13 @@ class UserAnalyticsController extends Controller
     public function index(Request $request): View
     {
         $roles = $this->getTotalUsersBasedOnRole($request);
-        $top10ActiveUsers = $this->getTop10ActiveUsers($request);
         $totalRegisteredUsers = $this->getTotalRegisteredUsers($request);
         $totalUsersBaseOnGenders = $this->getTotalUsersBasedOnGender($request);
         $totalUsers = $this->getTotalUsersBasedOnRegistrationSource($request);
         $totalGoogleUsers = $this->getTotalUsersBasedOnRegistrationSource($request, 'google');
         $totalFacebookUsers = $this->getTotalUsersBasedOnRegistrationSource($request, 'facebook');
 
-        return view('admin.analytics.users.index', compact(['roles', 'totalUsersBaseOnGenders', 'totalRegisteredUsers', 'totalUsers', 'totalGoogleUsers', 'totalFacebookUsers', 'top10ActiveUsers']));
+        return view('admin.analytics.users.index', compact(['roles', 'totalUsersBaseOnGenders', 'totalRegisteredUsers', 'totalUsers', 'totalGoogleUsers', 'totalFacebookUsers']));
     }
 
     private function getTotalUsersBasedOnRole($request): Collection
@@ -67,16 +66,5 @@ class UserAnalyticsController extends Controller
             });
 
         return $query->count();
-    }
-
-    private function getTop10ActiveUsers($request): object
-    {
-        $query = DB::table('activity_log')->select('user_profiles.first_name', 'user_profiles.last_name', DB::raw('count(*) as activity_count'))->join('users', 'users.id', '=', 'activity_log.causer_id')->join('user_profiles', 'user_profiles.user_id', '=', 'users.id')->groupBy('users.id', 'user_profiles.last_name', 'user_profiles.first_name')->orderByDesc('activity_count')->limit(10);
-
-        if ($request->date_from && $request->date_to) {
-            $query->whereBetween('activity_log.created_at', [$request->date_from, $request->date_to]);
-        }
-
-        return $query->get();
     }
 }
