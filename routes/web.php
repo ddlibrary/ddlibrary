@@ -244,11 +244,6 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('/admin/analytics', [AnalyticsController::class, 'index'])->middleware('admin');
     Route::post('/admin/analytics', [AnalyticsController::class, 'show'])->name('analytics')->middleware('admin');
 
-    // Library Analytics
-    Route::prefix('admin')->middleware('admin')->controller(ResourceAnalyticsController::class)->group(function(){
-        Route::get('resource-analytics', 'index');
-    });
-
     //admin, glossary
     Route::get('admin/glossary_subjects', [GlossarySubjectController::class, 'index'])->middleware('admin')->name('glossary_subjects_list');
     Route::get('admin/glossary_subjects/create', [GlossarySubjectController::class, 'create'])->middleware('admin');
@@ -288,8 +283,11 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::post('', 'store')->name('subscribe.store');
     });
 
-    // User Analytics
-    Route::get('admin/user-analytics',  [UserAnalyticsController::class, 'index'])->middleware('admin');
+    // Analytics
+    Route::prefix('admin/analytics')->middleware('admin')->group(function(){
+        Route::get('resources', [ResourceAnalyticsController::class, 'index']);
+        Route::get('users',  [UserAnalyticsController::class, 'index']);
+    });
 
 });
 Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {
