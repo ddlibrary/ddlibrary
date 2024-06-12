@@ -13,7 +13,7 @@ class UserAnalyticsController extends Controller
 {
     public function index(Request $request): View
     {
-        $roles = $this->getTotalUsersBaseOnRole($request);
+        $roles = $this->getTotalUsersBasedOnRole($request);
         $top10ActiveUsers = $this->getTop10ActiveUsers($request);
         $totalRegisteredUsers = $this->getTotalRegisteredUsers($request);
         $totalUsersBaseOnGenders = $this->getTotalUsersBaseOnGender($request);
@@ -24,7 +24,7 @@ class UserAnalyticsController extends Controller
         return view('admin.analytics.users.index', compact(['roles', 'totalUsersBaseOnGenders', 'totalRegisteredUsers', 'totalUsers', 'totalGoogleUsers', 'totalFacebookUsers', 'top10ActiveUsers']));
     }
 
-    private function getTotalUsersBaseOnRole($request): Collection
+    private function getTotalUsersBasedOnRole($request): Collection
     {
         return Role::withCount([
             'users' => function ($query) use ($request) {
