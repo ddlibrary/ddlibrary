@@ -7,11 +7,11 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-2">
-                            <label>From Date</label>
+                            <label>From <span class="fa fa-calendar"></span></label>
                             <input type="date" value="{{ request()->date_from }}" class="form-control" name="date_from">
                         </div>
                         <div class="col-md-2">
-                            <label>To Date</label>
+                            <label>To <span class="fa fa-calendar"></span></label>
                             <input type="date" value="{{ request()->date_to }}" class="form-control" name="date_to">
                         </div>
 
