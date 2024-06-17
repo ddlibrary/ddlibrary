@@ -18,8 +18,9 @@
                             <label>Language <span class="fa fa-language"></span></label>
                             <select class="form-control" name="language">
                                 <option value="">...</option>
-                                @foreach($languages as $locale => $properties)
-                                    <option value="{{ $locale }}" @selected($locale==request()->language)>{{ $properties['name'] }}</option>
+                                @foreach ($languages as $locale => $properties)
+                                    <option value="{{ $locale }}" @selected($locale == request()->language)>
+                                        {{ $properties['name'] }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -43,14 +44,14 @@
                                 <div class="card-header">Top 10 viewed resources</div>
                                 <div class="card-body text-secondary p-2">
                                     <div class="card-text">
-                                        @foreach ($top10ViewedResources as $top10ViewedResource)
+                                        @foreach ($top10ViewedResources as $resource)
                                             <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                                 <div class="p-1 text-capitalize">
-                                                    {{ $top10ViewedResource->title}}
+                                                    {{ $resource->title }}
                                                 </div>
                                                 <div class="p-1">
                                                     <span class="badge badge-info">
-                                                        {{ number_format($top10ViewedResource->views_count) }}
+                                                        {{ number_format($resource->views_count) }}
                                                     </span>
                                                 </div>
                                             </div>
