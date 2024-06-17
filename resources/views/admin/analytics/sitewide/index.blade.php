@@ -9,20 +9,20 @@
 
                         {{-- From Date --}}
                         <div class="col-md-2">
-                            <label>From <span class="fa fa-calendar"></span></label>
-                            <input type="date" value="{{ request()->date_from }}" class="form-control" name="date_from">
+                            <label for="from-date">From <span class="fa fa-calendar"></span></label>
+                            <input type="date" id="from-date" value="{{ request()->date_from }}" class="form-control" name="date_from">
                         </div>
 
                         {{-- To Date --}}
                         <div class="col-md-2">
-                            <label>To <span class="fa fa-calendar"></span></label>
-                            <input type="date" value="{{ request()->date_to }}" class="form-control" name="date_to">
+                            <label for="to-date">To <span class="fa fa-calendar"></span></label>
+                            <input type="date" id="to-date" value="{{ request()->date_to }}" class="form-control" name="date_to">
                         </div>
 
                         {{-- Language --}}
                         <div class="col-md-2">
-                            <label>Language <span class="fa fa-language"></span></label>
-                            <select class="form-control" name="language">
+                            <label for="language">Language <span class="fa fa-language"></span></label>
+                            <select class="form-control" name="language" id="language">
                                 <option value="">...</option>
                                 @foreach ($languages as $locale => $properties)
                                     <option value="{{ $locale }}" @selected($locale == request()->language)>
