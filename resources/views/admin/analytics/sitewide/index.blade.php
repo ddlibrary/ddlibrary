@@ -74,7 +74,7 @@
                         {{-- Total views base on user types  --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Total views base on user types </div>
+                                <div class="card-header">Total views based on user types </div>
                                 <div class="card-body text-secondary p-2">
                                     <div class="card-text">
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
