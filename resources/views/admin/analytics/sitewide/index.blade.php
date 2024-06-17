@@ -15,7 +15,7 @@
                             <input type="date" value="{{ request()->date_to }}" class="form-control" name="date_to">
                         </div>
                         <div class="col-md-2">
-                            <label>Language</label>
+                            <label>Language <span class="fa fa-language"></span></label>
                             <select class="form-control" name="language">
                                 <option value="">...</option>
                                 @foreach($languages as $locale => $properties)
