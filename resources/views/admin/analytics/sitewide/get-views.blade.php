@@ -7,11 +7,11 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-2">
-                            <label>From Date</label>
+                            <label>From</label>
                             <input type="date" value="{{ request()->date_from }}" class="form-control" name="date_from">
                         </div>
                         <div class="col-md-2">
-                            <label>To Date</label>
+                            <label>To</label>
                             <input type="date" value="{{ request()->date_to }}" class="form-control" name="date_to">
                         </div>
                         <div class="col-md-2">
@@ -53,26 +53,30 @@
                             </thead>
                             <tbody>
                                 @foreach ($resourceViews as $resourceView)
-                                    
-                                <tr>
-                                    <td class="text-center">{{ (($resourceViews->currentPage() - 1) * $resourceViews->perPage())+$loop->iteration }}</td>
-                                    <td class="text-left">
-                                        <a href="{{ URL::to($resourceView->resource->language.'/'.'resource/'.$resourceView->resource->id) }}">
-                                            {{ $resourceView->resource->title}}</td>
+                                    <tr>
+                                        <td class="text-center">
+                                            {{ ($resourceViews->currentPage() - 1) * $resourceViews->perPage() + $loop->iteration }}
+                                        </td>
+                                        <td class="text-left">
+                                            <a
+                                                href="{{ URL::to($resourceView->resource->language . '/' . 'resource/' . $resourceView->resource->id) }}">
+                                                {{ $resourceView->resource->title }}
+                                        </td>
                                         </a>
-                                    <td class="text-center">{{ $resourceView->resource->language}}</td>
-                                    <td class="text-center">{{ $resourceView->ip}}</td>
-                                    <td class="text-center">{{ $resourceView->browser_name}} {{ $resourceView->browser_version}}</td>
-                                    <td class="text-center">{{ $resourceView->platform}}</td>
-                                    <td class="text-center">{{ $resourceView->user?->profile?->first_name }} {{ $resourceView->user?->profile?->last_name }}</td>
-                                    <td class="text-center">{{ $resourceView->created_at->diffForHumans() }}</td>
-                                </tr>
+                                        <td class="text-center">{{ $resourceView->resource->language }}</td>
+                                        <td class="text-center">{{ $resourceView->ip }}</td>
+                                        <td class="text-center">{{ $resourceView->browser_name }}
+                                            {{ $resourceView->browser_version }}</td>
+                                        <td class="text-center">{{ $resourceView->platform }}</td>
+                                        <td class="text-center">{{ $resourceView->user?->profile?->first_name }}
+                                            {{ $resourceView->user?->profile?->last_name }}</td>
+                                        <td class="text-center">{{ $resourceView->created_at->diffForHumans() }}</td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $resourceViews->links()}}
+                        {{ $resourceViews->links() }}
                     </div>
-
                 </div>
             </div>
         </div>
