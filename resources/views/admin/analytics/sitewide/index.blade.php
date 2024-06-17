@@ -10,13 +10,15 @@
                         {{-- From Date --}}
                         <div class="col-md-2">
                             <label for="from-date">From <span class="fa fa-calendar"></span></label>
-                            <input type="date" id="from-date" value="{{ request()->date_from }}" class="form-control" name="date_from">
+                            <input type="date" id="from-date" value="{{ request()->date_from }}" class="form-control"
+                                name="date_from">
                         </div>
 
                         {{-- To Date --}}
                         <div class="col-md-2">
                             <label for="to-date">To <span class="fa fa-calendar"></span></label>
-                            <input type="date" id="to-date" value="{{ request()->date_to }}" class="form-control" name="date_to">
+                            <input type="date" id="to-date" value="{{ request()->date_to }}" class="form-control"
+                                name="date_to">
                         </div>
 
                         {{-- Language --}}
@@ -53,7 +55,9 @@
                                         @foreach ($top10ViewedResources as $resource)
                                             <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                                 <div class="p-1 text-capitalize">
-                                                    {{ $resource->title }}
+                                                    <a href="{{ URL::to('resource/' . $resource->id) }}" target="_blank">
+                                                        {{ $resource->title ? $resource->title : 'no resource' }}
+                                                    </a>
                                                 </div>
                                                 <div class="p-1">
                                                     <span class="badge badge-info">
