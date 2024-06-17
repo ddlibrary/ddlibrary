@@ -6,14 +6,20 @@
                 <form method="get" action="{{ url('admin/reports/sitewide') }}">
                     @csrf
                     <div class="row">
+
+                        {{-- From Date --}}
                         <div class="col-md-2">
                             <label>From <span class="fa fa-calendar"></span></label>
                             <input type="date" value="{{ request()->date_from }}" class="form-control" name="date_from">
                         </div>
+
+                        {{-- To Date --}}
                         <div class="col-md-2">
                             <label>To <span class="fa fa-calendar"></span></label>
                             <input type="date" value="{{ request()->date_to }}" class="form-control" name="date_to">
                         </div>
+
+                        {{-- Language --}}
                         <div class="col-md-2">
                             <label>Language <span class="fa fa-language"></span></label>
                             <select class="form-control" name="language">
