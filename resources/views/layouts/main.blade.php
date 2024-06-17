@@ -81,7 +81,7 @@
     <main>
 
         <?php
-        $lang = Config::get('app.locale');
+        $lang = config('app.locale');
         $questions_count = \App\Models\SurveyQuestion::getPublishedQuestions($lang)->count();
         ?>
         @if ($questions_count != 0)

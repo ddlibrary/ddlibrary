@@ -3,7 +3,7 @@
     <div class="content-wrapper">
         <div class="container-fluid">
             <div class="pb-4">
-                <form method="get" action="{{ url('admin/sitewide-analytics') }}">
+                <form method="get" action="{{ url('admin/analytics/sitewides') }}">
                     @csrf
                     <div class="row">
                         <div class="col-md-2">

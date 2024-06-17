@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Config;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +18,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static find($resourceId)
  * @method static findOrFail($resourceId)
  * @method static published()
- * @method static select(string $string)
  */
 class Resource extends Model
 {
@@ -188,7 +186,7 @@ class Resource extends Model
         return DB::table('resources AS rs')
             ->select('rs.id', 'rs.language', 'rs.title', 'rs.abstract', 'rs.user_id', 'users.username AS author', 'rs.status', 'rs.updated_at')
             ->join('users', 'users.id', '=', 'rs.user_id')
-            ->where('rs.language', Config::get('app.locale'))
+            ->where('rs.language', config('app.locale'))
             ->where('rs.status', 1)
             ->orderBy('rs.created', 'desc')
             ->groupBy('rs.id', 'rs.language', 'rs.title', 'rs.abstract', 'rs.user_id', 'users.username', 'rs.status', 'rs.updated_at', 'rs.created_at')
@@ -219,7 +217,7 @@ class Resource extends Model
             ->select('ttd.id', 'ttd.name', 'tth.parent', 'ttd.tnid')
             ->leftJoin('taxonomy_term_hierarchy AS tth', 'tth.tid', '=', 'ttd.id')
             ->where('vid', $vid)
-            ->where('language', Config::get('app.locale'))
+            ->where('language', config('app.locale'))
             ->orderBy('ttd.name')
             ->orderBy('ttd.weight', 'desc')
             ->get();
@@ -314,7 +312,7 @@ class Resource extends Model
                     ->where('rpub.tid', $request['publisher'])
                     ->where('rs.status', 1);
             })
-            ->where('rs.language', Config::get('app.locale'))
+            ->where('rs.language', config('app.locale'))
             ->where('rs.status', 1)
             ->where(function ($query) {
                 $query->where('rs.id', '>=', 11479)->orWhere('rs.id', '<', 10378); // TODO: remove after restoration
@@ -396,7 +394,7 @@ class Resource extends Model
 
     public function subjectIconsAndTotal($lang = ''): Collection
     {
-        $lang = ! $lang ? Config::get('app.locale') : $lang;
+        $lang = ! $lang ? config('app.locale') : $lang;
 
         return DB::table('resource_subject_areas AS sarea')
             ->select('sticons.file_name', 'ttd.name', 'ttd.id', 'sarea.tid AS subject_area')
@@ -417,13 +415,13 @@ class Resource extends Model
             ->join('taxonomy_term_hierarchy AS tth', 'tth.tid', '=', 'rsa.tid')
             ->where('tth.parent', $sId)
             ->where('rs.status', 1)
-            ->where('rs.language', Config::get('app.locale'))
+            ->where('rs.language', config('app.locale'))
             ->first();
     }
 
     public function featuredCollections($lang = ''): Collection
     {
-        $lang = ! $lang ? Config::get('app.locale') : $lang;
+        $lang = ! $lang ? config('app.locale') : $lang;
 
         return DB::table('featured_collections AS fcid')
             ->select('fcid.id', 'ttd.name', 'fcid.icon', 'ttd.language', 'fu.url', 'frt.type_id', 'frs.subject_id', 'frls.level_id')
@@ -472,5 +470,18 @@ class Resource extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()->logOnly(['title', 'created_at']);
+    }
+
+    public function downloads(){
+        return $this->hasMany(DownloadCount::class);
+    }
+
+    public function resourceViews(){
+        return $this->hasMany(ResourceView::class);
+    }
+
+    public function resourceFavorites(): HasMany
+    {
+        return $this->hasMany(ResourceFavorite::class);
     }
 }

@@ -37,6 +37,6 @@ class DownloadCount extends Model
 
     public function file(): BelongsTo
     {
-        return $this->belongsTo(ResourceAttachment::class);
+        return $this->belongsTo(ResourceAttachment::class, 'file_id');
     }
 }

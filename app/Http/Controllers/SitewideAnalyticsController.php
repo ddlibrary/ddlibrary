@@ -6,9 +6,7 @@ use App\Models\Resource;
 use App\Models\ResourceView;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-use phpDocumentor\Reflection\Types\Boolean;
 
 class SitewideAnalyticsController extends Controller
 {

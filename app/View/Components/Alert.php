@@ -25,8 +25,7 @@ class Alert extends Component
     /**
      * Create a new component instance.
      *
-     * @param  string  $level
-     * @param  mixed   $message
+     * @param  mixed  $message
      */
     public function __construct(string $level = 'success', $message = '')
     {

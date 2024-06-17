@@ -44,20 +44,6 @@ return [
             'throw' => false,
         ],
 
-        'private' => [
-            'driver' => 'local',
-            'root' => storage_path('app/private/resources'),
-            'url' => base_path().'/storage/app/private/resources',
-            'visibility' => 'private',
-        ],
-
-        'videos' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public/videos'),
-            'url' => base_path().'/storage/app/public/videos',
-            'visibility' => 'public',
-        ],
-
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -65,7 +51,6 @@ return [
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
-            'visibility' => 'public',
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
