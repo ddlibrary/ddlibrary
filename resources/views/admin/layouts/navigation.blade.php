@@ -95,7 +95,7 @@
         <a class="collapse-item" href="{{ URL::to('admin/reports/downloads') }}">Downloads</a>
         <a class="collapse-item" href="{{ URL::to('admin/reports/downloads') }}">Downloads</a>
         <a class="collapse-item" href="{{ URL::to('admin/reports/resources') }}">Resource Analytics</a>
-        <a class="collapse-item" href="{{ URL::to('admin/reports/sitewide') }}">Resource View</a>
+        <a class="collapse-item" href="{{ URL::to('admin/analytics/reports/sitewide') }}">Resource View</a>
         <div class="collapse-divider"></div>
         <h6 class="collapse-header">Analytics</h6>
         <a class="collapse-item" href="{{ URL::to('admin/analytics/sitewides') }}">Sitewide Analytics</a>
