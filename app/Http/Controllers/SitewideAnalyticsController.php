@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Resource;
 use App\Models\ResourceView;
+use App\Traits\LanguageTrait;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class SitewideAnalyticsController extends Controller
 {
+    use LanguageTrait;
+
     public function index(Request $request): View
     {
-        $languages = \LaravelLocalization::getSupportedLocales();
+        $languages = $this->getLanguages();
         $top10ViewedResources = $this->getTop10ViewedResources($request);
         $totalViews = $this->getTotalViews($request);
         $totalRegisteredUsersViews = $this->getTotalViews($request, 'no');
@@ -61,7 +64,7 @@ class SitewideAnalyticsController extends Controller
 
     public function viewResource(Request $request)
     {
-        $languages = \LaravelLocalization::getSupportedLocales();
+        $languages = $this->getLanguages();
         $resourceViews = ResourceView::with(['resource:id,title,language', 'user:id', 'user.profile:id,user_id,first_name,last_name'])
             ->when($request->language, function ($query) use ($request) {
                 $query->whereHas('resource', function ($query) use ($request) {
