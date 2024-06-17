@@ -79,7 +79,7 @@ class UserAnalyticsController extends Controller
             ->join('user_profiles', 'user_profiles.user_id', '=', 'users.id')
             ->join('user_roles', function ($join) {
                 $join->on('user_roles.user_id', '=', 'users.id')
-                    ->whereNotIn('user_roles.id', [UserRoleEnum::SiteAdministrator, UserRoleEnum::LibraryManager, UserRoleEnum::LibraryTeacher]);
+                    ->whereNotIn('user_roles.role_id', [UserRoleEnum::SiteAdministrator, UserRoleEnum::LibraryManager, UserRoleEnum::LibraryTeacher]);
             })
             ->groupBy('users.id', 'user_profiles.last_name', 'user_profiles.first_name')
             ->orderByDesc('activity_count')
