@@ -673,8 +673,12 @@ class ResourceController extends Controller
             Mail::to(Setting::find(1)->website_email)->send(new NewComment($comment));
         }
 
-        return redirect('resource/'.$resourceId)
-            ->with('success', 'Your comment is successfully registered. We will publish it after review.');
+        Session::flash('alert', [
+            'message' => __('Your comment is successfully registered. We will publish it after review.'),
+            'level' => 'success',
+        ]);
+
+        return redirect('resource/'.$resourceId);
     }
 
     public function resourceViewCounter(Request $request, $resourceId)
@@ -1348,7 +1352,7 @@ class ResourceController extends Controller
     {
         $secret = config('s3.config.secret');
         $decrypted_key = decrypt($key);
-        $received_time = $decrypted_key / $secret;
+        $received_time = $decrypted_key / ($secret ? $secret : 1);
         $current_time = time();
 
         if ($current_time - $received_time < 300) { // 300 - tolerance of 5 minutes

@@ -268,4 +268,9 @@ class User extends Authenticatable implements MustVerifyEmail
             ->where('user_roles.role_id', 3)
             ->first();
     }
+
+    public function getAvatarAttribute()
+    {
+        return $this->avatar ?? asset('storage/files/placeholder_image.png');
+    }
 }
