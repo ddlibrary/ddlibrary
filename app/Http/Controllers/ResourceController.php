@@ -26,6 +26,7 @@ use App\Models\ResourceTranslator;
 use App\Models\ResourceView;
 use App\Models\Setting;
 use App\Models\TaxonomyTerm;
+use App\Traits\PageVisitTrait;
 use Carbon\Carbon;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Foundation\Application;
@@ -45,6 +46,7 @@ use Throwable;
 
 class ResourceController extends Controller
 {
+    use PageVisitTrait;
     /**
      * Create a new controller instance.
      *
@@ -87,6 +89,7 @@ class ResourceController extends Controller
     {
         //setting the search session empty
         DDLClearSession();
+        $this->visit($request, 'Resource List');
 
         $myResources = new Resource();
 
@@ -152,8 +155,6 @@ class ResourceController extends Controller
 
     public function viewPublicResource(Request $request, $resourceId): View|Factory|Redirector|RedirectResponse|Application
     {
-        if (($resourceId >= 10378 and Auth::check()) or $resourceId < 10378 or $resourceId >= 11479) {  // TODO: remove after restoration
-            //setting the search session empty
             DDLClearSession();
             $myResources = new Resource();
 
@@ -162,6 +163,8 @@ class ResourceController extends Controller
             if ($resource->status == 0 && ! (isAdmin() || isLibraryManager())) {  // We don't want anyone else to access unpublished resources
                 abort(403);
             }
+
+            $this->visit($request, $resource->title);
 
             $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
             $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
@@ -182,9 +185,6 @@ class ResourceController extends Controller
                 'comments',
                 'translations'
             ));
-        } else {
-            return redirect('/login');
-        }
     }
 
     public function createStepOne(Request $request): Factory|View|Application
