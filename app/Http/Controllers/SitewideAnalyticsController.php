@@ -16,14 +16,14 @@ class SitewideAnalyticsController extends Controller
     public function index(Request $request): View
     {
         $languages = $this->getLanguages();
-        $top10ViewedResources = $this->getTop10ViewedResources($request);
+        $top10ViewedPages = $this->getTop10ViewedPages($request);
         $totalViews = $this->getTotalViews($request);
         $totalRegisteredUsersViews = $this->getTotalViews($request, 'no');
         $totalGuestViews = $this->getTotalViews($request, 'yes');
-        return view('admin.analytics.sitewide.index', compact('languages', 'top10ViewedResources', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews'));
+        return view('admin.analytics.sitewide.index', compact('languages', 'top10ViewedPages', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews'));
     }
 
-    private function getTop10ViewedResources($request): Collection
+    private function getTop10ViewedPages($request): Collection
     {
         return Resource::select(['id', 'title'])
             ->withCount([
