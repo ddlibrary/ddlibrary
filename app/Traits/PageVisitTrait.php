@@ -27,7 +27,7 @@ trait PageVisitTrait
             $platform = Platform::firstOrCreate(['name' => $agent->platform()]);
             $browser = Browser::firstOrCreate(['name' => $agent->browser    ()]);
 
-            PageVisit::create([
+            PageVisit::insert([
                 'title' => $title,
                 'page_url' => $request->url(),
                 'user_agent' => $request->userAgent(),
@@ -40,7 +40,9 @@ trait PageVisitTrait
                 'device_id' => $device->id,
                 'platform_id' => $platform->id,
                 'user_id' => $request->user()?->id,
-                'gender' => $request->user()?->profile?->gender
+                'gender' => $request->user()?->profile?->gender,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
     }
