@@ -2,81 +2,132 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Resource;
+use App\Enums\LanguageEnum;
+use App\Models\Browser;
+use App\Models\Device;
+use App\Models\PageType;
+use App\Models\PageVisit;
+use App\Models\Platform;
 use App\Models\ResourceView;
+use App\Traits\GenderTrait;
 use App\Traits\LanguageTrait;
+use App\Traits\PageVisitConditionTrait;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class SitewideAnalyticsController extends Controller
 {
-    use LanguageTrait;
+    use LanguageTrait, GenderTrait, PageVisitConditionTrait;
 
     public function index(Request $request): View
     {
         $languages = $this->getLanguages();
+        $genders = $this->genders();
+        $devices = Device::all(['id', 'name']);
+        $pageTypes = PageType::all(['id', 'name']);
+        $browsers = Browser::all(['id', 'name']);
+        $platforms = Platform::all(['id', 'name']);
+
         $top10ViewedPages = $this->getTop10ViewedPages($request);
         $totalViews = $this->getTotalViews($request);
         $totalRegisteredUsersViews = $this->getTotalViews($request, 'no');
+
+        $platformCounts = Platform::select(['id', 'name'])
+            ->withCount([
+                'pageVisits' => function ($query) use ($request) {
+                    return $this->filterPageVisits($query, $request);
+                },
+            ])
+            ->get();
+
+        $browserCounts = Browser::select(['id', 'name'])
+            ->withCount([
+                'pageVisits' => function ($query) use ($request) {
+                    return $this->filterPageVisits($query, $request);
+                },
+            ])
+            ->get();
+
+        $deviceCounts = Device::select(['id', 'name'])
+            ->withCount([
+                'pageVisits' => function ($query) use ($request) {
+                    return $this->filterPageVisits($query, $request);
+                },
+            ])
+            ->get();
+
+        $pageTypeCounts = PageType::select(['id', 'name'])
+            ->withCount([
+                'pageVisits' => function ($query) use ($request) {
+                    return $this->filterPageVisits($query, $request);
+                },
+            ])
+            ->get();
+
         $totalGuestViews = $this->getTotalViews($request, 'yes');
-        return view('admin.analytics.sitewide.index', compact('languages', 'top10ViewedPages', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews'));
+        $totalViewBasedOnLanguage = $this->getTotalViewBasedOnLanguage($request);
+
+        return view('admin.analytics.sitewide.index', compact('languages', 'genders', 'pageTypes', 'devices', 'platforms', 'browsers', 'top10ViewedPages', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews', 'platformCounts', 'browserCounts', 'deviceCounts', 'pageTypeCounts', 'totalViewBasedOnLanguage'));
     }
 
     private function getTop10ViewedPages($request): Collection
     {
-        return Resource::select(['id', 'title'])
-            ->withCount([
-                'views' => function ($query) use ($request) {
-                    if ($request->date_from && $request->date_to) {
-                        return $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
-                    }
-                },
-            ])
-            ->when($request->language, function ($query) use ($request) {
-                return $query->whereLanguage($request->language);
-            })
-            ->orderBy('views_count', 'desc')
-            ->limit(10)
-            ->get();
+        $query = PageVisit::selectRaw('page_url, title, COUNT(*) AS visit_count')->groupBy('page_url', 'title')->orderByDesc('visit_count')->limit(10);
+
+        $query = $this->filterPageVisits($query, $request);
+
+        return $query->get();
     }
 
     private function getTotalViews($request, $isGuest = null): float
     {
-        $query = ResourceView::query();
-
-        if ($request->language) {
-            $query->whereHas('resource', function ($query) use ($request) {
-                $query->where('language', $request->language);
-            });
-        }
-
-        if ($request->date_from && $request->date_to) {
-            $query->whereBetween('resource_views.created_at', [$request->date_from, $request->date_to]);
-        }
+        $query = PageVisit::query();
 
         if ($isGuest) {
-            $query->where('resource_views.user_id', $isGuest == 'no' ? '>' : '=', 0);
+            if ($isGuest == 'yes') {
+                $query->whereNull('user_id');
+            } else {
+                $query->whereNotNull('user_id');
+            }
         }
 
+        $query = $this->filterPageVisits($query, $request);
+
         return $query->count();
+    }
+
+    private function getTotalViewBasedOnLanguage($request): Collection
+    {
+        $totalResources = PageVisit::where(function ($query) use ($request) {
+            return $this->filterPageVisits($query, $request);
+        })
+            ->groupBy('language')
+            ->select('language', DB::raw('count(*) as count'))
+            ->orderBy('count', 'desc')
+            ->get();
+
+        return $totalResources->map(function ($item) {
+            $item['language'] = LanguageEnum::tryFrom($item['language'])?->name ?? $item['language'];
+            return $item;
+        });
     }
 
     public function viewResource(Request $request)
     {
         $languages = $this->getLanguages();
-        $resourceViews = ResourceView::with(['resource:id,title,language', 'user:id', 'user.profile:id,user_id,first_name,last_name'])
-            ->when($request->language, function ($query) use ($request) {
-                $query->whereHas('resource', function ($query) use ($request) {
-                    $query->where('language', $request->language);
-                });
-            })
-            ->when($request->date_from && $request->date_to, function ($query) use ($request) {
-                $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
-            })
-            ->paginate()
+        $genders = $this->genders();
+        $devices = Device::all(['id', 'name']);
+        $pageTypes = PageType::all(['id', 'name']);
+        $browsers = Browser::all(['id', 'name']);
+        $platforms = Platform::all(['id', 'name']);
+
+        $query = PageVisit::query()->with(['platform:id,name', 'device:id,name', 'browser:id,name', 'user:id', 'user.profile:id,user_id,first_name,last_name']);
+        $query = $this->filterPageVisits($query, $request);   
+        $views = $query->paginate()
             ->appends($request->except(['page']));
 
-        return view('admin.analytics.sitewide.get-views', compact(['resourceViews', 'languages']));
+        return view('admin.analytics.sitewide.get-views', compact(['views', 'languages', 'genders', 'devices','pageType', 'browsers', 'platforms']));
     }
 }
