@@ -14,6 +14,7 @@
         "doctrine/dbal": "^3.8",
         "fakerphp/faker": "^1.23",
         "guzzlehttp/guzzle": "^7.2",
+        "jenssegers/agent": "^2.6",
         "laravel/framework": "^10.48",
         "laravel/helpers": "^1.7",
         "laravel/sanctum": "^3.3",

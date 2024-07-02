@@ -22,6 +22,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ResourceAnalyticsController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SitewideAnalyticsController;
 use App\Http\Controllers\StoryWeaverController;
 use App\Http\Controllers\SubscribeController;
 use App\Http\Controllers\SurveyAnswerController;
@@ -283,13 +284,19 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::post('', 'store')->name('subscribe.store');
     });
 
+    
     // Analytics
     Route::prefix('admin/analytics')->middleware('admin')->group(function(){
         Route::get('resources', [ResourceAnalyticsController::class, 'index']);
         Route::get('users',  [UserAnalyticsController::class, 'index']);
+        Route::controller(SitewideAnalyticsController::class)->group(function(){
+            Route::get('sitewides', 'index');
+            Route::get('reports/sitewide', 'viewResource');
+        });
     });
 
 });
+
 Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
+use App\Traits\PageVisitTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,7 @@ use Yajra\Datatables\Datatables;
 
 class NewsController extends Controller
 {
+    use PageVisitTrait;
     /**
      * Create a new controller instance.
      *
@@ -46,7 +48,7 @@ class NewsController extends Controller
             ->make(true);
     }
 
-    public function view($newsId): View
+    public function view(Request $request, $newsId): View
     {
         //setting the search session empty
         DDLClearSession();
@@ -54,6 +56,8 @@ class NewsController extends Controller
         $myNews = new News();
 
         $news = News::find($newsId);
+        $this->visit($request, $news->title);
+
         $translation_id = $news->tnid;
         if ($translation_id) {
             $translations = News::where('tnid', $translation_id)->get();
