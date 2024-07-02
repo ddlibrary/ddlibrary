@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\LanguageEnum;
+use App\Enums\TaxonomyVocabularyEnum;
 use App\Models\DownloadCount;
 use App\Models\Resource;
+use App\Models\ResourceSubjectArea;
+use App\Models\TaxonomyTerm;
 use App\Traits\GenderTrait;
 use App\Traits\LanguageTrait;
 use Illuminate\Database\Eloquent\Collection;
@@ -21,6 +24,19 @@ class ResourceAnalyticsController extends Controller
         $genders = $this->genders();
         $languages = $this->getLanguages();
 
+        // $subjectAreas = TaxonomyTerm::withCount('resources')->where('vid', TaxonomyVocabularyEnum::ResourceSubject)
+
+        // ->where('language', 'en')->orderByDesc('resources_count')->get();
+        $subjectAreas = TaxonomyTerm::selectRaw('taxonomy_term_data.*, COUNT(resource_subject_areas.tid) as resources_count')
+                ->join('resource_subject_areas', 'taxonomy_term_data.id', '=', 'resource_subject_areas.tid')
+                ->where('taxonomy_term_data.vid', TaxonomyVocabularyEnum::ResourceSubject)
+                ->where('taxonomy_term_data.language', $request->language?? 'en')
+                ->having('resources_count', '>', 0)
+                ->groupBy('taxonomy_term_data.id')
+                ->orderByDesc('resources_count')
+                ->get();
+
+
         $top10Authors = $this->getTop10AuthorsOrPublishers($request, 'resource_authors'); // Get top 10 authors
         $totalResources = $this->getTotalResourcesBasedOnLanguage($request); // Total Resources base on Language
 
@@ -30,7 +46,7 @@ class ResourceAnalyticsController extends Controller
         $top10DownloadedResourcesByFileSizes = $this->getTop10DownloadedResourcesByFileSize($request); // Get top 10 downloaded resources by file size
         $sumOfAllIndividualDownloadedFileSizes = $this->getSumOfAllIndividualDownloadedFileSizes(); // Sum of all individual downloaded file sizes
 
-        return view('admin.analytics.resource-analytics.index', compact(['genders', 'languages', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 'top10Authors', 'top10Publishers', 'top10DownloadedResources', 'top10DownloadedResourcesByFileSizes', 'top10FavoriteResources']));
+        return view('admin.analytics.resource-analytics.index', compact(['genders', 'languages', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 'top10Authors', 'top10Publishers', 'top10DownloadedResources', 'top10DownloadedResourcesByFileSizes', 'top10FavoriteResources', 'subjectAreas']));
     }
 
     private function getSumOfAllIndividualDownloadedFileSizes(): float
