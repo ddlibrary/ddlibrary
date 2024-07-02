@@ -24,13 +24,19 @@ class ResourceAnalyticsController extends Controller
         $genders = $this->genders();
         $languages = $this->getLanguages();
 
-        // $subjectAreas = TaxonomyTerm::withCount('resources')->where('vid', TaxonomyVocabularyEnum::ResourceSubject)
-
-        // ->where('language', 'en')->orderByDesc('resources_count')->get();
         $subjectAreas = TaxonomyTerm::selectRaw('taxonomy_term_data.*, COUNT(resource_subject_areas.tid) as resources_count')
                 ->join('resource_subject_areas', 'taxonomy_term_data.id', '=', 'resource_subject_areas.tid')
                 ->where('taxonomy_term_data.vid', TaxonomyVocabularyEnum::ResourceSubject)
-                ->where('taxonomy_term_data.language', $request->language?? 'en')
+                ->where('taxonomy_term_data.language', $request->language ?? 'en')
+                ->having('resources_count', '>', 0)
+                ->groupBy('taxonomy_term_data.id')
+                ->orderByDesc('resources_count')
+                ->get();
+
+        $resourceTypes = TaxonomyTerm::selectRaw('taxonomy_term_data.*, COUNT(resource_learning_resource_types.tid) as resources_count')
+                ->join('resource_learning_resource_types', 'taxonomy_term_data.id', '=', 'resource_learning_resource_types.tid')
+                ->where('taxonomy_term_data.vid', TaxonomyVocabularyEnum::ResourceType)
+                ->where('taxonomy_term_data.language', $request->language ?? 'en')
                 ->having('resources_count', '>', 0)
                 ->groupBy('taxonomy_term_data.id')
                 ->orderByDesc('resources_count')
@@ -46,7 +52,7 @@ class ResourceAnalyticsController extends Controller
         $top10DownloadedResourcesByFileSizes = $this->getTop10DownloadedResourcesByFileSize($request); // Get top 10 downloaded resources by file size
         $sumOfAllIndividualDownloadedFileSizes = $this->getSumOfAllIndividualDownloadedFileSizes(); // Sum of all individual downloaded file sizes
 
-        return view('admin.analytics.resource-analytics.index', compact(['genders', 'languages', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 'top10Authors', 'top10Publishers', 'top10DownloadedResources', 'top10DownloadedResourcesByFileSizes', 'top10FavoriteResources', 'subjectAreas']));
+        return view('admin.analytics.resource-analytics.index', compact(['genders', 'languages', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 'top10Authors', 'top10Publishers', 'top10DownloadedResources', 'top10DownloadedResourcesByFileSizes', 'top10FavoriteResources', 'subjectAreas', 'resourceTypes']));
     }
 
     private function getSumOfAllIndividualDownloadedFileSizes(): float
