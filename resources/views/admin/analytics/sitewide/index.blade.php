@@ -93,9 +93,9 @@
                             </select>
                         </div>
 
-                        {{-- Is Robot --}}
+                        {{-- Is Rot --}}
                         <div class="col-md-2">
-                            <label for="page-type">Is Robt </label>
+                            <label for="page-type">Is Rot </label>
                             <select class="form-control" name="is_bot" id="is-robot">
                                 <option value="">...</option>
                                 <option value="1" @selected(1 == request()->is_bot)>Yes</option>
