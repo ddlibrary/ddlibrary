@@ -26,6 +26,7 @@ use App\Models\ResourceTranslator;
 use App\Models\ResourceView;
 use App\Models\Setting;
 use App\Models\TaxonomyTerm;
+use App\Traits\LanguageTrait;
 use Carbon\Carbon;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Foundation\Application;
@@ -45,14 +46,7 @@ use Throwable;
 
 class ResourceController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-    }
+    use LanguageTrait;
 
     public function index(Request $request): Factory|View|Application
     {
@@ -62,6 +56,7 @@ class ResourceController extends Controller
         DDLClearSession();
 
         $myResources = new Resource();
+        $languages = $this->getLanguages();
 
         $resources = $myResources->filterResources($request->all());
 
@@ -69,7 +64,7 @@ class ResourceController extends Controller
 
         $filters = $request->session()->get('filters');
 
-        return view('admin.resources.resources', compact('resources', 'filters'));
+        return view('admin.resources.resources', compact('resources', 'filters', 'languages'));
     }
 
     public function updateTid(Request $request, $resourceId): RedirectResponse
