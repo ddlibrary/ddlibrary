@@ -153,7 +153,7 @@
                                         </td>
                                         <td class="text-center">{{ $view->user?->profile?->first_name }}
                                             {{ $view->user?->profile?->last_name }}</td>
-                                        <td class="text-center">{{ $view->created_at->diffForHumans() }}</td>
+                                        <td class="text-center">{{ $view->created_at ? $view->created_at->diffForHumans() : ''  }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
