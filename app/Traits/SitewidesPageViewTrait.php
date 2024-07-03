@@ -13,7 +13,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 trait SitewidesPageViewTrait
 {
-    public function visit(Request $request, $title = null): void
+    public function pageView(Request $request, $title = null): void
     {
      
         $languageCode = $this->getLanguageCode();

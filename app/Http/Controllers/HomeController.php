@@ -38,7 +38,7 @@ class HomeController extends Controller
         //setting the search session empty
         DDLClearSession();
         $languageCode =  config('app.locale');
-        $this->visit($request, "Home Page $languageCode");
+        $this->pageView($request, "Home Page $languageCode");
 
         $resources = new Resource();
 

@@ -56,7 +56,7 @@ class NewsController extends Controller
         $myNews = new News();
 
         $news = News::find($newsId);
-        $this->visit($request, $news->title);
+        $this->pageView($request, $news->title);
 
         $translation_id = $news->tnid;
         if ($translation_id) {

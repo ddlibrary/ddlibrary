@@ -52,7 +52,7 @@ class PageController extends Controller
 
     public function view(Request $request, $pageId): Factory|View|Application
     {
-        $this->visit($request, 'Contact us');
+        $this->pageView($request, 'Contact us');
         //setting the search session empty
         DDLClearSession();
 

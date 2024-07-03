@@ -67,7 +67,7 @@ class ContactController extends Controller
      */
     public function create(Request $request): View
     {
-        $this->visit($request, 'Contact us');
+        $this->pageView($request, 'Contact us');
         if (Auth::check()) {
             //Get the currently authenticated user details...
             //get login email details using Auth facade

@@ -89,7 +89,7 @@ class ResourceController extends Controller
     {
         //setting the search session empty
         DDLClearSession();
-        $this->visit($request, 'Resource List');
+        $this->pageView($request, 'Resource List');
 
         $myResources = new Resource();
 
@@ -164,7 +164,7 @@ class ResourceController extends Controller
                 abort(403);
             }
 
-            $this->visit($request, $resource->title);
+            $this->pageView($request, $resource->title);
 
             $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
             $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
