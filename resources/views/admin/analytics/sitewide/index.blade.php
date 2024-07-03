@@ -95,8 +95,8 @@
 
                         {{-- Is Rot --}}
                         <div class="col-md-2">
-                            <label for="page-type">Is Rot </label>
-                            <select class="form-control" name="is_bot" id="is-robot">
+                            <label for="is-bot">Is Rot </label>
+                            <select class="form-control" name="is_bot" id="is-rot">
                                 <option value="">...</option>
                                 <option value="1" @selected(1 == request()->is_bot)>Yes</option>
                                 <option value="2" @selected(2 == request()->is_bot)>No</option>
@@ -125,15 +125,15 @@
                                 </div>
                                 <div class="card-body text-secondary p-2">
 
-                                    @forelse ($totalViewBasedOnLanguage as $resource)
+                                    @forelse ($totalViewBasedOnLanguage as $view)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
-                                                {{ $resource->language ?: '<no language>' }}
+                                                {{ $view->language ?: '<no language>' }}
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($resource->count) }}
+                                                    {{ number_format($view->count) }}
                                                 </span>
                                             </div>
                                         </div>
@@ -143,7 +143,7 @@
 
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            Total Resources
+                                            Total views
                                         </div>
                                         <span class="badge badge-info">
                                             {{ number_format($totalViewBasedOnLanguage->sum('count')) }}
@@ -252,7 +252,7 @@
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($platform->sitewides_sitewides_page_views_count) }}
+                                                    {{ number_format($platform->sitewides_page_views_count) }}
                                                 </span>
                                             </div>
                                         </div>
