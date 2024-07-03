@@ -26,7 +26,7 @@ use App\Models\ResourceTranslator;
 use App\Models\ResourceView;
 use App\Models\Setting;
 use App\Models\TaxonomyTerm;
-use App\Traits\PageVisitTrait;
+use App\Traits\PageViewTrait;
 use Carbon\Carbon;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Foundation\Application;
@@ -46,7 +46,7 @@ use Throwable;
 
 class ResourceController extends Controller
 {
-    use PageVisitTrait;
+    use PageViewTrait;
     /**
      * Create a new controller instance.
      *

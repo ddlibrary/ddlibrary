@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('page_visits', function (Blueprint $table) {
+        Schema::create('page_views', function (Blueprint $table) {
             $table->id();
             $table->string('page_url', 255);
             $table->string('user_agent', 255);
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('page_visits');
+        Schema::dropIfExists('page_views');
     }
 };

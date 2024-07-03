@@ -7,7 +7,7 @@ use App\Models\Resource;
 use App\Models\Survey;
 use App\Models\SurveyQuestion;
 use App\Models\SurveyQuestionOption;
-use App\Traits\PageVisitTrait;
+use App\Traits\PageViewTrait;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -17,7 +17,7 @@ use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    use PageVisitTrait;
+    use PageViewTrait;
     /**
      * Create a new controller instance.
      *

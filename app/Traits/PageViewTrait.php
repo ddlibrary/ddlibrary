@@ -5,13 +5,13 @@ namespace App\Traits;
 use App\Models\Browser;
 use App\Models\Device;
 use App\Models\PageType;
-use App\Models\PageVisit;
+use App\Models\PageView;
 use App\Models\Platform;
 use Illuminate\Http\Request;
 use Jenssegers\Agent\Agent;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-trait PageVisitTrait
+trait PageViewTrait
 {
     public function visit(Request $request, $title = null): void
     {
@@ -27,7 +27,7 @@ trait PageVisitTrait
             $platform = Platform::firstOrCreate(['name' => $agent->platform()]);
             $browser = Browser::firstOrCreate(['name' => $agent->browser    ()]);
 
-            PageVisit::insert([
+            PageView::insert([
                 'title' => $title,
                 'page_url' => $request->url(),
                 'user_agent' => $request->userAgent(),

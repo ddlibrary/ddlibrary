@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
-use App\Traits\PageVisitTrait;
+use App\Traits\PageViewTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +12,7 @@ use Yajra\Datatables\Datatables;
 
 class NewsController extends Controller
 {
-    use PageVisitTrait;
+    use PageViewTrait;
     /**
      * Create a new controller instance.
      *

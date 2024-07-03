@@ -252,7 +252,7 @@
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($platform->page_visits_count) }}
+                                                    {{ number_format($platform->page_views_count) }}
                                                 </span>
                                             </div>
                                         </div>
@@ -282,7 +282,7 @@
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($browser->page_visits_count) }}
+                                                    {{ number_format($browser->page_views_count) }}
                                                 </span>
                                             </div>
                                         </div>
@@ -312,7 +312,7 @@
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($device->page_visits_count) }}
+                                                    {{ number_format($device->page_views_count) }}
                                                 </span>
                                             </div>
                                         </div>
@@ -342,7 +342,7 @@
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($pageType->page_visits_count) }}
+                                                    {{ number_format($pageType->page_views_count) }}
                                                 </span>
                                             </div>
                                         </div>

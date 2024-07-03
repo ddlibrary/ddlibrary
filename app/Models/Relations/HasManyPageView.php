@@ -2,16 +2,16 @@
 
 namespace App\Models\Relations;
 
-use App\Models\PageVisit;
+use App\Models\PageView;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-trait HasManyPageVisit
+trait HasManyPageView
 {
     /**
      * Get user
      */
-    public function pageVisits(): HasMany
+    public function pageViews(): HasMany
     {
-        return $this->hasMany(PageVisit::class);
+        return $this->hasMany(PageView::class);
     }
 }

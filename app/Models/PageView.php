@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Relations\BelongsToUser;
 use Illuminate\Database\Eloquent\Model;
 
-class PageVisit extends Model
+class PageView extends Model
 {
     use BelongsToUser;
     
