@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Relations\HasManyGlossaryPageView;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -20,5 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class GlossarySubject extends Model
 {
+    use HasManyGlossaryPageView;
+
     protected $table = 'glossary_subjects';
 }
