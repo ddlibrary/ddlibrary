@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Relations\BelongsToUser;
 use Illuminate\Database\Eloquent\Model;
 
-class PageView extends Model
+class SitewidesPageView extends Model
 {
     use BelongsToUser;
     

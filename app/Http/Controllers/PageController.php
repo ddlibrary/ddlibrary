@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
+use App\Traits\SitewidesPageViewTrait;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -13,6 +14,7 @@ use Yajra\Datatables\Datatables;
 
 class PageController extends Controller
 {
+    use SitewidesPageViewTrait;
     /**
      * Create a new controller instance.
      *
@@ -48,8 +50,9 @@ class PageController extends Controller
             ->make(true);
     }
 
-    public function view($pageId): Factory|View|Application
+    public function view(Request $request, $pageId): Factory|View|Application
     {
+        $this->visit($request, 'Contact us');
         //setting the search session empty
         DDLClearSession();
 

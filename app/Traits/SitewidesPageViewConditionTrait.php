@@ -2,9 +2,9 @@
 
 namespace App\Traits;
 
-trait PageViewConditionTrait
+trait SitewidesPageViewConditionTrait
 {
-    protected function filterPageViews($query, $request)
+    protected function filterSitewidesPageViews($query, $request)
     {
         if ($request->platform_id) {
             $query->where('platform_id', $request->platform_id);

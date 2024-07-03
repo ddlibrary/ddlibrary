@@ -8,9 +8,10 @@ use App\Models\Device;
 use App\Models\PageType;
 use App\Models\PageView;
 use App\Models\Platform;
+use App\Models\SitewidesPageView;
 use App\Traits\GenderTrait;
 use App\Traits\LanguageTrait;
-use App\Traits\PageViewConditionTrait;
+use App\Traits\SitewidesPageViewConditionTrait;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,7 @@ use Illuminate\View\View;
 
 class SitewideAnalyticsController extends Controller
 {
-    use LanguageTrait, GenderTrait, PageViewConditionTrait;
+    use LanguageTrait, GenderTrait, SitewidesPageViewConditionTrait;
 
     public function index(Request $request): View
     {
@@ -35,32 +36,32 @@ class SitewideAnalyticsController extends Controller
 
         $platformCounts = Platform::select(['id', 'name'])
             ->withCount([
-                'PageViews' => function ($query) use ($request) {
-                    return $this->filterPageViews($query, $request);
+                'sitewidesPageViews' => function ($query) use ($request) {
+                    return $this->filterSitewidesPageViews($query, $request);
                 },
             ])
             ->get();
 
         $browserCounts = Browser::select(['id', 'name'])
             ->withCount([
-                'PageViews' => function ($query) use ($request) {
-                    return $this->filterPageViews($query, $request);
+                'sitewidesPageViews' => function ($query) use ($request) {
+                    return $this->filterSitewidesPageViews($query, $request);
                 },
             ])
             ->get();
 
         $deviceCounts = Device::select(['id', 'name'])
             ->withCount([
-                'PageViews' => function ($query) use ($request) {
-                    return $this->filterPageViews($query, $request);
+                'sitewidesPageViews' => function ($query) use ($request) {
+                    return $this->filterSitewidesPageViews($query, $request);
                 },
             ])
             ->get();
 
         $pageTypeCounts = PageType::select(['id', 'name'])
             ->withCount([
-                'PageViews' => function ($query) use ($request) {
-                    return $this->filterPageViews($query, $request);
+                'sitewidesPageViews' => function ($query) use ($request) {
+                    return $this->filterSitewidesPageViews($query, $request);
                 },
             ])
             ->get();
@@ -73,16 +74,16 @@ class SitewideAnalyticsController extends Controller
 
     private function getTop10ViewedPages($request): Collection
     {
-        $query = PageView::selectRaw('page_url, title, COUNT(*) AS visit_count')->groupBy('page_url', 'title')->orderByDesc('visit_count')->limit(10);
+        $query = SitewidesPageView::selectRaw('page_url, title, COUNT(*) AS visit_count')->groupBy('page_url', 'title')->orderByDesc('visit_count')->limit(10);
 
-        $query = $this->filterPageViews($query, $request);
+        $query = $this->filterSitewidesPageViews($query, $request);
 
         return $query->get();
     }
 
     private function getTotalViews($request, $isGuest = null): float
     {
-        $query = PageView::query();
+        $query = SitewidesPageView::query();
 
         if ($isGuest) {
             if ($isGuest == 'yes') {
@@ -92,15 +93,15 @@ class SitewideAnalyticsController extends Controller
             }
         }
 
-        $query = $this->filterPageViews($query, $request);
+        $query = $this->filterSitewidesPageViews($query, $request);
 
         return $query->count();
     }
 
     private function getTotalViewBasedOnLanguage($request): Collection
     {
-        $totalResources = PageView::where(function ($query) use ($request) {
-            return $this->filterPageViews($query, $request);
+        $totalResources = SitewidesPageView::where(function ($query) use ($request) {
+            return $this->filterSitewidesPageViews($query, $request);
         })
             ->groupBy('language')
             ->select('language', DB::raw('count(*) as count'))
@@ -122,8 +123,8 @@ class SitewideAnalyticsController extends Controller
         $browsers = Browser::all(['id', 'name']);
         $platforms = Platform::all(['id', 'name']);
 
-        $query = PageView::query()->with(['platform:id,name', 'device:id,name', 'browser:id,name', 'user:id', 'user.profile:id,user_id,first_name,last_name']);
-        $query = $this->filterPageViews($query, $request);   
+        $query = SitewidesPageView::query()->with(['platform:id,name', 'device:id,name', 'browser:id,name', 'user:id', 'user.profile:id,user_id,first_name,last_name']);
+        $query = $this->filterSitewidesPageViews($query, $request);   
         $views = $query->paginate()
             ->appends($request->except(['page']));
 

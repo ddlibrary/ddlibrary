@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\Setting;
 use App\Models\User;
 use App\Rules\RecaptchaRule;
+use App\Traits\SitewidesPageViewTrait;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -20,6 +21,7 @@ use Illuminate\View\View;
 
 class ContactController extends Controller
 {
+    use SitewidesPageViewTrait;
     /**
      * Display a listing of the resource.
      *
@@ -63,8 +65,9 @@ class ContactController extends Controller
      *
      * @return Application|BladeView|Factory|false|View
      */
-    public function create(): View
+    public function create(Request $request): View
     {
+        $this->visit($request, 'Contact us');
         if (Auth::check()) {
             //Get the currently authenticated user details...
             //get login email details using Auth facade
@@ -81,6 +84,7 @@ class ContactController extends Controller
         }
         //setting the search session empty
         DDLClearSession();
+        
 
         return view('contacts.contacts_view');
     }
