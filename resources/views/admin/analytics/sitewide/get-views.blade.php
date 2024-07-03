@@ -111,7 +111,7 @@
             </div>
             <div class="card mb-3">
                 <div class="card-header">
-                    <i class="fa fa-table"></i> Resource View
+                    <i class="fa fa-table"></i> Page View
                 </div>
                 <div class="card-body">
                     <div class="row">
