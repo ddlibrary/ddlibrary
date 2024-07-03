@@ -4,7 +4,7 @@ namespace App\Traits;
 
 trait SitewidesPageViewConditionTrait
 {
-    protected function filterSitewidesPageViews($query, $request)
+    protected function filterPageViews($query, $request)
     {
         if ($request->platform_id) {
             $query->where('platform_id', $request->platform_id);
@@ -14,6 +14,9 @@ trait SitewidesPageViewConditionTrait
         }
         if ($request->device_id) {
             $query->where('device_id', $request->device_id);
+        }
+        if ($request->glossary_subject_id) {
+            $query->where('glossary_subject_id', $request->glossary_subject_id);
         }
         if ($request->language) {
             $query->where('language', $request->language);
