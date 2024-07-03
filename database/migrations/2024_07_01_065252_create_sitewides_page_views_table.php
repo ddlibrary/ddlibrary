@@ -24,7 +24,7 @@ return new class extends Migration {
             $table->foreignId('device_id')->constrained('devices');
             $table->foreignId('platform_id')->constrained('platforms');
             $table->foreignId('browser_id')->constrained('browsers');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('user_id')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

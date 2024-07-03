@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreignId('platform_id')->constrained('platforms');
             $table->foreignId('browser_id')->constrained('browsers');
             $table->tinyInteger('status')->comment("1: view, 2: created");
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('user_id')->nullable();
             $table->unsignedInteger('glossary_id');
 
             $table->foreign('user_id')
