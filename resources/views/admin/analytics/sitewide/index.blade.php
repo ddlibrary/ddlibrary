@@ -83,7 +83,7 @@
 
                         {{-- Page Type --}}
                         <div class="col-md-2 mb-4">
-                            <label for="page-type">Page Type </label>
+                            <label for="page-type">Page type </label>
                             <select class="form-control" name="page_type_id" id="page-type">
                                 <option value="">...</option>
                                 @foreach ($pageTypes as $pageType)
