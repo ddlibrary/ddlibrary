@@ -103,6 +103,13 @@
                             </select>
                         </div>
 
+                        {{-- Page URL --}}
+                        <div class="col-md-4 mb-4">
+                            <label for="from-date">Page url </label>
+                            <input type="text" id="from-date" value="{{ request()->page_url }}" class="form-control"
+                                name="page_url" placeholder="Please enter page url without https://library.darakhtdanesh.org">
+                        </div>
+
                         <div class="col-md-2 mb-4" style="align-self: flex-end">
                             <input class="btn btn-primary" type="submit" value="Filter">
                         </div>
