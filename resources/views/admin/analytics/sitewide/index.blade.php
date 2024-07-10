@@ -161,13 +161,13 @@
                                     <div class="card-text">
                                         @foreach ($top10ViewedPages as $page)
                                             <div class="d-flex  justify-content-between mb-2 rounded bg-light text-dark">
-                                                <div class="p-1 text-capitalize d-flex">
+                                                <div class="p-1 d-flex">
                                                     <div class="flex-1"
                                                         style="flex-wrap: wrap;
                                                     word-break: break-all;
                                                     overflow-wrap: break-word;">
                                                         <a href="{{ $page->page_url }}" target="_blank">
-                                                            {{ $page->title }}
+                                                            {{ $page->page_url }}
                                                         </a>
                                                     </div>
                                                 </div>
