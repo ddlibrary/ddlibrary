@@ -8,21 +8,21 @@
                     <div class="row">
 
                         {{-- From Date --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label for="from-date">From </label>
                             <input type="date" id="from-date" value="{{ request()->date_from }}" class="form-control"
                                 name="date_from">
                         </div>
 
                         {{-- To Date --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label for="to-date">To </label>
                             <input type="date" id="to-date" value="{{ request()->date_to }}" class="form-control"
                                 name="date_to">
                         </div>
 
                         {{-- Gender --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label>Gender </label>
                             <select class="form-control" name="gender">
                                 <option value="">...</option>
@@ -34,7 +34,7 @@
                         </div>
 
                         {{-- Language --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label for="language">Language </label>
                             <select class="form-control" name="language" id="language">
                                 <option value="">...</option>
@@ -46,7 +46,7 @@
                         </div>
 
                         {{-- Device --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label for="device">Device </label>
                             <select class="form-control" name="device_id" id="device">
                                 <option value="">...</option>
@@ -58,7 +58,7 @@
                         </div>
 
                         {{-- Platform --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label for="platform">Platform </label>
                             <select class="form-control" name="platform_id" id="platform">
                                 <option value="">...</option>
@@ -70,7 +70,7 @@
                         </div>
 
                         {{-- Browser --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label for="browser">Browser </label>
                             <select class="form-control" name="browser_id" id="browser">
                                 <option value="">...</option>
@@ -82,7 +82,7 @@
                         </div>
 
                         {{-- Page Type --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label for="glossary-subject">Subject </label>
                             <select class="form-control" name="glossary_subject_id" id="glossary-subject">
                                 <option value="">...</option>
@@ -93,10 +93,10 @@
                             </select>
                         </div>
 
-                        {{-- Is Rot --}}
-                        <div class="col-md-2">
-                            <label for="bot">Is Rot </label>
-                            <select class="form-control" name="is_bot" id="is-robot">
+                        {{-- Is bot --}}
+                        <div class="col-md-2 mb-4">
+                            <label for="is-bot">Is bot </label>
+                            <select class="form-control" name="is_bot" id="is-bot">
                                 <option value="">...</option>
                                 <option value="1" @selected(1 == request()->is_bot)>Yes</option>
                                 <option value="2" @selected(2 == request()->is_bot)>No</option>
@@ -104,7 +104,7 @@
                         </div>
 
                         {{-- Status --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label for="bot">Status </label>
                             <select class="form-control" name="status" id="status">
                                 <option value="1" @selected(1 == request()->status)>View</option>
@@ -112,7 +112,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-2" style="align-self: flex-end">
+                        <div class="col-md-2 mb-4" style="align-self: flex-end">
                             <input class="btn btn-primary" type="submit" value="Filter">
                         </div>
                     </div>
@@ -170,7 +170,7 @@
                                     <div class="card-text">
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1 text-capitalize">
-                                                1. Total View
+                                                1. Total views
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -180,7 +180,7 @@
                                         </div>
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1 text-capitalize">
-                                                2. Unregistered users {{ $status }}
+                                                2. Unregistered
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -190,7 +190,7 @@
                                         </div>
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1 text-capitalize">
-                                                3. Registered users {{ $status }}
+                                                3. Registered
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -252,36 +252,6 @@
                                             <div class="p-1">
                                                 <span class="badge badge-info">
                                                     {{ number_format($browser->glossary_page_views_count) }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    @empty
-                                        <h2 class="alert alert-danger">N/A</h2>
-                                    @endforelse
-
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- View based on device --}}
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <div class="card border-secondary mb-3">
-                                <div class="card-header d-flex justify-content-between">
-                                    <div>
-                                        Total {{ $status }} based on device
-                                    </div>
-                                </div>
-                                <div class="card-body text-secondary p-2">
-
-                                    @forelse ($deviceCounts as $device)
-                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
-                                            <div class="p-1">
-                                                {{ $loop->iteration }}.
-                                                {{ $device->name ?: '<no device>' }}
-                                            </div>
-                                            <div class="p-1">
-                                                <span class="badge badge-info">
-                                                    {{ number_format($device->glossary_page_views_count) }}
                                                 </span>
                                             </div>
                                         </div>
