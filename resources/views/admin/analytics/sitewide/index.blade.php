@@ -211,7 +211,7 @@
                                         </div>
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1 text-capitalize">
-                                                2. Unregistered users views
+                                                2. Unregistered
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -221,7 +221,7 @@
                                         </div>
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1 text-capitalize">
-                                                3. Registered users views
+                                                3. Registered
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
