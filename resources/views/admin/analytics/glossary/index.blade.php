@@ -129,7 +129,7 @@
                             <div class="card border-secondary mb-3">
                                 <div class="card-header d-flex justify-content-between">
                                     <div>
-                                        Total {{ $status }} by languages
+                                        {{ $status }} by languages
                                     </div>
                                 </div>
                                 <div class="card-body text-secondary p-2">
@@ -165,7 +165,7 @@
                         {{-- Total views base on user types  --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Total {{ $status }} based on user types </div>
+                                <div class="card-header">{{ $status }} by user types </div>
                                 <div class="card-body text-secondary p-2">
                                     <div class="card-text">
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
@@ -208,7 +208,7 @@
                             <div class="card border-secondary mb-3">
                                 <div class="card-header d-flex justify-content-between">
                                     <div>
-                                        Total {{ $status }} based on platform
+                                        {{ $status }} by platforms
                                     </div>
                                 </div>
                                 <div class="card-body text-secondary p-2">
@@ -238,7 +238,7 @@
                             <div class="card border-secondary mb-3">
                                 <div class="card-header d-flex justify-content-between">
                                     <div>
-                                        Total {{ $status }} based on browser
+                                        {{ $status }} by browsers
                                     </div>
                                 </div>
                                 <div class="card-body text-secondary p-2">
@@ -268,7 +268,7 @@
                             <div class="card border-secondary mb-3">
                                 <div class="card-header d-flex justify-content-between">
                                     <div>
-                                        Total {{ $status }} based on glossary subject
+                                        {{ $status }} by glossary subjects
                                     </div>
                                 </div>
                                 <div class="card-body text-secondary p-2">
@@ -288,7 +288,6 @@
                                     @empty
                                         <h2 class="alert alert-danger">N/A</h2>
                                     @endforelse
-
                                 </div>
                             </div>
                         </div>
