@@ -201,7 +201,7 @@
                                     <div class="card-text">
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1 text-capitalize">
-                                                1. Total View
+                                                1. Total views
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
