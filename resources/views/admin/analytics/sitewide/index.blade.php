@@ -120,7 +120,7 @@
                             <div class="card border-secondary mb-3">
                                 <div class="card-header d-flex justify-content-between">
                                     <div>
-                                        Total views by languages
+                                        Views by languages
                                     </div>
                                 </div>
                                 <div class="card-body text-secondary p-2">
