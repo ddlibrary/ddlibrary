@@ -50,14 +50,6 @@ class GlossaryAnalyticsController extends Controller
             ])
             ->get();
 
-        $deviceCounts = Device::select(['id', 'name'])
-            ->withCount([
-                'glossaryPageViews' => function ($query) use ($request) {
-                    return $this->filterPageViews($query, $request);
-                },
-            ])
-            ->get();
-
         $glossarySubjectCounts = GlossarySubject::select(['id', 'en'])
             ->withCount([
                 'glossaryPageViews' => function ($query) use ($request) {
@@ -70,7 +62,7 @@ class GlossaryAnalyticsController extends Controller
         $totalGuestViews = $this->getTotalViews($request, 'yes');
         $totalViewBasedOnLanguage = $this->getTotalViewBasedOnLanguage($request);
 
-        return view('admin.analytics.glossary.index', compact('languages', 'genders', 'glossarySubjects', 'devices', 'platforms', 'browsers', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews', 'platformCounts', 'browserCounts', 'deviceCounts', 'glossarySubjectCounts', 'totalViewBasedOnLanguage', 'status'));
+        return view('admin.analytics.glossary.index', compact('languages', 'genders', 'glossarySubjects', 'devices', 'platforms', 'browsers', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews', 'platformCounts', 'browserCounts', 'glossarySubjectCounts', 'totalViewBasedOnLanguage', 'status'));
     }
 
     private function getTotalViews($request, $isGuest = null): float
