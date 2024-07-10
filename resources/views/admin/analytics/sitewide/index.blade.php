@@ -93,10 +93,10 @@
                             </select>
                         </div>
 
-                        {{-- Is Rot --}}
+                        {{-- Is Bot --}}
                         <div class="col-md-2 mb-4">
-                            <label for="is-bot">Is Rot </label>
-                            <select class="form-control" name="is_bot" id="is-rot">
+                            <label for="is-bot">Is Bot </label>
+                            <select class="form-control" name="is_bot" id="is-bot">
                                 <option value="">...</option>
                                 <option value="1" @selected(1 == request()->is_bot)>Yes</option>
                                 <option value="2" @selected(2 == request()->is_bot)>No</option>
