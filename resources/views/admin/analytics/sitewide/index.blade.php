@@ -293,36 +293,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        {{-- View based on page type --}}
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <div class="card border-secondary mb-3">
-                                <div class="card-header d-flex justify-content-between">
-                                    <div>
-                                        View based on page type
-                                    </div>
-                                </div>
-                                <div class="card-body text-secondary p-2">
-
-                                    @forelse ($pageTypeCounts as $pageType)
-                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
-                                            <div class="p-1">
-                                                {{ $loop->iteration }}.
-                                                {{ $pageType->name ?: '<no page type>' }}
-                                            </div>
-                                            <div class="p-1">
-                                                <span class="badge badge-info">
-                                                    {{ number_format($pageType->sitewide_page_views_count) }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    @empty
-                                        <h2 class="alert alert-danger">N/A</h2>
-                                    @endforelse
-
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
