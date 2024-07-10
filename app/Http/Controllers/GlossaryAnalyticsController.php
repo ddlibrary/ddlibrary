@@ -28,7 +28,7 @@ class GlossaryAnalyticsController extends Controller
         $browsers = Browser::all(['id', 'name']);
         $platforms = Platform::all(['id', 'name']);
         $glossarySubjects = GlossarySubject::all(['id', 'en']);
-        $status = $request->status == 2 ? 'created' : 'views';
+        $status = $request->status == 2 ? 'Created' : 'Views';
 
 
         $totalViews = $this->getTotalViews($request);
