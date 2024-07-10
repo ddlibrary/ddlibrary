@@ -115,12 +115,12 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        {{-- Total view by languages --}}
+                        {{-- Total views by languages --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
                                 <div class="card-header d-flex justify-content-between">
                                     <div>
-                                        Total view by languages
+                                        Total views by languages
                                     </div>
                                 </div>
                                 <div class="card-body text-secondary p-2">
