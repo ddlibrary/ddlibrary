@@ -9,7 +9,7 @@
 
                         {{-- From Date --}}
                         <div class="col-md-2 mb-4">
-                            <label for="from-date">FPassw0rd4@rom </label>
+                            <label for="from-date">From </label>
                             <input type="date" id="from-date" value="{{ request()->date_from }}" class="form-control"
                                 name="date_from">
                         </div>
@@ -95,7 +95,7 @@
 
                         {{-- Is Bot --}}
                         <div class="col-md-2 mb-4">
-                            <label for="is-bot">Is Bot </label>
+                            <label for="is-bot">Is bot </label>
                             <select class="form-control" name="is_bot" id="is-bot">
                                 <option value="">...</option>
                                 <option value="1" @selected(1 == request()->is_bot)>Yes</option>
