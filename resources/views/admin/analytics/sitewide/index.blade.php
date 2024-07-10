@@ -105,9 +105,9 @@
 
                         {{-- Page URL --}}
                         <div class="col-md-4 mb-4">
-                            <label for="from-date">Page url </label>
+                            <label for="from-date">Page URL </label>
                             <input type="text" id="from-date" value="{{ request()->page_url }}" class="form-control"
-                                name="page_url" placeholder="Please enter page url without {{ url('')}}">
+                                name="page_url" placeholder="Please enter page URL without {{ url('')}}">
                         </div>
 
                         <div class="col-md-2 mb-4" style="align-self: flex-end">
