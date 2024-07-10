@@ -7,7 +7,7 @@ use App\Models\Resource;
 use App\Models\Survey;
 use App\Models\SurveyQuestion;
 use App\Models\SurveyQuestionOption;
-use App\Traits\SitewidesPageViewTrait;
+use App\Traits\SitewidePageViewTrait;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -17,7 +17,7 @@ use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    use SitewidesPageViewTrait;
+    use SitewidePageViewTrait;
     /**
      * Create a new controller instance.
      *

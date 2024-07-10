@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
-use App\Traits\SitewidesPageViewTrait;
+use App\Traits\SitewidePageViewTrait;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -14,7 +14,7 @@ use Yajra\Datatables\Datatables;
 
 class PageController extends Controller
 {
-    use SitewidesPageViewTrait;
+    use SitewidePageViewTrait;
     /**
      * Create a new controller instance.
      *

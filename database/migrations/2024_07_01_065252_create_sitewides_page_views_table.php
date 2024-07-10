@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('sitewides_page_views', function (Blueprint $table) {
+        Schema::create('sitewide_page_views', function (Blueprint $table) {
             $table->id();
             $table->string('page_url', 255);
             $table->string('user_agent', 255);
@@ -36,6 +36,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('sitewides_page_views');
+        Schema::dropIfExists('sitewide_page_views');
     }
 };

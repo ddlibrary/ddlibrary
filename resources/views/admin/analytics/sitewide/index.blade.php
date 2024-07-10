@@ -3,7 +3,7 @@
     <div class="content-wrapper">
         <div class="container-fluid">
             <div class="pb-4">
-                <form method="get" action="{{ url('admin/analytics/sitewides') }}">
+                <form method="get" action="{{ url('admin/analytics/sitewide') }}">
                     @csrf
                     <div class="row">
 
@@ -252,7 +252,7 @@
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($platform->sitewides_page_views_count) }}
+                                                    {{ number_format($platform->sitewide_page_views_count) }}
                                                 </span>
                                             </div>
                                         </div>
@@ -282,7 +282,7 @@
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($browser->sitewides_page_views_count) }}
+                                                    {{ number_format($browser->sitewide_page_views_count) }}
                                                 </span>
                                             </div>
                                         </div>
@@ -312,7 +312,7 @@
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($device->sitewides_page_views_count) }}
+                                                    {{ number_format($device->sitewide_page_views_count) }}
                                                 </span>
                                             </div>
                                         </div>
@@ -342,7 +342,7 @@
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($pageType->sitewides_page_views_count) }}
+                                                    {{ number_format($pageType->sitewide_page_views_count) }}
                                                 </span>
                                             </div>
                                         </div>

@@ -7,7 +7,7 @@ use App\Models\Contact;
 use App\Models\Setting;
 use App\Models\User;
 use App\Rules\RecaptchaRule;
-use App\Traits\SitewidesPageViewTrait;
+use App\Traits\SitewidePageViewTrait;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -21,7 +21,7 @@ use Illuminate\View\View;
 
 class ContactController extends Controller
 {
-    use SitewidesPageViewTrait;
+    use SitewidePageViewTrait;
     /**
      * Display a listing of the resource.
      *

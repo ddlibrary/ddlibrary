@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Relations\HasManySitewidesPageView;
+use App\Models\Relations\HasManySitewidePageView;
 use Illuminate\Database\Eloquent\Model;
 
 class PageType extends Model
 {
-    use HasManySitewidesPageView;
+    use HasManySitewidePageView;
 
     protected $fillable = ['name'];
 }

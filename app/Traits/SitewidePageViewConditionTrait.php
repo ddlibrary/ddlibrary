@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-trait SitewidesPageViewConditionTrait
+trait SitewidePageViewConditionTrait
 {
     protected function filterPageViews($query, $request)
     {

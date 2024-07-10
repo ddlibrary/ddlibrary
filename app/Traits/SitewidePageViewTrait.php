@@ -6,12 +6,12 @@ use App\Models\Browser;
 use App\Models\Device;
 use App\Models\PageType;
 use App\Models\Platform;
-use App\Models\SitewidesPageView;
+use App\Models\SitewidePageView;
 use Illuminate\Http\Request;
 use Jenssegers\Agent\Agent;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-trait SitewidesPageViewTrait
+trait SitewidePageViewTrait
 {
     public function pageView(Request $request, $title = null): void
     {
@@ -27,7 +27,7 @@ trait SitewidesPageViewTrait
             $platform = Platform::firstOrCreate(['name' => $agent->platform()]);
             $browser = Browser::firstOrCreate(['name' => $agent->browser    ()]);
 
-            SitewidesPageView::insert([
+            SitewidePageView::insert([
                 'title' => $title,
                 'page_url' => $request->url(),
                 'user_agent' => $request->userAgent(),
