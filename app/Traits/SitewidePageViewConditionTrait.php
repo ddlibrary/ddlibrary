@@ -15,6 +15,9 @@ trait SitewidePageViewConditionTrait
         if ($request->device_id) {
             $query->where('device_id', $request->device_id);
         }
+        if ($request->page_url) {
+            $query->where('page_url', url('').'/'.$request->page_url);
+        }
         if ($request->glossary_subject_id) {
             $query->where('glossary_subject_id', $request->glossary_subject_id);
         }
