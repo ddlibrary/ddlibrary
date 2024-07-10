@@ -49,14 +49,6 @@ class SitewideAnalyticsController extends Controller
             ])
             ->get();
 
-        $deviceCounts = Device::select(['id', 'name'])
-            ->withCount([
-                'sitewidePageViews' => function ($query) use ($request) {
-                    return $this->filterPageViews($query, $request);
-                },
-            ])
-            ->get();
-
         $pageTypeCounts = PageType::select(['id', 'name'])
             ->withCount([
                 'sitewidePageViews' => function ($query) use ($request) {
@@ -68,7 +60,7 @@ class SitewideAnalyticsController extends Controller
         $totalGuestViews = $this->getTotalViews($request, 'yes');
         $totalViewBasedOnLanguage = $this->getTotalViewBasedOnLanguage($request);
 
-        return view('admin.analytics.sitewide.index', compact('languages', 'genders', 'pageTypes', 'devices', 'platforms', 'browsers', 'top10ViewedPages', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews', 'platformCounts', 'browserCounts', 'deviceCounts', 'pageTypeCounts', 'totalViewBasedOnLanguage'));
+        return view('admin.analytics.sitewide.index', compact('languages', 'genders', 'pageTypes', 'devices', 'platforms', 'browsers', 'top10ViewedPages', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews', 'platformCounts', 'browserCounts', 'pageTypeCounts', 'totalViewBasedOnLanguage'));
     }
 
     private function getTop10ViewedPages($request): Collection
