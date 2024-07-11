@@ -48,7 +48,7 @@ class SitewideAnalyticsController extends Controller
             ->get();
 
         $totalGuestViews = $this->getTotalViews($request, 'yes');
-        $totalViewBasedOnLanguage = $this->getTotalViewBasedOnLanguage($request);
+        $totalViewBasedOnLanguage = $this->getTotalViewsBasedOnLanguage($request);
 
         return view('admin.analytics.sitewide.index', compact('languages', 'genders', 'devices', 'platforms', 'browsers', 'top10ViewedPages', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews', 'platformCounts', 'browserCounts', 'totalViewBasedOnLanguage'));
     }
@@ -79,7 +79,7 @@ class SitewideAnalyticsController extends Controller
         return $query->count();
     }
 
-    private function getTotalViewBasedOnLanguage($request): Collection
+    private function getTotalViewsBasedOnLanguage($request): Collection
     {
         $totalResources = SitewidePageView::where(function ($query) use ($request) {
             return $this->filterPageViews($query, $request);

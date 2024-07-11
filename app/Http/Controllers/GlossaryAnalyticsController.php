@@ -60,7 +60,7 @@ class GlossaryAnalyticsController extends Controller
 
 
         $totalGuestViews = $this->getTotalViews($request, 'yes');
-        $totalViewBasedOnLanguage = $this->getTotalViewBasedOnLanguage($request);
+        $totalViewBasedOnLanguage = $this->getTotalViewsBasedOnLanguage($request);
 
         return view('admin.analytics.glossary.index', compact('languages', 'genders', 'glossarySubjects', 'devices', 'platforms', 'browsers', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews', 'platformCounts', 'browserCounts', 'glossarySubjectCounts', 'totalViewBasedOnLanguage', 'status'));
     }
@@ -82,7 +82,7 @@ class GlossaryAnalyticsController extends Controller
         return $query->count();
     }
 
-    private function getTotalViewBasedOnLanguage($request): Collection
+    private function getTotalViewsBasedOnLanguage($request): Collection
     {
         $totalResources = GlossaryPageView::where(function ($query) use ($request) {
             return $this->filterPageViews($query, $request);
