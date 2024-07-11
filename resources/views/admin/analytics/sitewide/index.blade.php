@@ -81,18 +81,6 @@
                             </select>
                         </div>
 
-                        {{-- Page Type --}}
-                        <div class="col-md-2 mb-4">
-                            <label for="page-type">Page type </label>
-                            <select class="form-control" name="page_type_id" id="page-type">
-                                <option value="">...</option>
-                                @foreach ($pageTypes as $pageType)
-                                    <option value="{{ $pageType->id }}" @selected($pageType->id == request()->page_type_id)>
-                                        {{ $pageType->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
                         {{-- Is Bot --}}
                         <div class="col-md-2 mb-4">
                             <label for="is-bot">Is bot </label>
