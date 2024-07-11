@@ -141,7 +141,7 @@
                                             Total views
                                         </div>
                                         <span class="badge badge-info">
-                                            {{ number_format($totalViewBasedOnLanguage->sum('count')) }}
+                                            {{ number_format($totalViewsBasedOnLanguage->sum('view_count')) }}
                                         </span>
                                     </div>
                                 </div>
