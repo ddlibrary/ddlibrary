@@ -30,7 +30,6 @@ trait GlossaryPageViewTrait
             GlossaryPageView::insert([
                 'title' => $title,
                 'user_agent' => $request->userAgent(),
-                'ip_address' => $request->ip(),
                 'browser_id' => $browser->id,
                 'browser' => $browser->name . ' ' . $agent->version($browser->name),
                 'is_bot' => $agent->isBot(),
