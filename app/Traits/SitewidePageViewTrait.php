@@ -25,7 +25,7 @@ trait SitewidePageViewTrait
             $device = Device::firstOrCreate(['name' => $agent->device()]);
             $pageTypeModel = PageType::firstOrCreate(['name' => $pageType]);
             $platform = Platform::firstOrCreate(['name' => $agent->platform()]);
-            $browser = Browser::firstOrCreate(['name' => $agent->browser    ()]);
+            $browser = Browser::firstOrCreate(['name' => $agent->browser()]);
 
             SitewidePageView::insert([
                 'title' => $title,
