@@ -13,7 +13,6 @@ return new class extends Migration {
         Schema::create('glossary_page_views', function (Blueprint $table) {
             $table->id();
             $table->string('user_agent', 255);
-            $table->string('ip_address', 45);
             $table->string('browser', 45);
             $table->string('title')->nullable();
 
