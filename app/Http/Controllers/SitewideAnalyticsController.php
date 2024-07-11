@@ -48,9 +48,9 @@ class SitewideAnalyticsController extends Controller
             ->get();
 
         $totalGuestViews = $this->getTotalViews($request, 'yes');
-        $totalViewBasedOnLanguage = $this->getTotalViewsBasedOnLanguage($request);
+        $totalViewsBasedOnLanguage = $this->getTotalViewsBasedOnLanguage($request);
 
-        return view('admin.analytics.sitewide.index', compact('languages', 'genders', 'devices', 'platforms', 'browsers', 'top10ViewedPages', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews', 'platformCounts', 'browserCounts', 'totalViewBasedOnLanguage'));
+        return view('admin.analytics.sitewide.index', compact('languages', 'genders', 'devices', 'platforms', 'browsers', 'top10ViewedPages', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews', 'platformCounts', 'browserCounts', 'totalViewsBasedOnLanguage'));
     }
 
     private function getTop10ViewedPages($request): Collection
