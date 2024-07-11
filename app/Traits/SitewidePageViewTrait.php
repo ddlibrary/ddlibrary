@@ -28,7 +28,6 @@ trait SitewidePageViewTrait
                 'title' => $title,
                 'page_url' => $request->url(),
                 'user_agent' => $request->userAgent(),
-                'ip_address' => $request->ip(),
                 'browser_id' => $browser->id,
                 'browser' => $browser->name. ' '. $agent->version($browser->name),
                 'is_bot' => $agent->isBot(),
