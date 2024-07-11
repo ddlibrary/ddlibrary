@@ -110,7 +110,6 @@
                                     <th class="text-center">NO</th>
                                     <th class="text-left">Title</th>
                                     <th class="text-center">Language</th>
-                                    <th class="text-center">IP</th>
                                     <th class="text-center">Browser</th>
                                     <th class="text-center">Platform</th>
                                     <th class="text-center">Device</th>
@@ -132,7 +131,6 @@
                                         </td>
                                         </a>
                                         <td class="text-center">{{ $view->language }}</tdDevice>
-                                        <td class="text-center">{{ $view->ip_address }}</td>
                                         <td class="text-center">{{ $view->browser }}</td>
                                         <td class="text-center">{{ $view->platform->name }}</td>
                                         <td class="text-center">{{ $view->device->name }}</td>
