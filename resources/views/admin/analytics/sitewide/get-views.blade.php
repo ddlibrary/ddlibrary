@@ -8,21 +8,21 @@
                     <div class="row">
 
                         {{-- From Date --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label for="from-date">From </label>
                             <input type="date" id="from-date" value="{{ request()->date_from }}" class="form-control"
                                 name="date_from">
                         </div>
 
                         {{-- To Date --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label for="to-date">To </label>
                             <input type="date" id="to-date" value="{{ request()->date_to }}" class="form-control"
                                 name="date_to">
                         </div>
 
                         {{-- Gender --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label>Gender </label>
                             <select class="form-control" name="gender">
                                 <option value="">...</option>
@@ -34,7 +34,7 @@
                         </div>
 
                         {{-- Language --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label for="language">Language </label>
                             <select class="form-control" name="language" id="language">
                                 <option value="">...</option>
@@ -46,7 +46,7 @@
                         </div>
 
                         {{-- Device --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label for="device">Device </label>
                             <select class="form-control" name="device_id" id="device">
                                 <option value="">...</option>
@@ -58,7 +58,7 @@
                         </div>
 
                         {{-- Platform --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label for="platform">Platform </label>
                             <select class="form-control" name="platform_id" id="platform">
                                 <option value="">...</option>
@@ -70,7 +70,7 @@
                         </div>
 
                         {{-- Browser --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label for="browser">Browser </label>
                             <select class="form-control" name="browser_id" id="browser">
                                 <option value="">...</option>
@@ -82,7 +82,7 @@
                         </div>
 
                         {{-- Is Robot --}}
-                        <div class="col-md-2">
+                        <div class="col-md-2 mb-4">
                             <label for="page-type">Is Robt </label>
                             <select class="form-control" name="is_bot" id="is-robot">
                                 <option value="">...</option>
@@ -91,7 +91,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-2" style="align-self: flex-end">
+                        <div class="col-md-2 mb-4" style="align-self: flex-end">
                             <input class="btn btn-primary" type="submit" value="Filter">
                         </div>
                     </div>
