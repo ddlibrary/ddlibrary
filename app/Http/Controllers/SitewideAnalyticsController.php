@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\LanguageEnum;
 use App\Models\Browser;
 use App\Models\Device;
-use App\Models\PageType;
 use App\Models\Platform;
 use App\Models\SitewidePageView;
 use App\Traits\GenderTrait;
@@ -25,7 +24,6 @@ class SitewideAnalyticsController extends Controller
         $languages = $this->getLanguages();
         $genders = $this->genders();
         $devices = Device::all(['id', 'name']);
-        $pageTypes = PageType::all(['id', 'name']);
         $browsers = Browser::all(['id', 'name']);
         $platforms = Platform::all(['id', 'name']);
 
@@ -49,18 +47,10 @@ class SitewideAnalyticsController extends Controller
             ])
             ->get();
 
-        $pageTypeCounts = PageType::select(['id', 'name'])
-            ->withCount([
-                'sitewidePageViews' => function ($query) use ($request) {
-                    return $this->filterPageViews($query, $request);
-                },
-            ])
-            ->get();
-
         $totalGuestViews = $this->getTotalViews($request, 'yes');
         $totalViewBasedOnLanguage = $this->getTotalViewBasedOnLanguage($request);
 
-        return view('admin.analytics.sitewide.index', compact('languages', 'genders', 'pageTypes', 'devices', 'platforms', 'browsers', 'top10ViewedPages', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews', 'platformCounts', 'browserCounts', 'pageTypeCounts', 'totalViewBasedOnLanguage'));
+        return view('admin.analytics.sitewide.index', compact('languages', 'genders', 'devices', 'platforms', 'browsers', 'top10ViewedPages', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews', 'platformCounts', 'browserCounts', 'totalViewBasedOnLanguage'));
     }
 
     private function getTop10ViewedPages($request): Collection
@@ -110,7 +100,6 @@ class SitewideAnalyticsController extends Controller
         $languages = $this->getLanguages();
         $genders = $this->genders();
         $devices = Device::all(['id', 'name']);
-        $pageTypes = PageType::all(['id', 'name']);
         $browsers = Browser::all(['id', 'name']);
         $platforms = Platform::all(['id', 'name']);
 
