@@ -14,7 +14,6 @@ return new class extends Migration {
             $table->id();
             $table->string('page_url', 255);
             $table->string('user_agent', 255);
-            $table->string('ip_address', 45);
             $table->string('browser', 45);
             $table->string('title')->nullable();
             $table->boolean('is_bot')->default(false);
