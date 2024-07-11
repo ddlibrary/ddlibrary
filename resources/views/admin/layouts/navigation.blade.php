@@ -98,9 +98,9 @@
         <div class="collapse-divider"></div>
         <h6 class="collapse-header">Analytics</h6>
         <a class="collapse-item" href="{{ URL::to('admin/analytics/sitewide') }}">Sitewide Analytics</a>
-        <a class="collapse-item" href="{{ URL::to('admin/analytics/resources') }}">Resource Analytics</a>
-        <a class="collapse-item" href="{{ URL::to('admin/analytics/glossaries') }}">Glossary Analytics</a>
-        <a class="collapse-item" href="{{ URL::to('admin/analytics/users') }}">User Analytics</a>
+        <a class="collapse-item" href="{{ URL::to('admin/analytics/resource') }}">Resource Analytics</a>
+        <a class="collapse-item" href="{{ URL::to('admin/analytics/glossary') }}">Glossary Analytics</a>
+        <a class="collapse-item" href="{{ URL::to('admin/analytics/user') }}">User Analytics</a>
         <a class="collapse-item" href="{{ URL::to('admin/analytics') }}">DDL Analytics</a>
     </div>
     </div>

@@ -288,14 +288,15 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     
     // Analytics
     Route::prefix('admin/analytics')->middleware('admin')->group(function(){
-        Route::get('resources', [ResourceAnalyticsController::class, 'index']);
+        Route::get('user', [UserAnalyticsController::class, 'index']);
+        Route::get('resource', [ResourceAnalyticsController::class, 'index']);
         Route::controller(SitewideAnalyticsController::class)->group(function(){
             Route::get('sitewide', 'index');
             Route::get('reports/sitewide', 'view');
         });
 
         Route::controller(GlossaryAnalyticsController::class)->group(function(){
-            Route::get('glossaries', 'index');
+            Route::get('glossary', 'index');
             Route::get('reports/glossary', 'view');
         });
     });
