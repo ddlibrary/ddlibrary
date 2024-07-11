@@ -85,8 +85,8 @@ class SitewideAnalyticsController extends Controller
             return $this->filterPageViews($query, $request);
         })
             ->groupBy('language')
-            ->select('language', DB::raw('count(*) as count'))
-            ->orderBy('count', 'desc')
+            ->select('language', DB::raw('count(*) as view_count'))
+            ->orderBy('view_count', 'desc')
             ->get();
 
         return $totalResources->map(function ($item) {

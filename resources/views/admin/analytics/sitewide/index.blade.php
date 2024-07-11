@@ -120,7 +120,7 @@
                                 </div>
                                 <div class="card-body text-secondary p-2">
 
-                                    @forelse ($totalViewBasedOnLanguage as $view)
+                                    @forelse ($totalViewsBasedOnLanguage as $view)
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
@@ -128,7 +128,7 @@
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($view->count) }}
+                                                    {{ number_format($view->view_count) }}
                                                 </span>
                                             </div>
                                         </div>
