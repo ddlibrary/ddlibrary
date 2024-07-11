@@ -60,9 +60,9 @@ class GlossaryAnalyticsController extends Controller
 
 
         $totalGuestViews = $this->getTotalViews($request, 'yes');
-        $totalViewBasedOnLanguage = $this->getTotalViewsBasedOnLanguage($request);
+        $totalViewsBasedOnLanguage = $this->getTotalViewsBasedOnLanguage($request);
 
-        return view('admin.analytics.glossary.index', compact('languages', 'genders', 'glossarySubjects', 'devices', 'platforms', 'browsers', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews', 'platformCounts', 'browserCounts', 'glossarySubjectCounts', 'totalViewBasedOnLanguage', 'status'));
+        return view('admin.analytics.glossary.index', compact('languages', 'genders', 'glossarySubjects', 'devices', 'platforms', 'browsers', 'totalViews', 'totalRegisteredUsersViews', 'totalGuestViews', 'platformCounts', 'browserCounts', 'glossarySubjectCounts', 'totalViewsBasedOnLanguage', 'status'));
     }
 
     private function getTotalViews($request, $isGuest = null): float
