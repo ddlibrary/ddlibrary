@@ -142,7 +142,7 @@
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
-                                                    {{ number_format($view->count) }}
+                                                    {{ number_format($view->view_count) }}
                                                 </span>
                                             </div>
                                         </div>
