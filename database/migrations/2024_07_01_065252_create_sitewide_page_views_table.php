@@ -20,7 +20,6 @@ return new class extends Migration {
             $table->boolean('is_bot')->default(false);
             $table->string('language', 4);
             $table->string('gender', 11)->index()->nullable();
-            $table->foreignId('page_type_id')->constrained('page_types');
             $table->foreignId('device_id')->constrained('devices');
             $table->foreignId('platform_id')->constrained('platforms');
             $table->foreignId('browser_id')->constrained('browsers');
