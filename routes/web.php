@@ -11,6 +11,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\FlagController;
+use App\Http\Controllers\GlossaryAnalyticsController;
 use App\Http\Controllers\GlossaryController;
 use App\Http\Controllers\GlossarySubjectController;
 use App\Http\Controllers\HomeController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ResourceAnalyticsController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SitewideAnalyticsController;
 use App\Http\Controllers\StoryWeaverController;
 use App\Http\Controllers\SubscribeController;
 use App\Http\Controllers\SurveyAnswerController;
@@ -283,13 +285,24 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::post('', 'store')->name('subscribe.store');
     });
 
+    
     // Analytics
     Route::prefix('admin/analytics')->middleware('admin')->group(function(){
-        Route::get('resources', [ResourceAnalyticsController::class, 'index']);
-        Route::get('users',  [UserAnalyticsController::class, 'index']);
+        Route::get('user', [UserAnalyticsController::class, 'index']);
+        Route::get('resource', [ResourceAnalyticsController::class, 'index']);
+        Route::controller(SitewideAnalyticsController::class)->group(function(){
+            Route::get('sitewide', 'index');
+            Route::get('reports/sitewide', 'view');
+        });
+
+        Route::controller(GlossaryAnalyticsController::class)->group(function(){
+            Route::get('glossary', 'index');
+            Route::get('reports/glossary', 'view');
+        });
     });
 
 });
+
 Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });

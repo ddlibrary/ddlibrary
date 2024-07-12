@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Relations\BelongsToResource;
+use App\Models\Relations\BelongsToUser;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class ResourceView extends Model
 {
-    public function resource(): BelongsTo
-    {
-        return $this->belongsTo(Resource::class);
-    }
+    use BelongsToResource, BelongsToUser;
 
     public function getCount(): Collection
     {
