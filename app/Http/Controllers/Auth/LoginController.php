@@ -58,10 +58,10 @@ class LoginController extends Controller
     {
         $googleUser = Socialite::driver('google')->user();
 
-        $user = DB::table('users')->where('email', $googleUser->email)->first();
+        $user = DB::table('users')->where('provider_id', $googleUser->id)->first();
 
         if (! $user) {
-            $user = $this->registerUser($googleUser);
+            $user = $this->registerUser($googleUser, 'google');
         }
 
         Auth::loginUsingId($user->id);
@@ -79,15 +79,17 @@ class LoginController extends Controller
         return $username;
     }
 
-    private function registerUser($data)
+    private function registerUser($data, $providerName)
     {
         $user = new User();
         $user->username = $this->getUserName($data->email);
         $user->email = $data->email;
         $user->avatar = $data->avatar;
+        $user->provider_name = $providerName;
+        $user->provider_id = $data->id;
         $user->status = 1;
         $user->accessed_at = Carbon::now();
-        $user->language = Config::get('app.locale');
+        $user->language = config('app.locale');
         $user->email_verified_at = Carbon::now();
         $user->save();
 
@@ -118,7 +120,7 @@ class LoginController extends Controller
         $user = DB::table('users')->where('email', $facebookUser->email)->first();
 
         if (! $user) {
-            $user = $this->registerUser($facebookUser);
+            $user = $this->registerUser($facebookUser, 'facebook');
         }
 
         Auth::loginUsingId($user->id);

@@ -50,13 +50,13 @@ return [
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => 'https://library.darakhtdanesh.org/login/google/callback/',
+        'redirect' => env('GOOGLE_REDIRECT', 'https://library.darakhtdanesh.org/login/google/callback/'),
     ],
 
     // Configure Google ReCAPTCHA v3 key+secret
     'recaptcha_v3' => [
         'site_key' => env('RECAPTCHAV3_SITEKEY'),
         'secret_key' => env('RECAPTCHAV3_SECRET'),
-    ]
+    ],
 
 ];

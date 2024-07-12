@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contact;
 use App\Mail\ContactPage;
+use App\Models\Contact;
 use App\Models\Setting;
-use App\Models\User;
 use App\Rules\RecaptchaRule;
+use App\Traits\SitewidePageViewTrait;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -20,6 +20,7 @@ use Illuminate\View\View;
 
 class ContactController extends Controller
 {
+    use SitewidePageViewTrait;
     /**
      * Display a listing of the resource.
      *
@@ -63,22 +64,21 @@ class ContactController extends Controller
      *
      * @return Application|BladeView|Factory|false|View
      */
-    public function create(): View
+    public function create(Request $request): View
     {
+        $this->pageView($request, 'Contact us');
+
         if (Auth::check()) {
-            //Get the currently authenticated user details...
-            //get login email details using Auth facade
-
-            if ($email = Auth::user()->email) {
-                $profile = User::users()->where('id', Auth::id())->first();
-                $firstname = $profile->first_name;
-                $lastname = $profile->last_name;
-                $fullname = $firstname.' '.$lastname;
-
-                return view('contacts.contacts_view', ['email' => $email, 'fullname' => $fullname]);
+            $user = auth()->user();
+            
+            if ($user->email) {
+                return view('contacts.contacts_view', [
+                    'email' => $user->email, 
+                    'fullname' => $user->profile->first_name . ' ' . $user->profile->last_name
+                ]);
             }
-
         }
+
         //setting the search session empty
         DDLClearSession();
 

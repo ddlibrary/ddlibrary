@@ -15,7 +15,7 @@ class SurveyQuestionController extends Controller
 {
     public function index($id): View
     {
-        $lang = Config::get('app.locale');
+        $lang = config('app.locale');
         $survey = Survey::find($id);
         $survey_questions = SurveyQuestion::where(['survey_id' => $survey->tnid, 'language' => $lang])->get();
 
