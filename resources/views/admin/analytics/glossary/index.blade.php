@@ -152,7 +152,7 @@
 
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            Total {{ $status }}
+                                            Total <span class="text-lowercase">{{ $status }}</span>
                                         </div>
                                         <span class="badge badge-info">
                                             {{ number_format($totalViewsBasedOnLanguage->sum('view_count')) }}
@@ -169,7 +169,7 @@
                                 <div class="card-body text-secondary p-2">
                                     <div class="card-text">
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
-                                            <div class="p-1 text-capitalize">
+                                            <div class="p-1">
                                                 1. Total views
                                             </div>
                                             <div class="p-1">
@@ -179,7 +179,7 @@
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
-                                            <div class="p-1 text-capitalize">
+                                            <div class="p-1">
                                                 2. Unregistered
                                             </div>
                                             <div class="p-1">
@@ -189,7 +189,7 @@
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
-                                            <div class="p-1 text-capitalize">
+                                            <div class="p-1">
                                                 3. Registered
                                             </div>
                                             <div class="p-1">
