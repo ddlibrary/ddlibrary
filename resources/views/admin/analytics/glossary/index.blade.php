@@ -170,17 +170,7 @@
                                     <div class="card-text">
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
-                                                1. Total views
-                                            </div>
-                                            <div class="p-1">
-                                                <span class="badge badge-info">
-                                                    {{ number_format($totalViews) }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
-                                            <div class="p-1">
-                                                2. Unregistered
+                                                1. Unregistered
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -190,7 +180,7 @@
                                         </div>
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
-                                                3. Registered
+                                                2. Registered
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -198,6 +188,14 @@
                                                 </span>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            Total views
+                                        </div>
+                                        <span class="badge badge-info">
+                                            {{ number_format($totalViews) }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>

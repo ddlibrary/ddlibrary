@@ -148,25 +148,15 @@
                             </div>
                         </div>
 
-                        {{-- Total views base on user types  --}}
+                        {{-- Total views by user types'  --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Total views based on user types </div>
+                                <div class="card-header">Total views by user types' </div>
                                 <div class="card-body text-secondary p-2">
                                     <div class="card-text">
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1 text-capitalize">
-                                                1. Total views
-                                            </div>
-                                            <div class="p-1">
-                                                <span class="badge badge-info">
-                                                    {{ number_format($totalViews) }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
-                                            <div class="p-1 text-capitalize">
-                                                2. Unregistered
+                                                1. Unregistered
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -176,7 +166,7 @@
                                         </div>
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1 text-capitalize">
-                                                3. Registered
+                                                2. Registered
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -184,6 +174,14 @@
                                                 </span>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            Total views
+                                        </div>
+                                        <span class="badge badge-info">
+                                            {{ number_format($totalViews) }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
