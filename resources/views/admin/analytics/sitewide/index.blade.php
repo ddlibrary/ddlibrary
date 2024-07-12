@@ -148,46 +148,6 @@
                             </div>
                         </div>
 
-                        {{-- Top 10 viewed pages  --}}
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <div class="card border-secondary mb-3">
-                                <div class="card-header">Top 10 viewed pages</div>
-                                <div class="card-body text-secondary p-2">
-                                    <div class="card-text">
-                                        @foreach ($top10ViewedPages as $page)
-                                            <div class="d-flex  justify-content-between mb-2 rounded bg-light text-dark">
-                                                <div class="p-1 d-flex">
-                                                    <div class="flex-1"
-                                                        style="flex-wrap: wrap;
-                                                    word-break: break-all;
-                                                    overflow-wrap: break-word;">
-                                                        <a href="{{ $page->page_url }}" target="_blank">
-                                                            {{ $page->page_url }}
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="p-1 pl-4">
-                                                    <span class="badge badge-info">
-                                                        {{ number_format($page->visit_count) }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
-                                            <div class="p-1 text-capitalize">
-                                                Total top 10 viewed pages
-                                            </div>
-                                            <div class="p-1">
-                                                <span class="badge badge-info">
-                                                    {{ number_format($top10ViewedPages->sum('visit_count')) }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         {{-- Total views base on user types  --}}
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card border-secondary mb-3">
@@ -285,6 +245,46 @@
                                         <h2 class="alert alert-danger">N/A</h2>
                                     @endforelse
 
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Top 10 viewed pages  --}}
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="card border-secondary mb-3">
+                                <div class="card-header">Top 10 viewed pages</div>
+                                <div class="card-body text-secondary p-2">
+                                    <div class="card-text">
+                                        @foreach ($top10ViewedPages as $page)
+                                            <div class="d-flex  justify-content-between mb-2 rounded bg-light text-dark">
+                                                <div class="p-1 d-flex">
+                                                    <div class="flex-1"
+                                                        style="flex-wrap: wrap;
+                                                    word-break: break-all;
+                                                    overflow-wrap: break-word;">
+                                                        <a href="{{ $page->page_url }}" target="_blank">
+                                                            {{ $page->page_url }}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="p-1 pl-4">
+                                                    <span class="badge badge-info">
+                                                        {{ number_format($page->visit_count) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1 text-capitalize">
+                                                Total top 10 viewed pages
+                                            </div>
+                                            <div class="p-1">
+                                                <span class="badge badge-info">
+                                                    {{ number_format($top10ViewedPages->sum('visit_count')) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
