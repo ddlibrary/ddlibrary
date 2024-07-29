@@ -46,4 +46,8 @@ class TaxonomyTerm extends Model
             return $query->where('language', $language);
         }
     }
+
+    public function resources(){
+        return $this->hasMany(ResourceSubjectArea::class, 'tid');
+    }
 }

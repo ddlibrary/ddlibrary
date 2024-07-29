@@ -228,6 +228,51 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="card border-secondary mb-3">
+                                <div class="card-header d-flex justify-content-between">
+                                    <div>
+                                        Resource Type
+                                    </div>
+                                    <div class="display-inline-block text-right">
+                                        <span class="fa fa-language"></span>
+                                    </div>
+                                </div>
+                                <div class="card-body text-secondary p-2">
+
+                                    @forelse ($resourceTypes as $resourceType)
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1">
+                                                {{ $loop->iteration }}.
+                                                @if ($resourceType->name)
+                                                    {{ $resourceType->name }}
+                                                @else
+                                                    <no resource type>
+                                                @endif
+                                            </div>
+                                            <div class="p-1">
+                                                <span class="badge badge-info">
+                                                    {{ number_format($resourceType->resources_count) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <h2 class="alert alert-danger">N/A</h2>
+                                    @endforelse
+                                    <div class="card-text">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                Total
+                                            </div>
+                                            <div>
+                                                <span class="badge badge-info">
+                                                    {{ number_format($subjectAreas->sum('resources_count')) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         {{-- Top 10 Authors --}}
@@ -299,6 +344,54 @@
                                         <h2 class="alert alert-danger">N/A</h2>
                                     @endforelse
 
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Subject Areas --}}
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="card border-secondary mb-3">
+                                <div class="card-header d-flex justify-content-between">
+                                    <div>
+                                        Subject Area
+                                    </div>
+                                    <div class="display-inline-block text-right">
+                                        <span class="fa fa-language"></span>
+                                    </div>
+                                </div>
+                                <div class="card-body text-secondary p-2">
+
+                                    @forelse ($subjectAreas as $subjectArea)
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1">
+                                                {{ $loop->iteration }}.
+                                                @if ($subjectArea->name)
+                                                    {{ $subjectArea->name }}
+                                                @else
+                                                    <no subjectArea>
+                                                @endif
+                                            </div>
+                                            <div class="p-1">
+                                                <span class="badge badge-info">
+                                                    {{ number_format($subjectArea->resources_count) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <h2 class="alert alert-danger">N/A</h2>
+                                    @endforelse
+                                    <div class="card-text">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                Total
+                                            </div>
+                                            <div>
+                                                <span class="badge badge-info">
+                                                    {{ number_format($subjectAreas->sum('resources_count')) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

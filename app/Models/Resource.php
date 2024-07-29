@@ -164,6 +164,9 @@ class Resource extends Model
             ->when(isset($requestArray['language']), function ($query) use ($requestArray) {
                 return $query->where('rs.language', $requestArray['language']);
             })
+            ->when(isset($requestArray['date_from']) && isset($requestArray['date_to']), function ($query) use ($requestArray) {
+                return $query->whereBetween('rs.created_at', [$requestArray['date_from'], $requestArray['date_to']]);
+            })
             ->when(isset($requestArray['subject_area']), function ($query) use ($requestArray) {
                 return $query->where('rsa.tid', $requestArray['subject_area']);
             })

@@ -26,6 +26,7 @@ use App\Models\ResourceTranslator;
 use App\Models\ResourceView;
 use App\Models\Setting;
 use App\Models\TaxonomyTerm;
+use App\Traits\LanguageTrait;
 use App\Traits\SitewidePageViewTrait;
 use Carbon\Carbon;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -46,7 +47,7 @@ use Throwable;
 
 class ResourceController extends Controller
 {
-    use SitewidePageViewTrait;
+    use LanguageTrait, SitewidePageViewTrait;
     /**
      * Create a new controller instance.
      *
@@ -64,6 +65,7 @@ class ResourceController extends Controller
         DDLClearSession();
 
         $myResources = new Resource();
+        $languages = $this->getLanguages();
 
         $resources = $myResources->filterResources($request->all());
 
@@ -71,7 +73,7 @@ class ResourceController extends Controller
 
         $filters = $request->session()->get('filters');
 
-        return view('admin.resources.resources', compact('resources', 'filters'));
+        return view('admin.resources.resources', compact('resources', 'filters', 'languages'));
     }
 
     public function updateTid(Request $request, $resourceId): RedirectResponse
