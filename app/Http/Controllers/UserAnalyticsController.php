@@ -74,8 +74,9 @@ class UserAnalyticsController extends Controller
 
     private function getTop10ActiveUsers($request): object
     {
-        $query = DB::table('activity_log')->select('user_profiles.first_name', 'user_profiles.last_name', DB::raw('count(*) as activity_count'))
-            ->join('users', 'users.id', '=', 'activity_log.causer_id')
+
+        $query = DB::table('sitewide_page_views')->select('user_profiles.first_name', 'user_profiles.last_name', DB::raw('count(*) as activity_count'))
+            ->join('users', 'users.id', '=', 'sitewide_page_views.user_id')
             ->join('user_profiles', 'user_profiles.user_id', '=', 'users.id')
             ->join('user_roles', function ($join) {
                 $join->on('user_roles.user_id', '=', 'users.id')
@@ -86,7 +87,7 @@ class UserAnalyticsController extends Controller
             ->limit(10);
 
         if ($request->date_from && $request->date_to) {
-            $query->whereBetween('activity_log.created_at', [$request->date_from, $request->date_to]);
+            $query->whereBetween('sitewide_page_views.created_at', [$request->date_from, $request->date_to]);
         }
 
         return $query->get();
