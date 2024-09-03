@@ -43,6 +43,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Illuminate\Validation\Rules\File;
+use Illuminate\Validation\Rule;
 use Throwable;
 
 class ResourceController extends Controller
@@ -201,12 +203,16 @@ class ResourceController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required',
-            'image' => 'required|file|mimes:jpg,jpeg,png|max:3072', // Max size is 3MB
+            'image' => ['required', 'file','mimes:jpg,jpeg,png','max:3072',File::image()->dimensions(
+                Rule::dimensions()->ratio(1.0)
+            )],
             'author' => 'string|nullable',
             'publisher' => 'string|nullable',
             'translator' => 'string|nullable',
             'language' => 'required',
             'abstract' => 'required',
+        ], [
+            'image.dimensions' => 'The resource image must be square in shape.', // Custom message
         ]);
 
         if (isset($validatedData['image'])) {
