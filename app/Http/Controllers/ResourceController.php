@@ -201,7 +201,7 @@ class ResourceController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required',
-            'image' => 'file|mimes:jpg,jpeg,png|max:3072', // Max size is 3MB
+            'image' => 'required|file|mimes:jpg,jpeg,png|max:3072', // Max size is 3MB
             'author' => 'string|nullable',
             'publisher' => 'string|nullable',
             'translator' => 'string|nullable',
