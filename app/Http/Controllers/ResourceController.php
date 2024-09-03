@@ -201,12 +201,29 @@ class ResourceController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required',
+            'image' => 'file|mimes:jpg,jpeg,png|max:3072', // Max size is 3MB
             'author' => 'string|nullable',
             'publisher' => 'string|nullable',
             'translator' => 'string|nullable',
             'language' => 'required',
             'abstract' => 'required',
         ]);
+
+        if (isset($validatedData['image'])) {
+            $image = $validatedData['image'];
+            $fileName = $image->getClientOriginalName();
+            $fileExtension = \File::extension($fileName);
+            $fileName = auth()->user()->id.'_'.time().'.'.$fileExtension;
+
+            // Store the file in S3
+            Storage::disk('s3')->put('resources/'.$fileName, file_get_contents($image));
+
+            // Save the full S3 path
+            $validatedData['resource_image'] = Storage::disk('s3')->url('resources/'.$fileName);
+
+            unset($validatedData['image']);
+
+        }
 
         $request->session()->put('resource1', $validatedData);
 
@@ -346,6 +363,7 @@ class ResourceController extends Controller
             $myResources = new Resource();
 
             $myResources->title = $finalArray['title'];
+            $myResources->image = $finalArray['resource_image'];
             $myResources->abstract = $finalArray['abstract'];
             $myResources->language = $finalArray['language'];
             $myResources->user_id = Auth::id();
