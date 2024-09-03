@@ -74,7 +74,7 @@
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <div id="editor">
-                <textarea class="form-control{{ $errors->has('abstract') ? ' is-invalid' : '' }}" name="abstract" style="height: 200px">{{ @$resource['abstract'] }}</textarea>
+                <textarea class="form-control w-100 {{ $errors->has('abstract') ? ' is-invalid' : '' }}" name="abstract" style="height: 200px">{{ @$resource['abstract'] }}</textarea>
             </div>
             @if ($errors->has('abstract'))
                 <span class="invalid-feedback">
@@ -88,22 +88,5 @@
         </form>
     </div>
 </section>
-@push('scripts')
-    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('ckeditor/config.js') }}"></script>
 
-    <script>
-        var getUrl = window.location;
-        var baseUrl = <?php echo json_encode(URL::to('/')); ?>;
-        var options = {
-            filebrowserImageBrowseUrl: baseUrl+'/laravel-filemanager?type=Images',
-            filebrowserImageUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Images&_token=',
-            filebrowserBrowseUrl: baseUrl+'/laravel-filemanager?type=Files',
-            filebrowserUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Files&_token='
-        };
-        CKEDITOR.config.contentsLangDirection = '{{ app()->getLocale() != "en"?"rtl":"ltr"}}';
-        CKEDITOR.config.filebrowserUploadMethod = 'form';
-        CKEDITOR.replace( 'abstract', options );
-    </script>
-@endpush
 @endsection
