@@ -26,15 +26,15 @@ class ExtractResourceImageUrl extends Command
      */
     public function handle()
     {
-        $records = DB::table('resources')->select('id','abstract','image')->get();
+        $resources = DB::table('resources')->select('id','abstract','image')->get();
 
-        foreach ($records as $record) {
+        foreach ($resources as $resource) {
             // Use regex to extract the image src
-            preg_match('/<img[^>]+src=["\']([^"\']+)["\']/i', $record->abstract, $matches);
+            preg_match('/<img[^>]+src=["\']([^"\']+)["\']/i', $resource->abstract, $matches);
 
 
             if (isset($matches[1])) {
-                DB::table('resources')->where('id', $record->id)->update(['image' => $matches[1]]);
+                DB::table('resources')->where('id', $resource->id)->update(['image' => $matches[1]]);
             }
         }
 
