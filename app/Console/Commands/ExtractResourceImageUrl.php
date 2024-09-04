@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ExtractResourceImageUrl extends Command
 {
@@ -13,7 +14,7 @@ class ExtractResourceImageUrl extends Command
      * @var string
      */
     protected $signature = 'app:extract:image-url';
-    
+
     /**
      * The console command description.
      *
@@ -26,18 +27,29 @@ class ExtractResourceImageUrl extends Command
      */
     public function handle()
     {
-        $resources = DB::table('resources')->select('id','abstract','image')->get();
-
+        $resources = DB::table('resources')->select('id', 'abstract')->get();
+        $baseUrl = 'https://library.darakhtdanesh.org/';
         foreach ($resources as $resource) {
-            // Use regex to extract the image src
-            preg_match('/<img[^>]+src=["\']([^"\']+)["\']/i', $resource->abstract, $matches);
+            $defaultImage = $baseUrl . 'storage/files/placeholder_image.png';
+            // Extract the image source using regex
+            preg_match('/src=["\']([^"\']+)["\']/', $resource->abstract, $matches);
 
+            if (!empty($matches[1])) {
+                $absStr = $matches[1];
 
-            if (isset($matches[1])) {
-                DB::table('resources')->where('id', $resource->id)->update(['image' => $matches[1]]);
+                // Skip if the URL contains 'youtube'
+                if (strpos($absStr, 'youtube') === false) {
+                    $imageName = basename($absStr); // Get the image name from the URL
+
+                    if ($imageName) {
+                        $defaultImage = $baseUrl . Storage::disk('public')->url($imageName);
+                    }
+                }
             }
-        }
 
-        $this->info('Image URLs extracted and stored successfully.');
+            DB::table('resources')
+                ->where('id', $resource->id)
+                ->update(['image' => $defaultImage]);
+        }
     }
 }
