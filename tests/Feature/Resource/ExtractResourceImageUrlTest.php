@@ -18,6 +18,8 @@ class ExtractResourceImageUrlTest extends TestCase
         $user = User::factory()->create();
         
         $this->actingAs($user);
+        $baseUrl = 'https://library.darakhtdanesh.org';
+        $defaultImage = $baseUrl . '/storage/files/placeholder_image.png';
 
         DB::table('resources')->insert([
             'id' => 1,
@@ -68,10 +70,10 @@ class ExtractResourceImageUrlTest extends TestCase
         $this->artisan('app:extract:image-url')->assertExitCode(0);
 
         // Check the database for the expected results
-        $this->assertEquals('https://example.com/image1.png', DB::table('resources')->where('id', 1)->value('image'));
-        $this->assertNull(DB::table('resources')->where('id', 2)->value('image'));
-        $this->assertEquals('https://example.com/image2.png', DB::table('resources')->where('id', 3)->value('image'));
-        $this->assertEquals('https://example.com/image3.png', DB::table('resources')->where('id', 4)->value('image'));
+        $this->assertEquals($baseUrl.'/storage/files/image1.png', DB::table('resources')->where('id', 1)->value('image'));
+        $this->assertEquals($defaultImage, DB::table('resources')->where('id', 2)->value('image'));
+        $this->assertEquals($baseUrl.'/storage/files/image2.png', DB::table('resources')->where('id', 3)->value('image'));
+        $this->assertEquals($baseUrl.'/storage/files/image3.png', DB::table('resources')->where('id', 4)->value('image'));
     }
 
 }
