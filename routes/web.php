@@ -290,6 +290,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::prefix('admin/analytics')->middleware('admin')->group(function(){
         Route::get('user', [UserAnalyticsController::class, 'index']);
         Route::get('resource', [ResourceAnalyticsController::class, 'index']);
+        Route::get('resource-subject-area', [ResourceAnalyticsController::class, 'resourceSubjectArea']);
+
         Route::controller(SitewideAnalyticsController::class)->group(function(){
             Route::get('sitewide', 'index');
             Route::get('reports/sitewide', 'view');
