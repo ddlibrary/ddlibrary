@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Admin\SubscriberController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -42,7 +43,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Spatie\Honeypot\ProtectAgainstSpam;
 
 if (env('APP_ENV') === 'production') {
-    \URL::forceScheme('https');
+    URL::forceScheme('https');
 }
 
 if (version_compare(PHP_VERSION, '7.2.0', '>=')) {

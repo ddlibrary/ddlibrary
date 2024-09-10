@@ -6,7 +6,7 @@ use App\Models\SurveySetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Redirect;
+use Illuminate\Support\Facades\Redirect;
 
 class SurveySettingController extends Controller
 {

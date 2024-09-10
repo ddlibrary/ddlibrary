@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App;
+use Illuminate\Support\Facades\App;
 use App\Models\Resource;
 use App\Models\SitewidePageView;
 use App\Models\TaxonomyTerm;

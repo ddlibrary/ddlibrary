@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\File;
 use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
 use App\Models\Resource;
@@ -268,7 +269,7 @@ class ResourceController extends Controller
                 $fileMime = $attachments->getMimeType();
                 $fileSize = $attachments->getSize();
                 $fileName = $attachments->getClientOriginalName();
-                $fileExtension = \File::extension($fileName);
+                $fileExtension = File::extension($fileName);
                 $fileName = auth()->user()->id.'_'.time().'.'.$fileExtension;
                 //$attachments->storeAs($fileName,'private');
                 Storage::disk('s3')->put('resources/'.$fileName, file_get_contents($attachments));
@@ -870,7 +871,7 @@ class ResourceController extends Controller
                 $fileMime = $attachments->getMimeType();
                 $fileSize = $attachments->getSize();
                 $fileName = $attachments->getClientOriginalName();
-                $fileExtension = \File::extension($fileName);
+                $fileExtension = File::extension($fileName);
                 $fileName = auth()->user()->id.'_'.time().'.'.$fileExtension;
                 //$attachments->storeAs($fileName,'private');
                 unset($validatedData['attachments']);
