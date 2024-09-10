@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddPostTranslatePageRequest;
-use App\Http\Requests\UpdatePageRequest;
 use App\Http\Requests\StorePageRequest;
+use App\Http\Requests\UpdatePageRequest;
 use App\Models\Page;
 use App\Traits\SitewidePageViewTrait;
 use Illuminate\Contracts\Foundation\Application;

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\App;
 use App\Models\Resource;
 use App\Models\SitewidePageView;
 use App\Models\TaxonomyTerm;
+use Illuminate\Support\Facades\App;
 use Illuminate\View\View;
 
 class ImpactController extends Controller

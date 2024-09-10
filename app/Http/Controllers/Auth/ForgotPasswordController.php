@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Requests\Auth\SendResetLinkEmailForgotPasswordRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\SendResetLinkEmailForgotPasswordRequest;
 use App\Rules\RecaptchaRule;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
-use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class ForgotPasswordController extends Controller

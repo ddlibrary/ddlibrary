@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreContactRequest extends FormRequest
 {
@@ -13,23 +12,23 @@ class StoreContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-'name'                 => [
+            'name' => [
                 'required',
             ],
-'email'                => [
+            'email' => [
                 'required',
                 'email',
             ],
-'subject'              => [
+            'subject' => [
                 'required',
             ],
-'message'              => [
+            'message' => [
                 'required',
             ],
-'g-recaptcha-response' => [
-'required',
-new RecaptchaRule(),
-],
-];
+            'g-recaptcha-response' => [
+                'required',
+                new RecaptchaRule,
+            ],
+        ];
     }
 }

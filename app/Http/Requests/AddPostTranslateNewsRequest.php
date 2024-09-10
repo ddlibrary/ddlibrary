@@ -12,21 +12,21 @@ class AddPostTranslateNewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-'title'     => [
+            'title' => [
                 'required',
             ],
-'language'  => [
+            'language' => [
                 'nullable',
             ],
-'summary'   => [
+            'summary' => [
                 'required',
             ],
-'body'      => [
+            'body' => [
                 'required',
             ],
-'published' => [
+            'published' => [
                 'integer',
             ],
-];
+        ];
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UpdateProfileUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Resource;
 use App\Models\ResourceFavorite;
 use App\Models\Role;
@@ -19,7 +19,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Laracsv\Export;

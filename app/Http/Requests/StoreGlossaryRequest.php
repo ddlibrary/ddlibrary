@@ -12,18 +12,18 @@ class StoreGlossaryRequest extends FormRequest
     public function rules(): array
     {
         return [
-'english' => [
+            'english' => [
                 'required_without_all:farsi,pashto',
             ],
-'farsi'   => [
+            'farsi' => [
                 'required_without_all:english,pashto',
             ],
-'pashto'  => [
+            'pashto' => [
                 'required_without_all:farsi,english',
             ],
-'subject' => [
+            'subject' => [
                 'required',
             ],
-];
+        ];
     }
 }

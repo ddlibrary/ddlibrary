@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Admin\SubscriberController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -39,6 +38,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VocabularyController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Spatie\Honeypot\ProtectAgainstSpam;
 
@@ -123,7 +123,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('admin/get-pages', [PageController::class, 'getPages'])->name('getpages')->middleware('admin');
     Route::get('admin/pages/view/{pageId}', [PageController::class, 'view'])->middleware('admin');
     Route::get('page/{pageId}', [PageController::class, 'view'])->where('pageId', '[0-9]+');
-Route::redirect('/about-education-afghanistan', 'page/22');
+    Route::redirect('/about-education-afghanistan', 'page/22');
     Route::get('page/edit/{pageId}', [PageController::class, 'edit'])->middleware('admin');
     Route::post('page/update/{pageId}', [PageController::class, 'update'])->name('update_page')->middleware('admin');
     Route::get('page/create', [PageController::class, 'create'])->middleware('admin');
@@ -263,8 +263,8 @@ Route::redirect('/about-education-afghanistan', 'page/22');
     Route::get('/node/{resourceId}', [ResourceController::class, 'viewPublicResource']);
     Route::get('/user/logout', [LoginController::class, 'logout']);
     Route::get('/user/password', [ForgotPasswordController::class, 'showLinkRequestForm']);
-Route::redirect('/volunteer', 'page/1532');
-Route::redirect('/support-library', 'page/21');
+    Route::redirect('/volunteer', 'page/1532');
+    Route::redirect('/support-library', 'page/21');
     //Auth
     Route::middleware(ProtectAgainstSpam::class)->group(function () {
         Auth::routes(['verify' => true]);

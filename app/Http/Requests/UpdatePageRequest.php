@@ -12,21 +12,21 @@ class UpdatePageRequest extends FormRequest
     public function rules(): array
     {
         return [
-'title'     => [
+            'title' => [
                 'required',
             ],
-'language'  => [
+            'language' => [
                 'required',
             ],
-'summary'   => [
+            'summary' => [
                 'required',
             ],
-'body'      => [
+            'body' => [
                 'required',
             ],
-'published' => [
+            'published' => [
                 'integer',
             ],
-];
+        ];
     }
 }

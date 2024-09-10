@@ -12,27 +12,27 @@ class UpdateMenuRequest extends FormRequest
     public function rules(): array
     {
         return [
-'title'    => [
+            'title' => [
                 'required',
             ],
-'location' => [
+            'location' => [
                 'required',
             ],
-'path'     => [
+            'path' => [
                 'required',
             ],
-'parent'   => [
+            'parent' => [
                 'nullable',
             ],
-'status'   => [
+            'status' => [
                 'required',
             ],
-'language' => [
+            'language' => [
                 'required',
             ],
-'weight'   => [
+            'weight' => [
                 'required',
             ],
-];
+        ];
     }
 }

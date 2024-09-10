@@ -12,15 +12,15 @@ class UpdateSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-'website_name'   => [
+            'website_name' => [
                 'required',
             ],
-'website_slogan' => [
+            'website_slogan' => [
                 'required',
             ],
-'website_email'  => [
+            'website_email' => [
                 'required',
             ],
-];
+        ];
     }
 }

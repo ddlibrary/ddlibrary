@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTranslateTaxonomyRequest;
 use App\Http\Requests\StoreTaxonomyRequest;
+use App\Http\Requests\StoreTranslateTaxonomyRequest;
 use App\Http\Requests\UpdateTaxonomyRequest;
 use App\Models\TaxonomyHierarchy;
 use App\Models\TaxonomyTerm;

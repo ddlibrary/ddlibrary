@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddPostTranslateNewsRequest;
-use App\Http\Requests\UpdateNewsRequest;
 use App\Http\Requests\StoreNewsRequest;
+use App\Http\Requests\UpdateNewsRequest;
 use App\Models\News;
 use App\Traits\SitewidePageViewTrait;
 use Illuminate\Http\RedirectResponse;

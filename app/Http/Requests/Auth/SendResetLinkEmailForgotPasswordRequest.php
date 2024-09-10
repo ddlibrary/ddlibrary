@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class SendResetLinkEmailForgotPasswordRequest extends FormRequest
 {
@@ -13,14 +12,14 @@ class SendResetLinkEmailForgotPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-'email'                => [
+            'email' => [
                 'required',
                 'email',
             ],
-'g-recaptcha-response' => [
-config('settings.captcha') && config('settings.captcha') == 'no' ? 'nullable' : 'required',
-new RecaptchaRule(),
-],
-];
+            'g-recaptcha-response' => [
+                config('settings.captcha') && config('settings.captcha') == 'no' ? 'nullable' : 'required',
+                new RecaptchaRule,
+            ],
+        ];
     }
 }

@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PostStepThreeEditResourceRequest;
-use App\Http\Requests\PostStepTwoEditResourceRequest;
 use App\Http\Requests\PostStepOneEditResourceRequest;
-use App\Http\Requests\PostStepThreeResourceRequest;
-use App\Http\Requests\PostStepTwoResourceRequest;
 use App\Http\Requests\PostStepOneResourceRequest;
-use Illuminate\Support\Facades\File;
+use App\Http\Requests\PostStepThreeEditResourceRequest;
+use App\Http\Requests\PostStepThreeResourceRequest;
+use App\Http\Requests\PostStepTwoEditResourceRequest;
+use App\Http\Requests\PostStepTwoResourceRequest;
 use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
 use App\Models\Resource;
@@ -45,6 +44,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;

@@ -12,15 +12,15 @@ class UpdateVocabularyRequest extends FormRequest
     public function rules(): array
     {
         return [
-'name'     => [
+            'name' => [
                 'required',
             ],
-'weight'   => [
+            'weight' => [
                 'required',
             ],
-'language' => [
+            'language' => [
                 'required',
             ],
-];
+        ];
     }
 }

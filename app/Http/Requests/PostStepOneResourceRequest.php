@@ -12,27 +12,27 @@ class PostStepOneResourceRequest extends FormRequest
     public function rules(): array
     {
         return [
-'title'      => [
+            'title' => [
                 'required',
             ],
-'author'     => [
+            'author' => [
                 'string',
                 'nullable',
             ],
-'publisher'  => [
+            'publisher' => [
                 'string',
                 'nullable',
             ],
-'translator' => [
+            'translator' => [
                 'string',
                 'nullable',
             ],
-'language'   => [
+            'language' => [
                 'required',
             ],
-'abstract'   => [
+            'abstract' => [
                 'required',
             ],
-];
+        ];
     }
 }

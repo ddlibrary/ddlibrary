@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateVocabularyRequest;
 use App\Http\Requests\StoreVocabularyRequest;
+use App\Http\Requests\UpdateVocabularyRequest;
 use App\Models\TaxonomyVocabulary;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Yajra\Datatables\Datatables;
 

@@ -12,41 +12,41 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-'username'   => [
+            'username' => [
                 'required',
             ],
-'password'   => [
+            'password' => [
                 'nullable',
             ],
-'email'      => [
+            'email' => [
                 'required_without:phone',
                 'nullable',
             ],
-'status'     => [
+            'status' => [
                 'required',
             ],
-'first_name' => [
+            'first_name' => [
                 'required',
             ],
-'last_name'  => [
+            'last_name' => [
                 'required',
             ],
-'gender'     => [
+            'gender' => [
                 'required',
             ],
-'role'       => [
+            'role' => [
                 'required',
             ],
-'phone'      => [
+            'phone' => [
                 'required_without:email',
                 'nullable',
             ],
-'country'    => [
+            'country' => [
                 'required',
             ],
-'city'       => [
+            'city' => [
                 'nullable',
             ],
-];
+        ];
     }
 }

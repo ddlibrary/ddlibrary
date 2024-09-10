@@ -12,25 +12,25 @@ class PostStepThreeEditResourceRequest extends FormRequest
     public function rules(): array
     {
         return [
-'translation_rights'     => [
+            'translation_rights' => [
                 'integer',
             ],
-'educational_resource'   => [
+            'educational_resource' => [
                 'integer',
             ],
-'iam_author'             => [
+            'iam_author' => [
                 'integer',
             ],
-'copyright_holder'       => [
+            'copyright_holder' => [
                 'string',
                 'nullable',
             ],
-'creative_commons'       => [
+            'creative_commons' => [
                 'integer',
             ],
-'creative_commons_other' => [
+            'creative_commons_other' => [
                 'integer',
             ],
-];
+        ];
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreGlossaryRequest;
 use App\Enums\GlossaryPageViewStatusEnum;
+use App\Http\Requests\StoreGlossaryRequest;
 use App\Models\Glossary;
 use App\Models\GlossarySubject;
 use App\Traits\GlossaryPageViewTrait;
