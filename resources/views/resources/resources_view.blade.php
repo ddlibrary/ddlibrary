@@ -311,7 +311,7 @@
                                 <span><a title="{{ $item->abstract }}"
                                         href="{{ URL::to('resource/' . $item->id) }}">{{ $item->title }}</a><br />
                                     <small>
-                                        {!! str_limit(strip_tags($item->abstract), 25) !!}
+                                        {!! Str::limit(strip_tags($item->abstract), 25) !!}
                                     </small>
                                 </span>
                             </div>
