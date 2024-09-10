@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreContactRequest;
 use App\Mail\ContactPage;
 use App\Models\Contact;
 use App\Models\Setting;
@@ -93,15 +94,8 @@ class ContactController extends Controller
      *
      * @throws ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreContactRequest $request): RedirectResponse
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email',
-            'subject' => 'required',
-            'message' => 'required',
-            'g-recaptcha-response' => ['required', new RecaptchaRule],
-        ]);
 
         //Saving contact info to the database
         $contact = new Contact;

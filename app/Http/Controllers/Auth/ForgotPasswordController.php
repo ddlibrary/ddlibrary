@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Requests\Auth\SendResetLinkEmailForgotPasswordRequest;
 use App\Http\Controllers\Controller;
 use App\Rules\RecaptchaRule;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
@@ -36,7 +37,7 @@ class ForgotPasswordController extends Controller
     /**
      * @throws ValidationException
      */
-    protected function validateEmail(Request $request)
+    protected function validateEmail(SendResetLinkEmailForgotPasswordRequest $request)
     {
         $this->validate($request, [
             'email' => 'required|email',

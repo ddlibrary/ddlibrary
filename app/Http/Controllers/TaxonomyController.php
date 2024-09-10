@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTranslateTaxonomyRequest;
+use App\Http\Requests\StoreTaxonomyRequest;
+use App\Http\Requests\UpdateTaxonomyRequest;
 use App\Models\TaxonomyHierarchy;
 use App\Models\TaxonomyTerm;
 use App\Models\TaxonomyVocabulary;
@@ -50,14 +53,8 @@ class TaxonomyController extends Controller
         return view('admin.taxonomy.taxonomy_edit', compact('term', 'vocabulary', 'parents', 'theParent'));
     }
 
-    public function update(Request $request, $vid, $tid): RedirectResponse
+    public function update(UpdateTaxonomyRequest $request, $vid, $tid): RedirectResponse
     {
-        $this->validate($request, [
-            'vid' => 'required',
-            'name' => 'required',
-            'weight' => 'required',
-            'language' => 'required',
-        ]);
 
         //Saving contact info to the database
         $term = TaxonomyTerm::find($tid);
@@ -108,14 +105,8 @@ class TaxonomyController extends Controller
         return view('admin.taxonomy.taxonomy_create', compact('vocabulary'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(StoreTaxonomyRequest $request): RedirectResponse
     {
-        $this->validate($request, [
-            'vid' => 'required',
-            'name' => 'required',
-            'weight' => 'required',
-            'language' => 'required',
-        ]);
 
         //Saving contact info to the database
         $term = new TaxonomyTerm;
@@ -164,14 +155,8 @@ class TaxonomyController extends Controller
         ));
     }
 
-    public function storeTranslate(Request $request, $tnid): RedirectResponse
+    public function storeTranslate(StoreTranslateTaxonomyRequest $request, $tnid): RedirectResponse
     {
-        $this->validate($request, [
-            'vid' => 'required',
-            'name' => 'required',
-            'weight' => 'required',
-            'language' => 'required',
-        ]);
 
         //Saving contact info to the database
         $term = new TaxonomyTerm;

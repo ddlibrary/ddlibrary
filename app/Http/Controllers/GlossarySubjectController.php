@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateGlossarySubjectRequest;
 use App\Models\GlossarySubject;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
@@ -74,20 +75,9 @@ class GlossarySubjectController extends Controller
      *
      * @return Application|RedirectResponse|Redirector
      */
-    public function update(Request $request): RedirectResponse
+    public function update(UpdateGlossarySubjectRequest $request): RedirectResponse
     {
-        $validatedData = $request->validate([
-            'english' => 'required',
-            'farsi' => 'required',
-            'pashto' => 'required',
-            'munji' => 'required',
-            'nuristani' => 'required',
-            'pashayi' => 'required',
-            'shughni' => 'required',
-            'swahili' => 'required',
-            'uzbek' => 'required',
-            'id' => 'required',
-        ]);
+        $validatedData = $request->validated();
 
         if ($validatedData['id'] == 'new') {
             $glossary_subject = new GlossarySubject;

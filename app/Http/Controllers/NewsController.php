@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddPostTranslateNewsRequest;
+use App\Http\Requests\UpdateNewsRequest;
+use App\Http\Requests\StoreNewsRequest;
 use App\Models\News;
 use App\Traits\SitewidePageViewTrait;
 use Illuminate\Http\RedirectResponse;
@@ -74,15 +77,8 @@ class NewsController extends Controller
         return view('news.news_create');
     }
 
-    public function store(Request $request, News $news): RedirectResponse
+    public function store(StoreNewsRequest $request, News $news): RedirectResponse
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'language' => 'required',
-            'summary' => 'required',
-            'body' => 'required',
-            'published' => 'integer',
-        ]);
 
         $news->title = $request->input('title');
         $news->summary = $request->input('summary');
@@ -108,15 +104,8 @@ class NewsController extends Controller
         return view('news.news_edit', compact('news'));
     }
 
-    public function update(Request $request, News $news, $id): RedirectResponse
+    public function update(UpdateNewsRequest $request, News $news, $id): RedirectResponse
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'language' => 'required',
-            'summary' => 'required',
-            'body' => 'required',
-            'published' => 'integer',
-        ]);
 
         $news = News::find($id);
         $news->title = $request->input('title');
@@ -144,15 +133,8 @@ class NewsController extends Controller
         return view('news.news_add_translate', compact('tnid', 'lang'));
     }
 
-    public function addPostTranslate(Request $request, News $news, $tnid, $lang): RedirectResponse
+    public function addPostTranslate(AddPostTranslateNewsRequest $request, News $news, $tnid, $lang): RedirectResponse
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'language' => 'nullable',
-            'summary' => 'required',
-            'body' => 'required',
-            'published' => 'integer',
-        ]);
 
         $news->title = $request->input('title');
         $news->summary = $request->input('summary');

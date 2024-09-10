@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateSettingRequest;
 use App\Models\Setting;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
@@ -76,13 +77,8 @@ class SettingController extends Controller
      *
      * @throws ValidationException
      */
-    public function update(Request $request, Setting $setting): RedirectResponse
+    public function update(UpdateSettingRequest $request, Setting $setting): RedirectResponse
     {
-        $this->validate($request, [
-            'website_name' => 'required',
-            'website_slogan' => 'required',
-            'website_email' => 'required',
-        ]);
 
         //Saving contact info to the database
         $setting = $setting->find(1);

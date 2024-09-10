@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateVocabularyRequest;
+use App\Http\Requests\StoreVocabularyRequest;
 use App\Models\TaxonomyVocabulary;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,13 +39,9 @@ class VocabularyController extends Controller
     }
 
     //Vocabulary Store Function
-    public function store(Request $request): RedirectResponse
+    public function store(StoreVocabularyRequest $request): RedirectResponse
     {
-        $attr = $this->validate($request, [
-            'name' => 'required',
-            'weight' => 'required',
-            'language' => 'required',
-        ]);
+        $attr = $request->validated();
         $row = new TaxonomyVocabulary;
         $row->name = $request->name;
         $row->weight = $request->weight;
@@ -62,13 +60,8 @@ class VocabularyController extends Controller
     }
 
     //Vocabulary Update Function
-    public function update(Request $request, $vid): RedirectResponse
+    public function update(UpdateVocabularyRequest $request, $vid): RedirectResponse
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'weight' => 'required',
-            'language' => 'required',
-        ]);
         //Updating vocabulary info to the database
         $vocabulary = TaxonomyVocabulary::find($vid);
         $vocabulary->name = $request->input('name');

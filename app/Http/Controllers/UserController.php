@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UpdateProfileUserRequest;
 use App\Models\Resource;
 use App\Models\ResourceFavorite;
 use App\Models\Role;
@@ -95,13 +97,8 @@ class UserController extends Controller
      *
      * @return Application|RedirectResponse|Redirector
      */
-    public function updateProfile(Request $request): RedirectResponse
+    public function updateProfile(UpdateProfileUserRequest $request): RedirectResponse
     {
-        $request->validate([
-            'email' => 'email|required',
-            'password' => 'nullable|confirmed|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',
-            'username' => 'required',
-        ]);
 
         $user = User::find(Auth::id());
 
@@ -155,21 +152,8 @@ class UserController extends Controller
      *
      * @throws ValidationException
      */
-    public function update(Request $request, $userId): RedirectResponse
+    public function update(UpdateUserRequest $request, $userId): RedirectResponse
     {
-        $this->validate($request, [
-            'username' => 'required',
-            'password' => 'nullable',
-            'email' => 'required_without:phone|nullable',
-            'status' => 'required',
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'gender' => 'required',
-            'role' => 'required',
-            'phone' => 'required_without:email|nullable',
-            'country' => 'required',
-            'city' => 'nullable',
-        ]);
 
         if ($request->filled('city')) {
             $city = $request->input('city');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateMenuRequest;
 use App\Models\Menu;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -111,17 +112,8 @@ class MenuController extends Controller
         return view('admin.menu.menu_edit', compact('details', 'locations', 'parents'));
     }
 
-    public function update(Request $request, $menuId): RedirectResponse
+    public function update(UpdateMenuRequest $request, $menuId): RedirectResponse
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'location' => 'required',
-            'path' => 'required',
-            'parent' => 'nullable',
-            'status' => 'required',
-            'language' => 'required',
-            'weight' => 'required',
-        ]);
 
         $menu = Menu::find($menuId);
         $menu->title = $request->input('title');

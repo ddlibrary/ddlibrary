@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddPostTranslatePageRequest;
+use App\Http\Requests\UpdatePageRequest;
+use App\Http\Requests\StorePageRequest;
 use App\Models\Page;
 use App\Traits\SitewidePageViewTrait;
 use Illuminate\Contracts\Foundation\Application;
@@ -77,15 +80,8 @@ class PageController extends Controller
         return view('pages.page_create');
     }
 
-    public function store(Request $request, Page $page): RedirectResponse
+    public function store(StorePageRequest $request, Page $page): RedirectResponse
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'language' => 'required',
-            'summary' => 'required',
-            'body' => 'required',
-            'published' => 'integer',
-        ]);
 
         $page->title = $request->input('title');
         $page->summary = $request->input('summary');
@@ -111,15 +107,8 @@ class PageController extends Controller
         return view('pages.page_edit', compact('page'));
     }
 
-    public function update(Request $request, Page $page, $id): RedirectResponse
+    public function update(UpdatePageRequest $request, Page $page, $id): RedirectResponse
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'language' => 'required',
-            'summary' => 'required',
-            'body' => 'required',
-            'published' => 'integer',
-        ]);
 
         $page = Page::find($id);
         $page->title = $request->input('title');
@@ -147,15 +136,8 @@ class PageController extends Controller
         return view('pages.page_add_translate', compact('tnid', 'lang'));
     }
 
-    public function addPostTranslate(Request $request, Page $page, $tnid, $lang): RedirectResponse
+    public function addPostTranslate(AddPostTranslatePageRequest $request, Page $page, $tnid, $lang): RedirectResponse
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'language' => 'nullable',
-            'summary' => 'required',
-            'body' => 'required',
-            'published' => 'integer',
-        ]);
 
         $page->title = $request->input('title');
         $page->summary = $request->input('summary');

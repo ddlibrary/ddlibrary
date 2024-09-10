@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostStepThreeEditResourceRequest;
+use App\Http\Requests\PostStepTwoEditResourceRequest;
+use App\Http\Requests\PostStepOneEditResourceRequest;
+use App\Http\Requests\PostStepThreeResourceRequest;
+use App\Http\Requests\PostStepTwoResourceRequest;
+use App\Http\Requests\PostStepOneResourceRequest;
 use Illuminate\Support\Facades\File;
 use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
@@ -197,16 +203,9 @@ class ResourceController extends Controller
         return view('resources.resources_add_step1', compact('resource'));
     }
 
-    public function postStepOne(Request $request): Redirector|Application|RedirectResponse
+    public function postStepOne(PostStepOneResourceRequest $request): Redirector|Application|RedirectResponse
     {
-        $validatedData = $request->validate([
-            'title' => 'required',
-            'author' => 'string|nullable',
-            'publisher' => 'string|nullable',
-            'translator' => 'string|nullable',
-            'language' => 'required',
-            'abstract' => 'required',
-        ]);
+        $validatedData = $request->validated();
 
         $request->session()->put('resource1', $validatedData);
 
@@ -251,18 +250,11 @@ class ResourceController extends Controller
         ));
     }
 
-    public function postStepTwo(Request $request): Redirector|Application|RedirectResponse
+    public function postStepTwo(PostStepTwoResourceRequest $request): Redirector|Application|RedirectResponse
     {
         $resource = $request->session()->get('resource2');
 
-        $validatedData = $request->validate([
-            'attachments.*' => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3|max:131072', // Max file size is 128 MB
-            'subject_areas' => 'required',
-            'keywords' => 'string|nullable',
-            'learning_resources_types' => 'required',
-            'educational_use' => 'required',
-            'level' => 'required',
-        ]);
+        $validatedData = $request->validated();
 
         if (isset($validatedData['attachments'])) {
             foreach ($validatedData['attachments'] as $attachments) {
@@ -313,16 +305,9 @@ class ResourceController extends Controller
      *
      * @throws Throwable
      */
-    public function postStepThree(Request $request)
+    public function postStepThree(PostStepThreeResourceRequest $request)
     {
-        $validatedData = $request->validate([
-            'translation_rights' => 'integer',
-            'educational_resource' => 'integer',
-            'copyright_holder' => 'string|nullable',
-            'iam_author' => 'integer',
-            'creative_commons' => 'integer',
-            'creative_commons_other' => 'integer',
-        ]);
+        $validatedData = $request->validated();
 
         $request->session()->put('resource3', $validatedData);
 
@@ -714,18 +699,11 @@ class ResourceController extends Controller
         return view('resources.resources_edit_step1', compact('resource'));
     }
 
-    public function postStepOneEdit($resourceId, Request $request): Redirector|Application|RedirectResponse
+    public function postStepOneEdit($resourceId, PostStepOneEditResourceRequest $request): Redirector|Application|RedirectResponse
     {
         $this->middleware('admin');
 
-        $validatedData = $request->validate([
-            'title' => 'required',
-            'author' => 'string|nullable',
-            'publisher' => 'string|nullable',
-            'translator' => 'string|nullable',
-            'language' => 'required',
-            'abstract' => 'required',
-        ]);
+        $validatedData = $request->validated();
 
         $validatedData['id'] = $resourceId;
         $validatedData['status'] = $request->input('status');
@@ -852,19 +830,12 @@ class ResourceController extends Controller
         ));
     }
 
-    public function postStepTwoEdit($resourceId, Request $request): Redirector|Application|RedirectResponse
+    public function postStepTwoEdit($resourceId, PostStepTwoEditResourceRequest $request): Redirector|Application|RedirectResponse
     {
         $this->middleware('admin');
 
         $resource = $request->session()->get('resource2');
-        $validatedData = $request->validate([
-            'attachments.*' => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3',
-            'subject_areas' => 'required',
-            'keywords' => 'string|nullable',
-            'learning_resources_types' => 'required',
-            'educational_use' => 'required',
-            'level' => 'required',
-        ]);
+        $validatedData = $request->validated();
 
         if (isset($validatedData['attachments'])) {
             foreach ($validatedData['attachments'] as $attachments) {
@@ -924,18 +895,11 @@ class ResourceController extends Controller
      *
      * @throws Throwable
      */
-    public function postStepThreeEdit($resourceId, Request $request): Redirector|Application|RedirectResponse
+    public function postStepThreeEdit($resourceId, PostStepThreeEditResourceRequest $request): Redirector|Application|RedirectResponse
     {
         $this->middleware('admin');
 
-        $validatedData = $request->validate([
-            'translation_rights' => 'integer',
-            'educational_resource' => 'integer',
-            'iam_author' => 'integer',
-            'copyright_holder' => 'string|nullable',
-            'creative_commons' => 'integer',
-            'creative_commons_other' => 'integer',
-        ]);
+        $validatedData = $request->validated();
 
         $request->session()->put('resource3', $validatedData);
 

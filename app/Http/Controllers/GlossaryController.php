@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreGlossaryRequest;
 use App\Enums\GlossaryPageViewStatusEnum;
 use App\Models\Glossary;
 use App\Models\GlossarySubject;
@@ -79,15 +80,10 @@ class GlossaryController extends Controller
      *
      * @return Application|RedirectResponse|Redirector|void
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreGlossaryRequest $request): RedirectResponse
     {
 
-        $validatedData = $request->validate([
-            'english' => 'required_without_all:farsi,pashto',
-            'farsi' => 'required_without_all:english,pashto',
-            'pashto' => 'required_without_all:farsi,english',
-            'subject' => 'required',
-        ]);
+        $validatedData = $request->validated();
         $glossary = new Glossary;
         $glossary->name_en = $validatedData['english'];
         $glossary->name_fa = $validatedData['farsi'];
