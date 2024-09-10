@@ -48,7 +48,7 @@ class VocabularyController extends Controller
         $row->language = $request->language;
         $row->save();
 
-        return redirect('/admin/vocabulary')->with('success', 'Vocabulary item created successfully!');
+        return redirect()->to('/admin/vocabulary')->with('success', 'Vocabulary item created successfully!');
     }
 
     //Vocabulary Edit Function
@@ -69,6 +69,6 @@ class VocabularyController extends Controller
         $vocabulary->language = $request->input('language');
         $vocabulary->save();
 
-        return redirect('/admin/vocabulary')->with('success', 'Vocabulary item updated successfully!');
+        return redirect()->to('/admin/vocabulary')->with('success', 'Vocabulary item updated successfully!');
     }
 }

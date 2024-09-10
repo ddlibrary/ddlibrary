@@ -96,7 +96,7 @@ class GlossarySubjectController extends Controller
         $glossary_subject->uz = $validatedData['uzbek'];
         $glossary_subject->save();
 
-        return redirect(route('glossary_subjects_list'))->with('status', __('Glossary subject(s) updated!'));
+        return redirect()->route('glossary_subjects_list')->with('status', __('Glossary subject(s) updated!'));
     }
 
     /**

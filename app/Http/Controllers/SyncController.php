@@ -428,6 +428,6 @@ class SyncController extends Controller
             $newInstance->save();
         }
 
-        return redirect('admin/sync');
+        return redirect()->to('admin/sync');
     }
 }

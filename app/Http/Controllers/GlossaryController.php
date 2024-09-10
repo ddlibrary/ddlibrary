@@ -96,7 +96,7 @@ class GlossaryController extends Controller
 
         $this->pageView($request, GlossaryPageViewStatusEnum::Create, 'Create Glossary');
 
-        return redirect(route('glossary'))->with('status', __('Glossary item added successfully!'));
+        return redirect()->route('glossary')->with('status', __('Glossary item added successfully!'));
 
     }
 

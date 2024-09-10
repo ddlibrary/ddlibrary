@@ -123,7 +123,7 @@ class UserController extends Controller
             'level' => 'success',
         ]);
 
-        return redirect(URL('user/profile'));
+        return redirect()->to(URL('user/profile'));
     }
 
     /**
@@ -201,7 +201,7 @@ class UserController extends Controller
         $user = User::find($userId);
         $user->delete();
 
-        return back()->with('error', 'You deleted the record!');
+        return redirect()->back()->with('error', 'You deleted the record!');
     }
 
     /**

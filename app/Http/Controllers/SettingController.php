@@ -91,7 +91,7 @@ class SettingController extends Controller
 
         $setting->save();
 
-        return redirect('/admin/settings')->with('success', 'Settings updated!');
+        return redirect()->to('/admin/settings')->with('success', 'Settings updated!');
     }
 
     /**

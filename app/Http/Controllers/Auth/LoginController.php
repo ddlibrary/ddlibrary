@@ -65,7 +65,7 @@ class LoginController extends Controller
 
         Auth::loginUsingId($user->id);
 
-        return redirect('/');
+        return redirect()->to('/');
     }
 
     private function getUserName($email)
@@ -124,7 +124,7 @@ class LoginController extends Controller
 
         Auth::loginUsingId($user->id);
 
-        return redirect('/');
+        return redirect()->to('/');
     }
 
     //Overwriting the AuthenticatesUsers trait login method
@@ -263,6 +263,6 @@ class LoginController extends Controller
     {
         $this->logout($request);
 
-        return redirect('/home');
+        return redirect()->to('/home');
     }
 }

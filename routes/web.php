@@ -124,7 +124,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('admin/pages/view/{pageId}', [PageController::class, 'view'])->middleware('admin');
     Route::get('page/{pageId}', [PageController::class, 'view'])->where('pageId', '[0-9]+');
     Route::get('/about-education-afghanistan', function () {
-        return redirect('page/22');
+        return redirect()->to('page/22');
     });
     Route::get('page/edit/{pageId}', [PageController::class, 'edit'])->middleware('admin');
     Route::post('page/update/{pageId}', [PageController::class, 'update'])->name('update_page')->middleware('admin');
@@ -266,10 +266,10 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('/user/logout', [LoginController::class, 'logout']);
     Route::get('/user/password', [ForgotPasswordController::class, 'showLinkRequestForm']);
     Route::get('/volunteer', function () {
-        return redirect('page/1532');
+        return redirect()->to('page/1532');
     });
     Route::get('/support-library', function () {
-        return redirect('page/21');
+        return redirect()->to('page/21');
     });
     //Auth
     Route::middleware(ProtectAgainstSpam::class)->group(function () {
@@ -278,7 +278,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('/logout', function () {
         Auth::logout();
 
-        return redirect('/home');
+        return redirect()->to('/home');
     });
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::prefix('subscribe')->middleware(['auth', 'verified'])->controller(SubscribeController::class)->group(function () {

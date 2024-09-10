@@ -90,7 +90,7 @@ class ResourceController extends Controller
         $resource->tnid = $translatedResource->id;
         $resource->save();
 
-        return back();
+        return redirect()->back();
     }
 
     public function list(Request $request): Factory|View|Application
@@ -209,7 +209,7 @@ class ResourceController extends Controller
 
         $request->session()->put('resource1', $validatedData);
 
-        return redirect('/resources/add/step2');
+        return redirect()->to('/resources/add/step2');
     }
 
     public function createStepTwo(Request $request): View|Factory|Redirector|RedirectResponse|Application
@@ -217,7 +217,7 @@ class ResourceController extends Controller
         $resource1 = $request->session()->get('resource1');
 
         if (! $resource1) {
-            return redirect('/resources/add/step1');
+            return redirect()->to('/resources/add/step1');
         }
 
         $resource = $request->session()->get('resource2');
@@ -278,7 +278,7 @@ class ResourceController extends Controller
 
         $request->session()->put('resource2', $validatedData);
 
-        return redirect('/resources/add/step3');
+        return redirect()->to('/resources/add/step3');
     }
 
     public function createStepThree(Request $request): View|Factory|Redirector|RedirectResponse|Application
@@ -287,7 +287,7 @@ class ResourceController extends Controller
         $resource2 = $request->session()->get('resource2');
 
         if (! $resource1 || ! $resource2) {
-            return redirect('/resources/add/step1');
+            return redirect()->to('/resources/add/step1');
         }
 
         $resource = $request->session()->get('resource3');
@@ -545,14 +545,14 @@ class ResourceController extends Controller
                 'level' => 'success',
             ]);
 
-            return redirect('/home');
+            return redirect()->to('/home');
         } elseif ($result) {
             $request->session()->flash('alert', [
                 'message' => __('Resource successfully added! It will be published after review.'),
                 'level' => 'success',
             ]);
 
-            return redirect('/home');
+            return redirect()->to('/home');
         }
 
         $request->session()->flash('alert', [
@@ -560,7 +560,7 @@ class ResourceController extends Controller
             'level' => 'danger',
         ]);
 
-        return redirect('/home');
+        return redirect()->to('/home');
 
     }
 
@@ -569,7 +569,7 @@ class ResourceController extends Controller
         $myResources = new Resource;
         $keyword = $request->only('term');
         if (! $keyword) {
-            return redirect('/home');
+            return redirect()->to('/home');
         }
         if ($entity == 'authors') {
             $records = $myResources->searchResourceAttributes($keyword['term'], 'taxonomy_term_data', 24);
@@ -589,7 +589,7 @@ class ResourceController extends Controller
             return response()->json($records->toArray());
         }
 
-        return redirect('/home');
+        return redirect()->to('/home');
     }
 
     public function resourceFavorite(Request $request): bool|string
@@ -625,9 +625,9 @@ class ResourceController extends Controller
         $resourceId = $request->input('resource_id');
 
         if (empty($userId)) {
-            return redirect('login');
+            return redirect()->to('login');
         } elseif (empty($resourceId)) {
-            return redirect('home');
+            return redirect()->to('home');
         }
 
         $flag = new ResourceFlag;
@@ -647,7 +647,7 @@ class ResourceController extends Controller
         $resourceId = $request->input('resource_id');
 
         if (empty($userId)) {
-            return redirect('login');
+            return redirect()->to('login');
         }
 
         $comment = new ResourceComment;
@@ -719,7 +719,7 @@ class ResourceController extends Controller
         $resource1 = $request->session()->get('resource1');
 
         if (! $resource1) {
-            return redirect('/resources/edit/step1');
+            return redirect()->to('/resources/edit/step1');
         }
 
         $myResources = new Resource;
@@ -872,7 +872,7 @@ class ResourceController extends Controller
         $resource2 = $request->session()->get('resource2');
 
         if (! $resource1 || ! $resource2) {
-            return redirect('/resources/edit/step1');
+            return redirect()->to('/resources/edit/step1');
         }
 
         $resource = $request->session()->get('resource3');
@@ -1226,7 +1226,7 @@ class ResourceController extends Controller
         }
         $rs->save();
 
-        return back();
+        return redirect()->back();
     }
 
     /**
@@ -1237,7 +1237,7 @@ class ResourceController extends Controller
         $resource = Resource::find($resourceId);
         $resource->delete();
 
-        return back()->with('error', 'You deleted the record!');
+        return redirect()->back()->with('error', 'You deleted the record!');
     }
 
     /**

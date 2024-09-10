@@ -73,7 +73,7 @@ class SurveyQuestionController extends Controller
         }
         $created_question->save();
 
-        return Redirect::back()->with('status', 'Question Added!');
+        return redirect()->back()->with('status', 'Question Added!');
     }
 
     public function delete($id): RedirectResponse
@@ -81,7 +81,7 @@ class SurveyQuestionController extends Controller
         $question = SurveyQuestion::find($id);
         $question->delete();
 
-        return Redirect::back()->with('status', 'Survey\'s Question Deleted!');
+        return redirect()->back()->with('status', 'Survey\'s Question Deleted!');
     }
 
     public function addTranslate($tnid, $lang): View

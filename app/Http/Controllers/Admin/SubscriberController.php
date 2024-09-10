@@ -32,6 +32,6 @@ class SubscriberController extends Controller
     {
         $subscriber->delete();
 
-        return back();
+        return redirect()->back();
     }
 }

@@ -76,7 +76,7 @@ class TaxonomyController extends Controller
         $parent->parent = $parentid;
         $parent->save();
 
-        return redirect('/admin/taxonomy')->with('success', 'Taxonomy item updated successfully!');
+        return redirect()->to('/admin/taxonomy')->with('success', 'Taxonomy item updated successfully!');
     }
 
     public function translate($tid): View
@@ -121,7 +121,7 @@ class TaxonomyController extends Controller
         //updating with tnid
         $term->save();
 
-        return redirect('/admin/taxonomy')->with('success', 'Taxonomy item created successfully!');
+        return redirect()->to('/admin/taxonomy')->with('success', 'Taxonomy item created successfully!');
     }
 
     public function createTranslate($tid, $tnid, $lang)
@@ -172,6 +172,6 @@ class TaxonomyController extends Controller
         $parent->parent = $request->input('parent');
         $parent->save();
 
-        return redirect('/admin/taxonomy')->with('success', 'Taxonomy item added successfully!');
+        return redirect()->to('/admin/taxonomy')->with('success', 'Taxonomy item added successfully!');
     }
 }

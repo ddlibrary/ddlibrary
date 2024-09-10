@@ -100,7 +100,7 @@ class MenuController extends Controller
         //inserting
         $menu->save();
 
-        return redirect('admin/menu')->with('success', 'Menu translation or new menu successfully added!');
+        return redirect()->to('admin/menu')->with('success', 'Menu translation or new menu successfully added!');
     }
 
     public function edit(Menu $menu, $menuId): View

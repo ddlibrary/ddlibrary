@@ -30,7 +30,7 @@ class StoryWeaverController extends Controller
         );
 
         if ($user_profile->visited_storyweaver_disclaimer) {
-            return redirect(route('storyweaver-auth'));
+            return redirect()->route('storyweaver-auth');
         }
         $email = false;
         if ($request->user()->email) {
@@ -156,6 +156,6 @@ class StoryWeaverController extends Controller
                     Redirect URL: '.$response_contents->redirect_url
         );
 
-        return redirect(route('home'));
+        return redirect()->route('home');
     }
 }

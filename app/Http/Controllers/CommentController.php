@@ -28,7 +28,7 @@ class CommentController extends Controller
             $rs->save();
         }
 
-        return back();
+        return redirect()->back();
     }
 
     public function delete($commentId): RedirectResponse

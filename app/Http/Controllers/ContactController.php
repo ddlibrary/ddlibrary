@@ -44,12 +44,12 @@ class ContactController extends Controller
             $contact->isread = 1;
             $contact->save();
 
-            return back()->with('success', 'You marked the message as read!');
+            return redirect()->back()->with('success', 'You marked the message as read!');
         } else {
             $contact->isread = 0;
             $contact->save();
 
-            return back()->with('success', 'You marked the message as unread!');
+            return redirect()->back()->with('success', 'You marked the message as unread!');
         }
     }
 
@@ -58,7 +58,7 @@ class ContactController extends Controller
         $contact = Contact::find($id);
         $contact->delete();
 
-        return back()->with('error', 'You deleted the record!');
+        return redirect()->back()->with('error', 'You deleted the record!');
     }
 
     /**
@@ -110,6 +110,6 @@ class ContactController extends Controller
             Mail::to(Setting::find(1)->website_email)->send(new ContactPage($contact));
         }
 
-        return redirect('/contact-us')->with('success', __('We received your message and will contact you back soon!'));
+        return redirect()->to('/contact-us')->with('success', __('We received your message and will contact you back soon!'));
     }
 }

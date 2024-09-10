@@ -22,7 +22,7 @@ class SubscribeController extends Controller
                 'level' => 'success',
             ]);
 
-            return redirect('/home');
+            return redirect()->to('/home');
         }
 
         return view('subscribe.index', compact('subscriber'));
@@ -41,6 +41,6 @@ class SubscribeController extends Controller
             'level' => 'success',
         ]);
 
-        return redirect('home');
+        return redirect()->to('home');
     }
 }

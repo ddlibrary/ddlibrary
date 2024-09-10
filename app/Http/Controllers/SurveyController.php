@@ -49,7 +49,7 @@ class SurveyController extends Controller
         }
         $created_survey->save();
 
-        return Redirect::back()->with('status', 'Survey Created!');
+        return redirect()->back()->with('status', 'Survey Created!');
     }
 
     public function edit($id): View
@@ -67,7 +67,7 @@ class SurveyController extends Controller
         $survey->language = $request['language'];
         $survey->save();
 
-        return Redirect::back()->with('status', 'Survey Updated!');
+        return redirect()->back()->with('status', 'Survey Updated!');
     }
 
     public function delete($id): RedirectResponse
@@ -75,7 +75,7 @@ class SurveyController extends Controller
         $survey = Survey::find($id);
         $survey->delete();
 
-        return Redirect::back()->with('status', 'Survey Deleted!');
+        return redirect()->back()->with('status', 'Survey Deleted!');
     }
 
     public function addTranslate($tnid, $lang): View

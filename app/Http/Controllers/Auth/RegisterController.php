@@ -182,15 +182,15 @@ class RegisterController extends Controller
             Auth::loginUsingId($user->id);
 
             if ($user->email) {
-                return redirect('email/verify');
+                return redirect()->to('email/verify');
             }
 
-            return $this->registered($request, $user->id) ?: redirect($this->redirectPath());
+            return $this->registered($request, $user->id) ?: redirect()->to($this->redirectPath());
         } catch (Exception $e) {
             DB::rollback();
         }
 
-        return back()->with('error', 'Sorry! Your account has not been created.');
+        return redirect()->back()->with('error', 'Sorry! Your account has not been created.');
     }
 
     private function getUserName($email)
