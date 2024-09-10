@@ -6,7 +6,6 @@ use App\Enums\LanguageEnum;
 use App\Enums\TaxonomyVocabularyEnum;
 use App\Models\DownloadCount;
 use App\Models\Resource;
-use App\Models\ResourceSubjectArea;
 use App\Models\TaxonomyTerm;
 use App\Traits\GenderTrait;
 use App\Traits\LanguageTrait;
@@ -17,7 +16,7 @@ use Illuminate\View\View;
 
 class ResourceAnalyticsController extends Controller
 {
-    use LanguageTrait, GenderTrait;
+    use GenderTrait, LanguageTrait;
 
     public function index(Request $request): View
     {
@@ -25,23 +24,22 @@ class ResourceAnalyticsController extends Controller
         $languages = $this->getLanguages();
 
         $subjectAreas = TaxonomyTerm::selectRaw('taxonomy_term_data.*, COUNT(resource_subject_areas.tid) as resources_count')
-                ->join('resource_subject_areas', 'taxonomy_term_data.id', '=', 'resource_subject_areas.tid')
-                ->where('taxonomy_term_data.vid', TaxonomyVocabularyEnum::ResourceSubject)
-                ->where('taxonomy_term_data.language', $request->language ?? 'en')
-                ->having('resources_count', '>', 0)
-                ->groupBy('taxonomy_term_data.id')
-                ->orderByDesc('resources_count')
-                ->get();
+            ->join('resource_subject_areas', 'taxonomy_term_data.id', '=', 'resource_subject_areas.tid')
+            ->where('taxonomy_term_data.vid', TaxonomyVocabularyEnum::ResourceSubject)
+            ->where('taxonomy_term_data.language', $request->language ?? 'en')
+            ->having('resources_count', '>', 0)
+            ->groupBy('taxonomy_term_data.id')
+            ->orderByDesc('resources_count')
+            ->get();
 
         $resourceTypes = TaxonomyTerm::selectRaw('taxonomy_term_data.*, COUNT(resource_learning_resource_types.tid) as resources_count')
-                ->join('resource_learning_resource_types', 'taxonomy_term_data.id', '=', 'resource_learning_resource_types.tid')
-                ->where('taxonomy_term_data.vid', TaxonomyVocabularyEnum::ResourceType)
-                ->where('taxonomy_term_data.language', $request->language ?? 'en')
-                ->having('resources_count', '>', 0)
-                ->groupBy('taxonomy_term_data.id')
-                ->orderByDesc('resources_count')
-                ->get();
-
+            ->join('resource_learning_resource_types', 'taxonomy_term_data.id', '=', 'resource_learning_resource_types.tid')
+            ->where('taxonomy_term_data.vid', TaxonomyVocabularyEnum::ResourceType)
+            ->where('taxonomy_term_data.language', $request->language ?? 'en')
+            ->having('resources_count', '>', 0)
+            ->groupBy('taxonomy_term_data.id')
+            ->orderByDesc('resources_count')
+            ->get();
 
         $top10Authors = $this->getTop10AuthorsOrPublishers($request, 'resource_authors'); // Get top 10 authors
         $totalResources = $this->getTotalResourcesBasedOnLanguage($request); // Total Resources base on Language
@@ -87,6 +85,7 @@ class ResourceAnalyticsController extends Controller
 
         return $totalResources->map(function ($item) {
             $item['language'] = LanguageEnum::tryFrom($item['language'])?->name ?? $item['language'];
+
             return $item;
         });
     }

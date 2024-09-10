@@ -18,6 +18,7 @@ use Illuminate\View\View;
 class GlossaryController extends Controller
 {
     use GlossaryPageViewTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +28,6 @@ class GlossaryController extends Controller
     {
         $this->pageView($request, GlossaryPageViewStatusEnum::View, 'Glossary');
         $glossary_flagged = null;
-
 
         if ($request->filled('text')) {
             $glossary = Glossary::orderBy('id', 'desc')
@@ -88,7 +88,7 @@ class GlossaryController extends Controller
             'pashto' => 'required_without_all:farsi,english',
             'subject' => 'required',
         ]);
-        $glossary = new Glossary();
+        $glossary = new Glossary;
         $glossary->name_en = $validatedData['english'];
         $glossary->name_fa = $validatedData['farsi'];
         $glossary->name_ps = $validatedData['pashto'];

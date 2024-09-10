@@ -63,7 +63,7 @@ class SettingController extends Controller
     {
         $setting = $setting->find(1);
         if ($setting == null) {
-            $setting = new Setting();
+            $setting = new Setting;
         }
 
         return view('admin.settings.settings_view')->with('setting', $setting);
@@ -87,7 +87,7 @@ class SettingController extends Controller
         //Saving contact info to the database
         $setting = $setting->find(1);
         if ($setting == null) {
-            $setting = new Setting();
+            $setting = new Setting;
         }
         $setting->website_name = $request->input('website_name');
         $setting->website_slogan = $request->input('website_slogan');

@@ -33,11 +33,11 @@ class SyncController extends Controller
     {
         $this->middleware('admin');
 
-        $rmResource = new Resource();
-        $rmDdlFile = new DdlFile();
-        $rmNews = new News();
-        $rmPage = new Page();
-        $rmTaxonomyTerm = new TaxonomyTerm();
+        $rmResource = new Resource;
+        $rmDdlFile = new DdlFile;
+        $rmNews = new News;
+        $rmPage = new Page;
+        $rmTaxonomyTerm = new TaxonomyTerm;
 
         $rmResourceRecords = $rmResource->setConnection('mysql_remote')->newQuery()->get();
         $rmDdlFileRecords = $rmDdlFile->setConnection('mysql_remote')->newQuery()->get();
@@ -45,12 +45,12 @@ class SyncController extends Controller
         $rmPageRecords = $rmPage->setConnection('mysql_remote')->newQuery()->get();
         $rmTaxonomyTermRecords = $rmTaxonomyTerm->setConnection('mysql_remote')->newQuery()->get();
 
-        $Resource = new Resource();
-        $DdlFile = new DdlFile();
-        $News = new News();
-        $Page = new Page();
-        $ResourceLevel = new ResourceLevel();
-        $TaxonomyTerm = new TaxonomyTerm();
+        $Resource = new Resource;
+        $DdlFile = new DdlFile;
+        $News = new News;
+        $Page = new Page;
+        $ResourceLevel = new ResourceLevel;
+        $TaxonomyTerm = new TaxonomyTerm;
 
         $ResourceRecords = $Resource->all();
         $DdlFileRecords = $DdlFile->all();
@@ -83,28 +83,28 @@ class SyncController extends Controller
     {
         $this->middleware('admin');
 
-        $rmResource = new Resource();
-        $rmDdlFile = new DdlFile();
-        $rmNews = new News();
-        $rmPage = new Page();
-        $rmResourceLevel = new ResourceLevel();
-        $rmResourceAttachment = new ResourceAttachment();
-        $rmResourceSubjectArea = new ResourceSubjectArea();
-        $rmTaxonomyTerm = new TaxonomyTerm();
-        $rmTaxonomyVocabulary = new TaxonomyVocabulary();
-        $rmTaxonomyHierarchy = new TaxonomyHierarchy();
-        $rmResourceKeyword = new ResourceKeyword();
-        $rmResourceLearningResourceType = new ResourceLearningResourceType();
-        $rmResourceEducationalUse = new ResourceEducationalUse();
-        $rmResourceTranslationRight = new ResourceTranslationRight();
-        $rmResourceEducationalResource = new ResourceEducationalResource();
-        $rmResourceCopyrightHolder = new ResourceCopyrightHolder();
-        $rmResourceCreativeCommon = new ResourceCreativeCommon();
-        $rmResourceSharePermission = new ResourceSharePermission();
-        $rmResourceAuthor = new ResourceAuthor();
-        $rmResourcePublisher = new ResourcePublisher();
-        $rmResourceTranslator = new ResourceTranslator();
-        $rmResourceIamAuthor = new ResourceIamAuthor();
+        $rmResource = new Resource;
+        $rmDdlFile = new DdlFile;
+        $rmNews = new News;
+        $rmPage = new Page;
+        $rmResourceLevel = new ResourceLevel;
+        $rmResourceAttachment = new ResourceAttachment;
+        $rmResourceSubjectArea = new ResourceSubjectArea;
+        $rmTaxonomyTerm = new TaxonomyTerm;
+        $rmTaxonomyVocabulary = new TaxonomyVocabulary;
+        $rmTaxonomyHierarchy = new TaxonomyHierarchy;
+        $rmResourceKeyword = new ResourceKeyword;
+        $rmResourceLearningResourceType = new ResourceLearningResourceType;
+        $rmResourceEducationalUse = new ResourceEducationalUse;
+        $rmResourceTranslationRight = new ResourceTranslationRight;
+        $rmResourceEducationalResource = new ResourceEducationalResource;
+        $rmResourceCopyrightHolder = new ResourceCopyrightHolder;
+        $rmResourceCreativeCommon = new ResourceCreativeCommon;
+        $rmResourceSharePermission = new ResourceSharePermission;
+        $rmResourceAuthor = new ResourceAuthor;
+        $rmResourcePublisher = new ResourcePublisher;
+        $rmResourceTranslator = new ResourceTranslator;
+        $rmResourceIamAuthor = new ResourceIamAuthor;
 
         $rmResourceRecords = $rmResource->setConnection('mysql_remote')->newQuery()->get();
         $rmDdlFileRecords = $rmDdlFile->setConnection('mysql_remote')->newQuery()->get();
@@ -129,28 +129,28 @@ class SyncController extends Controller
         $rmResourceTranslatorRecords = $rmResourceTranslator->setConnection('mysql_remote')->newQuery()->get();
         $rmResourceIamAuthorRecords = $rmResourceIamAuthor->setConnection('mysql_remote')->newQuery()->get();
 
-        $Resource = new Resource();
-        $DdlFile = new DdlFile();
-        $News = new News();
-        $Page = new Page();
-        $ResourceLevel = new ResourceLevel();
-        $ResourceAttachment = new ResourceAttachment();
-        $ResourceSubjectArea = new ResourceSubjectArea();
-        $TaxonomyTerm = new TaxonomyTerm();
-        $TaxonomyVocabulary = new TaxonomyVocabulary();
-        $TaxonomyHierarchy = new TaxonomyHierarchy();
-        $ResourceKeyword = new ResourceKeyword();
-        $ResourceLearningResourceType = new ResourceLearningResourceType();
-        $ResourceEducationalUse = new ResourceEducationalUse();
-        $ResourceTranslationRight = new ResourceTranslationRight();
-        $ResourceEducationalResource = new ResourceEducationalResource();
-        $ResourceCopyrightHolder = new ResourceCopyrightHolder();
-        $ResourceCreativeCommon = new ResourceCreativeCommon();
-        $ResourceSharePermission = new ResourceSharePermission();
-        $ResourceAuthor = new ResourceAuthor();
-        $ResourcePublisher = new ResourcePublisher();
-        $ResourceTranslator = new ResourceTranslator();
-        $ResourceIamAuthor = new ResourceIamAuthor();
+        $Resource = new Resource;
+        $DdlFile = new DdlFile;
+        $News = new News;
+        $Page = new Page;
+        $ResourceLevel = new ResourceLevel;
+        $ResourceAttachment = new ResourceAttachment;
+        $ResourceSubjectArea = new ResourceSubjectArea;
+        $TaxonomyTerm = new TaxonomyTerm;
+        $TaxonomyVocabulary = new TaxonomyVocabulary;
+        $TaxonomyHierarchy = new TaxonomyHierarchy;
+        $ResourceKeyword = new ResourceKeyword;
+        $ResourceLearningResourceType = new ResourceLearningResourceType;
+        $ResourceEducationalUse = new ResourceEducationalUse;
+        $ResourceTranslationRight = new ResourceTranslationRight;
+        $ResourceEducationalResource = new ResourceEducationalResource;
+        $ResourceCopyrightHolder = new ResourceCopyrightHolder;
+        $ResourceCreativeCommon = new ResourceCreativeCommon;
+        $ResourceSharePermission = new ResourceSharePermission;
+        $ResourceAuthor = new ResourceAuthor;
+        $ResourcePublisher = new ResourcePublisher;
+        $ResourceTranslator = new ResourceTranslator;
+        $ResourceIamAuthor = new ResourceIamAuthor;
 
         $ResourceRecords = $Resource->all();
         $DdlFileRecords = $DdlFile->all();

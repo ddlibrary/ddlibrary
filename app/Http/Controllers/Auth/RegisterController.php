@@ -18,7 +18,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -64,7 +63,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm(): View
     {
-        $myResources = new Resource();
+        $myResources = new Resource;
         $countries = $myResources->resourceAttributesList('taxonomy_term_data', 15);
         $provinces = $myResources->resourceAttributesList('taxonomy_term_data', 12)->all();
         $gmail_signup_url = 'https://accounts.google.com/signup';
@@ -88,7 +87,7 @@ class RegisterController extends Controller
                 'gender' => 'required',
                 'country' => 'required',
                 'city' => 'nullable',
-                'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule()],
+                'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
             ],
             [
                 'phone.unique' => __('The phone number has already been taken.'),
@@ -105,7 +104,7 @@ class RegisterController extends Controller
      */
     protected function create(Request $request): User
     {
-        $user = new User();
+        $user = new User;
         $user->username = $this->getUserName($request['email']);
         $user->password = Hash::make($request['password']);
         $user->email = $request['email'];

@@ -14,11 +14,11 @@ trait SitewidePageViewTrait
 {
     public function pageView(Request $request, $title = null): void
     {
-     
+
         $languageCode = $this->getLanguageCode();
 
         if (count(explode("/$languageCode", $request->url())) == 2) {
-            $agent = new Agent();
+            $agent = new Agent;
 
             $device = Device::firstOrCreate(['name' => $agent->device()]);
             $platform = Platform::firstOrCreate(['name' => $agent->platform()]);
@@ -29,7 +29,7 @@ trait SitewidePageViewTrait
                 'page_url' => $request->url(),
                 'user_agent' => $request->userAgent(),
                 'browser_id' => $browser->id,
-                'browser' => $browser->name. ' '. $agent->version($browser->name),
+                'browser' => $browser->name.' '.$agent->version($browser->name),
                 'is_bot' => $agent->isBot(),
                 'language' => $languageCode,
                 'device_id' => $device->id,

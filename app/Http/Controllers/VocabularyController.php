@@ -44,7 +44,7 @@ class VocabularyController extends Controller
             'weight' => 'required',
             'language' => 'required',
         ]);
-        $row = new TaxonomyVocabulary();
+        $row = new TaxonomyVocabulary;
         $row->name = $request->name;
         $row->weight = $request->weight;
         $row->language = $request->language;

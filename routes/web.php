@@ -144,8 +144,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('news/add/translate/{newsId}/{lang}', [NewsController::class, 'addTranslate'])->middleware('admin');
     Route::post('news/add/translate/{newsId}/{lang}', [NewsController::class, 'addPostTranslate'])->name('add_news_translate')->middleware('admin');
     //Menu
-    Route::prefix('admin')->middleware('admin')->group(function(){
-        Route::controller(MenuController::class)->group(function(){
+    Route::prefix('admin')->middleware('admin')->group(function () {
+        Route::controller(MenuController::class)->group(function () {
             Route::get('menu', 'index');
             Route::post('menu', 'index')->name('menulist');
             Route::get('menu/add/{menuId}', 'create');
@@ -159,7 +159,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         });
 
         //Settings
-        Route::controller(SettingController::class)->group(function(){
+        Route::controller(SettingController::class)->group(function () {
             Route::get('settings', 'edit');
             Route::post('settings', 'update')->name('settings');
         });
@@ -167,7 +167,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::resource('subscribers', SubscriberController::class)->only('index', 'destroy');
 
         //Comments
-        Route::prefix('comments')->controller(CommentController::class)->group(function(){
+        Route::prefix('comments')->controller(CommentController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('delete/{commentId}', 'delete');
             Route::get('published/{commentId}', 'published');
@@ -285,17 +285,16 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::post('', 'store')->name('subscribe.store');
     });
 
-    
     // Analytics
-    Route::prefix('admin/analytics')->middleware('admin')->group(function(){
+    Route::prefix('admin/analytics')->middleware('admin')->group(function () {
         Route::get('user', [UserAnalyticsController::class, 'index']);
         Route::get('resource', [ResourceAnalyticsController::class, 'index']);
-        Route::controller(SitewideAnalyticsController::class)->group(function(){
+        Route::controller(SitewideAnalyticsController::class)->group(function () {
             Route::get('sitewide', 'index');
             Route::get('reports/sitewide', 'view');
         });
 
-        Route::controller(GlossaryAnalyticsController::class)->group(function(){
+        Route::controller(GlossaryAnalyticsController::class)->group(function () {
             Route::get('glossary', 'index');
             Route::get('reports/glossary', 'view');
         });

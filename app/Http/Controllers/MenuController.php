@@ -39,7 +39,7 @@ class MenuController extends Controller
             'vocabulary' => $vocabulary,
         ];
         //creating search bar
-        $createSearchBar = new SearchController();
+        $createSearchBar = new SearchController;
         $searchBar = $createSearchBar->searchBar($args);
 
         return view('admin.menu.menu_list', compact('menuRecords', 'searchBar'));
@@ -50,7 +50,7 @@ class MenuController extends Controller
         $menu = Menu::find($id);
         $new_menu = false;
         if (! $menu) {
-            $menu = new Menu();
+            $menu = new Menu;
             $new_menu = true;
         }
         $locations = $menu->distinct()->pluck('location');

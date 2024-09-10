@@ -180,7 +180,7 @@ if (! function_exists('getCountry')) {
 if (! function_exists('isAdmin')) {
     function isAdmin(): bool
     {
-        $user = new User();
+        $user = new User;
 
         if ($user->isAdministrator(Auth::id())) {
             return true;
@@ -193,7 +193,7 @@ if (! function_exists('isAdmin')) {
 if (! function_exists('isNormalUser')) {
     function isNormalUser(): bool
     {
-        $user = new User();
+        $user = new User;
 
         if ($user->isNormalUser(Auth::id())) {
             return true;
@@ -206,7 +206,7 @@ if (! function_exists('isNormalUser')) {
 if (! function_exists('isLibraryManager')) {
     function isLibraryManager(): bool
     {
-        $user = new User();
+        $user = new User;
 
         if ($user->isLibraryManager(Auth::id())) {
             return true;
@@ -557,7 +557,7 @@ if (! function_exists('get_license_buttons')) {
 if (! function_exists('watermark_pdf')) {
     function watermark_pdf($file, $logo, $license_button_1, $license_button_2)
     {
-        $pdf = new FPDI();
+        $pdf = new FPDI;
         try {
             $pages = $pdf->setSourceFile($file);
         } catch (PdfParserException) {

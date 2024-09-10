@@ -15,15 +15,13 @@ use Yajra\Datatables\Datatables;
 class PageController extends Controller
 {
     use SitewidePageViewTrait;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     public function index(): \Illuminate\View\View
     {

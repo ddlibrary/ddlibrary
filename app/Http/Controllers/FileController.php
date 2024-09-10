@@ -30,7 +30,7 @@ class FileController extends Controller
     {
 
         if (is_numeric($resource_id) && is_numeric($file_id)) {
-            $fileDownload = new DownloadCount();
+            $fileDownload = new DownloadCount;
 
             $userAgentParser = parse_user_agent(request());
 

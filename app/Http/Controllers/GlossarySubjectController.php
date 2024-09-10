@@ -90,7 +90,7 @@ class GlossarySubjectController extends Controller
         ]);
 
         if ($validatedData['id'] == 'new') {
-            $glossary_subject = new GlossarySubject();
+            $glossary_subject = new GlossarySubject;
         } else {
             $glossary_subject = GlossarySubject::findOrFail($validatedData['id']);
         }

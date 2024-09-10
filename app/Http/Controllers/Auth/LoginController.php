@@ -12,7 +12,6 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
@@ -81,7 +80,7 @@ class LoginController extends Controller
 
     private function registerUser($data, $providerName)
     {
-        $user = new User();
+        $user = new User;
         $user->username = $this->getUserName($data->email);
         $user->email = $data->email;
         $user->avatar = $data->avatar;
@@ -94,13 +93,13 @@ class LoginController extends Controller
         $user->save();
 
         // Create user profile
-        $userProfile = new UserProfile();
+        $userProfile = new UserProfile;
         $userProfile->user_id = $user->id;
         $userProfile->first_name = $data->name;
         $userProfile->save();
 
         // Create user role
-        $userRole = new UserRole();
+        $userRole = new UserRole;
         $userRole->user_id = $user->id;
         $userRole->role_id = 6; //library user from roles table
         $userRole->save();
@@ -145,11 +144,11 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
         $credentials['user-id'] = null;
         //Checking if user exists
-        $userInstance = new User();
+        $userInstance = new User;
         $authUser = $userInstance->oneUser($credentials);
 
         if (! $authUser) {
-            $userProfileInstance = new UserProfile();
+            $userProfileInstance = new UserProfile;
             $authUserProfile = $userProfileInstance
                 ->getUserProfile($credentials);
             if ($authUserProfile) {
@@ -161,7 +160,7 @@ class LoginController extends Controller
         // If the status of the user is not 1 we assume the user is deleted, or in some cases, inactive
         if ($authUser && $authUser->status == 1) {
             if (checkUserPassword($credentials['password'], $authUser->password)) {
-                $user = new User();
+                $user = new User;
                 if ($user->updateUser(['password' => Hash::make($credentials['password'])], $credentials)) {
                     if ($this->attemptLogin($request, $authUser)) {
                         return $this->sendLoginResponse($request);
@@ -201,7 +200,7 @@ class LoginController extends Controller
         $this->validate($request, [
             'email' => 'required|string',
             'password' => 'required|string',
-            'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule()],
+            'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
         ]);
     }
 

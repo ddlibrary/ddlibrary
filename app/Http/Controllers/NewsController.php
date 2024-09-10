@@ -13,15 +13,13 @@ use Yajra\Datatables\Datatables;
 class NewsController extends Controller
 {
     use SitewidePageViewTrait;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     public function index(): View
     {
@@ -53,7 +51,7 @@ class NewsController extends Controller
         //setting the search session empty
         DDLClearSession();
 
-        $myNews = new News();
+        $myNews = new News;
 
         $news = News::find($newsId);
         $this->pageView($request, $news->title);

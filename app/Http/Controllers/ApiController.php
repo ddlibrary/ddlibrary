@@ -19,7 +19,6 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -124,7 +123,7 @@ class ApiController extends Controller
             return $validator->errors()->jsonSerialize();
         }
 
-        $user = new User();
+        $user = new User;
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->email = $request->email;
@@ -136,7 +135,7 @@ class ApiController extends Controller
 
         auth()->login($user);
 
-        $userProfile = new UserProfile();
+        $userProfile = new UserProfile;
         $userProfile->user_id = $user->id;
         $userProfile->save();
 
@@ -226,7 +225,7 @@ class ApiController extends Controller
     // Resource Categories
     public function resourceCategories($lang = 'en')
     {
-        $resource = new Resource();
+        $resource = new Resource;
 
         return $resource->subjectIconsAndTotal($lang);
     }
@@ -237,10 +236,10 @@ class ApiController extends Controller
         //setting the search session empty
         DDLClearSession();
 
-        $myResources = new Resource();
-        $views = new ResourceView();
+        $myResources = new Resource;
+        $views = new ResourceView;
 
-        $attachments = new ResourceAttachment();
+        $attachments = new ResourceAttachment;
         $attachments = $attachments->where('resource_id', $resourceId)->get();
 
         $resource = Resource::findOrFail($resourceId);
@@ -366,7 +365,7 @@ class ApiController extends Controller
     // Featured Resources
     public function featuredResources($lang = 'en')
     {
-        $resource = new Resource();
+        $resource = new Resource;
 
         return $resource->featuredCollections($lang);
     }
@@ -374,7 +373,7 @@ class ApiController extends Controller
     // Filter Resources
     public function filterResources(Request $request)
     {
-        $myResources = new Resource();
+        $myResources = new Resource;
 
         //Getting all whatever in the parameterBag
         $everything = $request->all();
@@ -402,9 +401,9 @@ class ApiController extends Controller
             $typeIds = $everything['type'];
         }
 
-        $views = new ResourceView();
-        $favorites = new ResourceFavorite();
-        $comments = new ResourceComment();
+        $views = new ResourceView;
+        $favorites = new ResourceFavorite;
+        $comments = new ResourceComment;
         $resources = $myResources->paginateResourcesBy($request);
 
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data', 8);

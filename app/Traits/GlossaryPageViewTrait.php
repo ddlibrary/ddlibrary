@@ -5,9 +5,9 @@ namespace App\Traits;
 use App\Enums\GlossaryPageViewStatusEnum;
 use App\Models\Browser;
 use App\Models\Device;
-use App\Models\Platform;
 use App\Models\GlossaryPageView;
 use App\Models\GlossarySubject;
+use App\Models\Platform;
 use Illuminate\Http\Request;
 use Jenssegers\Agent\Agent;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -18,9 +18,8 @@ trait GlossaryPageViewTrait
     {
         $languageCode = $this->getLanguageCode();
 
-     
         if (count(explode("/$languageCode", $request->url())) == 2) {
-            $agent = new Agent();
+            $agent = new Agent;
 
             $device = Device::firstOrCreate(['name' => $agent->device()]);
             $platform = Platform::firstOrCreate(['name' => $agent->platform()]);
@@ -31,7 +30,7 @@ trait GlossaryPageViewTrait
                 'title' => $title,
                 'user_agent' => $request->userAgent(),
                 'browser_id' => $browser->id,
-                'browser' => $browser->name . ' ' . $agent->version($browser->name),
+                'browser' => $browser->name.' '.$agent->version($browser->name),
                 'is_bot' => $agent->isBot(),
                 'language' => $languageCode,
                 'device_id' => $device->id,

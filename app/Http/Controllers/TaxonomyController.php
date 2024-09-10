@@ -29,7 +29,7 @@ class TaxonomyController extends Controller
             'vocabulary' => $vocabulary,
         ];
         //creating search bar
-        $createSearchBar = new SearchController();
+        $createSearchBar = new SearchController;
         $searchBar = $createSearchBar->searchBar($args);
 
         return view('admin.taxonomy.taxonomy_list', compact('terms', 'searchBar'));
@@ -182,7 +182,7 @@ class TaxonomyController extends Controller
         $term->tnid = $tnid;
         $term->save();
 
-        $parent = new TaxonomyHierarchy();
+        $parent = new TaxonomyHierarchy;
         $parent->tid = $term->id;
         $parent->parent = $request->input('parent');
         $parent->save();

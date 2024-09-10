@@ -24,7 +24,7 @@ class SurveySettingController extends Controller
 
     public function storeSurveyModalTime(Request $request): RedirectResponse
     {
-        $survey_modal_time = new SurveySetting();
+        $survey_modal_time = new SurveySetting;
         $survey_modal_time->time = $request['time'];
         $survey_modal_time->save();
 

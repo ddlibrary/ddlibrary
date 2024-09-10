@@ -11,7 +11,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\TransferException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 
@@ -81,7 +80,7 @@ class StoryWeaverController extends Controller
             }
         }
 
-        $client = new Client();
+        $client = new Client;
         try {
             $response = $client->request(
                 'POST', $storyweaver_url, [

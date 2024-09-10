@@ -33,7 +33,7 @@ class UserController extends Controller
     {
         $this->middleware('admin');
 
-        $usersModel = new User();
+        $usersModel = new User;
 
         $users = $usersModel->filterUsers($request->all());
         $roles = Role::all();
@@ -137,7 +137,7 @@ class UserController extends Controller
     public function edit($userId): View
     {
         $this->middleware('admin');
-        $myResources = new Resource();
+        $myResources = new Resource;
         $user = User::where('id', $userId)->first();
         $countries = $myResources->resourceAttributesList('taxonomy_term_data', 15);
         $provinces = $myResources->resourceAttributesList('taxonomy_term_data', 12);
@@ -201,7 +201,7 @@ class UserController extends Controller
         $userRole = UserRole::where('user_id', $userId);
         $userRole->delete();
 
-        $userRole = new UserRole();
+        $userRole = new UserRole;
         $userRole->user_id = $userId;
         $userRole->role_id = $request->input('role');
         $userRole->save();
@@ -227,7 +227,7 @@ class UserController extends Controller
     {
         $users = User::get(); // All users
         // $userProfiles = UserProfile::with('first_name','last_name')->get();
-        $csvExporter = new Export();
+        $csvExporter = new Export;
         $csvExporter
             ->build($users, [
                 'email' => 'Email Address',

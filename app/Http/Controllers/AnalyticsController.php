@@ -24,19 +24,19 @@ class AnalyticsController extends Controller
         $date_to = $request->filled('date_to') ? request('date_to') : '';
 
         if ($request->filled('type')) {
-            $usersModel = new User();
-            $resourceModel = new Resource();
+            $usersModel = new User;
+            $resourceModel = new Resource;
             if (request('type') == 'gender') {
                 $totalUsersByGender = $usersModel->totalUsersByGender($request);
 
                 return view('admin.analytics.user_gender', compact('totalUsersByGender'));
             } elseif (request('type') == 'resource_download') {
-                $downloadModel = new DownloadCount();
+                $downloadModel = new DownloadCount;
                 $downloadCount = $downloadModel->getCount();
 
                 return view('admin.analytics.resource_download', compact('downloadCount'));
             } elseif (request('type') == 'resource_view') {
-                $viewModel = new ResourceView();
+                $viewModel = new ResourceView;
                 $viewCount = $viewModel->getCount();
 
                 return view('admin.analytics.resource_view', compact('viewCount'));
