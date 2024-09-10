@@ -16,7 +16,7 @@ class RegistrationTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function guest_can_view_registration_page()
+    public function guest_can_view_registration_page(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -27,7 +27,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function user_can_register_with_basic_details()
+    public function user_can_register_with_basic_details(): void
     {
         $this->refreshApplicationWithLocale('en');
         $country = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::UserCountry->value]);
@@ -63,7 +63,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function name_field_is_required()
+    public function name_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -80,7 +80,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function last_name_field_is_required()
+    public function last_name_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -97,7 +97,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function email_field_is_required()
+    public function email_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -114,7 +114,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function email_should_be_unique()
+    public function email_should_be_unique(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -132,7 +132,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function country_field_is_required()
+    public function country_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -149,7 +149,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function gender_field_is_required()
+    public function gender_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -166,7 +166,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function passwords_must_match()
+    public function passwords_must_match(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -184,7 +184,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function easy_password_fail()
+    public function easy_password_fail(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -202,7 +202,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function test_password_must_be_at_least_8_chars_long()
+    public function test_password_must_be_at_least_8_chars_long(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -220,7 +220,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function thrown_error_if_password_and_confirmation_do_not_match()
+    public function thrown_error_if_password_and_confirmation_do_not_match(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -238,7 +238,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function old_session_inputs()
+    public function old_session_inputs(): void
     {
         $this->refreshApplicationWithLocale('en');
 

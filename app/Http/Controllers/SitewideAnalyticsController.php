@@ -96,7 +96,7 @@ class SitewideAnalyticsController extends Controller
         });
     }
 
-    public function view(Request $request)
+    public function view(Request $request): View
     {
         $languages = $this->getLanguages();
         $genders = $this->genders();

@@ -11,7 +11,7 @@ class ForgotPasswordTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function en_user_can_view_forgot_password_page()
+    public function en_user_can_view_forgot_password_page(): void
     {
         $this->refreshApplicationWithLocale('en');
         $response = $this->get('/en/password/reset');
@@ -25,7 +25,7 @@ class ForgotPasswordTest extends TestCase
     }
 
     /** @test */
-    public function en_getting_error_if_email_does_not_exist()
+    public function en_getting_error_if_email_does_not_exist(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -37,7 +37,7 @@ class ForgotPasswordTest extends TestCase
     }
 
     /** @test */
-    public function fa_user_can_view_forgot_password_page()
+    public function fa_user_can_view_forgot_password_page(): void
     {
         $this->refreshApplicationWithLocale('fa');
         $response = $this->get('/fa/password/reset');
@@ -51,7 +51,7 @@ class ForgotPasswordTest extends TestCase
     }
 
     /** @test */
-    public function fa_getting_error_if_email_does_not_exist()
+    public function fa_getting_error_if_email_does_not_exist(): void
     {
         $this->refreshApplicationWithLocale('fa');
 

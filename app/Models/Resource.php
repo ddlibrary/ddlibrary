@@ -475,12 +475,12 @@ class Resource extends Model
         return LogOptions::defaults()->logOnly(['title', 'created_at']);
     }
 
-    public function downloads()
+    public function downloads(): HasMany
     {
         return $this->hasMany(DownloadCount::class);
     }
 
-    public function resourceViews()
+    public function resourceViews(): HasMany
     {
         return $this->hasMany(ResourceView::class);
     }

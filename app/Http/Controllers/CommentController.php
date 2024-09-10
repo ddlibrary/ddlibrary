@@ -15,7 +15,7 @@ class CommentController extends Controller
         return view('admin.comments.comments_list', compact('comments'));
     }
 
-    public function published($commentId)
+    public function published($commentId): RedirectResponse
     {
         $this->middleware('admin');
 

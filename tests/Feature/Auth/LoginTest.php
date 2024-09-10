@@ -11,7 +11,7 @@ class LoginTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function en_guest_can_visit_login_page()
+    public function en_guest_can_visit_login_page(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -30,7 +30,7 @@ class LoginTest extends TestCase
     }
 
     /** @test */
-    public function en_user_can_login_with_valid_credential()
+    public function en_user_can_login_with_valid_credential(): void
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create(['email' => 'user@email.com', 'password' => bcrypt('Pass@123')]);
@@ -45,7 +45,7 @@ class LoginTest extends TestCase
     }
 
     /** @test */
-    public function en_disable_user_cannot_login_with_valid_credential()
+    public function en_disable_user_cannot_login_with_valid_credential(): void
     {
         $this->refreshApplicationWithLocale('en');
         User::factory()->create(['email' => 'disable_user@email.com', 'password' => bcrypt('Pass@123'), 'status' => false]);
@@ -69,7 +69,7 @@ class LoginTest extends TestCase
     }
 
     /** @test */
-    public function en_user_cannot_login_with_invalid_password()
+    public function en_user_cannot_login_with_invalid_password(): void
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create(['password' => bcrypt('Pass@123')]);
@@ -89,7 +89,7 @@ class LoginTest extends TestCase
     }
 
     /** @test */
-    public function en_user_cannot_login_with_invalid_email()
+    public function en_user_cannot_login_with_invalid_email(): void
     {
         $this->refreshApplicationWithLocale('en');
         User::factory()->create(['email' => 'email@mail.com', 'password' => bcrypt('Pass@123')]);
@@ -111,7 +111,7 @@ class LoginTest extends TestCase
     // Farsi
 
     /** @test */
-    public function fa_guest_can_visit_login_page()
+    public function fa_guest_can_visit_login_page(): void
     {
         $this->refreshApplicationWithLocale('fa');
 
@@ -130,7 +130,7 @@ class LoginTest extends TestCase
     }
 
     /** @test */
-    public function fa_user_can_login_with_valid_credential()
+    public function fa_user_can_login_with_valid_credential(): void
     {
         $this->refreshApplicationWithLocale('fa');
         $user = User::factory()->create(['email' => 'fa@email.com', 'password' => bcrypt('Pass@123')]);
@@ -145,7 +145,7 @@ class LoginTest extends TestCase
     }
 
     /** @test */
-    public function fa_disable_user_cannot_login_with_valid_credential()
+    public function fa_disable_user_cannot_login_with_valid_credential(): void
     {
         $this->refreshApplicationWithLocale('fa');
         User::factory()->create(['email' => 'fa_disable_user@email.com', 'password' => bcrypt('Pass@123'), 'status' => false]);
@@ -169,7 +169,7 @@ class LoginTest extends TestCase
     }
 
     /** @test */
-    public function fa_user_cannot_login_with_invalid_password()
+    public function fa_user_cannot_login_with_invalid_password(): void
     {
         $this->refreshApplicationWithLocale('fa');
         $user = User::factory()->create(['password' => bcrypt('Pass@123')]);
@@ -189,7 +189,7 @@ class LoginTest extends TestCase
     }
 
     /** @test */
-    public function fa_user_cannot_login_with_invalid_email()
+    public function fa_user_cannot_login_with_invalid_email(): void
     {
         $this->refreshApplicationWithLocale('fa');
         User::factory()->create(['email' => 'email@mail.com', 'password' => bcrypt('Pass@123')]);
@@ -209,7 +209,7 @@ class LoginTest extends TestCase
     }
 
     /** @test */
-    public function test_has_too_many_login_attempts()
+    public function test_has_too_many_login_attempts(): void
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
