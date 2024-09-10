@@ -3,10 +3,10 @@
     <script src="https://www.google.com/recaptcha/api.js"></script>
 @endif
 @section('title')
-    @lang('Log in to Darakht-e Danesh Library') - @lang('Darakht-e Danesh Library')
+    {{ __('Log in to Darakht-e Danesh Library') }} - {{ __('Darakht-e Danesh Library') }}
 @endsection
 @section('description')
-    @lang('The Darakht-e Danesh Online Library for Educators is a repository of open educational resources for teachers, teacher trainers, school administrators, literacy workers and others involved in furthering education in Afghanistan.')
+    {{ __('The Darakht-e Danesh Online Library for Educators is a repository of open educational resources for teachers, teacher trainers, school administrators, literacy workers and others involved in furthering education in Afghanistan.') }}
 @endsection
 @section('page_image')
     {{ asset('storage/files/logo-dd.png') }}
@@ -16,7 +16,7 @@
         <section class="p-8 d-block ddl-forms register-form">
             <div>
                 <header>
-                    <h3 class="text-center">@lang('Log in to Darakht-e Danesh Library')</h3>
+                    <h3 class="text-center">{{ __('Log in to Darakht-e Danesh Library') }}</h3>
                 </header>
                 <div>
                     <form method="POST" action="{{ route('login') }}" id="login-form">
@@ -27,7 +27,7 @@
                         <div class="form-item">
                             <input type="text" class="form-control w-100 {{ $errors->has('email') ? ' is-invalid' : '' }}"
                                 id="email" name="email" autocomplete="username" spellcheck="false"
-                                placeholder="@lang('Email or username or phone')" size="40" value="{{ old('email') }}" required
+                                placeholder="{{ __('Email or username or phone') }}" size="40" value="{{ old('email') }}" required
                                 autofocus>
                             @if ($errors->has('email'))
                                 <span class="invalid-feedback text-start">
@@ -41,7 +41,7 @@
                             <input type="password"
                                 class="form-control w-100 {{ $errors->has('password') ? ' is-invalid' : '' }} user-password"
                                 id="password" name="password" autocomplete="current-password" spellcheck="false"
-                                placeholder="@lang('Password')" size="40" required>
+                                placeholder="{{ __('Password') }}" size="40" required>
                             <span class="fa fa-eye-slash password-toggle-icon text-gray" aria-hidden="true"
                                 onclick="togglePassword()"></span>
                             @if ($errors->has('password'))
@@ -67,10 +67,10 @@
                                 @if (env('CAPTCHA') == 'yes')
                                     <button class="g-recaptcha form-control login-submit btn btn-primary w-100"
                                         data-sitekey="{{ config('services.recaptcha_v3.site_key') }}"
-                                        data-callback='onSubmit' data-action='register'>@lang('Log in')</button>
+                                        data-callback='onSubmit' data-action='register'>{{ __('Log in') }}</button>
                                 @else
                                     <button
-                                        class="form-control login-submit btn btn-primary w-100">@lang('Log in')</button>
+                                        class="form-control login-submit btn btn-primary w-100">{{ __('Log in') }}</button>
                                 @endif
                                 @if ($errors->has('g-recaptcha-response'))
                                     <div>
@@ -98,7 +98,7 @@
                                 type="submit">
                                 <i class="fab fa-google"></i>
                                 <span class="oauth-icon-separator"></span>
-                                @lang('Log in with Google')
+                                {{ __('Log in with Google') }}
                             </a>
 
                             {{-- Facebook --}}
@@ -107,14 +107,14 @@
                                 type="submit">
                                 <i class="fab fa-facebook-f"></i>
                                 <span class="oauth-icon-separator"></span>
-                                @lang('Log in with Facebook')
+                                {{ __('Log in with Facebook') }}
                             </a>
                         </div>
 
                         <div class="form-group text-start" style="margin-top: 20px;">
 
                             {{-- Sign up link --}}
-                            <a href="{{ route('register') }}" style="margin-inline-end: 25px;">@lang('Sign up')</a>
+                            <a href="{{ route('register') }}" style="margin-inline-end: 25px;">{{ __('Sign up') }}</a>
 
                             {{-- Forgot password --}}
                             <a href="{{ route('password.request') }}"

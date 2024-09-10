@@ -24,13 +24,13 @@
                             <div class="resource-icons-group">
                                 @if (isLibraryManager() or isAdmin())
                                     <a
-                                        href="{{ URL::to($resource->language . '/resources/edit/step1/' . $resource->id) }}">@lang('Edit')</a>
+                                        href="{{ URL::to($resource->language . '/resources/edit/step1/' . $resource->id) }}">{{ __('Edit') }}</a>
                                 @endif
                                 <i class="fas fa-lg fa-star pointer {{ $resource->favorites ? 'active' : '' }}"
-                                    title="@lang('Favorite this resource')" id="resourceFavorite"
+                                    title="{{ __('Favorite this resource') }}" id="resourceFavorite"
                                     onclick="favorite('resourceFavorite','{{ URL::to('resources/favorite/') }}','{{ $resource->id }}','{{ Auth::id() }}')"></i>
-                                <i class="fas fa-lg fa-share-square" title="@lang('Share this resource')"></i>
-                                <i class="fas fa-lg fa-flag" title="@lang('Flag this resource')"></i>
+                                <i class="fas fa-lg fa-share-square" title="{{ __('Share this resource') }}"></i>
+                                <i class="fas fa-lg fa-flag" title="{{ __('Flag this resource') }}"></i>
                             </div>
                         </div>
 
@@ -40,7 +40,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <span class="close" id="share-close">&times;</span>
-                                    <h2>@lang('Share this item')</h2>
+                                    <h2>{{ __('Share this item') }}</h2>
                                 </div>
                                 <div class="modal-body">
                                     <div class="modal-body">
@@ -67,12 +67,12 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <span class="close" id="favorite-close">&times;</span>
-                                    <h2>@lang('Favorite this item')</h2>
+                                    <h2>{{ __('Favorite this item') }}</h2>
                                 </div>
                                 <div class="modal-body">
                                     <div class="modal-body">
-                                        <h2>@lang('In order to favorite a resource, you are required to') <a href="{{ URL::to('login') }}"
-                                                title="@lang('login')">@lang('login')</a>.</h2>
+                                        <h2>{{ __('In order to favorite a resource, you are required to') }} <a href="{{ URL::to('login') }}"
+                                                title="{{ __('login') }}">{{ __('login') }}</a>.</h2>
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <span class="close" id="flag-close">&times;</span>
-                                    <h2>@lang('Flag this item')</h2>
+                                    <h2>{{ __('Flag this item') }}</h2>
                                 </div>
                                 <div class="modal-body">
                                     <div class="modal-body">
@@ -94,23 +94,23 @@
                                                     @csrf
                                                     <div class="form-item">
                                                         <label for="type">
-                                                            <strong>@lang('Type')</strong>
+                                                            <strong>{{ __('Type') }}</strong>
                                                             <span class="form-required"
                                                                 title="This field is required.">*</span>
                                                         </label>
                                                         <select name="type"
                                                             class="form-control{{ $errors->has('city') ? ' is-invalid' : '' }}"
                                                             required>
-                                                            <option value="">- @lang('None') -</option>
-                                                            <option value="1">@lang('Graphic Violence')</option>
-                                                            <option value="2">@lang('Graphic Sexual Content')</option>
-                                                            <option value="3">@lang('Spam, Scam or Fraud')</option>
-                                                            <option value="4">@lang('Broken or Empty Data')</option>
+                                                            <option value="">- {{ __('None') }} -</option>
+                                                            <option value="1">{{ __('Graphic Violence') }}</option>
+                                                            <option value="2">{{ __('Graphic Sexual Content') }}</option>
+                                                            <option value="3">{{ __('Spam, Scam or Fraud') }}</option>
+                                                            <option value="4">{{ __('Broken or Empty Data') }}</option>
                                                         </select>
                                                     </div>
                                                     <div class="form-item">
                                                         <label for="details">
-                                                            <strong>@lang('Details')</strong>
+                                                            <strong>{{ __('Details') }}</strong>
                                                             <span class="form-required"
                                                                 title="This field is required.">*</span>
                                                         </label>
@@ -120,7 +120,7 @@
                                                     <input type="hidden" value="{{ Auth::id() }}" name="userid">
                                                     <div class="left-side">
                                                         <input class="form-control normalButton" type="submit"
-                                                            value="@lang('Submit')">
+                                                            value="{{ __('Submit') }}">
                                                     </div>
                                                 </form>
                                             </div>
@@ -135,15 +135,15 @@
                 </article>
                 <article class="resource-view-details">
                     <div class="resource-view-download">
-                        <h3 style="display: inline;">@lang('Please click the button(s) below to download the resource(s)')</h3>
+                        <h3 style="display: inline;">{{ __('Please click the button(s) below to download the resource(s)') }}</h3>
                         <a href="{{ URL::to('glossary') }}" class="glossary-icon"><i class="fas fa-globe"
-                                title="@lang('DDL Glossary')"><span class="glossary-text">&nbsp;@lang('Glossary')</span>
+                                title="{{ __('DDL Glossary') }}"><span class="glossary-text">&nbsp;{{ __('Glossary') }}</span>
                             </i></a>
                     </div>
                     <div class="download-box">
                         @if ($resource->attachments)
                             @foreach ($resource->attachments as $file)
-                                <h4>@lang('File :id', ['id' => $loop->iteration])</h4>
+                                <h4>{{ __('File :id', ['id' => $loop->iteration]) }}</h4>
                                 <h4>
                                     <span class="badge badge-secondary">
                                         @php
@@ -172,12 +172,12 @@
                                             </audio>
                                         </span>
                                     @else
-                                        <span class="download-item no-preview">@lang('No preview available.')</span>
+                                        <span class="download-item no-preview">{{ __('No preview available.') }}</span>
                                     @endif
                                 </div>
 
                                 <span class="download-item">
-                                    @if (Auth::check())
+                                    @auth
                                         @php
                                             $user = Auth::id();
                                             $hash = hash(
@@ -187,12 +187,12 @@
                                         @endphp
                                         <a class="btn btn-primary"
                                             href="{{ URL::to('resource/' . $resource->id . '/download/' . $file->id . '/' . $hash) }}">
-                                            <i class="fa fa-download" aria-hidden="true"></i> @lang('Download')
+                                            <i class="fa fa-download" aria-hidden="true"></i> {{ __('Download') }}
                                             ({{ formatBytes($file->file_size) }})
                                         </a>
                                     @else
-                                        @lang('Please login to download this file.')
-                                    @endif
+                                        {{ __('Please login to download this file.') }}
+                                    @endauth
                                     <br>
                                 </span>
                             @endforeach
@@ -201,10 +201,10 @@
                 </article><br>
                 <div style="border:1px solid lightgray;" class="p-2 border-radius-5">
 
-                    <h3 class="bg-yellow-600 p-2 border-radius-top-5 black-400">@lang('About this resource')</h3>
+                    <h3 class="bg-yellow-600 p-2 border-radius-top-5 black-400">{{ __('About this resource') }}</h3>
                     @if (count($resource->authors))
                         <article class="resource-view-details">
-                            <h3>@lang('Author')</h3>
+                            <h3>{{ __('Author') }}</h3>
                             @foreach ($resource->authors as $author)
                                 <p>{{ $author->name }}</p>
                             @endforeach
@@ -213,7 +213,7 @@
 
                     @if (count($resource->translators))
                         <article class="resource-view-details">
-                            <h3>@lang('Translator')</h3>
+                            <h3>{{ __('Translator') }}</h3>
                             @foreach ($resource->translators as $translator)
                                 <p>{{ $translator->name }}</p>
                             @endforeach
@@ -221,35 +221,35 @@
                     @endif
 
                     <article class="resource-view-details">
-                        <h3>@lang('Resource Level')</h3>
+                        <h3>{{ __('Resource Level') }}</h3>
                         @foreach ($resource->levels as $level)
                             <p><a href="{{ URL::to('resources/list?level=' . $level->id) }}"
                                     title="{{ $level->name }}">{{ $level->name }}</a></p>
                         @endforeach
                     </article>
                     <article class="resource-view-details">
-                        <h3>@lang('Subject Area')</h3>
+                        <h3>{{ __('Subject Area') }}</h3>
                         @foreach ($resource->subjects as $subject)
                             <p><a href="{{ URL::to('resources/list?subject_area=' . $subject->id) }}"
                                     title="{{ $subject->name }}">{{ $subject->name }}</a></p>
                         @endforeach
                     </article>
                     <article class="resource-view-details">
-                        <h3>@lang('Learning Resource Type')</h3>
+                        <h3>{{ __('Learning Resource Type') }}</h3>
                         @foreach ($resource->LearningResourceTypes as $ltype)
                             <p><a href="{{ URL::to('resources/list?type=' . $ltype->id) }}"
                                     title="{{ $ltype->name }}">{{ $ltype->name }}</a></p>
                         @endforeach
                     </article>
                     <article class="resource-view-details">
-                        <h3>@lang('Publisher')</h3>
+                        <h3>{{ __('Publisher') }}</h3>
                         @foreach ($resource->publishers as $publisher)
                             <p><a href="{{ URL::to('resources/list?publisher=' . $publisher->id) }}"
                                     title="{{ $publisher->name }}">{{ $publisher->name }}</a></p>
                         @endforeach
                     </article>
                     <article class="resource-view-details">
-                        <h3>@lang('Languages Available')</h3>
+                        <h3>{{ __('Languages Available') }}</h3>
 
                         <?php
                         $supportedLocals = [];
@@ -290,7 +290,7 @@
                         </div>
                     </article>
                     <article class="resource-view-details">
-                        <h3>@lang('License')</h3>
+                        <h3>{{ __('License') }}</h3>
                         <p>{{ $resource->creativeCommons ? $resource->creativeCommons[0]->name : '' }}</p>
                     </article>
                 </div>
@@ -301,7 +301,7 @@
 
                 <div class="resource-view-related-items">
                     <header>
-                        <h2>@lang('Related Items')</h2>
+                        <h2>{{ __('Related Items') }}</h2>
                     </header>
                     <div class="resource-related-items-box">
                         @foreach ($relatedItems as $item)
@@ -322,7 +322,7 @@
                     <br>
                     <div class="translated-resource-id">
                         <div>
-                            @lang('Added by'):
+                            {{ __('Added by') }}:
                         </div>
                         <a class="flex-1" href="">
                             {{ $resource->user->profile?->first_name }}
@@ -359,8 +359,8 @@
             </aside>
             <section class="resource-view-comment border-radius-5">
                 <header class="bg-yellow-600 align-items-center border-radius-top-5">
-                    <h2 class="black-400"> @lang('Comments') </h2>
-                    <h3 class="black-400"> {{ count($comments) }} @lang('comment(s) so far') </h3>
+                    <h2 class="black-400"> {{ __('Comments') }} </h2>
+                    <h3 class="black-400"> {{ count($comments) }} {{ __('comment(s) so far') }} </h3>
                 </header>
                 @foreach ($comments as $cm)
                     <article style="border:1px solid #f1f1f1; border-radius: 5px;" class="p-2">
@@ -388,7 +388,7 @@
                     </article>
                     <br>
                 @endforeach
-                @if (Auth::check())
+                @auth
                     <form method="POST" action="{{ route('comment') }}">
                         @csrf
                         <article>
@@ -401,11 +401,11 @@
                         </div>
                     </form>
                 @else
-                    <h4 class="download-resource">@lang('Please login to add comments.')</h4>
-                @endif
+                    <h4 class="download-resource">{{ __('Please login to add comments.') }}</h4>
+                @endauth
             </section>
         @else
-            <h1>@lang('Resource not found or is not yet translated!')</h1>
+            <h1>{{ __('Resource not found or is not yet translated!') }}</h1>
         @endif
     </section>
 @endsection

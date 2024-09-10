@@ -39,7 +39,7 @@
         <input type="hidden" id="dataY" name="dataY">
         <input type="hidden" id="dataWidth" name="dataWidth">
         <input type="hidden" id="dataHeight" name="dataHeight">
-        <input type='hidden' name='_token' value='{{csrf_token()}}'>
+        @csrf
       </form>
     </div>
   </div>

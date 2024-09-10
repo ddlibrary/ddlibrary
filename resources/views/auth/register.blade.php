@@ -3,10 +3,10 @@
     <script src="https://www.google.com/recaptcha/api.js"></script>
 @endif
 @section('title')
-    @lang('Register an account') - @lang('Darakht-e Danesh Library')
+    {{ __('Register an account') }} - {{ __('Darakht-e Danesh Library') }}
 @endsection
 @section('description')
-    @lang('The Darakht-e Danesh Online Library for Educators is a repository of open educational resources for teachers, teacher trainers, school administrators, literacy workers and others involved in furthering education in Afghanistan.')
+    {{ __('The Darakht-e Danesh Online Library for Educators is a repository of open educational resources for teachers, teacher trainers, school administrators, literacy workers and others involved in furthering education in Afghanistan.') }}
 @endsection
 @section('page_image')
     {{ asset('storage/files/logo-dd.png') }}
@@ -14,7 +14,7 @@
 @section('content')
     <header>
         <br>
-        <h1 class="text-center">@lang('Register an account')</h1>
+        <h1 class="text-center">{{ __('Register an account') }}</h1>
     </header>
     <section class="ddl-forms register-form">
         <div class="content-body">
@@ -32,7 +32,7 @@
                             type="submit">
                             <i class="fab fa-google"></i>
                             <span class="oauth-icon-separator"></span>
-                            @lang('Sign Up with Google')
+                            {{ __('Sign Up with Google') }}
                         </a>
 
                         {{-- Facebook --}}
@@ -41,7 +41,7 @@
                             type="submit">
                             <i class="fab fa-facebook-f"></i>
                             <span class="oauth-icon-separator"></span>
-                            @lang('Sign Up with Facebook')
+                            {{ __('Sign Up with Facebook') }}
                         </a>
                     </div>
                     <div class="form-item">
@@ -58,10 +58,10 @@
                     <div class="register-form-item">
                         <div class="form-item">
                             <label for="first_name">
-                                <strong>@lang('First name')</strong>
+                                <strong>{{ __('First name') }}</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
-                            <input class="form-control  w-100" placeholder="@lang('First name')" id="first_name"
+                            <input class="form-control  w-100" placeholder="{{ __('First name') }}" id="first_name"
                                 name="first_name" value="{{ old('first_name') }}" type="text" required>
                         </div>
                     </div>
@@ -70,12 +70,12 @@
                     <div class="register-form-item">
                         <div class="form-item">
                             <label for="last_name">
-                                <strong>@lang('Last name')</strong>
+                                <strong>{{ __('Last name') }}</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
                             <input class="form-control  w-100{{ $errors->has('last_name') ? ' is-invalid' : '' }}"
                                 id="last_name" name="last_name" value="{{ old('last_name') }}" type="text"
-                                placeholder="@lang('Last name')" required>
+                                placeholder="{{ __('Last name') }}" required>
                         </div>
                     </div>
 
@@ -83,7 +83,7 @@
                     <div class="register-form-item">
                         <div class="form-item">
                             <label for="first_name">
-                                <strong>@lang('Email')</strong>
+                                <strong>{{ __('Email') }}</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
                             <input class="form-control  w-100{{ $errors->has('email') ? ' is-invalid' : '' }}"
@@ -96,17 +96,17 @@
                     <div class="register-form-item">
                         <div class="form-item">
                             <label for="gender">
-                                <strong>@lang('Gender')</strong>
+                                <strong>{{ __('Gender') }}</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
                             <select class="form-control  w-100{{ $errors->has('gender') ? ' is-invalid' : '' }}"
                                 name="gender" id="gender" required>
-                                <option value="">- @lang('None') -</option>
-                                <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>@lang('Male')
+                                <option value="">- {{ __('None') }} -</option>
+                                <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>{{ __('Male') }}
                                 </option>
-                                <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>@lang('Female')
+                                <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>{{ __('Female') }}
                                 </option>
-                                <option value="None" {{ old('gender') == 'None' ? 'selected' : '' }}>@lang('Prefer not to say')
+                                <option value="None" {{ old('gender') == 'None' ? 'selected' : '' }}>{{ __('Prefer not to say') }}
                                 </option>
                             </select>
                         </div>
@@ -116,14 +116,14 @@
                     <div class="register-form-item">
                         <div class="form-item">
                             <label for="password">
-                                <strong>@lang('Password')</strong>
+                                <strong>{{ __('Password') }}</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
                             <div class="position-relative">
                                 <input
                                     class="form-control  w-100{{ $errors->has('password') ? ' is-invalid' : '' }}  user-password"
                                     id="password" name="password" type="password" required placeholder="********"
-                                    title="@lang('Choose a strong password with a minimum of eight characters, <br>combining at least one special character (!@#$%^&.) and a digit (0-9).')">
+                                    title="{{ __('Choose a strong password with a minimum of eight characters, <br>combining at least one special character (!@#$%^&.) and a digit (0-9).') }}">
                                 <span class="fa fa-eye-slash password-toggle-icon text-gray" aria-hidden="true"
                                     onclick="togglePassword()"></span>
                             </div>
@@ -139,7 +139,7 @@
                     <div class="register-form-item">
                         <div class="form-item">
                             <label for="password_confirmation">
-                                <strong>@lang('Confirm password')</strong>
+                                <strong>{{ __('Confirm password') }}</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
                             <div class="position-relative">
@@ -155,13 +155,13 @@
                     <div class="register-form-item">
                         <div class="form-item">
                             <label for="country">
-                                <strong>@lang('Country')</strong>
+                                <strong>{{ __('Country') }}</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
                             <select class="form-control  w-100{{ $errors->has('country') ? ' is-invalid' : '' }}"
                                 name="country" id="country"
                                 onchange="populate(this,'city', {{ json_encode($provinces) }})" required>
-                                <option value="">- @lang('None') -</option>
+                                <option value="">- {{ __('None') }} -</option>
                                 @foreach ($countries as $cn)
                                     <option value="{{ $cn->tnid }}"
                                         {{ old('country') == $cn->tnid ? 'selected' : '' }}>{{ $cn->name }}</option>
@@ -174,11 +174,11 @@
                     <div class="register-form-item">
                         <div class="form-item">
                             <label for="city">
-                                <strong>@lang('City')</strong>
+                                <strong>{{ __('City') }}</strong>
                             </label>
                             <select class="form-control  w-100{{ $errors->has('city') ? ' is-invalid' : '' }}"
                                 name="city" id="city">
-                                <option value="">- @lang('None') -</option>
+                                <option value="">- {{ __('None') }} -</option>
                             </select>
                             <input type="text" class="form-control" name="city_other" id="js-text-city"
                                 style="display:none;">
@@ -193,7 +193,7 @@
                                 <input type="checkbox" class="m-0 submit-btn" checked style="width: auto;"
                                     name="subscribe" disabled>
                                 <small style="color:gray; font-size: 14px;">
-                                    @lang('Receive our occasional newsletters and announcements (your email will be shared with MailChimp).')
+                                    {{ __('Receive our occasional newsletters and announcements (your email will be shared with MailChimp).') }}
                                 </small>
                             </label>
                         </div>
@@ -207,13 +207,13 @@
                         @if (env('CAPTCHA') == 'yes')
                             <button class="g-recaptcha form-control submit-button btn btn-primary"
                                 data-sitekey="{{ config('services.recaptcha_v3.site_key') }}" data-callback='onSubmit'
-                                data-action='register'>@lang('Submit')</button>
+                                data-action='register'>{{ __('Submit') }}</button>
                         @else
-                            <button class="form-control submit-button btn btn-primary">@lang('Submit')</button>
+                            <button class="form-control submit-button btn btn-primary">{{ __('Submit') }}</button>
                         @endif
                     </div>
                     <div>
-                        <a href="{{ route('login') }}">@lang('Sign in')</a>
+                        <a href="{{ route('login') }}">{{ __('Sign in') }}</a>
                     </div>
 
                 </div>

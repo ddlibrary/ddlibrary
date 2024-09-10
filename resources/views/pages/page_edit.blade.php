@@ -2,7 +2,7 @@
 @section('content')
 <section class="ddl-forms">
     <header>
-        <h1>@lang('Edit Page')</h1>
+        <h1>{{ __('Edit Page') }}</h1>
     </header>
     <div class="content-body">
         @include('layouts.messages')
@@ -10,7 +10,7 @@
         @csrf
         <div class="form-item">
             <label for="title"> 
-                <strong>@lang('Title')</strong>
+                <strong>{{ __('Title') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <input class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" id="title" name="title" size="40" type="text" value="{{ $page->title }}" required autofocus>
@@ -22,11 +22,11 @@
         </div>
         <div class="form-item">
             <label for="language"> 
-                <strong>@lang('Language')</strong>
+                <strong>{{ __('Language') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <select class="form-control{{ $errors->has('language') ? ' is-invalid' : '' }}" name="language" id="language" required>
-                <option value="">- @lang('None') -</option>
+                <option value="">- {{ __('None') }} -</option>
                 @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                 <option value="{{ $localeCode }}" {{ $page->language == $localeCode ? "selected" : "" }}>{{ $properties['native'] }}</option>
                 @endforeach
@@ -34,7 +34,7 @@
         </div>
         <div class="form-item">
             <label for="summary"> 
-                <strong>@lang('Summary')</strong>
+                <strong>{{ __('Summary') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <div id="editor">
@@ -48,7 +48,7 @@
         </div>
         <div class="form-item">
             <label for="body"> 
-                <strong>@lang('Body')</strong>
+                <strong>{{ __('Body') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <div id="editor">
@@ -62,13 +62,13 @@
         </div>
         <div class="form-item">
             <label for="published"> 
-                <strong>@lang('Published?')</strong>
+                <strong>{{ __('Published?') }}</strong>
             </label>
-            <input type="radio" name="published" {{ ($page->status  == 1)?"checked":""}} value="1"> @lang('Yes')
-            <input type="radio" name="published" {{ ($page->status == 0)?"checked":""}} value="0"> @lang('No')
+            <input type="radio" name="published" {{ ($page->status  == 1)?"checked":""}} value="1"> {{ __('Yes') }}
+            <input type="radio" name="published" {{ ($page->status == 0)?"checked":""}} value="0"> {{ __('No') }}
         </div>
         <div class="left-side">
-            <input class="form-control normalButton" type="submit" value="@lang('Submit')">
+            <input class="form-control normalButton" type="submit" value="{{ __('Submit') }}">
         </div>
         </form>
     </div>

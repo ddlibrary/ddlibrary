@@ -15,7 +15,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <span class="close" id="survey-close">&times;</span>
-            <h3>@lang('DDL Survey')</h3>
+            <h3>{{ __('DDL Survey') }}</h3>
         </div>
         <div class="modal-body">
             @if ($questions_count != 0)
@@ -24,7 +24,7 @@
                 <div class="survey_content">
                     <div class="progress">
                         <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5">
-                            @lang('Question') 1 @lang('of') {{ $questions_count }}
+                            {{ __('Question') }} 1 {{ __('of') }} {{ $questions_count }}
                         </div>
                     </div>
 
@@ -65,9 +65,9 @@
                                             @endif
                                         </div>
                                         @if ($questions_count ==  $a)
-                                            <button type="submit" class="btn btn-success">@lang('Submit')</button>
+                                            <button type="submit" class="btn btn-success">{{ __('Submit') }}</button>
                                         @else
-                                            <a class="btn btn-primary next" href="#">@lang('Next')</a>
+                                            <a class="btn btn-primary next" href="#">{{ __('Next') }}</a>
                                         @endif
                                     </div>
                                 @else
@@ -89,7 +89,7 @@
                                             <a class="btn btn-success first" href="#">Start over</a>
                                             <button type="submit" class="btn btn-success">Submit</button>
                                         @else
-                                            <a class="btn btn-primary next" href="#">@lang('Next')</a>
+                                            <a class="btn btn-primary next" href="#">{{ __('Next') }}</a>
                                         @endif
                                     </div>
                                 @endif
@@ -99,14 +99,14 @@
                             @endforeach
                             <div class="tab-pane" id="finish">
                                 <div class="well"> 
-                                    <h4 style="text-align: center;"> @lang('Thank you for completing the survey!') </h4>
+                                    <h4 style="text-align: center;"> {{ __('Thank you for completing the survey!') }} </h4>
                                 </div>
                             </div>
                         </div>  
                     </form>
                 </div>
             @else
-                <p>@lang('No question added for the selected Language yet!')</p>
+                <p>{{ __('No question added for the selected Language yet!') }}</p>
             @endif
         </div>
     </div>
@@ -127,7 +127,7 @@
 	  var percent = (parseInt(step) / questions_count) * 100;
 	  
 	  $('.progress-bar').css({width: percent + '%'});
-	  $('.progress-bar').text(" @lang('Question') " + step + " @lang('of') " + questions_count);
+	  $('.progress-bar').text(" {{ __('Question') }} " + step + " {{ __('of') }} " + questions_count);
 	  //e.relatedTarget // previous tab  
 	})
 

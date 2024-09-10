@@ -30,10 +30,10 @@
 </style>
 
 <nav class="user-nav" style="">
-    <a href="{{ URL::to('user/profile') }}" title="@lang('Personal Information')"
-        class="{{ $page == 'profile' ? 'active' : '' }}">@lang('Personal Information')</a>
-    <a href="{{ URL::to('user/favorites') }}" title="@lang('Favorites')"
-        class="{{ $page == 'favorites' ? 'active' : '' }}">@lang('Favorites')</a>
-    <a href="{{ URL::to('user/uploaded-resources') }}" title="@lang('Uploaded Resources')"
-        class="{{ $page == 'uploaded-resources' ? 'active' : '' }}">@lang('Uploaded Resources')</a>
+    <a href="{{ URL::to('user/profile') }}" title="{{ __('Personal Information') }}"
+        class="{{ $page == 'profile' ? 'active' : '' }}">{{ __('Personal Information') }}</a>
+    <a href="{{ URL::to('user/favorites') }}" title="{{ __('Favorites') }}"
+        class="{{ $page == 'favorites' ? 'active' : '' }}">{{ __('Favorites') }}</a>
+    <a href="{{ URL::to('user/uploaded-resources') }}" title="{{ __('Uploaded Resources') }}"
+        class="{{ $page == 'uploaded-resources' ? 'active' : '' }}">{{ __('Uploaded Resources') }}</a>
 </nav>

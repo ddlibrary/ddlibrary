@@ -89,7 +89,7 @@
                   @if ($user->email)
                     {{ $user->email }}
                   @else
-                    @lang('No email in file.')
+                    {{ __('No email in file.') }}
                   @endif
                 </td>
                 <td>{{ ($user->status==0?"Not Active":"Active") }}</td>

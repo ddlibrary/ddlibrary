@@ -1,9 +1,9 @@
 @extends('layouts.main')
 @section('title')
-@lang('Latest Resources') - @lang('Darakht-e Danesh Online Library')
+{{ __('Latest Resources') }} - {{ __('Darakht-e Danesh Online Library') }}
 @endsection
 @section('description')
-@lang('The Darakht-e Danesh Online Library for Educators is a repository of open educational resources for teachers, teacher trainers, school administrators, literacy workers and others involved in furthering education in Afghanistan.')
+{{ __('The Darakht-e Danesh Online Library for Educators is a repository of open educational resources for teachers, teacher trainers, school administrators, literacy workers and others involved in furthering education in Afghanistan.') }}
 @endsection
 @section('page_image')
 {{ asset('storage/files/logo-dd.png') }}
@@ -16,9 +16,9 @@
 <section class="resource-list">
     <aside class="p-1">
         <form method="GET" id="side-form" action="{{ route('resourceList') }}">
-            <input class="form-control normalButton" style="display:none;" id="side-submit" type="submit" value="@lang('Filter')">
+            <input class="form-control normalButton" style="display:none;" id="side-submit" type="submit" value="{{ __('Filter') }}">
         <fieldset>
-            <legend class="accordion mb-1 bg-yellow black display-flex justify-content-space-between" id="resource-subjects">@lang('Resource Subject Areas')</legend>
+            <legend class="accordion mb-1 bg-yellow black display-flex justify-content-space-between" id="resource-subjects">{{ __('Resource Subject Areas') }}</legend>
             <ul class="panel resource-category">
                 @foreach($subjects AS $subject)
                     @if($subject->parent == 0)
@@ -36,7 +36,7 @@
             </ul>
         </fieldset>
         <fieldset>
-            <legend class="accordion mb-1 bg-yellow black display-flex justify-content-space-between">@lang('Resource Types')</legend>
+            <legend class="accordion mb-1 bg-yellow black display-flex justify-content-space-between">{{ __('Resource Types') }}</legend>
             <ul class="panel resource-category">
                 @foreach($types AS $type)
                     <li value="{{ $type->id }}" class="p-2" data-type="type" data-link="{{ route('resourceList', ['type' => $type->id])}}">{{ $type->name }}</li>
@@ -44,7 +44,7 @@
             </ul>
         </fieldset>
         <fieldset>
-        <legend class="accordion mb-1 bg-yellow black display-flex justify-content-space-between">@lang('Resource Levels')</legend>
+        <legend class="accordion mb-1 bg-yellow black display-flex justify-content-space-between">{{ __('Resource Levels') }}</legend>
         <ul class="panel resource-category">
             @foreach($levels AS $level)
                 @if($level->parent == 0)
@@ -55,7 +55,7 @@
         </fieldset>
         <fieldset>
             <legend class="glossary-accordion mb-1 bg-yellow black display-flex justify-content-space-between">
-                <a href="/glossary" class="glossary-icon-sidebar black"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text-sidebar">&nbsp;@lang('Glossary')</span> </i></a>
+                <a href="/glossary" class="glossary-icon-sidebar black"><i class="fas fa-globe" title="{{ __('DDL Glossary') }}" ><span class="glossary-text-sidebar">&nbsp;{{ __('Glossary') }}</span> </i></a>
             </legend>
         </fieldset>
         </form>

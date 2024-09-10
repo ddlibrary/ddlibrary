@@ -41,7 +41,7 @@
         @endforeach
     </div>
 @else
-    <h2>@lang('No records found!')</h2>
+    <h2>{{ __('No records found!') }}</h2>
 @endif
 <div class="resource-pagination">
     {{ $resources->appends(request()->input())->links() }}

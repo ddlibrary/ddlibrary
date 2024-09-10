@@ -1,17 +1,17 @@
 <table>
     <tr>
-        <th>@lang('No.')</th>
-        <th>@lang('English')</th>
-        <th>@lang('Farsi')</th>
-        <th>@lang('Pashto')</th>
-        <th>@lang('Subject')</th>
+        <th>{{ __('No.') }}</th>
+        <th>{{ __('English') }}</th>
+        <th>{{ __('Farsi') }}</th>
+        <th>{{ __('Pashto') }}</th>
+        <th>{{ __('Subject') }}</th>
         @if (isLibraryManager() or isAdmin())
             <th style="text-align: center;">
-                @lang('Delete')
+                {{ __('Delete') }}
             </th>
             @if ($flagged_queue)
                 <th style="text-align: center;">
-                    @lang('Approve')
+                    {{ __('Approve') }}
                 </th>
             @endif
         @endif
@@ -62,7 +62,7 @@
         </tr>
     @empty
         <tr>
-            <td>@lang('No items to show.')</td>
+            <td>{{ __('No items to show.') }}</td>
             <td></td>
             <td></td>
             <td></td>

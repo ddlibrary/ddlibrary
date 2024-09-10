@@ -14,32 +14,32 @@ DDL Glossary
     @csrf
     <table class="glossary">
         <tr>
-            <td style="width: 5%">@lang('Text'):</td>
+            <td style="width: 5%">{{ __('Text') }}:</td>
             <td style="width:5%">
                 <input class="form-control" type="text" name="text" id="text" value="{{ isset($filters['text'])?$filters['text']:"" }}">
             </td>
-            <td style="width:5%">@lang('Subject'):</td>
+            <td style="width:5%">{{ __('Subject') }}:</td>
             <td style="width:5%">
                 <select name="subject" class="form-control">
-                    <option value="">@lang('All')</option>
+                    <option value="">{{ __('All') }}</option>
                     @foreach($glossary_subjects as $id => $subject)
                         <option value="{{ $id }}" {{ (isset($filters['subject']) && $filters['subject'] ==  $id)?"selected":"" }}>{{ $subject }}</option>
                     @endforeach
                 </select>
             </td>
             @if (isLibraryManager() or isAdmin())
-                <td style="width: 15%;">@lang('Flagged for review'):</td>
+                <td style="width: 15%;">{{ __('Flagged for review') }}:</td>
                 <td style="width: 5%;">
                     <select name="flagged" class="form-control">
-                        <option value="show" {{ (isset($filters['flagged']) && $filters['flagged'] == "show")?"selected":"" }}>@lang('Show')</option>
-                        <option value="hide" {{ (isset($filters['flagged']) && $filters['flagged'] == "hide")?"selected":"" }}>@lang('Hide')</option>
+                        <option value="show" {{ (isset($filters['flagged']) && $filters['flagged'] == "show")?"selected":"" }}>{{ __('Show') }}</option>
+                        <option value="hide" {{ (isset($filters['flagged']) && $filters['flagged'] == "hide")?"selected":"" }}>{{ __('Hide') }}</option>
                     </select>
                 </td>
             @endif
             <td>
-                <input class="form-control" type="submit" value="@lang('Filter')">
+                <input class="form-control" type="submit" value="{{ __('Filter') }}">
             </td>
-            <td style="text-align: right; width: 5%; "><a href="{{ route('glossary_create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> @lang('Add')</a></td>
+            <td style="text-align: right; width: 5%; "><a href="{{ route('glossary_create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> {{ __('Add') }}</a></td>
         </tr>
     </table>
     </form>
@@ -57,10 +57,10 @@ DDL Glossary
         </div>
     @endif
     @if (isLibraryManager() or isAdmin())
-        <div id="update" style="color: #777; font-size: 14px; text-align: right;">@lang('Click and edit the text you would like to change (plain text only) and click \'Enter\' (return) once done, or click \'Escape\' to discard the changes. ')</div>
+        <div id="update" style="color: #777; font-size: 14px; text-align: right;">{{ __('Click and edit the text you would like to change (plain text only) and click \'Enter\' (return) once done, or click \'Escape\' to discard the changes. ') }}</div>
     @endif
     @if ($glossary_flagged)
-        <h3>@lang('Flagged for review')</h3>
+        <h3>{{ __('Flagged for review') }}</h3>
         @include('glossary.table', ['glossary' => $glossary_flagged, 'glossary_subjects' => $glossary_subjects, 'flagged_queue' => true])
         <br>
         <div class="resource-pagination">

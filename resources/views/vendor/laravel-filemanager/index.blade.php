@@ -125,7 +125,7 @@
           </div>
           <input type='hidden' name='working_dir' id='working_dir'>
           <input type='hidden' name='type' id='type' value='{{ request("type") }}'>
-          <input type='hidden' name='_token' value='{{csrf_token()}}'>
+          @csrf
         </form>
       </div>
       <div class="modal-footer">
