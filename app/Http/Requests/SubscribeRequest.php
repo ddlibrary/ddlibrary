@@ -32,7 +32,7 @@ class SubscribeRequest extends FormRequest
                 'required',
                 'string',
             ],
-            'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
+            'g-recaptcha-response' => [config('settings.captcha') && config('settings.captcha') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
         ];
     }
 }

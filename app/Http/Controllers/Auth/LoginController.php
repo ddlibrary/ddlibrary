@@ -200,7 +200,7 @@ class LoginController extends Controller
         $this->validate($request, [
             'email' => 'required|string',
             'password' => 'required|string',
-            'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
+            'g-recaptcha-response' => [config('settings.captcha') && config('settings.captcha') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
         ]);
     }
 

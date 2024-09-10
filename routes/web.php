@@ -42,7 +42,7 @@ use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Spatie\Honeypot\ProtectAgainstSpam;
 
-if (env('APP_ENV') === 'production') {
+if (config('app.env') === 'production') {
     URL::forceScheme('https');
 }
 

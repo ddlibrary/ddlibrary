@@ -20,7 +20,7 @@ class SendResetLinkEmailForgotPasswordRequest extends FormRequest
                 'email',
             ],
 'g-recaptcha-response' => [
-env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required',
+config('settings.captcha') && config('settings.captcha') == 'no' ? 'nullable' : 'required',
 new RecaptchaRule(),
 ],
 ];

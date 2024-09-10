@@ -87,7 +87,7 @@ class RegisterController extends Controller
                 'gender' => 'required',
                 'country' => 'required',
                 'city' => 'nullable',
-                'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
+                'g-recaptcha-response' => [config('settings.captcha') && config('settings.captcha') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
             ],
             [
                 'phone.unique' => __('The phone number has already been taken.'),
@@ -153,7 +153,7 @@ class RegisterController extends Controller
             $user = $this->create($request);
 
             // Send email verification
-            if (env('SEND_EMAIL') && env('SEND_EMAIL') != 'no') {
+            if (config('settings.send_email') && config('settings.send_email') != 'no') {
                 if ($user->email) {
                     event(new Registered($user));
                 }

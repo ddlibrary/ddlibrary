@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@if (env('CAPTCHA') == 'yes')
+@if (config('settings.captcha') == 'yes')
     <script src="https://www.google.com/recaptcha/api.js"></script>
 @endif
 @section('title')
@@ -27,8 +27,8 @@
                     <div class="socialite justify-content-center">
 
                         {{-- Gmail --}}
-                        <a href="{{ env('LOGIN_WITH_GOOGLE') == 'no' ? 'javascript:void(0)' : route('login.google') }}"
-                            class="btn btn-outline-secondary btn-md  @if (env('LOGIN_WITH_GOOGLE') == 'no') disabled-link display-none @endif @if (env('LOGIN_WITH_FACEBOOK') == 'no') flex-grow-1 @endif"
+                        <a href="{{ config('settings.login_with_google') == 'no' ? 'javascript:void(0)' : route('login.google') }}"
+                            class="btn btn-outline-secondary btn-md  @if (config('settings.login_with_google') == 'no') disabled-link display-none @endif @if (config('settings.login_with_facebook') == 'no') flex-grow-1 @endif"
                             type="submit">
                             <i class="fab fa-google"></i>
                             <span class="oauth-icon-separator"></span>
@@ -36,8 +36,8 @@
                         </a>
 
                         {{-- Facebook --}}
-                        <a href="{{ env('LOGIN_WITH_FACEBOOK') == 'no' ? 'javascript:void(0)' : route('login.facebook') }}"
-                            class=" btn btn-outline-secondary btn-md float-xl-right @if (env('LOGIN_WITH_FACEBOOK') == 'no') disabled-link display-none @endif @if (env('LOGIN_WITH_GOOGLE') == 'no') flex-grow-1 @endif"
+                        <a href="{{ config('settings.login_with_facebook') == 'no' ? 'javascript:void(0)' : route('login.facebook') }}"
+                            class=" btn btn-outline-secondary btn-md float-xl-right @if (config('settings.login_with_facebook') == 'no') disabled-link display-none @endif @if (config('settings.login_with_google') == 'no') flex-grow-1 @endif"
                             type="submit">
                             <i class="fab fa-facebook-f"></i>
                             <span class="oauth-icon-separator"></span>
@@ -204,7 +204,7 @@
                 {{-- Submit --}}
                 <div class="register-form-item register-form-submit-btn">
                     <div>
-                        @if (env('CAPTCHA') == 'yes')
+                        @if (config('settings.captcha') == 'yes')
                             <button class="g-recaptcha form-control submit-button btn btn-primary"
                                 data-sitekey="{{ config('services.recaptcha_v3.site_key') }}" data-callback='onSubmit'
                                 data-action='register'>{{ __('Submit') }}</button>

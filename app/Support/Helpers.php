@@ -76,7 +76,7 @@ if (! function_exists('fixImage')) {
         //To replace hardcoded url to dynamic base_url
         $abstract = str_replace('http://www.darakhtdanesh.org/', URL::to('/').'/', $abstract);
 
-        if (env('DDL_LITE') == 'yes') {
+        if (config('settings.ddl_lite') == 'yes') {
             if (strpos($abstract, '<div class="media_embed"') == true || strpos($abstract, '<div class="embeddedContent') == true) {
                 $abstract = preg_replace('#<div class="media_embed" height="315px" width="560px">(.*?)</div>#', '', $abstract);
                 $abstract = $abstract."
