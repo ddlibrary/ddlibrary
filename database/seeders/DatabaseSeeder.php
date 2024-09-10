@@ -2,17 +2,6 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\CitySeeder;
-use Database\Seeders\CountrySeeder;
-use Database\Seeders\EducationUseSeeder;
-use Database\Seeders\GlossarySubjectsSeeder;
-use Database\Seeders\LearningResourceTypeSeeder;
-use Database\Seeders\MenuSeeder;
-use Database\Seeders\ResourceLevelSeeder;
-use Database\Seeders\RoleSeeder;
-use Database\Seeders\SettingsSeeder;
-use Database\Seeders\SubjectAreaSeeder;
-use Database\Seeders\TaxonomyTermDataSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

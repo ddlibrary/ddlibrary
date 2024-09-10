@@ -1,9 +1,9 @@
 @extends('layouts.main')
 @section('title')
-    @lang('Darakht-e Danesh Online Library')
+    {{ __('Darakht-e Danesh Online Library') }}
 @endsection
 @section('description')
-    @lang('The Darakht-e Danesh Online Library for Educators is a repository of open educational resources for teachers, teacher trainers, school administrators, literacy workers and others involved in furthering education in Afghanistan.')
+    {{ __('The Darakht-e Danesh Online Library for Educators is a repository of open educational resources for teachers, teacher trainers, school administrators, literacy workers and others involved in furthering education in Afghanistan.') }}
 @endsection
 @section('page_image')
     {{ asset('storage/files/logo-dd.png') }}
@@ -15,18 +15,18 @@
     <section class="main-section">
         <div class="ddl-top-news border-radius-top-5">
             <div>
-                <p>@lang("Access children's storybooks through Storyweaver, click here"):
+                <p>{{ __("Access children's storybooks through Storyweaver, click here") }}:
                     <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}"
                         title="StoryWeaver">
                         <img src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url') . '/public/img/storyweaver-logo.svg') }}"
                             class="storyweaver-logo">
-                        @lang('StoryWeaver Library')
+                        {{ __('StoryWeaver Library') }}
                     </a>
                 </p>
             </div>
         </div>
         <header class="home-header border-b-lightgray ">
-            <h2>@lang('Explore our subjects')</h2>
+            <h2>{{ __('Explore our subjects') }}</h2>
         </header>
         <div class="section-content">
             @foreach ($subjectAreas as $subject)
@@ -36,7 +36,7 @@
                         <img src="{{ Storage::disk('public')->url($subject->file_name) }}" alt="Subject Area Icon">
                         <p>{{ $subject->name }}</p>
                         <p class="resource-count">{{ App\Models\Resource::countSubjectAreas($subject->id)->total }}
-                            @lang('Resources')</p>
+                            {{ __('Resources') }}</p>
                     </article>
                 </a>
             @endforeach
@@ -45,7 +45,7 @@
     <section class="main-section mt-2">
 
         <header class="border-radius-top-5 border-b-lightgray home-header">
-            <h2>@lang('Featured Resource Collections')</h2>
+            <h2>{{ __('Featured Resource Collections') }}</h2>
         </header>
         <div class="section-content">
             @foreach ($featured as $item)
@@ -72,7 +72,7 @@
             <a href="{{ URL::to('glossary') }}" title="Glossary">
                 <article class="home-subject-areas">
                     <i class="fa fa-search fa-4x" style="color: #ffa300"></i>
-                    <p>@lang('DDL Glossary')</p>
+                    <p>{{ __('DDL Glossary') }}</p>
                 </article>
             </a>
 
@@ -91,16 +91,16 @@
             <a href="{{ URL::to($covid_url) }}" title="Covid-19">
                 <article class="home-subject-areas">
                     <img src="{{ Storage::disk('public')->url('covid19.png') }}" alt="COVID19 Icon" style="height:52px">
-                    <p>@lang('COVID19')</p>
+                    <p>{{ __('COVID19') }}</p>
                 </article>
             </a>
             @php
                 $newcomers_support_url = 'page/4141';
             @endphp
-            <a href="{{ URL::to($newcomers_support_url) }}" title="@lang('Newcomers support URL')">
+            <a href="{{ URL::to($newcomers_support_url) }}" title="{{ __('Newcomers support URL') }}">
                 <article class="home-subject-areas">
                     <i class="fas fa-hands-helping fa-4x" style="color: #ffa300"></i>
-                    <p>@lang('Resources For Afghan Newcomers')</p>
+                    <p>{{ __('Resources For Afghan Newcomers') }}</p>
                 </article>
             </a>
         </div>
@@ -108,10 +108,10 @@
     <section class="main-section mt-2">
 
         <header class="border-radius-top-5 border-b-lightgray home-header">
-            <h2>@lang('StoryWeaver Library')</h2>
+            <h2>{{ __('StoryWeaver Library') }}</h2>
         </header>
         <div class="storyweaver-homepage">
-            <h3>@lang('Explore the StoryWeaver Collections')</h3>
+            <h3>{{ __('Explore the StoryWeaver Collections') }}</h3>
         </div>
         <div class="section-content">
             {{-- The route() landing_page parameters are keys from config/constants.php, and as such, must match with the keys to work --}}
@@ -120,57 +120,57 @@
                 <article class="home-subject-areas">
                     <img src="{{ Storage::disk('public')->url('StoryWeaver family and friends.svg') }}"
                         alt="Family & Friends collection">
-                    <p>@lang('Family & Friends')</p>
+                    <p>{{ __('Family & Friends') }}</p>
                 </article>
             </a>
             <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_growing_up']) }}" title="Growing Up">
                 <article class="home-subject-areas">
                     <img src="{{ Storage::disk('public')->url('StoryWeaver growing up.svg') }}"
                         alt="Growing Up collection">
-                    <p>@lang('Growing Up')</p>
+                    <p>{{ __('Growing Up') }}</p>
                 </article>
             </a>
             <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_funny']) }}" title="Funny">
                 <article class="home-subject-areas">
                     <img src="{{ Storage::disk('public')->url('StoryWeaver funny.svg') }}" alt="Funny collection">
-                    <p>@lang('Funny')</p>
+                    <p>{{ __('Funny') }}</p>
                 </article>
             </a>
             <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_stem']) }}" title="STEM">
                 <article class="home-subject-areas">
                     <img src="{{ Storage::disk('public')->url('StoryWeaver STEM.svg') }}" alt="STEM collection">
-                    <p>@lang('STEM')</p>
+                    <p>{{ __('STEM') }}</p>
                 </article>
             </a>
         </div>
         <div class="storyweaver-homepage">
-            <h3>@lang('Translate English Storybooks to Afghan languages')</h3>
+            <h3>{{ __('Translate English Storybooks to Afghan languages') }}</h3>
         </div>
 
         <div class="section-content">
             <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_pashto']) }}" title="Pashto">
                 <article class="home-subject-areas">
                     <img src="{{ Storage::disk('public')->url('StoryWeaver pashto.svg') }}" alt="Pashto translation">
-                    <p>@lang('Pashto')</p>
+                    <p>{{ __('Pashto') }}</p>
                 </article>
             </a>
             <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_dari']) }}" title="Dari/Farsi">
                 <article class="home-subject-areas">
                     <img src="{{ Storage::disk('public')->url('StoryWeaver dari.svg') }}" alt="Dari/Farsi translation">
-                    <p>@lang('Dari/Farsi')</p>
+                    <p>{{ __('Dari/Farsi') }}</p>
                 </article>
             </a>
         </div>
     </section>
     <section class="main-section mt-2">
         <header class="border-radius-top-5 border-b-lightgray home-header">
-            <h2>@lang('Quickstart videos')</h2>
+            <h2>{{ __('Quickstart videos') }}</h2>
         </header>
         <br>
         <div class="section-content" style="display: flex;">
             <div style="flex:1">
                 <header class="padding-b">
-                    <h4>@lang('Watch a video to learn more about our work in Afghanistan')</h4>
+                    <h4>{{ __('Watch a video to learn more about our work in Afghanistan') }}</h4>
                 </header>
                 <div style="margin: 20px;" class="thumbnail mt-2">
                     <iframe width="100%" height="315" class="border-radius-5" src="https://www.youtube.com/embed/bF5dpED9W64" frameborder="0"
@@ -181,7 +181,7 @@
 
             <div style="flex:1">
                 <header class="padding-b">
-                    <h4>@lang('How to Use the Darakht-e Danesh Library')</h4>
+                    <h4>{{ __('How to Use the Darakht-e Danesh Library') }}</h4>
                 </header>
                 <div style="margin: 20px;" class="thumbnail mt-2">
                     <iframe width="100%" height="315" class="border-radius-5"
@@ -196,7 +196,7 @@
     <section class="latest-news">
         <div class="latest-div">
             <header class="border-b-lightgray">
-                <h2>@lang('Latest News')</h2>
+                <h2>{{ __('Latest News') }}</h2>
             </header>
             @foreach ($latestNews as $news)
                 <article class="latest-content">
@@ -209,7 +209,7 @@
         </div>
         <div class="latest-div">
             <header class="border-b-lightgray">
-                <h2>@lang('Latest Resources')</h2>
+                <h2>{{ __('Latest Resources') }}</h2>
             </header>
             @foreach ($latestResources as $resource)
                 <article class="latest-content">
@@ -222,7 +222,7 @@
         </div>
         <div class="useful-links">
             <header class="border-b-lightgray">
-                <h2>@lang('Useful Links')</h2>
+                <h2>{{ __('Useful Links') }}</h2>
             </header>
             <nav class="latest-content">
                 <ul>
@@ -236,7 +236,7 @@
                     @endif
                     <li>
                         <a href="{{ url('subscribe') }}" class="btn btn-outline-secondary btn-md float-xl-right"
-                            title="@lang('Subscribe')">@lang('Subscribe')</a>
+                            title="{{ __('Subscribe') }}">{{ __('Subscribe') }}</a>
                     </li>
                 </ul>
             </nav>

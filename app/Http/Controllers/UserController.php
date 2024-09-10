@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateProfileUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Resource;
 use App\Models\ResourceFavorite;
 use App\Models\Role;
@@ -17,7 +19,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Laracsv\Export;
@@ -33,7 +34,7 @@ class UserController extends Controller
     {
         $this->middleware('admin');
 
-        $usersModel = new User();
+        $usersModel = new User;
 
         $users = $usersModel->filterUsers($request->all());
         $roles = Role::all();
@@ -95,13 +96,8 @@ class UserController extends Controller
      *
      * @return Application|RedirectResponse|Redirector
      */
-    public function updateProfile(Request $request): RedirectResponse
+    public function updateProfile(UpdateProfileUserRequest $request): RedirectResponse
     {
-        $request->validate([
-            'email' => 'email|required',
-            'password' => 'nullable|confirmed|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',
-            'username' => 'required',
-        ]);
 
         $user = User::find(Auth::id());
 
@@ -121,12 +117,12 @@ class UserController extends Controller
             $user->save();
         }
 
-        Session::flash('alert', [
+        $request->session()->flash('alert', [
             'message' => __('Your data has been updated successfully.'),
             'level' => 'success',
         ]);
 
-        return redirect(URL('user/profile'));
+        return redirect()->to(URL('user/profile'));
     }
 
     /**
@@ -137,7 +133,7 @@ class UserController extends Controller
     public function edit($userId): View
     {
         $this->middleware('admin');
-        $myResources = new Resource();
+        $myResources = new Resource;
         $user = User::where('id', $userId)->first();
         $countries = $myResources->resourceAttributesList('taxonomy_term_data', 15);
         $provinces = $myResources->resourceAttributesList('taxonomy_term_data', 12);
@@ -155,21 +151,8 @@ class UserController extends Controller
      *
      * @throws ValidationException
      */
-    public function update(Request $request, $userId): RedirectResponse
+    public function update(UpdateUserRequest $request, $userId): RedirectResponse
     {
-        $this->validate($request, [
-            'username' => 'required',
-            'password' => 'nullable',
-            'email' => 'required_without:phone|nullable',
-            'status' => 'required',
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'gender' => 'required',
-            'role' => 'required',
-            'phone' => 'required_without:email|nullable',
-            'country' => 'required',
-            'city' => 'nullable',
-        ]);
 
         if ($request->filled('city')) {
             $city = $request->input('city');
@@ -201,7 +184,7 @@ class UserController extends Controller
         $userRole = UserRole::where('user_id', $userId);
         $userRole->delete();
 
-        $userRole = new UserRole();
+        $userRole = new UserRole;
         $userRole->user_id = $userId;
         $userRole->role_id = $request->input('role');
         $userRole->save();
@@ -217,7 +200,7 @@ class UserController extends Controller
         $user = User::find($userId);
         $user->delete();
 
-        return back()->with('error', 'You deleted the record!');
+        return redirect()->back()->with('error', 'You deleted the record!');
     }
 
     /**
@@ -227,7 +210,7 @@ class UserController extends Controller
     {
         $users = User::get(); // All users
         // $userProfiles = UserProfile::with('first_name','last_name')->get();
-        $csvExporter = new Export();
+        $csvExporter = new Export;
         $csvExporter
             ->build($users, [
                 'email' => 'Email Address',

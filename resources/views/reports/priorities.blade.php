@@ -1,9 +1,9 @@
 @extends('layouts.main')
 @section('title')
-    @lang('Resource priorities - Darakht-e Danesh Library')
+    {{ __('Resource priorities - Darakht-e Danesh Library') }}
 @endsection
 @section('description')
-    @lang('Resource priorities')
+    {{ __('Resource priorities') }}
 @endsection
 @section('page_image')
     {{ asset('storage/files/logo-dd.png') }}
@@ -14,11 +14,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-5">
-                <h2>@lang('Resource priorities based on subjects')</h2>
+                <h2>{{ __('Resource priorities based on subjects') }}</h2>
             </div>
             @if (isLibraryManager() || isAdmin())
                 <div class="col-md-2 offset-md-5">
-                    <a href="{{ URL::to('resources/priorities/exclusion') }}" class="btn btn-primary mt-2">@lang('Exclusion list') <i class="fas fa-forward"></i></a>
+                    <a href="{{ URL::to('resources/priorities/exclusion') }}" class="btn btn-primary mt-2">{{ __('Exclusion list') }} <i class="fas fa-forward"></i></a>
                 </div>
             @endif
         </div>
@@ -42,10 +42,10 @@
         <thead class="thead-light">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">@lang('Subject')</th>
-                <th scope="col" class="text-center">@lang('No. of resources')</th>
+                <th scope="col">{{ __('Subject') }}</th>
+                <th scope="col" class="text-center">{{ __('No. of resources') }}</th>
                 @if (isLibraryManager() || isAdmin())
-                    <th scope="col" class="text-center">@lang('Exclude')</th>
+                    <th scope="col" class="text-center">{{ __('Exclude') }}</th>
                 @endif
             </tr>
         </thead>

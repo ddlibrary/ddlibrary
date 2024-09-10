@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Survey;
 use App\Models\SurveyQuestion;
-use Config;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Redirect;
 
 class SurveyController extends Controller
 {
@@ -35,7 +33,7 @@ class SurveyController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $survey = new Survey();
+        $survey = new Survey;
         $survey->name = $request['name'];
         $survey->state = $request['state'];
         $survey->language = $request['language'];
@@ -50,7 +48,7 @@ class SurveyController extends Controller
         }
         $created_survey->save();
 
-        return Redirect::back()->with('status', 'Survey Created!');
+        return redirect()->back()->with('status', 'Survey Created!');
     }
 
     public function edit($id): View
@@ -68,7 +66,7 @@ class SurveyController extends Controller
         $survey->language = $request['language'];
         $survey->save();
 
-        return Redirect::back()->with('status', 'Survey Updated!');
+        return redirect()->back()->with('status', 'Survey Updated!');
     }
 
     public function delete($id): RedirectResponse
@@ -76,7 +74,7 @@ class SurveyController extends Controller
         $survey = Survey::find($id);
         $survey->delete();
 
-        return Redirect::back()->with('status', 'Survey Deleted!');
+        return redirect()->back()->with('status', 'Survey Deleted!');
     }
 
     public function addTranslate($tnid, $lang): View

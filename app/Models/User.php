@@ -98,7 +98,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ->LeftJoin('user_roles', 'users.id', '=', 'user_roles.user_id')
             ->LeftJoin('roles', 'roles.id', '=', 'user_roles.role_id')
             ->LeftJoin('user_profiles AS up', 'up.user_id', '=', 'users.id')
-            ->orderBy('accessed_at', 'desc')
+            ->orderByDesc('accessed_at')
             ->groupBy(
                 'users.id',
                 'users.username',
@@ -157,7 +157,7 @@ class User extends Authenticatable implements MustVerifyEmail
                 return $query
                     ->where('up.country', $requestArray['country']);
             })
-            ->orderBy('accessed_at', 'desc')
+            ->orderByDesc('accessed_at')
             ->groupBy(
                 'users.id',
                 'users.username',
@@ -230,7 +230,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ->selectRaw('count(roles.id) as total')
             ->join('user_roles', 'user_roles.role_id', '=', 'roles.id')
             ->groupBy('roles.id', 'roles.name')
-            ->orderBy('total', 'DESC')
+            ->orderByDesc('total')
             ->get();
     }
 

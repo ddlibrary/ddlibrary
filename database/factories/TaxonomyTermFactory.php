@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class TaxonomyTermFactory extends Factory
 {
     protected $model = TaxonomyTerm::class;
+
     /**
      * Define the model's default state.
      *
@@ -20,7 +21,7 @@ class TaxonomyTermFactory extends Factory
     public function definition(): array
     {
         return [
-            'vid' => $this->faker->numberBetween(6,26),
+            'vid' => $this->faker->numberBetween(6, 26),
             'name' => $this->faker->name,
             'weight' => $this->faker->boolean,
             'language' => LanguageEnum::English->value,

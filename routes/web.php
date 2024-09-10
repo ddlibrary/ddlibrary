@@ -38,11 +38,12 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VocabularyController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Spatie\Honeypot\ProtectAgainstSpam;
 
-if (env('APP_ENV') === 'production') {
-    \URL::forceScheme('https');
+if (config('app.env') === 'production') {
+    URL::forceScheme('https');
 }
 
 if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
@@ -122,9 +123,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('admin/get-pages', [PageController::class, 'getPages'])->name('getpages')->middleware('admin');
     Route::get('admin/pages/view/{pageId}', [PageController::class, 'view'])->middleware('admin');
     Route::get('page/{pageId}', [PageController::class, 'view'])->where('pageId', '[0-9]+');
-    Route::get('/about-education-afghanistan', function () {
-        return redirect('page/22');
-    });
+    Route::redirect('/about-education-afghanistan', 'page/22');
     Route::get('page/edit/{pageId}', [PageController::class, 'edit'])->middleware('admin');
     Route::post('page/update/{pageId}', [PageController::class, 'update'])->name('update_page')->middleware('admin');
     Route::get('page/create', [PageController::class, 'create'])->middleware('admin');
@@ -144,8 +143,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('news/add/translate/{newsId}/{lang}', [NewsController::class, 'addTranslate'])->middleware('admin');
     Route::post('news/add/translate/{newsId}/{lang}', [NewsController::class, 'addPostTranslate'])->name('add_news_translate')->middleware('admin');
     //Menu
-    Route::prefix('admin')->middleware('admin')->group(function(){
-        Route::controller(MenuController::class)->group(function(){
+    Route::prefix('admin')->middleware('admin')->group(function () {
+        Route::controller(MenuController::class)->group(function () {
             Route::get('menu', 'index');
             Route::post('menu', 'index')->name('menulist');
             Route::get('menu/add/{menuId}', 'create');
@@ -159,7 +158,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         });
 
         //Settings
-        Route::controller(SettingController::class)->group(function(){
+        Route::controller(SettingController::class)->group(function () {
             Route::get('settings', 'edit');
             Route::post('settings', 'update')->name('settings');
         });
@@ -167,7 +166,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::resource('subscribers', SubscriberController::class)->only('index', 'destroy');
 
         //Comments
-        Route::prefix('comments')->controller(CommentController::class)->group(function(){
+        Route::prefix('comments')->controller(CommentController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('delete/{commentId}', 'delete');
             Route::get('published/{commentId}', 'published');
@@ -264,12 +263,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('/node/{resourceId}', [ResourceController::class, 'viewPublicResource']);
     Route::get('/user/logout', [LoginController::class, 'logout']);
     Route::get('/user/password', [ForgotPasswordController::class, 'showLinkRequestForm']);
-    Route::get('/volunteer', function () {
-        return redirect('page/1532');
-    });
-    Route::get('/support-library', function () {
-        return redirect('page/21');
-    });
+    Route::redirect('/volunteer', 'page/1532');
+    Route::redirect('/support-library', 'page/21');
     //Auth
     Route::middleware(ProtectAgainstSpam::class)->group(function () {
         Auth::routes(['verify' => true]);
@@ -277,7 +272,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('/logout', function () {
         Auth::logout();
 
-        return redirect('/home');
+        return redirect()->to('/home');
     });
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::prefix('subscribe')->middleware(['auth', 'verified'])->controller(SubscribeController::class)->group(function () {
@@ -285,17 +280,16 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::post('', 'store')->name('subscribe.store');
     });
 
-    
     // Analytics
-    Route::prefix('admin/analytics')->middleware('admin')->group(function(){
+    Route::prefix('admin/analytics')->middleware('admin')->group(function () {
         Route::get('user', [UserAnalyticsController::class, 'index']);
         Route::get('resource', [ResourceAnalyticsController::class, 'index']);
-        Route::controller(SitewideAnalyticsController::class)->group(function(){
+        Route::controller(SitewideAnalyticsController::class)->group(function () {
             Route::get('sitewide', 'index');
             Route::get('reports/sitewide', 'view');
         });
 
-        Route::controller(GlossaryAnalyticsController::class)->group(function(){
+        Route::controller(GlossaryAnalyticsController::class)->group(function () {
             Route::get('glossary', 'index');
             Route::get('reports/glossary', 'view');
         });

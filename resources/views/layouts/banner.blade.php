@@ -14,29 +14,29 @@
                 </a>
             @endforeach
             </div>
-            <a href="{{ URL::to('/') }}" title="@lang('Home')">@lang('Home')</a>
-            <a href="{{ URL::to('resources') }}" title="@lang('Browse')">@lang('Browse')</a>
+            <a href="{{ URL::to('/') }}" title="{{ __('Home') }}">{{ __('Home') }}</a>
+            <a href="{{ URL::to('resources') }}" title="{{ __('Browse') }}">{{ __('Browse') }}</a>
             {{-- The route() landing_page parameter is a key from config/constants.php, and as such, must match with a key to work --}}
-            <a href="{{ route ('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}" title="@lang('StoryWeaver')">@lang('StoryWeaver')</a>
-            <a href="{{ URL::to('resources/add/step1') }}" title="@lang('Upload a Resource')">@lang('Upload a Resource')</a>
-            @if (Auth::check())
-            <a href="{{ URL::to('logout') }}" title="@lang('Log Out')">@lang('Log Out')</a>
+            <a href="{{ route ('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}" title="{{ __('StoryWeaver') }}">{{ __('StoryWeaver') }}</a>
+            <a href="{{ URL::to('resources/add/step1') }}" title="{{ __('Upload a Resource') }}">{{ __('Upload a Resource') }}</a>
+            @auth
+            <a href="{{ URL::to('logout') }}" title="{{ __('Log Out') }}">{{ __('Log Out') }}</a>
             @if (isAdmin())
-            <a href="{{ URL::to('/admin') }}" title="@lang('Admin Panel')">@lang('Admin Panel')</a>
+            <a href="{{ URL::to('/admin') }}" title="{{ __('Admin Panel') }}">{{ __('Admin Panel') }}</a>
             @endif
             @else
-            <a href="{{ URL::to('/login') }}" title="@lang('Sign In')">@lang('Sign In')</a>
-            <a href="{{ URL::to('/register') }}" title="@lang('Register')">@lang('Register')</a>
+            <a href="{{ URL::to('/login') }}" title="{{ __('Sign In') }}">{{ __('Sign In') }}</a>
+            <a href="{{ URL::to('/register') }}" title="{{ __('Register') }}">{{ __('Register') }}</a>
             @endif
         </div>
     </div>
     <nav class="header-right">
         <ul class="language-content">
-            @if (Auth::check())
+            @auth
             <li>
-                @lang('Welcome'): <a class="username" href="{{ URL::to('user/profile') }}"> {{ ucwords(Auth::user()->username) }}</a>
+                {{ __('Welcome') }}: <a class="username" href="{{ URL::to('user/profile') }}"> {{ ucwords(Auth::user()->username) }}</a>
             </li>
-            @endif
+            @endauth
             <?php
             $supportedLocals = [];
             $newId = [];
@@ -99,27 +99,27 @@
                     </li>
                     @if ($loop->index == 1) {{-- where 0 is Home, 1 is DDL Library. We want it next to DDL Library. --}}
                         <li>
-                            <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}" title="StoryWeaver"><img src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/public/img/storyweaver-logo.svg') }}" class="storyweaver-logo" alt="StoryWeaver logo"> @lang('StoryWeaver Library')</a>
+                            <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}" title="StoryWeaver"><img src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/public/img/storyweaver-logo.svg') }}" class="storyweaver-logo" alt="StoryWeaver logo"> {{ __('StoryWeaver Library') }}</a>
                         </li>
                     @endif
                 @endforeach
             @endif
             
-            @if (Auth::check())
+            @auth
             <li>
-                <a href="{{ URL::to('logout') }}" title="@lang('Log Out')"><i class="fas fa-sign-in-alt fa-lg icons"></i>@lang('Log Out')</a>     
+                <a href="{{ URL::to('logout') }}" title="{{ __('Log Out') }}"><i class="fas fa-sign-in-alt fa-lg icons"></i>{{ __('Log Out') }}</a>     
             </li>
             @if (isAdmin())
             <li>
-                <a href="{{ URL::to('/admin') }}" title="@lang('Admin Panel')"><i class="fas fa-user fa-lg icons"></i>@lang('Admin Panel')</a>
+                <a href="{{ URL::to('/admin') }}" title="{{ __('Admin Panel') }}"><i class="fas fa-user fa-lg icons"></i>{{ __('Admin Panel') }}</a>
             </li>
             @endif
             @else
             <li>
-                <a href="{{ URL::to('/login') }}" title="@lang('Sign In')"><i class="fas fa-sign-in-alt fa-lg icons"></i>@lang('Sign In')</a>
+                <a href="{{ URL::to('/login') }}" title="{{ __('Sign In') }}"><i class="fas fa-sign-in-alt fa-lg icons"></i>{{ __('Sign In') }}</a>
             </li>
             <li>
-                <a href="{{ URL::to('/register') }}" title="@lang('Register')"><i class="fas fa-save fa-lg icons"></i>@lang('Register')</a>
+                <a href="{{ URL::to('/register') }}" title="{{ __('Register') }}"><i class="fas fa-save fa-lg icons"></i>{{ __('Register') }}</a>
             </li>
             @endif
         </ul>

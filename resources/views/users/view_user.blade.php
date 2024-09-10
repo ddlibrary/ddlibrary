@@ -3,7 +3,7 @@
     <section class="general-content">
         
         <header>
-            <h1>@lang('Users Details for') <strong>{{ $user->username }}</strong></h1>
+            <h1>{{ __('Users Details for') }} <strong>{{ $user->username }}</strong></h1>
         </header>
         <article>
 
@@ -14,7 +14,7 @@
                     @csrf
                     <div class="form-item">
                         <label for="email">
-                            <strong>@lang('Email')</strong>
+                            <strong>{{ __('Email') }}</strong>
                             <span class="form-required" title="This field is required.">*</span>
                         </label>
                         <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
@@ -30,7 +30,7 @@
 
                     <div class="form-item">
                         <label for="username">
-                            <strong>@lang('Username')</strong>
+                            <strong>{{ __('Username') }}</strong>
                             <span class="form-required" title="This field is required.">*</span>
                         </label>
                         <input class="form-control {{ $errors->has('username') ? ' is-invalid' : '' }}" name="username"
@@ -44,13 +44,13 @@
 
                     <div class="form-item">
                         <label for="password">
-                            <strong>@lang('Password')</strong>
+                            <strong>{{ __('Password') }}</strong>
                             <span class="form-required" title="This field is required."></span>
                         </label>
                         <div class="position-relative d-inline-block">
 
                             <input class="form-control user-password {{ $errors->has('password') ? ' is-invalid' : '' }}"
-                                name="password" type="password" size="38" placeholder="@lang('Only fill this if you want to change your password')"
+                                name="password" type="password" size="38" placeholder="{{ __('Only fill this if you want to change your password') }}"
                                 autocomplete="off">
                             <span class="fa fa-eye-slash password-toggle-icon text-gray" aria-hidden="true"
                                 onclick="togglePassword()"></span>
@@ -63,13 +63,13 @@
                     </div>
                     <div class="form-item">
                         <label for="confirm">
-                            <strong>@lang('Confirm')</strong>
+                            <strong>{{ __('Confirm') }}</strong>
                             <span class="form-required" title="This field is required."></span>
                         </label>
                         <div class="position-relative d-inline-block">
                             <input
                                 class="form-control  confirm-user-password {{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}"
-                                name="password_confirmation" type="password" size="38" placeholder="@lang('Only fill this if you want to change your password')"
+                                name="password_confirmation" type="password" size="38" placeholder="{{ __('Only fill this if you want to change your password') }}"
                                 autocomplete="off">
                             <span class="fa fa-eye-slash confirm-password-toggle-icon" aria-hidden="true"
                                 onclick="togglePassword('confirm-password-toggle-icon', 'confirm-user-password')"></span>
@@ -84,7 +84,7 @@
 
                         <div class="display-flex gap-5">
                             <div class="flex-1">
-                                <strong>@lang('Status'):</strong>
+                                <strong>{{ __('Status') }}:</strong>
                             </div>
                             <div class="flex-5">
                                 
@@ -96,7 +96,7 @@
                         </div>
                         <div class="display-flex gap-5">
                             <div class="flex-1">
-                                <strong>@lang('Created'):</strong>
+                                <strong>{{ __('Created') }}:</strong>
                             </div>
                             <div class="flex-5">
                                 {{ $user->created_at }}
@@ -105,7 +105,7 @@
 
                         <div class="display-flex gap-5">
                             <div class="flex-1">
-                                <strong>@lang('Access'):</strong>
+                                <strong>{{ __('Access') }}:</strong>
                             </div>
                             <div class="flex-5">
                                 {{ $user->accessed_at }}
@@ -114,7 +114,7 @@
                     </div>
 
                     <div class="left-side mt-5">
-                        <input class="form-control normalButton" type="submit" value="@lang('Update')">
+                        <input class="form-control normalButton" type="submit" value="{{ __('Update') }}">
                     </div>
 
                 </form>

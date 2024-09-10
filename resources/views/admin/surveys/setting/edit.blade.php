@@ -37,7 +37,7 @@
                       <input type="number" class="form-control" id="time" value="{{$survey_modal_time->time}}" name="time" required="true" placeholder="Numbers Only">
                     </div>
                   </div>
-                  <button type="submit" class="btn btn-primary pull-right btn-sm">@lang('Update')</button>
+                  <button type="submit" class="btn btn-primary pull-right btn-sm">{{ __('Update') }}</button>
                   
               </div>
             </div>

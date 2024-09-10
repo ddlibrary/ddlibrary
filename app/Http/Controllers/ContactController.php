@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreContactRequest;
 use App\Mail\ContactPage;
 use App\Models\Contact;
 use App\Models\Setting;
-use App\Rules\RecaptchaRule;
 use App\Traits\SitewidePageViewTrait;
 use BladeView;
 use Illuminate\Contracts\View\Factory;
@@ -13,7 +13,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -21,6 +20,7 @@ use Illuminate\View\View;
 class ContactController extends Controller
 {
     use SitewidePageViewTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -30,7 +30,7 @@ class ContactController extends Controller
     {
         $this->middleware('admin');
 
-        $records = Contact::orderBy('id', 'desc')->paginate(10);
+        $records = Contact::orderByDesc('id')->paginate(10);
 
         return view('admin.contacts.contact_list', compact('records'));
     }
@@ -42,12 +42,12 @@ class ContactController extends Controller
             $contact->isread = 1;
             $contact->save();
 
-            return back()->with('success', 'You marked the message as read!');
+            return redirect()->back()->with('success', 'You marked the message as read!');
         } else {
             $contact->isread = 0;
             $contact->save();
 
-            return back()->with('success', 'You marked the message as unread!');
+            return redirect()->back()->with('success', 'You marked the message as unread!');
         }
     }
 
@@ -56,7 +56,7 @@ class ContactController extends Controller
         $contact = Contact::find($id);
         $contact->delete();
 
-        return back()->with('error', 'You deleted the record!');
+        return redirect()->back()->with('error', 'You deleted the record!');
     }
 
     /**
@@ -68,13 +68,13 @@ class ContactController extends Controller
     {
         $this->pageView($request, 'Contact us');
 
-        if (Auth::check()) {
-            $user = auth()->user();
-            
+        if ($request->user()) {
+            $user = $request->user();
+
             if ($user->email) {
                 return view('contacts.contacts_view', [
-                    'email' => $user->email, 
-                    'fullname' => $user->profile->first_name . ' ' . $user->profile->last_name
+                    'email' => $user->email,
+                    'fullname' => $user->profile->first_name.' '.$user->profile->last_name,
                 ]);
             }
         }
@@ -92,18 +92,11 @@ class ContactController extends Controller
      *
      * @throws ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreContactRequest $request): RedirectResponse
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email',
-            'subject' => 'required',
-            'message' => 'required',
-            'g-recaptcha-response' => ['required', new RecaptchaRule()],
-        ]);
 
         //Saving contact info to the database
-        $contact = new Contact();
+        $contact = new Contact;
         $contact->name = $request->input('name');
         $contact->email = $request->input('email');
         $contact->subject = $request->input('subject');
@@ -115,6 +108,6 @@ class ContactController extends Controller
             Mail::to(Setting::find(1)->website_email)->send(new ContactPage($contact));
         }
 
-        return redirect('/contact-us')->with('success', __('We received your message and will contact you back soon!'));
+        return redirect()->to('/contact-us')->with('success', __('We received your message and will contact you back soon!'));
     }
 }

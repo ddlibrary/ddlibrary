@@ -22,6 +22,4 @@ use Illuminate\Database\Eloquent\Model;
 class GlossarySubject extends Model
 {
     use HasManyGlossaryPageView;
-
-    protected $table = 'glossary_subjects';
 }

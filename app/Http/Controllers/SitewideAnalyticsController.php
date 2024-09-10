@@ -17,7 +17,7 @@ use Illuminate\View\View;
 
 class SitewideAnalyticsController extends Controller
 {
-    use LanguageTrait, GenderTrait, SitewidePageViewConditionTrait;
+    use GenderTrait, LanguageTrait, SitewidePageViewConditionTrait;
 
     public function index(Request $request): View
     {
@@ -86,16 +86,17 @@ class SitewideAnalyticsController extends Controller
         })
             ->groupBy('language')
             ->select('language', DB::raw('count(*) as view_count'))
-            ->orderBy('view_count', 'desc')
+            ->orderByDesc('view_count')
             ->get();
 
         return $totalResources->map(function ($item) {
             $item['language'] = LanguageEnum::tryFrom($item['language'])?->name ?? $item['language'];
+
             return $item;
         });
     }
 
-    public function view(Request $request)
+    public function view(Request $request): View
     {
         $languages = $this->getLanguages();
         $genders = $this->genders();
@@ -104,10 +105,10 @@ class SitewideAnalyticsController extends Controller
         $platforms = Platform::all(['id', 'name']);
 
         $query = SitewidePageView::query()->with(['platform:id,name', 'device:id,name', 'browser:id,name', 'user:id', 'user.profile:id,user_id,first_name,last_name']);
-        $query = $this->filterPageViews($query, $request);   
+        $query = $this->filterPageViews($query, $request);
         $views = $query->paginate()
             ->appends($request->except(['page']));
 
-        return view('admin.analytics.sitewide.get-views', compact(['views', 'languages', 'genders', 'devices','pageType', 'browsers', 'platforms']));
+        return view('admin.analytics.sitewide.get-views', compact(['views', 'languages', 'genders', 'devices', 'pageType', 'browsers', 'platforms']));
     }
 }

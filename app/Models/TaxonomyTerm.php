@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class TaxonomyTerm extends Model
 {
     use HasFactory;
+
     /**
      * Indicates if the model should be timestamped.
      *
@@ -47,7 +49,8 @@ class TaxonomyTerm extends Model
         }
     }
 
-    public function resources(){
+    public function resources(): HasMany
+    {
         return $this->hasMany(ResourceSubjectArea::class, 'tid');
     }
 }

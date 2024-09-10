@@ -6,7 +6,6 @@ use App\Models\SurveySetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Redirect;
 
 class SurveySettingController extends Controller
 {
@@ -24,11 +23,11 @@ class SurveySettingController extends Controller
 
     public function storeSurveyModalTime(Request $request): RedirectResponse
     {
-        $survey_modal_time = new SurveySetting();
+        $survey_modal_time = new SurveySetting;
         $survey_modal_time->time = $request['time'];
         $survey_modal_time->save();
 
-        return Redirect::back()->with('status', 'Popup Time Created!');
+        return redirect()->back()->with('status', 'Popup Time Created!');
     }
 
     public function editSurveyModalTime(): View
@@ -44,6 +43,6 @@ class SurveySettingController extends Controller
         $survey_modal_time->time = $request['time'];
         $survey_modal_time->save();
 
-        return Redirect::back()->with('status', 'Popup Time Updated!');
+        return redirect()->back()->with('status', 'Popup Time Updated!');
     }
 }

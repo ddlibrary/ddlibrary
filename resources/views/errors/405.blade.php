@@ -2,7 +2,7 @@
 @section('content')
     <section class="generalContent">
         <header>
-            <h2>@lang('405 Not Allowed')</h2>
+            <h2>{{ __('405 Not Allowed') }}</h2>
         </header>
         <article>
             <strong>{{  $exception->getMessage() }}</strong>

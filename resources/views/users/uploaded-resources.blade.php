@@ -2,7 +2,7 @@
 @section('content')
 <section class="general-content">
     <header>
-        <h1>@lang('Users Details for') <strong>{{ $user->username }}</strong></h1>
+        <h1>{{ __('Users Details for') }} <strong>{{ $user->username }}</strong></h1>
     </header>
     <article>
         @include('users.user_nav')
@@ -10,8 +10,8 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>@lang('Title')</th>
-                    <th>@lang('Actions')</th>
+                    <th>{{ __('Title') }}</th>
+                    <th>{{ __('Actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,7 +20,7 @@
                     <tr>
                         <td>{{ ++$c }}</td>
                         <td>{{ $resource->title }}</td>
-                        <td><a href="{{ URL::to('resource/' . $resource->id) }}">@lang('View')</a></td>
+                        <td><a href="{{ URL::to('resource/' . $resource->id) }}">{{ __('View') }}</a></td>
                     </tr>
                 @endforeach
             </tbody>

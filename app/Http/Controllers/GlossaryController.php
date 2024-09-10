@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\GlossaryPageViewStatusEnum;
+use App\Http\Requests\StoreGlossaryRequest;
 use App\Models\Glossary;
 use App\Models\GlossarySubject;
 use App\Traits\GlossaryPageViewTrait;
@@ -18,6 +19,7 @@ use Illuminate\View\View;
 class GlossaryController extends Controller
 {
     use GlossaryPageViewTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -28,27 +30,26 @@ class GlossaryController extends Controller
         $this->pageView($request, GlossaryPageViewStatusEnum::View, 'Glossary');
         $glossary_flagged = null;
 
-
         if ($request->filled('text')) {
-            $glossary = Glossary::orderBy('id', 'desc')
+            $glossary = Glossary::orderByDesc('id')
                 ->orWhere('name_en', request('text'))
                 ->orWhere('name_fa', request('text'))
                 ->orWhere('name_ps', request('text'))
                 ->where('flagged_for_review', '!=', true)
                 ->paginate(15);
         } elseif ($request->filled('subject') && ! $request->filled('text')) {
-            $glossary = Glossary::orderBy('id', 'desc')
+            $glossary = Glossary::orderByDesc('id')
                 ->where('subject', request('subject'))
                 ->where('flagged_for_review', '!=', true)
                 ->paginate(15);
         } else {
-            $glossary = Glossary::orderBy('id', 'desc')
+            $glossary = Glossary::orderByDesc('id')
                 ->where('flagged_for_review', '!=', true)
                 ->paginate(15);
         }
 
         if (isAdmin() and (request('flagged') == 'show' or request('flagged') == null)) {
-            $glossary_flagged = Glossary::orderBy('id', 'desc')
+            $glossary_flagged = Glossary::orderByDesc('id')
                 ->where('flagged_for_review', '=', true)
                 ->paginate(50);
         }
@@ -79,16 +80,11 @@ class GlossaryController extends Controller
      *
      * @return Application|RedirectResponse|Redirector|void
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreGlossaryRequest $request): RedirectResponse
     {
 
-        $validatedData = $request->validate([
-            'english' => 'required_without_all:farsi,pashto',
-            'farsi' => 'required_without_all:english,pashto',
-            'pashto' => 'required_without_all:farsi,english',
-            'subject' => 'required',
-        ]);
-        $glossary = new Glossary();
+        $validatedData = $request->validated();
+        $glossary = new Glossary;
         $glossary->name_en = $validatedData['english'];
         $glossary->name_fa = $validatedData['farsi'];
         $glossary->name_ps = $validatedData['pashto'];
@@ -100,7 +96,7 @@ class GlossaryController extends Controller
 
         $this->pageView($request, GlossaryPageViewStatusEnum::Create, 'Create Glossary');
 
-        return redirect(route('glossary'))->with('status', __('Glossary item added successfully!'));
+        return redirect()->route('glossary')->with('status', __('Glossary item added successfully!'));
 
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateMenuRequest;
 use App\Models\Menu;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class MenuController extends Controller
             'vocabulary' => $vocabulary,
         ];
         //creating search bar
-        $createSearchBar = new SearchController();
+        $createSearchBar = new SearchController;
         $searchBar = $createSearchBar->searchBar($args);
 
         return view('admin.menu.menu_list', compact('menuRecords', 'searchBar'));
@@ -50,7 +51,7 @@ class MenuController extends Controller
         $menu = Menu::find($id);
         $new_menu = false;
         if (! $menu) {
-            $menu = new Menu();
+            $menu = new Menu;
             $new_menu = true;
         }
         $locations = $menu->distinct()->pluck('location');
@@ -99,7 +100,7 @@ class MenuController extends Controller
         //inserting
         $menu->save();
 
-        return redirect('admin/menu')->with('success', 'Menu translation or new menu successfully added!');
+        return redirect()->to('admin/menu')->with('success', 'Menu translation or new menu successfully added!');
     }
 
     public function edit(Menu $menu, $menuId): View
@@ -111,17 +112,8 @@ class MenuController extends Controller
         return view('admin.menu.menu_edit', compact('details', 'locations', 'parents'));
     }
 
-    public function update(Request $request, $menuId): RedirectResponse
+    public function update(UpdateMenuRequest $request, $menuId): RedirectResponse
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'location' => 'required',
-            'path' => 'required',
-            'parent' => 'nullable',
-            'status' => 'required',
-            'language' => 'required',
-            'weight' => 'required',
-        ]);
 
         $menu = Menu::find($menuId);
         $menu->title = $request->input('title');

@@ -11,13 +11,13 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\TransferException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 
 class StoryWeaverController extends Controller
 {
-    public function storyWeaverConfirmation($landing_page = 'storyweaver_default')
+    public function storyWeaverConfirmation(Request $request, $landing_page = 'storyweaver_default')
     {
         $user_profile = UserProfile::where('user_id', auth()->id())->first();
 
@@ -30,10 +30,10 @@ class StoryWeaverController extends Controller
         );
 
         if ($user_profile->visited_storyweaver_disclaimer) {
-            return redirect(route('storyweaver-auth'));
+            return redirect()->route('storyweaver-auth');
         }
         $email = false;
-        if (auth()->user()->email) {
+        if ($request->user()->email) {
             $email = true;
         }
 
@@ -81,7 +81,7 @@ class StoryWeaverController extends Controller
             }
         }
 
-        $client = new Client();
+        $client = new Client;
         try {
             $response = $client->request(
                 'POST', $storyweaver_url, [
@@ -156,6 +156,6 @@ class StoryWeaverController extends Controller
                     Redirect URL: '.$response_contents->redirect_url
         );
 
-        return redirect(route('home'));
+        return redirect()->route('home');
     }
 }

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\SendResetLinkEmailForgotPasswordRequest;
 use App\Rules\RecaptchaRule;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
-use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class ForgotPasswordController extends Controller
@@ -36,11 +36,11 @@ class ForgotPasswordController extends Controller
     /**
      * @throws ValidationException
      */
-    protected function validateEmail(Request $request)
+    protected function validateEmail(SendResetLinkEmailForgotPasswordRequest $request)
     {
         $this->validate($request, [
             'email' => 'required|email',
-            'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule()],
+            'g-recaptcha-response' => [config('settings.captcha') && config('settings.captcha') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
         ]);
     }
 }

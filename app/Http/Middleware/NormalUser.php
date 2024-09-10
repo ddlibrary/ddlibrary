@@ -15,10 +15,10 @@ class NormalUser
     {
         if (Auth::guard($guard)->check()) {
             if (! isNormalUser()) {
-                return redirect('/home');
+                return redirect()->to('/home');
             }
         } else {
-            return redirect('/login');
+            return redirect()->to('/login');
         }
 
         return $next($request);

@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Survey;
 use App\Models\SurveyQuestion;
 use App\Models\SurveyQuestionOption;
-use Config;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Redirect;
 
 class SurveyQuestionController extends Controller
 {
@@ -40,7 +38,7 @@ class SurveyQuestionController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $question = new SurveyQuestion();
+        $question = new SurveyQuestion;
         $question->text = $request['text'];
         $question->type = $request['type'];
         $question->language = $request['language'];
@@ -50,7 +48,7 @@ class SurveyQuestionController extends Controller
         if ($question->type != 'descriptive') {
             foreach ($request->options as $option_text) {
                 if ($option_text) {
-                    $option = new SurveyQuestionOption();
+                    $option = new SurveyQuestionOption;
                     $option->text = $option_text;
                     $option->question_id = $question->id;
                     $option->language = $request['language'];
@@ -74,7 +72,7 @@ class SurveyQuestionController extends Controller
         }
         $created_question->save();
 
-        return Redirect::back()->with('status', 'Question Added!');
+        return redirect()->back()->with('status', 'Question Added!');
     }
 
     public function delete($id): RedirectResponse
@@ -82,7 +80,7 @@ class SurveyQuestionController extends Controller
         $question = SurveyQuestion::find($id);
         $question->delete();
 
-        return Redirect::back()->with('status', 'Survey\'s Question Deleted!');
+        return redirect()->back()->with('status', 'Survey\'s Question Deleted!');
     }
 
     public function addTranslate($tnid, $lang): View

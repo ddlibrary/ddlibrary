@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddPostTranslateNewsRequest;
+use App\Http\Requests\StoreNewsRequest;
+use App\Http\Requests\UpdateNewsRequest;
 use App\Models\News;
 use App\Traits\SitewidePageViewTrait;
 use Illuminate\Http\RedirectResponse;
@@ -13,15 +16,13 @@ use Yajra\Datatables\Datatables;
 class NewsController extends Controller
 {
     use SitewidePageViewTrait;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     public function index(): View
     {
@@ -53,7 +54,7 @@ class NewsController extends Controller
         //setting the search session empty
         DDLClearSession();
 
-        $myNews = new News();
+        $myNews = new News;
 
         $news = News::find($newsId);
         $this->pageView($request, $news->title);
@@ -76,15 +77,8 @@ class NewsController extends Controller
         return view('news.news_create');
     }
 
-    public function store(Request $request, News $news): RedirectResponse
+    public function store(StoreNewsRequest $request, News $news): RedirectResponse
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'language' => 'required',
-            'summary' => 'required',
-            'body' => 'required',
-            'published' => 'integer',
-        ]);
 
         $news->title = $request->input('title');
         $news->summary = $request->input('summary');
@@ -110,15 +104,8 @@ class NewsController extends Controller
         return view('news.news_edit', compact('news'));
     }
 
-    public function update(Request $request, News $news, $id): RedirectResponse
+    public function update(UpdateNewsRequest $request, News $news, $id): RedirectResponse
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'language' => 'required',
-            'summary' => 'required',
-            'body' => 'required',
-            'published' => 'integer',
-        ]);
 
         $news = News::find($id);
         $news->title = $request->input('title');
@@ -146,15 +133,8 @@ class NewsController extends Controller
         return view('news.news_add_translate', compact('tnid', 'lang'));
     }
 
-    public function addPostTranslate(Request $request, News $news, $tnid, $lang): RedirectResponse
+    public function addPostTranslate(AddPostTranslateNewsRequest $request, News $news, $tnid, $lang): RedirectResponse
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'language' => 'nullable',
-            'summary' => 'required',
-            'body' => 'required',
-            'published' => 'integer',
-        ]);
 
         $news->title = $request->input('title');
         $news->summary = $request->input('summary');

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-@lang('Add a new Resource - Step 2')
+{{ __('Add a new Resource - Step 2') }}
 @endsection
 @push('styles')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
@@ -10,7 +10,7 @@
 
 <section class="ddl-forms">
     <header>
-        <h1>@lang('Add a new Resource - Step 2')</h1>
+        <h1>{{ __('Add a new Resource - Step 2') }}</h1>
     </header>
     <div class="content-body">
         @include('layouts.messages')
@@ -18,10 +18,10 @@
         @csrf
         <div class="form-item">
             <label for="attachments"> 
-                <strong>@lang('Attachments') {{ en('Attachments') }}</strong>
+                <strong>{{ __('Attachments') }} {{ en('Attachments') }}</strong>
             </label>
         <input class="form-control{{ $errors->has('attachments') ? ' is-invalid' : '' }}" id="attachments" name="attachments[]" size="40" type="file">
-            <button type='button' class="add_more">@lang('Add More Files')</button>
+            <button type='button' class="add_more">{{ __('Add More Files') }}</button>
             @if(isset($resource['attc']))
             <?php  $i = 0; ?>
             @foreach($resource['attc'] as $item)
@@ -41,7 +41,7 @@
         </div>
         <div class="form-item">
             <label for="subject_areas"> 
-                <strong>@lang('Subject Areas') {{ en('Subject Areas') }}</strong>
+                <strong>{{ __('Subject Areas') }} {{ en('Subject Areas') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <select class="form-control{{ $errors->has('subject_areas') ? ' is-invalid' : '' }}" id="subject_areas" name="subject_areas[]" required  multiple="multiple">
@@ -68,7 +68,7 @@
         </div>
         <div class="form-item">
                 <label for="keywords"> 
-                    <strong>@lang('Keywords') {{ en('Keywords') }}</strong>
+                    <strong>{{ __('Keywords') }} {{ en('Keywords') }}</strong>
                 </label>
                 <input class="form-control{{ $errors->has('keywords') ? ' is-invalid' : '' }}" id="keywords" name="keywords" size="40" type="text" value="{{ isset($resourceKeywords)?$resourceKeywords:"" }}" onkeydown="javascript:bringMeAttr('keywords','{{ URL::to('resources/attributes/keywords') }}')">
                 @if ($errors->has('keywords'))
@@ -79,7 +79,7 @@
             </div>
         <div class="form-item">
             <label for="learning_resources_types"> 
-                <strong>@lang('Learning Resources Types') {{ en('Learning Resources Types') }}</strong>
+                <strong>{{ __('Learning Resources Types') }} {{ en('Learning Resources Types') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <select class="form-control{{ $errors->has('learning_resources_types') ? ' is-invalid' : '' }}" id="learning_resources_types" name="learning_resources_types[]" required  multiple="multiple">
@@ -96,7 +96,7 @@
         </div>
         <div class="form-item">
             <label for="educational_use"> 
-                <strong>@lang('Educational Use') {{ en('Educational Use') }}</strong>
+                <strong>{{ __('Educational Use') }} {{ en('Educational Use') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <select class="form-control{{ $errors->has('educational_use') ? ' is-invalid' : '' }}" id="educational_use" name="educational_use[]" required  multiple="multiple">
@@ -114,7 +114,7 @@
 
         <div class="form-item">
             <label for="resource_levels"> 
-                <strong>@lang('Resource Levels') {{ en('Resource Levels') }}</strong>
+                <strong>{{ __('Resource Levels') }} {{ en('Resource Levels') }}</strong>
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <ul>
@@ -158,9 +158,9 @@
             </ul>
         </div>
         <div style="display:flex;">
-            <input style="margin-{{ (app()->getLocale()=="en")?"right":"left" }}: 10px;" class="form-control normalButton" type="button" value="@lang('Previous') {{ en('Previous') }}" onclick="location.href='{{ route('edit1', $resource["id"]) }}'">
-            <input class="form-control normalButton" type="submit" value="@lang('Next') {{ en('Next') }}" onclick="this.style.display='none';document.getElementById('wait').style.display='block'" ondblclick="this.style.display='display';document.getElementById('wait').style.display='block'">
-            <input type="button" class="form-control" id="wait" value="@lang('Please wait..') {{ en('Please wait..') }}" style="color:red;display:none" disabled>
+            <input style="margin-{{ (app()->getLocale()=="en")?"right":"left" }}: 10px;" class="form-control normalButton" type="button" value="{{ __('Previous') }} {{ en('Previous') }}" onclick="location.href='{{ route('edit1', $resource["id"]) }}'">
+            <input class="form-control normalButton" type="submit" value="{{ __('Next') }} {{ en('Next') }}" onclick="this.style.display='none';document.getElementById('wait').style.display='block'" ondblclick="this.style.display='display';document.getElementById('wait').style.display='block'">
+            <input type="button" class="form-control" id="wait" value="{{ __('Please wait..') }} {{ en('Please wait..') }}" style="color:red;display:none" disabled>
         </div>
         </form>
     </div>

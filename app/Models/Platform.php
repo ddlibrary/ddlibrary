@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Platform extends Model
 {
-    use HasManySitewidePageView, HasManyGlossaryPageView;
+    use HasManyGlossaryPageView, HasManySitewidePageView;
 
     protected $fillable = ['name'];
 }

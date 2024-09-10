@@ -18,7 +18,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -64,7 +63,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm(): View
     {
-        $myResources = new Resource();
+        $myResources = new Resource;
         $countries = $myResources->resourceAttributesList('taxonomy_term_data', 15);
         $provinces = $myResources->resourceAttributesList('taxonomy_term_data', 12)->all();
         $gmail_signup_url = 'https://accounts.google.com/signup';
@@ -88,7 +87,7 @@ class RegisterController extends Controller
                 'gender' => 'required',
                 'country' => 'required',
                 'city' => 'nullable',
-                'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule()],
+                'g-recaptcha-response' => [config('settings.captcha') && config('settings.captcha') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
             ],
             [
                 'phone.unique' => __('The phone number has already been taken.'),
@@ -105,7 +104,7 @@ class RegisterController extends Controller
      */
     protected function create(Request $request): User
     {
-        $user = new User();
+        $user = new User;
         $user->username = $this->getUserName($request['email']);
         $user->password = Hash::make($request['password']);
         $user->email = $request['email'];
@@ -154,7 +153,7 @@ class RegisterController extends Controller
             $user = $this->create($request);
 
             // Send email verification
-            if (env('SEND_EMAIL') && env('SEND_EMAIL') != 'no') {
+            if (config('settings.send_email') && config('settings.send_email') != 'no') {
                 if ($user->email) {
                     event(new Registered($user));
                 }
@@ -183,15 +182,15 @@ class RegisterController extends Controller
             Auth::loginUsingId($user->id);
 
             if ($user->email) {
-                return redirect('email/verify');
+                return redirect()->to('email/verify');
             }
 
-            return $this->registered($request, $user->id) ?: redirect($this->redirectPath());
+            return $this->registered($request, $user->id) ?: redirect()->to($this->redirectPath());
         } catch (Exception $e) {
             DB::rollback();
         }
 
-        return back()->with('error', 'Sorry! Your account has not been created.');
+        return redirect()->back()->with('error', 'Sorry! Your account has not been created.');
     }
 
     private function getUserName($email)

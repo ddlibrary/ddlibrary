@@ -10,12 +10,12 @@ class CommentController extends Controller
 {
     public function index(): View
     {
-        $comments = ResourceComment::orderBy('id', 'DESC')->paginate(10);
+        $comments = ResourceComment::orderByDesc('id')->paginate(10);
 
         return view('admin.comments.comments_list', compact('comments'));
     }
 
-    public function published($commentId)
+    public function published($commentId): RedirectResponse
     {
         $this->middleware('admin');
 
@@ -28,7 +28,7 @@ class CommentController extends Controller
             $rs->save();
         }
 
-        return back();
+        return redirect()->back();
     }
 
     public function delete($commentId): RedirectResponse

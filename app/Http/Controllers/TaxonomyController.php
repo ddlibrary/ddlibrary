@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTaxonomyRequest;
+use App\Http\Requests\StoreTranslateTaxonomyRequest;
+use App\Http\Requests\UpdateTaxonomyRequest;
 use App\Models\TaxonomyHierarchy;
 use App\Models\TaxonomyTerm;
 use App\Models\TaxonomyVocabulary;
@@ -15,7 +18,7 @@ class TaxonomyController extends Controller
     {
         $this->middleware('admin');
 
-        $terms = TaxonomyTerm::orderBy('vid', 'desc')->orderBy('weight')
+        $terms = TaxonomyTerm::orderByDesc('vid')->orderBy('weight')
             ->name(request('term'))
             ->vocabulary(request('vocabulary'))
             ->language(request('language'))
@@ -29,7 +32,7 @@ class TaxonomyController extends Controller
             'vocabulary' => $vocabulary,
         ];
         //creating search bar
-        $createSearchBar = new SearchController();
+        $createSearchBar = new SearchController;
         $searchBar = $createSearchBar->searchBar($args);
 
         return view('admin.taxonomy.taxonomy_list', compact('terms', 'searchBar'));
@@ -50,14 +53,8 @@ class TaxonomyController extends Controller
         return view('admin.taxonomy.taxonomy_edit', compact('term', 'vocabulary', 'parents', 'theParent'));
     }
 
-    public function update(Request $request, $vid, $tid): RedirectResponse
+    public function update(UpdateTaxonomyRequest $request, $vid, $tid): RedirectResponse
     {
-        $this->validate($request, [
-            'vid' => 'required',
-            'name' => 'required',
-            'weight' => 'required',
-            'language' => 'required',
-        ]);
 
         //Saving contact info to the database
         $term = TaxonomyTerm::find($tid);
@@ -79,7 +76,7 @@ class TaxonomyController extends Controller
         $parent->parent = $parentid;
         $parent->save();
 
-        return redirect('/admin/taxonomy')->with('success', 'Taxonomy item updated successfully!');
+        return redirect()->to('/admin/taxonomy')->with('success', 'Taxonomy item updated successfully!');
     }
 
     public function translate($tid): View
@@ -108,14 +105,8 @@ class TaxonomyController extends Controller
         return view('admin.taxonomy.taxonomy_create', compact('vocabulary'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(StoreTaxonomyRequest $request): RedirectResponse
     {
-        $this->validate($request, [
-            'vid' => 'required',
-            'name' => 'required',
-            'weight' => 'required',
-            'language' => 'required',
-        ]);
 
         //Saving contact info to the database
         $term = new TaxonomyTerm;
@@ -130,7 +121,7 @@ class TaxonomyController extends Controller
         //updating with tnid
         $term->save();
 
-        return redirect('/admin/taxonomy')->with('success', 'Taxonomy item created successfully!');
+        return redirect()->to('/admin/taxonomy')->with('success', 'Taxonomy item created successfully!');
     }
 
     public function createTranslate($tid, $tnid, $lang)
@@ -164,14 +155,8 @@ class TaxonomyController extends Controller
         ));
     }
 
-    public function storeTranslate(Request $request, $tnid): RedirectResponse
+    public function storeTranslate(StoreTranslateTaxonomyRequest $request, $tnid): RedirectResponse
     {
-        $this->validate($request, [
-            'vid' => 'required',
-            'name' => 'required',
-            'weight' => 'required',
-            'language' => 'required',
-        ]);
 
         //Saving contact info to the database
         $term = new TaxonomyTerm;
@@ -182,11 +167,11 @@ class TaxonomyController extends Controller
         $term->tnid = $tnid;
         $term->save();
 
-        $parent = new TaxonomyHierarchy();
+        $parent = new TaxonomyHierarchy;
         $parent->tid = $term->id;
         $parent->parent = $request->input('parent');
         $parent->save();
 
-        return redirect('/admin/taxonomy')->with('success', 'Taxonomy item added successfully!');
+        return redirect()->to('/admin/taxonomy')->with('success', 'Taxonomy item added successfully!');
     }
 }

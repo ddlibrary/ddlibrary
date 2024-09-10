@@ -65,7 +65,7 @@
                                     </td>
                                     <td>
                                         <select name="language" id="lang" onchange="getParents()" required>
-                                            <option value="">- @lang('None') -</option>
+                                            <option value="">- {{ __('None') }} -</option>
                                             @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                                             <option value="{{ $localeCode }}" {{ Request::get('lang') == $localeCode ? "selected" : "" }}>{{ $properties['native'] }}</option>
                                             @endforeach
