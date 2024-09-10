@@ -24,7 +24,7 @@ class ResourceView extends Model
             ->leftJoin('resources AS rs', 'rs.id', '=', 'rv.resource_id')
             ->where('rv.created_at', '>', \Carbon\Carbon::now()->subDays(30))
             ->groupBy('resource_id', 'rs.title', 'rv.resource_id', 'rs.language')
-            ->orderBy('total', 'DESC')
+            ->orderByDesc('total')
             ->limit(10)
             ->get();
     }

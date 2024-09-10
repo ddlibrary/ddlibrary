@@ -31,7 +31,7 @@ class ContactController extends Controller
     {
         $this->middleware('admin');
 
-        $records = Contact::orderBy('id', 'desc')->paginate(10);
+        $records = Contact::orderByDesc('id')->paginate(10);
 
         return view('admin.contacts.contact_list', compact('records'));
     }

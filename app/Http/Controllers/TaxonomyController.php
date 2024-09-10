@@ -15,7 +15,7 @@ class TaxonomyController extends Controller
     {
         $this->middleware('admin');
 
-        $terms = TaxonomyTerm::orderBy('vid', 'desc')->orderBy('weight')
+        $terms = TaxonomyTerm::orderByDesc('vid')->orderBy('weight')
             ->name(request('term'))
             ->vocabulary(request('vocabulary'))
             ->language(request('language'))

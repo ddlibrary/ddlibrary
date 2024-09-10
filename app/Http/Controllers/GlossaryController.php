@@ -30,25 +30,25 @@ class GlossaryController extends Controller
         $glossary_flagged = null;
 
         if ($request->filled('text')) {
-            $glossary = Glossary::orderBy('id', 'desc')
+            $glossary = Glossary::orderByDesc('id')
                 ->orWhere('name_en', request('text'))
                 ->orWhere('name_fa', request('text'))
                 ->orWhere('name_ps', request('text'))
                 ->where('flagged_for_review', '!=', true)
                 ->paginate(15);
         } elseif ($request->filled('subject') && ! $request->filled('text')) {
-            $glossary = Glossary::orderBy('id', 'desc')
+            $glossary = Glossary::orderByDesc('id')
                 ->where('subject', request('subject'))
                 ->where('flagged_for_review', '!=', true)
                 ->paginate(15);
         } else {
-            $glossary = Glossary::orderBy('id', 'desc')
+            $glossary = Glossary::orderByDesc('id')
                 ->where('flagged_for_review', '!=', true)
                 ->paginate(15);
         }
 
         if (isAdmin() and (request('flagged') == 'show' or request('flagged') == null)) {
-            $glossary_flagged = Glossary::orderBy('id', 'desc')
+            $glossary_flagged = Glossary::orderByDesc('id')
                 ->where('flagged_for_review', '=', true)
                 ->paginate(50);
         }

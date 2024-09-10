@@ -10,7 +10,7 @@ class CommentController extends Controller
 {
     public function index(): View
     {
-        $comments = ResourceComment::orderBy('id', 'DESC')->paginate(10);
+        $comments = ResourceComment::orderByDesc('id')->paginate(10);
 
         return view('admin.comments.comments_list', compact('comments'));
     }

@@ -87,7 +87,7 @@ class GlossaryAnalyticsController extends Controller
         })
             ->groupBy('language')
             ->select('language', DB::raw('count(*) as view_count'))
-            ->orderBy('view_count', 'desc')
+            ->orderByDesc('view_count')
             ->get();
 
         return $totalResources->map(function ($item) {

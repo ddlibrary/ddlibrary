@@ -20,7 +20,7 @@ class GlossarySubjectController extends Controller
      */
     public function index(): View
     {
-        $glossary_subjects = GlossarySubject::orderBy('id', 'DESC')->paginate(10);
+        $glossary_subjects = GlossarySubject::orderByDesc('id')->paginate(10);
 
         return view('admin.glossary.glossary_subject_list', compact('glossary_subjects'));
     }
