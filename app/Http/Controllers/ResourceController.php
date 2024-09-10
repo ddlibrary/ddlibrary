@@ -262,7 +262,7 @@ class ResourceController extends Controller
                 $fileSize = $attachments->getSize();
                 $fileName = $attachments->getClientOriginalName();
                 $fileExtension = File::extension($fileName);
-                $fileName = auth()->user()->id.'_'.time().'.'.$fileExtension;
+                $fileName = $request->user()->id.'_'.time().'.'.$fileExtension;
                 //$attachments->storeAs($fileName,'private');
                 Storage::disk('s3')->put('resources/'.$fileName, file_get_contents($attachments));
                 $validatedData['attc'][] = [
@@ -540,14 +540,14 @@ class ResourceController extends Controller
         });
 
         if ($result and isAdmin()) {
-            Session::flash('alert', [
+            $request->session()->flash('alert', [
                 'message' => __('Resource successfully added!'),
                 'level' => 'success',
             ]);
 
             return redirect('/home');
         } elseif ($result) {
-            Session::flash('alert', [
+            $request->session()->flash('alert', [
                 'message' => __('Resource successfully added! It will be published after review.'),
                 'level' => 'success',
             ]);
@@ -555,7 +555,7 @@ class ResourceController extends Controller
             return redirect('/home');
         }
 
-        Session::flash('alert', [
+        $request->session()->flash('alert', [
             'message' => __('Resource couldn\'t be added.'),
             'level' => 'danger',
         ]);
@@ -660,7 +660,7 @@ class ResourceController extends Controller
             Mail::to(Setting::find(1)->website_email)->send(new NewComment($comment));
         }
 
-        Session::flash('alert', [
+        $request->session()->flash('alert', [
             'message' => __('Your comment is successfully registered. We will publish it after review.'),
             'level' => 'success',
         ]);
@@ -843,7 +843,7 @@ class ResourceController extends Controller
                 $fileSize = $attachments->getSize();
                 $fileName = $attachments->getClientOriginalName();
                 $fileExtension = File::extension($fileName);
-                $fileName = auth()->user()->id.'_'.time().'.'.$fileExtension;
+                $fileName = $request->user()->id.'_'.time().'.'.$fileExtension;
                 //$attachments->storeAs($fileName,'private');
                 unset($validatedData['attachments']);
                 Storage::disk('s3')->put('resources/'.$fileName, file_get_contents($attachments));
@@ -1191,7 +1191,7 @@ class ResourceController extends Controller
         return redirect('/resource/'.$resourceId)->with('error', __('Resource could not be updated.'));
     }
 
-    public function deleteFile($resourceId, $fileName): Redirector|Application|RedirectResponse
+    public function deleteFile(Request $request, $resourceId, $fileName): Redirector|Application|RedirectResponse
     {
         $this->middleware('admin');
 
@@ -1207,7 +1207,7 @@ class ResourceController extends Controller
                 }
             }
             $resource2['attc'] = array_values($resource2Attc);
-            session()->put('resource2', $resource2);
+            $request->session()->put('resource2', $resource2);
         }
 
         return redirect('/resources/edit/step2/'.$resourceId)->with('success', 'File successfully deleted!');

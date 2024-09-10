@@ -6,6 +6,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\UserProfile;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\URL;
 
 class StoryWeaverController extends Controller
 {
-    public function storyWeaverConfirmation($landing_page = 'storyweaver_default')
+    public function storyWeaverConfirmation(Request $request, $landing_page = 'storyweaver_default')
     {
         $user_profile = UserProfile::where('user_id', auth()->id())->first();
 
@@ -32,7 +33,7 @@ class StoryWeaverController extends Controller
             return redirect(route('storyweaver-auth'));
         }
         $email = false;
-        if (auth()->user()->email) {
+        if ($request->user()->email) {
             $email = true;
         }
 

@@ -118,7 +118,7 @@ class UserController extends Controller
             $user->save();
         }
 
-        Session::flash('alert', [
+        $request->session()->flash('alert', [
             'message' => __('Your data has been updated successfully.'),
             'level' => 'success',
         ]);

@@ -42,7 +42,7 @@ class DownloadController extends Controller
             });
         }
 
-        $records = $query->orderByDesc('id')->paginate()->appends(request()->except(['page', '_token']));
+        $records = $query->orderByDesc('id')->paginate()->appends($request->except(['page', '_token']));
 
         $filters = $request;
 

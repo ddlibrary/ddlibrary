@@ -30,13 +30,13 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class ApiController extends Controller
 {
     // User Profile
-    public function user()
+    public function user(Request $request)
     {
-        return auth()->user();
+        return $request->user();
     }
 
     // Delete
-    public function delete()
+    public function delete(Request $request)
     {
         $id = Auth::id();
 
@@ -60,7 +60,7 @@ class ApiController extends Controller
             $subscription->delete();
         }
 
-        auth()->user()->tokens()->delete();
+        $request->user()->tokens()->delete();
 
         return ['message' => 'User deleted successfully!'];
     }
@@ -68,15 +68,15 @@ class ApiController extends Controller
     // Logout
     public function logout(Request $request)
     {
-        auth()->user()->tokens()->delete();
+        $request->user()->tokens()->delete();
 
         return ['message' => 'Logged out!'];
     }
 
     // Favorites
-    public function favorites()
+    public function favorites(Request $request)
     {
-        $favorites = ResourceFavorite::where('user_id', auth()->user()->id)->get(['resource_id']);
+        $favorites = ResourceFavorite::where('user_id', $request->user()->id)->get(['resource_id']);
         $resources = Resource::whereIn('id', $favorites)->get();
 
         return $resources;

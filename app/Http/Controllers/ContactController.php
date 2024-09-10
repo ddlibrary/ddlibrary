@@ -70,8 +70,8 @@ class ContactController extends Controller
     {
         $this->pageView($request, 'Contact us');
 
-        if (Auth::check()) {
-            $user = auth()->user();
+        if ($request->user()) {
+            $user = $request->user();
 
             if ($user->email) {
                 return view('contacts.contacts_view', [
