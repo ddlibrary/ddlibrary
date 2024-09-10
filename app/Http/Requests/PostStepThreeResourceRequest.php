@@ -14,12 +14,25 @@ class PostStepThreeResourceRequest extends FormRequest
     public function rules()
     {
         return [
-'translation_rights'     => 'integer',
-'educational_resource'   => 'integer',
-'copyright_holder'       => 'string|nullable',
-'iam_author'             => 'integer',
-'creative_commons'       => 'integer',
-'creative_commons_other' => 'integer',
+'translation_rights'     => [
+                'integer',
+            ],
+'educational_resource'   => [
+                'integer',
+            ],
+'copyright_holder'       => [
+                'string',
+                'nullable',
+            ],
+'iam_author'             => [
+                'integer',
+            ],
+'creative_commons'       => [
+                'integer',
+            ],
+'creative_commons_other' => [
+                'integer',
+            ],
 ];
     }
 }

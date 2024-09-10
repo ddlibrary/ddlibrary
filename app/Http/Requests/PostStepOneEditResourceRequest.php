@@ -14,12 +14,27 @@ class PostStepOneEditResourceRequest extends FormRequest
     public function rules()
     {
         return [
-'title'      => 'required',
-'author'     => 'string|nullable',
-'publisher'  => 'string|nullable',
-'translator' => 'string|nullable',
-'language'   => 'required',
-'abstract'   => 'required',
+'title'      => [
+                'required',
+            ],
+'author'     => [
+                'string',
+                'nullable',
+            ],
+'publisher'  => [
+                'string',
+                'nullable',
+            ],
+'translator' => [
+                'string',
+                'nullable',
+            ],
+'language'   => [
+                'required',
+            ],
+'abstract'   => [
+                'required',
+            ],
 ];
     }
 }

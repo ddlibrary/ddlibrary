@@ -15,10 +15,19 @@ class StoreContactRequest extends FormRequest
     public function rules()
     {
         return [
-'name'                 => 'required',
-'email'                => 'required|email',
-'subject'              => 'required',
-'message'              => 'required',
+'name'                 => [
+                'required',
+            ],
+'email'                => [
+                'required',
+                'email',
+            ],
+'subject'              => [
+                'required',
+            ],
+'message'              => [
+                'required',
+            ],
 'g-recaptcha-response' => [
 'required',
 new RecaptchaRule(),

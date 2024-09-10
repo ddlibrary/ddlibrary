@@ -14,11 +14,21 @@ class StorePageRequest extends FormRequest
     public function rules()
     {
         return [
-'title'     => 'required',
-'language'  => 'required',
-'summary'   => 'required',
-'body'      => 'required',
-'published' => 'integer',
+'title'     => [
+                'required',
+            ],
+'language'  => [
+                'required',
+            ],
+'summary'   => [
+                'required',
+            ],
+'body'      => [
+                'required',
+            ],
+'published' => [
+                'integer',
+            ],
 ];
     }
 }

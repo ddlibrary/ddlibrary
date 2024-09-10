@@ -14,12 +14,26 @@ class PostStepTwoEditResourceRequest extends FormRequest
     public function rules()
     {
         return [
-'attachments.*'            => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3',
-'subject_areas'            => 'required',
-'keywords'                 => 'string|nullable',
-'learning_resources_types' => 'required',
-'educational_use'          => 'required',
-'level'                    => 'required',
+'attachments.*'            => [
+                'file',
+                'mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3',
+            ],
+'subject_areas'            => [
+                'required',
+            ],
+'keywords'                 => [
+                'string',
+                'nullable',
+            ],
+'learning_resources_types' => [
+                'required',
+            ],
+'educational_use'          => [
+                'required',
+            ],
+'level'                    => [
+                'required',
+            ],
 ];
     }
 }

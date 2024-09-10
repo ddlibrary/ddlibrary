@@ -15,7 +15,10 @@ class SendResetLinkEmailForgotPasswordRequest extends FormRequest
     public function rules()
     {
         return [
-'email'                => 'required|email',
+'email'                => [
+                'required',
+                'email',
+            ],
 'g-recaptcha-response' => [
 env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required',
 new RecaptchaRule(),

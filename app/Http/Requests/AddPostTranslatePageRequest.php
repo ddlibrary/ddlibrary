@@ -14,11 +14,21 @@ class AddPostTranslatePageRequest extends FormRequest
     public function rules()
     {
         return [
-'title'     => 'required',
-'language'  => 'nullable',
-'summary'   => 'required',
-'body'      => 'required',
-'published' => 'integer',
+'title'     => [
+                'required',
+            ],
+'language'  => [
+                'nullable',
+            ],
+'summary'   => [
+                'required',
+            ],
+'body'      => [
+                'required',
+            ],
+'published' => [
+                'integer',
+            ],
 ];
     }
 }

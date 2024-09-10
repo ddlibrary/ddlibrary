@@ -14,9 +14,15 @@ class StoreVocabularyRequest extends FormRequest
     public function rules()
     {
         return [
-'name'     => 'required',
-'weight'   => 'required',
-'language' => 'required',
+'name'     => [
+                'required',
+            ],
+'weight'   => [
+                'required',
+            ],
+'language' => [
+                'required',
+            ],
 ];
     }
 }

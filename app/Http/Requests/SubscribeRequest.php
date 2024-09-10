@@ -23,8 +23,15 @@ class SubscribeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email|unique:subscribers,email',
-            'name' => 'required|string',
+            'email' => [
+                'required',
+                'email',
+                'unique:subscribers,email',
+            ],
+            'name' => [
+                'required',
+                'string',
+            ],
             'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
         ];
     }

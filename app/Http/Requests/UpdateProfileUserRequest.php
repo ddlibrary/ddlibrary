@@ -14,9 +14,20 @@ class UpdateProfileUserRequest extends FormRequest
     public function rules()
     {
         return [
-'email'    => 'email|required',
-'password' => 'nullable|confirmed|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',
-'username' => 'required',
+'email'    => [
+                'email',
+                'required',
+            ],
+'password' => [
+                'nullable',
+                'confirmed',
+                'string',
+                'min:8',
+                'regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',
+            ],
+'username' => [
+                'required',
+            ],
 ];
     }
 }

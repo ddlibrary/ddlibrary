@@ -14,16 +14,36 @@ class UpdateGlossarySubjectRequest extends FormRequest
     public function rules()
     {
         return [
-'english'   => 'required',
-'farsi'     => 'required',
-'pashto'    => 'required',
-'munji'     => 'required',
-'nuristani' => 'required',
-'pashayi'   => 'required',
-'shughni'   => 'required',
-'swahili'   => 'required',
-'uzbek'     => 'required',
-'id'        => 'required',
+'english'   => [
+                'required',
+            ],
+'farsi'     => [
+                'required',
+            ],
+'pashto'    => [
+                'required',
+            ],
+'munji'     => [
+                'required',
+            ],
+'nuristani' => [
+                'required',
+            ],
+'pashayi'   => [
+                'required',
+            ],
+'shughni'   => [
+                'required',
+            ],
+'swahili'   => [
+                'required',
+            ],
+'uzbek'     => [
+                'required',
+            ],
+'id'        => [
+                'required',
+            ],
 ];
     }
 }

@@ -14,10 +14,18 @@ class StoreTaxonomyRequest extends FormRequest
     public function rules()
     {
         return [
-'vid'      => 'required',
-'name'     => 'required',
-'weight'   => 'required',
-'language' => 'required',
+'vid'      => [
+                'required',
+            ],
+'name'     => [
+                'required',
+            ],
+'weight'   => [
+                'required',
+            ],
+'language' => [
+                'required',
+            ],
 ];
     }
 }
