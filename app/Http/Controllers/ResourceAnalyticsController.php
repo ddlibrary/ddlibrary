@@ -184,8 +184,17 @@ class ResourceAnalyticsController extends Controller
     {
         $query = Resource::query()
             ->select(['id', 'title', 'language'])
-            ->withCount('views');
+            ->withCount([
+                'views' => function ($query) use ($request) {
+                    if ($request->date_from && $request->date_to) {
+                        $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
+                    }
+                },
+            ]);
 
+        if ($request->language) {
+            $query->where('language', $request->language);
+        }
         $result = $query->orderBy('views_count', 'desc')->limit(10)->get();
 
         return $result;

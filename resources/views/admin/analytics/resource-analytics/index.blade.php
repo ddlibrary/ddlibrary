@@ -76,7 +76,7 @@
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
-                                                {{ $resource->language ?  : '<no language>' }}
+                                                {{ $resource->language ?: '<no language>' }}
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -119,7 +119,7 @@
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
                                                 <a href="{{ URL::to('resource/' . $resource->id) }}"
-                                                   target="_blank">{{ $resource->title }}</a>
+                                                    target="_blank">{{ $resource->title }}</a>
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -154,7 +154,7 @@
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
                                                 <a href="{{ URL::to('resource/' . $resource->id) }}"
-                                                   target="_blank">{{ $resource->title }}</a>
+                                                    target="_blank">{{ $resource->title }}</a>
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -190,7 +190,7 @@
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
                                                 <a href="{{ URL::to('resource/' . $resource->id) }}"
-                                                   target="_blank">{{ $resource->title }}</a>
+                                                    target="_blank">{{ $resource->title }}</a>
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -293,7 +293,7 @@
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
-                                                {{ $author->name ?  : '<no author>' }}
+                                                {{ $author->name ?: '<no author>' }}
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -320,17 +320,19 @@
                                 <div class="card-body text-secondary p-2">
 
                                     @forelse ($top10ViewedResources as $top10ViewedResource)
-                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
-                                            <div class="p-1">
-                                                {{ $loop->iteration }}.
-                                                {{ $top10ViewedResource->title ?  : '<no resource>' }}
+                                        @if ($top10ViewedResource->views_count > 0)
+                                            <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                                <div class="p-1">
+                                                    {{ $loop->iteration }}.
+                                                    {{ $top10ViewedResource->title ?: '<no resource>' }}
+                                                </div>
+                                                <div class="p-1">
+                                                    <span class="badge badge-info">
+                                                        {{ number_format($top10ViewedResource->views_count) }}
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <div class="p-1">
-                                                <span class="badge badge-info">
-                                                    {{ number_format($top10ViewedResource->views_count) }}
-                                                </span>
-                                            </div>
-                                        </div>
+                                        @endif
                                     @empty
                                         <h2 class="alert alert-danger">N/A</h2>
                                     @endforelse
@@ -359,7 +361,7 @@
                                                 {{ $loop->iteration }}.
                                                 @if ($publisher->name)
                                                     <a href="{{ URL::route('resourceList', ['publisher' => $publisher->id]) }}"
-                                                       target="_blank">{{ $publisher->name }}</a>
+                                                        target="_blank">{{ $publisher->name }}</a>
                                                 @else
                                                     <no publisher>
                                                 @endif
