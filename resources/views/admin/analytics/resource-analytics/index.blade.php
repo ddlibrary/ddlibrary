@@ -42,6 +42,15 @@
                                 @endforeach
                             </select>
                         </div>
+                        {{-- Is Bot --}}
+                        <div class="col-md-2">
+                            <label for="is-bot">Is bot <span class="fa fa-robot"></span></label>
+                            <select class="form-control" name="is_bot" id="is-bot">
+                                <option value="">...</option>
+                                <option value="1" @selected(1 == request()->is_bot)>Yes</option>
+                                <option value="2" @selected(2 == request()->is_bot)>No</option>
+                            </select>
+                        </div>
 
                         {{-- Filter button --}}
                         <div class="col-md-2" style="align-self: flex-end">
@@ -230,13 +239,22 @@
                             </div>
 
                             <div class="card border-secondary mb-3">
-                                <div class="card-header">Total views</div>
+                                <div class="card-header d-flex justify-content-between">
+                                    <div>
+                                        Total views
+                                    </div>
+                                    <div class="display-inline-block text-right">
+                                        <span class="fa fa-calendar"></span>
+                                        <span class="fa fa-female"></span>
+                                        <span class="fa fa-robot"></span>
+                                    </div>
+                                </div>
                                 <div class="card-body text-secondary p-2">
 
                                     <div class="card-text">
                                         <div class="d-flex justify-content-between">
                                             <div>
-                                                Total resource views
+                                                Total resources views
                                             </div>
                                             <div>
                                                 <span class="badge badge-info">
@@ -245,6 +263,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
                                 </div>
                             </div>
 
@@ -334,8 +353,10 @@
                                     <div class="display-inline-block text-right">
                                         <span class="fa fa-calendar"></span>
                                         <span class="fa fa-language"></span>
+                                        <span class="fa fa-robot"></span>
                                     </div>
                                 </div>
+
                                 <div class="card-body text-secondary p-2">
 
                                     @forelse ($top10ViewedResources as $top10ViewedResource)
