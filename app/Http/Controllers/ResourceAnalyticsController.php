@@ -7,6 +7,7 @@ use App\Enums\TaxonomyVocabularyEnum;
 use App\Models\DownloadCount;
 use App\Models\Resource;
 use App\Models\ResourceSubjectArea;
+use App\Models\ResourceView;
 use App\Models\TaxonomyTerm;
 use App\Traits\GenderTrait;
 use App\Traits\LanguageTrait;
@@ -51,8 +52,10 @@ class ResourceAnalyticsController extends Controller
         $top10DownloadedResourcesByFileSizes = $this->getTop10DownloadedResourcesByFileSize($request); // Get top 10 downloaded resources by file size
         $sumOfAllIndividualDownloadedFileSizes = $this->getSumOfAllIndividualDownloadedFileSizes(); // Sum of all individual downloaded file sizes
         $top10ViewedResources = $this->getTop10ViewedResources($request);
+        $totalViews = $this->getTotalViews($request);
+        
 
-        return view('admin.analytics.resource-analytics.index', compact(['genders', 'top10ViewedResources', 'languages', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 'top10Authors', 'top10Publishers', 'top10DownloadedResources', 'top10DownloadedResourcesByFileSizes', 'top10FavoriteResources', 'subjectAreas', 'resourceTypes']));
+        return view('admin.analytics.resource-analytics.index', compact(['genders', 'totalViews', 'top10ViewedResources', 'languages', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 'top10Authors', 'top10Publishers', 'top10DownloadedResources', 'top10DownloadedResourcesByFileSizes', 'top10FavoriteResources', 'subjectAreas', 'resourceTypes']));
     }
 
     private function getSumOfAllIndividualDownloadedFileSizes(): float
@@ -196,6 +199,21 @@ class ResourceAnalyticsController extends Controller
             $query->where('language', $request->language);
         }
         $result = $query->orderBy('views_count', 'desc')->limit(10)->get();
+
+        return $result;
+    }
+
+    private function getTotalViews($request)
+    {
+        $query = ResourceView::query();
+        if ($request->date_from && $request->date_to) {
+            $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
+        }
+
+        if ($request->language) {
+            $query->where('language', $request->language);
+        }
+        $result = $query->count();
 
         return $result;
     }

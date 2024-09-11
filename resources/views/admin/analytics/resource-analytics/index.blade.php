@@ -230,6 +230,25 @@
                             </div>
 
                             <div class="card border-secondary mb-3">
+                                <div class="card-header">Total views</div>
+                                <div class="card-body text-secondary p-2">
+
+                                    <div class="card-text">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                Total resource views
+                                            </div>
+                                            <div>
+                                                <span class="badge badge-info">
+                                                    {{ number_format($totalViews) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card border-secondary mb-3">
                                 <div class="card-header d-flex justify-content-between">
                                     <div>
                                         Resource Type
