@@ -310,7 +310,7 @@
                             <div class="card border-secondary mb-3">
                                 <div class="card-header d-flex justify-content-between">
                                     <div>
-                                        Top 10 resources
+                                        Top 10 viewed resources
                                     </div>
                                     <div class="display-inline-block text-right">
                                         <span class="fa fa-calendar"></span>
