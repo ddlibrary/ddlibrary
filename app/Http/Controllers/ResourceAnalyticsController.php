@@ -53,7 +53,6 @@ class ResourceAnalyticsController extends Controller
         $sumOfAllIndividualDownloadedFileSizes = $this->getSumOfAllIndividualDownloadedFileSizes(); // Sum of all individual downloaded file sizes
         $top10ViewedResources = $this->getTop10ViewedResources($request);
         $totalViews = $this->getTotalViews($request);
-        
 
         return view('admin.analytics.resource-analytics.index', compact(['genders', 'totalViews', 'top10ViewedResources', 'languages', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 'top10Authors', 'top10Publishers', 'top10DownloadedResources', 'top10DownloadedResourcesByFileSizes', 'top10FavoriteResources', 'subjectAreas', 'resourceTypes']));
     }
@@ -192,29 +191,36 @@ class ResourceAnalyticsController extends Controller
                     if ($request->date_from && $request->date_to) {
                         $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
                     }
+                    if ($request->is_bot) {
+                        $query->where('is_bot', $request->is_bot == 2 ? false : true);
+                    }
                 },
             ]);
 
         if ($request->language) {
             $query->where('language', $request->language);
         }
-        $result = $query->orderBy('views_count', 'desc')->limit(10)->get();
 
-        return $result;
+        return $query->orderBy('views_count', 'desc')->limit(10)->get();
     }
 
     private function getTotalViews($request)
     {
         $query = ResourceView::query();
+
         if ($request->date_from && $request->date_to) {
             $query->whereBetween('created_at', [$request->date_from, $request->date_to]);
         }
 
-        if ($request->language) {
-            $query->where('language', $request->language);
+        if ($request->is_bot) {
+            $query->where('is_bot', $request->is_bot == 2 ? false : true);
         }
-        $result = $query->count();
 
-        return $result;
+        if ($request->gender) {
+            $query->whereHas('user.profile', function ($query) use ($request) {
+                $query->where('gender', $request->gender);
+            });
+        }
+        return $query->count();
     }
 }
