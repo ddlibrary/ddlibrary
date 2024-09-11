@@ -307,6 +307,36 @@
 
                                 </div>
                             </div>
+                            <div class="card border-secondary mb-3">
+                                <div class="card-header d-flex justify-content-between">
+                                    <div>
+                                        Top 10 resources
+                                    </div>
+                                    <div class="display-inline-block text-right">
+                                        <span class="fa fa-calendar"></span>
+                                        <span class="fa fa-language"></span>
+                                    </div>
+                                </div>
+                                <div class="card-body text-secondary p-2">
+
+                                    @forelse ($top10ViewedResources as $top10ViewedResource)
+                                        <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                            <div class="p-1">
+                                                {{ $loop->iteration }}.
+                                                {{ $top10ViewedResource->title ?  : '<no resource>' }}
+                                            </div>
+                                            <div class="p-1">
+                                                <span class="badge badge-info">
+                                                    {{ number_format($top10ViewedResource->views_count) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <h2 class="alert alert-danger">N/A</h2>
+                                    @endforelse
+
+                                </div>
+                            </div>
                         </div>
 
                         {{-- Top 10 Publishers --}}
