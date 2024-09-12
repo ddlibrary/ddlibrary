@@ -4,7 +4,6 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Device;
-use App\Models\Role;
 use App\Models\Browser;
 use App\Models\Platform;
 use App\Models\GlossarySubject;
