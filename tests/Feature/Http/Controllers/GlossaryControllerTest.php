@@ -18,7 +18,7 @@ class GlossaryControllerTest extends TestCase
     /**
      * @test
      */
-    public function test_index_returns_a_successful_response()
+    public function test_index_returns_a_successful_response(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -34,7 +34,7 @@ class GlossaryControllerTest extends TestCase
     /**
      * @test
      */
-    public function test_create_returns_a_successful_response()
+    public function test_create_returns_a_successful_response(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -50,7 +50,7 @@ class GlossaryControllerTest extends TestCase
     /**
      * @test
      */
-    public function test_store_creates_new_glossary_item()
+    public function test_store_creates_new_glossary_item(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -73,7 +73,7 @@ class GlossaryControllerTest extends TestCase
     /**
      * @test
      */
-    public function test_update_glossary_item()
+    public function test_update_glossary_item(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -103,7 +103,7 @@ class GlossaryControllerTest extends TestCase
     /**
      * @test
      */
-    public function test_delete_glossary_item()
+    public function test_delete_glossary_item(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -121,7 +121,7 @@ class GlossaryControllerTest extends TestCase
     /**
      * @test
      */
-    public function test_approve_glossary_item()
+    public function test_approve_glossary_item(): void
     {
         $this->refreshApplicationWithLocale('en');
 
