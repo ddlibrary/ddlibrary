@@ -15,9 +15,9 @@ class SettingFactory extends Factory
     public function definition(): array
     {
         return [
-            'website_name' => $this->faker->word(),
-            'website_slogan' => $this->faker->word(),
-            'website_email' => $this->faker->word(),
+            'website_name' => $this->faker->name,
+            'website_slogan' => $this->faker->name,
+            'website_email' => $this->faker->name,
         ];
     }
 }
