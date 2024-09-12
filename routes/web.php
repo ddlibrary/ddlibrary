@@ -198,10 +198,10 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     });
 
     //Glossary
-    Route::prefix('glossary')->middleware('LibraryManager')->group(function(){
-        Route::controller(GlossaryController::class)->group(function(){
-            Route::get('', 'index');
-            Route::post('', 'index')->name('glossary');
+    Route::prefix('glossary')->controller(GlossaryController::class)->group(function(){
+        Route::get('', 'index');
+        Route::post('', 'index')->name('glossary');
+        Route::prefix('glossary')->middleware('LibraryManager')->group(function(){
             Route::get('create', 'create')->name('glossary_create');
             Route::post('store', 'store')->name('glossary_store');
             Route::post('update', 'update')->name('glossary_update');
@@ -209,7 +209,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
             Route::post('approve/{id}', 'approve')->name('glossary_approve');
         });
     });
-    
+
     //Impact Page
     Route::get('/impact', [ImpactController::class, 'index']);
 
