@@ -23,7 +23,7 @@ class HomeControllerTest extends TestCase
     public function index_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
-        
+
         Survey::factory()->create();
         SurveyQuestion::factory()->create();
         News::factory(3)->create(['status' => 1]);
@@ -43,7 +43,7 @@ class HomeControllerTest extends TestCase
         $response->assertViewHas('surveys');
         $response->assertViewHas('surveyQuestions');
         $response->assertViewHas('surveyQuestionOptions');
-        
+
         $this->assertCount(3, $response->viewData('latestNews'));
         $this->assertCount(3, $response->viewData('latestResources'));
     }
