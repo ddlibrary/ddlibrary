@@ -248,8 +248,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
 
     //admin, glossary
     Route::get('admin/glossary_subjects', [GlossarySubjectController::class, 'index'])->middleware('admin')->name('glossary_subjects_list');
-    Route::get('admin/glossary_subjects/create', [GlossarySubjectController::class, 'create'])->middleware('admin');
-    Route::get('admin/glossary_subjects/edit/{id}', [GlossarySubjectController::class, 'edit'])->middleware('admin');
+    Route::get('admin/glossary_subjects/create', [GlossarySubjectController::class, 'create'])->middleware('admin')->name('glossary_subjects_create');
+    Route::get('admin/glossary_subjects/edit/{id}', [GlossarySubjectController::class, 'edit'])->middleware('admin')->name('glossary_subjects_edit');
     Route::post('admin/glossary_subjects/update', [GlossarySubjectController::class, 'update'])->middleware('admin')->name('glossary_subjects_update');
     //StoryWeaver
     Route::get('/storyweaver/confirm/{landing_page}', [StoryWeaverController::class, 'storyWeaverConfirmation'])->name('storyweaver-confirm')->middleware('auth')->middleware('verified');
