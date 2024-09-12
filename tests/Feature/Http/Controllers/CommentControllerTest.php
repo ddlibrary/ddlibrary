@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\Models\Comment;
 use App\Models\User;
 use App\Models\Resource;
 use App\Models\ResourceComment;
