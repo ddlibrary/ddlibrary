@@ -247,10 +247,16 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::post('/admin/analytics', [AnalyticsController::class, 'show'])->name('analytics')->middleware('admin');
 
     //admin, glossary
-    Route::get('admin/glossary_subjects', [GlossarySubjectController::class, 'index'])->middleware('admin')->name('glossary_subjects_list');
-    Route::get('admin/glossary_subjects/create', [GlossarySubjectController::class, 'create'])->middleware('admin')->name('glossary_subjects_create');
-    Route::get('admin/glossary_subjects/edit/{id}', [GlossarySubjectController::class, 'edit'])->middleware('admin')->name('glossary_subjects_edit');
-    Route::post('admin/glossary_subjects/update', [GlossarySubjectController::class, 'update'])->middleware('admin')->name('glossary_subjects_update');
+    Route::prefix('admin/glossary_subjects')->middleware('admin')->group(function(){
+        Route::controller(GlossarySubjectController::class)->group(function(){
+            Route::get('',  'index')->name('glossary_subjects_list');
+            Route::get('create',  'create')->name('glossary_subjects_create');
+            Route::get('edit/{id}',  'edit')->name('glossary_subjects_edit');
+            Route::post('update',  'update')->name('glossary_subjects_update');
+        });
+    });
+
+
     //StoryWeaver
     Route::get('/storyweaver/confirm/{landing_page}', [StoryWeaverController::class, 'storyWeaverConfirmation'])->name('storyweaver-confirm')->middleware('auth')->middleware('verified');
     Route::get('/storyweaver/auth', [StoryWeaverController::class, 'storyWeaverAuth'])->name('storyweaver-auth')->middleware('auth')->middleware('verified');
