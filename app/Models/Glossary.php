@@ -20,5 +20,12 @@ class Glossary extends Model
     use HasFactory;
 
     protected $table = 'glossary';
-    //
+
+    protected $guarded = [];
+
+
+    public function glossarySubject()
+    {
+        return $this->belongsTo(GlossarySubject::class, 'subject', 'id');
+    }
 }
