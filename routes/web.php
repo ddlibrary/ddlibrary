@@ -169,8 +169,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         //Comments
         Route::prefix('comments')->controller(CommentController::class)->group(function(){
             Route::get('/', 'index');
-            Route::get('delete/{commentId}', 'delete');
-            Route::get('published/{commentId}', 'published');
+            Route::get('delete/{resourceComment}', 'delete');
+            Route::get('published/{resourceComment}', 'published')->middleware('admin');
         });
 
         //Flags
