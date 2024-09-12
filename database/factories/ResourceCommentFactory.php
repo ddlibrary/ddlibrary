@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Resource;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\ResourceComment;
+use App\Models\User;
 
 class ResourceCommentFactory extends Factory
 {
@@ -15,8 +16,10 @@ class ResourceCommentFactory extends Factory
     public function definition(): array
     {
         return [
-            'resource_id' => \App\Models\Resource::factory(),
-            'user_id' => \App\Models\User::factory(),
+            'resource_id' => Resource::factory()->create(),
+            'user_id' => User::factory()->create(),
+            'comment' => $this->faker->text(),
+            'status' => 1
         ];
     }
 }
