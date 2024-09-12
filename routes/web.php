@@ -198,13 +198,18 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     });
 
     //Glossary
-    Route::get('glossary', [GlossaryController::class, 'index']);
-    Route::post('glossary', [GlossaryController::class, 'index'])->name('glossary');
-    Route::get('glossary/create', [GlossaryController::class, 'create'])->name('glossary_create')->middleware('LibraryManager');
-    Route::post('glossary/store', [GlossaryController::class, 'store'])->name('glossary_store')->middleware('LibraryManager');
-    Route::post('glossary/update', [GlossaryController::class, 'update'])->name('glossary_update')->middleware('LibraryManager');
-    Route::post('glossary/delete/{id}', [GlossaryController::class, 'destroy'])->name('glossary_delete')->middleware('LibraryManager');
-    Route::post('glossary/approve/{id}', [GlossaryController::class, 'approve'])->name('glossary_approve')->middleware('LibraryManager');
+    Route::prefix('glossary')->middleware('LibraryManager')->group(function(){
+        Route::controller(GlossaryController::class)->group(function(){
+            Route::get('', 'index');
+            Route::post('', 'index')->name('glossary');
+            Route::get('create', 'create')->name('glossary_create');
+            Route::post('store', 'store')->name('glossary_store');
+            Route::post('update', 'update')->name('glossary_update');
+            Route::post('delete/{id}', 'destroy')->name('glossary_delete');
+            Route::post('approve/{id}', 'approve')->name('glossary_approve');
+        });
+    });
+    
     //Impact Page
     Route::get('/impact', [ImpactController::class, 'index']);
 
