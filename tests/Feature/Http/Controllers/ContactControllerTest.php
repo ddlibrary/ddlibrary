@@ -3,7 +3,6 @@
 namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Contact;
-use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -54,7 +53,7 @@ class ContactControllerTest extends TestCase
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
         $admin->roles()->attach(5);
-        $contacts = Contact::factory()->count(3)->create();
+        Contact::factory()->count(3)->create();
 
         $response = $this->actingAs($admin)->get('en/admin/contacts');
 
@@ -77,9 +76,9 @@ class ContactControllerTest extends TestCase
 
         $response = $this->actingAs($admin)->get("en/admin/contacts/read/$contact->id");
 
-    $response->assertRedirect();
-    $response->assertSessionHas('success');
-    $response->assertStatus(302);
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+        $response->assertStatus(302);
     }
 
     /**
@@ -96,7 +95,6 @@ class ContactControllerTest extends TestCase
             'message' => 'This is a test message',
         ]);
 
-        $response->assertRedirect('/contact-us')
-                 ->assertSessionHas('success', 'We received your message and will contact you back soon!');
+        $response->assertRedirect('/contact-us')->assertSessionHas('success', 'We received your message and will contact you back soon!');
     }
 }
