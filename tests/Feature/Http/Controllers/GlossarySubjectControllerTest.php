@@ -14,7 +14,7 @@ class GlossarySubjectControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_view_glossary_subjects_list()
+    public function test_admin_can_view_glossary_subjects_list(): void
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -29,7 +29,7 @@ class GlossarySubjectControllerTest extends TestCase
         $response->assertSee($glossarySubjects[0]->name);
     }
 
-    public function test_admin_can_create_glossary_subject()
+    public function test_admin_can_create_glossary_subject(): void
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -42,7 +42,7 @@ class GlossarySubjectControllerTest extends TestCase
         $response->assertViewHas('glossary_subject');
     }
 
-    public function test_admin_can_edit_glossary_subject()
+    public function test_admin_can_edit_glossary_subject(): void
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -57,7 +57,7 @@ class GlossarySubjectControllerTest extends TestCase
         $response->assertSee($subject->name);
     }
 
-    public function test_admin_can_update_glossary_subject()
+    public function test_admin_can_update_glossary_subject(): void
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -83,16 +83,12 @@ class GlossarySubjectControllerTest extends TestCase
         $this->assertDatabaseHas('glossary_subjects', ['id' => $subject->id, 'english' => 'english']);
     }
 
-    public function test_non_admin_cannot_access_glossary_subjects()
+    public function test_non_admin_cannot_access_glossary_subjects(): void
     {
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(route('glossary_subjects_list'));
 
-        // Change this line
-        // $response->assertStatus(403);
-        
-        // To this
         $response->assertRedirect('/en');
     }
 }
