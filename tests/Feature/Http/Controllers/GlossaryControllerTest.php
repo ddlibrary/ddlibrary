@@ -87,7 +87,8 @@ class GlossaryControllerTest extends TestCase
                 $glossary->id, // Glossary id
                 'glossary', // Type is glossary
                 'en', // language
-                'Updated English'], // updated value
+                'Updated English',
+            ], // updated value
         ];
 
         $response = $this->actingAs($user)->post(route('glossary_update'), $data);
@@ -97,7 +98,6 @@ class GlossaryControllerTest extends TestCase
         $glossary->refresh();
 
         $this->assertEquals($glossary->name_en, 'Updated English');
-
     }
 
     /**
