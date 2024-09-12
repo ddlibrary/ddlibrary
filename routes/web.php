@@ -248,9 +248,12 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('admin/create_survey_modal_time', [SurveySettingController::class, 'createSurveyModalTime']);
     Route::post('admin/store_survey_modal_time', [SurveySettingController::class, 'storeSurveyModalTime'])->name('store_survey_modal_time');
     //Analytics
-    Route::get('/admin/analytics', [AnalyticsController::class, 'index'])->middleware('admin');
-    Route::post('/admin/analytics', [AnalyticsController::class, 'show'])->name('analytics')->middleware('admin');
-
+    Route::prefix('admin/analytics')->middleware('admin')->group(function(){
+        Route::controller(AnalyticsController::class)->group(function(){
+            Route::get('')->name('analytics-list');
+            Route::post('')->name('analytics');
+        });
+    });
     //admin, glossary
     Route::prefix('admin/glossary_subjects')->middleware('admin')->group(function(){
         Route::controller(GlossarySubjectController::class)->group(function(){
