@@ -76,8 +76,7 @@ class GlossarySubjectControllerTest extends TestCase
             'id' => $subject->id,
         ];
 
-        $response = $this->actingAs($admin)
-            ->post(route('glossary_subjects_update'), $updatedData);
+        $response = $this->actingAs($admin)->post(route('glossary_subjects_update'), $updatedData);
 
         $response->assertRedirect();
         $this->assertDatabaseHas('glossary_subjects', ['id' => $subject->id, 'english' => 'english']);
