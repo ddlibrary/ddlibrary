@@ -10,6 +10,8 @@ class ResourceComment extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function resource(): BelongsTo
     {
         return $this->belongsTo(Resource::class);
