@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.321.7",
+            "version": "3.321.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "c64ee32d80ec2ab5d8d6a0b77297c2d69602ef3b"
+                "reference": "5de5099cfe0e17cb3eb2fe51de0101c99bc9442a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c64ee32d80ec2ab5d8d6a0b77297c2d69602ef3b",
-                "reference": "c64ee32d80ec2ab5d8d6a0b77297c2d69602ef3b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5de5099cfe0e17cb3eb2fe51de0101c99bc9442a",
+                "reference": "5de5099cfe0e17cb3eb2fe51de0101c99bc9442a",
                 "shasum": ""
             },
             "require": {
@@ -154,9 +154,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.321.7"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.321.9"
             },
-            "time": "2024-09-09T18:09:23+00:00"
+            "time": "2024-09-11T18:15:49+00:00"
         },
         {
             "name": "barryvdh/laravel-translation-manager",
@@ -2186,16 +2186,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v10.48.20",
+            "version": "v10.48.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "be2be342d4c74db6a8d2bd18469cd6d488ab9c98"
+                "reference": "c4ea52bb044faef4a103d7dd81746c01b2ec860e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/be2be342d4c74db6a8d2bd18469cd6d488ab9c98",
-                "reference": "be2be342d4c74db6a8d2bd18469cd6d488ab9c98",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/c4ea52bb044faef4a103d7dd81746c01b2ec860e",
+                "reference": "c4ea52bb044faef4a103d7dd81746c01b2ec860e",
                 "shasum": ""
             },
             "require": {
@@ -2389,7 +2389,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-08-09T07:55:45+00:00"
+            "time": "2024-09-12T15:00:09+00:00"
         },
         {
             "name": "laravel/helpers",
@@ -4793,16 +4793,16 @@
         },
         {
             "name": "psr/log",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "79dff0b268932c640297f5208d6298f71855c03e"
+                "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/79dff0b268932c640297f5208d6298f71855c03e",
-                "reference": "79dff0b268932c640297f5208d6298f71855c03e",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/f16e1d5863e37f8d8c2a01719f5b34baa2b714d3",
+                "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3",
                 "shasum": ""
             },
             "require": {
@@ -4837,9 +4837,9 @@
                 "psr-3"
             ],
             "support": {
-                "source": "https://github.com/php-fig/log/tree/3.0.1"
+                "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
-            "time": "2024-08-21T13:31:24+00:00"
+            "time": "2024-09-11T13:17:53+00:00"
         },
         {
             "name": "psr/simple-cache",
