@@ -10,7 +10,7 @@
                                 <div class="overflow-hidden w-100" style="border-radius: 5px 5px 0px 0px">
                                     <div class="display-flex">
                                         <img class="w-100 book-cover lazyload"
-                                            data-src="{{ getImagefromResource($resource->abstract) }}"
+                                            data-src="{{ $resource->image ? $resource->image : getImagefromResource($resource->abstract) }}"
                                             alt="Resource Image">
                                     </div>
                                 </div>

@@ -43,6 +43,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Illuminate\Validation\Rules\File;
+use Illuminate\Validation\Rule;
 use Throwable;
 
 class ResourceController extends Controller
@@ -201,12 +203,33 @@ class ResourceController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required',
+            'image' => ['required', 'file','mimes:jpg,jpeg,png','max:3072',File::image()->dimensions(
+                Rule::dimensions()->ratio(1.0)
+            )],
             'author' => 'string|nullable',
             'publisher' => 'string|nullable',
             'translator' => 'string|nullable',
             'language' => 'required',
             'abstract' => 'required',
+        ], [
+            'image.dimensions' => 'The resource image must be square in shape.', // Custom message
         ]);
+
+        if (isset($validatedData['image'])) {
+            $image = $validatedData['image'];
+            $fileName = $image->getClientOriginalName();
+            $fileExtension = \File::extension($fileName);
+            $fileName = auth()->user()->id.'_'.time().'.'.$fileExtension;
+
+            // Store the file in S3
+            Storage::disk('s3')->put('resources/'.$fileName, file_get_contents($image));
+
+            // Save the full S3 path
+            $validatedData['resource_image'] = Storage::disk('s3')->url('resources/'.$fileName);
+
+            unset($validatedData['image']);
+
+        }
 
         $request->session()->put('resource1', $validatedData);
 
@@ -346,6 +369,7 @@ class ResourceController extends Controller
             $myResources = new Resource();
 
             $myResources->title = $finalArray['title'];
+            $myResources->image = $finalArray['resource_image'];
             $myResources->abstract = $finalArray['abstract'];
             $myResources->language = $finalArray['language'];
             $myResources->user_id = Auth::id();
