@@ -34,8 +34,6 @@ class DownloadControllerTest extends TestCase
         $response->assertViewHas('filters');
         $response->assertViewHas('genders');
         $response->assertViewHas('languages');
-
-        // TODO: perform additional assertions
     }
 
 
