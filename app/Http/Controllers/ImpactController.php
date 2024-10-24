@@ -19,7 +19,7 @@ class ImpactController extends Controller
                 $views->where(function($query) {
                     $query->where('is_bot', false);
                 })
-                    ->orWhere(function($query) {
+                    ->where(function($query) {
                         $query->where('browser', '!=', 'Mozilla')
                             ->where('platform_id', '!=', 0);
                     });
