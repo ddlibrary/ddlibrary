@@ -14,7 +14,17 @@ class ImpactController extends Controller
     {
         $totalResources = Resource::count();
         $totalSubjects = TaxonomyTerm::where('vid', 8)->where('language', App::getLocale())->count();
-        $monthlyViews = SitewidePageView::where('created_at', '>', \Carbon\Carbon::now()->subDays(30))->where('is_bot', false)->count();
+        $monthlyViews = SitewidePageView::where('created_at', '>', \Carbon\Carbon::now()->subDays(30))
+            ->where(function($views)  {
+                $views->where(function($query) {
+                    $query->where('is_bot', false);
+                })
+                    ->orWhere(function($query) {
+                        $query->where('browser', '!=', 'Mozilla')
+                            ->where('platform', '!=', 0);
+                    });
+            })
+            ->count();
 
         return view('impact.impact_page', compact('totalResources', 'monthlyViews', 'totalSubjects'));
     }
