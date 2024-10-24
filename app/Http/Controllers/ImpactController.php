@@ -21,7 +21,7 @@ class ImpactController extends Controller
                 })
                     ->orWhere(function($query) {
                         $query->where('browser', '!=', 'Mozilla')
-                            ->where('platform', '!=', 0);
+                            ->where('platform_id', '!=', 0);
                     });
             })
             ->count();
