@@ -2,7 +2,7 @@
 @section('title')
     @lang('Add a new Resource - Step 1')
 @endsection
-@section('content')
+@push('styles')
     <style>
         .modal {
             display: none;
@@ -34,11 +34,8 @@
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             display: flex;
-            /* Added to align items horizontally */
             justify-content: space-between;
-            /* Space between title and close button */
             align-items: center;
-            /* Vertically center items */
         }
 
         .modal-body {
@@ -47,7 +44,7 @@
         }
 
         .image-manager-options {
-            width: 200px;
+            flex: 1;
             padding: 20px;
             min-height: 55vh;
             background-color: #e9ecef;
@@ -55,7 +52,7 @@
         }
 
         .image-manager-content {
-            flex-grow: 1;
+            flex: 4;
             padding: 20px;
             overflow-y: auto;
         }
@@ -77,7 +74,7 @@
             color: white;
         }
 
-        #selectImageBtn {
+        #select-image-btn {
             margin-top: 20px;
         }
 
@@ -95,46 +92,11 @@
             cursor: pointer;
         }
 
-        .image-list {
-            list-style-type: none;
-            padding: 0;
-            max-height: 700px;
-            overflow-y: auto;
-        }
-
-        .image-list li {
-            /* display: flex;
-                    align-items: center; */
-            padding: 10px;
-            border: 1px solid #ddd;
-            margin-bottom: 5px;
-            cursor: pointer;
-        }
-
-        .image-list div:hover {
-            background-color: #f0f0f0;
-        }
-
-        .image-list div.selected {
-            background-color: #e0e0e0;
-        }
-
-        .image-list .thumbnail {
-            width: 250px;
-            height: 250px;
-            object-fit: cover;
-            margin-right: 10px;
-        }
-
-        .image-list span {
-            flex-grow: 1;
-        }
-
-        #selectedImagePreview {
+        #selected-image-preview {
             margin-bottom: 20px;
         }
 
-        #previewImage {
+        #preview-image {
             max-width: 100%;
             max-height: 200px;
             object-fit: contain;
@@ -178,7 +140,6 @@
 
         .image-container {
             position: relative;
-            /* Changed to relative */
             width: 100%;
             overflow: hidden;
         }
@@ -190,11 +151,8 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            /* This ensures the image is fully visible */
             max-width: 100%;
-            /* Ensure image doesn't exceed container width */
             max-height: 100%;
-            /* Ensure image doesn't exceed container height */
         }
 
         .image-name {
@@ -212,7 +170,6 @@
             justify-content: center;
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             .image-grid {
                 grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -224,9 +181,13 @@
             .image-grid {
                 grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             }
+
+            .image-manager-options {
+                min-height: 60px;
+
+            }
         }
 
-        /* Responsive styles */
         @media (max-width: 768px) {
             .modal-body {
                 flex-direction: column;
@@ -236,6 +197,7 @@
                 width: 100%;
                 border-right: none;
                 border-bottom: 1px solid #dee2e6;
+                min-height: 60px;
             }
 
             .image-manager-options button {
@@ -249,11 +211,10 @@
             }
         }
 
-        #loadingMessage {
+        #loading-message {
             text-align: center;
             font-size: 1.2em;
             color: #007bff;
-            /* Change color as needed */
             margin: 20px 0;
         }
 
@@ -263,11 +224,14 @@
             display: none;
             margin-top: 20px;
         }
+
         #dimensions {
             margin-top: 10px;
             font-weight: bold;
         }
     </style>
+@endpush
+@section('content')
     <section class="resource-form">
         <header>
             <h1>@lang('Add a new Resource - Step 1')</h1>
@@ -382,7 +346,7 @@
                         <div class="mt-1 display-flex align-items-center">
                             <div class="flex-1">
                                 <button type="button" class="btn btn-primary" id="open-file-manager">Select or upload your
-                                    image</button>
+                                    image </button>
 
                                 <input type="hidden" id="file_uuid" name="image" required>
                             </div>
@@ -396,12 +360,12 @@
                 </div>
 
                 {{-- Selected Image Preview --}}
-                <div id="selectedImagePreview" class="flex-1 mt-1 border-radius-5" style="display: none;">
-                    <img id="previewImage" class="border-radius-5" src="" alt="Selected Image">
+                <div id="selected-image-preview" class="flex-1 mt-1 border-radius-5" style="display: none;">
+                    <img id="preview-image" class="border-radius-5" src="" alt="Selected Image">
                 </div>
 
                 {{-- Abstract --}}
-                <div class="flex-1">
+                <div class="flex-1 mt-2">
                     <label for="abstract">
                         <strong>@lang('Abstract') {{ en('Abstract') }}</strong>
                         <span class="form-required" title="This field is required.">*</span>
@@ -426,20 +390,20 @@
         </div>
 
         <!-- File Manager Modal -->
-        <div class="modal" id="fileManagerModal">
+        <div class="modal" id="file-manager-modal">
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>Image Manager</h2>
-                    <span class="close" id="closeFileManagerModal">&times;</span>
+                    <span class="close" id="close-file-manager-modal">&times;</span>
                 </div>
                 <div class="modal-body">
                     <div class="image-manager-options">
-                        <button id="selectImageOption" class="btn-option active">Select Image</button>
-                        <button id="uploadImageOption" class="btn-option">Upload Image</button>
+                        <button id="select-image-option" class="btn-option active">Select Image</button>
+                        <button id="upload-image-option" class="btn-option">Upload Image</button>
                     </div>
                     <div class="image-manager-content">
                         <!-- Select Image Content -->
-                        <div id="selectImageContent">
+                        <div id="select-image-content">
                             <h3>Select Image from File Manager <span id="result"></span></h3>
                             <div class="display-flex gap-5">
                                 <div class="form-item flex-1">
@@ -486,17 +450,17 @@
 
                                 </div>
                             </div>
-                            <div id="fileList" class="w-100">
+                            <div id="file-list" class="w-100">
                                 <!-- File items will be populated dynamically -->
                             </div>
-                            <div id="loadingMessage" style="display: none;">Loading, please wait...</div>
-                            <button id="selectImageBtn" class="btn btn-primary" style="display: none;">Select
-                                Image</button>
+                            <div id="loading-message" style="display: none;">Loading, please wait...</div>
+                            <button id="select-image-btn" class="btn btn-primary" style="display: none;">Select
+                                Image </button>
                         </div>
                         <!-- Upload Image Content -->
-                        <div id="uploadImageContent" style="display: none;">
+                        <div id="upload-image-content" style="display: none;">
                             <h3>Upload New Image</h3>
-                            <form id="uploadForm">
+                            <form id="upload-form">
                                 <div class="display-flex" style="flex-direction: column">
                                     <div class="flex-1 mb-2">
                                         <label for="image">
@@ -510,10 +474,10 @@
                                     </div>
 
                                     <div class="flex-1 mb-2">
-                                        <label for="image_name">
+                                        <label for="image-name">
                                             <strong>File Name</strong>
                                         </label>
-                                        <input type="text" id="image_name" name="image_name"
+                                        <input type="text" id="image-name" name="image_name"
                                             class="form-control w-100 box-sizing">
                                     </div>
                                     <div class="flex-1 mb-2">
@@ -523,7 +487,6 @@
                                         <input type="text" id="license" name="license"
                                             class="form-control w-100 box-sizing">
                                     </div>
-
                                     <button type="submit" class="btn btn-primary">Upload</button>
                                 </div>
                             </form>
@@ -539,17 +502,15 @@
     <script>
         function openModal(e) {
             e.preventDefault();
-            alert('hi')
         }
         $(document).ready(function() {
-            const newImageModal = $('#newImageModal');
-            const fileManagerModal = $('#fileManagerModal');
-            const selectImageBtn = $('#selectImageBtn');
+            const fileManagerModal = $('#file-manager-modal');
+            const selectImageBtn = $('#select-image-btn');
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            const selectImageContent = $('#selectImageContent');
-            const uploadImageContent = $('#uploadImageContent');
-            const selectImageOption = $('#selectImageOption');
-            const uploadImageOption = $('#uploadImageOption');
+            const selectImageContent = $('#select-image-content');
+            const uploadImageContent = $('#upload-image-content');
+            const selectImageOption = $('#select-image-option');
+            const uploadImageOption = $('#upload-image-option');
 
             $.ajaxSetup({
                 headers: {
@@ -557,20 +518,7 @@
                 }
             });
 
-            $('#imageOption').change(function() {
-                const selectedOption = $(this).val();
-                if (selectedOption === 'upload') {
-                    newImageModal.show();
-                } else if (selectedOption === 'select') {
-                    fileManagerModal.show();
-                    $('#search-input').val(''); // Clear previous search
-                    $('#fileList').empty(); // Clear previous results
-                    selectImageBtn.hide(); // Hide the select button
-                }
-            });
-
-            $('#closeNewImageModal, #closeFileManagerModal').click(function() {
-                newImageModal.hide();
+            $('#close-file-manager-modal').click(function() {
                 fileManagerModal.hide();
             });
 
@@ -583,7 +531,6 @@
                     if (searchTerm.length >= 0) {
                         searchImages();
                     } else {
-                        // $('#fileList').empty();
                         selectImageBtn.hide();
                     }
                 }, 300);
@@ -619,8 +566,8 @@
                 if (subjectArea || search) {
 
                     // Show loading message
-                    $('#loadingMessage').show();
-                    $('#fileList').empty(); // Clear previous results
+                    $('#loading-message').show();
+                    $('#file-list').empty(); // Clear previous results
 
                     $.ajax({
                         url: url,
@@ -630,7 +577,7 @@
                             subject_area_id: subjectArea
                         },
                         success: function(response) {
-                            $("#fileList").html(response);
+                            $("#file-list").html(response);
                             initializePagination();
                             initializeImageSelection();
                         },
@@ -640,7 +587,7 @@
                         },
                         complete: function() {
                             // Hide loading message
-                            $('#loadingMessage').hide();
+                            $('#loading-message').hide();
                         }
                     });
                 }
@@ -678,11 +625,8 @@
 
             function displaySelectedImage(imageUrl) {
                 // Update the image on the main page
-                $('#previewImage').attr('src', imageUrl);
-                $('#selectedImagePreview').show();
-
-                // You might also want to update a label or text to show the image is selected
-                $('#selectedImageLabel').text('Selected Image:').show();
+                $('#preview-image').attr('src', imageUrl);
+                $('#selected-image-preview').show();
             }
 
             // Handle file selection
@@ -690,7 +634,7 @@
                 const file = this.files[0];
                 if (file) {
                     const fileName = file.name.split('.').slice(0, -1).join('.');
-                    $('#image_name').val(fileName);
+                    $('#image-name').val(fileName);
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         const img = document.getElementById('preview');
@@ -699,8 +643,9 @@
                         img.onload = function() {
                             const width = img.naturalWidth;
                             const height = img.naturalHeight;
-                            document.getElementById('dimensions').htmlContent =
-                                `<p style='background:lighttan; border-radius:5px; padding:4px;'>${width} x ${height}</p>`;
+                            $("#dimensions").html(
+                                `<span class='d-inline-block progress-bar-${width == height ? 'success' :'danger'} white border-radius-5 p-1'>${width} x ${height}</span>`
+                                )
                         };
 
                         img.style.display = 'block';
@@ -710,23 +655,22 @@
 
             });
 
-            // Handle image upload
-            $('#uploadForm').on('submit', function(e) {
-                e.preventDefault(); // Prevent the default form submission
+
+            $('#upload-form').on('submit', function(e) {
+                e.preventDefault();
                 uploadNewImage();
-                return false; // Ensure the form doesn't submit
+                return false;
             });
 
-            // Add click event to the submit button as a backup
-            $('#uploadForm button[type="submit"]').on('click', function(e) {
+            $('#upload-form button[type="submit"]').on('click', function(e) {
                 e.preventDefault(); // Prevent default button click behavior
                 uploadNewImage();
-                return false; // Ensure the form doesn't submit
+                return false;
             });
 
             function uploadNewImage() {
-                const formData = new FormData($('#uploadForm')[0]);
-                const submitButton = $('#uploadForm button[type="submit"]');
+                const formData = new FormData($('#upload-form')[0]);
+                const submitButton = $('#upload-form button[type="submit"]');
 
                 // Clear previous error messages
                 $('.error-message').remove();
@@ -749,7 +693,7 @@
                             displaySelectedImage(response.imageUrl);
 
                             // Clear the form
-                            $('#uploadForm')[0].reset();
+                            $('#upload-form')[0].reset();
 
                             // Display success message
                             alert('Image uploaded successfully!');
