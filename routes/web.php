@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\SubscriberController;
+use App\Http\Controllers\AdminResourceFileController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -288,19 +289,27 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
 
     
     // Analytics
-    Route::prefix('admin/analytics')->middleware('admin')->group(function(){
-        Route::get('user', [UserAnalyticsController::class, 'index']);
-        Route::get('resource', [ResourceAnalyticsController::class, 'index']);
-        Route::controller(SitewideAnalyticsController::class)->group(function(){
-            Route::get('sitewide', 'index');
-            Route::get('reports/sitewide', 'view');
+    Route::middleware('admin')->group(function(){
+        Route::prefix('admin/analytics')->group(function(){
+            Route::get('user', [UserAnalyticsController::class, 'index']);
+            Route::get('resource', [ResourceAnalyticsController::class, 'index']);
+            Route::controller(SitewideAnalyticsController::class)->group(function(){
+                Route::get('sitewide', 'index');
+                Route::get('reports/sitewide', 'view');
+            });
+
+            Route::controller(GlossaryAnalyticsController::class)->group(function(){
+                Route::get('glossary', 'index');
+                Route::get('reports/glossary', 'view');
+            });
         });
 
-        Route::controller(GlossaryAnalyticsController::class)->group(function(){
-            Route::get('glossary', 'index');
-            Route::get('reports/glossary', 'view');
+        Route::prefix('admin/resource-files')->controller(AdminResourceFileController::class)->group(function(){
+            Route::get('/', 'index');
         });
+
     });
+
 
 });
 
