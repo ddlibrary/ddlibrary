@@ -62,12 +62,6 @@ class ResourceFileController extends Controller
         ]);
     }
 
-    public function getImages()
-    {
-        $images = ResourceFile::select('id', 'uuid', 'name')->get();
-        return response()->json(['images' => $images]);
-    }
-
     public function searchImages(ResourceFileRequest $request)
     {
         $query = ResourceFile::query()->select('uuid', 'name', 'path')
