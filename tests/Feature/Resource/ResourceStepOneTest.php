@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\ResourceFile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class ResourceStepOneTest extends TestCase
@@ -15,19 +17,19 @@ class ResourceStepOneTest extends TestCase
     public function it_stores_resource_image_and_redirects()
     {
         $this->refreshApplicationWithLocale('en');
-        Storage::fake('s3');
         $user = \App\Models\User::factory()->create();
         $this->actingAs($user);
 
-        $file = UploadedFile::fake()->image('image.jpg', 600, 600);
+        $resourceFile = ResourceFile::create([
+            'uuid' => Str::uuid(),
+            'name' => 'new-file',
+            'license' => 'license',
+            'path' => 'https://file.com',
+        ]);
 
-        $response = $this->post('/en/resources/add/step1', $this->data(['image' => $file]));
+        $response = $this->post('/en/resources/add/step1', $this->data(['image' => $resourceFile->uuid]));
 
         $response->assertRedirect('/resources/add/step2');
-
-        // Assert that the file was stored on S3
-        $fileName = auth()->user()->id . '_' . time() . '.jpg';
-        Storage::disk('s3')->assertExists('resources/' . $fileName);
 
         // Assert session data
         $this->assertEquals('This is Title', session('resource1.title'));
@@ -44,53 +46,6 @@ class ResourceStepOneTest extends TestCase
         $response = $this->post('/en/resources/add/step1', []);
 
         $response->assertSessionHasErrors(['title', 'image', 'language', 'abstract']);
-    }
-
-    /** @test */
-    public function image_should_be_square_in_shape()
-    {
-        $this->refreshApplicationWithLocale('en');
-        $user = \App\Models\User::factory()->create();
-        $this->actingAs($user);
-
-        $file = UploadedFile::fake()->image('image.jpg', 600, 400);
-
-        $response = $this->post('/en/resources/add/step1', $this->data(['image' => $file]));
-
-        $response->assertSessionHasErrors('image');
-        $this->assertEquals('The resource image must be square in shape.', session('errors')->get('image')[0]);
-    }
-
-    /** @test */
-    public function it_can_upload_only_image_type()
-    {
-        $this->refreshApplicationWithLocale('en');
-        $user = \App\Models\User::factory()->create();
-        $this->actingAs($user);
-
-        // Test with a non-image file
-        $file = UploadedFile::fake()->create('document.pdf', 100); // Fake PDF file
-
-        $response = $this->post('/en/resources/add/step1', $this->data(['image' => $file]));
-
-        $response->assertSessionHasErrors('image');
-        $this->assertEquals('The image field must be a file of type: jpg, jpeg, png.', session('errors')->get('image')[0]);
-    }
-
-    /** @test */
-    public function image_should_be_less_than_3_mb()
-    {
-        $this->refreshApplicationWithLocale('en');
-        $user = \App\Models\User::factory()->create();
-        $this->actingAs($user);
-
-        // Test with an image exceeding the maximum size
-        $largeFile = UploadedFile::fake()->image('large_image.jpg')->size(3073); // 3MB file
-
-        $response = $this->post('/en/resources/add/step1', $this->data(['image' => $largeFile]));
-
-        $response->assertSessionHasErrors('image');
-        $this->assertEquals('The image field must not be greater than 3072 kilobytes.', session('errors')->get('image')[0]);
     }
 
     /** @test */
