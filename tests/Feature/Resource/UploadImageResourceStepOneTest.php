@@ -71,6 +71,31 @@ class UploadImageResourceStepOneTest extends TestCase
         ]);
     }
 
+    /** @test */
+    public function it_can_upload_only_image_type()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // Test with a non-image file
+        $file = UploadedFile::fake()->create('document.pdf', 100);
+
+        $response = $this->post('upload-image', $this->data(['image' => $file]));
+
+        // Check for JSON response indicating failure
+        $response->assertJson([
+            'success' => false,
+            'errors' => [
+                'image' => [
+                    'The image field must be a file of type: jpg, jpeg, png.',
+                    'The image field must be an image.',
+                    'The resource image must be square in shape.'
+                ]
+            ]
+        ]);
+    }
+
     protected function data($merge = [])
     {
         $file = UploadedFile::fake()->image('image.jpg', 200, 200);
