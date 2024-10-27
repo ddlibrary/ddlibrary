@@ -34,6 +34,7 @@
         <a class="collapse-item" href="{{ URL::to('admin/resources') }}">Resources</a>
         <a class="collapse-item" href="{{ URL::to('admin/comments') }}">Comments</a>
         <a class="collapse-item" href="{{ URL::to('admin/flags') }}">Flags</a>
+        <a class="collapse-item" href="{{ URL::to('admin/resource-images') }}">Resource Images</a>
     </div>
     </div>
 </li>
