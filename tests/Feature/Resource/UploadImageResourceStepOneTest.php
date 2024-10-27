@@ -50,6 +50,27 @@ class UploadImageResourceStepOneTest extends TestCase
         ]);
     }
 
+    /** @test */
+    public function image_should_be_square_in_shape()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $file = UploadedFile::fake()->image('image.jpg', 600, 400);
+
+        $response = $this->post('upload-image', $this->data(['image' => $file]));
+
+        $response->assertJson([
+            'success' => false,
+            'errors' => [
+                'image' => [
+                    'The resource image must be square in shape.'
+                ]
+            ]
+        ]);
+    }
+
     protected function data($merge = [])
     {
         $file = UploadedFile::fake()->image('image.jpg', 200, 200);
