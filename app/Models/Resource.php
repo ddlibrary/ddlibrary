@@ -25,6 +25,7 @@ class Resource extends Model
     use LogsActivity;
 
     protected static $logAttributes = ['*'];
+    protected $guarded = [];
 
     public function levels(): BelongsToMany
     {
