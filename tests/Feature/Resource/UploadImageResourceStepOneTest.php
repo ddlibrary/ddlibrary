@@ -103,12 +103,10 @@ class UploadImageResourceStepOneTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        // Test with an image exceeding the maximum size
         $largeFile = UploadedFile::fake()->image('large_image.jpg')->size(3073); // 3MB file
 
         $response = $this->post('upload-image', $this->data(['image' => $largeFile]));
 
-        // Check for JSON response indicating failure
         $response->assertJson([
             'success' => false,
             'errors' => [
@@ -124,8 +122,8 @@ class UploadImageResourceStepOneTest extends TestCase
         $file = UploadedFile::fake()->image('image.jpg', 200, 200);
         return array_merge(
             [
-                'license' => 'This is Title',
                 'image' => $file,
+                'license' => 'This is Title',
                 'image_name' => 'This is image name',
             ],
             $merge,
