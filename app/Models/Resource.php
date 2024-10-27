@@ -215,13 +215,14 @@ class Resource extends Model
             ->get();
     }
 
-    public function resourceAttributesList($tableName, $vid): Collection
+    public function resourceAttributesList($tableName, $vid, $language = null): Collection
     {
+        $language = $language ? $language : config('app.locale');
         return DB::table($tableName.' AS ttd')
             ->select('ttd.id', 'ttd.name', 'tth.parent', 'ttd.tnid')
             ->leftJoin('taxonomy_term_hierarchy AS tth', 'tth.tid', '=', 'ttd.id')
             ->where('vid', $vid)
-            ->where('language', config('app.locale'))
+            ->where('language', $language)
             ->orderBy('ttd.name')
             ->orderBy('ttd.weight', 'desc')
             ->get();
