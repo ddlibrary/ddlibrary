@@ -96,6 +96,29 @@ class UploadImageResourceStepOneTest extends TestCase
         ]);
     }
 
+    /** @test */
+    public function image_should_be_less_than_3_mb()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // Test with an image exceeding the maximum size
+        $largeFile = UploadedFile::fake()->image('large_image.jpg')->size(3073); // 3MB file
+
+        $response = $this->post('upload-image', $this->data(['image' => $largeFile]));
+
+        // Check for JSON response indicating failure
+        $response->assertJson([
+            'success' => false,
+            'errors' => [
+                'image' => [
+                    'The image field must not be greater than 3072 kilobytes.'
+                ]
+            ]
+        ]);
+    }
+
     protected function data($merge = [])
     {
         $file = UploadedFile::fake()->image('image.jpg', 200, 200);
