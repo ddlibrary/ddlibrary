@@ -318,7 +318,6 @@ Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function 
 });
 
 Route::post('/upload-image', [ResourceFileController::class, 'uploadImage'])->name('upload.image');
-Route::get('/get-images', [ResourceFileController::class, 'getImages'])->name('get.images');
 Route::get('/search-images', [ResourceFileController::class, 'searchImages'])->name('search.images');
 
 /** OTHER PAGES THAT SHOULD NOT BE LOCALIZED **/
