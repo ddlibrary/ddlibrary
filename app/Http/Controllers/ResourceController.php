@@ -13,6 +13,7 @@ use App\Models\ResourceCreativeCommon;
 use App\Models\ResourceEducationalResource;
 use App\Models\ResourceEducationalUse;
 use App\Models\ResourceFavorite;
+use App\Models\ResourceFile;
 use App\Models\ResourceFlag;
 use App\Models\ResourceIamAuthor;
 use App\Models\ResourceKeyword;
@@ -43,8 +44,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Illuminate\Validation\Rules\File;
-use Illuminate\Validation\Rule;
 use Throwable;
 
 class ResourceController extends Controller
@@ -195,38 +194,37 @@ class ResourceController extends Controller
     {
         $this->middleware('auth');
         $resource = $request->session()->get('resource1');
+        $myResources = new Resource();
+        $subjects = $myResources->resourceAttributesList('taxonomy_term_data', 8);
 
-        return view('resources.resources_add_step1', compact('resource'));
+        return view('resources.resources_add_step1', compact('resource', 'subjects'));
     }
 
     public function postStepOne(Request $request): Redirector|Application|RedirectResponse
     {
         $validatedData = $request->validate([
             'title' => 'required',
-            'image' => ['required', 'file','mimes:jpg,jpeg,png','max:3072',File::image()->dimensions(
-                Rule::dimensions()->ratio(1.0)
-            )],
+            'image' => ['required'],
             'author' => 'string|nullable',
             'publisher' => 'string|nullable',
             'translator' => 'string|nullable',
             'language' => 'required',
             'abstract' => 'required',
-        ], [
-            'image.dimensions' => 'The resource image must be square in shape.', // Custom message
         ]);
 
         if (isset($validatedData['image'])) {
             $image = $validatedData['image'];
-            $fileName = $image->getClientOriginalName();
-            $fileExtension = \File::extension($fileName);
-            $fileName = auth()->user()->id.'_'.time().'.'.$fileExtension;
+            // $fileName = $image->getClientOriginalName();
+            // $fileExtension = \File::extension($fileName);
+            // $fileName = auth()->user()->id.'_'.time().'.'.$fileExtension;
 
-            // Store the file in S3
-            Storage::disk('s3')->put('resources/'.$fileName, file_get_contents($image));
+            // // Store the file in S3
+            // Storage::disk('s3')->put('resources/'.$fileName, file_get_contents($image));
+            $resosurceFile = ResourceFile::where('uuid', $image)->first();
 
             // Save the full S3 path
-            $validatedData['resource_image'] = Storage::disk('s3')->url('resources/'.$fileName);
-
+            $validatedData['resource_image'] = $resosurceFile->path;
+            $validatedData['resource_file_id'] = $resosurceFile->id;
             unset($validatedData['image']);
 
         }
@@ -370,6 +368,7 @@ class ResourceController extends Controller
 
             $myResources->title = $finalArray['title'];
             $myResources->image = $finalArray['resource_image'];
+            $myResources->resource_file_id = $finalArray['resource_file_id'];
             $myResources->abstract = $finalArray['abstract'];
             $myResources->language = $finalArray['language'];
             $myResources->user_id = Auth::id();
