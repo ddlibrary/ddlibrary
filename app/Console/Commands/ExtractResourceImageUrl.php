@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Resource;
+use App\Models\ResourceFile;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -27,7 +29,7 @@ class ExtractResourceImageUrl extends Command
      */
     public function handle()
     {
-        $resources = DB::table('resources')->select('id', 'abstract')->get();
+        $resources = Resource::select('id', 'abstract', 'title', 'image')->get();
         $baseUrl = 'https://library.darakhtdanesh.org';
         foreach ($resources as $resource) {
             $defaultImage = $baseUrl . '/storage/files/placeholder_image.png';
@@ -47,9 +49,13 @@ class ExtractResourceImageUrl extends Command
                 }
             }
 
-            DB::table('resources')
-                ->where('id', $resource->id)
-                ->update(['image' => $defaultImage]);
+            
+            $resourceFile = ResourceFile::create([
+                'name' => $resource->title ? $resource->title : 'ٔno title',
+                'path' => $defaultImage,
+            ]);
+
+            $resource->update(['image' => $defaultImage, 'resource_file_id' => $resourceFile->id]);
         }
     }
 }
