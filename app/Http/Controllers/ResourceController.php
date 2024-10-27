@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TaxonomyVocabularyEnum;
 use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
 use App\Models\Resource;
@@ -195,7 +196,7 @@ class ResourceController extends Controller
         $this->middleware('auth');
         $resource = $request->session()->get('resource1');
         $myResources = new Resource();
-        $subjects = $myResources->resourceAttributesList('taxonomy_term_data', 8);
+        $subjects = $myResources->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject);
 
         return view('resources.resources_add_step1', compact('resource', 'subjects'));
     }
