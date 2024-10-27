@@ -214,15 +214,8 @@ class ResourceController extends Controller
 
         if (isset($validatedData['image'])) {
             $image = $validatedData['image'];
-            // $fileName = $image->getClientOriginalName();
-            // $fileExtension = \File::extension($fileName);
-            // $fileName = auth()->user()->id.'_'.time().'.'.$fileExtension;
-
-            // // Store the file in S3
-            // Storage::disk('s3')->put('resources/'.$fileName, file_get_contents($image));
             $resosurceFile = ResourceFile::where('uuid', $image)->first();
 
-            // Save the full S3 path
             $validatedData['resource_image'] = $resosurceFile->path;
             $validatedData['resource_file_id'] = $resosurceFile->id;
             unset($validatedData['image']);
