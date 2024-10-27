@@ -304,7 +304,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
             });
         });
 
-        Route::prefix('admin/resource-files')->controller(AdminResourceFileController::class)->group(function(){
+        Route::prefix('admin/resource-images')->controller(AdminResourceFileController::class)->group(function(){
             Route::get('/', 'index');
         });
 
