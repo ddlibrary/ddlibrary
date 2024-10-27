@@ -31,6 +31,25 @@ class UploadImageResourceStepOneTest extends TestCase
         Storage::disk('s3')->assertExists('resources/' . $fileName);
     }
 
+    /** @test */
+    public function image_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $user = \App\Models\User::factory()->create();
+        $this->actingAs($user);
+
+        $response = $this->post('upload-image', []);
+
+        $response->assertJson([
+            'success' => false,
+            'errors' => [
+                'image' => [
+                    'The image field is required.'
+                ]
+            ]
+        ]);
+    }
+
     protected function data($merge = [])
     {
         $file = UploadedFile::fake()->image('image.jpg', 200, 200);
