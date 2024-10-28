@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\CausesActivity;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Jenssegers\Agent\Agent;
 
 /**
  * @method static find($resourceId)
@@ -461,10 +462,12 @@ class Resource extends Model
 
     public function updateResourceCounter($data): int
     {
+        $agent = new Agent();
         return DB::table('resource_views')->insertGetId([
             'resource_id' => $data['resource_id'],
             'user_id' => $data['userid'],
             'ip' => $data['ip'],
+            'is_bot' => $agent->isBot(),
             'browser_name' => $data['browser_name'],
             'browser_version' => $data['browser_version'],
             'platform' => $data['platform'],

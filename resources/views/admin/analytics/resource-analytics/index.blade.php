@@ -42,6 +42,15 @@
                                 @endforeach
                             </select>
                         </div>
+                        {{-- Is Bot --}}
+                        <div class="col-md-2">
+                            <label for="is-bot">Is bot <span class="fa fa-robot"></span></label>
+                            <select class="form-control" name="is_bot" id="is-bot">
+                                <option value="">...</option>
+                                <option value="1" @selected(1 == request()->is_bot)>Yes</option>
+                                <option value="2" @selected(2 == request()->is_bot)>No</option>
+                            </select>
+                        </div>
 
                         {{-- Filter button --}}
                         <div class="col-md-2" style="align-self: flex-end">
@@ -76,7 +85,7 @@
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
-                                                {{ $resource->language ?  : '<no language>' }}
+                                                {{ $resource->language ?: '<no language>' }}
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -119,7 +128,7 @@
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
                                                 <a href="{{ URL::to('resource/' . $resource->id) }}"
-                                                   target="_blank">{{ $resource->title }}</a>
+                                                    target="_blank">{{ $resource->title }}</a>
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -154,7 +163,7 @@
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
                                                 <a href="{{ URL::to('resource/' . $resource->id) }}"
-                                                   target="_blank">{{ $resource->title }}</a>
+                                                    target="_blank">{{ $resource->title }}</a>
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -190,7 +199,7 @@
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
                                                 <a href="{{ URL::to('resource/' . $resource->id) }}"
-                                                   target="_blank">{{ $resource->title }}</a>
+                                                    target="_blank">{{ $resource->title }}</a>
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -226,6 +235,35 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="card border-secondary mb-3">
+                                <div class="card-header d-flex justify-content-between">
+                                    <div>
+                                        Total views
+                                    </div>
+                                    <div class="display-inline-block text-right">
+                                        <span class="fa fa-calendar"></span>
+                                        <span class="fa fa-female"></span>
+                                        <span class="fa fa-robot"></span>
+                                    </div>
+                                </div>
+                                <div class="card-body text-secondary p-2">
+
+                                    <div class="card-text">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                Total resources views
+                                            </div>
+                                            <div>
+                                                <span class="badge badge-info">
+                                                    {{ number_format($totalViews) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
 
@@ -293,7 +331,7 @@
                                         <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
                                             <div class="p-1">
                                                 {{ $loop->iteration }}.
-                                                {{ $author->name ?  : '<no author>' }}
+                                                {{ $author->name ?: '<no author>' }}
                                             </div>
                                             <div class="p-1">
                                                 <span class="badge badge-info">
@@ -301,6 +339,40 @@
                                                 </span>
                                             </div>
                                         </div>
+                                    @empty
+                                        <h2 class="alert alert-danger">N/A</h2>
+                                    @endforelse
+
+                                </div>
+                            </div>
+                            <div class="card border-secondary mb-3">
+                                <div class="card-header d-flex justify-content-between">
+                                    <div>
+                                        Top 10 viewed resources
+                                    </div>
+                                    <div class="display-inline-block text-right">
+                                        <span class="fa fa-calendar"></span>
+                                        <span class="fa fa-language"></span>
+                                        <span class="fa fa-robot"></span>
+                                    </div>
+                                </div>
+
+                                <div class="card-body text-secondary p-2">
+
+                                    @forelse ($top10ViewedResources as $top10ViewedResource)
+                                        @if ($top10ViewedResource->views_count > 0)
+                                            <div class="d-flex justify-content-between mb-2 rounded bg-light text-dark">
+                                                <div class="p-1">
+                                                    {{ $loop->iteration }}.
+                                                    {{ $top10ViewedResource->title ?: '<no resource>' }}
+                                                </div>
+                                                <div class="p-1">
+                                                    <span class="badge badge-info">
+                                                        {{ number_format($top10ViewedResource->views_count) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        @endif
                                     @empty
                                         <h2 class="alert alert-danger">N/A</h2>
                                     @endforelse
@@ -329,7 +401,7 @@
                                                 {{ $loop->iteration }}.
                                                 @if ($publisher->name)
                                                     <a href="{{ URL::route('resourceList', ['publisher' => $publisher->id]) }}"
-                                                       target="_blank">{{ $publisher->name }}</a>
+                                                        target="_blank">{{ $publisher->name }}</a>
                                                 @else
                                                     <no publisher>
                                                 @endif
