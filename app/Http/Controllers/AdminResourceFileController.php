@@ -19,7 +19,7 @@ class AdminResourceFileController extends Controller
         $language = $request->language ? $request->language: config('app.locale');
         $myResources = new Resource();
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject, $language);
-        $query = ResourceFile::query()
+        $query = ResourceFile::query()->with(['resources'])
             ->where(function ($query) use ($request) {
                 if ($request->subject_area_id) {
                     $subjectAreaId = $request->subject_area_id;
