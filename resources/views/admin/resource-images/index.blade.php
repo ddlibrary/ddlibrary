@@ -94,7 +94,7 @@
                                         <td>
                                             {{ ($images->currentPage() - 1) * $images->perPage() + $indexkey + 1 }}
                                         </td>
-                                        <td><img src="{{ $image->path }}" style="width:150px;"></td>
+                                        <td><img src="{{ $image->thumbnail_path }}" style="width:150px;"></td>
                                         <td>{{ $image->name }}</td>
                                         <td>{{ $image->license }}</td>
                                         <td>
