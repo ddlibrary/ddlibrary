@@ -53,6 +53,7 @@ class ExtractResourceImageUrl extends Command
             $resourceFile = ResourceFile::create([
                 'name' => $resource->title ? $resource->title : 'ٔno title',
                 'path' => $defaultImage,
+                'thumbnail_path' => $defaultImage,
             ]);
 
             $resource->update(['image' => $defaultImage, 'resource_file_id' => $resourceFile->id]);
