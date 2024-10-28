@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Resource;
 
 use App\Models\ResourceFile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
