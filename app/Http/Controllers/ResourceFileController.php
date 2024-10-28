@@ -74,14 +74,14 @@ class ResourceFileController extends Controller
             'name' => $request->image_name,
             'license' => $request->license,
             'path' => $fullPath,
-            'thumbnail_path' => $thumbnailFullPath, // Assuming you have a column for thumbnail path
+            'thumbnail_path' => $thumbnailFullPath,
         ]);
 
         return response()->json([
             'success' => true,
             'imageUuid' => $resourceFile->uuid,
             'imageUrl' => $fullPath,
-            'thumbnailUrl' => $thumbnailFullPath, // Include thumbnail URL in the response
+            'thumbnailUrl' => $thumbnailFullPath,
             'imageName' => $request->image_name,
             'message' => 'Image uploaded successfully',
         ]);
