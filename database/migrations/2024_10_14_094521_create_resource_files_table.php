@@ -17,6 +17,8 @@ return new class extends Migration
             $table->uuid('uuid')->unique();
             $table->string('license')->nullable();
             $table->string('path', 500);
+            $table->string('thumbnail_path', 500)->nullable();
+            
             $table->timestamps();
         });
     }
