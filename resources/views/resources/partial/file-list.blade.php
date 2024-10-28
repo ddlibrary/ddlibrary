@@ -21,14 +21,12 @@
         justify-content: center;
         align-items: center;
         overflow: hidden;
-        /* Hide overflow */
     }
 
     .image-container img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        /* Cover the entire area while maintaining aspect ratio */
     }
 
     .pagination {
