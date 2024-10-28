@@ -74,7 +74,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('admin/user/delete/{userId}', [UserController::class, 'deleteUser'])->middleware('admin');
     Route::get('admin/user/export', [UserController::class, 'exportUsers'])->middleware('admin');
     //Resources
-    Route::get('admin/resources', [ResourceController::class, 'index'])->middleware('auth');
+    Route::get('admin/resources/index', [ResourceController::class, 'index'])->middleware('auth');
     Route::post('admin/resources', [ResourceController::class, 'index'])->name('resources')->middleware('admin');
     Route::any('resources/list', [ResourceController::class, 'list'])->name('resourceList');
     Route::get('resources/priorities', [ReportController::class, 'resourcePriorities']);
@@ -169,14 +169,14 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::resource('subscribers', SubscriberController::class)->only('index', 'destroy');
 
         //Comments
-        Route::prefix('comments')->controller(CommentController::class)->group(function(){
+        Route::prefix('resources/comments')->controller(CommentController::class)->group(function(){
             Route::get('/', 'index');
             Route::get('delete/{commentId}', 'delete');
             Route::get('published/{commentId}', 'published');
         });
 
         //Flags
-        Route::get('flags', [FlagController::class, 'index']);
+        Route::get('resources/flags', [FlagController::class, 'index']);
         //Taxonomy
         Route::get('taxonomy', [TaxonomyController::class, 'index'])->name('gettaxonomylist');
         Route::post('taxonomy', [TaxonomyController::class, 'index'])->name('posttaxonomylist');
@@ -304,7 +304,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
             });
         });
 
-        Route::prefix('admin/resource-images')->controller(AdminResourceFileController::class)->group(function(){
+        Route::prefix('admin/resources/resource-images')->controller(AdminResourceFileController::class)->group(function(){
             Route::get('/', 'index');
         });
 
