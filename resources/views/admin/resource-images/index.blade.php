@@ -18,8 +18,8 @@
                         {{-- Search  --}}
                         <div class="col-md-2">
                             <label>Search </label>
-                            <input type="text" value="{{ request()->search }}"
-                                placeholder="Please search..." class="form-control" name="search">
+                            <input type="text" value="{{ request()->search }}" placeholder="Please search..."
+                                class="form-control" name="search">
                         </div>
 
                         {{-- Subject Area --}}
@@ -82,6 +82,7 @@
                                     <th>Image</th>
                                     <th>Name</th>
                                     <th>License</th>
+                                    <th>Resources</th>
                                     <th>Updated</th>
                                     <th>Edit</th>
                                 </tr>
@@ -96,6 +97,18 @@
                                         <td><img src="{{ $image->path }}" style="width:150px;"></td>
                                         <td>{{ $image->name }}</td>
                                         <td>{{ $image->license }}</td>
+                                        <td>
+                                            <ol>
+                                                @foreach ($image->resources as $resource)
+                                                    <li>
+                                                        <a href="{{ url("$resource->language/resource/$resource->id") }}"
+                                                            target="_blanket">
+                                                            {{ $resource->title }}
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ol>
+                                        </td>
                                         <td>{{ $image->updated_at }}</td>
                                         <td>
                                         </td>
