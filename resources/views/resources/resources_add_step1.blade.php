@@ -699,7 +699,7 @@
                             alert('Image uploaded successfully!');
 
                             // Close the modal
-                            $('#fileManagerModal').hide();
+                            $('#file-manager-modal').hide();
 
                             // Refresh the image list
                             searchImages();
