@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class ResourceFile extends Model
@@ -19,5 +20,10 @@ class ResourceFile extends Model
         static::creating(function ($model) {
             $model->uuid = Str::uuid();
         });
+    }
+
+    public function resources(): HasMany
+    {
+        return $this->hasMany(Resource::class);
     }
 }
