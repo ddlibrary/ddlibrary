@@ -90,7 +90,7 @@ class ResourceFileController extends Controller
     public function searchImages(ResourceFileRequest $request)
     {
         $query = ResourceFile::query()
-            ->select('uuid', 'name', 'path')
+            ->select('uuid', 'name', 'thumbnail_path')
             ->where(function ($query) use ($request) {
                 if ($request->subject_area_id) {
                     $resourceFileIds = DB::table('resource_subject_areas')
