@@ -61,7 +61,7 @@
                                 <strong>@lang('First name')</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
-                            <input class="form-control  w-100" placeholder="@lang('First name')" id="first_name"
+                            <input class="form-control w-100 box-sizing " placeholder="@lang('First name')" id="first_name"
                                 name="first_name" value="{{ old('first_name') }}" type="text" required>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                                 <strong>@lang('Last name')</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
-                            <input class="form-control  w-100{{ $errors->has('last_name') ? ' is-invalid' : '' }}"
+                            <input class="form-control w-100 box-sizing {{ $errors->has('last_name') ? ' is-invalid' : '' }}"
                                 id="last_name" name="last_name" value="{{ old('last_name') }}" type="text"
                                 placeholder="@lang('Last name')" required>
                         </div>
@@ -86,7 +86,7 @@
                                 <strong>@lang('Email')</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
-                            <input class="form-control  w-100{{ $errors->has('email') ? ' is-invalid' : '' }}"
+                            <input class="form-control w-100 box-sizing {{ $errors->has('email') ? ' is-invalid' : '' }}"
                                 placeholder="youemail@email.com" id="email" name="email" type="email"
                                 value="{{ old('email') }}" {{ $errors->has('phone') ? '' : 'required' }} autofocus>
                         </div>
@@ -99,7 +99,7 @@
                                 <strong>@lang('Gender')</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
-                            <select class="form-control  w-100{{ $errors->has('gender') ? ' is-invalid' : '' }}"
+                            <select class="form-control w-100 box-sizing {{ $errors->has('gender') ? ' is-invalid' : '' }}"
                                 name="gender" id="gender" required>
                                 <option value="">- @lang('None') -</option>
                                 <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>@lang('Male')
@@ -121,7 +121,7 @@
                             </label>
                             <div class="position-relative">
                                 <input
-                                    class="form-control  w-100{{ $errors->has('password') ? ' is-invalid' : '' }}  user-password"
+                                    class="form-control w-100 box-sizing {{ $errors->has('password') ? ' is-invalid' : '' }}  user-password"
                                     id="password" name="password" type="password" required placeholder="********"
                                     title="@lang('Choose a strong password with a minimum of eight characters, <br>combining at least one special character (!@#$%^&.) and a digit (0-9).')">
                                 <span class="fa fa-eye-slash password-toggle-icon text-gray" aria-hidden="true"
@@ -143,7 +143,7 @@
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
                             <div class="position-relative">
-                                <input class="form-control  w-100 confirm-user-password" placeholder="********"
+                                <input class="form-control w-100 box-sizing confirm-user-password" placeholder="********"
                                     id="password_confirmation" name="password_confirmation" type="password" required>
                                 <span class="fa fa-eye-slash confirm-password-toggle-icon text-gray" aria-hidden="true"
                                     onclick="togglePassword('confirm-password-toggle-icon', 'confirm-user-password')"></span>
@@ -158,7 +158,7 @@
                                 <strong>@lang('Country')</strong>
                                 <span class="form-required" title="This field is required.">*</span>
                             </label>
-                            <select class="form-control  w-100{{ $errors->has('country') ? ' is-invalid' : '' }}"
+                            <select class="form-control w-100 box-sizing {{ $errors->has('country') ? ' is-invalid' : '' }}"
                                 name="country" id="country"
                                 onchange="populate(this,'city', {{ json_encode($provinces) }})" required>
                                 <option value="">- @lang('None') -</option>
@@ -176,7 +176,7 @@
                             <label for="city">
                                 <strong>@lang('City')</strong>
                             </label>
-                            <select class="form-control  w-100{{ $errors->has('city') ? ' is-invalid' : '' }}"
+                            <select class="form-control w-100 box-sizing {{ $errors->has('city') ? ' is-invalid' : '' }}"
                                 name="city" id="city">
                                 <option value="">- @lang('None') -</option>
                             </select>
