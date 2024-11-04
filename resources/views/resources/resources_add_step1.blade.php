@@ -558,12 +558,12 @@
                 e.preventDefault();
                 fileManagerModal.show();
                 selectImageOption.click(); // Default to select image option
+                searchImages()
             });
 
             function searchImages(url = '{{ route('search.images') }}') {
                 let subjectArea = $('#subject_areas').val();
                 let search = $('#search-input').val();
-                if (subjectArea || search) {
 
                     // Show loading message
                     $('#loading-message').show();
@@ -574,7 +574,8 @@
                         type: 'GET',
                         data: {
                             search: search,
-                            subject_area_id: subjectArea
+                            subject_area_id: subjectArea,
+                            language: "{{config('app.locale') }}"
                         },
                         success: function(response) {
                             $("#file-list").html(response);
@@ -590,7 +591,6 @@
                             $('#loading-message').hide();
                         }
                     });
-                }
 
             }
 
