@@ -27,9 +27,9 @@ class ResourceFileRequest extends FormRequest
             'search' => ['nullable', 'string'],
             'subject_area_id' => ['nullable', 'numeric'],
             'language' => ['required', Rule::in([
-                LanguageEnum::Farsi, LanguageEnum::Pashto, LanguageEnum::Munji, 
+                LanguageEnum::Farsi, LanguageEnum::Pashto, LanguageEnum::Munji,
                 LanguageEnum::Noorestani, LanguageEnum::Pashaiee,
-                LanguageEnum::Shaghnani, LanguageEnum::Sowji, 
+                LanguageEnum::Shaghnani, LanguageEnum::Sowji,
                 LanguageEnum::Uzbaki, LanguageEnum::English
             ])]
         ];
