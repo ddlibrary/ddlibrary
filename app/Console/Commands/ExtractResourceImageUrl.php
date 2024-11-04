@@ -29,7 +29,7 @@ class ExtractResourceImageUrl extends Command
      */
     public function handle()
     {
-        $resources = Resource::select('id', 'abstract', 'title', 'image')->get();
+        $resources = Resource::select('id', 'abstract', 'title', 'image', 'language')->get();
         $baseUrl = 'https://library.darakhtdanesh.org';
         foreach ($resources as $resource) {
             $defaultImage = $baseUrl . '/storage/files/placeholder_image.png';
@@ -53,6 +53,7 @@ class ExtractResourceImageUrl extends Command
             $resourceFile = ResourceFile::create([
                 'name' => $resource->title ? $resource->title : 'ٔno title',
                 'path' => $defaultImage,
+                'language' => $resource->language,
                 'thumbnail_path' => $defaultImage,
             ]);
 
