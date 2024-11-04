@@ -23,7 +23,7 @@ class ResourceFileController extends Controller
             [
                 'image' => ['required', 'file', 'mimes:jpg,jpeg,png', 'max:3072', File::image()->dimensions(Rule::dimensions()->ratio(1.0))],
                 'image_name' => 'nullable|string|max:255',
-                'license' => 'nullable|string|max:255',
+                'taxonomy_term_data_id' => 'nullable|exists:taxonomy_term_data,id',
             ],
             [
                 'image.dimensions' => 'The resource image must be square in shape.',
@@ -72,7 +72,8 @@ class ResourceFileController extends Controller
         $resourceFile = ResourceFile::create([
             'uuid' => Str::uuid(),
             'name' => $request->image_name,
-            'license' => $request->license,
+            'language' => $request->language,
+            'taxonomy_term_data_id' => $request->taxonomy_term_data_id,
             'path' => $fullPath,
             'thumbnail_path' => $thumbnailFullPath,
         ]);
