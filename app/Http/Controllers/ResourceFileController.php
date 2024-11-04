@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 use Imagine\Gd\Imagine;
-use Imagine\Image\Box; 
+use Imagine\Image\Box;
 
 class ResourceFileController extends Controller
 {
@@ -102,9 +102,14 @@ class ResourceFileController extends Controller
                 if ($request->search) {
                     $query->where('name', 'like', "%{$request->search}%");
                 }
-            });
+            })
+            ->where('language', $request->language);
+
         $count = $query->count();
-        $files = $query->paginate(16)->appends($request->except(['page']));
+        $files = $query
+            ->orderByDesc('created_at')
+            ->paginate(16)
+            ->appends($request->except(['page']));
 
         return view('resources.partial.file-list', compact('count', 'files'));
     }
