@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name')->index();
             $table->uuid('uuid')->unique();
-            $table->unsignedInteger('taxonomy_term_data_id')->nullable(); // TaxonomyTerm Model
+            $table->unsignedInteger('taxonomy_term_data_id')->nullable(); // TaxonomyTerm Model - License
             $table->string('path', 500);
             $table->string('language', 5)->nullable()->index();
             $table->string('thumbnail_path', 500)->nullable();
             
+            $table->foreign('taxonomy_term_data_id')->references('id')->on('taxonomy_term_data');
+
             $table->timestamps();
         });
     }
