@@ -196,9 +196,10 @@ class ResourceController extends Controller
         $this->middleware('auth');
         $resource = $request->session()->get('resource1');
         $myResources = new Resource();
+        $creativeCommons = $myResources->resourceAttributesList('taxonomy_term_data', 10);
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject);
 
-        return view('resources.resources_add_step1', compact('resource', 'subjects'));
+        return view('resources.resources_add_step1', compact('resource', 'subjects', 'creativeCommons'));
     }
 
     public function postStepOne(Request $request): Redirector|Application|RedirectResponse
