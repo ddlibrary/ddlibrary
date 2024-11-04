@@ -484,8 +484,13 @@
                                         <label for="license">
                                             <strong>License</strong>
                                         </label>
-                                        <input type="text" id="license" name="license"
-                                            class="form-control w-100 box-sizing">
+                                        <select class="form-control w-100 box-sizing" name="taxonomy_term_data_id" id="license">
+                                            <option>...</option>
+                                            @foreach ($creativeCommons as $creativeCommon)
+                                                <option value="{{ $creativeCommon->id}}">{{ $creativeCommon->name }}</option>
+                                            @endforeach
+                                            <input type="hidden" name="language" value="{{config('app.locale') }}">
+                                        </select>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Upload</button>
                                 </div>
