@@ -275,7 +275,7 @@
                                     $index = count($currentUrl) - 1;
                                     $currentUrl[$index] = $newId[$localeCode];
                                     ?>
-                                    <a href="{{ url($localeCode.'/resource/'.$currentUrl[5]) }}">
+                                    <a href="{{ $resource->language != $localeCode ? url($localeCode.'/resource/'.$currentUrl[5]) : '#'}}">
                                         <p class="bg-lightseagreen p-2 border-radius-5 white">
                                             {{ $properties['native'] }}
                                             <span class="fa fa-check-circle"></span>
