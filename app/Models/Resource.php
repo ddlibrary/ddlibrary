@@ -216,7 +216,7 @@ class Resource extends Model
             ->get();
     }
 
-    public function resourceAttributesList($tableName, $vid, $language = null): Collection
+    public function resourceAttributesList($tableName, $vid, $language = null, $whereIn = null): Collection
     {
         $language = $language ? $language : config('app.locale');
         return DB::table($tableName.' AS ttd')
@@ -224,6 +224,11 @@ class Resource extends Model
             ->leftJoin('taxonomy_term_hierarchy AS tth', 'tth.tid', '=', 'ttd.id')
             ->where('vid', $vid)
             ->where('language', $language)
+            ->where(function($query) use ($whereIn){
+                if($whereIn){
+                    $query->whereIn('ttd.tnid', $whereIn);
+                }
+            })
             ->orderBy('ttd.name')
             ->orderBy('ttd.weight', 'desc')
             ->get();
