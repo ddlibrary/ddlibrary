@@ -345,8 +345,7 @@
                         </label>
                         <div class="mt-1 display-flex align-items-center">
                             <div class="flex-1">
-                                <button type="button" class="btn btn-primary" id="open-file-manager">Select or upload your
-                                    image </button>
+                                <button type="button" class="btn btn-primary" id="open-file-manager">@lang('Select or upload your image') </button>
 
                                 <input type="hidden" id="file_uuid" name="image" required>
                             </div>
@@ -393,18 +392,18 @@
         <div class="modal" id="file-manager-modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>Image Manager</h2>
+                    <h2>@lang('Image manager')</h2>
                     <span class="close" id="close-file-manager-modal">&times;</span>
                 </div>
                 <div class="modal-body">
                     <div class="image-manager-options">
-                        <button id="select-image-option" class="btn-option active">Select Image</button>
-                        <button id="upload-image-option" class="btn-option">Upload Image</button>
+                        <button id="select-image-option" class="btn-option active">@lang('Select image')</button>
+                        <button id="upload-image-option" class="btn-option">@lang('Upload image')</button>
                     </div>
                     <div class="image-manager-content">
                         <!-- Select Image Content -->
                         <div id="select-image-content">
-                            <h3>Select Image from File Manager <span id="result"></span></h3>
+                            <h3> @lang('Select image from file manager') <span id="result"></span></h3>
                             <div class="display-flex gap-5">
                                 <div class="form-item flex-1">
                                     <label for="subject_areas">
@@ -443,7 +442,7 @@
                                         <strong>@lang('Search by image name')</strong>
                                         <span class="form-required" title="This field is required.">*</span>
                                     </label>
-                                    <input type="text" id="search-input" placeholder="Search by file name"
+                                    <input type="text" id="search-input" placeholder="@lang('Search by image name')"
                                         class="form-control w-100 box-sizing">
                                 </div>
                                 <div class="flex-2">
@@ -454,17 +453,16 @@
                                 <!-- File items will be populated dynamically -->
                             </div>
                             <div id="loading-message" style="display: none;">Loading, please wait...</div>
-                            <button id="select-image-btn" class="btn btn-primary" style="display: none;">Select
-                                Image </button>
+                            <button id="select-image-btn" class="btn btn-primary" style="display: none;">@lang('Select image')</button>
                         </div>
                         <!-- Upload Image Content -->
                         <div id="upload-image-content" style="display: none;">
-                            <h3>Upload New Image</h3>
+                            <h3>@lang('Upload New Image')</h3>
                             <form id="upload-form">
                                 <div class="display-flex" style="flex-direction: column">
                                     <div class="flex-1 mb-2">
                                         <label for="image">
-                                            <strong>Image</strong>
+                                            <strong>@lang('Image')</strong>
                                             <span class="form-required" title="This field is required.">*</span>
                                         </label>
                                         <input type="file" id="image" name="image"
@@ -475,14 +473,14 @@
 
                                     <div class="flex-1 mb-2">
                                         <label for="image-name">
-                                            <strong>File Name</strong>
+                                            <strong>@lang('File name')</strong>
                                         </label>
                                         <input type="text" id="image-name" name="image_name"
                                             class="form-control w-100 box-sizing">
                                     </div>
                                     <div class="flex-1 mb-2">
                                         <label for="license">
-                                            <strong>License</strong>
+                                            <strong>@lang('License')</strong>
                                         </label>
                                         <select class="form-control w-100 box-sizing" name="taxonomy_term_data_id" id="license">
                                             <option>...</option>
@@ -492,7 +490,7 @@
                                             <input type="hidden" name="language" value="{{config('app.locale') }}">
                                         </select>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Upload</button>
+                                    <button type="submit" class="btn btn-primary">@lang('Upload')</button>
                                 </div>
                             </form>
                         </div>
