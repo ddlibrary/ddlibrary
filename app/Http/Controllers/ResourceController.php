@@ -196,7 +196,7 @@ class ResourceController extends Controller
         $this->middleware('auth');
         $resource = $request->session()->get('resource1');
         $myResources = new Resource();
-        $creativeCommons = $myResources->resourceAttributesList('taxonomy_term_data', 10);
+        $creativeCommons = $myResources->resourceAttributesList('taxonomy_term_data', 10, config('app.locale'), [168,535]); // taxonomy_term_data.tnid [168=Unknown , 535=CC BY / CC BY-SA]
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject);
 
         return view('resources.resources_add_step1', compact('resource', 'subjects', 'creativeCommons'));
