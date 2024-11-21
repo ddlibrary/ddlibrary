@@ -452,7 +452,7 @@
                             <div id="file-list" class="w-100">
                                 <!-- File items will be populated dynamically -->
                             </div>
-                            <div id="loading-message" style="display: none;">Loading, please wait...</div>
+                            <div id="loading-message" style="display: none;">@lang('Loading, please wait')</div>
                             <button id="select-image-btn" class="btn btn-primary" style="display: none;">@lang('Select image')</button>
                         </div>
                         <!-- Upload Image Content -->
