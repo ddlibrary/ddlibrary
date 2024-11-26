@@ -169,8 +169,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         //Comments
         Route::prefix('comments')->controller(CommentController::class)->group(function(){
             Route::get('/', 'index');
-            Route::get('delete/{commentId}', 'delete');
-            Route::get('published/{commentId}', 'published');
+            Route::get('delete/{resourceComment}', 'delete');
+            Route::get('published/{resourceComment}', 'published')->middleware('admin');
         });
 
         //Flags
@@ -198,13 +198,18 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     });
 
     //Glossary
-    Route::get('glossary', [GlossaryController::class, 'index']);
-    Route::post('glossary', [GlossaryController::class, 'index'])->name('glossary');
-    Route::get('glossary/create', [GlossaryController::class, 'create'])->name('glossary_create')->middleware('LibraryManager');
-    Route::post('glossary/store', [GlossaryController::class, 'store'])->name('glossary_store')->middleware('LibraryManager');
-    Route::post('glossary/update', [GlossaryController::class, 'update'])->name('glossary_update')->middleware('LibraryManager');
-    Route::post('glossary/delete/{id}', [GlossaryController::class, 'destroy'])->name('glossary_delete')->middleware('LibraryManager');
-    Route::post('glossary/approve/{id}', [GlossaryController::class, 'approve'])->name('glossary_approve')->middleware('LibraryManager');
+    Route::prefix('glossary')->controller(GlossaryController::class)->group(function(){
+        Route::get('', 'index');
+        Route::post('', 'index')->name('glossary');
+        Route::prefix('glossary')->middleware('LibraryManager')->group(function(){
+            Route::get('create', 'create')->name('glossary_create');
+            Route::post('store', 'store')->name('glossary_store');
+            Route::post('update', 'update')->name('glossary_update');
+            Route::post('delete/{id}', 'destroy')->name('glossary_delete');
+            Route::post('approve/{id}', 'approve')->name('glossary_approve');
+        });
+    });
+
     //Impact Page
     Route::get('/impact', [ImpactController::class, 'index']);
 
@@ -243,14 +248,23 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('admin/create_survey_modal_time', [SurveySettingController::class, 'createSurveyModalTime']);
     Route::post('admin/store_survey_modal_time', [SurveySettingController::class, 'storeSurveyModalTime'])->name('store_survey_modal_time');
     //Analytics
-    Route::get('/admin/analytics', [AnalyticsController::class, 'index'])->middleware('admin');
-    Route::post('/admin/analytics', [AnalyticsController::class, 'show'])->name('analytics')->middleware('admin');
-
+    Route::prefix('admin/analytics')->middleware('admin')->group(function(){
+        Route::controller(AnalyticsController::class)->group(function(){
+            Route::get('')->name('analytics-list');
+            Route::post('')->name('analytics');
+        });
+    });
     //admin, glossary
-    Route::get('admin/glossary_subjects', [GlossarySubjectController::class, 'index'])->middleware('admin')->name('glossary_subjects_list');
-    Route::get('admin/glossary_subjects/create', [GlossarySubjectController::class, 'create'])->middleware('admin');
-    Route::get('admin/glossary_subjects/edit/{id}', [GlossarySubjectController::class, 'edit'])->middleware('admin');
-    Route::post('admin/glossary_subjects/update', [GlossarySubjectController::class, 'update'])->middleware('admin')->name('glossary_subjects_update');
+    Route::prefix('admin/glossary_subjects')->middleware('admin')->group(function(){
+        Route::controller(GlossarySubjectController::class)->group(function(){
+            Route::get('',  'index')->name('glossary_subjects_list');
+            Route::get('create',  'create')->name('glossary_subjects_create');
+            Route::get('edit/{id}',  'edit')->name('glossary_subjects_edit');
+            Route::post('update',  'update')->name('glossary_subjects_update');
+        });
+    });
+
+
     //StoryWeaver
     Route::get('/storyweaver/confirm/{landing_page}', [StoryWeaverController::class, 'storyWeaverConfirmation'])->name('storyweaver-confirm')->middleware('auth')->middleware('verified');
     Route::get('/storyweaver/auth', [StoryWeaverController::class, 'storyWeaverAuth'])->name('storyweaver-auth')->middleware('auth')->middleware('verified');

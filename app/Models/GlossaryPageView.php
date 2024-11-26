@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Relations\BelongsToUser;
 use Illuminate\Database\Eloquent\Model;
 
 class GlossaryPageView extends Model
 {
+    use HasFactory;
+
     use BelongsToUser;
 
     protected $guarded = [];
