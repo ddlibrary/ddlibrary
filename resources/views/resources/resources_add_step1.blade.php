@@ -399,6 +399,7 @@
                     <div class="image-manager-options">
                         <button id="select-image-option" class="btn-option active">@lang('Select image')</button>
                         <button id="upload-image-option" class="btn-option">@lang('Upload image')</button>
+                        <button id="cropper-image-option" class="btn-option">@lang('Crop your image')</button>
                     </div>
                     <div class="image-manager-content">
                         <!-- Select Image Content -->
@@ -494,6 +495,23 @@
                                 </div>
                             </form>
                         </div>
+                        <div id="cropper-image-content" style="display: none;">
+                            <h3>@lang('Crop your image')</h3>
+                            <form id="cropper-form">
+                                <div class="display-flex" style="flex-direction: column">
+                                    <div class="flex-1 mb-2">
+                                        <label for="image">
+                                            <strong>@lang('Image')</strong>
+                                            <span class="form-required" title="This field is required.">*</span>
+                                        </label>
+                                        <input type="file" id="cropper-image" name="cropper_image"
+                                            class="form-control w-100 box-sizing" accept="image/*" required>
+                                        <div id="cropper" style="width: 100%; height: 100%;"></div>
+                                        <button type="button" id="download-cropped-image" class="btn btn-primary mt-2" style="display: none;">@lang('Download Cropped Image')</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -502,6 +520,8 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
     <script>
         function openModal(e) {
             e.preventDefault();
@@ -512,8 +532,10 @@
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             const selectImageContent = $('#select-image-content');
             const uploadImageContent = $('#upload-image-content');
+            const cropperImageContent = $('#cropper-image-content');
             const selectImageOption = $('#select-image-option');
             const uploadImageOption = $('#upload-image-option');
+            const cropperImageOption = $('#cropper-image-option');
 
             $.ajaxSetup({
                 headers: {
@@ -548,12 +570,22 @@
                 uploadImageOption.removeClass('active');
                 selectImageContent.show();
                 uploadImageContent.hide();
+                cropperImageContent.hide();
             });
 
             uploadImageOption.click(function() {
                 $(this).addClass('active');
                 selectImageOption.removeClass('active');
                 uploadImageContent.show();
+                selectImageContent.hide();
+                cropperImageContent.hide();
+            });
+
+            cropperImageOption.click(function() {
+                $(this).addClass('active');
+                selectImageOption.removeClass('active');
+                cropperImageContent.show();
+                uploadImageContent.hide();
                 selectImageContent.hide();
             });
 
@@ -732,6 +764,58 @@
                     inputField.after(`<span class="error-message text-danger">${errorMessage}</span>`);
                 }
             }
+
+            let cropper;
+            $('#cropper-image').on('change', function(event) {
+                const files = event.target.files;
+                const done = (url) => {
+                    $('#cropper-image').val('');
+                    return url;
+                };
+                if (files && files.length > 0) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const image = document.createElement('img');
+                        image.src = e.target.result;
+                        $('#cropper').html(image);
+                        if (cropper) {
+                            cropper.destroy();
+                        }
+                        cropper = new Cropper(image, {
+                            aspectRatio: 1, // Square crop
+                            viewMode: 1,
+                            autoCropArea: 1,
+                            responsive: true,
+                            ready() {
+                                // Show the download button when the cropper is ready
+                                $('#download-cropped-image').show();
+                            }
+                        });
+                        // Set the cropper to fill the div
+                        $(image).css({
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover' // Ensures the image covers the div
+                        });
+                    };
+                    reader.readAsDataURL(files[0]);
+                }
+            });
+
+            $('#download-cropped-image').on('click', function() {
+                if (cropper) {
+                    const canvas = cropper.getCroppedCanvas();
+                    canvas.toBlob((blob) => {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'cropped-image.png'; // Default file name
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    });
+                }
+            });
 
         });
     </script>
