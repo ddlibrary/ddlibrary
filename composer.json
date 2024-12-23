@@ -23,6 +23,7 @@
         "laravel/ui": "^4.5",
         "league/flysystem-aws-s3-v3": "^3.28",
         "mcamara/laravel-localization": "^1.8",
+        "predis/predis": "^2.3",
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.6",
         "spatie/laravel-activitylog": "^4.8",
