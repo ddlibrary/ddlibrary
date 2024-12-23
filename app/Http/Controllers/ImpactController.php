@@ -19,13 +19,6 @@ class ImpactController extends Controller
         $totalSubjects = TaxonomyTerm::where('vid', 8)->where('language', App::getLocale())->count();
         $monthlyViews = null;
         $monthlyViewsTimestamp = null;
-        if (Cache::get('monthlyViews'))
-        {
-            $monthlyViews = Cache::get('monthlyViews');
-            $monthlyViewsTimestamp = Cache::get('monthlyViewsTimestamp');
-        }
-        else
-            CalculateMonthlyViews::dispatch();
         if ($update && isAdmin())
         {
             CalculateMonthlyViews::dispatch();
@@ -35,6 +28,13 @@ class ImpactController extends Controller
             ]);
             return view('impact.impact_page', compact('totalResources', 'monthlyViews', 'monthlyViewsTimestamp', 'totalSubjects'));
         }
+        else if (Cache::get('monthlyViews'))
+        {
+            $monthlyViews = Cache::get('monthlyViews');
+            $monthlyViewsTimestamp = Cache::get('monthlyViewsTimestamp');
+        }
+        else
+            CalculateMonthlyViews::dispatch();
 
         return view('impact.impact_page', compact('totalResources', 'monthlyViews', 'monthlyViewsTimestamp', 'totalSubjects'));
     }
