@@ -36,7 +36,7 @@ class ImpactController extends Controller
             return view('impact.impact_page', compact('totalResources', 'monthlyViews', 'monthlyViewsTimestamp', 'totalSubjects'));
         }
 
-        return view('impact.impact_page', compact('totalResources', 'monthlyViews', 'monthlyViewsTimestamp', 'update', 'totalSubjects'));
+        return view('impact.impact_page', compact('totalResources', 'monthlyViews', 'monthlyViewsTimestamp', 'totalSubjects'));
     }
 
 }
