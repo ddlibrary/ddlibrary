@@ -206,7 +206,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::post('glossary/delete/{id}', [GlossaryController::class, 'destroy'])->name('glossary_delete')->middleware('LibraryManager');
     Route::post('glossary/approve/{id}', [GlossaryController::class, 'approve'])->name('glossary_approve')->middleware('LibraryManager');
     //Impact Page
-    Route::get('/impact', [ImpactController::class, 'index']);
+    Route::get('/impact/{update?}', [ImpactController::class, 'index']);
 
     //admin, survey
     Route::get('admin/surveys', [SurveyController::class, 'index']);
