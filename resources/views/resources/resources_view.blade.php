@@ -273,14 +273,14 @@
                                     <?php
                                     $currentUrl = explode('/', url()->current());
                                     $index = count($currentUrl) - 1;
-                                    $value = $currentUrl[$index];
                                     $currentUrl[$index] = $newId[$localeCode];
-                                    $newUrl = implode('/', $currentUrl);
                                     ?>
-                                    <p class="bg-lightseagreen p-2 border-radius-5 white">
-                                        {{ $properties['native'] }}
-                                        <span class="fa fa-check-circle"></span>
-                                    </p>
+                                    <a href="{{ $resource->language != $localeCode ? url($localeCode.'/resource/'.$currentUrl[5]) : '#'}}">
+                                        <p class="bg-lightseagreen p-2 border-radius-5 white">
+                                            {{ $properties['native'] }}
+                                            <span class="fa fa-check-circle"></span>
+                                        </p>
+                                    </a>
                                 @else
                                     <p class="bg-red-300 p-2 border-radius-5 white">
                                         {{ $properties['native'] }}
@@ -306,8 +306,8 @@
                     <div class="resource-related-items-box">
                         @foreach ($relatedItems as $item)
                             <div class="related-item">
-                                <img class="related-items-img border-radius-5" src="{{ getImagefromResource($item->abstract, '55x50') }}"
-                                    alt="Resource Image">
+                                <img class="related-items-img border-radius-5"
+                                    src="{{ getImagefromResource($item->abstract, '55x50') }}" alt="Resource Image">
                                 <span><a title="{{ $item->abstract }}"
                                         href="{{ URL::to('resource/' . $item->id) }}">{{ $item->title }}</a><br />
                                     <small>
