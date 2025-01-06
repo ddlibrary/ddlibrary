@@ -48,26 +48,10 @@ class ExtractResourceImageUrl extends Command
                     }
                 }
             }
-
-            $width = null;
-            $height = null;
-            $size = null;
-            if (filter_var($defaultImage, FILTER_VALIDATE_URL)) {
-                // Get the size of the image
-                $imageSize = getimagesize($defaultImage);
-
-                if ($imageSize) {
-                    $width = $imageSize[0];
-                    $height = $imageSize[1];
-                    $size = $imageSize['mime'];
-                }
-            }
+            
             $resourceFile = ResourceFile::create([
                 'name' => $resource->title ? $resource->title : 'ٔno title',
                 'path' => $defaultImage,
-                'width' => $width,
-                'height' => $height,
-                'size' => $size,
                 'language' => $resource->language,
                 'thumbnail_path' => $defaultImage,
             ]);
