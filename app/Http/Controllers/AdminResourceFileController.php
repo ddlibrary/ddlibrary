@@ -42,4 +42,8 @@ class AdminResourceFileController extends Controller
 
         return view('admin.resource-images.index', compact('subjects', 'images', 'languages', 'totalResourceImages'));
     }
+
+    public function cropper(){
+        return view('admin.resource-images.cropper');
+    }
 }
