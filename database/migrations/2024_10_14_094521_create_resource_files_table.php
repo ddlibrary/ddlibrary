@@ -17,6 +17,9 @@ return new class extends Migration
             $table->uuid('uuid')->unique();
             $table->unsignedInteger('taxonomy_term_data_id')->nullable(); // TaxonomyTerm Model - License
             $table->string('path', 500);
+            $table->string('height')->nullable();
+            $table->string('width')->nullable();
+            $table->string('size')->nullable();
             $table->string('language', 5)->nullable()->index();
             $table->string('thumbnail_path', 500)->nullable();
             
