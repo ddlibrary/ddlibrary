@@ -506,7 +506,10 @@
                                         </label>
                                         <input type="file" id="cropper-image" name="cropper_image"
                                             class="form-control w-100 box-sizing" accept="image/*" required>
-                                        <div id="cropper" style="width: 100%; height: 100%;"></div>
+                                            <div style="width: 60%; padding:20px;" class="text-center">
+
+                                                <div id="cropper" style="width: 100%; height: 100%;"></div>
+                                            </div>
                                         <button type="button" id="download-cropped-image" class="btn btn-primary mt-2" style="display: none;">@lang('Download Cropped Image')</button>
                                     </div>
                                 </div>
@@ -568,6 +571,7 @@
             selectImageOption.click(function() {
                 $(this).addClass('active');
                 uploadImageOption.removeClass('active');
+                cropperImageOption.removeClass('active');
                 selectImageContent.show();
                 uploadImageContent.hide();
                 cropperImageContent.hide();
@@ -576,6 +580,7 @@
             uploadImageOption.click(function() {
                 $(this).addClass('active');
                 selectImageOption.removeClass('active');
+                cropperImageOption.removeClass('active');
                 uploadImageContent.show();
                 selectImageContent.hide();
                 cropperImageContent.hide();
@@ -583,6 +588,7 @@
 
             cropperImageOption.click(function() {
                 $(this).addClass('active');
+                uploadImageOption.removeClass('active');
                 selectImageOption.removeClass('active');
                 cropperImageContent.show();
                 uploadImageContent.hide();
