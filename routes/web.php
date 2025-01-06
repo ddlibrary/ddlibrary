@@ -306,6 +306,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
 
         Route::prefix('admin/resources/resource-images')->controller(AdminResourceFileController::class)->group(function(){
             Route::get('/', 'index');
+            Route::get('cropper', 'cropper');
         });
 
     });
