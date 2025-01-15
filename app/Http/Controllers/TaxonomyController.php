@@ -7,6 +7,7 @@ use App\Models\TaxonomyTerm;
 use App\Models\TaxonomyVocabulary;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class TaxonomyController extends Controller
@@ -75,6 +76,15 @@ class TaxonomyController extends Controller
         $parentid = $request->input('parent');
 
         $parent = TaxonomyHierarchy::firstOrNew(['tid' => $tid], ['parent' => $parentid]);
+
+        if(!isset($parent->id)){
+            $latestId = DB::table('taxonomy_term_hierarchy')->max('aux_id');
+            $THID = $latestId ? $latestId + 1 : 1;
+        }else{
+            $THID = $parent->id; // taxonomy_term_hierarchy.id
+        }
+
+        $parent->id = $THID;
         $parent->tid = $tid;
         $parent->parent = $parentid;
         $parent->save();
