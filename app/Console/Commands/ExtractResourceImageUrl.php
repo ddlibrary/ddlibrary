@@ -22,7 +22,7 @@ class ExtractResourceImageUrl extends Command
      *
      * @var string
      */
-    protected $description = 'Extract image URLs from stract field and store in image field';
+    protected $description = 'Extract image URLs from the abstract field and store in the image field.';
 
     /**
      * Execute the console command.
