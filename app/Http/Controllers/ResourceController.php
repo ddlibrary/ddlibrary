@@ -160,7 +160,7 @@ class ResourceController extends Controller
     public function viewPublicResource(Request $request, $resourceId): View|Factory|Redirector|RedirectResponse|Application
     {
             DDLClearSession();
-            $myResources = new Resource();
+            $myResource = new Resource();
 
             $resource = Resource::findOrFail($resourceId);
 
@@ -170,12 +170,12 @@ class ResourceController extends Controller
 
             $this->pageView($request, $resource->title);
 
-            $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
+            $relatedItems = $myResource->getRelatedResources($resourceId, $resource->subjects);
             $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
 
             $translation_id = $resource->tnid;
             if ($translation_id) {
-                $translations = $myResources->getResourceTranslations($translation_id);
+                $translations = $myResource->getResourceTranslations($translation_id);
             } else {
                 $translations = [];
             }
