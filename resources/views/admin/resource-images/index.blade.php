@@ -18,7 +18,7 @@
                         {{-- Search  --}}
                         <div class="col-md-2">
                             <label>Search </label>
-                            <input type="text" value="{{ request()->search }}" placeholder="Please search..."
+                            <input type="text" value="{{ request()->search }}" placeholder="Begin typing here to search for an image"
                                 class="form-control" name="search">
                         </div>
 
