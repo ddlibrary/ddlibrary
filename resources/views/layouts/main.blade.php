@@ -23,6 +23,11 @@
 
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 
+    <script>
+        let baseUrl = "{{ url('/') }}";
+        let localLanguage = "{{config('app.locale') }}";
+    </script>
+
     @if (Lang::locale() != 'en')
         <link rel="stylesheet" href="{{ asset('css/local.css') }}">
     @endif
@@ -101,6 +106,7 @@
             <x-alert :message="Session::get('alert.message')" :level="Session::get('alert.level')" />
         @endif
     </main>
+    @yield('custom-script')
     @include('layouts.footer')
     <!-- Optional JavaScript -->
     <script async src="{{ asset('js/all.js') }}"></script>
