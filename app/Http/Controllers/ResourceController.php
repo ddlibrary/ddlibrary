@@ -1322,10 +1322,11 @@ class ResourceController extends Controller
                 sys_get_temp_dir(), $file_name.'_'
             );
             file_put_contents($temp_file, $file);
-
+            /** TODO: Fix watermark PDF files
             if (! $attachment->file_watermarked && $file_mime == 'application/pdf') {
                 WatermarkPDF::dispatch($attachment, $temp_file, $resource);
             }
+            */
 
             return response()
                 ->download($temp_file, $file_name, $headers)
