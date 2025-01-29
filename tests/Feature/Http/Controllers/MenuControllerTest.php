@@ -133,9 +133,12 @@ class MenuControllerTest extends TestCase
         $admin = User::factory()->create();
         $admin->roles()->attach(5);
 
-        $response = $this->actingAs($admin)->post(route('store_menu'), $this->data([
-            'title' => '',
-        ]),);
+        $response = $this->actingAs($admin)->post(
+            route('store_menu'),
+            $this->data([
+                'title' => '',
+            ]),
+        );
         $response->assertStatus(400);
     }
 
@@ -147,6 +150,18 @@ class MenuControllerTest extends TestCase
         $admin->roles()->attach(5);
 
         $response = $this->actingAs($admin)->post(route('store_menu'), $this->data(['location' => '']));
+
+        $response->assertStatus(400);
+    }
+
+    /** @test */
+    public function en_path_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $response = $this->actingAs($admin)->post(route('store_menu'), $this->data(['path' => '']));
 
         $response->assertStatus(400);
     }
@@ -185,9 +200,12 @@ class MenuControllerTest extends TestCase
 
         $menu = Menu::factory()->create();
 
-        $response = $this->actingAs($admin)->post(route('update_menu', ['menuId' => $menu->id]), $this->data([
-            'title' => 'Updated Menu'
-        ]));
+        $response = $this->actingAs($admin)->post(
+            route('update_menu', ['menuId' => $menu->id]),
+            $this->data([
+                'title' => 'Updated Menu',
+            ]),
+        );
 
         $response->assertRedirect('admin/menu/edit/' . $menu->id);
         $this->assertDatabaseHas('menus', ['title' => 'Updated Menu']);
