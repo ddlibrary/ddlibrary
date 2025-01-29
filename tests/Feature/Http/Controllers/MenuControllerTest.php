@@ -127,7 +127,7 @@ class MenuControllerTest extends TestCase
     }
 
     /** @test */
-    public function en_title_field_is_required()
+    public function title_field_is_required()
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -143,7 +143,7 @@ class MenuControllerTest extends TestCase
     }
 
     /** @test */
-    public function en_location_field_is_required()
+    public function location_field_is_required()
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -155,7 +155,7 @@ class MenuControllerTest extends TestCase
     }
 
     /** @test */
-    public function en_path_field_is_required()
+    public function path_field_is_required()
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -166,7 +166,7 @@ class MenuControllerTest extends TestCase
         $response->assertStatus(400);
     }
 
-    public function en_status_field_is_required()
+    public function status_field_is_required()
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
