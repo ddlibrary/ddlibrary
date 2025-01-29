@@ -60,14 +60,6 @@ class NewsControllerTest extends TestCase
     /**
      * @test
      */
-    public function add_translate_returns_an_ok_response(): void
-    {
-        // This test is incomplete
-    }
-
-    /**
-     * @test
-     */
     public function create_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -201,6 +193,18 @@ class NewsControllerTest extends TestCase
     }
 
     /** @test */
+    public function title_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $response = $this->actingAs($admin)->post(route('add_news'), $this->data(['title' => '']));
+
+        $response->assertSessionHasErrors(['title' => 'The title field is required.']);
+    }
+
+    /** @test */
     public function language_field_is_required()
     {
         $this->refreshApplicationWithLocale('en');
@@ -209,7 +213,7 @@ class NewsControllerTest extends TestCase
 
         $response = $this->actingAs($admin)->post(route('add_news'), $this->data(['language' => '']));
 
-        $response->assertStatus(400);
+        $response->assertSessionHasErrors(['language' => 'The language field is required.']);
     }
 
     protected function data($merge = [])
