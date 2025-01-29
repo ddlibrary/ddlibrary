@@ -179,6 +179,18 @@ class MenuControllerTest extends TestCase
     }
 
     /** @test */
+    public function weight_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $response = $this->actingAs($admin)->post(route('store_menu'), $this->data(['weight' => '']));
+
+        $response->assertStatus(400);
+    }
+
+    /** @test */
     public function language_field_is_required()
     {
         $this->refreshApplicationWithLocale('en');
