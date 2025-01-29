@@ -165,9 +165,10 @@ class PageControllerTest extends TestCase
         $admin->roles()->attach(5);
         $this->actingAs($admin);
 
-        $page = Page::factory()->create();
+        $page1 = Page::factory()->create();
+        $page2 = Page::factory()->create(['tnid' => $page1->id]);
 
-        $response = $this->get('en/page/translate/' . $page->id . '/' . $page->tnid);
+        $response = $this->get('en/page/translate/' . $page2->id . '/' . $page2->tnid);
 
         $response->assertOk();
         $response->assertViewIs('pages.page_translate');
