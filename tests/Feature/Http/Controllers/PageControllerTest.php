@@ -225,6 +225,18 @@ class PageControllerTest extends TestCase
         $response->assertForbidden();
     }
 
+    /** @test */
+    public function title_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $response = $this->actingAs($admin)->post(route('add_page'), $this->data(['title' => '']));
+
+        $response->assertSessionHasErrors(['title' => 'The title field is required.']);
+    }
+
     protected function data($merge = [])
     {
         return array_merge(
