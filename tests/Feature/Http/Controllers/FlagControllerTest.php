@@ -25,13 +25,12 @@ class FlagControllerTest extends TestCase
         $admin = User::factory()->create();
         $admin->roles()->attach(5);
         
-        ResourceFlag::factory()->count(3)->create();
+        ResourceFlag::factory()->count(15)->create();
         $response = $this->actingAs($admin)->get(url("en/admin/flags"));
         
         $response->assertOk();
         $response->assertViewIs('admin.flags.flags_list');
         $response->assertViewHas('flags');
-        $this->assertCount(3, $response->viewData('flags'));
-
+        $this->assertCount(10, $response->viewData('flags'));
     }
 }
