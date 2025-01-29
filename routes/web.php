@@ -117,21 +117,31 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     //Downloads
     Route::get('admin/reports/downloads', [DownloadController::class, 'index'])->middleware('admin');
     Route::post('admin/reports/downloads', [DownloadController::class, 'index'])->name('downloads')->middleware('admin');
-    //Pages
-    Route::get('admin/pages', [PageController::class, 'index'])->middleware('admin');
-    Route::get('admin/get-pages', [PageController::class, 'getPages'])->name('getpages')->middleware('admin');
-    Route::get('admin/pages/view/{pageId}', [PageController::class, 'view'])->middleware('admin');
-    Route::get('page/{pageId}', [PageController::class, 'view'])->where('pageId', '[0-9]+');
     Route::get('/about-education-afghanistan', function () {
         return redirect('page/22');
     });
-    Route::get('page/edit/{pageId}', [PageController::class, 'edit'])->middleware('admin');
-    Route::post('page/update/{pageId}', [PageController::class, 'update'])->name('update_page')->middleware('admin');
-    Route::get('page/create', [PageController::class, 'create'])->middleware('admin');
-    Route::post('page/store', [PageController::class, 'store'])->name('add_page')->middleware('admin');
-    Route::get('page/translate/{pageId}/{pageTnid}', [PageController::class, 'translate'])->middleware('admin');
-    Route::get('page/add/translate/{pageId}/{lang}', [PageController::class, 'addTranslate'])->middleware('admin');
-    Route::post('page/add/translate/{pageId}/{lang}', [PageController::class, 'addPostTranslate'])->name('add_page_translate')->middleware('admin');
+
+    //Pages
+    Route::controller(PageController::class)->group(function(){
+        Route::get('page/{pageId}', 'view')->where('pageId', '[0-9]+');
+        Route::middleware('admin')->group(function(){
+            Route::prefix('admin')->group(function(){
+                Route::get('pages', 'index');
+                Route::get('get-pages', 'getPages')->name('getpages');
+                Route::get('pages/view/{pageId}', 'view');
+            });
+            Route::prefix('page')->group(function(){
+                Route::get('edit/{pageId}', 'edit');
+                Route::post('update/{pageId}', 'update')->name('update_page');
+                Route::get('create', 'create');
+                Route::post('store', 'store')->name('add_page');
+                Route::get('translate/{pageId}/{pageTnid}', 'translate');
+                Route::get('add/translate/{pageId}/{lang}', 'addTranslate');
+                Route::post('add/translate/{pageId}/{lang}', 'addPostTranslate')->name('add_page_translate');
+            });
+        });
+    });
+
     //News
     Route::get('admin/news', [NewsController::class, 'index'])->middleware('admin');
     Route::get('admin/get-news', [NewsController::class, 'getNews'])->name('getnews')->middleware('admin');
