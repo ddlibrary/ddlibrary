@@ -166,6 +166,7 @@ class MenuControllerTest extends TestCase
         $response->assertStatus(400);
     }
 
+    /** @test */
     public function status_field_is_required()
     {
         $this->refreshApplicationWithLocale('en');
@@ -173,6 +174,18 @@ class MenuControllerTest extends TestCase
         $admin->roles()->attach(5);
 
         $response = $this->actingAs($admin)->post(route('store_menu'), $this->data(['status' => '']));
+
+        $response->assertStatus(400);
+    }
+
+    /** @test */
+    public function language_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $response = $this->actingAs($admin)->post(route('store_menu'), $this->data(['language' => '']));
 
         $response->assertStatus(400);
     }
