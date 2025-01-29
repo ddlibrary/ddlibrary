@@ -92,13 +92,7 @@ class NewsControllerTest extends TestCase
         $admin->roles()->attach(5);
         $this->actingAs($admin);
 
-        $response = $this->post(route('add_news'), [
-            'title' => 'Sample News Title',
-            'language' => 'en',
-            'summary' => 'This is a summary of the news.',
-            'body' => 'This is the body of the news.',
-            'published' => 1,
-        ]);
+        $response = $this->post(route('add_news'), $this->data());
 
         $response->assertRedirect();
         $this->assertDatabaseHas('news', ['title' => 'Sample News Title']);
