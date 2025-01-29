@@ -130,6 +130,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
                 Route::get('get-pages', 'getPages')->name('getpages');
                 Route::get('pages/view/{pageId}', 'view');
             });
+            
             Route::prefix('page')->group(function(){
                 Route::get('edit/{pageId}', 'edit');
                 Route::post('update/{pageId}', 'update')->name('update_page');
@@ -143,16 +144,24 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     });
 
     //News
-    Route::get('admin/news', [NewsController::class, 'index'])->middleware('admin');
-    Route::get('admin/get-news', [NewsController::class, 'getNews'])->name('getnews')->middleware('admin');
-    Route::get('news/{newsId}', [NewsController::class, 'view'])->where('newsId', '[0-9]+');
-    Route::get('news/edit/{newsId}', [NewsController::class, 'edit'])->middleware('admin');
-    Route::post('news/update/{newsId}', [NewsController::class, 'update'])->name('update_news')->middleware('admin');
-    Route::get('news/create', [NewsController::class, 'create'])->middleware('admin');
-    Route::post('news/store', [NewsController::class, 'store'])->name('add_news')->middleware('admin');
-    Route::get('news/translate/{newsId}/{newsTnid}', [NewsController::class, 'translate'])->middleware('admin');
-    Route::get('news/add/translate/{newsId}/{lang}', [NewsController::class, 'addTranslate'])->middleware('admin');
-    Route::post('news/add/translate/{newsId}/{lang}', [NewsController::class, 'addPostTranslate'])->name('add_news_translate')->middleware('admin');
+    Route::controller(NewsController::class)->group(function(){
+        Route::get('news/{newsId}', 'view')->where('newsId', '[0-9]+');
+        Route::middleware('admin')->group(function(){
+
+            Route::get('admin/news', 'index');
+            Route::get('admin/get-news', 'getNews')->name('getnews');
+
+            Route::prefix('news')->group(function(){
+                Route::get('edit/{newsId}', 'edit');
+                Route::post('update/{newsId}', 'update')->name('update_news');
+                Route::get('create', 'create');
+                Route::post('store', 'store')->name('add_news');
+                Route::get('translate/{newsId}/{newsTnid}', 'translate');
+                Route::get('add/translate/{newsId}/{lang}', 'addTranslate');
+                Route::post('add/translate/{newsId}/{lang}', 'addPostTranslate')->name('add_news_translate');
+            });
+        });
+    });
     //Menu
     Route::prefix('admin')->middleware('admin')->group(function(){
         Route::controller(MenuController::class)->group(function(){
