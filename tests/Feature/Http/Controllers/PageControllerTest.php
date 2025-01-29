@@ -112,6 +112,27 @@ class PageControllerTest extends TestCase
         $this->assertDatabaseHas('pages', ['title' => 'Updated Page Title']);
     }
 
+    /** @test */
+    public function update_title_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+        $page = Page::factory()->create();
+
+        $response = $this->post(route('update_page', ['pageId' => $page->id]), [
+            'title' => '',
+            'language' => 'en',
+            'summary' => 'Updated summary.',
+            'body' => 'Updated body content.',
+            'published' => 1,
+        ]);
+
+        $response->assertSessionHasErrors(['title' => 'The title field is required.']);
+    }
+
     /**
      * @test
      */
@@ -182,6 +203,7 @@ class PageControllerTest extends TestCase
         // TODO: perform additional assertions
     }
 
+    
 
     /**
      * @test
