@@ -139,6 +139,18 @@ class MenuControllerTest extends TestCase
         $response->assertStatus(400);
     }
 
+    /** @test */
+    public function en_location_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $response = $this->actingAs($admin)->post(route('store_menu'), $this->data(['location' => '']));
+
+        $response->assertStatus(400);
+    }
+
     /**
      * @test
      */
