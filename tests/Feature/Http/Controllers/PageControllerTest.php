@@ -230,4 +230,18 @@ class PageControllerTest extends TestCase
 
         $response->assertForbidden();
     }
+
+    protected function data($merge = [])
+    {
+        return array_merge(
+            [
+                'title' => 'Sample Page Title',
+                'language' => 'en',
+                'summary' => 'This is a summary of the page.',
+                'body' => 'This is the body of the page.',
+                'published' => 1,
+            ],
+            $merge,
+        );
+    }
 }
