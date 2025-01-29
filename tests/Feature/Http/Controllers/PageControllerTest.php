@@ -237,6 +237,18 @@ class PageControllerTest extends TestCase
         $response->assertSessionHasErrors(['title' => 'The title field is required.']);
     }
 
+    /** @test */
+    public function language_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $response = $this->actingAs($admin)->post(route('add_page'), $this->data(['language' => '']));
+
+        $response->assertSessionHasErrors(['language' => 'The language field is required.']);
+    }
+
     protected function data($merge = [])
     {
         return array_merge(
