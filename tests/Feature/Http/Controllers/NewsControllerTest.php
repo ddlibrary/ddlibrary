@@ -228,6 +228,18 @@ class NewsControllerTest extends TestCase
         $response->assertSessionHasErrors(['summary' => 'The summary field is required.']);
     }
 
+    /** @test */
+    public function body_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $response = $this->actingAs($admin)->post(route('add_news'), $this->data(['body' => '']));
+
+        $response->assertSessionHasErrors(['body' => 'The body field is required.']);
+    }
+
     protected function data($merge = [])
     {
         return array_merge(
