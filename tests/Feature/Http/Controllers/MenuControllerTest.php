@@ -140,14 +140,9 @@ class MenuControllerTest extends TestCase
         $admin = User::factory()->create();
         $admin->roles()->attach(5);
 
-        $response = $this->actingAs($admin)->post(route('store_menu'), [
+        $response = $this->actingAs($admin)->post(route('store_menu'), $this->data([
             'title' => '',
-            'location' => 'header',
-            'path' => '/new-menu',
-            'status' => 1,
-            'language' => 'en',
-            'weight' => 1,
-        ]);
+        ]),);
         $response->assertStatus(400);
     }
 
@@ -191,5 +186,18 @@ class MenuControllerTest extends TestCase
         // TODO: perform additional assertions
     }
 
-    // test cases...
+    protected function data($merge = [])
+    {
+        return array_merge(
+            [
+                'title' => 'Home Page',
+                'location' => 'header',
+                'path' => '/new-menu',
+                'status' => 1,
+                'language' => 'en',
+                'weight' => 1,
+            ],
+            $merge,
+        );
+    }
 }
