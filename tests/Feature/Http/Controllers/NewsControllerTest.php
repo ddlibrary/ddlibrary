@@ -252,6 +252,27 @@ class NewsControllerTest extends TestCase
         $response->assertSessionHasErrors(['published' => 'The published field must be an integer.']);
     }
 
+    /** @test */
+    public function update_title_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+        $news = News::factory()->create();
+
+        $response = $this->post(
+            route('update_news', ['newsId' => $news->id]),
+            $this->data([
+                'title' => '',
+                'summary' => 'Updated summary.',
+            ]),
+        );
+
+        $response->assertSessionHasErrors(['title' => 'The title field is required.']);
+    }
+
     protected function data($merge = [])
     {
         return array_merge(
