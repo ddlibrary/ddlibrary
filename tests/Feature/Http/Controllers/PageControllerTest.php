@@ -57,13 +57,7 @@ class PageControllerTest extends TestCase
         $admin->roles()->attach(5);
         $this->actingAs($admin);
 
-        $response = $this->post(route('add_page'), [
-            'title' => 'Sample Page Title',
-            'language' => 'en',
-            'summary' => 'This is a summary of the page.',
-            'body' => 'This is the body of the page.',
-            'published' => 1,
-        ]);
+        $response = $this->post(route('add_page'), $this->data());
 
         $response->assertRedirect();
         $this->assertDatabaseHas('pages', ['title' => 'Sample Page Title']);
