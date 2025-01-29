@@ -205,4 +205,18 @@ class NewsControllerTest extends TestCase
         $response->assertViewHas('news', $news);
         $response->assertViewHas('translations');
     }
+
+    protected function data($merge = [])
+    {
+        return array_merge(
+            [
+                'title' => 'Sample News Title',
+                'language' => 'en',
+                'summary' => 'This is a summary of the news.',
+                'body' => 'This is the body of the news.',
+                'published' => 1,
+            ],
+            $merge,
+        );
+    }
 }
