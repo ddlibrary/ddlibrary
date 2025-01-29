@@ -173,14 +173,9 @@ class MenuControllerTest extends TestCase
 
         $menu = Menu::factory()->create();
 
-        $response = $this->actingAs($admin)->post(route('update_menu', ['menuId' => $menu->id]), [
-            'title' => 'Updated Menu',
-            'location' => 'footer',
-            'path' => '/updated-menu',
-            'status' => 1,
-            'language' => 'en',
-            'weight' => 2,
-        ]);
+        $response = $this->actingAs($admin)->post(route('update_menu', ['menuId' => $menu->id]), $this->data([
+            'title' => 'Updated Menu'
+        ]));
 
         $response->assertRedirect('admin/menu/edit/' . $menu->id);
         $this->assertDatabaseHas('menus', ['title' => 'Updated Menu']);
