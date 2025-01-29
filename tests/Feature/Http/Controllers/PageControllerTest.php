@@ -306,6 +306,27 @@ class PageControllerTest extends TestCase
         $response->assertSessionHasErrors(['language' => 'The language field is required.']);
     }
 
+    /** @test */
+    public function update_summary_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+        $page = Page::factory()->create();
+
+        $response = $this->post(
+            route('update_page', ['pageId' => $page->id]),
+            $this->data([
+                'summary' => '',
+                'body' => 'Update body.',
+            ]),
+        );
+
+        $response->assertSessionHasErrors(['summary' => 'The summary field is required.']);
+    }
+
     protected function data($merge = [])
     {
         return array_merge(
