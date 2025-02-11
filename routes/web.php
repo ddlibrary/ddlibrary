@@ -180,7 +180,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         //Settings
         Route::controller(SettingController::class)->group(function(){
             Route::get('settings', 'edit');
-            Route::post('settings', 'update')->name('settings');
+            Route::put('settings/{setting}', 'update');
         });
 
         Route::resource('subscribers', SubscriberController::class)->only('index', 'destroy');
@@ -210,7 +210,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::get('vocabulary/create', [VocabularyController::class, 'create'])->name('vocabularycreate');
         Route::post('vocabulary/store', [VocabularyController::class, 'store'])->name('vocabularystore');
         Route::get('vocabulary/edit/{vid}', [VocabularyController::class, 'edit'])->name('vocabularyedit');
-        Route::post('vocabulary/edit/{vid}', [VocabularyController::class, 'update'])->name('vocabularyedit');
+        Route::post('vocabulary/edit/{vid}', [VocabularyController::class, 'update'])->name('update-vocabulary');
         //Sync
         Route::get('/sync', [SyncController::class, 'index']);
         Route::get('/run_sync', [SyncController::class, 'SyncIt']);
