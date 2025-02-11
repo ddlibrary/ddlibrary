@@ -32,6 +32,7 @@ class GlossarySubjectControllerTest extends TestCase
     public function test_admin_can_create_glossary_subject(): void
     {
         $this->refreshApplicationWithLocale('en');
+        
         $admin = User::factory()->create();
         $admin->roles()->attach(5);
 
