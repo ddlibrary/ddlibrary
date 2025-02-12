@@ -102,6 +102,19 @@ class VocabularyControllerTest extends TestCase
         $this->assertEquals('New vocabulary', TaxonomyVocabulary::latest()->value('name'));
     }
 
+    /** @test */
+    public function name_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $user->roles()->attach(5);
+
+        $response = $this->actingAs($user)->post(route('vocabularystore'), $this->data(['name' => '']));
+
+        $response->assertSessionHasErrors(['name' => 'The name field is required.']);
+    }
+
     /**
      * @test
      */
