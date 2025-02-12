@@ -201,6 +201,4 @@ class SurveyControllerTest extends TestCase
         $response->assertViewHas('survey_self');
 
     }
-
-    // test cases...
 }
