@@ -36,10 +36,10 @@ class SitewidePageViewFactory extends Factory
             'is_bot' => $this->faker->boolean,
             'language' => $this->faker->languageCode,
             'gender' => $this->faker->randomElement(['male', 'female', null]),
-            'device_id' => Device::factory(), // Assuming you have a Device factory
-            'platform_id' => Platform::factory(), // Assuming you have a Platform factory
-            'browser_id' => Browser::factory(), // Assuming you have a Browser factory
-            'user_id' => User::factory()->create(), // Assuming you have a User factory
+            'device_id' => Device::factory(),
+            'platform_id' => Platform::factory(),
+            'browser_id' => Browser::factory(),
+            'user_id' => User::factory()->create(),
         ];
     }
 }
