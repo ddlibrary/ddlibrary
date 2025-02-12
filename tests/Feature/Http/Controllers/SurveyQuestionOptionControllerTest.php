@@ -165,6 +165,4 @@ class SurveyQuestionOptionControllerTest extends TestCase
         $response->assertViewHas('survey');
 
     }
-
-    // test cases...
 }
