@@ -348,7 +348,6 @@ class PageControllerTest extends TestCase
         $response->assertSessionHasErrors(['body' => 'The body field is required.']);
     }
 
-
     /** @test */
     public function update_published_field_must_be_an_integer()
     {
