@@ -115,6 +115,19 @@ class VocabularyControllerTest extends TestCase
         $response->assertSessionHasErrors(['name' => 'The name field is required.']);
     }
 
+    /** @test */
+    public function weight_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $user->roles()->attach(5);
+
+        $response = $this->actingAs($user)->post(route('vocabularystore'), $this->data(['weight' => '']));
+
+        $response->assertSessionHasErrors(['weight' => 'The weight field is required.']);
+    }
+
     /**
      * @test
      */
