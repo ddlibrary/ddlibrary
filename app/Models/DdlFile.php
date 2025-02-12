@@ -9,6 +9,8 @@ class DdlFile extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     protected $table = 'files';
-    //
+
 }
