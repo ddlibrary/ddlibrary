@@ -184,6 +184,21 @@ class VocabularyControllerTest extends TestCase
         $response->assertSessionHasErrors(['name' => 'The name field is required.']);
     }
 
+    /** @test */
+    public function update_weight_field_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $user->roles()->attach(5);
+
+        $taxonomyVocabulary = TaxonomyVocabulary::factory()->create();
+
+        $response = $this->actingAs($user)->post("en/admin/vocabulary/edit/$taxonomyVocabulary->vid", $this->data(['weight' => '']));
+
+        $response->assertSessionHasErrors(['weight' => 'The weight field is required.']);
+    }
+
     protected function data($merge = [])
     {
         return array_merge(
