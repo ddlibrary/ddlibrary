@@ -189,7 +189,6 @@ class UserControllerTest extends TestCase
      */
     public function view_user_returns_an_ok_response(): void
     {
-
         $this->refreshApplicationWithLocale('en');
 
         $user = User::factory()->create();
@@ -203,8 +202,5 @@ class UserControllerTest extends TestCase
         $response->assertViewIs('users.view_user');
         $response->assertViewHas('page');
         $response->assertViewHas('user');
-
     }
-
-    // test cases...
 }
