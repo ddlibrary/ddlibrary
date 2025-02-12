@@ -30,8 +30,5 @@ class ResourceAnalyticsControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('admin.analytics.resource-analytics.index');
         $response->assertViewHas(['genders', 'languages', 'totalResources', 'sumOfAllIndividualDownloadedFileSizes', 'top10Authors', 'top10Publishers', 'top10DownloadedResources', 'top10DownloadedResourcesByFileSizes', 'top10FavoriteResources', 'subjectAreas', 'resourceTypes']);
-
     }
-
-    // test cases...
 }
