@@ -39,6 +39,20 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
+    public function view_file_aborts_with_a_403(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $resource = Resource::factory()->create();
+
+        $response = $this->get('en/resource/view/' . $resource->id . '/invalid-key');
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * @test
+     */
     public function view_public_resource_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
