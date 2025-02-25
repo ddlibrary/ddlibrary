@@ -22,10 +22,10 @@
     <link rel="shortcut icon" href="{{ asset('storage/files/favicon.ico') }}">
 
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
-
+    @yield('style')
     <script>
         let baseUrl = "{{ url('/') }}";
-        let localLanguage = "{{config('app.locale') }}";
+        let localLanguage = "{{ config('app.locale') }}";
     </script>
 
     @if (Lang::locale() != 'en')
@@ -47,6 +47,8 @@
             gtag('config', 'UA-6207513-43');
         </script>
     @endif
+
+
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
 </head>
@@ -106,7 +108,6 @@
             <x-alert :message="Session::get('alert.message')" :level="Session::get('alert.level')" />
         @endif
     </main>
-    @yield('custom-script')
     @include('layouts.footer')
     <!-- Optional JavaScript -->
     <script async src="{{ asset('js/all.js') }}"></script>
