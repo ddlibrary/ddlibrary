@@ -43,8 +43,10 @@ class ResourceFileController extends Controller
         $fileName = auth()->user()->id . '_' . time() . '.' . $file->getClientOriginalExtension();
         $path = 'resources/' . $fileName;
 
+        $fileSystemDisk = env('FILESYSTEM_DISK', 'local');
+
         // Store the file in S3
-        Storage::disk('local')->put($path, file_get_contents($file));
+        Storage::disk($fileSystemDisk)->put($path, file_get_contents($file));
 
         // Create a thumbnail using imagine/imagine
         $imagine = new Imagine();
@@ -63,11 +65,11 @@ class ResourceFileController extends Controller
             ->save($tempDirectory . '/' . $fileName); // Save to the temporary local storage
 
         // Store the thumbnail in S3
-        Storage::disk('local')->put($thumbnailPath, file_get_contents($tempDirectory . '/' . $fileName));
+        Storage::disk($fileSystemDisk)->put($thumbnailPath, file_get_contents($tempDirectory . '/' . $fileName));
 
-        $thumbnailFullPath = Storage::disk('local')->url($thumbnailPath);
+        $thumbnailFullPath = Storage::disk($fileSystemDisk)->url($thumbnailPath);
 
-        $fullPath = Storage::disk('local')->url($path);
+        $fullPath = Storage::disk($fileSystemDisk)->url($path);
 
         $resourceFile = ResourceFile::create([
             'uuid' => Str::uuid(),

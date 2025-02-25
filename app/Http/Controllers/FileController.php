@@ -17,11 +17,13 @@ class FileController extends Controller
     public function __invoke($resource_id, $file_id, $file_path): BinaryFileResponse
     {
         $this->fileDownloadCounter($resource_id, $file_id);
-        if (! Storage::disk('local')->exists($file_path)) {
+        
+        $fileSystemDisk = env('FILESYSTEM_DISK', 'local');
+        if (! Storage::disk($fileSystemDisk)->exists($file_path)) {
             abort(404);
         }
 
-        $local_path = Storage::disk('local')->url($file_path);
+        $local_path = Storage::disk($fileSystemDisk)->url($file_path);
 
         return response()->file($local_path);
     }
