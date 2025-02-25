@@ -15,7 +15,9 @@ class UploadImageResourceTest extends TestCase
     /** @test */
     public function it_stores_resource_image()
     {
-        Storage::fake('s3');
+        $fileSystemDisk = env('FILESYSTEM_DISK', 'local');
+        
+        Storage::fake($fileSystemDisk);
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -28,7 +30,7 @@ class UploadImageResourceTest extends TestCase
 
         // Assert that the file was stored on S3
         $fileName = auth()->user()->id . '_' . time() . '.jpg';
-        Storage::disk('s3')->assertExists('resources/' . $fileName);
+        Storage::disk($fileSystemDisk)->assertExists('resources/' . $fileName);
     }
 
     /** @test */
