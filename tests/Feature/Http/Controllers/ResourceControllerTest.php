@@ -39,6 +39,28 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
+    public function view_public_resource_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $resource = Resource::factory()->create();
+        $resourceComments = ResourceComment::factory()
+            ->times(3)
+            ->create(['resource_id' => $resource->id]);
+
+        $response = $this->get('en/resource/' . $resource->id);
+
+        $response->assertOk();
+        $response->assertViewIs('resources.resources_view');
+        $response->assertViewHas('resource', $resource);
+        $response->assertViewHas('relatedItems');
+        $response->assertViewHas('comments', $resourceComments);
+        $response->assertViewHas('translations');
+    }
+
+    /**
+     * @test
+     */
     public function view_public_resource_aborts_with_a_403(): void
     {
         $this->refreshApplicationWithLocale('en');
