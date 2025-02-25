@@ -2,9 +2,9 @@
 @section('title')
     @lang('Add a new Resource - Step 1')
 @endsection
-@push('styles')
-    <link href="{{ asset('css/resource.css')}}">
-@endpush
+@section('style')
+<link rel="stylesheet" href="{{ asset('css/resource.css') }}">
+@endsection
 @section('content')
     <section class="resource-form">
         <header>
@@ -258,7 +258,7 @@
                                             <strong>@lang('License')</strong>
                                         </label>
                                         <select class="form-control w-100 box-sizing" name="taxonomy_term_data_id" id="license">
-                                            <option>...</option>
+                                            <option value="">...</option>
                                             @foreach ($creativeCommons as $creativeCommon)
                                                 <option value="{{ $creativeCommon->id}}">{{ $creativeCommon->name }}</option>
                                             @endforeach
@@ -297,7 +297,8 @@
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('js/resource.js') }}"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
-    <script src="{{ asset('js/resource.js') }}"></script>
 @endpush
