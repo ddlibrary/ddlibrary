@@ -4,7 +4,7 @@
             <div class="image-item" style="position:relative;" data-uuid="{{ $file->uuid }}"
                 data-url="{{ $file->path }}">
                 <div class="image-container responsive-square">
-                    <img src="{{ asset($file->path) }}" alt="{{ $file->name }}" class="resource-cover">
+                    <img src="{{ $file->thumbnail_path }}" alt="{{ $file->name }}" class="resource-cover">
                 </div>
                 <p class="image-name">{{ $file->name }}</p>
             </div>
