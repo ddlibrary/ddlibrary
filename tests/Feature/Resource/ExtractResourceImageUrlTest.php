@@ -18,8 +18,8 @@ class ExtractResourceImageUrlTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user);
-        $baseUrl = 'https://library.darakhtdanesh.org';
-        $defaultImage = $baseUrl . '/storage/files/placeholder_image.png';
+        
+        $defaultImage = '/storage/files/placeholder_image.png';
 
         DB::table('resources')->insert([
             'id' => 1,
