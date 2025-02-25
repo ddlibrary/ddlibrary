@@ -44,7 +44,7 @@ class ResourceFileController extends Controller
         $path = 'resources/' . $fileName;
 
         // Store the file in S3
-        Storage::disk('s3')->put($path, file_get_contents($file));
+        Storage::disk('local')->put($path, file_get_contents($file));
 
         // Create a thumbnail using imagine/imagine
         $imagine = new Imagine();
@@ -63,11 +63,11 @@ class ResourceFileController extends Controller
             ->save($tempDirectory . '/' . $fileName); // Save to the temporary local storage
 
         // Store the thumbnail in S3
-        Storage::disk('s3')->put($thumbnailPath, file_get_contents($tempDirectory . '/' . $fileName));
+        Storage::disk('local')->put($thumbnailPath, file_get_contents($tempDirectory . '/' . $fileName));
 
-        $thumbnailFullPath = Storage::disk('s3')->url($thumbnailPath);
+        $thumbnailFullPath = Storage::disk('local')->url($thumbnailPath);
 
-        $fullPath = Storage::disk('s3')->url($path);
+        $fullPath = Storage::disk('local')->url($path);
 
         $resourceFile = ResourceFile::create([
             'uuid' => Str::uuid(),
@@ -91,7 +91,7 @@ class ResourceFileController extends Controller
     public function searchImages(ResourceFileRequest $request)
     {
         $query = ResourceFile::query()
-            ->select('uuid', 'name', 'thumbnail_path')
+            ->select('uuid', 'name', 'thumbnail_path','path')
             ->where(function ($query) use ($request) {
                 if ($request->subject_area_id) {
                     $resourceFileIds = DB::table('resource_subject_areas')
