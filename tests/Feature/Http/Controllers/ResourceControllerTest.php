@@ -6,6 +6,7 @@ use App\Models\Resource;
 use App\Models\ResourceAttachment;
 use App\Models\ResourceComment;
 use App\Models\User;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,6 +16,8 @@ use Tests\TestCase;
 class ResourceControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    
 
     /**
      * @test
@@ -153,6 +156,68 @@ class ResourceControllerTest extends TestCase
         $response = $this->get(route('step3'));
 
         $response->assertRedirect('/resources/add/step1');
+    }
+
+    /**
+     * @test
+     */
+    public function create_step_three_edit_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        // Create a resource
+        $resource = Resource::factory()->create();
+
+        // Prepare resource1 data
+        $resource1 = [
+            'title' => $resource->title,
+            'author' => "Author",
+            'publisher' => "Publisher",
+            'translator' => "Translator",
+            'language' => $resource->language,
+            'abstract' => $resource->abstract,
+            'status' => 1,
+        ];
+
+        Session::put('resource1', $resource1);
+        Session::put('resource2', [
+            'subject_areas' => [],
+            'learning_resources_types' => [],
+            'keywords' => '',
+            'educational_use' => [],
+            'level' => [],
+            'attc' => [],
+        ]);
+
+        $response = $this->get(route('edit3', ['resourceId' => $resource->id]));
+
+        $response->assertOk();
+
+        $response->assertViewIs('resources.resources_edit_step3');
+
+        $response->assertViewHas('resource');
+    }
+
+    /**
+     * @test
+     */
+    public function create_step_two_returns_an_ok_response(): void
+    {
+
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $response = $this->get(route('step2'));
+
+        $response->assertRedirect('/resources/add/step1');
+
     }
 
     /**
