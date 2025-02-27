@@ -19,6 +19,7 @@ class ResourceControllerTest extends TestCase
     use RefreshDatabase;
 
     
+    
     /**
      * @test
      */
@@ -326,6 +327,28 @@ class ResourceControllerTest extends TestCase
         $response->assertViewHas('views');
         $response->assertViewHas('favorites');
         $response->assertViewHas('comments');
+    }
+
+    /**
+     * @test
+     */
+    public function post_step_one_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $response = $this->post('en/resources/add/step1', [
+            'title' => 'Resource Title',
+            'author' => 'Author Name',
+            'publisher' => 'Publisher Name',
+            'translator' => 'Translator Name',
+            'language' => 'en',
+            'abstract' => 'This is an abstract.',
+        ]);
+
+        $response->assertRedirect('/resources/add/step2');
     }
 
     /**
