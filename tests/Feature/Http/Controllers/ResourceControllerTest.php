@@ -6,6 +6,7 @@ use App\Models\Resource;
 use App\Models\ResourceAttachment;
 use App\Models\ResourceComment;
 use App\Models\ResourceFlag;
+use App\Models\TaxonomyTerm;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -388,8 +389,8 @@ class ResourceControllerTest extends TestCase
         $admin->roles()->attach(5);
         $this->actingAs($admin);
 
-        $resource = \App\Models\Resource::factory()->create();
-        $taxonomyTerm = \App\Models\TaxonomyTerm::factory()->create();
+        $resource = Resource::factory()->create();
+        $taxonomyTerm = TaxonomyTerm::factory()->create();
 
         $step1 = [
             "title" => "nice",
@@ -418,6 +419,106 @@ class ResourceControllerTest extends TestCase
         ]);
 
         $response->assertRedirect('/home');
+
+    }
+
+    /**
+     * @test
+     */
+    public function post_step_three_edit_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $resource = Resource::factory()->create();
+        $taxonomyTerm = TaxonomyTerm::factory()->create();
+
+        $step1 = [
+            "title" => "updated title",
+            "author" => "updated wow",
+            "publisher" => "updated wow",
+            "translator" => "updated great",
+            "language" => "en",
+            "abstract" => "<p>updated abstract</p>"
+        ];
+
+        $step2 = [
+            "subject_areas" => [],
+            "keywords" => "keyword",
+            "learning_resources_types" => [], 
+            "educational_use" =>  [],
+            "level" =>  [],
+        ];
+
+        Session::put('resource1', $step1);
+        Session::put('resource2', $step2);
+
+        $resource = Resource::factory()->create();
+        $taxonomyTerm = TaxonomyTerm::factory()->create();
+
+        $response = $this->post('en/resources/edit/step3/'.$resource->id, [
+            "translation_rights" => 1,
+            "educational_resource" => 1,
+            "copyright_holder" => null
+        ]);
+
+        $response->assertRedirect('/resource/' . $resource->id);
+
+        $this->assertEquals('updated title', Resource::whereId($resource->id)->value('title'));
+
+    }
+
+     /**
+     * @test
+     */
+    public function post_step_two_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $step1 = [
+            "title" => "nice",
+            "author" => "wow",
+            "publisher" => "wow",
+            "translator" => "great",
+            "language" => "en",
+            "abstract" => "<p>abstract</p>"
+        ];
+
+        Session::put('resource1', $step1);
+
+        // learning_resources_types with vid 7
+        TaxonomyTerm::factory()->create(['vid' => 7, 'name' => 'Book']);
+        TaxonomyTerm::factory()->create(['vid' => 7, 'name' => 'Media']);
+
+        // subject_areas with vid 8
+        TaxonomyTerm::factory()->create(['vid' => 8, 'name' => 'Computer']);
+        TaxonomyTerm::factory()->create(['vid' => 8, 'name' => 'History']);
+
+
+        // educational_use with vid 25
+        TaxonomyTerm::factory()->create(['vid' => 25, 'name' => 'Information Education']);
+        TaxonomyTerm::factory()->create(['vid' => 25, 'name' => 'Professional Development']);
+
+        // level with vid 13
+        TaxonomyTerm::factory()->create(['vid' => 13, 'name' => 'Preschool']);
+        TaxonomyTerm::factory()->create(['vid' => 13, 'name' => 'Literacy']);
+
+        $response = $this->post('en/resources/add/step2', [
+            "subject_areas" => TaxonomyTerm::where('vid', 8)->pluck('id'),
+            "keywords" => "keyword",
+            "learning_resources_types" => TaxonomyTerm::where('vid', 7)->pluck('id'),
+            "educational_use" => TaxonomyTerm::where('vid', 25)->pluck('id'),
+            "level" => TaxonomyTerm::where('vid', 13)->pluck('id'),
+        ]);
+
+        $response->assertRedirect('/resources/add/step3');
 
     }
 
