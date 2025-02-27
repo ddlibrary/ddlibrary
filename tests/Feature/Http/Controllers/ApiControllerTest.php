@@ -289,4 +289,42 @@ class ApiControllerTest extends TestCase
         $this->assertEquals($newsItem->summary, $response->json()[0]['summary']);
         $this->assertEquals($newsItem->body, $response->json()[0]['body']);
     }
+
+    /**
+     * @test
+     */
+    public function news_list_returns_an_ok_response(): void
+    {
+        $newsItems = News::factory()->count(3)->create([
+            'status' => 1,
+            'language' => 'en',
+        ]);
+
+        $response = $this->getJson('api/news_list/en');
+
+        $response->assertOk();
+
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'title',
+                    'summary',
+                    'body',
+                    'created_at',
+                    'updated_at',
+                ],
+            ],
+            'links',
+        ]);
+
+        $this->assertCount(3, $response->json('data'));
+
+        foreach ($newsItems as $newsItem) {
+            $this->assertTrue(
+                collect($response->json('data'))->contains(fn($item) => $item['id'] === $newsItem->id),
+                'News item not found in the response data'
+            );
+        }
+    }
 }
