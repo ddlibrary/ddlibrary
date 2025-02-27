@@ -139,6 +139,22 @@ class ResourceControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('resources.resources_edit_step1');
     }
+
+    /**
+     * @test
+     */
+    public function create_step_three_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $response = $this->get(route('step3'));
+
+        $response->assertRedirect('/resources/add/step1');
+    }
+
     /**
      * @test
      */
