@@ -53,6 +53,33 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
+    public function published_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5); // Ensure this is the correct role for admin access
+        $this->actingAs($admin);
+    
+        // Create a resource
+        $resource = Resource::factory()->create(['status' => 0]); // Start with an unpublished status
+    
+        // Make the request to the published route
+        $response = $this->get('en/admin/resource/published/' . $resource->id);
+    
+        // Assert that the response is a redirect (302)
+        $response->assertRedirect();
+    
+        // Verify the resource's status was updated correctly
+        $resource->refresh(); // Refresh the resource model to get the latest data
+        $this->assertEquals(1, $resource->status);
+    }
+
+    
+    /**
+     * @test
+     */
     public function resource_favorite_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
