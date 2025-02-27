@@ -25,6 +25,30 @@ class ApiControllerTest extends TestCase
     /**
      * @test
      */
+    public function news_view_returns_an_ok_response(): void
+    {
+        $news = News::factory()->create();
+
+        $response = $this->getJson("api/news_view/{$news->id}");
+
+        $response->assertOk();
+
+        $response->assertViewIs('news.news_api_view');
+
+        $response->assertViewHas('news', $news);
+
+        $translation_id = $news->tnid;
+        if ($translation_id) {
+            $translations = News::where('tnid', $translation_id)->get();
+            $response->assertViewHas('translations', $translations);
+        } else {
+            $response->assertViewHas('translations', []);
+        }
+    }
+
+    /**
+     * @test
+     */
     public function delete_returns_an_ok_response(): void
     {
         $user = User::factory()->create();
