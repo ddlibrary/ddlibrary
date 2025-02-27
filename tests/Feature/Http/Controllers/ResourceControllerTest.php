@@ -53,6 +53,30 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
+    public function resource_favorite_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $resource = Resource::factory()->create();
+
+        $response = $this->post('resources/favorite', [
+            'userId' => $user->id,
+            'resourceId' => $resource->id,
+        ]);
+
+        $response->assertOk();
+        $this->assertDatabaseHas('resource_favorites', [
+            'resource_id' => $resource->id,
+            'user_id' => $user->id,
+        ]);
+    }
+
+    /**
+     * @test
+     */
     public function update_tid_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
