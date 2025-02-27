@@ -163,4 +163,42 @@ class ApiControllerTest extends TestCase
         }
 
     }
+
+    /**
+     * @test
+     */
+    public function links_returns_an_ok_response(): void
+    {
+        // Create 3 menu items with language 'en' and location 'bottom-menu'
+        $menus = Menu::factory()->count(3)->create([
+            'language' => 'en',
+            'location' => 'bottom-menu',
+        ]);
+
+        // Make the API request
+        $response = $this->getJson('api/links/en');
+
+        // Assert that the response is OK
+        $response->assertOk();
+
+        // Assert the JSON structure of the response
+        $response->assertJsonStructure([
+            '*' => [
+                'id',
+                'title',
+                'path',
+            ],
+        ]);
+
+        // Assert that the correct number of menus are returned
+        $this->assertCount(3, $response->json());
+
+        // Optionally verify that the expected menu items are returned
+        foreach ($menus as $menu) {
+            $this->assertTrue(
+                collect($response->json())->contains(fn($item) => $item['id'] === $menu->id),
+                'Menu item not found in the response data'
+            );
+        }
+    }
 }
