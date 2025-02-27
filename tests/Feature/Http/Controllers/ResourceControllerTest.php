@@ -19,8 +19,6 @@ class ResourceControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    
-    
     /**
      * @test
      */
@@ -177,9 +175,9 @@ class ResourceControllerTest extends TestCase
         // Prepare resource1 data
         $resource1 = [
             'title' => $resource->title,
-            'author' => "Author",
-            'publisher' => "Publisher",
-            'translator' => "Translator",
+            'author' => 'Author',
+            'publisher' => 'Publisher',
+            'translator' => 'Translator',
             'language' => $resource->language,
             'abstract' => $resource->abstract,
             'status' => 1,
@@ -209,7 +207,6 @@ class ResourceControllerTest extends TestCase
      */
     public function create_step_two_returns_an_ok_response(): void
     {
-
         $this->refreshApplicationWithLocale('en');
 
         $admin = User::factory()->create();
@@ -219,7 +216,6 @@ class ResourceControllerTest extends TestCase
         $response = $this->get(route('step2'));
 
         $response->assertRedirect('/resources/add/step1');
-
     }
 
     /**
@@ -237,9 +233,9 @@ class ResourceControllerTest extends TestCase
 
         $resource1 = [
             'title' => $resource->title,
-            'author' => "Author",
-            'publisher' => "Publisher",
-            'translator' => "Translator",
+            'author' => 'Author',
+            'publisher' => 'Publisher',
+            'translator' => 'Translator',
             'language' => $resource->language,
             'abstract' => $resource->abstract,
             'status' => 1,
@@ -251,7 +247,6 @@ class ResourceControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('resources.resources_edit_step2');
-
     }
 
     /**
@@ -382,7 +377,6 @@ class ResourceControllerTest extends TestCase
      */
     public function post_step_three_returns_an_ok_response(): void
     {
-
         $this->refreshApplicationWithLocale('en');
 
         $admin = User::factory()->create();
@@ -393,33 +387,32 @@ class ResourceControllerTest extends TestCase
         $taxonomyTerm = TaxonomyTerm::factory()->create();
 
         $step1 = [
-            "title" => "nice",
-            "author" => "wow",
-            "publisher" => "wow",
-            "translator" => "great",
-            "language" => "en",
-            "abstract" => "<p>abstract</p>"
+            'title' => 'nice',
+            'author' => 'wow',
+            'publisher' => 'wow',
+            'translator' => 'great',
+            'language' => 'en',
+            'abstract' => '<p>abstract</p>',
         ];
 
         $step2 = [
-            "subject_areas" => [],
-            "keywords" => "keyword",
-            "learning_resources_types" => [], 
-            "educational_use" =>  [],
-            "level" =>  [],
+            'subject_areas' => [],
+            'keywords' => 'keyword',
+            'learning_resources_types' => [],
+            'educational_use' => [],
+            'level' => [],
         ];
 
         Session::put('resource1', $step1);
         Session::put('resource2', $step2);
 
         $response = $this->post('en/resources/add/step3', [
-            "translation_rights" => 1,
-            "educational_resource" => 1,
-            "copyright_holder" => null
+            'translation_rights' => 1,
+            'educational_resource' => 1,
+            'copyright_holder' => null,
         ]);
 
         $response->assertRedirect('/home');
-
     }
 
     /**
@@ -437,20 +430,20 @@ class ResourceControllerTest extends TestCase
         $taxonomyTerm = TaxonomyTerm::factory()->create();
 
         $step1 = [
-            "title" => "updated title",
-            "author" => "updated wow",
-            "publisher" => "updated wow",
-            "translator" => "updated great",
-            "language" => "en",
-            "abstract" => "<p>updated abstract</p>"
+            'title' => 'updated title',
+            'author' => 'updated wow',
+            'publisher' => 'updated wow',
+            'translator' => 'updated great',
+            'language' => 'en',
+            'abstract' => '<p>updated abstract</p>',
         ];
 
         $step2 = [
-            "subject_areas" => [],
-            "keywords" => "keyword",
-            "learning_resources_types" => [], 
-            "educational_use" =>  [],
-            "level" =>  [],
+            'subject_areas' => [],
+            'keywords' => 'keyword',
+            'learning_resources_types' => [],
+            'educational_use' => [],
+            'level' => [],
         ];
 
         Session::put('resource1', $step1);
@@ -459,19 +452,18 @@ class ResourceControllerTest extends TestCase
         $resource = Resource::factory()->create();
         $taxonomyTerm = TaxonomyTerm::factory()->create();
 
-        $response = $this->post('en/resources/edit/step3/'.$resource->id, [
-            "translation_rights" => 1,
-            "educational_resource" => 1,
-            "copyright_holder" => null
+        $response = $this->post('en/resources/edit/step3/' . $resource->id, [
+            'translation_rights' => 1,
+            'educational_resource' => 1,
+            'copyright_holder' => null,
         ]);
 
         $response->assertRedirect('/resource/' . $resource->id);
 
         $this->assertEquals('updated title', Resource::whereId($resource->id)->value('title'));
-
     }
 
-     /**
+    /**
      * @test
      */
     public function post_step_two_returns_an_ok_response(): void
@@ -483,12 +475,12 @@ class ResourceControllerTest extends TestCase
         $this->actingAs($admin);
 
         $step1 = [
-            "title" => "nice",
-            "author" => "wow",
-            "publisher" => "wow",
-            "translator" => "great",
-            "language" => "en",
-            "abstract" => "<p>abstract</p>"
+            'title' => 'nice',
+            'author' => 'wow',
+            'publisher' => 'wow',
+            'translator' => 'great',
+            'language' => 'en',
+            'abstract' => '<p>abstract</p>',
         ];
 
         Session::put('resource1', $step1);
@@ -501,7 +493,6 @@ class ResourceControllerTest extends TestCase
         TaxonomyTerm::factory()->create(['vid' => 8, 'name' => 'Computer']);
         TaxonomyTerm::factory()->create(['vid' => 8, 'name' => 'History']);
 
-
         // educational_use with vid 25
         TaxonomyTerm::factory()->create(['vid' => 25, 'name' => 'Information Education']);
         TaxonomyTerm::factory()->create(['vid' => 25, 'name' => 'Professional Development']);
@@ -511,15 +502,61 @@ class ResourceControllerTest extends TestCase
         TaxonomyTerm::factory()->create(['vid' => 13, 'name' => 'Literacy']);
 
         $response = $this->post('en/resources/add/step2', [
-            "subject_areas" => TaxonomyTerm::where('vid', 8)->pluck('id'),
-            "keywords" => "keyword",
-            "learning_resources_types" => TaxonomyTerm::where('vid', 7)->pluck('id'),
-            "educational_use" => TaxonomyTerm::where('vid', 25)->pluck('id'),
-            "level" => TaxonomyTerm::where('vid', 13)->pluck('id'),
+            'subject_areas' => TaxonomyTerm::where('vid', 8)->pluck('id'),
+            'keywords' => 'keyword',
+            'learning_resources_types' => TaxonomyTerm::where('vid', 7)->pluck('id'),
+            'educational_use' => TaxonomyTerm::where('vid', 25)->pluck('id'),
+            'level' => TaxonomyTerm::where('vid', 13)->pluck('id'),
         ]);
 
         $response->assertRedirect('/resources/add/step3');
+    }
 
+    /**
+     * @test
+     */
+    public function post_step_two_edit_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $step1 = [
+            'title' => 'nice',
+            'author' => 'wow',
+            'publisher' => 'wow',
+            'translator' => 'great',
+            'language' => 'en',
+            'abstract' => '<p>abstract</p>',
+        ];
+
+        Session::put('resource1', $step1);
+
+        // learning_resources_types with vid 7
+        TaxonomyTerm::factory()->create(['vid' => 7, 'name' => 'Learning resource type']);
+
+        // subject_areas with vid 8
+        TaxonomyTerm::factory()->create(['vid' => 8, 'name' => 'Subject area']);
+
+        // educational_use with vid 25
+        TaxonomyTerm::factory()->create(['vid' => 25, 'name' => 'Educatinal use']);
+
+        // level with vid 13
+        TaxonomyTerm::factory()->create(['vid' => 13, 'name' => 'Level']);
+
+        $resource = Resource::factory()->create();
+
+        $response = $this->post("en/resources/edit/step2/$resource->id", [
+            'subject_areas' => TaxonomyTerm::where('vid', 8)->latest()->take(1)->pluck('id'),
+            'keywords' => 'keyword',
+            'learning_resources_types' => TaxonomyTerm::where('vid', 7)->latest()->take(1)->pluck('id'),
+            'educational_use' => TaxonomyTerm::where('vid', 25)->latest()->take(1)->pluck('id'),
+            'level' => TaxonomyTerm::where('vid', 13)->latest()->take(1)->pluck('id'),
+        ]);
+
+        $response->assertRedirect('/resources/edit/step3/' . $resource->id);
     }
 
     /**
@@ -543,26 +580,24 @@ class ResourceControllerTest extends TestCase
     {
         $this->refreshApplicationWithLocale('en');
 
-
         $admin = User::factory()->create();
         $admin->roles()->attach(5); // Ensure this is the correct role for admin access
         $this->actingAs($admin);
-    
+
         // Create a resource
         $resource = Resource::factory()->create(['status' => 0]); // Start with an unpublished status
-    
+
         // Make the request to the published route
         $response = $this->get('en/admin/resource/published/' . $resource->id);
-    
+
         // Assert that the response is a redirect (302)
         $response->assertRedirect();
-    
+
         // Verify the resource's status was updated correctly
         $resource->refresh(); // Refresh the resource model to get the latest data
         $this->assertEquals(1, $resource->status);
     }
 
-    
     /**
      * @test
      */
