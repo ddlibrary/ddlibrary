@@ -311,6 +311,26 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
+    public function list_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $response = $this->get(route('resourceList'));
+
+        $response->assertOk();
+        $response->assertViewIs('resources.resources_list');
+        $response->assertViewHas('resources');
+        $response->assertViewHas('views');
+        $response->assertViewHas('favorites');
+        $response->assertViewHas('comments');
+    }
+
+    /**
+     * @test
+     */
     public function view_file_aborts_with_a_404(): void
     {
         $this->refreshApplicationWithLocale('en');
