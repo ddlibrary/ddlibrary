@@ -117,4 +117,50 @@ class ApiControllerTest extends TestCase
     
         $this->assertCount(12, $response->json('data'));
     }
+
+    /**
+     * @test
+     */
+    public function resource_offset_returns_an_ok_response(): void
+    {
+
+        $resources = Resource::factory()->count(40)->create([
+            'status' => 1,
+            'language' => 'en',
+        ]);
+    
+        // Define the language and offset (page number)
+        $lang = 'en';
+        $perPage = 32; // Number of resources per page
+        $offset = 2;
+    
+        // Make the API request (assuming offset is treated as page number)
+        $response = $this->getJson("api/resources/{$lang}?page={$offset}");
+    
+        // Assert that the response is OK
+        $response->assertOk();
+    
+        // Assert the JSON structure of the response
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'title',
+                    'abstract',
+                    'status',
+                    'language',
+                ],
+            ],
+            'links',
+        ]);
+    
+        $this->assertCount(8, $response->json('data'));
+    
+        // Optionally, verify that the returned resources are from the correct offset
+        $expectedIds = $resources->slice(($offset - 1) * $perPage, $perPage)->pluck('id')->toArray();
+        foreach ($response->json('data') as $item) {
+            $this->assertTrue(in_array($item['id'], $expectedIds), 'Resource not found in the expected data set');
+        }
+
+    }
 }
