@@ -223,6 +223,38 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
+    public function create_step_two_edit_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $user->roles()->attach(5);
+        $this->actingAs($user);
+
+        $resource = Resource::factory()->create();
+
+        $resource1 = [
+            'title' => $resource->title,
+            'author' => "Author",
+            'publisher' => "Publisher",
+            'translator' => "Translator",
+            'language' => $resource->language,
+            'abstract' => $resource->abstract,
+            'status' => 1,
+        ];
+
+        Session::put('resource1', $resource1);
+
+        $response = $this->get("en/resources/edit/step2/$resource->id");
+
+        $response->assertOk();
+        $response->assertViewIs('resources.resources_edit_step2');
+
+    }
+
+    /**
+     * @test
+     */
     public function view_file_aborts_with_a_404(): void
     {
         $this->refreshApplicationWithLocale('en');
