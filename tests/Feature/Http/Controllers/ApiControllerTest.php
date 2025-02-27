@@ -25,6 +25,37 @@ class ApiControllerTest extends TestCase
     /**
      * @test
      */
+    public function page_returns_an_ok_response(): void
+    {
+        $pages = Page::factory()->count(3)->create();
+
+        $pageItem = $pages->first();
+
+        $response = $this->getJson("api/page/{$pageItem->id}");
+
+        $response->assertOk();
+
+        $response->assertJsonStructure([
+            '*' => [ 
+                'id',
+                'title',
+                'summary',
+                'body',
+                'created_at',
+                'updated_at',
+            ],
+        ]);
+
+        $this->assertCount(1, $response->json()); // Ensure only one page item is returned
+        $this->assertEquals($pageItem->id, $response->json()[0]['id']);
+        $this->assertEquals($pageItem->title, $response->json()[0]['title']);
+        $this->assertEquals($pageItem->summary, $response->json()[0]['summary']);
+        $this->assertEquals($pageItem->body, $response->json()[0]['body']);
+    }
+
+    /**
+     * @test
+     */
     public function news_view_returns_an_ok_response(): void
     {
         $news = News::factory()->create();
