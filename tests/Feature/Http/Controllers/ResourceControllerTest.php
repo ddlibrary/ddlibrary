@@ -3,9 +3,8 @@
 namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Resource;
-use App\Models\ResourceComment;
 use App\Models\ResourceAttachment;
-use App\Models\ResourceFlag;
+use App\Models\ResourceComment;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -16,6 +15,7 @@ use Tests\TestCase;
 class ResourceControllerTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * @test
      */
@@ -39,15 +39,40 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
-    public function view_file_aborts_with_a_403(): void
+    public function view_file_aborts_with_a_404(): void
     {
         $this->refreshApplicationWithLocale('en');
 
         $resource = Resource::factory()->create();
 
-        $response = $this->get('en/resource/view/' . $resource->id . '/invalid-key');
+        $response = $this->get('en/resource/view/999/invalid-key');
 
-        $response->assertForbidden();
+        $response->assertNotFound();
+    }
+
+    /**
+     * @test
+     */
+    public function update_tid_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $resource = Resource::factory()->create();
+        $translatedResource = Resource::factory()->create();
+
+        $response = $this->post(route('updatetid', ['resourceId' => $resource->id]), [
+            'link' => $translatedResource->id,
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('resources', [
+            'id' => $resource->id,
+            'tnid' => $translatedResource->id,
+        ]);
     }
 
     /**
