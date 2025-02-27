@@ -78,6 +78,31 @@ class ResourceControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * @test
+     */
+    public function comment_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $resource = Resource::factory()->create();
+
+        $response = $this->post(route('comment'), [
+            'userid' => $user->id,
+            'resource_id' => $resource->id,
+            'comment' => 'This is a test comment.',
+        ]);
+
+        $response->assertRedirect('resource/' . $resource->id);
+        $this->assertDatabaseHas('resource_comments', [
+            'resource_id' => $resource->id,
+            'user_id' => $user->id,
+            'comment' => 'This is a test comment.',
+        ]);
+    }
 
     /**
      * @test
