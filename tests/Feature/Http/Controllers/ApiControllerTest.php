@@ -232,4 +232,29 @@ class ApiControllerTest extends TestCase
 
         $this->assertAuthenticatedAs($user);
     }
+
+    /**
+     * @test
+     */
+    public function logout_returns_an_ok_response(): void
+    {
+        $user = User::factory()->create([
+            'password' => Hash::make('password123'),
+        ]);
+
+        $token = $user->createToken('Test Device')->plainTextToken;
+
+        $response = $this->withHeaders(['Authorization' => "Bearer {$token}"])
+                        ->postJson('api/logout');
+
+        $response->assertOk();
+
+        $response->assertJsonStructure([
+            'message',
+        ]);
+
+        $this->assertEquals('Logged out!', $response->json('message'));
+
+        $this->assertCount(0, $user->tokens);
+    }
 }
