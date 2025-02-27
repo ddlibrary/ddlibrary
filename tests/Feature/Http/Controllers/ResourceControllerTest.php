@@ -19,6 +19,8 @@ class ResourceControllerTest extends TestCase
 
     
 
+    
+
     /**
      * @test
      */
@@ -250,6 +252,25 @@ class ResourceControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('resources.resources_edit_step2');
 
+    }
+
+    /**
+     * @test
+     */
+    public function delete_resource_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $resource = Resource::factory()->create();
+
+        $response = $this->get('en/admin/resource/delete/' . $resource->id);
+
+        $response->assertRedirect();
+        $this->assertEquals(0, Resource::whereId($resource->id)->count());
     }
 
     /**
