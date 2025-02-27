@@ -107,6 +107,23 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
+    public function create_step_one_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $response = $this->get(route('step1'));
+
+        $response->assertOk();
+        $response->assertViewIs('resources.resources_add_step1');
+        $response->assertViewHas('resource');
+    }
+
+    /**
+     * @test
+     */
     public function view_file_aborts_with_a_404(): void
     {
         $this->refreshApplicationWithLocale('en');
