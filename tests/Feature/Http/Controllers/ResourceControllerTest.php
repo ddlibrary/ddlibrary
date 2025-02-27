@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use App\Models\Resource;
 use App\Models\ResourceAttachment;
 use App\Models\ResourceComment;
+use App\Models\ResourceFlag;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,7 +18,7 @@ class ResourceControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-
+    
     /**
      * @test
      */
@@ -282,6 +283,29 @@ class ResourceControllerTest extends TestCase
         $response = $this->get('en/resource/view/999/invalid-key');
 
         $response->assertNotFound();
+    }
+
+    /**
+     * @test
+     */
+    public function flag_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $resource = Resource::factory()->create();
+
+        $response = $this->post(route('flag'), [
+            'userid' => $user->id,
+            'resource_id' => $resource->id,
+            'type' => 'spam',
+            'details' => 'This is a spam resource.',
+        ]);
+
+        $response->assertRedirect('resource/' . $resource->id);
+        $this->assertEquals('This is a spam resource.', ResourceFlag::where('resource_id', $resource->id)->value('details'));
     }
 
     /**
