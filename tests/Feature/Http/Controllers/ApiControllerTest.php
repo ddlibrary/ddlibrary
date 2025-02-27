@@ -86,4 +86,35 @@ class ApiControllerTest extends TestCase
         $this->assertEquals($user->id, $response->json('id'));
         $this->assertEquals($user->email, $response->json('email'));
     }
+
+    /**
+     * @test
+     */
+    public function resources_returns_an_ok_response(): void
+    {
+
+        $resources = Resource::factory()->count(12)->create([
+            'status' => 1,
+            'language' => 'en',
+        ]);
+    
+        $response = $this->getJson('api/resources/en');
+    
+        $response->assertOk();
+    
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'title',
+                    'abstract',
+                    'status',
+                    'language',
+                ],
+            ],
+            'links',
+        ]);
+    
+        $this->assertCount(12, $response->json('data'));
+    }
 }
