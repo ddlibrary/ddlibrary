@@ -379,6 +379,51 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
+    public function post_step_three_returns_an_ok_response(): void
+    {
+
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $resource = \App\Models\Resource::factory()->create();
+        $taxonomyTerm = \App\Models\TaxonomyTerm::factory()->create();
+
+        $step1 = [
+            "title" => "nice",
+            "author" => "wow",
+            "publisher" => "wow",
+            "translator" => "great",
+            "language" => "en",
+            "abstract" => "<p>abstract</p>"
+        ];
+
+        $step2 = [
+            "subject_areas" => [],
+            "keywords" => "keyword",
+            "learning_resources_types" => [], 
+            "educational_use" =>  [],
+            "level" =>  [],
+        ];
+
+        Session::put('resource1', $step1);
+        Session::put('resource2', $step2);
+
+        $response = $this->post('en/resources/add/step3', [
+            "translation_rights" => 1,
+            "educational_resource" => 1,
+            "copyright_holder" => null
+        ]);
+
+        $response->assertRedirect('/home');
+
+    }
+
+    /**
+     * @test
+     */
     public function view_file_aborts_with_a_404(): void
     {
         $this->refreshApplicationWithLocale('en');
