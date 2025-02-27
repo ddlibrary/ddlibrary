@@ -17,9 +17,6 @@ class ResourceControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    
-
-    
 
     /**
      * @test
@@ -271,6 +268,20 @@ class ResourceControllerTest extends TestCase
 
         $response->assertRedirect();
         $this->assertEquals(0, Resource::whereId($resource->id)->count());
+    }
+
+    /**
+     * @test
+     */
+    public function download_file_aborts_with_a_404(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $resource = Resource::factory()->create();
+
+        $response = $this->get('en/resource/view/999/invalid-key');
+
+        $response->assertNotFound();
     }
 
     /**
