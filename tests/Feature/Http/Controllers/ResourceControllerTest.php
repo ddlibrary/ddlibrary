@@ -39,6 +39,49 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
+    public function attributes_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $resource = Resource::factory()->create();
+
+        // Test for authors
+        $response = $this->get('en/resources/attributes/authors?term=sample');
+        $response->assertOk();
+        $response->assertJsonStructure([
+            '*' => ['id', 'name'],
+        ]);
+
+        // Test for publishers
+        $response = $this->get('en/resources/attributes/publishers?term=sample');
+        $response->assertOk();
+        $response->assertJsonStructure([
+            '*' => ['id', 'name'],
+        ]);
+
+        // Test for translators
+        $response = $this->get('en/resources/attributes/translators?term=sample');
+        $response->assertOk();
+        $response->assertJsonStructure([
+            '*' => ['id', 'name'],
+        ]);
+
+        // Test for keywords
+        $response = $this->get('en/resources/attributes/keywords?term=sample');
+        $response->assertOk();
+        $response->assertJsonStructure([
+            '*' => ['id', 'name'],
+        ]);
+    }
+
+
+    /**
+     * @test
+     */
     public function view_file_aborts_with_a_404(): void
     {
         $this->refreshApplicationWithLocale('en');
