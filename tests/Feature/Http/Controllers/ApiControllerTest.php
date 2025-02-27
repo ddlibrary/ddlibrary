@@ -257,4 +257,36 @@ class ApiControllerTest extends TestCase
 
         $this->assertCount(0, $user->tokens);
     }
+
+
+    /**
+     * @test
+     */
+    public function news_returns_an_ok_response(): void
+    {
+        $newsItems = News::factory()->count(3)->create();
+
+        $newsItem = $newsItems->first();
+
+        $response = $this->getJson("api/news/{$newsItem->id}");
+
+        $response->assertOk();
+
+        $response->assertJsonStructure([
+            '*' => [
+                'id',
+                'title',
+                'summary',
+                'body',
+                'created_at',
+                'updated_at',
+            ],
+        ]);
+
+        $this->assertCount(1, $response->json()); // Should return only one news item
+        $this->assertEquals($newsItem->id, $response->json()[0]['id']);
+        $this->assertEquals($newsItem->title, $response->json()[0]['title']);
+        $this->assertEquals($newsItem->summary, $response->json()[0]['summary']);
+        $this->assertEquals($newsItem->body, $response->json()[0]['body']);
+    }
 }
