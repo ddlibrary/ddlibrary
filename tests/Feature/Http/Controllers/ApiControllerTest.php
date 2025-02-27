@@ -11,6 +11,7 @@ use App\Models\ResourceComment;
 use App\Models\ResourceFavorite;
 use App\Models\User;
 use App\Models\UserProfile;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -200,5 +201,35 @@ class ApiControllerTest extends TestCase
                 'Menu item not found in the response data'
             );
         }
+    }
+
+    /**
+     * @test
+     */
+    public function login_returns_an_ok_response(): void
+    {
+        $user = User::factory()->create([
+            'password' => Hash::make('password123'),
+        ]);
+
+        $requestData = [
+            'email' => $user->email,
+            'password' => 'password123',
+            'device_name' => 'Test Device',
+        ];
+
+        $response = $this->postJson('api/login', $requestData);
+
+        $response->assertOk();
+
+        $response->assertJsonStructure([
+            'token',
+            'user',
+        ]);
+
+        $this->assertArrayHasKey('token', $response->json());
+        $this->assertEquals($user->username, $response->json('user'));
+
+        $this->assertAuthenticatedAs($user);
     }
 }
