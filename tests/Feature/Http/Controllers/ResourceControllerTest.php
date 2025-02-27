@@ -354,6 +354,31 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
+    public function post_step_one_edit_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $resource = Resource::factory()->create();
+
+        $response = $this->post('en/resources/edit/step1/' . $resource->id, [
+            'title' => 'Updated Resource',
+            'author' => 'Updated Author',
+            'publisher' => 'Updated Publisher',
+            'translator' => 'Updated Translator',
+            'language' => 'en',
+            'abstract' => 'Updated abstract.',
+        ]);
+
+        $response->assertRedirect('/resources/edit/step2/' . $resource->id);
+    }
+
+    /**
+     * @test
+     */
     public function view_file_aborts_with_a_404(): void
     {
         $this->refreshApplicationWithLocale('en');
