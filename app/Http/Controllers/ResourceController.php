@@ -1262,7 +1262,7 @@ class ResourceController extends Controller
         }
         $rs->save();
 
-        return back();
+        return redirect()->back();
     }
 
     /**
@@ -1355,7 +1355,7 @@ class ResourceController extends Controller
     {
         $secret = config('s3.config.secret');
         $decrypted_key = $$key ? decrypt($key) : null;
-        $received_time = $secret ? $decrypted_key / ($secret ? $secret : 1) : 1;
+        $received_time = $secret ? $decrypted_key / ($secret ? $secret : 1) : time();
         $current_time = time();
 
         if ($current_time - $received_time < 300) { // 300 - tolerance of 5 minutes
