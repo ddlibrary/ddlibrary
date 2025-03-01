@@ -25,6 +25,48 @@ class ApiControllerTest extends TestCase
     /**
      * @test
      */
+    public function pages_returns_an_ok_response(): void
+    {
+        $pages = Page::factory()->count(3)->create([
+            'status' => 1,
+            'language' => 'en'
+        ]);
+
+        $response = $this->getJson('api/pages/en'); // Change 'en' to the desired language if needed
+
+        $response->assertOk();
+
+        $response->assertJsonStructure([
+            'current_page',
+            'data' => [
+                '*' => [ // Each page item in the data array should have the following structure
+                    'id',
+                    'title',
+                    'summary',
+                    'body',
+                    'language',
+                    'status',
+                    'created_at',
+                    'updated_at',
+                ],
+            ],
+            'last_page',
+            'per_page',
+            'total',
+        ]);
+
+        $responseData = $response->json();
+
+        $this->assertEquals(3, $responseData['total']);
+
+        foreach ($pages as $page) {
+            $this->assertTrue(in_array($page->id, array_column($responseData['data'], 'id')), "Page ID {$page->id} not found in the response.");
+        }
+    }
+
+    /**
+     * @test
+     */
     public function page_view_returns_an_ok_response(): void
     {
         $page = Page::factory()->create();
@@ -43,7 +85,7 @@ class ApiControllerTest extends TestCase
             $response->assertViewHas('translations', []);
         }
     }
-    
+
     /**
      * @test
      */
