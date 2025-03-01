@@ -25,6 +25,28 @@ class ApiControllerTest extends TestCase
     /**
      * @test
      */
+    public function page_view_returns_an_ok_response(): void
+    {
+        $page = Page::factory()->create();
+        $translations = Page::factory()->count(2)->create(['tnid' => $page->tnid]);
+
+        $response = $this->getJson("api/page_view/$page->id");
+
+        $response->assertOk();
+        $response->assertViewIs('pages.page_app_view');
+        $response->assertViewHas('page');
+        
+        $translation_id = $page->tnid;
+        if ($translation_id) {
+            $response->assertViewHas('translations');
+        } else {
+            $response->assertViewHas('translations', []);
+        }
+    }
+    
+    /**
+     * @test
+     */
     public function page_returns_an_ok_response(): void
     {
         $pages = Page::factory()->count(3)->create();
@@ -46,7 +68,7 @@ class ApiControllerTest extends TestCase
             ],
         ]);
 
-        $this->assertCount(1, $response->json()); // Ensure only one page item is returned
+        $this->assertCount(1, $response->json());
         $this->assertEquals($pageItem->id, $response->json()[0]['id']);
         $this->assertEquals($pageItem->title, $response->json()[0]['title']);
         $this->assertEquals($pageItem->summary, $response->json()[0]['summary']);
