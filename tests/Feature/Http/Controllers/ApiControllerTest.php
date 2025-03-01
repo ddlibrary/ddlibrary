@@ -25,12 +25,52 @@ class ApiControllerTest extends TestCase
     /**
      * @test
      */
+    public function register_returns_an_ok_response(): void
+    {
+        $requestData = [
+            'email' => 'ddluser@example.com',
+            'username' => 'ddluser',
+            'password' => 'Password@123!',
+        ];
+
+        $response = $this->postJson('api/register', $requestData);
+
+        $response->assertOk();
+
+        $response->assertJsonStructure(['token', 'user']);
+
+        $this->assertDatabaseHas('users', [
+            'email' => $requestData['email'],
+            'username' => $requestData['username'],
+        ]);
+
+        $this->assertNotEmpty($response->json('token'));
+
+        $user = User::where('email', $requestData['email'])->first();
+        $this->assertEquals(1, $user->status); // Ensure the user is active
+        $this->assertEquals(config('app.locale'), $user->language); // Check the default language
+
+        $this->assertDatabaseHas('user_profiles', [
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertDatabaseHas('user_roles', [
+            'user_id' => $user->id,
+            'role_id' => 6,
+        ]);
+    }
+
+    /**
+     * @test
+     */
     public function pages_returns_an_ok_response(): void
     {
-        $pages = Page::factory()->count(3)->create([
-            'status' => 1,
-            'language' => 'en'
-        ]);
+        $pages = Page::factory()
+            ->count(3)
+            ->create([
+                'status' => 1,
+                'language' => 'en',
+            ]);
 
         $response = $this->getJson('api/pages/en'); // Change 'en' to the desired language if needed
 
@@ -39,7 +79,8 @@ class ApiControllerTest extends TestCase
         $response->assertJsonStructure([
             'current_page',
             'data' => [
-                '*' => [ // Each page item in the data array should have the following structure
+                '*' => [
+                    // Each page item in the data array should have the following structure
                     'id',
                     'title',
                     'summary',
@@ -70,14 +111,16 @@ class ApiControllerTest extends TestCase
     public function page_view_returns_an_ok_response(): void
     {
         $page = Page::factory()->create();
-        $translations = Page::factory()->count(2)->create(['tnid' => $page->tnid]);
+        $translations = Page::factory()
+            ->count(2)
+            ->create(['tnid' => $page->tnid]);
 
         $response = $this->getJson("api/page_view/$page->id");
 
         $response->assertOk();
         $response->assertViewIs('pages.page_app_view');
         $response->assertViewHas('page');
-        
+
         $translation_id = $page->tnid;
         if ($translation_id) {
             $response->assertViewHas('translations');
@@ -100,14 +143,7 @@ class ApiControllerTest extends TestCase
         $response->assertOk();
 
         $response->assertJsonStructure([
-            '*' => [ 
-                'id',
-                'title',
-                'summary',
-                'body',
-                'created_at',
-                'updated_at',
-            ],
+            '*' => ['id', 'title', 'summary', 'body', 'created_at', 'updated_at'],
         ]);
 
         $this->assertCount(1, $response->json());
@@ -212,29 +248,24 @@ class ApiControllerTest extends TestCase
      */
     public function resources_returns_an_ok_response(): void
     {
+        $resources = Resource::factory()
+            ->count(12)
+            ->create([
+                'status' => 1,
+                'language' => 'en',
+            ]);
 
-        $resources = Resource::factory()->count(12)->create([
-            'status' => 1,
-            'language' => 'en',
-        ]);
-    
         $response = $this->getJson('api/resources/en');
-    
+
         $response->assertOk();
-    
+
         $response->assertJsonStructure([
             'data' => [
-                '*' => [
-                    'id',
-                    'title',
-                    'abstract',
-                    'status',
-                    'language',
-                ],
+                '*' => ['id', 'title', 'abstract', 'status', 'language'],
             ],
             'links',
         ]);
-    
+
         $this->assertCount(12, $response->json('data'));
     }
 
@@ -243,45 +274,42 @@ class ApiControllerTest extends TestCase
      */
     public function resource_offset_returns_an_ok_response(): void
     {
+        $resources = Resource::factory()
+            ->count(40)
+            ->create([
+                'status' => 1,
+                'language' => 'en',
+            ]);
 
-        $resources = Resource::factory()->count(40)->create([
-            'status' => 1,
-            'language' => 'en',
-        ]);
-    
         // Define the language and offset (page number)
         $lang = 'en';
         $perPage = 32; // Number of resources per page
         $offset = 2;
-    
+
         // Make the API request (assuming offset is treated as page number)
         $response = $this->getJson("api/resources/{$lang}?page={$offset}");
-    
+
         // Assert that the response is OK
         $response->assertOk();
-    
+
         // Assert the JSON structure of the response
         $response->assertJsonStructure([
             'data' => [
-                '*' => [
-                    'id',
-                    'title',
-                    'abstract',
-                    'status',
-                    'language',
-                ],
+                '*' => ['id', 'title', 'abstract', 'status', 'language'],
             ],
             'links',
         ]);
-    
+
         $this->assertCount(8, $response->json('data'));
-    
+
         // Optionally, verify that the returned resources are from the correct offset
-        $expectedIds = $resources->slice(($offset - 1) * $perPage, $perPage)->pluck('id')->toArray();
+        $expectedIds = $resources
+            ->slice(($offset - 1) * $perPage, $perPage)
+            ->pluck('id')
+            ->toArray();
         foreach ($response->json('data') as $item) {
             $this->assertTrue(in_array($item['id'], $expectedIds), 'Resource not found in the expected data set');
         }
-
     }
 
     /**
@@ -290,10 +318,12 @@ class ApiControllerTest extends TestCase
     public function links_returns_an_ok_response(): void
     {
         // Create 3 menu items with language 'en' and location 'bottom-menu'
-        $menus = Menu::factory()->count(3)->create([
-            'language' => 'en',
-            'location' => 'bottom-menu',
-        ]);
+        $menus = Menu::factory()
+            ->count(3)
+            ->create([
+                'language' => 'en',
+                'location' => 'bottom-menu',
+            ]);
 
         // Make the API request
         $response = $this->getJson('api/links/en');
@@ -303,11 +333,7 @@ class ApiControllerTest extends TestCase
 
         // Assert the JSON structure of the response
         $response->assertJsonStructure([
-            '*' => [
-                'id',
-                'title',
-                'path',
-            ],
+            '*' => ['id', 'title', 'path'],
         ]);
 
         // Assert that the correct number of menus are returned
@@ -315,10 +341,7 @@ class ApiControllerTest extends TestCase
 
         // Optionally verify that the expected menu items are returned
         foreach ($menus as $menu) {
-            $this->assertTrue(
-                collect($response->json())->contains(fn($item) => $item['id'] === $menu->id),
-                'Menu item not found in the response data'
-            );
+            $this->assertTrue(collect($response->json())->contains(fn($item) => $item['id'] === $menu->id), 'Menu item not found in the response data');
         }
     }
 
@@ -341,10 +364,7 @@ class ApiControllerTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertJsonStructure([
-            'token',
-            'user',
-        ]);
+        $response->assertJsonStructure(['token', 'user']);
 
         $this->assertArrayHasKey('token', $response->json());
         $this->assertEquals($user->username, $response->json('user'));
@@ -363,20 +383,16 @@ class ApiControllerTest extends TestCase
 
         $token = $user->createToken('Test Device')->plainTextToken;
 
-        $response = $this->withHeaders(['Authorization' => "Bearer {$token}"])
-                        ->postJson('api/logout');
+        $response = $this->withHeaders(['Authorization' => "Bearer {$token}"])->postJson('api/logout');
 
         $response->assertOk();
 
-        $response->assertJsonStructure([
-            'message',
-        ]);
+        $response->assertJsonStructure(['message']);
 
         $this->assertEquals('Logged out!', $response->json('message'));
 
         $this->assertCount(0, $user->tokens);
     }
-
 
     /**
      * @test
@@ -392,14 +408,7 @@ class ApiControllerTest extends TestCase
         $response->assertOk();
 
         $response->assertJsonStructure([
-            '*' => [
-                'id',
-                'title',
-                'summary',
-                'body',
-                'created_at',
-                'updated_at',
-            ],
+            '*' => ['id', 'title', 'summary', 'body', 'created_at', 'updated_at'],
         ]);
 
         $this->assertCount(1, $response->json()); // Should return only one news item
@@ -414,10 +423,12 @@ class ApiControllerTest extends TestCase
      */
     public function news_list_returns_an_ok_response(): void
     {
-        $newsItems = News::factory()->count(3)->create([
-            'status' => 1,
-            'language' => 'en',
-        ]);
+        $newsItems = News::factory()
+            ->count(3)
+            ->create([
+                'status' => 1,
+                'language' => 'en',
+            ]);
 
         $response = $this->getJson('api/news_list/en');
 
@@ -425,14 +436,7 @@ class ApiControllerTest extends TestCase
 
         $response->assertJsonStructure([
             'data' => [
-                '*' => [
-                    'id',
-                    'title',
-                    'summary',
-                    'body',
-                    'created_at',
-                    'updated_at',
-                ],
+                '*' => ['id', 'title', 'summary', 'body', 'created_at', 'updated_at'],
             ],
             'links',
         ]);
@@ -440,10 +444,7 @@ class ApiControllerTest extends TestCase
         $this->assertCount(3, $response->json('data'));
 
         foreach ($newsItems as $newsItem) {
-            $this->assertTrue(
-                collect($response->json('data'))->contains(fn($item) => $item['id'] === $newsItem->id),
-                'News item not found in the response data'
-            );
+            $this->assertTrue(collect($response->json('data'))->contains(fn($item) => $item['id'] === $newsItem->id), 'News item not found in the response data');
         }
     }
 }
