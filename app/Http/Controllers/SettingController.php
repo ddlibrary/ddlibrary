@@ -15,58 +15,15 @@ use Illuminate\View\View;
 class SettingController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return void
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return void
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return void
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @return void
-     */
-    public function show(Setting $setting)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @return BladeView|Factory|false|Application|View
      */
-    public function edit(Setting $setting): View
+    public function edit(): View
     {
-        $setting = $setting->find(1);
-        if ($setting == null) {
-            $setting = new Setting();
-        }
+        $setting =  Setting::first();
 
-        return view('admin.settings.settings_view')->with('setting', $setting);
+        return view('admin.settings.settings_view', compact('setting'));
     }
 
     /**
@@ -84,27 +41,12 @@ class SettingController extends Controller
             'website_email' => 'required',
         ]);
 
-        //Saving contact info to the database
-        $setting = $setting->find(1);
-        if ($setting == null) {
-            $setting = new Setting();
-        }
-        $setting->website_name = $request->input('website_name');
-        $setting->website_slogan = $request->input('website_slogan');
-        $setting->website_email = $request->input('website_email');
-
-        $setting->save();
+        $setting->update([
+            'website_name' => $request->input('website_name'),
+            'website_slogan' => $request->input('website_slogan'),
+            'website_email' => $request->input('website_email'),
+        ]);
 
         return redirect('/admin/settings')->with('success', 'Settings updated!');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return void
-     */
-    public function destroy(Setting $setting)
-    {
-        //
     }
 }

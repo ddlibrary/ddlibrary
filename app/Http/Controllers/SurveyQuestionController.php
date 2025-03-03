@@ -74,21 +74,21 @@ class SurveyQuestionController extends Controller
         }
         $created_question->save();
 
-        return Redirect::back()->with('status', 'Question Added!');
+        return back()->with('status', 'Question Added!');
     }
 
     public function delete($id): RedirectResponse
     {
-        $question = SurveyQuestion::find($id);
-        $question->delete();
+        SurveyQuestion::whereId($id)->delete();
 
-        return Redirect::back()->with('status', 'Survey\'s Question Deleted!');
+        return back()->with('status', 'Survey\'s Question Deleted!');
     }
 
     public function addTranslate($tnid, $lang): View
     {
         $question = SurveyQuestion::where('id', $tnid)->first();
         $survey = Survey::find($question->survey_id);
+
 
         return view('admin.surveys.question.add_translation', compact('tnid', 'lang', 'survey', 'question'));
     }
