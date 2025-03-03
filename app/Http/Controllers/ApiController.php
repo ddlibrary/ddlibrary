@@ -164,7 +164,7 @@ class ApiController extends Controller
     // Page view
     public function pageView($id): View
     {
-        $page = Page::find($id);
+        $page = Page::findOrFail($id);
 
         $translation_id = $page->tnid;
         $translations = ($translation_id) ? Page::where('tnid', $translation_id)->get() : [];
