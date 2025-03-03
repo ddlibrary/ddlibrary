@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\TaxonomyHierarchy;
 use App\Models\TaxonomyTerm;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,11 +18,11 @@ class TaxonomyHierarchyFactory extends Factory
      */
     public function definition(): array
     {
-        $id = TaxonomyTerm::factory()->create()->id;
         return [
-            'tid' => $id,
+            'id' => (int)(TaxonomyHierarchy::latest()->value('id') + 1),
+            'tid' => TaxonomyTerm::factory()->create()->id,
             'parent' => 1,
-            'aux_id' => $id,
+            'aux_id' => TaxonomyTerm::factory()->create()->id,
         ];
     }
 }
