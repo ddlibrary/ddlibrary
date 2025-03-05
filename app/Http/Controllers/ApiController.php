@@ -439,7 +439,7 @@ class ApiController extends Controller
     public function getFile($fileId): BinaryFileResponse
     {
 
-        $resourceAttachment = ResourceAttachment::where('resource_id', $fileId)->firstOrFail();
+        $resourceAttachment = ResourceAttachment::where('id', $fileId)->firstOrFail();
         try {
             $file = Storage::disk('s3')->get('resources/'.$resourceAttachment->file_name);
         } catch (FileNotFoundException $e) {
