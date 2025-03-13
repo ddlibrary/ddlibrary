@@ -81,7 +81,7 @@ class ResourceFileController extends Controller
             'imageUrl' => $fullPath,
             'thumbnailUrl' => $thumbnailFullPath,
             'imageName' => $request->image_name,
-            'message' => 'Image uploaded successfully',
+            'message' => __('Image uploaded successfully'),
         ]);
     }
 
