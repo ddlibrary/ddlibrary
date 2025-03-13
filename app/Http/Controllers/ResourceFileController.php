@@ -26,7 +26,7 @@ class ResourceFileController extends Controller
                 'taxonomy_term_data_id' => 'nullable|exists:taxonomy_term_data,id',
             ],
             [
-                'image.dimensions' => 'The resource image must be square in shape.',
+                'image.dimensions' => "Upload an image that is the same width and height (a square).",
             ],
         );
 
