@@ -299,5 +299,6 @@
     "Upload":"اپلود",
     "Loading, please wait":"لطفاً صبر کنید",
     "Resource not found": "دریافت نشد.",
-    "Image uploaded successfully": "عکس موفقانه اپلود گردید"
+    "Image uploaded successfully": "عکس موفقانه اپلود گردید",
+    "Upload an image that is the same width and height (a square).": "تصویری با عرض و ارتفاع برابر را آپلود کنید (مانند یک مربع)."
 }

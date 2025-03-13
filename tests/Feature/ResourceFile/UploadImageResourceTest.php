@@ -67,7 +67,7 @@ class UploadImageResourceTest extends TestCase
             'success' => false,
             'errors' => [
                 'image' => [
-                    "Upload an image that is the same width and height (a square)."
+                    __("Upload an image that is the same width and height (a square).")
                 ]
             ]
         ]);
@@ -92,7 +92,7 @@ class UploadImageResourceTest extends TestCase
                 'image' => [
                     'The image field must be a file of type: jpg, jpeg, png.',
                     'The image field must be an image.',
-                    "Upload an image that is the same width and height (a square)."
+                    __("Upload an image that is the same width and height (a square).")
                 ]
             ]
         ]);
