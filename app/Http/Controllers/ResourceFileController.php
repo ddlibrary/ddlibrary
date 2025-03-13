@@ -45,26 +45,21 @@ class ResourceFileController extends Controller
 
         $fileSystemDisk = env('FILESYSTEM_DISK', 'local');
 
-        // Store the file in S3
         Storage::disk($fileSystemDisk)->put($path, file_get_contents($file));
 
-        // Create a thumbnail using imagine/imagine
         $imagine = new Imagine();
         $image = $imagine->open($file->getRealPath());
         $thumbnailPath = 'resources/thumbnails/' . $fileName;
 
-        // Ensure the temp directory exists
         $tempDirectory = storage_path('app/temp/resources/thumbnails');
         if (!file_exists($tempDirectory)) {
-            mkdir($tempDirectory, 0755, true); // Create the directory if it doesn't exist
+            mkdir($tempDirectory, 0755, true);
         }
 
-        // Resize and save the thumbnail to the temporary local storage
         $image
-            ->resize(new Box(250, 250)) // Resize to 150x150 pixels
-            ->save($tempDirectory . '/' . $fileName); // Save to the temporary local storage
+            ->resize(new Box(250, 250))
+            ->save($tempDirectory . '/' . $fileName);
 
-        // Store the thumbnail in S3
         Storage::disk($fileSystemDisk)->put($thumbnailPath, file_get_contents($tempDirectory . '/' . $fileName));
 
         $thumbnailFullPath = Storage::disk($fileSystemDisk)->url($thumbnailPath);
