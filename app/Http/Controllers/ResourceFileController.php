@@ -51,7 +51,8 @@ class ResourceFileController extends Controller
         $image = $imagine->open($file->getRealPath());
         $thumbnailPath = 'resources/thumbnails/' . $fileName;
 
-        $tempDirectory = storage_path('app/temp/resources/thumbnails');
+        $tempDirectory = sys_get_temp_dir() . '/resources/thumbnails';
+
         if (!file_exists($tempDirectory)) {
             mkdir($tempDirectory, 0755, true);
         }
