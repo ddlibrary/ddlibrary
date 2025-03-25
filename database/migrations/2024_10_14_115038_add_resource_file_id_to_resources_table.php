@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('resources', function (Blueprint $table) {
             $table->unsignedBigInteger('resource_file_id')->after('user_id')->nullable();
+            $table->string('image', 500)->after('title')->nullable();
 
             $table->foreign('resource_file_id')->references('id')->on('resource_files');
         });
@@ -26,6 +27,7 @@ return new class extends Migration
         Schema::table('resources', function (Blueprint $table) {
             $table->dropForeign(['resource_file_id']);
             $table->dropColumn('resource_file_id');
+            $table->dropColumn('image');
         });
     }
 };
