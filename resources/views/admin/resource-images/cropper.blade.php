@@ -5,7 +5,7 @@
             <!-- Example DataTables Card-->
             <div class="card mb-3">
                 <div class="card-header">
-                    <i class="fa fa-table"></i> Crop the Image
+                    <i class="fa fa-table"></i> {{ _('Crop the Image')}}
                 </div>
                 <div class="card-body">
                     <div >
