@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TaxonomyVocabularyEnum;
 use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
 use App\Models\Resource;
@@ -13,6 +14,7 @@ use App\Models\ResourceCreativeCommon;
 use App\Models\ResourceEducationalResource;
 use App\Models\ResourceEducationalUse;
 use App\Models\ResourceFavorite;
+use App\Models\ResourceFile;
 use App\Models\ResourceFlag;
 use App\Models\ResourceIamAuthor;
 use App\Models\ResourceKeyword;
@@ -158,7 +160,7 @@ class ResourceController extends Controller
     public function viewPublicResource(Request $request, $resourceId): View|Factory|Redirector|RedirectResponse|Application
     {
             DDLClearSession();
-            $myResources = new Resource();
+            $myResource = new Resource();
 
             $resource = Resource::findOrFail($resourceId);
 
@@ -168,12 +170,12 @@ class ResourceController extends Controller
 
             $this->pageView($request, $resource->title);
 
-            $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
+            $relatedItems = $myResource->getRelatedResources($resourceId, $resource->subjects);
             $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
 
             $translation_id = $resource->tnid;
             if ($translation_id) {
-                $translations = $myResources->getResourceTranslations($translation_id);
+                $translations = $myResource->getResourceTranslations($translation_id);
             } else {
                 $translations = [];
             }
@@ -193,20 +195,34 @@ class ResourceController extends Controller
     {
         $this->middleware('auth');
         $resource = $request->session()->get('resource1');
+        $myResources = new Resource();
+        $creativeCommons = $myResources->resourceAttributesList('taxonomy_term_data', 10, config('app.locale'), [168,535]); // taxonomy_term_data.tnid [168=Unknown , 535=CC BY / CC BY-SA]
+        $subjects = $myResources->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject);
 
-        return view('resources.resources_add_step1', compact('resource'));
+        return view('resources.resources_add_step1', compact('resource', 'subjects', 'creativeCommons'));
     }
 
     public function postStepOne(Request $request): Redirector|Application|RedirectResponse
     {
         $validatedData = $request->validate([
             'title' => 'required',
+            'image' => ['required'],
             'author' => 'string|nullable',
             'publisher' => 'string|nullable',
             'translator' => 'string|nullable',
             'language' => 'required',
             'abstract' => 'required',
         ]);
+
+        if (isset($validatedData['image'])) {
+            $image = $validatedData['image'];
+            $resosurceFile = ResourceFile::where('uuid', $image)->first();
+
+            $validatedData['resource_image'] = $resosurceFile->path;
+            $validatedData['resource_file_id'] = $resosurceFile->id;
+            unset($validatedData['image']);
+
+        }
 
         $request->session()->put('resource1', $validatedData);
 
@@ -346,6 +362,8 @@ class ResourceController extends Controller
             $myResources = new Resource();
 
             $myResources->title = $finalArray['title'];
+            $myResources->image = $finalArray['resource_image'];
+            $myResources->resource_file_id = $finalArray['resource_file_id'];
             $myResources->abstract = $finalArray['abstract'];
             $myResources->language = $finalArray['language'];
             $myResources->user_id = Auth::id();

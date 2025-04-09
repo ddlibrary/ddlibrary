@@ -296,8 +296,8 @@
                 </div>
             </section>
             <aside>
-                <img class="resource-view-img border-radius-5"
-                    src="{{ getImagefromResource($resource->abstract, '282x254') }}" alt="Resource Main Image">
+                <img class="resource-view-img border-radius-5" src="{{ $resource->image ? $resource->image : getImagefromResource($resource->abstract, '282x254') }}"
+                    alt="Resource Main Image">
 
                 <div class="resource-view-related-items">
                     <header>
