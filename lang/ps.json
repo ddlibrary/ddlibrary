@@ -163,8 +163,5 @@
     "Subscribe to our newsletter":"خبرنامه ما را سابسکرایب کنید",
     "You already subscribed our newsletter.": "شما قبلاً خبرنامه ما را سابسکرایب کرده‌اید،",
     "Thank you": "خیلی ممنون",
-    "If you registered using a phone number, please contact us.": "اگر با شماره مبایل راجستر کرده اید، لطفاً <a href='/contact-us'> با ما تماس شوید</a>.",
-    "Image uploaded successfully": "عکس موفقانه اپلود گردید",
-    "Upload an image that is the same width and height (a square).": "تصویری با عرض و ارتفاع برابر را آپلود کنید (مانند یک مربع).",
-    "Crop the Image": "تصویر را برش بزنید"
+    "If you registered using a phone number, please contact us.": "اگر با شماره مبایل راجستر کرده اید، لطفاً <a href='/contact-us'> با ما تماس شوید</a>."
 }

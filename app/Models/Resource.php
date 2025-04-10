@@ -26,7 +26,6 @@ class Resource extends Model
     use LogsActivity;
 
     protected static $logAttributes = ['*'];
-    protected $guarded = [];
 
     public function levels(): BelongsToMany
     {
@@ -216,19 +215,13 @@ class Resource extends Model
             ->get();
     }
 
-    public function resourceAttributesList($tableName, $vid, $language = null, $whereIn = null): Collection
+    public function resourceAttributesList($tableName, $vid): Collection
     {
-        $language = $language ? $language : config('app.locale');
         return DB::table($tableName.' AS ttd')
             ->select('ttd.id', 'ttd.name', 'tth.parent', 'ttd.tnid')
             ->leftJoin('taxonomy_term_hierarchy AS tth', 'tth.tid', '=', 'ttd.id')
             ->where('vid', $vid)
-            ->where('language', $language)
-            ->where(function($query) use ($whereIn){
-                if($whereIn){
-                    $query->whereIn('ttd.tnid', $whereIn);
-                }
-            })
+            ->where('language', config('app.locale'))
             ->orderBy('ttd.name')
             ->orderBy('ttd.weight', 'desc')
             ->get();
@@ -273,7 +266,7 @@ class Resource extends Model
         }
 
         return DB::table('resources AS rs')
-            ->select('rs.id', 'rs.language', 'rs.abstract', 'rs.title', 'rs.status','rs.image')
+            ->select('rs.id', 'rs.language', 'rs.abstract', 'rs.title', 'rs.status')
             ->when($subjectAreaIds != null, function ($query) use ($subjectAreaIds) {
                 return $query
                     ->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
