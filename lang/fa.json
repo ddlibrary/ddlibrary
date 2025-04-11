@@ -286,5 +286,6 @@
     "Sorry! your data was not updated.":"ببخشید! عملیه ویرایش صورت نگرفت",
     "If this resource is translated, enter the translated resource id and click submit:": "اگر این منبع ترجمه شده است. آی دی منبع ترجمه شده را وارد کنید و روی دکمه ثبت کلیک کنید.",
     "Enter the translated resource id": "آی دی منبع ترجمه شده را وارد کنید",
-    "Your comment is successfully registered. We will publish it after review.": "نظر شما با موفقیت ثبت شد. پس از بررسی، آن را منتشر خواهیم کرد."
+    "Your comment is successfully registered. We will publish it after review.": "نظر شما با موفقیت ثبت شد. پس از بررسی، آن را منتشر خواهیم کرد.",
+    "Linked resources:": "منابع مرتبط"
 }
