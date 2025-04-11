@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ResourceTranslationLinkRequest;
 use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
 use App\Models\Resource;
@@ -77,7 +78,7 @@ class ResourceController extends Controller
         return view('admin.resources.resources', compact('resources', 'filters', 'languages'));
     }
 
-    public function updateTid(Request $request, $resourceId): RedirectResponse
+    public function updateTid(ResourceTranslationLinkRequest $request, $resourceId): RedirectResponse
     {
         $linkId = $request->input('link');
 
