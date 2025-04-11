@@ -15,26 +15,18 @@ class CommentController extends Controller
         return view('admin.comments.comments_list', compact('comments'));
     }
 
-    public function published($commentId)
+    public function published(ResourceComment $resourceComment)
     {
-        $this->middleware('admin');
-
-        $rs = ResourceComment::find($commentId);
-        if ($rs->status == 1) {
-            $rs->status = 0;
-            $rs->save();
-        } else {
-            $rs->status = 1;
-            $rs->save();
-        }
+        $resourceComment->update([
+            'status' => $resourceComment->status == 1 ? 0 : 1
+        ]);
 
         return back();
     }
 
-    public function delete($commentId): RedirectResponse
+    public function delete(ResourceComment $resourceComment): RedirectResponse
     {
-        $comment = ResourceComment::findOrFail($commentId);
-        $comment->delete();
+        $resourceComment->delete();
 
         return redirect()->back()->with('success', 'Comment has been deleted successfully!');
     }
