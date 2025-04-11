@@ -169,6 +169,8 @@ class ResourceController extends Controller
 
             $resource = Resource::with('resourceTranslationLinks')->findOrFail($resourceId);
 
+            $resourceTranslationLinks = ResourceTranslationLink::where('resource_id', $resourceId)->orWhere('link_resource_id', $resourceId)->get();
+
             if ($resource->status == 0 && ! (isAdmin() || isLibraryManager())) {  // We don't want anyone else to access unpublished resources
                 abort(403);
             }
@@ -191,6 +193,7 @@ class ResourceController extends Controller
             return view('resources.resources_view', compact(
                 'resource',
                 'relatedItems',
+                'resourceTranslationLinks',
                 'comments',
                 'translations'
             ));
