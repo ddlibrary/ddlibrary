@@ -254,14 +254,14 @@
                         <?php
                         $supportedLocals = [];
                         $newId = [];
+                        $newId[$resource->language] = $resource->id;
                         foreach (config('laravellocalization.localesOrder') as $localeCode) {
                             $supportedLocals[] = $localeCode;
                         }
-                        
-                        if (isset($translations)) {
-                            foreach ($translations as $tr) {
-                                if (in_array($tr->language, $supportedLocals)) {
-                                    $newId[$tr->language] = $tr->id;
+                        if (isset($resource->resourceTranslationLinks)) {
+                            foreach ($resource->resourceTranslationLinks as $resourceTranslationLinkre) {
+                                if (in_array($resourceTranslationLinkre->language, $supportedLocals)) {
+                                    $newId[$resourceTranslationLinkre->language] = $resourceTranslationLinkre->link_resource_id;
                                 }
                             }
                         }
