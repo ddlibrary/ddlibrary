@@ -167,7 +167,7 @@ class ResourceController extends Controller
             DDLClearSession();
             $myResources = new Resource();
 
-            $resource = Resource::findOrFail($resourceId);
+            $resource = Resource::with('resourceTranslationLinks')->findOrFail($resourceId);
 
             if ($resource->status == 0 && ! (isAdmin() || isLibraryManager())) {  // We don't want anyone else to access unpublished resources
                 abort(403);
