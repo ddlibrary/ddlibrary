@@ -167,7 +167,7 @@ class ResourceController extends Controller
             DDLClearSession();
             $myResources = new Resource();
 
-            $resource = Resource::with('resourceTranslationLinks')->findOrFail($resourceId);
+            $resource = Resource::findOrFail($resourceId);
 
             $resourceTranslationLinks = ResourceTranslationLink::where('resource_id', $resourceId)->orWhere('link_resource_id', $resourceId)->get();
 
