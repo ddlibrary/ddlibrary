@@ -25,6 +25,8 @@ class Resource extends Model
     use CausesActivity;
     use LogsActivity;
 
+    protected $guarded = [];
+
     protected static $logAttributes = ['*'];
 
     public function levels(): BelongsToMany
