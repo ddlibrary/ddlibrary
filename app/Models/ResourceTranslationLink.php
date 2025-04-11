@@ -15,4 +15,8 @@ class ResourceTranslationLink extends Model
     public function linkedResource(): BelongsTo {
         return $this->belongsTo(Resource::class, 'link_resource_id');
     }
+
+    public function resource(): BelongsTo {
+        return $this->belongsTo(Resource::class);
+    }
 }
