@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('resource_id');
             $table->unsignedInteger('link_resource_id');
-            $table->string('language');
 
             $table->foreign('resource_id')
                 ->references('id')
@@ -28,7 +27,6 @@ return new class extends Migration
                 ->onDelete('CASCADE');
 
             $table->unique(['resource_id', 'link_resource_id']);
-
 
             $table->timestamps();
         });
