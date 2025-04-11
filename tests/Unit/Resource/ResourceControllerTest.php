@@ -81,7 +81,7 @@ class ResourceControllerTest extends TestCase
     }
 
      /** @test */
-    public function it_validates_the_request()
+    public function link_resource_id_is_required()
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -98,6 +98,7 @@ class ResourceControllerTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors('link_resource_id');
+        $this->assertEquals('The link resource id field is required.', session('errors')->get('link_resource_id')[0]);
     }
 
     /** @test */
