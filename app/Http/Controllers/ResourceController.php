@@ -101,7 +101,7 @@ class ResourceController extends Controller
                 ]
             );
             Session::flash('alert', [
-                'message' => __('Resource successfully added!'),
+                'message' => __('Resource successfully linked!'),
                 'level' => 'success',
             ]);
         }else{
