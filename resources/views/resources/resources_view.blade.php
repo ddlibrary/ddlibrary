@@ -259,9 +259,9 @@
                             $supportedLocals[] = $localeCode;
                         }
                         if (isset($resource->resourceTranslationLinks)) {
-                            foreach ($resource->resourceTranslationLinks as $resourceTranslationLinkre) {
-                                if (in_array($resourceTranslationLinkre->language, $supportedLocals)) {
-                                    $newId[$resourceTranslationLinkre->language] = $resourceTranslationLinkre->link_resource_id;
+                            foreach ($resource->resourceTranslationLinks as $resourceTranslationLink) {
+                                if (in_array($resourceTranslationLink->language, $supportedLocals)) {
+                                    $newId[$resourceTranslationLink->language] = $resourceTranslationLink->link_resource_id;
                                 }
                             }
                         }
@@ -344,15 +344,24 @@
                                 </div>
                             </div>
                         </form>
-                        @if ($translations)
+                        @if ($resourceTranslationLinks)
                             <br><b>Linked resources:</b>
-                            @foreach ($translations as $resource)
-                                <a href="{{ URL::to($resource->language . '/resource/' . $resource->id) }}"
-                                    target="_blank">{{ $resource->id }} ({{ $resource->language }})</a>
-                                @if (!$loop->last)
-                                    ,
-                                @endif
-                            @endforeach
+                            <div class="resource-related-items-box">
+
+                                @foreach ($resourceTranslationLinks as $resourceTranslationLink)
+                                    <?php 
+                                        $resourceTranslated = $resourceTranslationLink->resource_id == $resource->id ? $resourceTranslationLink->linkedResource : $resourceTranslationLink->resource;
+                                    ?>
+                                    <div class="related-item">
+                                        <img class="related-items-img border-radius-5"
+                                            src="{{ getImagefromResource($resourceTranslated->abstract, '55x50') }}" alt="Resource Image">
+                                        <span><a title="{{ $resourceTranslated->title }}" target="_blank"
+                                            href="{{ URL::to($resourceTranslated->language . '/resource/' . $resourceTranslated->id) }}">
+                                            {{ $resourceTranslated->title }}</a><br />
+                                        </span>
+                                    </div>
+                                @endforeach
+                            </div>
                         @endif
                     </div>
                 @endif
