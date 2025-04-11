@@ -23,7 +23,7 @@ class ResourceTranslationLinkRequest extends FormRequest
     {
         return [
             'resource_id' => ['required', 'exists:resources,id'],
-            'link' => ['required', 'exists:resources,id']
+            'link_resource_id' => ['required', 'exists:resources,id']
         ];
     }
 }

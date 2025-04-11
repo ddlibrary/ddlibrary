@@ -338,13 +338,13 @@
                             <div class="translated-resource-id">
                                 {{ __('If this resource is translated, enter the translated resource id and click submit:') }}
                                 <div class="display-flex gap-1 mt-2">
-                                    <input type="number" class="flex-1 border-radius-5 border-0" name="link" min=0
+                                    <input type="number" class="flex-1 border-radius-5 border-0" name="link_resource_id" min=0
                                         placeholder=" {{ __('Enter the translated resource id') }} "
                                         class="form-control tnid-input">
                                     <input type="submit" class="form-control normalButton" value="{{ __('Submit') }}">
                                 </div>
-                                @if ($errors->has('link'))
-                                    <span class="text-red">{{ $errors->first('link') }}</span>
+                                @if ($errors->has('link_resource_id'))
+                                    <span class="text-red">{{ $errors->first('link_resource_id') }}</span>
                                 @endif
                             </div>
                         </form>

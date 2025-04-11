@@ -80,7 +80,7 @@ class ResourceController extends Controller
 
     public function updateTid(ResourceTranslationLinkRequest $request, $resourceId): RedirectResponse
     {
-        $linkId = $request->input('link');
+        $linkId = $request->input('link_resource_id');
 
         $resourceTranslationLink = ResourceTranslationLink::where(function($query) use ($resourceId, $linkId){
                 $query->where(['resource_id' => $resourceId, 'link_resource_id' => $linkId]);
