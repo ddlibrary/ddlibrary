@@ -343,6 +343,9 @@
                                         class="form-control tnid-input">
                                     <input type="submit" class="form-control normalButton" value="{{ __('Submit') }}">
                                 </div>
+                                @if ($errors->has('link'))
+                                    <span class="text-red">{{ $errors->first('link') }}</span>
+                                @endif
                             </div>
                         </form>
                         @if ($resourceTranslationLinks)
