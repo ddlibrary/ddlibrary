@@ -79,17 +79,37 @@ class ResourceController extends Controller
 
     public function updateTid(Request $request, $resourceId): RedirectResponse
     {
-        $translatedResource = Resource::findOrFail($request->input('link'));
-        
-        ResourceTranslationLink::updateOrCreate(
-            ['resource_id' => $resourceId, 'link_resource_id' => $translatedResource->id], 
-            ['language' => $translatedResource->language]
-        );
+        $linkId = $request->input('link');
 
-        Session::flash('alert', [
-            'message' => __('Resource successfully added!'),
-            'level' => 'success',
-        ]);
+        $resourceTranslationLink = ResourceTranslationLink::where(function($query) use ($resourceId, $linkId){
+                $query->where(['resource_id' => $resourceId, 'link_resource_id' => $linkId]);
+            })
+            ->orWhere(function($query) use ($resourceId, $linkId){
+                $query->where(['link_resource_id' => $resourceId, 'resource_id' => $linkId]);
+            })
+            ->doesntExist();
+
+        if($resourceTranslationLink){
+
+            ResourceTranslationLink::insert(
+                [
+                    'resource_id' => $resourceId, 
+                    'link_resource_id' => $linkId,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]
+            );
+            Session::flash('alert', [
+                'message' => __('Resource successfully added!'),
+                'level' => 'success',
+            ]);
+        }else{
+            Session::flash('alert', [
+                'message' => __('This resource already linked!'),
+                'level' => 'danger',
+            ]);
+        }
+
 
         return back();
     }
