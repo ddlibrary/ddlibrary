@@ -21,6 +21,7 @@ use App\Models\ResourceLevel;
 use App\Models\ResourcePublisher;
 use App\Models\ResourceSharePermission;
 use App\Models\ResourceSubjectArea;
+use App\Models\ResourceTranslationLink;
 use App\Models\ResourceTranslationRight;
 use App\Models\ResourceTranslator;
 use App\Models\ResourceView;
@@ -79,10 +80,16 @@ class ResourceController extends Controller
     public function updateTid(Request $request, $resourceId): RedirectResponse
     {
         $translatedResource = Resource::findOrFail($request->input('link'));
+        
+        ResourceTranslationLink::updateOrCreate(
+            ['resource_id' => $resourceId, 'link_resource_id' => $translatedResource->id], 
+            ['language' => $translatedResource->language]
+        );
 
-        $resource = Resource::findOrFail($resourceId);
-        $resource->tnid = $translatedResource->id;
-        $resource->save();
+        Session::flash('alert', [
+            'message' => __('Resource successfully added!'),
+            'level' => 'success',
+        ]);
 
         return back();
     }
