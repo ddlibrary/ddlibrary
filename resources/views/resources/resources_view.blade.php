@@ -349,7 +349,7 @@
                             </div>
                         </form>
                         @if ($resourceTranslationLinks)
-                            <br><b>Linked resources:</b>
+                            <br><b>@lang('Linked resources:')</b>
                             <div class="resource-related-items-box">
 
                                 @foreach ($resourceTranslationLinks as $resourceTranslationLink)
