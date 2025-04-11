@@ -147,5 +147,31 @@ class ResourceControllerTest extends TestCase
         $response->assertRedirect('/login');
     }
 
+    /** @test */
+    public function it_prevents_normal_users_from_linking_resources()
+    {
+        $normalUser = User::factory()->create();
+        $normalUser->roles()->attach(6);
+        $resource1 = Resource::create([
+            'title' => "Resource 1",
+            'abstract' => "abstract content",
+            'language' => 'en',
+            'status' => 1,
+        ]);
+
+        $link = Resource::create([
+            'title' => "Resource 2",
+            'abstract' => "abstract content",
+            'language' => 'en',
+            'status' => 1,
+        ]);
+
+        $response = $this->actingAs($normalUser)->post(route('updatetid', $resource1->id), [
+            'link_resource_id' => $link->id,
+        ]);
+
+        $response->assertRedirect('/home');
+    }
+
     
 }
