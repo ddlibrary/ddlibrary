@@ -22,7 +22,6 @@ class ResourceTranslationLinkRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'resource_id' => ['required', 'exists:resources,id'],
             'link_resource_id' => ['required', 'exists:resources,id']
         ];
     }
