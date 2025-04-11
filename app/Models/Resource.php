@@ -490,8 +490,4 @@ class Resource extends Model
     {
         return $this->hasMany(ResourceFavorite::class);
     }
-
-    public function resourceTranslationLinks(){
-        return $this->hasMany(ResourceTranslationLink::class);
-    }
 }
