@@ -121,5 +121,31 @@ class ResourceControllerTest extends TestCase
         $response->assertSessionHasErrors('link_resource_id');
         $this->assertEquals('The selected link resource id is invalid.', session('errors')->get('link_resource_id')[0]);
     }
+
+    /** @test */
+    public function it_prevents_unauthenticated_users_from_linking_resources()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $resource1 = Resource::create([
+            'title' => "Resource 1",
+            'abstract' => "abstract content",
+            'language' => 'en',
+            'status' => 1,
+        ]);
+
+        $link = Resource::create([
+            'title' => "Resource 2",
+            'abstract' => "abstract content",
+            'language' => 'en',
+            'status' => 1,
+        ]);
+
+        $response = $this->post(route('updatetid', $resource1->id), [
+            'link_resource_id' => $link->id,
+        ]);
+
+        $response->assertRedirect('/login');
+    }
+
     
 }
