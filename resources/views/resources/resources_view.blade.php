@@ -258,10 +258,11 @@
                         foreach (config('laravellocalization.localesOrder') as $localeCode) {
                             $supportedLocals[] = $localeCode;
                         }
-                        if (isset($resource->resourceTranslationLinks)) {
-                            foreach ($resource->resourceTranslationLinks as $resourceTranslationLink) {
-                                if (in_array($resourceTranslationLink->language, $supportedLocals)) {
-                                    $newId[$resourceTranslationLink->language] = $resourceTranslationLink->link_resource_id;
+                        if (isset($resourceTranslationLinks)) {
+                            foreach ($resourceTranslationLinks as $resourceTranslationLink) {
+                                $resourceTranslated = $resourceTranslationLink->resource_id == $resource->id ? $resourceTranslationLink->linkedResource : $resourceTranslationLink->resource;
+                                if (in_array($resourceTranslated->language, $supportedLocals)) {
+                                    $newId[$resourceTranslated->language] = $resourceTranslated->id;
                                 }
                             }
                         }
