@@ -79,5 +79,25 @@ class ResourceControllerTest extends TestCase
         $this->assertEquals('This resource already linked!', Session::get('alert.message'));
         $this->assertEquals('danger', Session::get('alert.level'));
     }
+
+     /** @test */
+    public function it_validates_the_request()
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $resource1 = Resource::create([
+            'title' => "Resource 1",
+            'abstract' => "abstract content",
+            'language' => 'en',
+            'status' => 1,
+        ]);
+
+        $response = $this->actingAs($admin)->post(route('updatetid', $resource1->id), [
+            'link_resource_id' => '',
+        ]);
+
+        $response->assertSessionHasErrors('link_resource_id');
+    }
     
 }
