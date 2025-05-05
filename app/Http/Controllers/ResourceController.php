@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ResourceTranslationLinkRequest;
 use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
 use App\Models\Resource;
@@ -21,6 +22,7 @@ use App\Models\ResourceLevel;
 use App\Models\ResourcePublisher;
 use App\Models\ResourceSharePermission;
 use App\Models\ResourceSubjectArea;
+use App\Models\ResourceTranslationLink;
 use App\Models\ResourceTranslationRight;
 use App\Models\ResourceTranslator;
 use App\Models\ResourceView;
@@ -76,13 +78,39 @@ class ResourceController extends Controller
         return view('admin.resources.resources', compact('resources', 'filters', 'languages'));
     }
 
-    public function updateTid(Request $request, $resourceId): RedirectResponse
+    public function updateTid(ResourceTranslationLinkRequest $request, $resourceId): RedirectResponse
     {
-        $translatedResource = Resource::findOrFail($request->input('link'));
+        $linkId = $request->input('link_resource_id');
 
-        $resource = Resource::findOrFail($resourceId);
-        $resource->tnid = $translatedResource->id;
-        $resource->save();
+        $resourceTranslationLink = ResourceTranslationLink::where(function($query) use ($resourceId, $linkId){
+                $query->where(['resource_id' => $resourceId, 'link_resource_id' => $linkId]);
+            })
+            ->orWhere(function($query) use ($resourceId, $linkId){
+                $query->where(['link_resource_id' => $resourceId, 'resource_id' => $linkId]);
+            })
+            ->doesntExist();
+
+        if($resourceTranslationLink){
+
+            ResourceTranslationLink::insert(
+                [
+                    'resource_id' => $resourceId, 
+                    'link_resource_id' => $linkId,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]
+            );
+            Session::flash('alert', [
+                'message' => __('Resource successfully linked!'),
+                'level' => 'success',
+            ]);
+        }else{
+            Session::flash('alert', [
+                'message' => __('This resource already linked!'),
+                'level' => 'danger',
+            ]);
+        }
+
 
         return back();
     }
@@ -162,6 +190,8 @@ class ResourceController extends Controller
 
             $resource = Resource::findOrFail($resourceId);
 
+            $resourceTranslationLinks = ResourceTranslationLink::where('resource_id', $resourceId)->orWhere('link_resource_id', $resourceId)->get();
+
             if ($resource->status == 0 && ! (isAdmin() || isLibraryManager())) {  // We don't want anyone else to access unpublished resources
                 abort(403);
             }
@@ -184,6 +214,7 @@ class ResourceController extends Controller
             return view('resources.resources_view', compact(
                 'resource',
                 'relatedItems',
+                'resourceTranslationLinks',
                 'comments',
                 'translations'
             ));

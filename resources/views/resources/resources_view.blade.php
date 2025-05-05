@@ -254,14 +254,15 @@
                         <?php
                         $supportedLocals = [];
                         $newId = [];
+                        $newId[$resource->language] = $resource->id;
                         foreach (config('laravellocalization.localesOrder') as $localeCode) {
                             $supportedLocals[] = $localeCode;
                         }
-                        
-                        if (isset($translations)) {
-                            foreach ($translations as $tr) {
-                                if (in_array($tr->language, $supportedLocals)) {
-                                    $newId[$tr->language] = $tr->id;
+                        if (isset($resourceTranslationLinks)) {
+                            foreach ($resourceTranslationLinks as $resourceTranslationLink) {
+                                $resourceTranslated = $resourceTranslationLink->resource_id == $resource->id ? $resourceTranslationLink->linkedResource : $resourceTranslationLink->resource;
+                                if (in_array($resourceTranslated->language, $supportedLocals)) {
+                                    $newId[$resourceTranslated->language] = $resourceTranslated->id;
                                 }
                             }
                         }
@@ -337,22 +338,34 @@
                             <div class="translated-resource-id">
                                 {{ __('If this resource is translated, enter the translated resource id and click submit:') }}
                                 <div class="display-flex gap-1 mt-2">
-                                    <input type="number" class="flex-1 border-radius-5 border-0" name="link" min=0
+                                    <input type="number" class="flex-1 border-radius-5 border-0" name="link_resource_id" min=0
                                         placeholder=" {{ __('Enter the translated resource id') }} "
                                         class="form-control tnid-input">
                                     <input type="submit" class="form-control normalButton" value="{{ __('Submit') }}">
                                 </div>
+                                @if ($errors->has('link_resource_id'))
+                                    <span class="text-red">{{ $errors->first('link_resource_id') }}</span>
+                                @endif
                             </div>
                         </form>
-                        @if ($translations)
-                            <br><b>Linked resources:</b>
-                            @foreach ($translations as $resource)
-                                <a href="{{ URL::to($resource->language . '/resource/' . $resource->id) }}"
-                                    target="_blank">{{ $resource->id }} ({{ $resource->language }})</a>
-                                @if (!$loop->last)
-                                    ,
-                                @endif
-                            @endforeach
+                        @if ($resourceTranslationLinks)
+                            <br><b>@lang('Linked resources:')</b>
+                            <div class="resource-related-items-box">
+
+                                @foreach ($resourceTranslationLinks as $resourceTranslationLink)
+                                    <?php 
+                                        $resourceTranslated = $resourceTranslationLink->resource_id == $resource->id ? $resourceTranslationLink->linkedResource : $resourceTranslationLink->resource;
+                                    ?>
+                                    <div class="related-item">
+                                        <img class="related-items-img border-radius-5"
+                                            src="{{ getImagefromResource($resourceTranslated->abstract, '55x50') }}" alt="Resource Image">
+                                        <span><a title="{{ $resourceTranslated->title }}" target="_blank"
+                                            href="{{ URL::to($resourceTranslated->language . '/resource/' . $resourceTranslated->id) }}">
+                                            {{ $resourceTranslated->title }}</a><br />
+                                        </span>
+                                    </div>
+                                @endforeach
+                            </div>
                         @endif
                     </div>
                 @endif

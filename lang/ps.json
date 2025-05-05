@@ -163,5 +163,10 @@
     "Subscribe to our newsletter":"خبرنامه ما را سابسکرایب کنید",
     "You already subscribed our newsletter.": "شما قبلاً خبرنامه ما را سابسکرایب کرده‌اید،",
     "Thank you": "خیلی ممنون",
-    "If you registered using a phone number, please contact us.": "اگر با شماره مبایل راجستر کرده اید، لطفاً <a href='/contact-us'> با ما تماس شوید</a>."
+    "If this resource is translated, enter the translated resource id and click submit:": "که دا سرچینه ژباړل شوې وي، د ژباړې سرچینې ID داخل کړئ او د وړاندې کولو لپاره کلیک وکړئ.",
+    "Enter the translated resource id": " د ژباړې سرچینې ID داخل کړئ",
+    "About this resource" : "د دې سرچینې په اړه",
+    "Please click the button(s) below to download the resource(s)": "مهرباني وکړئ لاندې تڼۍ(و) ته کلیک وکړئ ترڅو سرچینې(و) ډاونلوډ کړئ",
+    "If you registered using a phone number, please contact us.": "اگر با شماره مبایل راجستر کرده اید، لطفاً <a href='/contact-us'> با ما تماس شوید</a>.",
+    "Linked resources:": "اړوندې سرچینې"
 }
