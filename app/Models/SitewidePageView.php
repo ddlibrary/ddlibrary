@@ -3,22 +3,18 @@
 namespace App\Models;
 
 use App\Models\Relations\BelongsToUser;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SitewidePageView extends Model
 {
-    use BelongsToUser;
+    use BelongsToUser, HasFactory;
     
     protected $guarded = [];
 
     protected $casts = [
         'is_bot' => 'boolean',
     ];
-
-    public function pageType()
-    {
-        return $this->belongsTo(PageType::class);
-    }
 
     public function platform()
     {

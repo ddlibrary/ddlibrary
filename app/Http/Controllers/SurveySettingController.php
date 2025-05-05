@@ -28,12 +28,12 @@ class SurveySettingController extends Controller
         $survey_modal_time->time = $request['time'];
         $survey_modal_time->save();
 
-        return Redirect::back()->with('status', 'Popup Time Created!');
+        return back()->with('status', 'Popup Time Created!');
     }
 
     public function editSurveyModalTime(): View
     {
-        $survey_modal_time = SurveySetting::all()->first();
+        $survey_modal_time = SurveySetting::first();
 
         return view('admin.surveys.setting.edit', compact('survey_modal_time'));
     }
