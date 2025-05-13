@@ -1,5 +1,3 @@
-version: "3.7"
-
 networks:
   ddlmain-network:
 
@@ -10,6 +8,7 @@ volumes:
 services:
   web:
     image: nginx:stable-alpine
+    platform: linux/amd64
     container_name: web
     volumes:
       - ./public:/var/www/html/public
@@ -23,14 +22,16 @@ services:
     networks:
       - ddlmain-network
   db:
-    image: mysql:5.7
+    image: mysql:8.2
+    platform: linux/amd64
     container_name: db
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: MYSQL_ALLOW_EMPTY_PASSWORD
       MYSQL_USER: ${DB_USERNAME}
     volumes:
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
       - ./docker/mysql/db.cnf:/etc/mysql/conf.d/my.cnf
       - dbdata:/var/lib/mysql
     tty: true
@@ -57,6 +58,7 @@ services:
       - ddlmain-network
   redis:
     image: redis:latest
+    platform: linux/amd64
     container_name: redis-stack-server
     ports:
       - "6379:6379"

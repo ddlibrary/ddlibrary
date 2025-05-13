@@ -16,6 +16,7 @@ mix.styles([
    'resources/assets/css/common.css',
    'resources/assets/css/ddl.css',
    'resources/assets/css/survey.css',
+   'resources/assets/css/bootstrap.min.css',
    'resources/assets/css/fontawesome-all.min.css',
    'resources/assets/css/style.css'
 ], 'public/css/all.css');

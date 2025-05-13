@@ -102,57 +102,47 @@ class ResourceController extends Controller
             session(['search' => $everything['search']]);
         }
 
-        $subjectAreaIds = [];
-        $levelIds = [];
-        $typeIds = [];
+        if(
+            $request->filled('subjectAreaParent')
+            or
+            $request->filled('subjectAreaChild')
+        ) {
+            $subjectAreaParentIds = array();
+            $parentIdsfromChildren = array();
+            $subjectAreaChildIds = array();
 
-        //if subject_area exists in the request
-        if ($request->filled('subject_area')) {
-            $subjectAreaIds = $everything['subject_area'];
+            if ($request->filled('subjectAreaParent')) {
+                $subjectAreaParentIds = $everything['subjectAreaParent'];
+            }
+
+            if ($request->filled('subjectAreaChild')) {
+                $subjectAreaChildIds = $everything['subjectAreaChild'];
+                $parentIdsfromChildren = (new Resource())
+                    ->resourceAttributesList('taxonomy_term_data', 8)  // 8 being subject areas
+                    ->whereIn('id', $subjectAreaChildIds)
+                    ->pluck('parent')
+                    ->toArray();
+            }
+
+            $bothParentIds = array_merge($parentIdsfromChildren, $subjectAreaParentIds);
+            $noDuplicateParentAreaIds = array_keys(  // return the array with all the keys
+                array_intersect(
+                    array_count_values(  // count how many times a particular value occurs
+                        $bothParentIds
+                    ),
+                    [1]  // keep only the ones with that occurred exactly once
+                )
+            );
+
+
+            $finalSubjectAreaIds = array_merge($noDuplicateParentAreaIds, $subjectAreaChildIds);
+            $finalSubjectAreaIds = array_map('strval', $finalSubjectAreaIds);
+            $request->request->remove('subjectAreaParent');
+            $request->request->add(['subject_area' => $finalSubjectAreaIds]);
         }
-
-        //if level exists in the request
-        if ($request->filled('level')) {
-            $levelIds = $everything['level'];
-        }
-
-        //if type exists
-        if ($request->filled('type')) {
-            $typeIds = $everything['type'];
-        }
-
-        $views = new ResourceView();
-        $favorites = new ResourceFavorite();
-        $comments = new ResourceComment();
         $resources = $myResources->paginateResourcesBy($request);
 
-        $subjects = $myResources->resourceAttributesList('taxonomy_term_data', 8);
-        $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
-        $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
-
-        if ($request->ajax()) {
-            $resources = $myResources->paginateResourcesBy($request);
-
-            return view('resources.resources_list_content', compact(
-                'resources',
-                'views',
-                'favorites',
-                'comments'
-            ));
-        }
-
-        return view('resources.resources_list', compact(
-            'resources',
-            'subjects',
-            'types',
-            'levels',
-            'subjectAreaIds',
-            'levelIds',
-            'typeIds',
-            'views',
-            'favorites',
-            'comments'
-        ));
+        return view('resources.resources_list', compact('resources'));
     }
 
     public function viewPublicResource(Request $request, $resourceId): View|Factory|Redirector|RedirectResponse|Application
