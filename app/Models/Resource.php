@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Relations\BelongsToUser;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,6 +25,7 @@ class Resource extends Model
 {
     use CausesActivity;
     use LogsActivity;
+    use BelongsToUser;
 
     protected static $logAttributes = ['*'];
 
@@ -183,54 +185,6 @@ class Resource extends Model
             ->orderBy('rs.created_at', 'desc')
             ->groupBy('rs.id', 'rs.language', 'rs.title', 'rs.abstract', 'rs.user_id', 'users.username', 'rs.status', 'rs.updated_at', 'rs.tnid', 'rs.created_at')
             ->paginate(10);
-    }
-
-    public function resourceWithoutPublisher($requestArray, $withoutPublishers = false)
-    {
-        $query = Resource::query() // Use Eloquent model instead of DB facade
-            ->select('resources.id', 'resources.language', 'resources.title', 'resources.abstract', 'resources.user_id', 'resources.tnid', 'users.username AS addedby', 'resources.status', 'resources.created_at', 'resources.updated_at')
-            ->leftJoin('users', 'users.id', '=', 'resources.user_id')
-            ->leftJoin('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'resources.id')
-            ->leftJoin('resource_levels AS rl', 'rl.resource_id', '=', 'resources.id')
-            ->leftJoin('resource_learning_resource_types AS rlrt', 'rlrt.resource_id', '=', 'resources.id')
-            ->leftJoin('resource_attachments AS ra', 'ra.resource_id', '=', 'resources.id');
-
-        // Apply filters based on the request array
-        $query->when(!empty($requestArray['title']), function ($query) use ($requestArray) {
-            return $query->where('resources.title', 'like', '%'.$requestArray['title'].'%');
-        })
-        ->when(isset($requestArray['status']), function ($query) use ($requestArray) {
-            return $query->where('resources.status', $requestArray['status']);
-        })
-        ->when(isset($requestArray['language']), function ($query) use ($requestArray) {
-            return $query->where('resources.language', $requestArray['language']);
-        })
-        ->when(isset($requestArray['date_from']) && isset($requestArray['date_to']), function ($query) use ($requestArray) {
-            return $query->whereBetween('resources.created_at', [$requestArray['date_from'], $requestArray['date_to']]);
-        })
-        ->when(isset($requestArray['subject_area']), function ($query) use ($requestArray) {
-            return $query->where('rsa.tid', $requestArray['subject_area']);
-        })
-        ->when(isset($requestArray['level']), function ($query) use ($requestArray) {
-            return $query->where('rl.tid', $requestArray['level']);
-        })
-        ->when(isset($requestArray['type']), function ($query) use ($requestArray) {
-            return $query->where('rlrt.tid', $requestArray['type']);
-        })
-        ->when(isset($requestArray['format']), function ($query) use ($requestArray) {
-            return $query->where('ra.file_mime', $requestArray['format']);
-        });
-
-        // If $withoutPublishers is true, filter out resources with publishers
-        if ($withoutPublishers) {
-            $query->doesntHave('publishers');
-        }
-
-        // Apply ordering and grouping
-        $query->orderBy('resources.created_at', 'desc')
-            ->groupBy('resources.id', 'resources.language', 'resources.title', 'resources.abstract', 'resources.user_id', 'users.username', 'resources.status', 'resources.updated_at', 'resources.tnid', 'resources.created_at');
-
-        return $query->paginate(10);
     }
 
     public function paginateResources(): LengthAwarePaginator
