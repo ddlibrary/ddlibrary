@@ -105,6 +105,9 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
 
         Route::get('admin/resources-without-publishers','resourcesWithNoPublishers')->name('resource-without-publishers');
         Route::post('resources/add-publisher', 'addPublisher');
+
+        Route::get('admin/resources-without-authors','resourcesWithNoAuthors')->name('resource-without-authors');
+        Route::post('resources/add-author', 'addAuthor');
     });
     //delete file
     Route::get('delete/file/{resourceId}/{fileName}', [ResourceController::class, 'deleteFile'])->name('delete-file');
