@@ -1387,9 +1387,8 @@ class ResourceController extends Controller
         $myResources = new Resource();
         $languages = $this->getLanguages();
 
-        $query = Resource::query()->with(['publishers', 'user:id,username']); // Use Eloquent model instead of DB facade
+        $query = Resource::query()->with(['publishers:id,name', 'user:id,username']);
 
-        // Apply filters based on the request array
         $query->when($request->title, function ($query) use ($request) {
             return $query->where('title', 'like', '%'.$request['title'].'%');
         })
@@ -1458,5 +1457,39 @@ class ResourceController extends Controller
 
             return response()->json(['message' => 'Failed to add publisher: ' . $e->getMessage()], 500);
         }
+    }
+
+    public function resourcesWithNoAuthors(Request $request){
+
+        DDLClearSession();
+
+        $myResources = new Resource();
+        $languages = $this->getLanguages();
+
+        $query = Resource::query()->with(['authors:id,name', 'user:id,username']);
+
+        $query->when($request->title, function ($query) use ($request) {
+            return $query->where('title', 'like', '%'.$request['title'].'%');
+        })
+        ->when($request->status, function ($query) use ($request) {
+            return $query->where('status', $request['status']);
+        })
+        ->when($request->language, function ($query) use ($request) {
+            return $query->where('language', $request['language']);
+        });
+        
+
+        if ($request->without_author ? true : false) {
+            $query->doesntHave('authors');
+        }
+
+        $resources = $query->orderBy('resources.created_at', 'desc')->paginate(10);
+
+        $request->session()->put('filters', $request->all());
+
+        $filters = $request->session()->get('filters');
+
+        return view('admin.resources.resources-without-author', compact('resources', 'filters', 'languages'));
+
     }
 }
