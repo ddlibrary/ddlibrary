@@ -78,7 +78,6 @@
                 <div class="card-body">
 
                     <span>Total: <strong>{{ $resources->total() }}</strong></span>
-                    <span id="message-{{ $resource->id }}" class="message" style="display: non;float:right;padding:2px; display:inline-block;background:green;border-radius:3px;">nice</span>
                     <div class="table-responsive">
                         <table class="table table-bordered" width="100%" cellspacing="0">
                             <thead>
@@ -114,8 +113,7 @@
                                                 href="{{ URL::to($resource->language . '/' . 'resource/' . $resource->id) }}">{{ $resource->title }}</a>
                                         </td>
                                         <td>
-                                            <input type="" class="form-control" onchange="addPublisher($(this), '{{ $resource->id}}')" placeholder="Please add publisher">
-                                            
+                                            <input type="text" class="form-control" onchange="addPublisher($(this), '{{ $resource->id}}')" placeholder="Please add publisher">
                                         </td>
 
                                         <td><a
@@ -148,7 +146,7 @@
             const name = inputElement.val();
             if (name) {
                 $.ajax({
-                    url: "{{ url('api/resources/add-publisher') }}",
+                    url: "{{ url('resources/add-publisher') }}",
                     method: 'POST',
                     data: {
                         name: name,
