@@ -345,13 +345,20 @@
                             </div>
                         </form>
                         @if ($translations)
-                            <br><b>Linked resources:</b>
+                            <div class="mt-2">
+                                <strong>@lang('Linked resources:')</strong>
+                            </div>
                             @foreach ($translations as $resource)
-                                <a href="{{ URL::to($resource->language . '/resource/' . $resource->id) }}"
-                                    target="_blank">{{ $resource->id }} ({{ $resource->language }})</a>
-                                @if (!$loop->last)
-                                    ,
-                                @endif
+                            <div class="display-flex gap-1 mt-1" style="background:#f1eded;padding:5px">
+                                <div style="padding:1px 3px;align-self:center">
+                                    {{ $loop->iteration}}
+                                </div>
+                                <div>
+                                    <a href="{{ URL::to($resource->language . '/resource/' . $resource->id) }}" target="_blank">
+                                        {{ $resource->title }} ({{ $resource->language }})
+                                    </a>
+                                </div>
+                            </div>
                             @endforeach
                         @endif
                     </div>
