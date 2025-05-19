@@ -1382,13 +1382,30 @@ class ResourceController extends Controller
 
     public function resourcesWithNoPublishers(Request $request){
 
-        //setting the search session empty
         DDLClearSession();
 
         $myResources = new Resource();
         $languages = $this->getLanguages();
 
-        $resources = $myResources->resourceWithoutPublisher($request->all(), true);
+        $query = Resource::query()->with(['publishers', 'user:id,username']); // Use Eloquent model instead of DB facade
+
+        // Apply filters based on the request array
+        $query->when($request->title, function ($query) use ($request) {
+            return $query->where('title', 'like', '%'.$request['title'].'%');
+        })
+        ->when($request->status, function ($query) use ($request) {
+            return $query->where('status', $request['status']);
+        })
+        ->when($request->language, function ($query) use ($request) {
+            return $query->where('language', $request['language']);
+        });
+        
+
+        if ($request->without_publisher ? true : false) {
+            $query->doesntHave('publishers');
+        }
+
+        $resources = $query->orderBy('resources.created_at', 'desc')->paginate(10);
 
         $request->session()->put('filters', $request->all());
 
