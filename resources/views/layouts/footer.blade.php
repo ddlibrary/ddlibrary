@@ -1,14 +1,16 @@
-<footer class="border-top-gray">
-    <nav>
-        @if($menu)
+<footer id="footer">
+    @if($menu)
+        <ul class="list-inline" style="display: inline">
             @foreach ($menu->where('location', 'footer-menu')->where('language', app()->getLocale()) as $fmenu)
-                <a href="{{ URL::to($fmenu->path) }}" title="{{ $fmenu->title }}">{{ $fmenu->title }}</a>
+                <li class="list-inline-item">
+                    <a href="{{ URL::to($fmenu->path) }}" title="{{ $fmenu->title }}">{{ $fmenu->title }}</a>
+                </li>
             @endforeach
-        @endif
-    </nav>
-    <div>
-        <i class="fab fa-twitter fa-2x" title="DDL Twitter Account" onclick="window.location.href='https://twitter.com/AfghanOERs'"></i>
-        <i class="fab fa-facebook fa-2x" title="DDL Facebook Account" onclick="window.location.href='https://www.facebook.com/AfghanOERs/'"></i>
-        <i class="fab fa-youtube fa-2x" title="DDL Youtube Account" onclick="window.location.href='https://www.youtube.com/channel/UCVmc4QsedamLXMeXbutW-iw/videos'"></i>
-    </div>
+        </ul>
+    @endif
+    <span style="float: right; display:inline-block">
+        <a href="https://twitter.com/AfghanOERs" target="_blank"><i class="fab fa-twitter-square fa-2x" title="DDL Twitter" style="color: #1da1f2;"></i></a>
+        <a href="https://www.facebook.com/AfghanOERs/" target="_blank"><i class="fab fa-facebook-square fa-2x" title="DDL Facebook" style="color: #4267b2;"></i></a>
+        <a href="https://www.youtube.com/c/DarakhteDaneshLibrary" target="_blank"><i class="fab fa-youtube-square fa-2x" title="DDL Youtube" style="color: #ff0000;"></i></a>
+    </span>
 </footer>

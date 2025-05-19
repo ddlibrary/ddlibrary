@@ -1,3 +1,12 @@
+import 'bootstrap/dist/js/bootstrap.bundle'; // For Bootstrap 5 (includes Popper)
+// For Bootstrap 4, you might need to import Popper separately:
+// import 'popper.js/dist/umd/popper';
+// import 'bootstrap';
+
+// Your other JavaScript files
+import '../../assets/js/lazysizes.min.js';
+
+console.log('Your JavaScript file has loaded!');
 
 if(window.jQuery){
     $(document).ready(function(){
