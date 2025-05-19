@@ -103,7 +103,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::post('resource/{resourceId}', [ResourceController::class, 'updateTid'])->middleware('admin')->name('updatetid');
     Route::controller(ResourceController::class)->middleware('admin')->group(function(){
 
-        Route::get('admin/resources-without-publishers','resourcesWithNoPublishers');
+        Route::get('admin/resources-without-publishers','resourcesWithNoPublishers')->name('resource-without-publishers');
         Route::post('resources/add-publisher', 'addPublisher');
     });
     //delete file
