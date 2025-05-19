@@ -90,11 +90,6 @@ class ResourceController extends Controller
 
                 $translatedResource->tnid = $resource->id;
                 $translatedResource->save();
-                Session::flash('alert', [
-                    'message' => __('Resource linked successfully'),
-                    'level' => 'success',
-                ]);
-                return back()->with('success', 'Resource linked successfully.');
             }
             // Case 2: If both have primary_tnid
             elseif ($translatedResource->primary_tnid && $resource->primary_tnid) {
@@ -114,7 +109,7 @@ class ResourceController extends Controller
             $resource->tnid = $translatedResource->id;
             $resource->save();
         }
-        
+
         // Handle cases where tnid is not equal to id
         else {
             if ($resource->tnid != $resource->id) {
@@ -131,9 +126,10 @@ class ResourceController extends Controller
                 }
             }
         }
+
         Session::flash('alert', [
-            'message' => __('Linking conditions not met.'),
-            'level' => 'danger',
+            'message' => __('Resource linked successfully'),
+            'level' => 'success',
         ]);
 
         return back();
