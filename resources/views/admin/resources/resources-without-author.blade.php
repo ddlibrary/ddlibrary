@@ -113,7 +113,6 @@
                                         </td>
                                         <td>
                                             <div>
-
                                                 <div class="row" style="width: 100%">
                                                     <div class="col-9">
                                                         <input type="text" value="{{ $resource->authors->first()?->name}}" class="form-control make-disable item-{{$resource->id}}"  placeholder="Please add author">

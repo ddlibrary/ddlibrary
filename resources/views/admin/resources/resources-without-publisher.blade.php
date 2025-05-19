@@ -112,12 +112,14 @@
                                                 href="{{ URL::to($resource->language . '/' . 'resource/' . $resource->id) }}">{{ $resource->title }}</a>
                                         </td>
                                         <td>
-                                            <div class="row">
-                                                <div class="col-9">
-                                                    <input type="text" value="{{ $resource->publishers->first()?->name}}" class="form-control make-disable item-{{$resource->id}}"  placeholder="Please add publisher">
-                                                </div>
-                                                <div class="col-3">
-                                                    <button class="btn btn-success make-disable" onclick="addPublisher({{ $resource->id }})">Save</button>
+                                            <div>
+                                                <div class="row" style="width: 100%">
+                                                    <div class="col-9">
+                                                        <input type="text" value="{{ $resource->publishers->first()?->name}}" class="form-control make-disable item-{{$resource->id}}"  placeholder="Please add publisher">
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <button class="btn btn-success make-disable" onclick="addPublisher({{ $resource->id }})">Save</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </td>
@@ -132,9 +134,7 @@
                                         <td>{{ $resource->updated_at }}</td>
                                         <td>{{ fixLanguage($resource->language) }}</td>
                                         <td>
-                                            <a href="{{ URL::to('resources/edit/step1/' . $resource->id) }}">Edit</a> |
-                                            <a href="resource/delete/{{ $resource->id }}"
-                                                onclick="return confirm('Are you sure you want to delete this resource?');">Delete</a>
+                                            <a href="{{ URL::to('resources/edit/step1/' . $resource->id) }}">Edit</a> 
                                         </td>
                                     </tr>
                                 @endforeach
