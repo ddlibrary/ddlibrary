@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ResourceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,3 +48,6 @@ Route::get('/resources/{lang}/{offset}', [ApiController::class, 'resourceOffset'
 Route::get('/featured_resources/{lang?}', [ApiController::class, 'featuredResources']);
 Route::get('/filter_resources/{lang?}', [ApiController::class, 'filterResources']);
 Route::get('/resource/getFile/{fileId}', [ApiController::class, 'getFile']);
+
+//
+Route::post('resources/add-publisher', [ResourceController::class, 'addPublisher']);
