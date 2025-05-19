@@ -36,7 +36,8 @@
                                     No</option>
                             </select>
                         </div>
-                        {{-- Is Published --}}
+
+                        {{-- Without publisher --}}
                         <div class="col-md-2">
                             <label>Without publisher</label>
                             <select class="form-control" name="without_publisher">
@@ -47,7 +48,6 @@
                               
                             </select>
                         </div>
-
 
                         {{-- Language --}}
                         <div class="col-md-2">
@@ -112,11 +112,19 @@
                                                 href="{{ URL::to($resource->language . '/' . 'resource/' . $resource->id) }}">{{ $resource->title }}</a>
                                         </td>
                                         <td>
-                                            <input type="text" value="{{ $resource->publishers->first()?->name}}" class="form-control" onchange="addPublisher($(this), '{{ $resource->id}}')" placeholder="Please add publisher">
+                                            <div class="row">
+                                                <div class="col-9">
+                                                    <input type="text" value="{{ $resource->publishers->first()?->name}}" class="form-control make-disable item-{{$resource->id}}"  placeholder="Please add publisher">
+                                                </div>
+                                                <div class="col-3">
+                                                    <button class="btn btn-success make-disable" onclick="addPublisher({{ $resource->id }})">Save</button>
+                                                </div>
+                                            </div>
                                         </td>
-
-                                        <td><a
-                                                href="{{ URL::to('users/view/' . $resource->user_id) }}">{{ $resource->user?->username }}</a>
+                                        <td>
+                                            <a href="{{ URL::to('users/view/' . $resource->user_id) }}">
+                                                {{ $resource->user?->username }}
+                                            </a>
                                         </td>
                                         <td><a
                                                 href="{{ URL::to('admin/resource/published/' . $resource->id) }}">{{ $resource->status == 0 ? 'Not Published' : 'Published' }}</a>
@@ -141,27 +149,33 @@
         <!-- /.content-wrapper-->
 
         <script>
-            function addPublisher(inputElement, resourceId) {
-            const name = inputElement.val();
-            if (name) {
-                $.ajax({
-                    url: "{{ url('resources/add-publisher') }}",
-                    method: 'POST',
-                    data: {
-                        name: name,
-                        resource_id: resourceId,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        showToast(response.message, 'success');
-                    },
-                    error: function(xhr) {
-                        const errorMessage = xhr.responseJSON?.message || 'Failed to add publisher.';
-                        showToast(errorMessage, 'error');
-                    }
-                });
-            } else {
-                showToast('Please enter a publisher name.', 'error');
+            function addPublisher(resourceId) {
+            const name = $(`.item-${resourceId}`).val();
+            if(confirm('Are you sure to change the publisher?')){
+                if (name) {
+                    $('.make-disable').attr('disabled', true)
+                    $.ajax({
+                        url: "{{ url('resources/add-publisher') }}",
+                        method: 'POST',
+                        data: {
+                            name: name,
+                            resource_id: resourceId,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            showToast(response.message, 'success');
+                        },
+                        error: function(xhr) {
+                            const errorMessage = xhr.responseJSON?.message || 'Failed to add publisher.';
+                            showToast(errorMessage, 'error');
+                        },
+                        complete: function() {
+                            $('.make-disable').attr('disabled', false);
+                        }
+                    });
+                } else {
+                    showToast('Please enter a publisher name.', 'error');
+                }
             }
         }
         </script>
