@@ -1405,27 +1405,33 @@ class ResourceController extends Controller
 
         try {
             $resource = Resource::findOrFail($request->resource_id);
-
-            $theTaxonomy = TaxonomyTerm::where('name', $request->name)
-                ->where('vid', 9)
-                ->first();
-
-            $myPublisher = new ResourcePublisher();
-            $myPublisher->resource_id = $resource->id;
-
-            if ($theTaxonomy != null) {
-                $myPublisher->tid = $theTaxonomy->id;
-            } else {
-                $myTaxonomy = new TaxonomyTerm();
-                $myTaxonomy->vid = 9;
-                $myTaxonomy->name = $request->name;
-                $myTaxonomy->language = $resource->language;
-                $myTaxonomy->save();
-
-                $myPublisher->tid = $myTaxonomy->id;
+            $existingPublisher = $resource->publishers()->first();
+            if($existingPublisher){
+                $existingPublisher->name = $request->name;
+                $existingPublisher->save();
+            }else{
+                $theTaxonomy = TaxonomyTerm::where('name', $request->name)
+                    ->where('vid', 9)
+                    ->first();
+    
+                $myPublisher = new ResourcePublisher();
+                $myPublisher->resource_id = $resource->id;
+    
+                if ($theTaxonomy != null) {
+                    $myPublisher->tid = $theTaxonomy->id;
+                } else {
+                    $myTaxonomy = new TaxonomyTerm();
+                    $myTaxonomy->vid = 9;
+                    $myTaxonomy->name = $request->name;
+                    $myTaxonomy->language = $resource->language;
+                    $myTaxonomy->save();
+    
+                    $myPublisher->tid = $myTaxonomy->id;
+                }
+    
+                $myPublisher->save();
             }
 
-            $myPublisher->save();
 
             DB::commit();
 
