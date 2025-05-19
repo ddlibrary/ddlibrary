@@ -12,7 +12,7 @@
             </ol>
             
             <div class="pb-4">
-                <form method="POST" action="{{ route('resources') }}">
+                <form method="get" action="{{ route('resource-without-publishers') }}">
                     @csrf
                     <div class="row">
 
@@ -21,18 +21,6 @@
                             <label>Title </label>
                             <input type="text" value="{{ isset($filters['title']) ? $filters['title'] : '' }}"
                                 placeholder="Please search..." class="form-control" name="title">
-                        </div>
-
-                        {{-- From  --}}
-                        <div class="col-md-2">
-                            <label>From </label>
-                            <input type="date" value="{{ request()->date_from }}" class="form-control" name="date_from">
-                        </div>
-
-                        {{-- To --}}
-                        <div class="col-md-2">
-                            <label>To </label>
-                            <input type="date" value="{{ request()->date_to }}" class="form-control" name="date_to">
                         </div>
 
                         {{-- Is Published --}}
@@ -46,6 +34,17 @@
                                 <option value="2"
                                     {{ isset($filters['status']) && $filters['status'] == 2 ? 'selected' : '' }}>
                                     No</option>
+                            </select>
+                        </div>
+                        {{-- Is Published --}}
+                        <div class="col-md-2">
+                            <label>Without publisher</label>
+                            <select class="form-control" name="without_publisher">
+                                <option value="">...</option>
+                                <option value="1"
+                                    {{ isset($filters['without_publisher']) && $filters['without_publisher'] == 1 ? 'selected' : '' }}>
+                                    Yes</option>
+                              
                             </select>
                         </div>
 
@@ -113,11 +112,11 @@
                                                 href="{{ URL::to($resource->language . '/' . 'resource/' . $resource->id) }}">{{ $resource->title }}</a>
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" onchange="addPublisher($(this), '{{ $resource->id}}')" placeholder="Please add publisher">
+                                            <input type="text" value="{{ $resource->publishers->first()?->name}}" class="form-control" onchange="addPublisher($(this), '{{ $resource->id}}')" placeholder="Please add publisher">
                                         </td>
 
                                         <td><a
-                                                href="{{ URL::to('users/view/' . $resource->user_id) }}">{{ $resource->addedby }}</a>
+                                                href="{{ URL::to('users/view/' . $resource->user_id) }}">{{ $resource->user?->username }}</a>
                                         </td>
                                         <td><a
                                                 href="{{ URL::to('admin/resource/published/' . $resource->id) }}">{{ $resource->status == 0 ? 'Not Published' : 'Published' }}</a>
