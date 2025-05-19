@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddPublisherRequest;
 use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
 use App\Models\Resource;
@@ -1376,6 +1377,63 @@ class ResourceController extends Controller
                 ->deleteFileAfterSend();
         } else {
             abort(403);
+        }
+    }
+
+    public function resourcesWithNoPublishers(Request $request){
+
+        //setting the search session empty
+        DDLClearSession();
+
+        $myResources = new Resource();
+        $languages = $this->getLanguages();
+
+        $resources = $myResources->resourceWithoutPublisher($request->all(), true);
+
+        $request->session()->put('filters', $request->all());
+
+        $filters = $request->session()->get('filters');
+
+        return view('admin.resources.resources-without-publisher', compact('resources', 'filters', 'languages'));
+
+    }
+
+
+    public function addPublisher(AddPublisherRequest $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $resource = Resource::findOrFail($request->resource_id);
+
+            $theTaxonomy = TaxonomyTerm::where('name', $request->name)
+                ->where('vid', 9)
+                ->first();
+
+            $myPublisher = new ResourcePublisher();
+            $myPublisher->resource_id = $resource->id;
+
+            if ($theTaxonomy != null) {
+                $myPublisher->tid = $theTaxonomy->id;
+            } else {
+                $myTaxonomy = new TaxonomyTerm();
+                $myTaxonomy->vid = 9;
+                $myTaxonomy->name = $request->name;
+                $myTaxonomy->language = $resource->language;
+                $myTaxonomy->save();
+
+                $myPublisher->tid = $myTaxonomy->id;
+            }
+
+            $myPublisher->save();
+
+            DB::commit();
+
+            return response()->json(['message' => "($request->name) is added as publisher for ($resource->title)"], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json(['message' => 'Failed to add publisher: ' . $e->getMessage()], 500);
         }
     }
 }
