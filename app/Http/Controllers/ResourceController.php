@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddAuthorRequest;
 use App\Http\Requests\AddPublisherRequest;
 use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
@@ -1458,4 +1459,40 @@ class ResourceController extends Controller
             return response()->json(['message' => 'Failed to add publisher: ' . $e->getMessage()], 500);
         }
     }
+
+    public function resourcesWithoutAuthors(Request $request){
+
+        DDLClearSession();
+
+        $myResources = new Resource();
+        $languages = $this->getLanguages();
+
+        $query = Resource::query()->select(['id', 'title', 'language', 'user_id', 'updated_at', 'created_at'])->with(['authors:id,name', 'user:id,username'])
+        ->withCount('authors');
+
+        $query->when($request->title, function ($query) use ($request) {
+            return $query->where('title', 'like', '%'.$request['title'].'%');
+        })
+        ->when($request->status, function ($query) use ($request) {
+            return $query->where('status', $request['status']);
+        })
+        ->when($request->language, function ($query) use ($request) {
+            return $query->where('language', $request['language']);
+        });
+        
+
+        if ($request->without_author ? true : false) {
+            $query->doesntHave('authors');
+        }
+
+        $resources = $query->orderBy('resources.created_at', 'desc')->paginate();
+
+        $request->session()->put('filters', $request->all());
+
+        $filters = $request->session()->get('filters');
+
+        return view('admin.resources.resources-without-author', compact('resources', 'filters', 'languages'));
+
+    }
+
 }
