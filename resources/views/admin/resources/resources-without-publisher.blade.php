@@ -155,7 +155,7 @@
                 if (name) {
                     $('.make-disable').attr('disabled', true)
                     $.ajax({
-                        url: "{{ url('resources/add-publisher') }}",
+                        url: "{{ url('admin/resources/add-publisher') }}",
                         method: 'POST',
                         data: {
                             name: name,
