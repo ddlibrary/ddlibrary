@@ -102,8 +102,11 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::post('resources/edit/step3/{resourceId}', [ResourceController::class, 'postStepThreeEdit'])->middleware('LibraryManager');
     Route::post('resource/{resourceId}', [ResourceController::class, 'updateTid'])->middleware('admin')->name('updatetid');
     Route::controller(ResourceController::class)->middleware('admin')->group(function(){
-        Route::get('admin/resources-without-publishers','resourcesWithNoPublishers')->name('resource-without-publishers');
+        Route::get('admin/resources-without-publishers','resourcesWithoutPublishers')->name('resource-without-publishers');
         Route::post('resources/add-publisher', 'addPublisher');
+
+        Route::get('admin/resources-without-authors','resourcesWithoutAuthors')->name('resource-without-authors');
+        Route::post('resources/add-author', 'addAuthor');
     });
     //delete file
     Route::get('delete/file/{resourceId}/{fileName}', [ResourceController::class, 'deleteFile'])->name('delete-file');
