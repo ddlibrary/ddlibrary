@@ -1467,14 +1467,14 @@ class ResourceController extends Controller
         $myResources = new Resource();
         $languages = $this->getLanguages();
 
-        $query = Resource::query()->select(['id', 'title', 'language', 'user_id', 'updated_at', 'created_at'])->with(['authors:id,name', 'user:id,username'])
+        $query = Resource::query()->select(['id', 'title', 'language', 'user_id', 'updated_at', 'created_at', 'status'])->with(['authors:id,name', 'user:id,username'])
         ->withCount('authors');
 
         $query->when($request->title, function ($query) use ($request) {
             return $query->where('title', 'like', '%'.$request['title'].'%');
         })
         ->when($request->status, function ($query) use ($request) {
-            return $query->where('status', $request['status']);
+            return $query->where('status', $request->status == 1 ? true : false);
         })
         ->when($request->language, function ($query) use ($request) {
             return $query->where('language', $request['language']);
@@ -1505,8 +1505,8 @@ class ResourceController extends Controller
             $resource->authors()?->delete();
 
             $authors = trim($request->name, ',');
-
             $authors = explode(',', $authors);
+
             foreach ($authors as $author) {
                 $theTaxonomy = TaxonomyTerm::where('name', $author)
                     ->where('vid', 24)
@@ -1514,6 +1514,7 @@ class ResourceController extends Controller
 
                 $resourceAuthor = new ResourceAuthor();
                 $resourceAuthor->resource_id = $resource->id;
+
                 if ($theTaxonomy != null) {
                     $resourceAuthor->tid = $theTaxonomy->id;
                 } else {
@@ -1525,8 +1526,10 @@ class ResourceController extends Controller
 
                     $resourceAuthor->tid = $taxonomy->id;
                 }
+
                 $resourceAuthor->save();
             }
+
             DB::commit();
 
             return response()->json(['message' => "($request->name) is added as author for ($resource->title)"], 200);
