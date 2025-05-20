@@ -34,6 +34,7 @@
         <a class="collapse-item" href="{{ URL::to('admin/resources') }}">Resources</a>
         <a class="collapse-item" href="{{ URL::to('admin/resources-without-publishers?without_publisher=1') }}"> Without publisher</a>
         <a class="collapse-item" href="{{ URL::to('admin/resources-without-authors?without_author=1') }}"> Without author</a>
+        <a class="collapse-item" href="{{ URL::to('admin/resources-without-translators?without_translator=1') }}"> Without translator</a>
         <a class="collapse-item" href="{{ URL::to('admin/comments') }}">Comments</a>
         <a class="collapse-item" href="{{ URL::to('admin/flags') }}">Flags</a>
     </div>
