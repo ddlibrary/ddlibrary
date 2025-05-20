@@ -1380,7 +1380,7 @@ class ResourceController extends Controller
         }
     }
 
-    public function resourcesWithNoPublishers(Request $request){
+    public function resourcesWithoutPublishers(Request $request){
 
         DDLClearSession();
 
