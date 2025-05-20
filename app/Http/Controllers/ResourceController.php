@@ -1388,16 +1388,17 @@ class ResourceController extends Controller
         $myResources = new Resource();
         $languages = $this->getLanguages();
 
-        $query = Resource::query()->with(['publishers:id,name', 'user:id,username']);
+        $query = Resource::query()->select(['id', 'title', 'language', 'user_id', 'updated_at', 'created_at', 'status'])
+        ->with(['publishers:id,name', 'user:id,username']);
 
         $query->when($request->title, function ($query) use ($request) {
-            return $query->where('title', 'like', '%'.$request['title'].'%');
+            return $query->where('title', 'like', '%'.$request->title.'%');
         })
         ->when($request->status, function ($query) use ($request) {
-            return $query->where('status', $request['status']);
+            return $query->where('status', $request->status);
         })
         ->when($request->language, function ($query) use ($request) {
-            return $query->where('language', $request['language']);
+            return $query->where('language', $request->language);
         });
         
 
@@ -1467,17 +1468,17 @@ class ResourceController extends Controller
         $myResources = new Resource();
         $languages = $this->getLanguages();
 
-        $query = Resource::query()->select(['id', 'title', 'language', 'user_id', 'updated_at', 'created_at', 'status'])->with(['authors:id,name', 'user:id,username'])
-        ->withCount('authors');
+        $query = Resource::query()->select(['id', 'title', 'language', 'user_id', 'updated_at', 'created_at', 'status'])
+        ->with(['authors:id,name', 'user:id,username']);
 
         $query->when($request->title, function ($query) use ($request) {
-            return $query->where('title', 'like', '%'.$request['title'].'%');
+            return $query->where('title', 'like', '%'.$request->title.'%');
         })
         ->when($request->status, function ($query) use ($request) {
             return $query->where('status', $request->status == 1 ? true : false);
         })
         ->when($request->language, function ($query) use ($request) {
-            return $query->where('language', $request['language']);
+            return $query->where('language', $request->language);
         });
         
 
