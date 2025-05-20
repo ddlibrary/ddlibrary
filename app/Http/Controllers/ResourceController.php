@@ -1495,4 +1495,45 @@ class ResourceController extends Controller
 
     }
 
+    public function addAuthor(AddAuthorRequest $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $resource = Resource::findOrFail($request->resource_id);
+
+            $resource->authors()?->delete();
+
+            $authors = trim($request->name, ',');
+
+            $authors = explode(',', $authors);
+            foreach ($authors as $author) {
+                $theTaxonomy = TaxonomyTerm::where('name', $author)
+                    ->where('vid', 24)
+                    ->first();
+
+                $resourceAuthor = new ResourceAuthor();
+                $resourceAuthor->resource_id = $resource->id;
+                if ($theTaxonomy != null) {
+                    $resourceAuthor->tid = $theTaxonomy->id;
+                } else {
+                    $taxonomy = new TaxonomyTerm();
+                    $taxonomy->vid = 24;
+                    $taxonomy->name = trim($author);
+                    $taxonomy->language = $resource->language;
+                    $taxonomy->save();
+
+                    $resourceAuthor->tid = $taxonomy->id;
+                }
+                $resourceAuthor->save();
+            }
+            DB::commit();
+
+            return response()->json(['message' => "($request->name) is added as author for ($resource->title)"], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json(['message' => 'Failed to add author: ' . $e->getMessage()], 500);
+        }
+    }
 }
