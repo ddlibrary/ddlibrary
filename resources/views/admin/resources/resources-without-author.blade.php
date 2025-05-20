@@ -133,7 +133,7 @@
                                         </td>
                                         <td>{{ $resource->updated_at }}</td>
                                         <td>{{ fixLanguage($resource->language) }}</td>
-                                        <td>
+                                        <td class="text-center">
                                             <a href="{{ URL::to('resources/edit/step1/' . $resource->id) }}">Edit</a> 
                                         </td>
                                     </tr>
