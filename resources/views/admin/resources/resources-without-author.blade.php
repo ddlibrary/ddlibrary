@@ -106,16 +106,16 @@
                             <tbody>
                                 @foreach ($resources as $indexkey => $resource)
                                     <tr>
-                                        <td>{{ ($resources->currentPage() - 1) * $resources->perPage() + $indexkey + 1 }}
+                                        <td>
                                         </td>
                                         <td><a
                                                 href="{{ URL::to($resource->language . '/' . 'resource/' . $resource->id) }}">{{ $resource->title }}</a>
                                         </td>
-                                        <td>
+                                        <td class="w-50">
                                             <div>
                                                 <div class="row" style="width: 100%">
                                                     <div class="col-9">
-                                                        <input type="text" value="{{ $resource->authors->first()?->name}}" class="form-control make-disable item-{{$resource->id}}"  placeholder="Please add author">
+                                                        <input type="text" value="{{ $resource->authors->pluck('name')->implode(', '); }}" class="form-control make-disable item-{{$resource->id}}"  placeholder="Please add author">
                                                     </div>
                                                     <div class="col-3">
                                                         <button class="btn btn-success make-disable" onclick="addAuthor({{ $resource->id }})">Save</button>
@@ -145,8 +145,6 @@
                 </div>
             </div>
         </div>
-        <!-- /.container-fluid-->
-        <!-- /.content-wrapper-->
 
         <script>
             function addAuthor(resourceId) {
