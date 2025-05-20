@@ -32,7 +32,7 @@ class ExtractResourceImageUrl extends Command
         $resources = Resource::select('id', 'abstract', 'title', 'image', 'language')->get();
         $baseUrl = env('APP_URL', 'https://library.darakhtdanesh.org');
         foreach ($resources as $resource) {
-            $defaultImage = $baseUrl . Storage::get('files/placeholder_image.png');
+            $defaultImage = $baseUrl . Storage::url('files/placeholder_image.png');
             // Extract the image source using regex
             preg_match('/src=["\']([^"\']+)["\']/', $resource->abstract, $matches);
 
@@ -42,12 +42,16 @@ class ExtractResourceImageUrl extends Command
                 // Skip if the URL contains 'youtube'
                 if (strpos($absStr, 'youtube') === false) {
                     $imageName = basename($absStr); // Get the image name from the URL
+                    info($imageName);
 
                     if ($imageName) {
                         $defaultImage = $baseUrl . Storage::disk('public')->url($imageName);
+                        info($defaultImage);
                     }
                 }
             }
+            info($resource->title);
+            info($defaultImage);
             
             $resourceFile = ResourceFile::create([
                 'name' => $resource->title ? $resource->title : 'ٔno title',
