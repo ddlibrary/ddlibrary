@@ -1382,9 +1382,6 @@ class ResourceController extends Controller
 
     public function resourcesWithoutPublishers(Request $request){
 
-        DDLClearSession();
-
-        $myResources = new Resource();
         $languages = $this->getLanguages();
 
         $query = Resource::query()->select(['id', 'title', 'language', 'user_id', 'updated_at', 'created_at', 'status'])
@@ -1449,7 +1446,6 @@ class ResourceController extends Controller
                 $myPublisher->save();
             }
 
-
             DB::commit();
 
             return response()->json(['message' => "($request->name) is added as publisher for ($resource->title)"], 200);
@@ -1462,9 +1458,6 @@ class ResourceController extends Controller
 
     public function resourcesWithoutAuthors(Request $request){
 
-        DDLClearSession();
-
-        $myResources = new Resource();
         $languages = $this->getLanguages();
 
         $query = Resource::query()->select(['id', 'title', 'language', 'user_id', 'updated_at', 'created_at', 'status'])
@@ -1538,5 +1531,37 @@ class ResourceController extends Controller
 
             return response()->json(['message' => 'Failed to add author: ' . $e->getMessage()], 500);
         }
+    }
+
+    public function resourcesWithoutTranslators(Request $request){
+
+        $languages = $this->getLanguages();
+
+        $query = Resource::query()->select(['id', 'title', 'language', 'user_id', 'updated_at', 'created_at', 'status'])
+        ->with(['translators:id,name', 'user:id,username']);
+
+        $query->when($request->title, function ($query) use ($request) {
+            return $query->where('title', 'like', '%'.$request->title.'%');
+        })
+        ->when($request->status, function ($query) use ($request) {
+            return $query->where('status', $request->status == 1 ? true : false);
+        })
+        ->when($request->language, function ($query) use ($request) {
+            return $query->where('language', $request->language);
+        });
+        
+
+        if ($request->without_translator ? true : false) {
+            $query->doesntHave('translators');
+        }
+
+        $resources = $query->orderBy('resources.created_at', 'desc')->paginate();
+
+        $request->session()->put('filters', $request->all());
+
+        $filters = $request->session()->get('filters');
+
+        return view('admin.resources.resources-without-translator', compact('resources', 'filters', 'languages'));
+
     }
 }
