@@ -73,7 +73,7 @@
                 @endif
                 <div id="resource-title" class="row pt-md-2">
                     <h4 class="col-md-8" >{{ $resource->title }}</h4>
-                    <div class="col-md-4 text-end">
+                    <div class="col-md-4 {{ (Lang::locale() != 'en') ? 'text-start' : 'text-end' }}">
                         @if (isLibraryManager() or isAdmin())
                             <a href="{{ URL::to($resource->language.'/resources/edit/step1/'.$resource->id) }}"><i class="far fa-lg fa-edit" aria-hidden="true" title="@lang('Edit')"></i></a>
                         @endif
@@ -166,7 +166,7 @@
                     <div class="col-2 text-secondary">
                         <i class="far fa-star"></i> <span class="text-secondary">{{ $favorites->where('resource_id', $resource->id)->count()  }}</span>
                     </div>
-                    <div class="col-8 text-end">
+                    <div class="col-8 {{ (Lang::locale() != 'en') ? 'text-start' : 'text-end' }}">
                         <a href="{{ URL::to('glossary') }}" class="glossary-icon"><i class="fas fa-globe" title="@lang('DDL Glossary')" ><span class="glossary-text">&nbsp;@lang('Glossary')</span> </i></a>
                     </div>
                 </div>

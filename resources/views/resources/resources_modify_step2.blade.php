@@ -108,7 +108,7 @@
                 <label for="resource_levels">
                     <strong>@lang('Resource Levels') {{ en('Resource Levels') }}</strong>
                 </label>
-                <ul>
+                <ul style="list-style-type: none;">
                     <?php
                     if(!isset($resource['level'])){
                         $resource['level'] = [];
@@ -121,19 +121,13 @@
                                     $levelParent = $levels->where('parent', $level->id);
                                 }?>
                                 @if($levelParent)
-                                    <i class="fas fa-plus fa-xs" onclick="showHide(this,'subLevel{{$level->id}}')"></i>
-                                @endif
-                                @if($levelParent)
-                                    <ul id="subLevel{{$level->id}}" class="subItem" style="display:none;">
+                                    <ul id="subLevel{{$level->id}}" class="subItem" style="list-style-type: none;">
                                         @foreach($levelParent as $item)
                                             <li><input type="checkbox" name="level[]" onchange="fnTest(this,'subLevel{{$item->id}}');" {{  $resourceLevels != null ? (in_array($item->id, $resourceLevels) ? "checked" : "") : ""}} class="js-child" value="{{ $item->id }}"> {{ $item->name  . termEn($item->id)}}
 
                                                     <?php $levelItemParent = $levels->where('parent', $item->id);?>
                                                 @if($levelItemParent)
-                                                    <i class="fas fa-plus fa-xs" onclick="showHide(this,'subLevel{{$item->id}}')"></i>
-                                                @endif
-                                                @if($levelItemParent)
-                                                    <ul id="subLevel{{$item->id}}" class="subItem" style="display:none;">
+                                                    <ul id="subLevel{{$item->id}}" class="subItem" style="list-style-type: none;">
                                                         @foreach($levelItemParent as $itemLevel)
                                                             <li><input type="checkbox" name="level[]" {{  $resourceLevels != null ? (in_array($itemLevel->id, $resourceLevels) ? "checked" : "") : ""}} class="js-child" value="{{ $itemLevel->id }}"> {{ $itemLevel->name  . termEn($itemLevel->id)}}</li>
                                                         @endforeach

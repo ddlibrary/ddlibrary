@@ -8,6 +8,6 @@
             <input type="text" id="search" name="search" class="form-control" placeholder="@lang('Search our growing library!')">
         </div>
         <input type="submit" class="btn btn-primary col-md-1 col-2 my-2" value="@lang('Go')">
-        <a href="{{ route('resourceFilter') }}" class="btn btn-outline-secondary col-md-1 col-2 ms-1 my-2">@lang('Filter')</a>
+        <a href="{{ route('resourceFilter') }}" class="btn btn-outline-secondary col-md-1 col-2 {{ (Lang::locale() != 'en') ? 'me-1' : 'ms-1' }} my-2">@lang('Filter')</a>
     </form>
 </div>

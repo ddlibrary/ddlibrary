@@ -9,7 +9,7 @@
         <form method="POST" action="@if($edit){{ route('edit3', $resource['id']) }}@else{{ route('step3') }}@endif">
             @csrf
             <h4>@lang('Translation Rights') {{ en('Translation Rights') }}</h4>
-            <div class="form-check mb-3">
+            <div class="form-check {{ (Lang::locale() != 'en') ? 'form-check-reverse' : '' }} mb-3">
                 <input class="form-check-input" type="checkbox" value="1" name="translation_rights" id="translation_rights" {{ $dbRecords->TranslationRights ? "checked" : "" }}>
                 <label class="form-check-label" for="translation_rights">
                     @lang('I am providing a new translation. I have selected the license that appears on the original resource.')
@@ -28,7 +28,7 @@
                 @endif
             </div>
             <h4>@lang('Educational Resource') {{ en('Educational Resource') }}</h4>
-            <div class="form-check mb-3">
+            <div class="form-check {{ (Lang::locale() != 'en') ? 'form-check-reverse' : '' }} mb-3">
                 <input class="form-check-input" type="checkbox" value="1" name="educational_resource" id="educational_resource" {{ $dbRecords->EducationalResources?"checked":""  }}>
                 <label class="form-check-label" for="translation_rights">
                     @lang('I am submitting a resource to DDL that is already published. I have selected the license that is on the original resource.')
@@ -47,7 +47,7 @@
                 @endif
             </div>
             <h4>@lang('I am the author') {{ en('I am the author') }}</h4>
-            <div class="form-check mb-3">
+            <div class="form-check {{ (Lang::locale() != 'en') ? 'form-check-reverse' : '' }} mb-3">
                 <input class="form-check-input" type="checkbox" value="1" name="iam_author" {{ $dbRecords->IamAuthors?"checked":"" }}>
                 <label class="form-check-label" for="iam_author">
                     @lang('I am the author and I am submitting my resource to DDL. I am selecting a creative commons license for my resource below.')
@@ -90,7 +90,7 @@
             <div class="form-item">
                 <label for="creative_commons">
                     <strong>@lang('If there is Creative Commons License on the resource, select one of these') <br>
-                        {{ en('If there is Creative Commons License on the resource, select one of these') }}
+                        {{ en('If there is Creative Commons License on the resource, select one of these.') }}
                     </strong>
                 </label>
                 @foreach($creativeCommons AS $cc)
@@ -104,7 +104,7 @@
                         }
                         ?>
                     @if(in_array($cc->tnid, array(535, 536, 537, 159, 6187)))
-                        <div class="form-check">
+                        <div class="form-check {{ (Lang::locale() != 'en') ? 'form-check-reverse' : '' }}">
                             <input class="form-check-input" type="radio" value="{{ $cc->id }}" name="creative_commons" id="radio_for_{{ $cc->id }}" {{ ($cc_common == $cc->name)?"checked":"" }}>
                             <label class="form-check-label" for="radio_for_{{ $cc->id }}">
                                 {{ $cc->name }}
@@ -124,7 +124,7 @@
                 </label>
                 @foreach($creativeCommons AS $other)
                     @if(!in_array($other->tnid, array(535, 536, 537, 159, 6187)))
-                        <div class="form-check">
+                        <div class="form-check {{ (Lang::locale() != 'en') ? 'form-check-reverse' : '' }}">
                             <input class="form-check-input" type="radio" value="{{ $other->id }}" name="creative_commons_other" id="radio_for_{{ $other->id }}" @if($dbRecords->SharePermissions) {{ $dbRecords->SharePermissions->tid == $other->id?"checked":"" }} @endif>
                             <label class="form-check-label" for="radio_for_{{ $other->id }}">
                                 {{ $other->name . termEn($other->id) }}
