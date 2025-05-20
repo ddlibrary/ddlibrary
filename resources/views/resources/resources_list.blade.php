@@ -23,7 +23,7 @@
                             <div class="card-body" style="padding: 0.75rem;">
                                 <p class="card-text">{{ $resource->title }}</p>
                             </div>
-                            <a href="{{ URL::to('resource/'.$resource->id) }}" class="stretched-link" target="_blank"></a>
+                            <a href="{{ URL::to('resource/'.$resource->id) }}" class="stretched-link"></a>
                         </div>
                     @endif
                 @endforeach

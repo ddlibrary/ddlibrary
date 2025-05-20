@@ -2,7 +2,7 @@
 
     <h2 class="my-3">@lang('Free and open educational resources for Afghanistan')</h2>
 
-    <form class="justify-content-center row" method="GET" action="{{ Request::fullUrl() }}">
+    <form class="justify-content-center row" method="GET" action="{{ route('resourceList') }}">
         <div class="form-group col-md-6 col-12 my-2">
             <label for="search" class="sr-only">@lang('Search')</label>
             <input type="text" id="search" name="search" class="form-control" placeholder="@lang('Search our growing library!')">

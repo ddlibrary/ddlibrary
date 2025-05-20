@@ -70,7 +70,7 @@
                                 >
                             @endif
                         </div>
-                        <div class="d-xl-flex justify-content-space-between">
+                        <div class="d-flex justify-content-between mb-3">
                             <a href="{{ config('app.google_sso_enabled') == 'no' ? 'javascript:void(0)' : route('login.google') }}"
                                class="btn btn-outline-secondary btn-md"
                             >
@@ -87,7 +87,7 @@
                                 @lang('Log in with Facebook')
                             </a>
                         </div>
-                        <div class="form-group mt-4 d-xl-flex justify-content-space-between">
+                        <div class="d-flex justify-content-between">
                             <a href="{{ route('password.request') }}">{{ __('Forgot your password?') }}</a>
                             <a href="{{ route('register') }}">@lang('Sign up')</a>
                         </div>

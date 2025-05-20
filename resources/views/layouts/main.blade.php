@@ -43,7 +43,6 @@
         </script>
     @endif
 
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
     <!-- Matomo -->
     <script>
       var _paq = window._paq = window._paq || [];
@@ -119,8 +118,8 @@
             <!-- Optional JavaScript -->
         </div>
     </div>
-    <script async src="{{ asset('js/all.js') }}"></script>
     @stack('scripts')
+    <script async src="{{ asset('js/all.js') }}"></script>
 </body>
 
 </html>

@@ -11,7 +11,6 @@ let mix = require('laravel-mix');
  |
  */
 mix.sass('resources/assets/sass/app.scss', 'public/css/all.css')
-    .js('resources/assets/js/ddl.js', 'public/js/all.js')
-    .sourceMaps();
+    .js('resources/assets/js/ddl.js', 'public/js/all.js');
 
 mix.styles('resources/assets/css/local.css', 'public/css/local.css');

@@ -5,12 +5,8 @@
 // Variables
 @import "variables";
 
-// Reset and common styles
-@import '../css/reset.css';
-@import '../css/common.css';
+
 @import '../css/ddl.css';
-@import '../css/survey.css';
-@import '../css/style.css';
 @import '../css/local.css';
 
 // Bootstrap
@@ -21,3 +17,6 @@
 @import '~@fortawesome/fontawesome-free/scss/regular';
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/brands';
+
+//jQuery UI
+@import '~jquery-ui/themes/base/all.css';

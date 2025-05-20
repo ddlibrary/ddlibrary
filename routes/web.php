@@ -74,9 +74,9 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     //Resources
     Route::get('admin/resources', [ResourceController::class, 'index'])->middleware('auth');
     Route::post('admin/resources', [ResourceController::class, 'index'])->name('resources')->middleware('admin');
-    Route::get('resources/list', 'ResourceController@list')->name('resourceList');
-    Route::get('resources/filter', 'ResourceController@resourceFilter')->name('resourceFilter');
-    Route::get('resources/filter/subject', 'ResourceController@getSubjectChildren');
+    Route::get('resources/list', [ResourceController::class, 'list'])->name('resourceList');
+    Route::get('resources/filter', [ResourceController::class, 'resourceFilter'])->name('resourceFilter');
+    Route::get('resources/filter/subject', [ResourceController::class, 'getSubjectChildren']);
     Route::get('resources/priorities', [ReportController::class, 'resourcePriorities']);
     Route::get('resources/priorities/exclusion', [ReportController::class, 'resourcePrioritiesExclusion'])->middleware('LibraryManager');
     Route::post('resources/priorities/exclusion/add/{id}', [ReportController::class, 'resourcePrioritiesExclusionModify'])->middleware('LibraryManager');

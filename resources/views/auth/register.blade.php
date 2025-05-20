@@ -49,7 +49,7 @@
                                            type="email"
                                            value="{{ old('email') }}"
                                            aria-describedby="emailHelp"
-                                           {{ $errors->has('phone')? '' : 'required' }}
+                                           required
                                            autofocus
                                     >
                                     <small id="emailHelp" class="form-text text-muted">
@@ -214,16 +214,4 @@
             </div>
         </div>
     </div>
-@push('scripts')
-    <script src="{{ asset('js/ddl.js') }}"></script>
-    <script>
-        function showDiv() {
-            document.getElementById('phone').required = true;
-            document.getElementById('email').required = false;
-            document.getElementById('phone-text').style.display = "none";
-            document.getElementById('phone-block').style.display = "flex";
-            document.getElementById('email-preferred').style.display = "inline";
-        }
-    </script>
-@endpush
 @endsection

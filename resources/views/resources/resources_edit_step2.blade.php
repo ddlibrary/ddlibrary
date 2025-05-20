@@ -46,17 +46,17 @@
             </label>
             <select class="form-control{{ $errors->has('subject_areas') ? ' is-invalid' : '' }}" id="subject_areas" name="subject_areas[]" required  multiple="multiple">
                 @foreach ($subjects AS $item)
-                @if($item->parent == 0)
-                    <optgroup label="{{ $item->name }}">
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                        <?php if (isset($subjects) && isset($item)) {
-                            $parentItems = $subjects->where('parent', $item->id);
-                        } ?>
-                        @foreach($parentItems as $pitem)
-                            <option value="{{ $pitem->id }}">{{ $pitem->name . termEn($pitem->id)}}</option>
-                        @endforeach      
-                    </optgroup>
-                @endif
+                    @if($item->parent == 0)
+                        <optgroup label="{{ $item->name }}">
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            <?php if (isset($subjects) && isset($item)) {
+                                $parentItems = $subjects->where('parent', $item->id);
+                            } ?>
+                            @foreach($parentItems as $pitem)
+                                <option value="{{ $pitem->id }}">{{ $pitem->name . termEn($pitem->id)}}</option>
+                            @endforeach
+                        </optgroup>
+                    @endif
                 @endforeach
             </select>
 
