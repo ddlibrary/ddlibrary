@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AddAuthorRequest;
-use App\Http\Requests\AddPublisherRequest;
+use App\Http\Requests\ResourceTaxonomyTermRequest;
 use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
 use App\Models\Resource;
@@ -1417,7 +1416,7 @@ class ResourceController extends Controller
     }
 
 
-    public function addPublisher(AddPublisherRequest $request)
+    public function addPublisher(ResourceTaxonomyTermRequest $request)
     {
         DB::beginTransaction();
 
@@ -1496,7 +1495,7 @@ class ResourceController extends Controller
 
     }
 
-    public function addAuthor(AddAuthorRequest $request)
+    public function addAuthor(ResourceTaxonomyTermRequest $request)
     {
         DB::beginTransaction();
 
