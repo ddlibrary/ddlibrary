@@ -1564,4 +1564,50 @@ class ResourceController extends Controller
         return view('admin.resources.resources-without-translator', compact('resources', 'filters', 'languages'));
 
     }
+
+    public function addTranslator(ResourceTaxonomyTermRequest $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $resource = Resource::findOrFail($request->resource_id);
+
+            $resource->authors()?->delete();
+
+            $translators = trim($request->name, ',');
+            $translators = explode(',', $translators);
+
+            foreach ($translators as $translator) {
+                $theTaxonomy = TaxonomyTerm::where('name', $translator)
+                    ->where('vid', 24)
+                    ->first();
+
+                $resourceTranslator = new ResourceTranslator();
+                $resourceTranslator->resource_id = $resource->id;
+
+                if ($theTaxonomy != null) {
+                    $resourceTranslator->tid = $theTaxonomy->id;
+                } else {
+                    $taxonomy = new TaxonomyTerm();
+                    $taxonomy->vid = 24;
+                    $taxonomy->name = trim($translator);
+                    $taxonomy->language = $resource->language;
+                    $taxonomy->save();
+
+                    $resourceTranslator->tid = $taxonomy->id;
+                }
+
+                $resourceTranslator->save();
+                
+            }
+
+            DB::commit();
+
+            return response()->json(['message' => "($request->name) is added as author for ($resource->title)"], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json(['message' => 'Failed to add author: ' . $e->getMessage()], 500);
+        }
+    }
 }
