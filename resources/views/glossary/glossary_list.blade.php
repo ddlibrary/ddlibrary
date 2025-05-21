@@ -9,74 +9,75 @@ DDL Glossary
 {{ asset('storage/files/logo-dd.png') }}
 @endsection
 @section('content')
-<section class="general-content">
-<form method="POST" action="{{ route('glossary') }}" id="gform">
-    @csrf
-    <table class="glossary">
-        <tr>
-            <td style="width: 5%">@lang('Text'):</td>
-            <td style="width:5%">
-                <input class="form-control" type="text" name="text" id="text" value="{{ isset($filters['text'])?$filters['text']:"" }}">
-            </td>
-            <td style="width:5%">@lang('Subject'):</td>
-            <td style="width:5%">
-                <select name="subject" class="form-control">
-                    <option value="">@lang('All')</option>
-                    @foreach($glossary_subjects as $id => $subject)
-                        <option value="{{ $id }}" {{ (isset($filters['subject']) && $filters['subject'] ==  $id)?"selected":"" }}>{{ $subject }}</option>
-                    @endforeach
-                </select>
-            </td>
-            @if (isLibraryManager() or isAdmin())
-                <td style="width: 15%;">@lang('Flagged for review'):</td>
-                <td style="width: 5%;">
-                    <select name="flagged" class="form-control">
-                        <option value="show" {{ (isset($filters['flagged']) && $filters['flagged'] == "show")?"selected":"" }}>@lang('Show')</option>
-                        <option value="hide" {{ (isset($filters['flagged']) && $filters['flagged'] == "hide")?"selected":"" }}>@lang('Hide')</option>
-                    </select>
-                </td>
-            @endif
-            <td>
-                <input class="form-control" type="submit" value="@lang('Filter')">
-            </td>
-            <td style="text-align: right; width: 5%; "><a href="{{ route('glossary_create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> @lang('Add')</a></td>
-        </tr>
-    </table>
-    </form>
-    <div id="success_msg" style="
-    margin-top: 11px;
-    text-align: center;
-    color: #5cb85c;
-    font-size: 22px;
-    display: none;"></div>
+    <div class="mx-5">
+        <form method="POST" action="{{ route('glossary') }}" id="gform">
+            @csrf
+            <table class="glossary">
+                <tr>
+                    <td>@lang('Text'):</td>
+                    <td>
+                        <input class="form-control" type="text" name="text" id="text" value="{{ isset($filters['text'])?$filters['text']:"" }}">
+                    </td>
+                    <td>@lang('Subject'):</td>
+                    <td>
+                        <select name="subject" class="form-control">
+                            <option value="">@lang('All')</option>
+                            @foreach($glossary_subjects as $id => $subject)
+                                <option value="{{ $id }}" {{ (isset($filters['subject']) && $filters['subject'] ==  $id)?"selected":"" }}>{{ $subject }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                    @if (isLibraryManager() or isAdmin())
+                        <td>@lang('Flagged for review'):</td>
+                        <td>
+                            <select name="flagged" class="form-control">
+                                <option value="show" {{ (isset($filters['flagged']) && $filters['flagged'] == "show")?"selected":"" }}>@lang('Show')</option>
+                                <option value="hide" {{ (isset($filters['flagged']) && $filters['flagged'] == "hide")?"selected":"" }}>@lang('Hide')</option>
+                            </select>
+                        </td>
+                    @endif
+                    <td>
+                        <input class="btn btn-outline-secondary" type="submit" value="@lang('Filter')">
+                    </td>
+                    @if (isLibraryManager() or isAdmin())
+                        <td ><a href="{{ route('glossary_create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> @lang('Add')</a></td>
+                    @endif
+                </tr>
+            </table>
+        </form>
+        <div id="success_msg" style="
+        margin-top: 11px;
+        text-align: center;
+        color: #5cb85c;
+        font-size: 22px;
+        display: none;"></div>
 
-    @if (session('status'))
-        <br>
-        <div id="add_success" class="alert alert-success">
-            {{ (session('status')) }}
-        </div>
-    @endif
-    @if (isLibraryManager() or isAdmin())
-        <div id="update" style="color: #777; font-size: 14px; text-align: right;">@lang('Click and edit the text you would like to change (plain text only) and click \'Enter\' (return) once done, or click \'Escape\' to discard the changes. ')</div>
-    @endif
-    @if ($glossary_flagged)
-        <h3>@lang('Flagged for review')</h3>
-        @include('glossary.table', ['glossary' => $glossary_flagged, 'glossary_subjects' => $glossary_subjects, 'flagged_queue' => true])
+        @if (session('status'))
+            <br>
+            <div id="add_success" class="alert alert-success">
+                {{ (session('status')) }}
+            </div>
+        @endif
+        @if (isLibraryManager() or isAdmin())
+            <div id="update" style="color: #777; font-size: 14px; text-align: right;">@lang('Click and edit the text you would like to change (plain text only) and click \'Enter\' (return) once done, or click \'Escape\' to discard the changes. ')</div>
+        @endif
+        @if ($glossary_flagged)
+            <h3>@lang('Flagged for review')</h3>
+            @include('glossary.table', ['glossary' => $glossary_flagged, 'glossary_subjects' => $glossary_subjects, 'flagged_queue' => true])
+            <br>
+            <div class="resource-pagination">
+                {{ $glossary_flagged->appends(request()->input())->links() }}
+            </div>
+            <br>
+        @endif
+        @include('glossary.table', ['glossary' => $glossary, 'glossary_subjects' => $glossary_subjects, 'flagged_queue' => false])
         <br>
         <div class="resource-pagination">
-            {{ $glossary_flagged->appends(request()->input())->links() }}
+            {{ $glossary->appends(request()->input())->links() }}
         </div>
-        <br>
-    @endif
-    @include('glossary.table', ['glossary' => $glossary, 'glossary_subjects' => $glossary_subjects, 'flagged_queue' => false])
-    <br>
-    <div class="resource-pagination">
-        {{ $glossary->appends(request()->input())->links() }}
     </div>
-</section>
 @endsection
 @push('scripts')
-    <script src="{{ asset('js/ddl.js') }}"></script>
     <script>
         $(document).ready(function() {
             $("td[contenteditable=\"true\"]").keydown(function(event) {

@@ -1,3 +1,11 @@
+import $ from 'jquery';
+window.$ = window.jQuery = $; // Make jQuery globally available
+
+// Import jQuery UI
+import 'jquery-ui/ui/widgets/autocomplete.js';
+import 'jquery-ui/ui/widgets/datepicker.js';
+import 'bootstrap/dist/js/bootstrap.bundle';
+import '../../assets/js/lazysizes.min.js';
 
 if(window.jQuery){
     $(document).ready(function(){
@@ -128,7 +136,7 @@ function closeNav() {
     document.getElementById("myNav").style.width = "0%";
 }
 
-function favorite(elementId, baseUrl, resourceId, userId) 
+window.favorite = function (elementId, baseUrl, resourceId, userId)
 {
     let csrf = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
@@ -150,7 +158,7 @@ function favorite(elementId, baseUrl, resourceId, userId)
     });
 }
 
-function showHide(itself, elementId)
+window.showHide = function (itself, elementId)
 {
     var theElement = document.getElementById(elementId);
 
@@ -167,9 +175,9 @@ function showHide(itself, elementId)
     }
 }
 
-function fnTest(check, cchild){
+window.fnTest = function (check, cchild){
     if($(check).is(':checked')){
-        $(check).siblings('#'.cchild).find('.js-child').prop("checked",true);
+        $(check).siblings('#'. cchild).find('.js-child').prop("checked",true);
     }else{
         $(check).siblings('#'.cchild).find('.js-child').prop("checked",false);        
     }
@@ -216,7 +224,7 @@ function extractLast( term ) {
     return split( term ).pop();
 }
 
-function bringMeAttr(id, url)
+window.bringMeAttr = function (id, url)
 {
     $( "#"+id )
     // don't navigate away from the field on tab when selecting an item

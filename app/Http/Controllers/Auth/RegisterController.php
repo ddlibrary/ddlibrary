@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -80,18 +81,16 @@ class RegisterController extends Controller
         return Validator::make(
             $data,
             [
-                'email' => 'required_without:phone|string|email|max:255|unique:users|nullable|regex:/^([a-zA-Z\d\._-]+)@(?!fmail.com)/', //Regex to block fmail.com domain
-                'password' => 'confirmed|required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/', // Regex for at least one digit and one special character
+                'email' => 'required|string|email|max:255|unique:users|nullable|regex:/^([a-zA-Z\d\._-]+)@(?!fmail.com)/', //Regex to block fmail.com domain
+                'password' => ['required', 'confirmed', Password::min(8)->numbers()->symbols()],
                 'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'phone' => 'required_without:email|max:20|unique:user_profiles|nullable',
+                'last_name' => 'string|max:255|nullable',
                 'gender' => 'required',
                 'country' => 'required',
                 'city' => 'nullable',
-                'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule()],
+                'g-recaptcha-response' => [config('app.captcha') == 'no' ? 'nullable' : 'required', new RecaptchaRule()],
             ],
             [
-                'phone.unique' => __('The phone number has already been taken.'),
                 'password.regex' => __('The password you entered doesn\'t have any special characters (!@#$%^&.) and (or) digits (0-9).'),
                 'email.regex' => __('Please enter a valid email.'),
             ],
@@ -112,11 +111,6 @@ class RegisterController extends Controller
         $user->status = 1;
         $user->accessed_at = Carbon::now();
         $user->language = config('app.locale');
-
-        if ($user->email == null) {
-            $user->email_verified_at = Carbon::now(); // This is a hack for the duration, until we can verify phone numbers as well
-        }
-
         $user->save();
 
         return $user;
@@ -130,8 +124,7 @@ class RegisterController extends Controller
             'last_name' => $data['last_name'],
             'country' => $data['country'],
             'city' => $data['city'] ? $data['city'] : ($data['city_other'] ? $data['city_other'] : null),
-            'gender' => $data['gender'],
-            'phone' => $data['phone'],
+            'gender' => $data['gender']
         ]);
     }
 

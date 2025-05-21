@@ -160,13 +160,12 @@ class UserController extends Controller
         $this->validate($request, [
             'username' => 'required',
             'password' => 'nullable',
-            'email' => 'required_without:phone|nullable',
+            'email' => 'required',
             'status' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
             'gender' => 'required',
             'role' => 'required',
-            'phone' => 'required_without:email|nullable',
             'country' => 'required',
             'city' => 'nullable',
         ]);
@@ -195,7 +194,6 @@ class UserController extends Controller
         $userProfile->gender = $request->input('gender');
         $userProfile->country = $request->input('country');
         $userProfile->city = $city;
-        $userProfile->phone = $request->input('phone');
         $userProfile->save();
 
         $userRole = UserRole::where('user_id', $userId);

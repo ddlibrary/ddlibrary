@@ -10,45 +10,5 @@ let mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
-
-mix.styles([
-   'resources/assets/css/reset.css',
-   'resources/assets/css/common.css',
-   'resources/assets/css/ddl.css',
-   'resources/assets/css/survey.css',
-   'resources/assets/css/fontawesome-all.min.css',
-   'resources/assets/css/style.css'
-], 'public/css/all.css');
-
-
-mix.styles('resources/assets/css/local.css', 'public/css/local.css');
-
-mix.babel([
-   'resources/assets/js/ddl.js',
-   'resources/assets/js/lazysizes.min.js',
-   'resources/assets/js/bootstrap.min.js',
-   ], 'public/js/all.js');
-
-/*
-const ImageminPlugin = require('imagemin-webpack-plugin').default;
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const imageminMozjpeg = require('imagemin-mozjpeg');
-
-
-mix.webpackConfig({
-    plugins: [
-        new CopyWebpackPlugin([{
-            from: 'public/storage/files',
-            to: 'storage/files', // Laravel mix will place this in 'public/img'
-        }]),
-        new ImageminPlugin({
-            test: /\.(jpe?g|png|gif|svg)$/i,
-            plugins: [
-                imageminMozjpeg({
-                    quality: 50,
-                })
-            ]
-        })
-    ]
-});
-*/
+mix.sass('resources/assets/sass/app.scss', 'public/css/all.css')
+    .js('resources/assets/js/ddl.js', 'public/js/all.js');

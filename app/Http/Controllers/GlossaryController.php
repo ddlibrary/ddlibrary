@@ -28,14 +28,13 @@ class GlossaryController extends Controller
         $this->pageView($request, GlossaryPageViewStatusEnum::View, 'Glossary');
         $glossary_flagged = null;
 
-
         if ($request->filled('text')) {
             $glossary = Glossary::orderBy('id', 'desc')
-                ->orWhere('name_en', request('text'))
-                ->orWhere('name_fa', request('text'))
-                ->orWhere('name_ps', request('text'))
+                ->orWhere('name_en', 'like', '%'.request('text').'%')
+                ->orWhere('name_fa', 'like', '%'.request('text').'%')
+                ->orWhere('name_ps', 'like', '%'.request('text').'%')
                 ->where('flagged_for_review', '!=', true)
-                ->paginate(15);
+                ->paginate (15);
         } elseif ($request->filled('subject') && ! $request->filled('text')) {
             $glossary = Glossary::orderBy('id', 'desc')
                 ->where('subject', request('subject'))

@@ -146,6 +146,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | MISC Settings
+    |--------------------------------------------------------------------------
+    |
+    | Here you can define miscellaneous settings for your application.
+    |
+    */
+
+    'captcha' => env('CAPTCHA', 'no'),
+    'LOGIN_WITH_GOOGLE' => env('GOOGLE_SSO_ENABLED', false),
+    'LOGIN_WITH_FACEBOOK' => env('FACEBOOK_SSO_ENABLED', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
     |
