@@ -308,7 +308,7 @@
                                 @lang('Please login to add a comment')
                             @endif
                         </label>
-                        <textarea class="form-control" name="comment" id="commentTextArea" rows="3" @if (!Auth::check()) disabled @endif></textarea>
+                        <textarea class="form-control" name="comment" id="commentTextArea" rows="3" @if (!Auth::check()) disabled @endif required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary offset-md-11" @if (!Auth::check()) disabled @endif>@lang('Submit')</button>
                 </form>

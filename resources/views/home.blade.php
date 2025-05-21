@@ -213,7 +213,7 @@
                 <hr>
                 @foreach($latestNews AS $news)
                     <a href="{{ URL::to('news/'.$news->id) }}" title="{{ $news->title }}">
-                        <p>{{ $news->title }}<br><span class="badge badge-secondary">{{ __($news->created_at->diffForHumans()) }}</span></p>
+                        <p>{{ $news->title }}<br><span class="badge text-bg-secondary">{{ __($news->created_at->diffForHumans()) }}</span></p>
                     </a>
                 @endforeach
             </div>
@@ -222,7 +222,7 @@
                 <hr>
                 @foreach($latestResources AS $resource)
                     <a href="{{ URL::to('resource/'.$resource->id) }}" title="{{ $resource->title }}">
-                        <p>{{ $resource->title }}<br><span class="badge badge-secondary">{{ __($resource->updated_at->diffForHumans()) }}</span></p>
+                        <p>{{ $resource->title }}<br><span class="badge text-bg-secondary">{{ __($resource->updated_at->diffForHumans()) }}</span></p>
                     </a>
                 @endforeach
             </div>

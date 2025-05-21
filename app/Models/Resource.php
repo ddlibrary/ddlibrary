@@ -323,7 +323,7 @@ class Resource extends Model
             })
             ->orderBy('rs.created_at', 'desc')
             ->groupBy('rs.id', 'rs.language', 'rs.title', 'rs.abstract', 'rs.created_at')
-            ->paginate(32);
+            ->paginate(30);
     }
 
     //Total resources based on level

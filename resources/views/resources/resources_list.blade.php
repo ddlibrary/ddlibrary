@@ -20,6 +20,7 @@
                     @if ($resource->status)
                         <div class="card col-8 col-md-4 col-lg-2 m-1 p-0">
                             <img class="card-img-top" src="{{ getImagefromResource($resource->abstract) }}" alt="Resource image" loading="lazy">
+                            <hr class="mx-2">
                             <div class="card-body" style="padding: 0.75rem;">
                                 <p class="card-text">{{ $resource->title }}</p>
                             </div>

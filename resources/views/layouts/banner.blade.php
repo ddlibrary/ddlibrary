@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg" style="border-radius: 0; background-color: #000000;">
+<nav class="navbar navbar-expand-lg px-2" style="border-radius: 0; background-color: #000000;">
     <a href="{{ URL::to('/') }}" class="navbar-brand" title="Website Logo">
         <img src="{{ asset('storage/files/logo-dd.png') }}" alt="DDL Logo">
     </a>
@@ -7,7 +7,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto">
+        <ul class="navbar-nav {{ (Lang::locale() != 'en') ? 'ms-auto' : 'me-auto' }}">
             <li class="nav-item active">
                 <a class="nav-link" href="{{ URL::to('/') }}"><i class="fas fa-home"></i> @lang('Home') <span class="sr-only">(current)</span></a>
             </li>
@@ -56,7 +56,7 @@
                 </div>
             </li>
             @if (Auth::check())
-                <li class="nav-item dropdown dropstart">
+                <li class="nav-item dropdown {{ (Lang::locale() != 'en') ? 'dropend' : 'dropstart' }}">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-circle-user fa-2xl"></i>
                     </a>

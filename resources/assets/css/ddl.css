@@ -37,6 +37,7 @@ header #toggle {
 
 .navbar a:hover, .navbar a:active, .navbar a:focus {
     color: #da7437 !important;
+    text-decoration: none !important;
 }
 
 .navbar-expand-lg .navbar-nav .dropdown-menu {
@@ -55,25 +56,6 @@ header #toggle {
     margin-right: 10px;
     font-size: 1rem;
 }
-
-.badge {
-    display: inline-block;
-    padding: 0.25em 0.4em;
-    font-size: 75%;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: 0.25rem;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.badge-secondary {
-    color: #fff;
-    background-color: #6c757d;
-}
-
 
 .language-content .username {
     color: #ffffff!important;
@@ -144,7 +126,7 @@ header #toggle {
     background-image:
         linear-gradient(
             225deg,
-            #7777776e,
+            #ffa800,
             transparent
         );
     border-radius: 2px;
@@ -274,19 +256,12 @@ header #toggle {
     position: relative;
     min-height: 100vh;
     background: #eee;
-}
-
-#content-wrap {
-    padding-bottom: 2rem;
-}
-
-#footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 10px 40px 10px 40px;
-    border-top: 2px solid #c4c4c4;
-    background-color: #d3d3d3;
+    a {
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
 /** Registration */

@@ -1,13 +1,8 @@
-
-// Fonts
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,600");
-
-// Variables
+// Variables and SCSS
 @import "variables";
-
+@import 'footer';
 
 @import '../css/ddl.css';
-@import '../css/local.css';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
