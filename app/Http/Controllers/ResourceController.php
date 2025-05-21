@@ -1404,12 +1404,8 @@ class ResourceController extends Controller
 
         if ($current_time - $received_time < 300) { // 300 - tolerance of 5 minutes
             $resourceAttachment = ResourceAttachment::findOrFail($fileId);
-            try {
-                $file = Storage::disk('s3')->get('resources/'.$resourceAttachment->file_name);
-            } catch (FileNotFoundException $e) {
-                Log::error($e);
-                abort(404);
-            }
+            $file = Storage::disk('s3')->get('resources/'.$resourceAttachment->file_name);
+            if ($file == null) abort(404);
             $temp_file = tempnam(
                 sys_get_temp_dir(), $resourceAttachment->file_name.'_'
             );
