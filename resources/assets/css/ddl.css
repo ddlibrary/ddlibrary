@@ -486,6 +486,25 @@ select.form-control:focus::-ms-value {
     background-color: #f8c45b;
 }
 
+.resource-card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.resource-card img {
+    object-fit: cover;
+    height: 220px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.resource-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.25);
+}
+
+.resource-card:hover img {
+    transform: scale(1.05);
+}
+
 .sub-item {
     margin: 0 10px 0 10px;
 }
@@ -658,6 +677,11 @@ aside .sub-subject-show {
 .social-share i:hover {
     color: #ffa800;
 }
+
+.similar-resources .similar-resources-text {
+    color: #000;
+}
+
 .glossary-icon{
     color: #777777;
 }

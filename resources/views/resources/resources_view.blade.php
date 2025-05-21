@@ -49,7 +49,7 @@
                         <hr>
                         </span>--}}
                         <h6>@lang('File :id', ['id' => $loop->iteration])</h6>
-                            <span class="badge badge-secondary">
+                            <span class="badge text-bg-secondary">
                             @php
                                 /* @var $file */
                                 echo(pathinfo($file->file_name, PATHINFO_EXTENSION));
@@ -240,7 +240,7 @@
                     </div>
                     <div class="col-md-4 mb-1">
                         <h6>@lang('License')</h6>
-                        <p class="badge text-bg-primary">{{ $resource->creativeCommons?$resource->creativeCommons[0]->name:"" }}</p>
+                        <p class="badge text-bg-secondary">{{ $resource->creativeCommons?$resource->creativeCommons[0]->name:"" }}</p>
                     </div>
                 </div>
             </div>
@@ -254,16 +254,21 @@
                 <div class="card">
                     <div class="card-body p-1">
                         <h4>@lang('Similar resources')</h4>
+                        <hr>
                         @foreach ($relatedItems AS $item)
-                            <div class="row mb-2">
-                                <div class="col-3">
-                                    <img class="resource-view-img" src="{{ getImagefromResource($item->abstract,'55x50') }}" alt="Resource Image">
+                            <a title="@lang('Resource title')" href="{{ URL::to('resource/'.$item->id) }}">
+                                <div class="row mb-2 similar-resources">
+                                    <div class="d-none d-lg-block col-lg-4">
+                                        <img class="resource-view-img" src="{{ getImagefromResource($item->abstract,'55x50') }}" alt="Resource Image">
+                                    </div>
+                                    <div class="col-12 col-lg-8">
+                                            {{ $item->title }}<br/>
+                                        <span class="similar-resources-text">
+                                            {!! str_limit(strip_tags($item->abstract), 25) !!}
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="col-8">
-                            <span><a title="Resource Title" href="{{ URL::to('resource/'.$item->id) }}">{{ $item->title }}</a><br/>
-                            {!! str_limit(strip_tags($item->abstract), 25) !!}</span>
-                                </div>
-                            </div>
+                            </a>
                         @endforeach
                     </div>
                 </div>
