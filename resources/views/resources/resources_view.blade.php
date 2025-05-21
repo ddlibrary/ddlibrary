@@ -18,6 +18,10 @@
             <div class="col-md-8">
                 @if($resource->attachments)
                     @foreach($resource->attachments as $file)
+                        @php
+                            $time = time();
+                            $key = encrypt(config('s3.config.secret') * $time);
+                        @endphp
                         @if ($file->file_mime == 'application/pdf')
                             <iframe src="{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}#toolbar=0"
                                     height="500" width="100%"></iframe>
