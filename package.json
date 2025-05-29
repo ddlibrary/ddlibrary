@@ -10,7 +10,7 @@
     "devDependencies": {
         "@fortawesome/fontawesome-free": "^6.7.2",
         "@popperjs/core": "^2.11.6",
-        "axios": "^1.7.4",
+        "axios": "^1.8.2",
         "bootstrap": "^5.3.6",
         "copy-webpack-plugin": "^9.0",
         "cross-env": "^5.2.1",
