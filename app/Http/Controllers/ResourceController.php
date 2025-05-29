@@ -33,6 +33,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
@@ -42,6 +43,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Mcamara\LaravelLocalization\Exceptions\SupportedLocalesNotDefined;
+use Mcamara\LaravelLocalization\LaravelLocalization;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
 
@@ -102,99 +105,142 @@ class ResourceController extends Controller
             session(['search' => $everything['search']]);
         }
 
-        $subjectAreaIds = [];
-        $levelIds = [];
-        $typeIds = [];
+        if(
+            $request->filled('subjectAreaParent')
+            or
+            $request->filled('subjectAreaChild')
+        ) {
+            $subjectAreaParentIds = array();
+            $parentIdsfromChildren = array();
+            $subjectAreaChildIds = array();
 
-        //if subject_area exists in the request
-        if ($request->filled('subject_area')) {
-            $subjectAreaIds = $everything['subject_area'];
+            if ($request->filled('subjectAreaParent')) {
+                $subjectAreaParentIds = $everything['subjectAreaParent'];
+            }
+
+            if ($request->filled('subjectAreaChild')) {
+                $subjectAreaChildIds = $everything['subjectAreaChild'];
+                $parentIdsfromChildren = (new Resource())
+                    ->resourceAttributesList('taxonomy_term_data', 8)  // 8 being subject areas
+                    ->whereIn('id', $subjectAreaChildIds)
+                    ->pluck('parent')
+                    ->toArray();
+            }
+
+            $bothParentIds = array_merge($parentIdsfromChildren, $subjectAreaParentIds);
+            $noDuplicateParentAreaIds = array_keys(  // return the array with all the keys
+                array_intersect(
+                    array_count_values(  // count how many times a particular value occurs
+                        $bothParentIds
+                    ),
+                    [1]  // keep only the ones with that occurred exactly once
+                )
+            );
+
+
+            $finalSubjectAreaIds = array_merge($noDuplicateParentAreaIds, $subjectAreaChildIds);
+            $finalSubjectAreaIds = array_map('strval', $finalSubjectAreaIds);
+            $request->request->remove('subjectAreaParent');
+            $request->request->add(['subject_area' => $finalSubjectAreaIds]);
         }
-
-        //if level exists in the request
-        if ($request->filled('level')) {
-            $levelIds = $everything['level'];
-        }
-
-        //if type exists
-        if ($request->filled('type')) {
-            $typeIds = $everything['type'];
-        }
-
-        $views = new ResourceView();
-        $favorites = new ResourceFavorite();
-        $comments = new ResourceComment();
         $resources = $myResources->paginateResourcesBy($request);
 
-        $subjects = $myResources->resourceAttributesList('taxonomy_term_data', 8);
-        $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
-        $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
-
-        if ($request->ajax()) {
-            $resources = $myResources->paginateResourcesBy($request);
-
-            return view('resources.resources_list_content', compact(
-                'resources',
-                'views',
-                'favorites',
-                'comments'
-            ));
-        }
-
-        return view('resources.resources_list', compact(
-            'resources',
-            'subjects',
-            'types',
-            'levels',
-            'subjectAreaIds',
-            'levelIds',
-            'typeIds',
-            'views',
-            'favorites',
-            'comments'
-        ));
+        return view('resources.resources_list', compact('resources'));
     }
 
+    public function resourceFilter(): Factory|View|Application
+    {
+        $resourceObject = new Resource();
+        $parentSubjects = $resourceObject
+            ->resourceAttributesList('taxonomy_term_data',8)  // 8 being subject areas
+            ->where('parent', 0);
+        $resourceTypes = $resourceObject->resourceAttributesList('taxonomy_term_data', 7);  // 7 being resource types
+        $literacyLevels = $resourceObject
+            ->resourceAttributesList('taxonomy_term_data', 13)
+            ->where('parent', 0);// 13 being resource literacy levels
+
+        return view('resources.resources_filter', compact('parentSubjects', 'resourceTypes', 'literacyLevels'));
+    }
+
+    public function getSubjectChildren(Request $request): array
+    {
+        $subjectIds = explode(',',$request->input('IDs'));
+        return (new Resource())
+            ->resourceAttributesList('taxonomy_term_data',8)  // 8 being subject areas
+            ->whereIn('parent', $subjectIds)
+            ->pluck('id', 'name')
+            ->toArray();
+    }
+
+    /**
+     * @throws SupportedLocalesNotDefined
+     */
     public function viewPublicResource(Request $request, $resourceId): View|Factory|Redirector|RedirectResponse|Application
     {
-            DDLClearSession();
-            $myResources = new Resource();
+        DDLClearSession();
+        $myResources = new Resource();
 
-            $resource = Resource::findOrFail($resourceId);
+        $resource = Resource::findOrFail($resourceId);
 
-            if ($resource->status == 0 && ! (isAdmin() || isLibraryManager())) {  // We don't want anyone else to access unpublished resources
-                abort(403);
+        if ($resource->status == 0 && ! (isAdmin() || isLibraryManager())) {  // We don't want anyone else to access unpublished resources
+            abort(403);
+        }
+
+        $this->pageView($request, $resource->title);
+
+        $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
+        $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
+        $languages_available = array();
+
+        $translation_id = $resource->tnid;
+        if($translation_id) {
+            $translations = $myResources->getResourceTranslations($translation_id);
+            $supportedLocals = array();
+            $newId = array();
+            foreach (config('laravellocalization.localesOrder') as $localeCode) {
+                $supportedLocals[] = $localeCode;
             }
 
-            $this->pageView($request, $resource->title);
-
-            $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
-            $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
-
-            $translation_id = $resource->tnid;
-            if ($translation_id) {
-                $translations = $myResources->getResourceTranslations($translation_id);
-            } else {
-                $translations = [];
+            if ($translations) {
+                foreach ($translations as $tr) {
+                    if (in_array($tr->language, $supportedLocals)) {
+                        $newId[$tr->language] = $tr->id;
+                    }
+                }
             }
 
-            $this->resourceViewCounter($request, $resourceId);
-            Carbon::setLocale(app()->getLocale());
+            foreach ((new LaravelLocalization)->getSupportedLocales() as $localeCode => $properties) {
+                if(isset($newId[$localeCode]) && $newId != 0) {
+                    $currentUrl = explode('/',url()->current());
+                    $index = count($currentUrl) - 1;
+                    $currentUrl[$index] = $newId[$localeCode];
+                    $newUrl = implode('/', $currentUrl);
+                    $languages_available[$localeCode]['url'] = $newUrl;
+                    $languages_available[$localeCode]['native'] = $properties['native'];
+                }
+            }
+        }
+        $this->resourceViewCounter($request, $resourceId);
+        $views = new ResourceView();
+        $favorites = new ResourceFavorite();
+        Carbon::setLocale(app()->getLocale());
 
-            return view('resources.resources_view', compact(
-                'resource',
-                'relatedItems',
-                'comments',
-                'translations'
-            ));
+        return view('resources.resources_view', compact(
+            'resource',
+            'relatedItems',
+            'comments',
+            'languages_available',
+            'views',
+            'favorites',
+        ));
     }
 
     public function createStepOne(Request $request): Factory|View|Application
     {
         $this->middleware('auth');
-        $resource = $request->session()->get('resource1');
+        $resource = $request->session()->get('new_resource_step_1');
 
-        return view('resources.resources_add_step1', compact('resource'));
+        return view('resources.resources_modify_step1', compact('resource'));
     }
 
     public function postStepOne(Request $request): Redirector|Application|RedirectResponse
@@ -208,24 +254,24 @@ class ResourceController extends Controller
             'abstract' => 'required',
         ]);
 
-        $request->session()->put('resource1', $validatedData);
+        $request->session()->put('new_resource_step_1', $validatedData);
 
         return redirect('/resources/add/step2');
     }
 
     public function createStepTwo(Request $request): View|Factory|Redirector|RedirectResponse|Application
     {
-        $resource1 = $request->session()->get('resource1');
+        $new_resource_step_1 = $request->session()->get('new_resource_step_1');
 
-        if (! $resource1) {
+        if (! $new_resource_step_1) {
             return redirect('/resources/add/step1');
         }
 
-        $resource = $request->session()->get('resource2');
+        $resource = $request->session()->get('new_resource_step_2');
 
-        $resourceSubjectAreas = json_encode($resource['subject_areas'], JSON_NUMERIC_CHECK);
-        $resourceLearningResourceTypes = json_encode($resource['learning_resources_types'], JSON_NUMERIC_CHECK);
-        $EditEducationalUse = json_encode($resource['educational_use'], JSON_NUMERIC_CHECK);
+        $resourceSubjectAreas = $resource['subject_areas'];
+        $resourceLearningResourceTypes = $resource['learning_resources_types'];
+        $editEducationalUse = $resource['educational_use'];
         //$resourceKeywords = json_encode($resource['keywords']);
 
         $myResources = new Resource();
@@ -237,8 +283,11 @@ class ResourceController extends Controller
         $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
         $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
 
-        return view('resources.resources_add_step2', compact(
+        $edit = false;
+
+        return view('resources.resources_modify_step2', compact(
             'resource',
+            'edit',
             'subjects',
             'keywords',
             'types',
@@ -247,13 +296,13 @@ class ResourceController extends Controller
             'educationalUse',
             'resourceSubjectAreas',
             'resourceLearningResourceTypes',
-            'EditEducationalUse'
+            'editEducationalUse'
         ));
     }
 
     public function postStepTwo(Request $request): Redirector|Application|RedirectResponse
     {
-        $resource = $request->session()->get('resource2');
+        $new_resource_step_1 = $request->session()->get('new_resource_step_1');
 
         $validatedData = $request->validate([
             'attachments.*' => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3|max:131072', // Max file size is 128 MB
@@ -282,30 +331,31 @@ class ResourceController extends Controller
             unset($validatedData['attachments']);
         }
 
-        $validatedData = $this->getValidatedData($resource, $validatedData);
+        $validatedData = $this->getValidatedData($new_resource_step_1, $validatedData);
 
-        $request->session()->put('resource2', $validatedData);
+        $request->session()->put('new_resource_step_2', $validatedData);
 
         return redirect('/resources/add/step3');
     }
 
     public function createStepThree(Request $request): View|Factory|Redirector|RedirectResponse|Application
     {
-        $resource1 = $request->session()->get('resource1');
-        $resource2 = $request->session()->get('resource2');
+        $resource1 = $request->session()->get('new_resource_step_1');
+        $resource2 = $request->session()->get('new_resource_step_2');
 
         if (! $resource1 || ! $resource2) {
             return redirect('/resources/add/step1');
         }
 
-        $resource = $request->session()->get('resource3');
+        $resource = $request->session()->get('new_resource_step_3');
 
         $myResources = new Resource();
 
         $creativeCommons = $myResources->resourceAttributesList('taxonomy_term_data', 10);
         $creativeCommonsOther = $myResources->resourceAttributesList('taxonomy_term_data', 26);
+        $edit = false;
 
-        return view('resources.resources_add_step3', compact('resource', 'creativeCommons', 'creativeCommonsOther'));
+        return view('resources.resources_modify_step3', compact('resource', 'edit', 'creativeCommons', 'creativeCommonsOther'));
     }
 
     /**
@@ -324,20 +374,20 @@ class ResourceController extends Controller
             'creative_commons_other' => 'integer',
         ]);
 
-        $request->session()->put('resource3', $validatedData);
+        $request->session()->put('new_resource_step_3', $validatedData);
 
-        $resource1 = $request->session()->get('resource1');
-        $resource2 = $request->session()->get('resource2');
-        $resource3 = $request->session()->get('resource3');
+        $resource1 = $request->session()->get('new_resource_step_1');
+        $resource2 = $request->session()->get('new_resource_step_2');
+        $resource3 = $request->session()->get('new_resource_step_3');
         if (isAdmin()) {
             $resource3['published'] = $request->input('published');
         } else {
             $resource3['published'] = 0;
         }
 
-        $request->session()->forget('resource1');
-        $request->session()->forget('resource2');
-        $request->session()->forget('resource3');
+        $request->session()->forget('new_resource_step_1');
+        $request->session()->forget('new_resource_step_2');
+        $request->session()->forget('new_resource_step_3');
         $request->session()->save();
 
         $finalArray = array_merge($resource1, $resource2, $resource3);
@@ -579,28 +629,21 @@ class ResourceController extends Controller
 
     }
 
-    public function attributes($entity, Request $request)
+    public function attributes(string $entity, Request $request): JsonResponse|Redirector|RedirectResponse|Application
     {
         $myResources = new Resource();
         $keyword = $request->only('term');
         if (! $keyword) {
             return redirect('/home');
         }
-        if ($entity == 'authors') {
-            $records = $myResources->searchResourceAttributes($keyword['term'], 'taxonomy_term_data', 24);
+        $vid = null;
+        if ($entity == "authors") $vid = 24;
+        elseif ($entity == "publishers") $vid = 9;
+        elseif ($entity == "translators") $vid = 22;
+        elseif ($entity == "keywords") $vid = 23;
 
-            return response()->json($records->toArray());
-        } elseif ($entity == 'publishers') {
-            $records = $myResources->searchResourceAttributes($keyword['term'], 'taxonomy_term_data', 9);
-
-            return response()->json($records->toArray());
-        } elseif ($entity == 'translators') {
-            $records = $myResources->searchResourceAttributes($keyword['term'], 'taxonomy_term_data', 22);
-
-            return response()->json($records->toArray());
-        } elseif ($entity == 'keywords') {
-            $records = $myResources->searchResourceAttributes($keyword['term'], 'taxonomy_term_data', 23);
-
+        if ($vid) {
+            $records = $myResources->searchResourceAttributes($keyword['term'],'taxonomy_term_data', $vid);
             return response()->json($records->toArray());
         }
 
@@ -653,7 +696,7 @@ class ResourceController extends Controller
         $flag->save();
 
         return redirect('resource/'.$resourceId)
-            ->with('success', __('Your flag report is now registered! We will get back to you as soon as possible!'));
+            ->with('success', __('Thank you for your report. We will review and take action as soon as possible.'));
     }
 
     public function comment(Request $request): Redirector|Application|RedirectResponse
@@ -676,14 +719,14 @@ class ResourceController extends Controller
         }
 
         Session::flash('alert', [
-            'message' => __('Your comment is successfully registered. We will publish it after review.'),
+            'message' => __('Your comment is recorded. It will be published after a review.'),
             'level' => 'success',
         ]);
 
         return redirect('resource/'.$resourceId);
     }
 
-    public function resourceViewCounter(Request $request, $resourceId)
+    public function resourceViewCounter(Request $request, $resourceId): void
     {
         $myResources = new Resource();
 
@@ -706,12 +749,13 @@ class ResourceController extends Controller
 
         $myResources = new Resource();
 
-        $resource = $request->session()->get('resource1');
+        $resource = $request->session()->get('edit_resource_step_1');
         if ($resource == null) {
             $resource = (array) $myResources->getResources($resourceId);
         }
+        $edit = true;
 
-        return view('resources.resources_edit_step1', compact('resource'));
+        return view('resources.resources_modify_step1', compact('resource', 'edit'));
     }
 
     public function postStepOneEdit($resourceId, Request $request): Redirector|Application|RedirectResponse
@@ -729,7 +773,7 @@ class ResourceController extends Controller
 
         $validatedData['id'] = $resourceId;
         $validatedData['status'] = $request->input('status');
-        $request->session()->put('resource1', $validatedData);
+        $request->session()->put('edit_resource_step_1', $validatedData);
 
         return redirect('/resources/edit/step2/'.$resourceId);
     }
@@ -738,7 +782,7 @@ class ResourceController extends Controller
     {
         $this->middleware('admin');
 
-        $resource1 = $request->session()->get('resource1');
+        $resource1 = $request->session()->get('edit_resource_step_1');
 
         if (! $resource1) {
             return redirect('/resources/edit/step1');
@@ -748,15 +792,15 @@ class ResourceController extends Controller
 
         $resourceSubjectAreas = [];
         $resourceLearningResourceTypes = [];
-        $EditEducationalUse = [];
+        $editEducationalUse = [];
         $resourceLevels = [];
         $resourceKeywords = [];
         $resourceAttachments = [];
 
-        $resource = $request->session()->get('resource2');
+        $resource = $request->session()->get('edit_resource_step_2');
 
         if (isset($resource['subject_areas'])) {
-            $resourceSubjectAreas = $resource['subject_areas'];
+            $resourceSubjectAreas = $resource['subject_areas'].toArray();
         } else {
             $dataSubjects = $myResources->resourceAttributes($resourceId, 'resource_subject_areas', 'tid', 'taxonomy_term_data');
             foreach ($dataSubjects as $item) {
@@ -783,11 +827,11 @@ class ResourceController extends Controller
         }
 
         if (isset($resource['educational_use'])) {
-            $EditEducationalUse = $resource['educational_use'];
+            $editEducationalUse = $resource['educational_use'];
         } else {
             $dataEducationalUse = $myResources->resourceAttributes($resourceId, 'resource_educational_uses', 'tid', 'taxonomy_term_data');
             foreach ($dataEducationalUse as $item) {
-                array_push($EditEducationalUse, $item->id);
+                array_push($editEducationalUse, $item->id);
             }
         }
 
@@ -818,14 +862,11 @@ class ResourceController extends Controller
                 ];
             }
             $resource['attc'] = $resourceAttachments;
-            $request->session()->put('resource2', $resource);
+            $request->session()->put('edit_resource_step_2', $resource);
             $request->session()->save();
         }
 
-        $resourceSubjectAreas = json_encode($resourceSubjectAreas, JSON_NUMERIC_CHECK);
-        $resourceLearningResourceTypes = json_encode($resourceLearningResourceTypes, JSON_NUMERIC_CHECK);
         $resourceKeywords = $resourceKeywords ? implode(',', $resourceKeywords) : '';
-        $EditEducationalUse = json_encode($EditEducationalUse, JSON_NUMERIC_CHECK);
 
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data', 8);
         $keywords = $myResources->resourceAttributesList('taxonomy_term_data', 23);
@@ -834,9 +875,11 @@ class ResourceController extends Controller
         $types = $myResources->resourceAttributesList('taxonomy_term_data', 7);
         $levels = $myResources->resourceAttributesList('taxonomy_term_data', 13);
         $resource['id'] = $resourceId;
+        $edit = true;
 
-        return view('resources.resources_edit_step2', compact(
+        return view('resources.resources_modify_step2', compact(
             'resource',
+            'edit',
             'subjects',
             'keywords',
             'types',
@@ -845,7 +888,7 @@ class ResourceController extends Controller
             'educationalUse',
             'resourceSubjectAreas',
             'resourceLearningResourceTypes',
-            'EditEducationalUse',
+            'editEducationalUse',
             'resourceAttachments',
             'resourceLevels',
             'resourceKeywords'
@@ -856,7 +899,7 @@ class ResourceController extends Controller
     {
         $this->middleware('admin');
 
-        $resource = $request->session()->get('resource2');
+        $resource = $request->session()->get('edit_resource_step_2');
         $validatedData = $request->validate([
             'attachments.*' => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3',
             'subject_areas' => 'required',
@@ -887,7 +930,7 @@ class ResourceController extends Controller
         $validatedData = $this->getValidatedData($resource, $validatedData);
 
         $validatedData['resourceid'] = $resourceId;
-        $request->session()->put('resource2', $validatedData);
+        $request->session()->put('edit_resource_step_2', $validatedData);
         $request->session()->save();
 
         return redirect('/resources/edit/step3/'.$resourceId);
@@ -897,14 +940,14 @@ class ResourceController extends Controller
     {
         $this->middleware('admin');
 
-        $resource1 = $request->session()->get('resource1');
-        $resource2 = $request->session()->get('resource2');
+        $resource1 = $request->session()->get('edit_resource_step_1');
+        $resource2 = $request->session()->get('edit_resource_step_2');
 
         if (! $resource1 || ! $resource2) {
             return redirect('/resources/edit/step1');
         }
 
-        $resource = $request->session()->get('resource3');
+        $resource = $request->session()->get('edit_resource_step_3');
 
         $dbRecords = Resource::find($resourceId);
 
@@ -915,8 +958,9 @@ class ResourceController extends Controller
 
         $resource['id'] = $resourceId;
         $resource['status'] = $resource1['status'];
+        $edit = true;
 
-        return view('resources.resources_edit_step3', compact('dbRecords', 'resource', 'creativeCommons', 'creativeCommonsOther'));
+        return view('resources.resources_modify_step3', compact('dbRecords', 'edit', 'resource', 'creativeCommons', 'creativeCommonsOther'));
     }
 
     /**
@@ -937,16 +981,16 @@ class ResourceController extends Controller
             'creative_commons_other' => 'integer',
         ]);
 
-        $request->session()->put('resource3', $validatedData);
+        $request->session()->put('edit_resource_step_3', $validatedData);
 
-        $resource1 = $request->session()->get('resource1');
-        $resource2 = $request->session()->get('resource2');
-        $resource3 = $request->session()->get('resource3');
+        $resource1 = $request->session()->get('edit_resource_step_1');
+        $resource2 = $request->session()->get('edit_resource_step_2');
+        $resource3 = $request->session()->get('edit_resource_step_3');
         $resource3['published'] = $request->input('published');
 
-        $request->session()->forget('resource1');
-        $request->session()->forget('resource2');
-        $request->session()->forget('resource3');
+        $request->session()->forget('edit_resource_step_1');
+        $request->session()->forget('edit_resource_step_2');
+        $request->session()->forget('edit_resource_step_3');
         $request->session()->save();
 
         $finalArray = array_merge($resource1, $resource2, $resource3);
@@ -1355,17 +1399,13 @@ class ResourceController extends Controller
     {
         $secret = config('s3.config.secret');
         $decrypted_key = decrypt($key);
-        $received_time = $decrypted_key / ($secret ? $secret : 1);
+        $received_time = $decrypted_key / ($secret ?: 1);
         $current_time = time();
 
         if ($current_time - $received_time < 300) { // 300 - tolerance of 5 minutes
             $resourceAttachment = ResourceAttachment::findOrFail($fileId);
-            try {
-                $file = Storage::disk('s3')->get('resources/'.$resourceAttachment->file_name);
-            } catch (FileNotFoundException $e) {
-                Log::error($e);
-                abort(404);
-            }
+            $file = Storage::disk('s3')->get('resources/'.$resourceAttachment->file_name);
+            if ($file == null) abort(404);
             $temp_file = tempnam(
                 sys_get_temp_dir(), $resourceAttachment->file_name.'_'
             );

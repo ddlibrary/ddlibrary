@@ -43,7 +43,6 @@
         </script>
     @endif
 
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
     <!-- Matomo -->
     <script>
       var _paq = window._paq = window._paq || [];
@@ -62,64 +61,63 @@
 </head>
 
 <body>
+    <div id="page-container">
+        <!-- Facebook Chat Integration - Start -->
+        <!-- Load Facebook SDK for JavaScript -->
+        <div id="fb-root"></div>
+        <script>
+            window.fbAsyncInit = function() {
+                FB.init({
+                    xfbml: true,
+                    version: 'v3.2'
+                });
+            };
 
+            (function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s);
+                js.id = id;
+                js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        </script>
 
-    <!-- Facebook Chat Integration - Start -->
-    <!-- Load Facebook SDK for JavaScript -->
-    <div id="fb-root"></div>
-    <script>
-        window.fbAsyncInit = function() {
-            FB.init({
-                xfbml: true,
-                version: 'v3.2'
-            });
-        };
-
-        (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s);
-            js.id = id;
-            js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    </script>
-
-    <!-- Your customer chat code -->
-    <div class="fb-customerchat" attribution=setup_tool page_id="1540661852875335" theme_color="#ffa800"
-        logged_in_greeting="به کتابخانه درخت دانش خوش آمدید. چگونه می توانیم به شما کمک کنیم؟"
-        logged_out_greeting="به کتابخانه درخت دانش خوش آمدید. چگونه می توانیم به شما کمک کنیم؟">
-    </div>
-    <!-- Facebook Chat Integration - End -->
-    @include('layouts.banner')
-    @yield('search')
-    <main>
-
-        <?php
-        $lang = config('app.locale');
-        $questions_count = \App\Models\SurveyQuestion::getPublishedQuestions($lang)->count();
-        ?>
-        @if ($questions_count != 0)
-            @if (Request::is(Lang::locale() . '/home'))
-                @include('../survey/survey_view')
-            @elseif (Request::is(Lang::locale()))
-                @include('../survey/survey_view')
-            @elseif (Request::is(Lang::locale() . '/resource/*'))
-                @include('../survey/survey_view')
-            @elseif (Request::is(Lang::locale() . '/resources/*'))
-                @include('../survey/survey_view')
+        <!-- Your customer chat code -->
+        <div class="fb-customerchat" attribution=setup_tool page_id="1540661852875335" theme_color="#ffa800"
+            logged_in_greeting="به کتابخانه درخت دانش خوش آمدید. چگونه می توانیم به شما کمک کنیم؟"
+            logged_out_greeting="به کتابخانه درخت دانش خوش آمدید. چگونه می توانیم به شما کمک کنیم؟">
+        </div>
+        <!-- Facebook Chat Integration - End -->
+        @include('layouts.banner')
+        @yield('search')
+        <main>
+            <?php
+            $lang = config('app.locale');
+            $questions_count = \App\Models\SurveyQuestion::getPublishedQuestions($lang)->count();
+            ?>
+            @if ($questions_count != 0)
+                @if (Request::is(Lang::locale() . '/home'))
+                    @include('../survey/survey_view')
+                @elseif (Request::is(Lang::locale()))
+                    @include('../survey/survey_view')
+                @elseif (Request::is(Lang::locale() . '/resource/*'))
+                    @include('../survey/survey_view')
+                @elseif (Request::is(Lang::locale() . '/resources/*'))
+                    @include('../survey/survey_view')
+                @endif
             @endif
-        @endif
 
-        @yield('content')
-        @if (session()->has('alert'))
-            <x-alert :message="Session::get('alert.message')" :level="Session::get('alert.level')" />
-        @endif
-    </main>
-    @include('layouts.footer')
-    <!-- Optional JavaScript -->
-    <script async src="{{ asset('js/all.js') }}"></script>
+            @yield('content')
+            @if (session()->has('alert'))
+                <x-alert :message="Session::get('alert.message')" :level="Session::get('alert.level')" />
+            @endif
+        </main>
+        @include('layouts.footer')
+        <!-- Optional JavaScript -->
+    </div>
     @stack('scripts')
+    <script async src="{{ asset('js/all.js') }}"></script>
 </body>
 
 </html>
