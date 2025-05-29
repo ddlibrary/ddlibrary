@@ -19,4 +19,4 @@
     <a href="{{ URL::to('page/translate/'.$page->id.'/'.$page->tnid) }}">Translate</a>
     @endif
 </div>
-@endsection 
+@endsection
