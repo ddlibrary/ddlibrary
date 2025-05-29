@@ -77,7 +77,7 @@
                 </label>
                 <select class="form-control{{ $errors->has('learning_resources_types') ? ' is-invalid' : '' }}" id="learning_resources_types" name="learning_resources_types[]" size="10" required  multiple>
                     @foreach ($learningResourceTypes AS $item)
-                        <option value="{{ $item->id }}" {{ $resourceLearningResourceTypes != "null" ? (in_array($item->id, $resourceLearningResourceTypes) ? 'selected' : '') : '' }}>{{ $item->name . termEn($item->id) }}</option>
+                        <option value="{{ $item->id }}" {{ $resourceLearningResourceTypes != null ? (in_array($item->id, $resourceLearningResourceTypes) ? 'selected' : '') : '' }}>{{ $item->name . termEn($item->id) }}</option>
                     @endforeach
                 </select>
 
