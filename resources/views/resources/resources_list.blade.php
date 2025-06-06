@@ -23,6 +23,11 @@
                             <div class="card-body" style="padding: 0.75rem;">
                                 <p class="card-text">{{ $resource->title }}</p>
                             </div>
+                            <div class="card-footer text-muted resource-list-footer-style-override">
+                                <span><i class="fa-solid fa-eye"></i> {{ $views->where('resource_id', $resource->id)->count() }}</span>
+                                <span class="resource-list-card-footer-separator"><i class="fa-solid fa-comments"></i> {{ $comments->where('resource_id', $resource->id)->count() }}</span>
+                                <span class="resource-list-card-footer-separator"><i class="fa-solid fa-star"></i> {{ $favorites->where('resource_id', $resource->id)->count() }}</span>
+                            </div>
                             <a href="{{ URL::to('resource/'.$resource->id) }}" class="stretched-link"></a>
                         </div>
                     @endif

@@ -96,7 +96,7 @@ class ResourceController extends Controller
         DDLClearSession();
         $this->pageView($request, 'Resource List');
 
-        $myResources = new Resource();
+        $resource = new Resource();
 
         //Getting all whatever in the parameterBag
         $everything = $request->all();
@@ -140,12 +140,16 @@ class ResourceController extends Controller
 
             $finalSubjectAreaIds = array_merge($noDuplicateParentAreaIds, $subjectAreaChildIds);
             $finalSubjectAreaIds = array_map('strval', $finalSubjectAreaIds);
-            $request->request->remove('subjectAreaParent');
-            $request->request->add(['subject_area' => $finalSubjectAreaIds]);
+            $request->query->remove('subjectAreaParent');
+            $request->query->add(['subject_area' => $finalSubjectAreaIds]);
         }
-        $resources = $myResources->paginateResourcesBy($request);
+        $resources = $resource->paginateResourcesBy($request);
 
-        return view('resources.resources_list', compact('resources'));
+        $views = new ResourceView();
+        $favorites = new ResourceFavorite();
+        $comments = new ResourceComment();
+
+        return view('resources.resources_list', compact('resources', 'views', 'favorites', 'comments'));
     }
 
     public function resourceFilter(): Factory|View|Application

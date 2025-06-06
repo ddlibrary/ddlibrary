@@ -1,5 +1,5 @@
 # PHP Version environment variable
-ARG PHP_VERSION
+ARG PHP_VERSION=8.2
 
 FROM php:$PHP_VERSION-fpm
 
@@ -14,7 +14,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libzip-dev \
     libicu-dev \
     libwebp-dev \
-    nano
+    nano \
+    procps
 
 RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - && \
     apt-get install -y nodejs \
