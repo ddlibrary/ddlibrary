@@ -27,40 +27,72 @@
                 <a class="nav-link" href="{{ URL::to('add/resourcefile') }}"><i class="fas fa-upload"></i> @lang('Submit a resource')</a>
             </li>
         </ul>
-        <ul class="navbar-nav">
+        <ul class="navbar-nav align-items-center">
+            @php
+                $currentLocale = LaravelLocalization::getCurrentLocale();
+                $currentPath = request()->path();
+                $redirectPath = null;
+                if ($pos = str_contains($currentPath, $currentLocale . '/')) {
+                    $redirectPath = substr($currentPath, $pos + 1);
+                }
+            @endphp
+            <li class="nav-item @if(LaravelLocalization::getCurrentLocaleDirection() == 'ltr') border-end @else border-start @endif border-white lh-1">
+                <a rel="alternate"
+                   href="{{ URL::to('/en'.$redirectPath) }}"
+                   hreflang="en"
+                   title="Language"
+                   class="nav-link"
+                >
+                    English
+                </a>
+            </li>
+            <li class="nav-item @if(LaravelLocalization::getCurrentLocaleDirection() == 'ltr') border-end @else border-start @endif border-white lh-1" >
+                <a rel="alternate"
+                   href="{{ URL::to('/fa'.$redirectPath) }}"
+                   hreflang="fa"
+                   title="Language"
+                   class="nav-link"
+                >
+                    فارسی
+                </a>
+            </li>
+            <li class="nav-item">
+                <a rel="alternate"
+                   href="{{ URL::to('/ps'.$redirectPath) }}"
+                   hreflang="ps"
+                   title="Language"
+                   class="nav-link"
+                >
+                    پښتو
+                </a>
+            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-language"></i> {{ LaravelLocalization::getCurrentLocaleNative() }}
+                    <i class="fa-solid fa-language"></i> @lang('Other languages')
                 </a>
                 <div class="dropdown-menu @if(LaravelLocalization::getCurrentLocaleDirection() == 'ltr') dropdown-menu-right @else dropdown-menu-left @endif" aria-labelledby="navbarDropdown">
-                    <?php
-                    $currentLocale = LaravelLocalization::getCurrentLocale();
-                    $currentPath = request()->path();
-                    $redirectPath = null;
-                    if ($pos = str_contains($currentPath, $currentLocale . '/')) {
-                        $redirectPath = substr($currentPath, $pos + 1);
-                    }
-                    ?>
                     @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                         @unless($localeCode == LaravelLocalization::getCurrentLocale())
-                            <a rel="alternate"
-                               href="{{ URL::to('/'.$localeCode.$redirectPath) }}"
-                               hreflang="{{ $localeCode }}"
-                               title="Language"
-                               class="dropdown-item"
-                            >
-                                {{ $properties['native'] }}
-                            </a>
+                            @if ($localeCode != 'en' and $localeCode != 'fa' and $localeCode != 'ps')
+                                <a rel="alternate"
+                                   href="{{ URL::to('/'.$localeCode.$redirectPath) }}"
+                                   hreflang="{{ $localeCode }}"
+                                   title="Language"
+                                   class="dropdown-item"
+                                >
+                                    {{ $properties['native'] }}
+                                </a>
+                            @endif
                         @endunless
                     @endforeach
                 </div>
             </li>
             @if (Auth::check())
-                <li class="nav-item dropdown {{ (Lang::locale() != 'en') ? 'dropend' : 'dropstart' }}">
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-circle-user fa-2xl"></i>
                     </a>
-                    <div class="dropdown-menu @if(LaravelLocalization::getCurrentLocaleDirection() == 'ltr') dropdown-menu-right @else dropdown-menu-left @endif" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu @if(LaravelLocalization::getCurrentLocaleDirection() == 'ltr') dropdown-menu-end @else dropdown-menu-start @endif" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ URL::to('/user/profile') }}" title="@lang('Account')">@lang('Account')</a>
                         @if (isAdmin())
                             <a class="dropdown-item" href="{{ URL::to('/admin') }}" title="@lang('Admin panel')">@lang('Admin panel')</a>

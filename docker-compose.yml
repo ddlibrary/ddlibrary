@@ -32,7 +32,6 @@ services:
       MYSQL_ROOT_PASSWORD: MYSQL_ALLOW_EMPTY_PASSWORD
       MYSQL_USER: ${DB_USERNAME}
     volumes:
-      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
       - ./docker/mysql/db.cnf:/etc/mysql/conf.d/my.cnf
       - dbdata:/var/lib/mysql
     tty: true

@@ -558,6 +558,15 @@ aside .sub-subject-show {
     color: #888;
 }
 
+.resource-list-card-footer-separator::before {
+    content: "•";
+    margin: 0 4px;
+}
+
+.card-footer.resource-list-footer-style-override {
+    border-top: 0;
+}
+
 .resource-view {
     display: flex;
     flex-wrap: wrap;
