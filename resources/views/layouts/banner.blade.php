@@ -36,7 +36,7 @@
                     $redirectPath = substr($currentPath, $pos + 1);
                 }
             @endphp
-            <li class="nav-item @if(LaravelLocalization::getCurrentLocaleDirection() == 'ltr') border-end @else border-start @endif border-white lh-1">
+            <li class="nav-item @if(LaravelLocalization::getCurrentLocaleDirection() == 'ltr') border-end @else border-start @endif border-white lh-1" id="no-border-nav-item">
                 <a rel="alternate"
                    href="{{ URL::to('/en'.$redirectPath) }}"
                    hreflang="en"
@@ -46,7 +46,7 @@
                     English
                 </a>
             </li>
-            <li class="nav-item @if(LaravelLocalization::getCurrentLocaleDirection() == 'ltr') border-end @else border-start @endif border-white lh-1" >
+            <li class="nav-item @if(LaravelLocalization::getCurrentLocaleDirection() == 'ltr') border-end @else border-start @endif border-white lh-1" id="no-border-nav-item">
                 <a rel="alternate"
                    href="{{ URL::to('/fa'.$redirectPath) }}"
                    hreflang="fa"

@@ -45,12 +45,17 @@ header #toggle {
     border: 2px solid #636060;
 }
 
+#no-border-nav-item {
+    @media (max-width: 991px) {
+        border: 0 !important;
+    }
+}
+
 .header-right .language-content {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
-    margin: 0 25px 0 34px;
-    margin-bottom: -23px;
+    margin: 0 25px -23px 34px;
 }
 .header-right .language-content li {
     margin-right: 10px;
