@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ResourceTaxonomyTermRequest;
 use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
 use App\Models\Resource;
@@ -1420,6 +1421,237 @@ class ResourceController extends Controller
                 ->deleteFileAfterSend();
         } else {
             abort(403);
+        }
+    }
+
+    public function resourcesWithoutPublishers(Request $request){
+
+        $languages = $this->getLanguages();
+
+        $query = Resource::query()->select(['id', 'title', 'language', 'user_id', 'updated_at', 'created_at', 'status'])
+        ->with(['publishers:id,name', 'user:id,username']);
+
+        $query->when($request->title, function ($query) use ($request) {
+            return $query->where('title', 'like', '%'.$request->title.'%');
+        })
+        ->when($request->status, function ($query) use ($request) {
+            return $query->where('status', $request->status);
+        })
+        ->when($request->language, function ($query) use ($request) {
+            return $query->where('language', $request->language);
+        });
+        
+
+        if ($request->without_publisher ? true : false) {
+            $query->doesntHave('publishers');
+        }
+
+        $resources = $query->orderBy('resources.created_at', 'desc')->paginate(10);
+
+        $request->session()->put('filters', $request->all());
+
+        $filters = $request->session()->get('filters');
+
+        return view('admin.resources.resources-without-publisher', compact('resources', 'filters', 'languages'));
+
+    }
+
+
+    public function addPublisher(ResourceTaxonomyTermRequest $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $resource = Resource::findOrFail($request->resource_id);
+            $existingPublisher = $resource->publishers()->first();
+            if($existingPublisher){
+                $existingPublisher->name = $request->name;
+                $existingPublisher->save();
+            }else{
+                $theTaxonomy = TaxonomyTerm::where('name', $request->name)
+                    ->where('vid', 9)
+                    ->first();
+    
+                $myPublisher = new ResourcePublisher();
+                $myPublisher->resource_id = $resource->id;
+    
+                if ($theTaxonomy != null) {
+                    $myPublisher->tid = $theTaxonomy->id;
+                } else {
+                    $myTaxonomy = new TaxonomyTerm();
+                    $myTaxonomy->vid = 9;
+                    $myTaxonomy->name = $request->name;
+                    $myTaxonomy->language = $resource->language;
+                    $myTaxonomy->save();
+    
+                    $myPublisher->tid = $myTaxonomy->id;
+                }
+    
+                $myPublisher->save();
+            }
+
+            DB::commit();
+
+            return response()->json(['message' => "($request->name) is added as publisher for ($resource->title)"], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json(['message' => 'Failed to add publisher: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function resourcesWithoutAuthors(Request $request){
+
+        $languages = $this->getLanguages();
+
+        $query = Resource::query()->select(['id', 'title', 'language', 'user_id', 'updated_at', 'created_at', 'status'])
+        ->with(['authors:id,name', 'user:id,username']);
+
+        $query->when($request->title, function ($query) use ($request) {
+            return $query->where('title', 'like', '%'.$request->title.'%');
+        })
+        ->when($request->status, function ($query) use ($request) {
+            return $query->where('status', $request->status == 1 ? true : false);
+        })
+        ->when($request->language, function ($query) use ($request) {
+            return $query->where('language', $request->language);
+        });
+        
+
+        if ($request->without_author ? true : false) {
+            $query->doesntHave('authors');
+        }
+
+        $resources = $query->orderBy('resources.created_at', 'desc')->paginate();
+
+        $request->session()->put('filters', $request->all());
+
+        $filters = $request->session()->get('filters');
+
+        return view('admin.resources.resources-without-author', compact('resources', 'filters', 'languages'));
+
+    }
+
+    public function addAuthor(ResourceTaxonomyTermRequest $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $resource = Resource::findOrFail($request->resource_id);
+
+            $resource->authors()?->delete();
+
+            $authors = trim($request->name, ',');
+            $authors = explode(',', $authors);
+
+            foreach ($authors as $author) {
+                $theTaxonomy = TaxonomyTerm::where('name', $author)
+                    ->where('vid', 24)
+                    ->first();
+
+                $resourceAuthor = new ResourceAuthor();
+                $resourceAuthor->resource_id = $resource->id;
+
+                if ($theTaxonomy != null) {
+                    $resourceAuthor->tid = $theTaxonomy->id;
+                } else {
+                    $taxonomy = new TaxonomyTerm();
+                    $taxonomy->vid = 24;
+                    $taxonomy->name = trim($author);
+                    $taxonomy->language = $resource->language;
+                    $taxonomy->save();
+
+                    $resourceAuthor->tid = $taxonomy->id;
+                }
+
+                $resourceAuthor->save();
+            }
+
+            DB::commit();
+
+            return response()->json(['message' => "($request->name) is added as author for ($resource->title)"], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json(['message' => 'Failed to add author: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function resourcesWithoutTranslators(Request $request){
+
+        $languages = $this->getLanguages();
+
+        $query = Resource::query()->select(['id', 'title', 'language', 'user_id', 'updated_at', 'created_at', 'status'])
+        ->with(['translators:id,name', 'user:id,username']);
+
+        $query->when($request->title, function ($query) use ($request) {
+            return $query->where('title', 'like', '%'.$request->title.'%');
+        })
+        ->when($request->status, function ($query) use ($request) {
+            return $query->where('status', $request->status == 1 ? true : false);
+        })
+        ->when($request->language, function ($query) use ($request) {
+            return $query->where('language', $request->language);
+        });
+        
+
+        if ($request->without_translator ? true : false) {
+            $query->doesntHave('translators');
+        }
+
+        $resources = $query->orderBy('resources.created_at', 'desc')->paginate();
+
+        $request->session()->put('filters', $request->all());
+
+        $filters = $request->session()->get('filters');
+
+        return view('admin.resources.resources-without-translator', compact('resources', 'filters', 'languages'));
+
+    }
+
+    public function addTranslator(ResourceTaxonomyTermRequest $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $resource = Resource::findOrFail($request->resource_id);
+
+            $resource->authors()?->delete();
+
+            $translators = trim($request->name, ',');
+            $translators = explode(',', $translators);
+
+            foreach ($translators as $translator) {
+                $theTaxonomy = TaxonomyTerm::where('name', $translator)
+                    ->where('vid', 24)
+                    ->first();
+
+                $resourceTranslator = new ResourceTranslator();
+                $resourceTranslator->resource_id = $resource->id;
+
+                if ($theTaxonomy != null) {
+                    $resourceTranslator->tid = $theTaxonomy->id;
+                } else {
+                    $taxonomy = new TaxonomyTerm();
+                    $taxonomy->vid = 24;
+                    $taxonomy->name = trim($translator);
+                    $taxonomy->language = $resource->language;
+                    $taxonomy->save();
+
+                    $resourceTranslator->tid = $taxonomy->id;
+                }
+
+                $resourceTranslator->save();
+                
+            }
+
+            DB::commit();
+
+            return response()->json(['message' => "($request->name) is added as author for ($resource->title)"], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json(['message' => 'Failed to add author: ' . $e->getMessage()], 500);
         }
     }
 }

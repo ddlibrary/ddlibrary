@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Relations\BelongsToUser;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,6 +25,7 @@ class Resource extends Model
 {
     use CausesActivity;
     use LogsActivity;
+    use BelongsToUser;
 
     protected static $logAttributes = ['*'];
 
