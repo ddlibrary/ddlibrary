@@ -287,7 +287,9 @@
                             <form class="form-row" method="post" action="{{ route('updatetid', $resource->id) }}">
                                 
                                 @csrf
-                                <label for="link">If this resource is translated, enter the id of the translated resource and click submit.</label>
+                                <label for="link">
+                                    {{ __('If this resource is translated, enter the translated resource id and click submit:') }}
+                                </label>
                                 <div class="row">
                                     <div class="col-sm-9">
                                         <input type="text" name="link" class="form-control">
