@@ -178,7 +178,7 @@ class LoginTest extends TestCase
         $response->assertRedirect('/fa/login');
         $response->assertSessionHasErrors('email');
         $response->assertSessionHasErrors();
-        $response->assertSessionHasErrors(['email' => 'اطلاعات وارد شده غلط میباشد.']);
+        $response->assertSessionHasErrors(['email' => 'اطلاعات وارد شده غلط می‌باشد.']);
 
         $this->assertFalse(session()->hasOldInput('password'));
         $this->assertGuest();
