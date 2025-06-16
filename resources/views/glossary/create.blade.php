@@ -35,7 +35,7 @@
                     </select>
                 </div>
                 <div class="left-side">
-                    <input class="form-control submit-button btn btn-primary" type="submit" value="@lang('Submit')">
+                    <input class="btn btn-primary btn-md" type="submit" value="@lang('Submit')">
                 </div>
             </form>
         </div>

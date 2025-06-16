@@ -28,7 +28,7 @@
                             class="col-md-4 col-form-label text-md-right">{{ __('Your email address') }}</label>
 
                         <div class="col-md-8">
-                            <input id="email" placeholder="@lang('Please enter your email')" type="email"
+                            <input id="email" type="email"
                                 class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" style="width: 377px;"
                                 name="email" value="{{ old('email') }}" required>
 
@@ -38,11 +38,11 @@
                     <div class="form-item">
                         <div>
                             @if (env('CAPTCHA') == 'yes')
-                                <button class="g-recaptcha form-control submit-button btn btn-primary"
+                                <button class="g-recaptcha submit-button btn btn-primary btn-md"
                                     data-sitekey="{{ config('services.recaptcha_v3.site_key') }}" data-callback='onSubmit'
                                     data-action='register'>@lang('Send password reset link')</button>
                             @else
-                                <button class="form-control submit-button btn btn-primary">@lang('Send password reset link')</button>
+                                <button class="submit-button btn btn-primary btn-md">@lang('Send password reset link')</button>
                             @endif
                         </div>
                     </div>
