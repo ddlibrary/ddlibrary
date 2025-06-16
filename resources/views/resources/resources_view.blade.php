@@ -285,14 +285,14 @@
                             @endif
 
                             <form class="form-row" method="post" action="{{ route('updatetid', $resource->id) }}">
-                                
+                                @honeypot
                                 @csrf
                                 <label for="link">
                                     {{ __('If this resource is translated, enter the translated resource id and click submit:') }}
                                 </label>
                                 <div class="row">
                                     <div class="col-sm-9">
-                                        <input type="text" name="link" class="form-control">
+                                        <input type="number" name="link" class="form-control">
                                     </div>
                                     <div class="col-sm-3">
                                         <input type="submit" class="btn btn-primary" value="@lang('Submit')">
