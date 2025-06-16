@@ -106,8 +106,10 @@ class ResourceController extends Controller
 
         // Handle cases where one resource is primary
         if ($resource->primary_tnid) {
-            $translatedResource->tnid = $resource->id;
-            $translatedResource->save();
+            if($translatedResource->tnid != $resource->id){
+                $translatedResource->tnid = $resource->id;
+                $translatedResource->save();
+            }
         } elseif ($translatedResource->primary_tnid) {
             $resource->tnid = $translatedResource->id;
             $resource->save();
