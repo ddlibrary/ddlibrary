@@ -152,7 +152,7 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertRedirect('/fa/login');
-        $response->assertSessionHasErrors(['email' => 'اطلاعات وارد شده غلط میباشد.']);
+        $response->assertSessionHasErrors(['email' => 'اطلاعات وارد شده غلط می‌باشد.']);
     }
 
     public function fa_user_cannot_view_a_login_form_when_authenticated()
