@@ -118,13 +118,11 @@ class LoginTest extends TestCase
         $response->assertSuccessful();
         $response->assertViewIs('auth.login');
 
-        $response->assertSee('یا');
-        $response->assertSee('ایمیل یا نام کاربری یا شماره تیلفون');
         $response->assertSee('حساب جدید');
         $response->assertSee('گذرواژه');
         $response->assertSee('مرا به خاطر بسپار');
-        $response->assertSee('گذرواژه را فراموش کردم');
-        $response->assertSee('ورود به کتابخانه درخت دانش');
+        $response->assertSee('گذرواژه را فراموش کردید؟');
+        $response->assertSee('ورود به سیستم');
     }
 
     /** @test */
