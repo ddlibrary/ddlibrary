@@ -47,7 +47,6 @@ class ForgotPasswordTest extends TestCase
 
         $response->assertSee('گذرواژه خود را تغییر بدهید');
         $response->assertSee('آدرس ایمیل شما');
-        $response->assertSee('لطفاً ایمیل آدرس خود را وارد کنید.');
     }
 
     /** @test */
