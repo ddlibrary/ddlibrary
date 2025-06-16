@@ -1,24 +1,13 @@
-<section class="banner">
-    <div class="main-section search-section">
-        <header>
-            <h1>@lang('Free and open educational resources for Afghanistan')</h1>
-        </header>
-        <form method="GET" action="{{ route('resourceList') }}" id="search-form">
-            @csrf
+<div class="container text-center mb-4">
 
-            <div class="relative-div">
-                <input type="text" name="search" class="form-control search-input" value="{{ session('search') }}"
-                    placeholder="@lang('SEARCH OUR GROWING LIBRARY!')" autofocus>
-                <i class="fa fa-search fa-2x search-icon {{ Lang::locale() == 'en' ? 'search-icon-right' : 'search-icon-left' }}"
-                    onclick="submitForm()"></i>
-            </div>
-        </form>
-    </div>
-    @push('scripts')
-        <script>
-            function submitForm() {
-                document.getElementById('search-form').submit();
-            }
-        </script>
-    @endpush
-</section>
+    <h2 class="my-3">@lang('Free and open educational resources for Afghanistan')</h2>
+
+    <form class="justify-content-center row" method="GET" action="{{ route('resourceList') }}">
+        <div class="form-group col-md-6 col-12 my-2">
+            <label for="search" class="sr-only">@lang('Search')</label>
+            <input type="text" id="search" name="search" class="form-control" placeholder="@lang('Search our growing library!')">
+        </div>
+        <input type="submit" class="btn btn-primary col-md-1 col-2 my-2" value="@lang('Go')">
+        <a href="{{ route('resourceFilter') }}" class="btn btn-outline-secondary col-md-1 col-2 {{ (Lang::locale() != 'en') ? 'me-1' : 'ms-1' }} my-2">@lang('Filter')</a>
+    </form>
+</div>

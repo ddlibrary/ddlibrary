@@ -12,68 +12,63 @@
     @include('layouts.search')
 @endsection
 @section('content')
-    <section class="main-section">
-        <div class="ddl-top-news border-radius-top-5">
-            <div>
-                <p>@lang("Access children's storybooks through Storyweaver, click here"):
-                    <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}"
-                        title="StoryWeaver">
-                        <img src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url') . '/public/img/storyweaver-logo.svg') }}"
-                            class="storyweaver-logo">
-                        @lang('StoryWeaver Library')
-                    </a>
-                </p>
-            </div>
-        </div>
-        <header class="home-header border-b-lightgray ">
-            <h2>@lang('Explore our subjects')</h2>
-        </header>
-        <div class="section-content">
-            @foreach ($subjectAreas as $subject)
-                <a href="{{ URL::to('resources/list?=&subject_area[]=' . $subject->subject_area) }}"
-                    title="{{ $subject->name }}">
-                    <article class="home-subject-areas">
+    <div class="container pt-2" id="homepage-main-container">
+        <h4 class="@if(LaravelLocalization::getCurrentLocaleDirection() == 'ltr') main-heading @else main-heading-rtl @endif p-2">
+            @lang('Explore our subjects')
+        </h4>
+        <div class="row justify-content-center my-4">
+            @foreach($subjectAreas as $subject)
+                <a href="{{ URL::to('resources/list?=&subject_area[]='.$subject->subject_area) }}"
+                   title="{{ $subject->name }}"
+                   class="col-6 col-sm-4 col-lg-2 text-center"
+                >
+                    <div class="home-subject-areas">
                         <img src="{{ Storage::disk('public')->url($subject->file_name) }}" alt="Subject Area Icon">
                         <p>{{ $subject->name }}</p>
                         <p class="resource-count">{{ App\Models\Resource::countSubjectAreas($subject->id)->total }}
                             @lang('Resources')</p>
-                    </article>
+                    </div>
                 </a>
             @endforeach
         </div>
-    </section>
-    <section class="main-section mt-2">
-
-        <header class="border-radius-top-5 border-b-lightgray home-header">
-            <h2>@lang('Featured Resource Collections')</h2>
-        </header>
-        <div class="section-content">
+        <h4 class="@if(LaravelLocalization::getCurrentLocaleDirection() == 'ltr') main-heading @else main-heading-rtl @endif p-2">
+            @lang('Featured resource collections')
+        </h4>
+        <div class="row justify-content-center my-4">
             @foreach ($featured as $item)
                 <?php
-                if ($item->url) {
-                    $url = URL::to($item->url);
-                } elseif ($item->type_id) {
-                    $url = URL::to('resources/list?type=' . $item->type_id);
-                } elseif ($item->subject_id) {
-                    $url = URL::to('resources/list?subject_area=' . $item->subject_id);
-                } elseif ($item->level_id) {
-                    $url = URL::to('resources/list?level=' . $item->level_id);
-                } else {
-                    $url = URL::to('/');
+                if (isset($item)) {
+                    if($item->url){
+                        $url = URL::to($item->url);
+                    }elseif($item->type_id){
+                        $url = URL::to('resources/list?type='.$item->type_id);
+                    }elseif($item->subject_id){
+                        $url = URL::to('resources/list?subject_area='.$item->subject_id);
+                    }elseif($item->level_id){
+                        $url = URL::to('resources/list?level='.$item->level_id);
+                    }else{
+                        $url = URL::to('/');
+                    }
                 }
                 ?>
-                <a href="{{ URL::to($url) }}" title="{{ $item->name }}">
-                    <article class="home-subject-areas">
+                <a href="{{ URL::to($url) }}"
+                   title="{{ $item->name }}"
+                   class="col-6 col-sm-4 col-lg-2 text-center"
+                >
+                    <div class="home-subject-areas">
                         <i class="{{ $item->icon }} fa-4x" style="color: #ffa300"></i>
                         <p>{{ $item->name }}</p>
-                    </article>
+                    </div>
                 </a>
             @endforeach
-            <a href="{{ URL::to('glossary') }}" title="Glossary">
-                <article class="home-subject-areas">
-                    <i class="fa fa-search fa-4x" style="color: #ffa300"></i>
-                    <p>@lang('DDL Glossary')</p>
-                </article>
+            <a href="{{ URL::to('glossary') }}"
+               title="Glossary"
+               class="col-6 col-sm-4 col-lg-2 text-center"
+            >
+                <div class="home-subject-areas">
+                    <i class="fa fa-globe fa-4x" style="color: #ffa300"></i>
+                    <p>@lang('Glossary')</p>
+                </div>
             </a>
 
             <?php
@@ -88,159 +83,157 @@
                 $covid_url = 'page/4136';
             }
             ?>
-            <a href="{{ URL::to($covid_url) }}" title="Covid-19">
-                <article class="home-subject-areas">
-                    <img src="{{ Storage::disk('public')->url('covid19.png') }}" alt="COVID19 Icon" style="height:52px">
-                    <p>@lang('COVID19')</p>
-                </article>
+            <a href="{{ URL::to($covid_url) }}"
+               title="COVID-19"
+               class="col-6 col-sm-4 col-lg-2 text-center"
+            >
+                <div class="home-subject-areas">
+                    <i class="fas fa-first-aid fa-4x" style="color: #ffa300"></i>
+                    <p>@lang('COVID-19')</p>
+                </div>
             </a>
             @php
                 $newcomers_support_url = 'page/4141';
             @endphp
-            <a href="{{ URL::to($newcomers_support_url) }}" title="@lang('Newcomers support URL')">
-                <article class="home-subject-areas">
+            <a href="{{ URL::to($newcomers_support_url) }}"
+               title="Newcomers support URL"
+               class="col-6 col-sm-4 col-lg-2 text-center"
+            >
+                <div class="home-subject-areas">
                     <i class="fas fa-hands-helping fa-4x" style="color: #ffa300"></i>
                     <p>@lang('Resources For Afghan Newcomers')</p>
-                </article>
+                </div>
             </a>
         </div>
-    </section>
-    <section class="main-section mt-2">
-
-        <header class="border-radius-top-5 border-b-lightgray home-header">
-            <h2>@lang('StoryWeaver Library')</h2>
-        </header>
-        <div class="storyweaver-homepage">
-            <h3>@lang('Explore the StoryWeaver Collections')</h3>
+        <h4 class="@if(LaravelLocalization::getCurrentLocaleDirection() == 'ltr') main-heading @else main-heading-rtl @endif p-2">
+            @lang('StoryWeaver Library')
+        </h4>
+        <div class="sub-heading">
+            <h6>@lang('Explore the StoryWeaver collections')</h6>
         </div>
-        <div class="section-content">
+
+        <div class="row justify-content-center my-4">
             {{-- The route() landing_page parameters are keys from config/constants.php, and as such, must match with the keys to work --}}
             <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_family_and_friends']) }}"
-                title="Family & Friends">
-                <article class="home-subject-areas">
-                    <img src="{{ Storage::disk('public')->url('StoryWeaver family and friends.svg') }}"
-                        alt="Family & Friends collection">
+               title="Family & friends"
+               class="col-6 col-sm-4 col-lg-2 text-center"
+            >
+                <div class="home-subject-areas">
+                    <img src="{{ Storage::disk('public')->url('StoryWeaver family and friends.svg') }}" alt="Family & friends collection">
                     <p>@lang('Family & Friends')</p>
-                </article>
+                </div>
             </a>
-            <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_growing_up']) }}" title="Growing Up">
-                <article class="home-subject-areas">
-                    <img src="{{ Storage::disk('public')->url('StoryWeaver growing up.svg') }}"
-                        alt="Growing Up collection">
+            <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_growing_up']) }}"
+               title="Growing up"
+               class="col-6 col-sm-4 col-lg-2 text-center"
+            >
+                <div class="home-subject-areas">
+                    <img src="{{ Storage::disk('public')->url('StoryWeaver growing up.svg') }}" alt="Growing up collection">
                     <p>@lang('Growing Up')</p>
-                </article>
+                </div>
             </a>
-            <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_funny']) }}" title="Funny">
-                <article class="home-subject-areas">
+            <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_funny']) }}"
+               title="Funny"
+               class="col-6 col-sm-4 col-lg-2 text-center"
+            >
+                <div class="home-subject-areas">
                     <img src="{{ Storage::disk('public')->url('StoryWeaver funny.svg') }}" alt="Funny collection">
                     <p>@lang('Funny')</p>
-                </article>
+                </div>
             </a>
-            <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_stem']) }}" title="STEM">
-                <article class="home-subject-areas">
+            <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_stem']) }}"
+               title="STEM"
+               class="col-6 col-sm-4 col-lg-2 text-center"
+            >
+                <div class="home-subject-areas">
                     <img src="{{ Storage::disk('public')->url('StoryWeaver STEM.svg') }}" alt="STEM collection">
                     <p>@lang('STEM')</p>
-                </article>
+                </div>
             </a>
         </div>
-        <div class="storyweaver-homepage">
-            <h3>@lang('Translate English Storybooks to Afghan languages')</h3>
+        <div class="sub-heading">
+            <h6>@lang('Translate English Storybooks to Afghan languages')</h6>
         </div>
 
-        <div class="section-content">
-            <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_pashto']) }}" title="Pashto">
-                <article class="home-subject-areas">
+        <div class="row justify-content-center">
+            <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_pashto']) }}"
+               title="Pashto"
+               class="col-6 col-sm-4 col-lg-2 text-center"
+            >
+                <div class="home-subject-areas">
                     <img src="{{ Storage::disk('public')->url('StoryWeaver pashto.svg') }}" alt="Pashto translation">
                     <p>@lang('Pashto')</p>
-                </article>
+                </div>
             </a>
-            <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_dari']) }}" title="Dari/Farsi">
-                <article class="home-subject-areas">
-                    <img src="{{ Storage::disk('public')->url('StoryWeaver dari.svg') }}" alt="Dari/Farsi translation">
+            <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_dari']) }}"
+               title="Dari/Farsi"
+               class="col-6 col-sm-4 col-lg-2 text-center"
+            >
+                <div class="home-subject-areas">
+                    <img src="{{ Storage::disk('public')->url('StoryWeaver dari.svg') }}" alt="Dari/Farsi translation" width="65" height="54">
                     <p>@lang('Dari/Farsi')</p>
-                </article>
+                </div>
             </a>
         </div>
-    </section>
-    <section class="main-section mt-2">
-        <header class="border-radius-top-5 border-b-lightgray home-header">
-            <h2>@lang('Quickstart videos')</h2>
-        </header>
-        <br>
-        <div class="section-content" style="display: flex;">
-            <div style="flex:1">
-                <header class="padding-b">
-                    <h4>@lang('Watch a video to learn more about our work in Afghanistan')</h4>
-                </header>
-                <div style="margin: 20px;" class="thumbnail mt-2">
-                    <iframe width="100%" height="315" class="border-radius-5" src="https://www.youtube.com/embed/bF5dpED9W64" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen></iframe>
+        <h4 class="@if(LaravelLocalization::getCurrentLocaleDirection() == 'ltr') main-heading @else main-heading-rtl @endif p-2">
+            @lang('Quickstart videos')
+        </h4>
+        <div class="row mt-4 pb-4">
+            <div class="col-md-6">
+                <div class="sub-heading">
+                    <h6>@lang('Our work in Afghanistan')</h6>
                 </div>
+                <iframe width="100%"
+                        height="315"
+                        style="border: none;"
+                        src="https://www.youtube-nocookie.com/embed/bF5dpED9W64"
+                        allow="clipboard-write; encrypted-media; picture-in-picture"
+                        allowfullscreen
+                ></iframe>
             </div>
 
-            <div style="flex:1">
-                <header class="padding-b">
-                    <h4>@lang('How to Use the Darakht-e Danesh Library')</h4>
-                </header>
-                <div style="margin: 20px;" class="thumbnail mt-2">
-                    <iframe width="100%" height="315" class="border-radius-5"
-                        src="https://www.youtube.com/embed/{{ Lang::locale() == 'en' ? '-PgQmUX2vbs' : (Lang::locale() == 'ps' ? 'EhoGbreiCjo' : '-JM5lzeDWrE') }}"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen></iframe>
+            <div class="col-md-6">
+                <div class="sub-heading">
+                    <h6>@lang('How to use our library')</h6>
                 </div>
+                <iframe width="100%"
+                        height="315"
+                        style="border: none;"
+                        src="https://www.youtube-nocookie.com/embed/{{ (Lang::locale() == 'en') ? '-PgQmUX2vbs' : ( (Lang::locale() == 'ps') ? 'EhoGbreiCjo' : '-JM5lzeDWrE') }}"
+                        allow="clipboard-write; encrypted-media; picture-in-picture"
+                        allowfullscreen
+                ></iframe>
             </div>
         </div>
-    </section>
-    <section class="latest-news">
-        <div class="latest-div">
-            <header class="border-b-lightgray">
-                <h2>@lang('Latest News')</h2>
-            </header>
-            @foreach ($latestNews as $news)
-                <article class="latest-content">
-                    <a href="{{ URL::to('news/' . $news->id) }}" title="{{ $news->title }}">
-                        <p>{{ $news->title }}</p>
+    </div>
+    <div class="container pt-2 mt-3" id="homepage-sub-container">
+        <div class="row">
+            <div class="col-md-4">
+                <h4>@lang('Latest news')</h4>
+                <hr>
+                @foreach($latestNews AS $news)
+                    <a href="{{ URL::to('news/'.$news->id) }}" title="{{ $news->title }}">
+                        <p>{{ $news->title }}<br><span class="badge text-bg-secondary">{{ __($news->created_at->diffForHumans()) }}</span></p>
                     </a>
-                    <i class="time">{{ $news->created_at->diffForHumans() }}</i>
-                </article>
-            @endforeach
-        </div>
-        <div class="latest-div">
-            <header class="border-b-lightgray">
-                <h2>@lang('Latest Resources')</h2>
-            </header>
-            @foreach ($latestResources as $resource)
-                <article class="latest-content">
-                    <a href="{{ URL::to('resource/' . $resource->id) }}" title="{{ $resource->title }}">
-                        <p>{{ $resource->title }}</p>
+                @endforeach
+            </div>
+            <div class="col-md-4">
+                <h4>@lang('Latest resources')</h4>
+                <hr>
+                @foreach($latestResources AS $resource)
+                    <a href="{{ URL::to('resource/'.$resource->id) }}" title="{{ $resource->title }}">
+                        <p>{{ $resource->title }}<br><span class="badge text-bg-secondary">{{ __($resource->updated_at->diffForHumans()) }}</span></p>
                     </a>
-                    <i class="time">{{ __($resource->updated_at->diffForHumans()) }}</i>
-                </article>
-            @endforeach
+                @endforeach
+            </div>
+            <div class="col-md-4">
+                <h4>@lang('Useful links')</h4>
+                <hr>
+                @foreach ($menu->where('location', 'bottom-menu')->where('language', app()->getLocale()) as $bmenu)
+                    <a href="{{ URL::to($bmenu->path) }}" title="{{ $bmenu->title }}">{{ $bmenu->title }}</a><br>
+                @endforeach
+            </div>
         </div>
-        <div class="useful-links">
-            <header class="border-b-lightgray">
-                <h2>@lang('Useful Links')</h2>
-            </header>
-            <nav class="latest-content">
-                <ul>
-                    @if ($menu)
-                        @foreach ($menu->where('location', 'bottom-menu')->where('status', 1)->where('language', app()->getLocale()) as $bmenu)
-                            <li>
-                                <a href="{{ URL::to($bmenu->path) }}"
-                                    title="{{ $bmenu->title }}">{{ $bmenu->title }}</a>
-                            </li>
-                        @endforeach
-                    @endif
-                    <li>
-                        <a href="{{ url('subscribe') }}" class="btn btn-outline-secondary btn-md float-xl-right"
-                            title="@lang('Subscribe')">@lang('Subscribe')</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </section>
+    </div>
 
 @endsection
