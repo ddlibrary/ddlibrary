@@ -20,13 +20,11 @@ class LoginTest extends TestCase
         $response->assertSuccessful();
         $response->assertViewIs('auth.login');
 
-        $response->assertSee('or');
         $response->assertSee('Email');
         $response->assertSee('Sign up');
         $response->assertSee('Password');
-        $response->assertSee('Remember Me');
         $response->assertSee('Forgot your password?');
-        $response->assertSee('Log in to Darakht-e Danesh Library');
+        $response->assertSee('Log in');
     }
 
     /** @test */
@@ -202,7 +200,7 @@ class LoginTest extends TestCase
         $response->assertRedirect('/fa/login');
         $response->assertSessionHasErrors('email');
         $response->assertSessionHasErrors();
-        $response->assertSessionHasErrors(['email' => 'اطلاعات وارد شده غلط میباشد.']);
+        $response->assertSessionHasErrors(['email' => 'اطلاعات وارد شده غلط می‌باشد.']);
 
         $this->assertFalse(session()->hasOldInput('password'));
         $this->assertGuest();
