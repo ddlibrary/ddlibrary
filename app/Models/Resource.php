@@ -453,7 +453,7 @@ class Resource extends Model
     public function getResourceTranslations($resourceId): Collection
     {
         return DB::table('resources AS rs')
-            ->select('rs.id', 'rs.language')
+            ->select('rs.id', 'rs.language', 'rs.title')
             ->where('rs.tnid', $resourceId)
             ->get();
     }

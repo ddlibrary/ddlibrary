@@ -285,13 +285,36 @@
                             @endif
 
                             <form class="form-row" method="post" action="{{ route('updatetid', $resource->id) }}">
+                                @honeypot
                                 @csrf
-                                <label for="link">If this resource is translated, enter the id of the translated resource and click submit.</label>
-                                <div class="form-group col-5 my-2">
-                                    <input type="text" name="link" class="form-control">
+                                <label for="link">
+                                    {{ __('If this resource is translated, enter the translated resource id and click submit:') }}
+                                </label>
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <input type="number" name="link" class="form-control">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="submit" class="btn btn-primary" value="@lang('Submit')">
+                                    </div>
                                 </div>
-                                <input type="submit" class="btn btn-primary" value="@lang('Submit')">
                             </form>
+
+                            <div class="mt-2">
+                                <strong>@lang('Linked resources:')</strong>
+                            </div>
+                            @foreach ($translations as $resource)
+                            <div class="d-flex gap-1 mt-1 bg-secondary-subtle p-2">
+                                <div class="p-1">
+                                    {{ $loop->iteration}}. 
+                                </div>
+                                <div class="p-1">
+                                    <a href="{{ URL::to($resource->language . '/resource/' . $resource->id) }}" target="_blank">
+                                        {{ $resource->title }} ({{ $resource->language }})
+                                    </a>
+                                </div>
+                            </div>
+                            @endforeach
                         @endif
                     </div>
                 </div>

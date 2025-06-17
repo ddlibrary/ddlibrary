@@ -82,10 +82,60 @@ class ResourceController extends Controller
     public function updateTid(Request $request, $resourceId): RedirectResponse
     {
         $translatedResource = Resource::findOrFail($request->input('link'));
-
         $resource = Resource::findOrFail($resourceId);
-        $resource->tnid = $translatedResource->id;
-        $resource->save();
+
+        // Check if both resources are self-referential
+        if ($translatedResource->tnid == $translatedResource->id && $resource->tnid == $resource->id) {
+            // Case 1: Both are not primary
+            if (!$translatedResource->primary_tnid && !$resource->primary_tnid) {
+                $resource->primary_tnid = true;
+                $resource->save();
+
+                $translatedResource->tnid = $resource->id;
+                $translatedResource->save();
+            }
+            // Case 2: If both have primary_tnid
+            elseif ($translatedResource->primary_tnid && $resource->primary_tnid) {
+                Session::flash('alert', [
+                    'message' => __('Both resources are primary and cannot be linked.'),
+                    'level' => 'danger',
+                ]);
+                return back();
+            }
+        }
+
+        // Handle cases where one resource is primary
+        if ($resource->primary_tnid) {
+            if($translatedResource->tnid != $resource->id){
+                $translatedResource->tnid = $resource->id;
+                $translatedResource->save();
+            }
+        } elseif ($translatedResource->primary_tnid) {
+            $resource->tnid = $translatedResource->id;
+            $resource->save();
+        }
+
+        // Handle cases where tnid is not equal to id
+        else {
+            if ($resource->tnid != $resource->id) {
+                $primaryResource = Resource::find($resource->tnid);
+                if ($primaryResource) {
+                    $translatedResource->tnid = $primaryResource->id;
+                    $translatedResource->save();
+                }
+            } elseif ($translatedResource->tnid != $translatedResource->id) {
+                $primaryResource = Resource::find($translatedResource->tnid);
+                if ($primaryResource) {
+                    $resource->tnid = $primaryResource->id;
+                    $resource->save();
+                }
+            }
+        }
+
+        Session::flash('alert', [
+            'message' => __('Resource linked successfully'),
+            'level' => 'success',
+        ]);
 
         return back();
     }
@@ -235,6 +285,7 @@ class ResourceController extends Controller
             'comments',
             'languages_available',
             'views',
+            'translations',
             'favorites',
         ));
     }

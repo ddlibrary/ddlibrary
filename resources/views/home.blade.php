@@ -229,9 +229,11 @@
             <div class="col-md-4">
                 <h4>@lang('Useful links')</h4>
                 <hr>
+                @if($menu)
                 @foreach ($menu->where('location', 'bottom-menu')->where('language', app()->getLocale()) as $bmenu)
                     <a href="{{ URL::to($bmenu->path) }}" title="{{ $bmenu->title }}">{{ $bmenu->title }}</a><br>
                 @endforeach
+                @endif
             </div>
         </div>
     </div>

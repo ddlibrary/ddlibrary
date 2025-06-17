@@ -80,7 +80,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function last_name_field_is_required()
+    public function last_name_field_is_nullable()
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -91,9 +91,7 @@ class RegistrationTest extends TestCase
             ]),
         );
 
-        $response->assertRedirect('en/register');
-        $response->assertSessionHasErrors('last_name');
-        $this->assertNull(User::first());
+        $response->assertRedirect('email/verify');
     }
 
     /** @test */
@@ -197,7 +195,7 @@ class RegistrationTest extends TestCase
         );
 
         $response->assertRedirect('en/register');
-        $response->assertSessionHasErrors(['password' => "The password you entered doesn't have any special characters (!@#$%^&.) and (or) digits (0-9)."]);
+        $response->assertSessionHasErrors(['password' => "The password field must contain at least one symbol."]);
         $this->assertNull(User::first());
     }
 
