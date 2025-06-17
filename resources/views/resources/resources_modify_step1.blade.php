@@ -34,7 +34,7 @@
                        id="author"
                        name="author"
                        type="text"
-                       value="{{ $resource->authors->pluck('name')->implode(', ') }}"
+                       value="{{ @$resource['author'] }}"
                        aria-describedby="authorOptional"
                        onkeydown="bringMeAttr('author','{{ URL::to('resources/attributes/authors') }}')"
                 >
@@ -55,7 +55,7 @@
                        id="publisher"
                        name="publisher"
                        type="text"
-                       value="{{ old('publisher') ? old('publisher') : $resource->publishers->pluck('name')->implode(', ') }}"
+                       value="{{ old('publisher')?old('publisher'):@$resource['publisher'] }}"
                        aria-describedby="publisherOptional"
                        onkeydown="bringMeAttr('publisher','{{ URL::to('resources/attributes/publishers') }}')"
                 >
@@ -76,7 +76,7 @@
                        id="translator"
                        name="translator"
                        type="text"
-                       value="{{ $resource->translators->pluck('name')->implode(', ') }}"
+                       value="{{ @$resource['translator'] }}"
                        aria-describedby="translatorOptional"
                        onkeydown="bringMeAttr('translator','{{ URL::to('resources/attributes/translators') }}')"
                 >

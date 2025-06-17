@@ -511,7 +511,7 @@ class ResourceController extends Controller
                 $authors = trim($finalArray['author'], ',');
                 $authors = explode(',', $authors);
                 foreach ($authors as $author) {
-                    $theTaxonomy = TaxonomyTerm::where('name', trim($author))
+                    $theTaxonomy = TaxonomyTerm::where('name', $author)
                         ->where('vid', 24)
                         ->first();
 
@@ -523,7 +523,7 @@ class ResourceController extends Controller
                     } else {
                         $myTaxonomy = new TaxonomyTerm();
                         $myTaxonomy->vid = 24;
-                        $myTaxonomy->name = trim($author);
+                        $myTaxonomy->name = $author;
                         $myTaxonomy->language = $finalArray['language'];
                         $myTaxonomy->save();
 
@@ -562,7 +562,7 @@ class ResourceController extends Controller
                 $translators = trim($finalArray['translator'], ',');
                 $translators = explode(',', $translators);
                 foreach ($translators as $translator) {
-                    $theTaxonomy = TaxonomyTerm::where('name', trim($translator))
+                    $theTaxonomy = TaxonomyTerm::where('name', $translator)
                         ->where('vid', 24)
                         ->first();
 
@@ -574,7 +574,7 @@ class ResourceController extends Controller
                     } else {
                         $myTaxonomy = new TaxonomyTerm();
                         $myTaxonomy->vid = 24;
-                        $myTaxonomy->name = trim($translator);
+                        $myTaxonomy->name = $translator;
                         $myTaxonomy->language = $finalArray['language'];
                         $myTaxonomy->save();
 
@@ -806,7 +806,7 @@ class ResourceController extends Controller
 
         $resource = $request->session()->get('edit_resource_step_1');
         if ($resource == null) {
-            $resource = Resource::with(['authors:id,name', 'translators:id,name', 'publishers:id,name'])->findOrFail($resourceId);
+            $resource = (array) $myResources->getResources($resourceId);
         }
         $edit = true;
 
@@ -1128,7 +1128,7 @@ class ResourceController extends Controller
             $authors = trim($finalArray['author'], ',');
             $authors = explode(',', $authors);
             foreach ($authors as $author) {
-                $theTaxonomy = TaxonomyTerm::where('name', trim($author))
+                $theTaxonomy = TaxonomyTerm::where('name', $author)
                     ->where('vid', 24)
                     ->first();
 
@@ -1139,7 +1139,7 @@ class ResourceController extends Controller
                 } else {
                     $myTaxonomy = new TaxonomyTerm();
                     $myTaxonomy->vid = 24;
-                    $myTaxonomy->name = trim($author);
+                    $myTaxonomy->name = $author;
                     $myTaxonomy->language = $finalArray['language'];
                     $myTaxonomy->save();
 
@@ -1186,7 +1186,7 @@ class ResourceController extends Controller
                 $translators = trim($finalArray['translator'], ',');
                 $translators = explode(',', $translators);
                 foreach ($translators as $translator) {
-                    $theTaxonomy = TaxonomyTerm::where('name', trim($translator))
+                    $theTaxonomy = TaxonomyTerm::where('name', $translator)
                         ->where('vid', 24)
                         ->first();
 
@@ -1198,7 +1198,7 @@ class ResourceController extends Controller
                     } else {
                         $myTaxonomy = new TaxonomyTerm();
                         $myTaxonomy->vid = 24;
-                        $myTaxonomy->name = trim($translator);
+                        $myTaxonomy->name = $translator;
                         $myTaxonomy->language = $finalArray['language'];
                         $myTaxonomy->save();
 
