@@ -24,9 +24,6 @@
                     </div>
 
                     <div class="social-icons">
-                        <a href="https://twitter.com/AfghanOERs" target="_blank" title="DDL Twitter" class="social-icon twitter">
-                            <i class="fab fa-twitter-square"></i>
-                        </a>
                         <a href="https://www.facebook.com/darakhtedanesh/" target="_blank" title="DDL Facebook" class="social-icon facebook">
                             <i class="fab fa-facebook-square"></i>
                         </a>
