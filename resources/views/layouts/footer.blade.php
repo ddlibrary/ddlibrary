@@ -24,6 +24,9 @@
                     </div>
 
                     <div class="social-icons">
+                        <a href="https://www.instagram.com/darakhtedanesh" target="_blank" title="DDL Instagram" class="social-icon instagram">
+                            <i class="fab fa-instagram-square"></i>
+                        </a>
                         <a href="https://www.facebook.com/darakhtedanesh/" target="_blank" title="DDL Facebook" class="social-icon facebook">
                             <i class="fab fa-facebook-square"></i>
                         </a>
