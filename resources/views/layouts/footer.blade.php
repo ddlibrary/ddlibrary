@@ -27,7 +27,7 @@
                         <a href="https://twitter.com/AfghanOERs" target="_blank" title="DDL Twitter" class="social-icon twitter">
                             <i class="fab fa-twitter-square"></i>
                         </a>
-                        <a href="https://www.facebook.com/AfghanOERs/" target="_blank" title="DDL Facebook" class="social-icon facebook">
+                        <a href="https://www.facebook.com/darakhtedanesh/" target="_blank" title="DDL Facebook" class="social-icon facebook">
                             <i class="fab fa-facebook-square"></i>
                         </a>
                         <a href="https://www.youtube.com/c/DarakhteDaneshLibrary" target="_blank" title="DDL Youtube" class="social-icon youtube">
