@@ -34,7 +34,7 @@
                        id="author"
                        name="author"
                        type="text"
-                       value="{{ @$resource['author'] }}"
+                       value="{{ $resource->authors?->pluck('name')->implode(', ') }}"
                        aria-describedby="authorOptional"
                        onkeydown="bringMeAttr('author','{{ URL::to('resources/attributes/authors') }}')"
                 >
