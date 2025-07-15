@@ -1336,10 +1336,10 @@ class ResourceController extends Controller
         DB::beginTransaction();
 
         try {
-            Storage::disk('local')->delete('resources/' . $fileName);
-            // // Check the count of attachments
+            Storage::disk('s3')->delete('resources/' . $fileName);
+
             ResourceAttachment::where('resource_id', $resourceId)->where('file_name', $fileName)->delete();
-           
+
             $resource = Resource::find($request->resourceId);
            
             $dataAttachments = $resource->resourceAttachments($resourceId)->toArray();
@@ -1357,23 +1357,23 @@ class ResourceController extends Controller
 
             DB::commit();
             Session::flash('alert', [
-                'message' => __('Your data has been updated successfully.'),
+                'message' => __('Your file successfully has been deleted.'),
                 'level' => 'success',
             ]);
 
             return redirect('resources/edit/step2/' . $resourceId)->with('success', 'File successfully deleted!');
         } catch (QueryException $e) {
-            DB::rollback(); // Rollback the transaction on error
+            DB::rollback();
             Session::flash('alert', [
-                'message' => __('Your data has been updated successfully.'),
+                'message' => __('Operation has failed.'),
                 'level' => 'danger',
             ]);
             
             return redirect("resources/edit/step2/' . $resourceId")->back()->withErrors('Error deleting file: ' . $e->getMessage());
         } catch (\Exception $e) {
-            DB::rollback(); // Rollback for any other exception
+            DB::rollback();
             Session::flash('alert', [
-                'message' => __('Your data has been updated successfully.'),
+                'message' => __('Operation has failed.'),
                 'level' => 'danger',
             ]);
             return redirect("resources/edit/step2/' . $resourceId")->back()->withErrors('An unexpected error occurred: ' . $e->getMessage());

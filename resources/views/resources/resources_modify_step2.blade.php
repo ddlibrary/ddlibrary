@@ -27,10 +27,23 @@
                     </div>
                     <button type='button' class="add_more btn btn-link">@lang('Add more files')</button>
                     @if (isset($resource['attc']) and $edit)
-                        @foreach ($resource['attc'] as $item)
-                            <br><a
-                                href="{{ asset('/storage/attachments/' . $item['file_name']) }}">{{ $item['file_name'] }}</a>
-                        @endforeach
+                        <div class="bg-white py-3 px-2 rounded my-2">
+                            @foreach ($resource['attc'] as $item)
+                                <div class="d-flex gap-3 attachment-1 file-{{ $loop->iteration }}">
+                                    <div class="align-self-center">{{ $loop->iteration }}.</div>
+                                    <div class="flex-grow-1 align-items-center">
+                                        <a
+                                            href="{{ asset('/storage/attachments/' . $item['file_name']) }}">{{ $item['file_name'] }}</a>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <a href="{{ url('delete/file/' . $resource['id'] . '/' . $item['file_name']) }}"
+                                        onclick="return confirm(`{{ __('Are you sure to delete this file?')}}`)">
+                                            <span class="fa fa-trash text-danger"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     @endif
 
                     @if ($errors->has('attachments'))
@@ -187,10 +200,9 @@
     </div>
 @endsection
 @push('scripts')
-    
     <script>
-        function removeAttachment(attachment){
-            if(confirm("Are you sure to remove this file?")){
+        function removeAttachment(attachment) {
+            if (confirm("{{ __('Are you sure to delete this file?')}}")) {
                 $(`.${attachment}`).remove()
             }
         }

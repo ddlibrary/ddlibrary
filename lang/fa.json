@@ -382,5 +382,8 @@
     "Your telephone number will also be treated as confidential information. <br>\n                         But please note that you won't be able to reset your password and <br>\n                         we won't be able to communicate to you. If you forget your password, <br>\n                         you will have to contact us.": "شماره تیلفون شما برای ما حیثیت «اطلاعات محرمانه» را دارد، اما لطفا به خاطر داشته باشید که ما<br> قادر نخواهیم بود گذرواژه تان را تغییر بدهیم<br> و یا با شما رابطه برقرار کنیم. اگر شما گذرواژه خود را فراموش کردید، باید با ما تماس بگیرید.",
     "click here to request another": "برای درخواست بیشتر اینجا را کلیک کنید",
     "update": "به‌روزسازی",
-    "views": "نمایش‌ها"
+    "views": "نمایش‌ها",
+    "Are you sure to delete this file?": "شما مایل به حذف این فایل هستید؟",
+    "Your file successfully has been deleted.": "فایل موفقانه حذف گردید.",
+    "Operation has failed.": "عملیه صورت نگرفت"
 }
