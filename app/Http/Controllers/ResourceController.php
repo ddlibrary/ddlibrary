@@ -1354,29 +1354,20 @@ class ResourceController extends Controller
             $request->session()->put('edit_resource_step_2', $resource);
             $request->session()->save();
 
-
             DB::commit();
             Session::flash('alert', [
                 'message' => __('Your file successfully has been deleted.'),
                 'level' => 'success',
             ]);
 
-            return redirect('resources/edit/step2/' . $resourceId)->with('success', 'File successfully deleted!');
-        } catch (QueryException $e) {
-            DB::rollback();
-            Session::flash('alert', [
-                'message' => __('Operation has failed.'),
-                'level' => 'danger',
-            ]);
-            
-            return redirect("resources/edit/step2/' . $resourceId")->back()->withErrors('Error deleting file: ' . $e->getMessage());
+            return redirect('resources/edit/step2/' . $resourceId);
         } catch (\Exception $e) {
             DB::rollback();
             Session::flash('alert', [
                 'message' => __('Operation has failed.'),
                 'level' => 'danger',
             ]);
-            return redirect("resources/edit/step2/' . $resourceId")->back()->withErrors('An unexpected error occurred: ' . $e->getMessage());
+            return redirect("resources/edit/step2/' . $resourceId");
         }
     }
 
