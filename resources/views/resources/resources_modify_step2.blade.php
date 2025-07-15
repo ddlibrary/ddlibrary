@@ -33,7 +33,7 @@
                                     <div class="align-self-center">{{ $loop->iteration }}.</div>
                                     <div class="flex-grow-1 align-items-center">
                                         <a
-                                            href="{{ asset('/storage/attachments/' . $item['file_name']) }}">{{ $item['file_name'] }}</a>
+                                            href="{{ asset('/storage/attachments/' . $item['file_name']) }}" target="_blank">{{ $item['file_name'] }}</a>
                                     </div>
                                     <div class="align-self-center">
                                         <a href="{{ url('delete/file/' . $resource['id'] . '/' . $item['file_name']) }}"
