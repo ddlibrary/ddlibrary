@@ -1360,14 +1360,14 @@ class ResourceController extends Controller
                 'level' => 'success',
             ]);
 
-            return redirect('resources/edit/step2/' . $resourceId);
+            return redirect("resources/edit/step2/$resourceId");
         } catch (\Exception $e) {
             DB::rollback();
             Session::flash('alert', [
                 'message' => __('Operation has failed.'),
                 'level' => 'danger',
             ]);
-            return redirect("resources/edit/step2/' . $resourceId");
+            return redirect("resources/edit/step2/$resourceId");
         }
     }
 
