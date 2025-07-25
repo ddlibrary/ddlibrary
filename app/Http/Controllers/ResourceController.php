@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TaxonomyVocabularyEnum;
 use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
 use App\Models\Resource;
@@ -294,8 +295,11 @@ class ResourceController extends Controller
     {
         $this->middleware('auth');
         $resource = $request->session()->get('new_resource_step_1');
+        $myResources = new Resource();
+        $creativeCommons = $myResources->resourceAttributesList('taxonomy_term_data', 10, config('app.locale'), [168,535]); // taxonomy_term_data.tnid [168=Unknown , 535=CC BY / CC BY-SA]
+        $subjects = $myResources->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject);
 
-        return view('resources.resources_modify_step1', compact('resource'));
+        return view('resources.resources_modify_step1', compact('resource', 'creativeCommons', 'subjects'));
     }
 
     public function postStepOne(Request $request): Redirector|Application|RedirectResponse

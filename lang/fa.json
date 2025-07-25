@@ -382,5 +382,20 @@
     "Your telephone number will also be treated as confidential information. <br>\n                         But please note that you won't be able to reset your password and <br>\n                         we won't be able to communicate to you. If you forget your password, <br>\n                         you will have to contact us.": "شماره تیلفون شما برای ما حیثیت «اطلاعات محرمانه» را دارد، اما لطفا به خاطر داشته باشید که ما<br> قادر نخواهیم بود گذرواژه تان را تغییر بدهیم<br> و یا با شما رابطه برقرار کنیم. اگر شما گذرواژه خود را فراموش کردید، باید با ما تماس بگیرید.",
     "click here to request another": "برای درخواست بیشتر اینجا را کلیک کنید",
     "update": "به‌روزسازی",
-    "views": "نمایش‌ها"
+    "views": "نمایش‌ها",
+    "Image": "عکس",
+    "Select or upload your image": "انتخاب عکس یا اپلود کردن عکس جدید",
+    "Select image from file manager": "انتخاب عکس از گالری تصاویر",
+    "Search by image name": "جستجو عکس بر اساس نام",
+    "Select image": "انتخاب عکس",
+    "Upload image": "اپلود عکس جدید",
+    "Image manager": "گالاری تصاویر",
+    "File name":"نام عکس",
+    "Upload New Image": "اپلود کردن عکس جدید",
+    "Upload":"اپلود",
+    "Loading, please wait":"لطفاً صبر کنید",
+    "Resource not found": "دریافت نشد.",
+    "Image uploaded successfully": "عکس موفقانه اپلود گردید",
+    "Upload an image that is the same width and height (a square).": "تصویری با عرض و ارتفاع برابر را آپلود کنید (مانند یک مربع).",
+    "Crop your image": "تصویر را برش بزنید"
 }
