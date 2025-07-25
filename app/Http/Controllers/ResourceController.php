@@ -293,7 +293,6 @@ class ResourceController extends Controller
 
     public function createStepOne(Request $request): Factory|View|Application
     {
-        $this->middleware('auth');
         $resource = $request->session()->get('new_resource_step_1');
         $myResources = new Resource();
         $creativeCommons = $myResources->resourceAttributesList('taxonomy_term_data', 10, config('app.locale'), [168,535]); // taxonomy_term_data.tnid [168=Unknown , 535=CC BY / CC BY-SA]
