@@ -13,11 +13,17 @@ if(window.jQuery){
             let randomNumber = Math.ceil(Math.random() * 1000)
             e.preventDefault();
             $(this).before(`
-                <input name='attachments[]'
-                    id="resource-file-${randomNumber}"
-                    onchange="checkFile(event)"
-                    type='file' class='form-control mt-1' 
-                />`);
+                <div class="d-flex gap-3 attachment-${randomNumber}">
+                    <div class="flex-grow-1 align-items-center">
+                        <input id="resource-file-${randomNumber}"
+                            class="form-control col-md-6"
+                            id="attachments" name="attachments[]" type="file">
+                    </div>
+                    <div class="align-self-center">
+                        <span class="fa fa-trash text-danger" onclick="removeAttachment('attachment-${randomNumber}')"></span>
+                    </div>
+                </div>
+            `);
         });
 
         $('.fa-share-square').click(function(e){
