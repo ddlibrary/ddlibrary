@@ -1,13 +1,6 @@
 <style>
 .custom-alert {
-    position: absolute;
-    padding: 0.75rem 1.25rem;
-    border: 1px solid transparent;
-    border-radius: 0.25rem;
     margin:90px 30px;
-    top:0;
-    min-width: 312px;
-    max-width: 350px;
 }
 
 .custom-alert-success {
@@ -30,9 +23,6 @@
 }
 .progress-bar {
     height: 5px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
     width: 100%;
     animation: progress 10s linear forwards;
 }
@@ -46,9 +36,12 @@
         width: 0%;
     }
 }
+.cursor-pointer {
+    cursor: pointer;
+}
 </style>
 <div id="alert-message" class="z-index-2 ">
-    <div class="custom-alert custom-alert-{{ $level }} {{ Lang::locale() == 'en' ? 'position-right-0' : 'position-left-0' }}">
+    <div class="position-absolute p-3 border-transparent rounded min-w-100 top-0 custom-alert custom-alert-{{ $level }} {{ Lang::locale() == 'en' ? 'position-right-0' : 'position-left-0' }}">
         <div>
             <div class="d-flex">
                 <div class="{{ Lang::locale() == 'en' ? 'me-2' : 'ms-2' }}">
@@ -58,7 +51,7 @@
                     {{ $message }}
                 </div>
             </div>
-            <div class="progress-bar progress-bar-{{ $level }}"></div>
+            <div class="position-absolute bottom-0 start-0  progress-bar progress-bar-{{ $level }}"></div>
         </div>
     </div>
 </div>
