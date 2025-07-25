@@ -1323,10 +1323,20 @@ class ResourceController extends Controller
         });
 
         if ($result) {
-            return redirect('/resource/'.$resourceId)->with('success', __('Resource updated successfully'));
+            Session::flash('alert', [
+                'message' => __('Resource updated successfully'),
+                'level' => 'success',
+            ]);
+            
+            return redirect("resource/$resourceId");
         }
 
-        return redirect('/resource/'.$resourceId)->with('error', __('Resource could not be updated.'));
+        Session::flash('alert', [
+            'message' => __('Resource could not be updated.'),
+            'level' => 'danger',
+        ]);
+
+        return redirect("resource/$resourceId");
     }
 
     public function deleteFile(Request $request, $resourceId, $fileName): Redirector|Application|RedirectResponse
