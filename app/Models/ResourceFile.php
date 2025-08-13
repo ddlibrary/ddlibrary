@@ -11,7 +11,7 @@ class ResourceFile extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['uuid', 'name', 'taxonomy_term_data_id', 'path', 'thumbnail_path', 'language'];
+    protected $fillable = ['uuid', 'name', 'taxonomy_term_data_id', 'path', 'thumbnail_path', 'language', 'resource_id'];
 
     protected static function boot()
     {

@@ -54,6 +54,7 @@ class ExtractResourceImageUrl extends Command
                 'path' => $defaultImage,
                 'language' => $resource->language,
                 'thumbnail_path' => $defaultImage,
+                'resource_id' => $resource->id
             ]);
 
             $resource->update(['image' => $defaultImage, 'resource_file_id' => $resourceFile->id]);

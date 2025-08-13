@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->index();
             $table->uuid('uuid')->unique();
             $table->unsignedInteger('taxonomy_term_data_id')->nullable(); // TaxonomyTerm Model - License
+            $table->unsignedInteger('resource_id')->nullable();
             $table->string('path', 500);
             $table->string('height')->nullable();
             $table->string('width')->nullable();
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->string('thumbnail_path', 500)->nullable();
             
             $table->foreign('taxonomy_term_data_id')->references('id')->on('taxonomy_term_data');
+            $table->foreign('resource_id')->references('id')->on('resources');
 
             $table->timestamps();
         });
