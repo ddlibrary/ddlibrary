@@ -45,7 +45,7 @@ class ResourceFileController extends Controller
 
         $fileSystemDisk = env('FILESYSTEM_DISK', 'local');
 
-        Storage::disk($fileSystemDisk)->put($path, file_get_contents($file));
+        Storage::disk($fileSystemDisk)->put('public/'.$path, file_get_contents($file));
 
         $imagine = new Imagine();
         $image = $imagine->open($file->getRealPath());
@@ -61,11 +61,13 @@ class ResourceFileController extends Controller
             ->resize(new Box(250, 250))
             ->save($tempDirectory . '/' . $fileName);
 
-        Storage::disk($fileSystemDisk)->put($thumbnailPath, file_get_contents($tempDirectory . '/' . $fileName));
+        Storage::disk($fileSystemDisk)->put('public/'.$thumbnailPath, file_get_contents($tempDirectory . '/' . $fileName));
 
         $thumbnailFullPath = Storage::disk($fileSystemDisk)->url($thumbnailPath);
+        $thumbnailFullPath = str_replace('/storage', '', $thumbnailFullPath);
 
         $fullPath = Storage::disk($fileSystemDisk)->url($path);
+        $fullPath = str_replace('/storage', '', $fullPath);
 
         $resourceFile = ResourceFile::create([
             'uuid' => Str::uuid(),
