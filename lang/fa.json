@@ -397,5 +397,8 @@
     "Resource not found": "دریافت نشد.",
     "Image uploaded successfully": "عکس موفقانه اپلود گردید",
     "Upload an image that is the same width and height (a square).": "تصویری با عرض و ارتفاع برابر را آپلود کنید (مانند یک مربع).",
-    "Crop your image": "تصویر را برش بزنید"
+    "Crop your image": "تصویر را برش بزنید",
+    "Are you sure to delete this file?": "شما مایل به حذف این فایل هستید؟",
+    "Your file successfully has been deleted.": "فایل موفقانه حذف گردید.",
+    "Operation has failed.": "عملیه صورت نگرفت"
 }

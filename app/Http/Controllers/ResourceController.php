@@ -34,6 +34,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -377,7 +378,8 @@ class ResourceController extends Controller
                 $fileSize = $attachments->getSize();
                 $fileName = $attachments->getClientOriginalName();
                 $fileExtension = \File::extension($fileName);
-                $fileName = auth()->user()->id.'_'.time().'.'.$fileExtension;
+                $uniqueId = uniqid(); // Generate a unique ID
+                $fileName = auth()->user()->id . '_' . $uniqueId . '_' . time() . '.' . $fileExtension;
                 //$attachments->storeAs($fileName,'private');
                 Storage::disk('s3')->put('resources/'.$fileName, file_get_contents($attachments));
                 $validatedData['attc'][] = [
@@ -514,7 +516,7 @@ class ResourceController extends Controller
                 $authors = trim($finalArray['author'], ',');
                 $authors = explode(',', $authors);
                 foreach ($authors as $author) {
-                    $theTaxonomy = TaxonomyTerm::where('name', $author)
+                    $theTaxonomy = TaxonomyTerm::where('name', trim($author))
                         ->where('vid', 24)
                         ->first();
 
@@ -565,7 +567,7 @@ class ResourceController extends Controller
                 $translators = trim($finalArray['translator'], ',');
                 $translators = explode(',', $translators);
                 foreach ($translators as $translator) {
-                    $theTaxonomy = TaxonomyTerm::where('name', $translator)
+                    $theTaxonomy = TaxonomyTerm::where('name', trim($translator))
                         ->where('vid', 24)
                         ->first();
 
@@ -809,7 +811,7 @@ class ResourceController extends Controller
 
         $resource = $request->session()->get('edit_resource_step_1');
         if ($resource == null) {
-            $resource = (array) $myResources->getResources($resourceId);
+            $resource = Resource::with(['authors:id,name', 'translators:id,name', 'publishers:id,name'])->findOrFail($resourceId);
         }
         $edit = true;
 
@@ -973,7 +975,8 @@ class ResourceController extends Controller
                 $fileSize = $attachments->getSize();
                 $fileName = $attachments->getClientOriginalName();
                 $fileExtension = \File::extension($fileName);
-                $fileName = auth()->user()->id.'_'.time().'.'.$fileExtension;
+                $uniqueId = uniqid(); // Generate a unique ID
+                $fileName = auth()->user()->id . '_' . $uniqueId . '_' . time() . '.' . $fileExtension;
                 //$attachments->storeAs($fileName,'private');
                 unset($validatedData['attachments']);
                 Storage::disk('s3')->put('resources/'.$fileName, file_get_contents($attachments));
@@ -1131,7 +1134,7 @@ class ResourceController extends Controller
             $authors = trim($finalArray['author'], ',');
             $authors = explode(',', $authors);
             foreach ($authors as $author) {
-                $theTaxonomy = TaxonomyTerm::where('name', $author)
+                $theTaxonomy = TaxonomyTerm::where('name', trim($author))
                     ->where('vid', 24)
                     ->first();
 
@@ -1189,7 +1192,7 @@ class ResourceController extends Controller
                 $translators = trim($finalArray['translator'], ',');
                 $translators = explode(',', $translators);
                 foreach ($translators as $translator) {
-                    $theTaxonomy = TaxonomyTerm::where('name', $translator)
+                    $theTaxonomy = TaxonomyTerm::where('name', trim($translator))
                         ->where('vid', 24)
                         ->first();
 
@@ -1323,32 +1326,62 @@ class ResourceController extends Controller
         });
 
         if ($result) {
-            return redirect('/resource/'.$resourceId)->with('success', __('Resource updated successfully'));
+            Session::flash('alert', [
+                'message' => __('Resource updated successfully'),
+                'level' => 'success',
+            ]);
+            
+            return redirect("resource/$resourceId");
         }
 
-        return redirect('/resource/'.$resourceId)->with('error', __('Resource could not be updated.'));
+        Session::flash('alert', [
+            'message' => __('Resource could not be updated.'),
+            'level' => 'danger',
+        ]);
+
+        return redirect("resource/$resourceId");
     }
 
-    public function deleteFile($resourceId, $fileName): Redirector|Application|RedirectResponse
+    public function deleteFile(Request $request, $resourceId, $fileName): Redirector|Application|RedirectResponse
     {
         $this->middleware('admin');
 
-        Storage::disk('s3')->delete($fileName);
-        ResourceAttachment::where('resource_id', $resourceId)->where('file_name', $fileName)->delete();
-        $resource2 = session('resource2');
-        $resource2Attc = $resource2['attc'];
+        DB::beginTransaction();
 
-        if ($resource2Attc) {
-            for ($i = 0; $i < count($resource2Attc); $i++) {
-                if ($resource2Attc[$i]['file_name'] == $fileName) {
-                    unset($resource2Attc[$i]);
-                }
+        try {
+            Storage::disk('s3')->delete('resources/' . $fileName);
+
+            ResourceAttachment::where('resource_id', $resourceId)->where('file_name', $fileName)->delete();
+
+            $resource = Resource::find($request->resourceId);
+           
+            $dataAttachments = $resource->resourceAttachments($resourceId)->toArray();
+            foreach ($dataAttachments as $item) {
+                $resourceAttachments[] = [
+                    'file_name' => $item->file_name,
+                    'file_size' => $item->file_size,
+                    'file_mime' => $item->file_mime,
+                ];
             }
-            $resource2['attc'] = array_values($resource2Attc);
-            session()->put('resource2', $resource2);
-        }
+            $resource['attc'] = $resourceAttachments;
+            $request->session()->put('edit_resource_step_2', $resource);
+            $request->session()->save();
 
-        return redirect('/resources/edit/step2/'.$resourceId)->with('success', 'File successfully deleted!');
+            DB::commit();
+            Session::flash('alert', [
+                'message' => __('Your file successfully has been deleted.'),
+                'level' => 'success',
+            ]);
+
+            return redirect("resources/edit/step2/$resourceId");
+        } catch (\Exception $e) {
+            DB::rollback();
+            Session::flash('alert', [
+                'message' => __('Operation has failed.'),
+                'level' => 'danger',
+            ]);
+            return redirect("resources/edit/step2/$resourceId");
+        }
     }
 
     public function published($resourceId): RedirectResponse
