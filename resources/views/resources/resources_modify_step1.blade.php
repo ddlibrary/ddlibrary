@@ -103,21 +103,27 @@
                     </label>
                     <div class="">
                         <div class="flex-1">
-                            <button type="button" class="btn btn-primary" id="open-file-manager">@lang('Select or upload your image')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="searchImages()"
+                                data-bs-target="#exampleModal" id="open-file-managers">@lang('Select or upload your image')
                             </button>
-
-                            <input type="hidden" id="file_uuid" name="image" required>
+                            <input type="hidden" value="{{ @$resource->resourceFile->uuid }}" id="file_uuid"
+                                name="image" required>
                         </div>
                     </div>
                     @if ($errors->has('image'))
-                        <span class="invalid-feedback">
+                        <span>
                             <strong>{{ $errors->first('image') }}</strong>
                         </span><br>
                     @endif
                 </div>
                 {{-- Selected Image Preview --}}
-                <div id="selected-image-preview" class="flex-1 mt-1 border-radius-5" style="display: none;">
-                    <img id="preview-image" class="border-radius-5" src="" alt="Selected Image">
+                <div class="form-group col-6 mb-3">
+
+                    <div id="selected-image-preview" class="flex-1 mt-1 border-radius-5 w-100"
+                        style="display: {{ @$resource->image ? 'block' : 'none' }};">
+                        <img id="preview-image" src="{{ @$resource->image }}" class="border-radius-5"
+                            style="max-height: 250px;" alt="Selected Image">
+                    </div>
                 </div>
                 <div class="form-group mb-3">
                     <label for="abstract">
@@ -125,9 +131,7 @@
                     </label>
                     <div id="editor" class="mb-2">
                         <textarea class="form-control{{ $errors->has('abstract') ? ' is-invalid' : '' }}" name="abstract"
-                            style="height: 200px">
-                        {{ @$resource['abstract'] }}
-                    </textarea>
+                            style="height: 200px">{{ @$resource['abstract'] }}</textarea>
                     </div>
                     @if ($errors->has('abstract'))
                         <span class="invalid-feedback">
@@ -140,101 +144,105 @@
             <input class="btn btn-primary" type="submit" value="@lang('Next')">
         </form>
     </div>
-    <!-- File Manager Modal -->
-    <div class="modal" id="file-manager-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>@lang('Image manager')</h2>
-                <span class="close" id="close-file-manager-modal">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="image-manager-options">
-                    <button id="select-image-option" class="btn-option active">@lang('Select image')</button>
-                    <button id="upload-image-option" class="btn-option">@lang('Upload image')</button>
-                    <button id="cropper-image-option" class="btn-option">@lang('Crop your image')</button>
-                </div>
-                <div class="image-manager-content">
-                    <!-- Select Image Content -->
-                    <div id="select-image-content">
-                        <h3> @lang('Select image from file manager') <span id="result"></span></h3>
-                        <div class="d-flex gap-5 mb-4">
-                            <div class="flex-fill">
-                                <label for="subject_areas" class="mb-2">
-                                    <strong>@lang('Subject Areas') {{ en('Subject Areas') }}</strong>
-                                    <span class="form-required" title="This field is required.">*</span>
-                                </label>
-                                <select
-                                    class="form-control box-sizing {{ $errors->has('subject_areas') ? ' is-invalid' : '' }}"
-                                    id="subject_areas" name="subject_areas" required>
-                                    <option value="">...</option>
-                                    @foreach ($subjects as $item)
-                                        @if ($item->parent == 0)
-                                            <optgroup label="{{ $item->name }}">
-                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                <?php if (isset($subjects) && isset($item)) {
-                                                    $parentItems = $subjects->where('parent', $item->id);
-                                                } ?>
-                                                @foreach ($parentItems as $pitem)
-                                                    <option value="{{ $pitem->id }}">
-                                                        {{ $pitem->name . termEn($pitem->id) }}
-                                                    </option>
-                                                @endforeach
-                                            </optgroup>
-                                        @endif
-                                    @endforeach
-                                </select>
 
-                                @if ($errors->has('subject_areas'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('subject_areas') }}</strong>
-                                    </span><br>
-                                @endif
-                            </div>
-                            <div class="flex-fill">
-                                <label for="search-input" class="display-inline-block mb-2">
-                                    <strong>@lang('Search by image name')</strong>
-                                    <span class="form-required" title="This field is required.">*</span>
-                                </label>
-                                <input type="text" id="search-input" placeholder="@lang('Search by image name')"
-                                    class="form-control w-100 box-sizing">
-                            </div>
-                        </div>
-                        <div id="file-list" class="w-100">
-                            <!-- File items will be populated dynamically -->
-                        </div>
-                        <div id="loading-message" style="display: none;">@lang('Loading, please wait')</div>
-                        <button id="select-image-btn" class="btn btn-primary"
-                            style="display: none;">@lang('Select image')</button>
+
+    <!-- File Manager Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="fileManagerLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fileManagerLabel">@lang('Image manager')</h5>
+                    <div class="text-{{ Lang::locale() == 'en' ? 'end' : 'start' }} flex-fill">
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <!-- Upload Image Content -->
-                    <div id="upload-image-content" style="display: none;">
-                        <h3>@lang('Upload New Image')</h3>
-                        <form id="upload-form">
-                            <div class="display-flex" style="flex-direction: column">
-                                <div class="flex-1 mb-2">
-                                    <label for="image">
-                                        <strong>@lang('Image')</strong>
-                                        <span class="form-required" title="This field is required.">*</span>
+                </div>
+                <div class="modal-body d-flex flex-column flex-md-row">
+                    <div class="image-manager-options d-flex flex-column p-1 bg-light border-end"
+                        style="min-width: 250px;">
+                        <button id="select-image-option" class="btn btn-outline-primary mb-2 active"
+                            onclick="setActive('select')">@lang('Select image')</button>
+                        <button id="upload-image-option" class="btn btn-outline-secondary mb-2"
+                            onclick="setActive('upload')">@lang('Upload image')</button>
+                        <button id="cropper-image-option" class="btn btn-outline-secondary"
+                            onclick="setActive('crop')">@lang('Crop your image')</button>
+                    </div>
+                    <div class="image-manager-content flex-grow-1 p-3 overflow-auto">
+                        <!-- Select Image Content -->
+                        <div id="select-image-content">
+                            <h3>@lang('Select image from file manager') <span id="result"></span></h3>
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label for="subject_areas" class="form-label">
+                                        <strong>@lang('Subject Areas') {{ en('Subject Areas') }}</strong>
+                                        <span class="text-danger" title="This field is required.">*</span>
                                     </label>
-                                    <input type="file" id="image" name="image"
-                                        class="form-control w-100 box-sizing" accept="image/*" required>
-                                    <img id="preview" alt="Image Preview">
+                                    <select class="form-select {{ $errors->has('subject_areas') ? 'is-invalid' : '' }}"
+                                        id="subject_areas" name="subject_areas" onchange="searchImages()" required>
+                                        <option value="">...</option>
+                                        @foreach ($subjects as $item)
+                                            @if ($item->parent == 0)
+                                                <optgroup label="{{ $item->name }}">
+                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                    <?php if (isset($subjects) && isset($item)) {
+                                                        $parentItems = $subjects->where('parent', $item->id);
+                                                    } ?>
+                                                    @foreach ($parentItems as $pitem)
+                                                        <option value="{{ $pitem->id }}">
+                                                            {{ $pitem->name . termEn($pitem->id) }}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('subject_areas'))
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('subject_areas') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                                <div class="col">
+                                    <label for="search-input" class="form-label">
+                                        <strong>@lang('Search by image name')</strong>
+                                        <span class="text-danger" title="This field is required.">*</span>
+                                    </label>
+                                    <input type="text" id="search-input" onkeyup="searchImages()"
+                                        placeholder="@lang('Search by image name')" class="form-control">
+                                </div>
+                            </div>
+                            <div id="file-list" class="w-100">
+                                <!-- File items will be populated dynamically -->
+                            </div>
+                            <div id="loading-message" style="display: none;">@lang('Loading, please wait')</div>
+
+                        </div>
+                        <!-- Upload Image Content -->
+                        <div id="upload-image-content" style="display: none;">
+                            <h3>@lang('Upload New Image')</h3>
+                            <form id="upload-form">
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">
+                                        <strong>@lang('Image')</strong>
+                                        <span class="text-danger" title="This field is required.">*</span>
+                                    </label>
+                                    <input type="file" onchange="selectNewImage()" name="image"
+                                        class="form-control" accept="image/*" id="image" required>
+                                    <div class="w-100">
+                                        <img id="preview" alt="Image Preview" style="max-height: 300px;display: none" class="mt-2">
+                                    </div>
                                     <div id="dimensions"></div>
                                 </div>
-
-                                <div class="flex-1 mb-2">
-                                    <label for="image-name">
+                                <div class="mb-3">
+                                    <label for="image-name" class="form-label">
                                         <strong>@lang('File name')</strong>
                                     </label>
-                                    <input type="text" id="image-name" name="image_name"
-                                        class="form-control w-100 box-sizing">
+                                    <input type="text" id="image-name" name="image_name" class="form-control">
                                 </div>
-                                <div class="flex-1 mb-2">
-                                    <label for="license">
+                                <div class="mb-3">
+                                    <label for="license" class="form-label">
                                         <strong>@lang('License')</strong>
                                     </label>
-                                    <select class="form-control w-100 box-sizing" name="taxonomy_term_data_id"
-                                        id="license">
+                                    <select class="form-select" name="taxonomy_term_data_id" id="license">
                                         <option value="">...</option>
                                         @foreach ($creativeCommons as $creativeCommon)
                                             <option value="{{ $creativeCommon->id }}">{{ $creativeCommon->name }}
@@ -244,29 +252,24 @@
                                     </select>
                                 </div>
                                 <button type="submit" class="btn btn-primary">@lang('Upload')</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div id="cropper-image-content" style="display: none;">
-                        <h3>@lang('Crop your image')</h3>
-                        <form id="cropper-form">
-                            <div class="display-flex" style="flex-direction: column">
-                                <div class="flex-1 mb-2">
-                                    <label for="image">
+                            </form>
+                        </div>
+                        <div id="cropper-image-content" style="display: none;">
+                            <h3>@lang('Crop your image')</h3>
+                            <form id="cropper-form">
+                                <div class="mb-3">
+                                    <label for="cropper-image" class="form-label">
                                         <strong>@lang('Image')</strong>
-                                        <span class="form-required" title="This field is required.">*</span>
+                                        <span class="text-danger" title="This field is required.">*</span>
                                     </label>
-                                    <input type="file" id="cropper-image" name="cropper_image"
-                                        class="form-control w-100 box-sizing" accept="image/*" required>
-                                    <div style="width: 60%; padding:20px;" class="text-center">
-
-                                        <div id="cropper" style="width: 100%; height: 100%;"></div>
-                                    </div>
+                                    <input type="file" id="cropper-image" name="cropper_image" class="form-control"
+                                        accept="image/*" required>
+                                    <div id="cropper" class="mt-3" style="width: 100%; height: 300px;"></div>
                                     <button type="button" id="download-cropped-image" class="btn btn-primary mt-2"
-                                        style="display: none;">@lang('Download Cropped Image')</button>
+                                        style="display: none;">@lang('Download')</button>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -274,8 +277,6 @@
     </div>
 @endsection
 @section('script')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
-
     <script src="{{ asset('js/resource.js') }}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"
