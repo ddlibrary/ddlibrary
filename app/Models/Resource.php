@@ -268,7 +268,7 @@ class Resource extends Model
         }
 
         return DB::table('resources AS rs')
-            ->select('rs.id', 'rs.language', 'rs.abstract', 'rs.title', 'rs.status')
+            ->select('rs.id', 'rs.language', 'rs.abstract', 'rs.title', 'rs.status','rs.image')
             ->when($subjectAreaIds != null, function ($query) use ($subjectAreaIds) {
                 return $query
                     ->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
@@ -491,5 +491,10 @@ class Resource extends Model
     public function resourceFavorites(): HasMany
     {
         return $this->hasMany(ResourceFavorite::class);
+    }
+
+    public function resourceFile(): BelongsTo
+    {
+        return $this->belongsTo(ResourceFile::class);
     }
 }
