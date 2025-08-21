@@ -26,7 +26,7 @@ class ResourceFileController extends Controller
                 'taxonomy_term_data_id' => 'nullable|exists:taxonomy_term_data,id',
             ],
             [
-                'image.dimensions' => __("Upload an image that is the same width and height (a square)."),
+                'image.dimensions' => __('Upload an image that is the same width and height (a square).'),
             ],
         );
 
@@ -45,7 +45,7 @@ class ResourceFileController extends Controller
 
         $fileSystemDisk = env('FILESYSTEM_DISK', 'local');
 
-        Storage::disk($fileSystemDisk)->put('public/'.$path, file_get_contents($file));
+        Storage::disk($fileSystemDisk)->put('public/' . $path, file_get_contents($file));
 
         $imagine = new Imagine();
         $image = $imagine->open($file->getRealPath());
@@ -57,11 +57,9 @@ class ResourceFileController extends Controller
             mkdir($tempDirectory, 0755, true);
         }
 
-        $image
-            ->resize(new Box(250, 250))
-            ->save($tempDirectory . '/' . $fileName);
+        $image->resize(new Box(250, 250))->save($tempDirectory . '/' . $fileName);
 
-        Storage::disk($fileSystemDisk)->put('public/'.$thumbnailPath, file_get_contents($tempDirectory . '/' . $fileName));
+        Storage::disk($fileSystemDisk)->put('public/' . $thumbnailPath, file_get_contents($tempDirectory . '/' . $fileName));
 
         $thumbnailFullPath = Storage::disk($fileSystemDisk)->url($thumbnailPath);
         $thumbnailFullPath = str_replace('/storage', '', $thumbnailFullPath);
@@ -91,13 +89,10 @@ class ResourceFileController extends Controller
     public function searchImages(ResourceFileRequest $request)
     {
         $query = ResourceFile::query()
-            ->select('uuid', 'name', 'thumbnail_path','path')
+            ->select('uuid', 'name', 'thumbnail_path', 'path')
             ->where(function ($query) use ($request) {
                 if ($request->subject_area_id) {
-                    $resourceFileIds = DB::table('resource_subject_areas')
-                        ->join('resources', 'resource_subject_areas.resource_id', '=', 'resources.id')
-                        ->where('tid', $request->subject_area_id)
-                        ->pluck('resource_file_id');
+                    $resourceFileIds = DB::table('resource_subject_areas')->join('resources', 'resource_subject_areas.resource_id', '=', 'resources.id')->where('tid', $request->subject_area_id)->pluck('resource_file_id');
                     $query->whereIn('id', $resourceFileIds);
                 }
                 if ($request->search) {
@@ -107,10 +102,8 @@ class ResourceFileController extends Controller
             ->where('language', $request->language);
 
         $count = $query->count();
-        $files = $query
-            ->orderByDesc('created_at')
-            ->paginate(16)
-            ->appends($request->except(['page']));
+        $files = $query->orderByDesc('created_at')->paginate(16)->appends($request->except('page'));
+
 
         return view('resources.partial.file-list', compact('count', 'files'));
     }
