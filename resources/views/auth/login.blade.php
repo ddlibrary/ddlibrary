@@ -97,5 +97,8 @@
         @if (config('app.captcha') == 'yes')
             <script src="https://www.google.com/recaptcha/api.js"></script>
         @endif
+        function onSubmit(token) {
+            document.getElementById("reset-password-form").submit();
+        }
     @endpush
 @endsection
