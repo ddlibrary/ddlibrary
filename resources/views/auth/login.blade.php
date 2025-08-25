@@ -53,7 +53,7 @@
                                 <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> {{ __('Remember me') }}
                             </label>
                             @if (config('app.captcha') == 'yes')
-                                <input class="btn btn-primary btn-md btn-block col-12 mt-2"
+                                <input class="g-recaptcha btn btn-primary btn-md btn-block col-12 mt-2"
                                        type="submit"
                                        data-sitekey="{{ config('services.recaptcha_v3.site_key') }}"
                                        data-callback='onSubmit'
