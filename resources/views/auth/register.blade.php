@@ -191,7 +191,7 @@
                             </div>
                             @if(config('app.captcha')== 'yes')
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary"
+                                    <button type="submit" class="g-recaptcha btn btn-primary"
                                             data-sitekey="{{ config('services.recaptcha_v3.site_key') }}"
                                             data-callback='onSubmit'
                                             data-action='register'>
