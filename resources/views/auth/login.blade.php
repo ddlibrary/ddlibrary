@@ -99,7 +99,7 @@
         @endif
         <script>
             function onSubmit(token) {
-                document.getElementById("reset-password-form").submit();
+                document.getElementById("login-form").submit();
             }
         </script>
     @endpush
