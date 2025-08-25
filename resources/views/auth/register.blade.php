@@ -1,7 +1,4 @@
 @extends('layouts.main')
-@if (config('app.captcha') == 'yes')
-    <script src="https://www.google.com/recaptcha/api.js"></script>
-@endif
 @section('title')
     @lang('Register an account') - @lang('Darakht-e Danesh Library')
 @endsection
@@ -34,7 +31,7 @@
                             <div class="col-md-1"></div>
                         </div>
                         <hr>
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('register') }}" id="register-form">
                             @honeypot
                             @csrf
                             <div class="mb-3">@lang('Or, sign up using your email')</div>
@@ -214,4 +211,14 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        @if (config('app.captcha') == 'yes')
+            <script src="https://www.google.com/recaptcha/api.js"></script>
+        @endif
+        <script>
+            function onSubmit(token) {
+                document.getElementById("register-form").submit();
+            }
+        </script>
+    @endpush
 @endsection
