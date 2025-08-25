@@ -1,7 +1,4 @@
 @extends('layouts.main')
-@if (config('app.captcha') == 'yes')
-    <script src="https://www.google.com/recaptcha/api.js"></script>
-@endif
 @section('title')
     @lang('Log in to Darakht-e Danesh Library') - @lang('Darakht-e Danesh Library')
 @endsection
@@ -96,4 +93,9 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        @if (config('app.captcha') == 'yes')
+            <script src="https://www.google.com/recaptcha/api.js"></script>
+        @endif
+    @endpush
 @endsection
