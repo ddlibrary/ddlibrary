@@ -25,7 +25,7 @@
                 async loadEPUB() {
                     try {
                         await this.loadLibraries();
-                        const route = document.getElementById('app').dataset.userId;
+                        const route = document.getElementById('app').dataset.fileRoute;
                         this.book = new ePub(route);
                         
                         this.rendition = this.book.renderTo(document.getElementById('epubContent'), {
