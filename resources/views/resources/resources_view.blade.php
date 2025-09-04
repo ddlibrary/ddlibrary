@@ -237,8 +237,10 @@
         @include('layouts.messages')
         <div class="row m-2 mt-md-4">
             <div class="col-md-8">
-
-
+                @php
+                    $epubBook = null;
+                    $epubBookKey = null;
+                @endphp
                 @if ($resource->attachments)
                     @foreach ($resource->attachments as $file)
                         @php
@@ -246,7 +248,7 @@
                             $key = encrypt(config('s3.config.secret') * $time);
                         @endphp
                         @if ($file->file_mime == 'application/pdf')
-                            <iframe src="{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}#toolbar=0" height="500"
+                            <iframe src="{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}#toolbar=0" height="500"
                                 width="100%"></iframe>
                         @elseif(
                             $file->file_mime == 'application/msword' ||
@@ -261,6 +263,46 @@
                                         type="audio/mpeg">
                                 </audio>
                             </span>
+                        @elseif($file->file_mime == 'application/epub+zip')
+                            <div>
+                                @php
+                                    $epubBook = $file;
+                                    $epubBookKey = $key;
+                                @endphp
+
+                                <div class="epub-container" id="epubViewer" style="display: none;">
+                                    <div class="epub-header" style="display: none">
+                                        <h1 class="epub-title" id="epubTitle">Loading...</h1>
+                                        <p class="epub-author" id="epubAuthor">Author</p>
+                                    </div>
+
+                                    <div class="epub-controls">
+                                        <button class="epub-btn" id="prevBtn" onclick="previousPage()">Previous</button>
+                                        <button class="epub-btn" id="tocBtn" onclick="showTableOfContents()">Table of
+                                            Contents</button>
+                                        <button class="epub-btn" id="fontSizeBtn" onclick="toggleFontSize()">Font
+                                            Size</button>
+                                        <button class="epub-btn" id="nextBtn" onclick="nextPage()">Next</button>
+                                    </div>
+
+                                    <div class="epub-content">
+                                        <div class="epub-page" id="epubContent">
+                                            <!-- EPUB content will be rendered here by epubjs -->
+                                        </div>
+                                    </div>
+
+                                    <div class="epub-navigation">
+                                        <button class="epub-btn" onclick="previousPage()">← Previous</button>
+                                        <div class="epub-progress">
+                                            <div class="epub-progress-bar d-none">
+                                                <div class="epub-progress-fill" id="progressBar"></div>
+                                            </div>
+                                            <div class="epub-status" id="epubStatus">Page 1 of 1</div>
+                                        </div>
+                                        <button class="epub-btn" onclick="nextPage()">Next →</button>
+                                    </div>
+                                </div>
+                            </div>
                         @else
                             <span class="download-item no-preview">@lang('No preview available.')</span>
                         @endif
@@ -401,40 +443,7 @@
                 </div>
                 <hr>
                 <div id="resource-view-title-box">
-                    <div>
 
-                        <div class="epub-container" id="epubViewer" style="display: none;">
-                            <div class="epub-header" style="display: none">
-                                <h1 class="epub-title" id="epubTitle">Loading...</h1>
-                                <p class="epub-author" id="epubAuthor">Author</p>
-                            </div>
-
-                            <div class="epub-controls">
-                                <button class="epub-btn" id="prevBtn" onclick="previousPage()">Previous</button>
-                                <button class="epub-btn" id="tocBtn" onclick="showTableOfContents()">Table of
-                                    Contents</button>
-                                <button class="epub-btn" id="fontSizeBtn" onclick="toggleFontSize()">Font Size</button>
-                                <button class="epub-btn" id="nextBtn" onclick="nextPage()">Next</button>
-                            </div>
-
-                            <div class="epub-content">
-                                <div class="epub-page" id="epubContent">
-                                    <!-- EPUB content will be rendered here by epubjs -->
-                                </div>
-                            </div>
-
-                            <div class="epub-navigation">
-                                <button class="epub-btn" onclick="previousPage()">← Previous</button>
-                                <div class="epub-progress">
-                                    <div class="epub-progress-bar d-none">
-                                        <div class="epub-progress-fill" id="progressBar"></div>
-                                    </div>
-                                    <div class="epub-status" id="epubStatus">Page 1 of 1</div>
-                                </div>
-                                <button class="epub-btn" onclick="nextPage()">Next →</button>
-                            </div>
-                        </div>
-                    </div>
                     {!! fixImage($resource->abstract, $resource->id) !!}
                 </div>
                 <br>
@@ -593,8 +602,6 @@
             </div>
             <div class="col-md-8">
                 <h5>{{ count($comments) }} @lang('Comment(s)')</h5>
-
-
                 <form method="POST" action="{{ route('comment') }}">
                     @csrf
                     @honeypot
@@ -631,7 +638,9 @@
             </div>
         </div>
     </div>
-    <div id="app" data-user-id="{{ asset('books/book.epub') }}"></div>
+    @if ($epubBook)
+        <div id="app" data-user-id="{{ asset('resources/'.$epubBook->file_name) }}"></div>
 
-    <script src="{{ asset('epub/epub.js') }}"></script>
+        <script src="{{ asset('epub/epub.js') }}"></script>
+    @endif
 @endsection
