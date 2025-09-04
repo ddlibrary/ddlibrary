@@ -235,7 +235,7 @@ class ResourceController extends Controller
         DDLClearSession();
         $myResources = new Resource();
 
-        $resource = Resource::findOrFail($resourceId);
+        $resource = Resource::with('attachments')->findOrFail($resourceId);
 
         if ($resource->status == 0 && ! (isAdmin() || isLibraryManager())) {  // We don't want anyone else to access unpublished resources
             abort(403);
@@ -361,7 +361,7 @@ class ResourceController extends Controller
         $new_resource_step_1 = $request->session()->get('new_resource_step_1');
 
         $validatedData = $request->validate([
-            'attachments.*' => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3|max:131072', // Max file size is 128 MB
+            'attachments.*' => 'file|mimes:xlsx,xls,csv,epub,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3|max:131072', // Max file size is 128 MB
             'subject_areas' => 'required',
             'keywords' => 'string|nullable',
             'learning_resources_types' => 'required',
@@ -377,8 +377,13 @@ class ResourceController extends Controller
                 $fileExtension = \File::extension($fileName);
                 $uniqueId = uniqid(); // Generate a unique ID
                 $fileName = auth()->user()->id . '_' . $uniqueId . '_' . time() . '.' . $fileExtension;
-                //$attachments->storeAs($fileName,'private');
-                Storage::disk('s3')->put('resources/'.$fileName, file_get_contents($attachments));
+                
+                $diskType = 's3';
+                if($fileExtension == 'epub'){
+                    $diskType = 'public';
+                }
+
+                Storage::disk($diskType)->put('resources/'.$fileName, file_get_contents($attachments));
                 $validatedData['attc'][] = [
                     'file_name' => $fileName,
                     'file_size' => $fileSize,
@@ -958,7 +963,7 @@ class ResourceController extends Controller
 
         $resource = $request->session()->get('edit_resource_step_2');
         $validatedData = $request->validate([
-            'attachments.*' => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3',
+            'attachments.*' => 'file|mimes:xlsx,xls,csv,epub,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3',
             'subject_areas' => 'required',
             'keywords' => 'string|nullable',
             'learning_resources_types' => 'required',
@@ -974,9 +979,13 @@ class ResourceController extends Controller
                 $fileExtension = \File::extension($fileName);
                 $uniqueId = uniqid(); // Generate a unique ID
                 $fileName = auth()->user()->id . '_' . $uniqueId . '_' . time() . '.' . $fileExtension;
-                //$attachments->storeAs($fileName,'private');
+                 $diskType = 's3';
+                if($fileExtension == 'epub'){
+                    $diskType = 'public';
+                }
+
                 unset($validatedData['attachments']);
-                Storage::disk('s3')->put('resources/'.$fileName, file_get_contents($attachments));
+                Storage::disk($diskType)->put('resources/'.$fileName, file_get_contents($attachments));
                 $validatedData['attc'][] = [
                     'file_name' => $fileName,
                     'file_size' => $fileSize,
@@ -1444,7 +1453,12 @@ class ResourceController extends Controller
                 'filename' => $file_name,
             ];
 
-            $file = Storage::disk('s3')->get('resources/'.$file_name);
+            $diskType = 's3';
+            if($attachment->file_mime == 'application/epub+zip'){
+                $diskType = 'public';
+            }
+
+            $file = Storage::disk($diskType)->get('resources/'.$file_name);
 
             if (! $file) {
                 abort('404');
