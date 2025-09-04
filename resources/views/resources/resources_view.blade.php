@@ -11,227 +11,9 @@
 @section('search')
     @include('layouts.search')
 @endsection
-<style>
-    html {
-        background-color: oklch(1 0 0);
-    }
-
-    html.dark {
-        background-color: oklch(0.145 0 0);
-    }
-
-    /* EPUB Viewer Styles */
-    .epub-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2px;
-        font-family: 'Georgia', serif;
-        line-height: 1.6;
-    }
-
-    .epub-header {
-        text-align: center;
-        margin-bottom: 30px;
-        padding: 2px;
-        background: linear-gradient(135deg, #d5b577 0%, #ffa800 100%);
-        color: white;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .epub-title {
-        font-size: 2.5em;
-        margin: 0 0 10px 0;
-        font-weight: 300;
-    }
-
-    .epub-author {
-        font-size: 1.2em;
-        opacity: 0.9;
-        margin: 0;
-    }
-
-    .epub-controls {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin: 20px 0;
-        flex-wrap: wrap;
-    }
-
-    .epub-btn {
-        padding: 12px 24px;
-        border: none;
-        border-radius: 25px;
-        background: linear-gradient(135deg, #d5b577 0%, #ffa800 100%);
-        color: white;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .epub-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .epub-btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none;
-    }
-
-    .epub-content {
-        background: white;
-        padding: 4px;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        min-height: 600px;
-        position: relative;
-    }
-
-    .epub-page {
-        font-size: 18px;
-        color: #333;
-        text-align: justify;
-        max-width: 800px;
-        margin: 0 auto;
-    }
-
-    .epub-page h1,
-    .epub-page h2,
-    .epub-page h3 {
-        color: #2c3e50;
-        margin-top: 30px;
-        margin-bottom: 15px;
-    }
-
-    .epub-page p {
-        margin-bottom: 20px;
-        text-indent: 2em;
-    }
-
-    .epub-navigation {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 30px;
-        padding: 2px;
-        background: #f8f9fa;
-        border-radius: 10px;
-    }
-
-    .epub-progress {
-        flex: 1;
-        margin: 0 20px;
-    }
-
-    .epub-progress-bar {
-        width: 100%;
-        height: 8px;
-        background: #e9ecef;
-        border-radius: 4px;
-        overflow: hidden;
-    }
-
-    .epub-progress-fill {
-        /* height: 100%; */
-        background: linear-gradient(90deg, #d5b577 0%, #ffa800 100%);
-        transition: width 0.3s ease;
-    }
-
-    .epub-status {
-        text-align: center;
-        color: #6c757d;
-        font-size: 14px;
-        margin-top: 10px;
-    }
-
-    .epub-loading {
-        text-align: center;
-        padding: 60px 20px;
-        color: #6c757d;
-    }
-
-    .epub-loading::after {
-        content: '';
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        border: 3px solid #f3f3f3;
-        border-top: 3px solid #d5b577;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin-left: 10px;
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-
-    .epub-error {
-        text-align: center;
-        padding: 40px 20px;
-        color: #dc3545;
-        background: #f8d7da;
-        border: 1px solid #f5c6cb;
-        border-radius: 10px;
-        margin: 20px 0;
-    }
-
-    /* Dark mode support */
-    html.dark .epub-content {
-        background: #1a1a1a;
-        color: #e0e0e0;
-    }
-
-    html.dark .epub-page {
-        color: #e0e0e0;
-    }
-
-    html.dark .epub-page h1,
-    html.dark .epub-page h2,
-    html.dark .epub-page h3 {
-        color: #ffffff;
-    }
-
-    html.dark .epub-navigation {
-        background: #2d2d2d;
-    }
-
-    /* Responsive design */
-    @media (max-width: 768px) {
-        .epub-container {
-            padding: 2px;
-        }
-
-        .epub-content {
-            padding: 2px;
-        }
-
-        .epub-title {
-            font-size: 2em;
-        }
-
-        .epub-controls {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .epub-btn {
-            width: 100%;
-            max-width: 200px;
-        }
-    }
-</style>
+@section('style')
+    <link rel="stylesheet" href="{{ asset('epub/epub.css') }}">
+@endsection
 @section('content')
     <div class="container-fluid">
         @include('layouts.messages')
@@ -248,8 +30,9 @@
                             $key = encrypt(config('s3.config.secret') * $time);
                         @endphp
                         @if ($file->file_mime == 'application/pdf')
-                            <iframe src="{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}#toolbar=0" height="500"
-                                width="100%"></iframe>
+                            <iframe
+                                src="{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}#toolbar=0"
+                                height="500" width="100%"></iframe>
                         @elseif(
                             $file->file_mime == 'application/msword' ||
                                 $file->file_mime == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
@@ -271,18 +54,21 @@
                                 @endphp
 
                                 <div class="epub-container" id="epubViewer" style="display: none;">
-                                    <div class="epub-header" style="display: none">
-                                        <h1 class="epub-title" id="epubTitle">Loading...</h1>
-                                        <p class="epub-author" id="epubAuthor">Author</p>
+                                    <div class="epub-header">
+                                        <h1 class="epub-title" id="epubTitle">@lang('Loading, please wait')</h1>
+                                        <p class="epub-author" id="epubAuthor">@lang('Author')</p>
                                     </div>
 
                                     <div class="epub-controls">
-                                        <button class="epub-btn" id="prevBtn" onclick="previousPage()">Previous</button>
-                                        <button class="epub-btn" id="tocBtn" onclick="showTableOfContents()">Table of
-                                            Contents</button>
-                                        <button class="epub-btn" id="fontSizeBtn" onclick="toggleFontSize()">Font
-                                            Size</button>
-                                        <button class="epub-btn" id="nextBtn" onclick="nextPage()">Next</button>
+                                        <button class="epub-btn" id="prevBtn"
+                                            onclick="previousPage()">@lang('Previous')</button>
+                                        <button class="epub-btn" id="tocBtn"
+                                            onclick="showTableOfContents()">@lang('Table of Contents')</button>
+                                        <button class="epub-btn" id="fontSizeBtn"
+                                            onclick="toggleFontSize()">@lang('Font Size')
+                                        </button>
+                                        <button class="epub-btn" id="nextBtn"
+                                            onclick="nextPage()">@lang('Next')</button>
                                     </div>
 
                                     <div class="epub-content">
@@ -292,14 +78,20 @@
                                     </div>
 
                                     <div class="epub-navigation">
-                                        <button class="epub-btn" onclick="previousPage()">← Previous</button>
+                                        <button class="epub-btn" onclick="previousPage()">← @lang('Previous')</button>
                                         <div class="epub-progress">
                                             <div class="epub-progress-bar d-none">
                                                 <div class="epub-progress-fill" id="progressBar"></div>
                                             </div>
-                                            <div class="epub-status" id="epubStatus">Page 1 of 1</div>
+                                            <div class="epub-status" id="epubStatus">
+                                                @if (Lang::locale() == 'en')
+                                                    Page 1 of 1
+                                                @else
+                                                    صفحه 1 از 1
+                                                @endif
+                                            </div>
                                         </div>
-                                        <button class="epub-btn" onclick="nextPage()">Next →</button>
+                                        <button class="epub-btn" onclick="nextPage()">@lang('Next') →</button>
                                     </div>
                                 </div>
                             </div>
@@ -638,13 +430,11 @@
             </div>
         </div>
     </div>
-    
+
 @endsection
 @push('scripts')
     @if ($epubBook)
-        <div id="app" data-file-route="{{ asset('resources/'.$epubBook->file_name) }}"></div>
+        <div id="app" data-file-route="{{ asset('resources/' . $epubBook->file_name) }}"></div>
         <script src="{{ asset('epub/epub.js') }}"></script>
     @endif
 @endpush
-
-
