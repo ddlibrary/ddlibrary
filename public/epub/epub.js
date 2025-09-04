@@ -193,8 +193,14 @@
 
                 updateStatus() {
                     if (this.totalPages > 0) {
+                        let page = 'Page';
+                        let of = 'of';
+                        if(localLanguage != 'en'){
+                            page = 'صفحه';
+                            of = 'از';
+                        }
                         document.getElementById('epubStatus').textContent = 
-                            `Page ${this.currentPage + 1} of ${this.totalPages}`;
+                            `${page} ${this.currentPage + 1} ${of} ${this.totalPages}`;
                     }
                 }
 
