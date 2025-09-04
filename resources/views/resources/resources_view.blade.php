@@ -447,7 +447,7 @@
 @endsection
 @push('scripts')
     @if ($epubBook)
-        <div id="app" data-file-route="{{ asset('resources/' . $epubBook->file_name) }}"></div>
+        <div id="app" data-file-route="{{ asset('files/resources/' . $epubBook->file_name) }}"></div>
         <script src="{{ asset('epub/epub.js') }}"></script>
     @endif
 @endpush
