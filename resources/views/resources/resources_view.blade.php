@@ -11,9 +11,9 @@
 @section('search')
     @include('layouts.search')
 @endsection
-@section('style')
+@push('styles')
     <link rel="stylesheet" href="{{ asset('epub/epub.css') }}">
-@endsection
+@endpush
 @section('content')
     <div class="container-fluid">
         @include('layouts.messages')
