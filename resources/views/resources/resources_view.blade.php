@@ -78,7 +78,14 @@
                                     </div>
 
                                     <div class="epub-navigation">
-                                        <button class="epub-btn" onclick="previousPage()">← @lang('Previous')</button>
+                                        <button class="epub-btn" onclick="previousPage()">
+                                            @if (Lang::locale() == 'en')
+                                                ←
+                                            @else
+                                                →
+                                            @endif
+                                            @lang('Previous')
+                                        </button>
                                         <div class="epub-progress">
                                             <div class="epub-progress-bar d-none">
                                                 <div class="epub-progress-fill" id="progressBar"></div>
@@ -91,7 +98,13 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <button class="epub-btn" onclick="nextPage()">@lang('Next') →</button>
+                                        <button class="epub-btn" onclick="nextPage()">@lang('Next')
+                                            @if (Lang::locale() == 'en')
+                                                →
+                                            @else
+                                                ←
+                                            @endif
+                                        </button>
                                     </div>
                                 </div>
                             </div>
