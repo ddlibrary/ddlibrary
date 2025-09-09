@@ -388,7 +388,7 @@ class Resource extends Model
         }
 
         return DB::table('resources AS rs')
-            ->select('rs.id', 'rs.title', 'rs.abstract')
+            ->select('rs.id', 'rs.title', 'rs.abstract', 'rs.image')
             ->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
             //not to include the record itself in the related items part
             ->where('rs.id', '!=', $resourceId)
