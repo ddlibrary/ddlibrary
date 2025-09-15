@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Http\Requests;
 
+use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -139,5 +140,27 @@ class SubscribeRequestTest extends TestCase
         $response = $this->actingAs($user)->post('en/subscribe', $requestData);
 
         $response->assertSessionHasErrors('name');
+    }
+
+    public function test_email_must_be_unique()
+    {
+        $this->refreshApplicationWithLocale('en');
+        
+        $user = User::factory()->create();
+
+        Subscriber::create([
+            'email' => 'test@example.com',
+            'name' => 'Existing User',
+            'user_id' => $user->id,
+        ]);
+
+        $requestData = [
+            'email' => 'test@example.com',
+            'name' => 'Test User',
+        ];
+
+        $response = $this->actingAs($user)->post('en/subscribe', $requestData);
+
+        $response->assertSessionHasErrors('email');
     }
 }
