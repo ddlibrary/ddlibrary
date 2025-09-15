@@ -125,4 +125,19 @@ class SubscribeRequestTest extends TestCase
 
         $response->assertSessionHasErrors('email');
     }
+
+     public function test_name_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+        
+        $user = User::factory()->create();
+        
+        $requestData = [
+            'email' => 'test@example.com',
+        ];
+
+        $response = $this->actingAs($user)->post('en/subscribe', $requestData);
+
+        $response->assertSessionHasErrors('name');
+    }
 }
