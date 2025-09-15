@@ -1,0 +1,203 @@
+<?php
+
+namespace Tests\Feature\Http\Controllers;
+
+use App\Models\Survey;
+use App\Models\SurveyQuestion;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use App\Models\User;
+
+/**
+ * @see \App\Http\Controllers\SurveyController
+ */
+class SurveyControllerTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /**
+     * @test
+     */
+    public function add_translate_returns_an_ok_response(): void
+    {
+
+        $survey = Survey::factory()->create();
+
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $response = $this->actingAs($admin)->get("en/admin/survey/add/translate/$survey->id/en");
+
+        $response->assertOk();
+        $response->assertViewIs('admin.surveys.survey.add_translation');
+        $response->assertViewHas('tnid');
+        $response->assertViewHas('lang');
+
+    }
+
+    /**
+     * @test
+     */
+    public function create_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $response = $this->actingAs($admin)->get('en/admin/survey/create');
+
+        $response->assertOk();
+        $response->assertViewIs('admin.surveys.survey.create');
+    }
+
+    /**
+     * @test
+     */
+    public function delete_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $survey = Survey::factory()->create();
+
+        $response = $this->actingAs($admin)->get("en/admin/survey/delete/$survey->id");
+
+        $this->assertEquals(0, Survey::find($survey->id));
+
+        $response->assertRedirect();
+    }
+
+    /**
+     * @test
+     */
+    public function edit_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $survey = Survey::factory()->create();
+
+        $response = $this->actingAs($admin)->get('en/admin/survey/edit/' . $survey->id);
+
+        $response->assertOk();
+        $response->assertViewIs('admin.surveys.survey.edit');
+        $response->assertViewHas('survey', $survey);
+    }
+
+    /**
+     * @test
+     */
+    public function index_returns_an_ok_response(): void
+    {
+
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $surveys = Survey::factory()->times(3)->create();
+
+        $response = $this->actingAs($admin)->get('en/admin/surveys');
+
+        $response->assertOk();
+        $response->assertViewIs('admin.surveys.survey.list');
+        $response->assertViewHas('surveys', $surveys);
+
+    }
+
+    /**
+     * @test
+     */
+    public function report_returns_an_ok_response(): void
+    {
+
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $survey = Survey::factory()->create();
+        SurveyQuestion::factory()->times(3)->create();
+
+        $response = $this->actingAs($admin)->get("en/admin/survey/report/$survey->id");
+
+        $response->assertOk();
+        $response->assertViewIs('admin.surveys.survey.report');
+        $response->assertViewHas('survey', $survey);
+        $response->assertViewHas('survey_questions');
+
+    }
+
+    /**
+     * @test
+     */
+    public function store_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $response = $this->actingAs($admin)->post(route('create_survey'), [
+            'name' => 'New Survey',
+            'state' => 'active',
+            'language' => 'en',
+            'tnid' => null,
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('surveys', ['name' => 'New Survey']);
+    }
+
+    /**
+     * @test
+     */
+    public function update_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $survey = Survey::factory()->create();
+
+        $response = $this->actingAs($admin)->post(route('update_survey', ['id' => $survey->id]), [
+            'name' => 'Updated Survey',
+            'state' => 'active',
+            'language' => 'en',
+        ]);
+
+        $response->assertRedirect();
+
+        $this->assertDatabaseHas('surveys', ['name' => 'Updated Survey']);
+    }
+
+    /**
+     * @test
+     */
+    public function view_returns_an_ok_response(): void
+    {
+
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $survey = Survey::factory()->create();
+
+        $response = $this->actingAs($admin)->get('en/admin/survey/view/{id}/{tnid}');
+
+        $response->assertOk();
+        $response->assertViewIs('admin.surveys.survey.view');
+        $response->assertViewHas('surveys');
+        $response->assertViewHas('survey_self');
+
+    }
+}

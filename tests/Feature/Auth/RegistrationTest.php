@@ -268,7 +268,6 @@ class RegistrationTest extends TestCase
         ]);
         $response->assertSessionMissing('_old_input.password');
     }
-    
 
     protected function data($merge = [])
     {
