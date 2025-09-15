@@ -56,22 +56,22 @@ class SubscribeRequestTest extends TestCase
     {
         $this->refreshApplicationWithLocale('en');
 
-        $admin = User::factory()->create();
-        $admin->roles()->attach(5);
+        $user = User::factory()->create();
+        $user->roles()->attach(5);
 
         $requestData = [
             'email' => 'library@example.com',
             'name' => 'Ddlibary user',
         ];
 
-        $response = $this->actingAs($admin)->post('en/subscribe', $requestData);
+        $response = $this->actingAs($user)->post('en/subscribe', $requestData);
 
         $response->assertRedirect('home');
 
         $this->assertDatabaseHas('subscribers', [
             'email' => 'library@example.com',
             'name' => 'Ddlibary user',
-            'user_id' => $admin->id,
+            'user_id' => $user->id,
         ]);
         $response->assertSessionHas('alert.message', __('Thank you for subscribing to our newsletter! You will now receive updates and news directly in your inbox.'));
     }
@@ -93,5 +93,20 @@ class SubscribeRequestTest extends TestCase
             'email' => 'test@example.com',
             'name' => 'Test User',
         ]);
+    }
+
+    public function test_email_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+
+        $requestData = [
+            'name' => 'Test User',
+        ];
+
+        $response = $this->actingAs($user)->post('en/subscribe', $requestData);
+
+        $response->assertSessionHasErrors('email');
     }
 }
