@@ -241,7 +241,7 @@ class ResourceControllerTest extends TestCase
             'status' => 1,
         ];
 
-        Session::put('resource1', $resource1);
+        Session::put('edit_resource_step_1', $resource1);
 
         $response = $this->get("en/resources/edit/step2/$resource->id");
 
