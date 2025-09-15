@@ -180,4 +180,24 @@ class SubscribeRequestTest extends TestCase
 
         $response->assertSessionHasErrors('name');
     }
+
+    public function test_recaptcha_response_is_required_when_enabled()
+    {
+        // Temporarily set CAPTCHA to enabled
+        $this->app['config']->set('captcha.enabled', true);
+
+        $this->refreshApplicationWithLocale('en');
+        
+        $user = User::factory()->create();
+        
+        $requestData = [
+            'email' => 'test@example.com',
+            'name' => 'Test User',
+            'g-recaptcha-response' => [],
+        ];
+
+        $response = $this->actingAs($user)->post('en/subscribe', $requestData);
+
+        $response->assertSessionHasErrors('g-recaptcha-response');
+    }
 }
