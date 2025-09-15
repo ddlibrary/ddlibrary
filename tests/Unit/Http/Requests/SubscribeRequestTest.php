@@ -200,4 +200,23 @@ class SubscribeRequestTest extends TestCase
 
         $response->assertSessionHasErrors('g-recaptcha-response');
     }
+
+    public function test_recaptcha_response_is_nullable_when_disabled()
+    {
+        $this->app['config']->set('captcha.enabled', false);
+
+        $this->refreshApplicationWithLocale('en');
+        
+        $user = User::factory()->create();
+        
+        $requestData = [
+            'email' => 'test@example.com',
+            'name' => 'Test User',
+            'g-recaptcha-response' => null,
+        ];
+
+        $response = $this->actingAs($user)->post('en/subscribe', $requestData);
+
+        $response->assertSessionDoesntHaveErrors('g-recaptcha-response');
+    }
 }
