@@ -39,7 +39,7 @@ class CommentControllerTest extends TestCase
         ]);
 
         $response->assertRedirect('resource/' . $resource->id);
-        $response->assertSessionHas('alert.message', __('Your comment is successfully registered. We will publish it after review.'));
+        $response->assertSessionHas('alert.message', __('Your comment is recorded. It will be published after a review.'));
         $response->assertSessionHas('alert.level', 'success');
 
         $this->assertDatabaseHas('resource_comments', [
