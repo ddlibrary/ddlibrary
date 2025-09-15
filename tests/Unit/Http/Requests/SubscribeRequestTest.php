@@ -19,7 +19,7 @@ class SubscribeRequestTest extends TestCase
     {
         parent::setUp();
 
-        $this->subject = new \App\Http\Requests\SubscribeRequest;
+        $this->subject = new \App\Http\Requests\SubscribeRequest();
     }
 
     /**
@@ -39,19 +39,14 @@ class SubscribeRequestTest extends TestCase
     {
         $actual = $this->subject->rules();
 
-        $this->assertValidationRules([
-            'g-recaptcha-response' => [
+        $this->assertValidationRules(
+            [
+                'g-recaptcha-response' => [],
+                'email' => ['required', 'email', 'unique:subscribers,email'],
+                'name' => ['required', 'string'],
             ],
-            'email' => [
-                'required',
-                'email',
-                'unique:subscribers,email',
-            ],
-            'name' => [
-                'required',
-                'string',
-            ],
-        ], $actual);
+            $actual,
+        );
     }
 
     /**
@@ -64,22 +59,42 @@ class SubscribeRequestTest extends TestCase
         $admin = User::factory()->create();
         $admin->roles()->attach(5);
 
-        
         $requestData = [
             'email' => 'library@example.com',
             'name' => 'Ddlibary user',
-            'user_id' => $admin->id
         ];
-        
-        $response = $this->actingAs($admin)->post("en/subscribe", $requestData);
+
+        $response = $this->actingAs($admin)->post('en/subscribe', $requestData);
 
         $response->assertRedirect('home');
 
         $this->assertDatabaseHas('subscribers', [
             'email' => 'library@example.com',
             'name' => 'Ddlibary user',
-            'user_id' => $admin->id
+            'user_id' => $admin->id,
         ]);
+        $response->assertSessionHas('alert.message', __('Thank you for subscribing to our newsletter! You will now receive updates and news directly in your inbox.'));
     }
 
+    public function test_store_creates_new_subscriber_for_unauthenticated_user(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $requestData = [
+            'email' => 'test@example.com',
+            'name' => 'Test User',
+        ];
+
+        // Make the POST request to the subscription route
+        $response = $this->post('en/subscribe', $requestData);
+
+        // Assert that the response redirects to the login page for unauthenticated users
+        $response->assertRedirect('en/login');
+
+        // Optionally, you can also check that the subscriber wasn't created
+        $this->assertDatabaseMissing('subscribers', [
+            'email' => 'test@example.com',
+            'name' => 'Test User',
+        ]);
+    }
 }
