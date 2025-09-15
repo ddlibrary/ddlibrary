@@ -246,7 +246,7 @@ class ResourceControllerTest extends TestCase
         $response = $this->get("en/resources/edit/step2/$resource->id");
 
         $response->assertOk();
-        $response->assertViewIs('resources.resources_edit_step2');
+        $response->assertViewIs('resources.resources_modify_step2');
     }
 
     /**
