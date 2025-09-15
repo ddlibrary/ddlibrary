@@ -633,17 +633,26 @@ class ResourceControllerTest extends TestCase
         $admin->roles()->attach(5);
         $this->actingAs($admin);
 
-        $resource = Resource::factory()->create();
-        $translatedResource = Resource::factory()->create();
+        // Create resources
+        $resource = Resource::factory()->create(['primary_tnid' => false]);
+        $resource->tnid = $resource->id;
+        $resource->save();
+        
+        $translatedResource = Resource::factory()->create(['primary_tnid' => false]);
+        $translatedResource->tnid = $translatedResource->id;
+        $translatedResource->save();
 
+        // Make the POST request to update the tnid
         $response = $this->post(route('updatetid', ['resourceId' => $resource->id]), [
             'link' => $translatedResource->id,
         ]);
 
         $response->assertRedirect();
+
+        // Assert that the tnid has been updated correctly
         $this->assertDatabaseHas('resources', [
             'id' => $resource->id,
-            'tnid' => $translatedResource->id,
+            'tnid' => $resource->id,
         ]);
     }
 
