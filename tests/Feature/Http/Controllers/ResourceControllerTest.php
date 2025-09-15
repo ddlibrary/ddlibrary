@@ -197,7 +197,7 @@ class ResourceControllerTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertViewIs('resources.resources_edit_step3');
+        $response->assertViewIs('resources.resources_modify_step3');
 
         $response->assertViewHas('resource');
     }
