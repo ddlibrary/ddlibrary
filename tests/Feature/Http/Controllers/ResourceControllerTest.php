@@ -183,8 +183,8 @@ class ResourceControllerTest extends TestCase
             'status' => 1,
         ];
 
-        Session::put('resource1', $resource1);
-        Session::put('resource2', [
+        Session::put('edit_resource_step_1', $resource1);
+        Session::put('edit_resource_step_2', [
             'subject_areas' => [],
             'learning_resources_types' => [],
             'keywords' => '',
