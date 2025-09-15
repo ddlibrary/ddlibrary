@@ -6,8 +6,6 @@ use App\Models\Menu;
 use App\Models\News;
 use App\Models\Page;
 use App\Models\Resource;
-use App\Models\ResourceAttachment;
-use App\Models\ResourceComment;
 use App\Models\ResourceFavorite;
 use App\Models\User;
 use App\Models\UserProfile;
