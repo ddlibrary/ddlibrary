@@ -113,7 +113,6 @@ class ApiController extends Controller
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|unique:users|nullable|regex:/^([a-zA-Z\d\._-]+)@(?!fmail.com)/', //Regex to block fmail.com domain
-            'username' => 'required|string|max:255',
             'password' => 'required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',
         ], [
             'password.regex' => __('The password you entered doesn\'t have any special characters (!@#$%^&.) and (or) digits (0-9).'),
@@ -125,7 +124,7 @@ class ApiController extends Controller
         }
 
         $user = new User();
-        $user->username = $request->username;
+        $user->username = $this->getUserName($request['email']);
         $user->password = Hash::make($request->password);
         $user->email = $request->email;
         $user->status = 1;
@@ -440,7 +439,7 @@ class ApiController extends Controller
     public function getFile($fileId): BinaryFileResponse
     {
 
-        $resourceAttachment = ResourceAttachment::where('resource_id', $fileId)->firstOrFail();
+        $resourceAttachment = ResourceAttachment::where('id', $fileId)->firstOrFail();
         try {
             $file = Storage::disk('s3')->get('resources/'.$resourceAttachment->file_name);
         } catch (FileNotFoundException $e) {
@@ -455,5 +454,16 @@ class ApiController extends Controller
         return response()
             ->download($temp_file, $resourceAttachment->file_name, [], 'inline')
             ->deleteFileAfterSend();
+    }
+
+    private function getUserName($email)
+    {
+        $username = substr($email, 0, strrpos($email, '@'));
+
+        if (DB::table('users')->where('username', $username)->exists()) {
+            return $username.time();
+        }
+
+        return $username;
     }
 }
