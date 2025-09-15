@@ -446,8 +446,8 @@ class ResourceControllerTest extends TestCase
             'level' => [],
         ];
 
-        Session::put('resource1', $step1);
-        Session::put('resource2', $step2);
+        Session::put('edit_resource_step_1', $step1);
+        Session::put('edit_resource_step_2', $step2);
 
         $resource = Resource::factory()->create();
         $taxonomyTerm = TaxonomyTerm::factory()->create();
