@@ -248,6 +248,7 @@ class ResourceController extends Controller
         $languages_available = array();
 
         $translation_id = $resource->tnid;
+        $translations = null;
         if($translation_id) {
             $translations = $myResources->getResourceTranslations($translation_id);
             $supportedLocals = array();
