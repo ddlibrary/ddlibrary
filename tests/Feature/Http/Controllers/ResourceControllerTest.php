@@ -403,8 +403,8 @@ class ResourceControllerTest extends TestCase
             'level' => [],
         ];
 
-        Session::put('resource1', $step1);
-        Session::put('resource2', $step2);
+        Session::put('new_resource_step_1', $step1);
+        Session::put('new_resource_step_2', $step2);
 
         $response = $this->post('en/resources/add/step3', [
             'translation_rights' => 1,
