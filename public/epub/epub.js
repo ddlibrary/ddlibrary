@@ -193,14 +193,9 @@ class EPUBViewer {
 
     updateStatus() {
         if (this.totalPages > 0) {
-            let page = 'Page';
-            let of = 'of';
-            if(localLanguage != 'en'){
-                page = 'صفحه';
-                of = 'از';
-            }
+         
             document.getElementById('epubStatus').textContent = 
-                `${page} ${this.currentPage + 1} ${of} ${this.totalPages}`;
+                ` ${this.currentPage + 1} / ${this.totalPages}`;
         }
     }
 

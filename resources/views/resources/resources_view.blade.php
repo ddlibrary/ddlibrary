@@ -91,11 +91,7 @@
                                                 <div class="epub-progress-fill" id="progressBar"></div>
                                             </div>
                                             <div class="epub-status" id="epubStatus">
-                                                @if (Lang::locale() == 'en')
                                                     Page 1 of 1
-                                                @else
-                                                    صفحه 1 از 1
-                                                @endif
                                             </div>
                                         </div>
                                         <button class="epub-btn" onclick="nextPage()">@lang('Next')
