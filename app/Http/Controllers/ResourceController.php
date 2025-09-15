@@ -1486,7 +1486,7 @@ class ResourceController extends Controller
     public function viewFile($fileId, $key): BinaryFileResponse
     {
         $secret = config('s3.config.secret');
-        $decrypted_key = $$key ? decrypt($key) : null;
+        $decrypted_key = $$key ? decrypt($key) : [];
         $received_time = $secret ? $decrypted_key / ($secret ? $secret : 1) : time();
         $current_time = time();
 
