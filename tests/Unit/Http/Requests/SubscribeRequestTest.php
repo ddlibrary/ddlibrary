@@ -109,4 +109,20 @@ class SubscribeRequestTest extends TestCase
 
         $response->assertSessionHasErrors('email');
     }
+
+    public function test_email_must_be_valid_email_format()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+
+        $requestData = [
+            'email' => 'invalid-email',
+            'name' => 'Test User',
+        ];
+
+        $response = $this->actingAs($user)->post('en/subscribe', $requestData);
+
+        $response->assertSessionHasErrors('email');
+    }
 }
