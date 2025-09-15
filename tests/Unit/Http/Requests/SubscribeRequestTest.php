@@ -85,13 +85,10 @@ class SubscribeRequestTest extends TestCase
             'name' => 'Test User',
         ];
 
-        // Make the POST request to the subscription route
         $response = $this->post('en/subscribe', $requestData);
 
-        // Assert that the response redirects to the login page for unauthenticated users
         $response->assertRedirect('en/login');
 
-        // Optionally, you can also check that the subscriber wasn't created
         $this->assertDatabaseMissing('subscribers', [
             'email' => 'test@example.com',
             'name' => 'Test User',
