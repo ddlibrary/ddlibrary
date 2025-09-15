@@ -140,7 +140,7 @@ class ResourceControllerTest extends TestCase
         $response = $this->get(route('edit1', ['resourceId' => $resource->id]));
 
         $response->assertOk();
-        $response->assertViewIs('resources.resources_edit_step1');
+        $response->assertViewIs('resources.resources_modify_step1');
     }
 
     /**
