@@ -43,7 +43,7 @@ class ResourceFileController extends Controller
         $fileName = auth()->user()->id . '_' . time() . '.' . $file->getClientOriginalExtension();
         $path = 'resources/' . $fileName;
 
-        $fileSystemDisk = config('app.filesystem_disk', 'local');
+        $fileSystemDisk = config('filesystems.default', 'local');
 
         Storage::disk($fileSystemDisk)->put('public/' . $path, file_get_contents($file));
 
