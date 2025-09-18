@@ -202,6 +202,4 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
-    'filesystem_disk' => env('FILESYSTEM_DISK', 'local'),
-
 ];
