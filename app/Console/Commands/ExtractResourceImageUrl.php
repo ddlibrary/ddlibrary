@@ -30,7 +30,7 @@ class ExtractResourceImageUrl extends Command
     public function handle()
 {
     $resources = Resource::select('id', 'abstract', 'title', 'image', 'language')->get();
-    $baseUrl = env('APP_URL', 'https://library.darakhtdanesh.org');
+    $baseUrl = config('app.url', 'https://library.darakhtdanesh.org');;
     
     foreach ($resources as $resource) {
         $defaultImage = $baseUrl . Storage::get('files/placeholder_image.png');
