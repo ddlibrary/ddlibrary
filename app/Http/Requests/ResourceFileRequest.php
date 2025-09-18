@@ -26,12 +26,20 @@ class ResourceFileRequest extends FormRequest
         return [
             'search' => ['nullable', 'string'],
             'subject_area_id' => ['nullable', 'numeric'],
-            'language' => ['required', Rule::in([
-                LanguageEnum::Farsi, LanguageEnum::Pashto, LanguageEnum::Munji,
-                LanguageEnum::Noorestani, LanguageEnum::Pashaiee,
-                LanguageEnum::Shaghnani, LanguageEnum::Sowji,
-                LanguageEnum::Uzbaki, LanguageEnum::English
-            ])]
+            'language' => [
+                'required',
+                Rule::in($this->getAvailableLanguages())
+            ]
         ];
+    }
+
+    /**
+     * Get available languages from the Enum.
+     *
+     * @return array<string>
+     */
+    private function getAvailableLanguages(): array
+    {
+        return array_map(fn($lang) => $lang->value, LanguageEnum::cases());
     }
 }
