@@ -26,10 +26,6 @@
     @if (Lang::locale() != 'en')
         <link rel="stylesheet" href="{{ asset('css/local.css') }}">
     @endif
-    <script>
-        let baseUrl = "{{ url('/') }}";
-        let localLanguage = "{{ config('app.locale') }}";
-    </script>
 
     @stack('styles')
     @if (App::environment('production'))
@@ -61,7 +57,6 @@
         g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
       })();
     </script>
-    @yield('style')
     <!-- End Matomo Code -->
 </head>
 
@@ -123,7 +118,6 @@
     </div>
     @stack('scripts')
     <script async src="{{ asset('js/all.js') }}"></script>
-    @yield('script')
 </body>
 
 </html>
