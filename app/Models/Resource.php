@@ -25,6 +25,8 @@ class Resource extends Model
     use CausesActivity;
     use LogsActivity;
 
+    protected $guarded = [];
+
     protected static $logAttributes = ['*'];
 
     public function levels(): BelongsToMany
@@ -266,7 +268,7 @@ class Resource extends Model
         }
 
         return DB::table('resources AS rs')
-            ->select('rs.id', 'rs.language', 'rs.abstract', 'rs.title', 'rs.status')
+            ->select('rs.id', 'rs.language', 'rs.abstract', 'rs.title', 'rs.status','rs.image')
             ->when($subjectAreaIds != null, function ($query) use ($subjectAreaIds) {
                 return $query
                     ->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
@@ -386,7 +388,7 @@ class Resource extends Model
         }
 
         return DB::table('resources AS rs')
-            ->select('rs.id', 'rs.title', 'rs.abstract')
+            ->select('rs.id', 'rs.title', 'rs.abstract', 'rs.image')
             ->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
             //not to include the record itself in the related items part
             ->where('rs.id', '!=', $resourceId)
@@ -489,5 +491,10 @@ class Resource extends Model
     public function resourceFavorites(): HasMany
     {
         return $this->hasMany(ResourceFavorite::class);
+    }
+
+    public function resourceFile(): BelongsTo
+    {
+        return $this->belongsTo(ResourceFile::class);
     }
 }
