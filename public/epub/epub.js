@@ -296,3 +296,4 @@ function goToChapter(href) {
 document.addEventListener('DOMContentLoaded', function() {
     epubViewer = new EPUBViewer();
 });
+
