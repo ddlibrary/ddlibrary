@@ -119,32 +119,51 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     //Downloads
     Route::get('admin/reports/downloads', [DownloadController::class, 'index'])->middleware('admin');
     Route::post('admin/reports/downloads', [DownloadController::class, 'index'])->name('downloads')->middleware('admin');
-    //Pages
-    Route::get('admin/pages', [PageController::class, 'index'])->middleware('admin');
-    Route::get('admin/get-pages', [PageController::class, 'getPages'])->name('getpages')->middleware('admin');
-    Route::get('admin/pages/view/{pageId}', [PageController::class, 'view'])->middleware('admin');
-    Route::get('page/{pageId}', [PageController::class, 'view'])->where('pageId', '[0-9]+');
     Route::get('/about-education-afghanistan', function () {
         return redirect('page/22');
     });
-    Route::get('page/edit/{pageId}', [PageController::class, 'edit'])->middleware('admin');
-    Route::post('page/update/{pageId}', [PageController::class, 'update'])->name('update_page')->middleware('admin');
-    Route::get('page/create', [PageController::class, 'create'])->middleware('admin');
-    Route::post('page/store', [PageController::class, 'store'])->name('add_page')->middleware('admin');
-    Route::get('page/translate/{pageId}/{pageTnid}', [PageController::class, 'translate'])->middleware('admin');
-    Route::get('page/add/translate/{pageId}/{lang}', [PageController::class, 'addTranslate'])->middleware('admin');
-    Route::post('page/add/translate/{pageId}/{lang}', [PageController::class, 'addPostTranslate'])->name('add_page_translate')->middleware('admin');
+
+    //Pages
+    Route::controller(PageController::class)->group(function(){
+        Route::get('page/{pageId}', 'view')->where('pageId', '[0-9]+');
+        Route::middleware('admin')->group(function(){
+            Route::prefix('admin')->group(function(){
+                Route::get('pages', 'index');
+                Route::get('get-pages', 'getPages')->name('getpages');
+                Route::get('pages/view/{pageId}', 'view');
+            });
+            
+            Route::prefix('page')->group(function(){
+                Route::get('edit/{pageId}', 'edit');
+                Route::post('update/{pageId}', 'update')->name('update_page');
+                Route::get('create', 'create');
+                Route::post('store', 'store')->name('add_page');
+                Route::get('translate/{pageId}/{pageTnid}', 'translate');
+                Route::get('add/translate/{pageId}/{lang}', 'addTranslate');
+                Route::post('add/translate/{pageId}/{lang}', 'addPostTranslate')->name('add_page_translate');
+            });
+        });
+    });
+
     //News
-    Route::get('admin/news', [NewsController::class, 'index'])->middleware('admin');
-    Route::get('admin/get-news', [NewsController::class, 'getNews'])->name('getnews')->middleware('admin');
-    Route::get('news/{newsId}', [NewsController::class, 'view'])->where('newsId', '[0-9]+');
-    Route::get('news/edit/{newsId}', [NewsController::class, 'edit'])->middleware('admin');
-    Route::post('news/update/{newsId}', [NewsController::class, 'update'])->name('update_news')->middleware('admin');
-    Route::get('news/create', [NewsController::class, 'create'])->middleware('admin');
-    Route::post('news/store', [NewsController::class, 'store'])->name('add_news')->middleware('admin');
-    Route::get('news/translate/{newsId}/{newsTnid}', [NewsController::class, 'translate'])->middleware('admin');
-    Route::get('news/add/translate/{newsId}/{lang}', [NewsController::class, 'addTranslate'])->middleware('admin');
-    Route::post('news/add/translate/{newsId}/{lang}', [NewsController::class, 'addPostTranslate'])->name('add_news_translate')->middleware('admin');
+    Route::controller(NewsController::class)->group(function(){
+        Route::get('news/{newsId}', 'view')->where('newsId', '[0-9]+');
+        Route::middleware('admin')->group(function(){
+
+            Route::get('admin/news', 'index');
+            Route::get('admin/get-news', 'getNews')->name('getnews');
+
+            Route::prefix('news')->group(function(){
+                Route::get('edit/{newsId}', 'edit');
+                Route::post('update/{newsId}', 'update')->name('update_news');
+                Route::get('create', 'create');
+                Route::post('store', 'store')->name('add_news');
+                Route::get('translate/{newsId}/{newsTnid}', 'translate');
+                Route::get('add/translate/{newsId}/{lang}', 'addTranslate');
+                Route::post('add/translate/{newsId}/{lang}', 'addPostTranslate')->name('add_news_translate');
+            });
+        });
+    });
     //Menu
     Route::prefix('admin')->middleware('admin')->group(function(){
         Route::controller(MenuController::class)->group(function(){
@@ -163,7 +182,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         //Settings
         Route::controller(SettingController::class)->group(function(){
             Route::get('settings', 'edit');
-            Route::post('settings', 'update')->name('settings');
+            Route::put('settings/{setting}', 'update');
         });
 
         Route::resource('subscribers', SubscriberController::class)->only('index', 'destroy');
@@ -171,8 +190,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         //Comments
         Route::prefix('comments')->controller(CommentController::class)->group(function(){
             Route::get('/', 'index');
-            Route::get('delete/{commentId}', 'delete');
-            Route::get('published/{commentId}', 'published');
+            Route::get('delete/{resourceComment}', 'delete');
+            Route::get('published/{resourceComment}', 'published')->middleware('admin');
         });
 
         //Flags
@@ -193,20 +212,25 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::get('vocabulary/create', [VocabularyController::class, 'create'])->name('vocabularycreate');
         Route::post('vocabulary/store', [VocabularyController::class, 'store'])->name('vocabularystore');
         Route::get('vocabulary/edit/{vid}', [VocabularyController::class, 'edit'])->name('vocabularyedit');
-        Route::post('vocabulary/edit/{vid}', [VocabularyController::class, 'update'])->name('vocabularyedit');
+        Route::post('vocabulary/edit/{vid}', [VocabularyController::class, 'update'])->name('update-vocabulary');
         //Sync
         Route::get('/sync', [SyncController::class, 'index']);
         Route::get('/run_sync', [SyncController::class, 'SyncIt']);
     });
 
     //Glossary
-    Route::get('glossary', [GlossaryController::class, 'index']);
-    Route::post('glossary', [GlossaryController::class, 'index'])->name('glossary');
-    Route::get('glossary/create', [GlossaryController::class, 'create'])->name('glossary_create')->middleware('LibraryManager');
-    Route::post('glossary/store', [GlossaryController::class, 'store'])->name('glossary_store')->middleware('LibraryManager');
-    Route::post('glossary/update', [GlossaryController::class, 'update'])->name('glossary_update')->middleware('LibraryManager');
-    Route::post('glossary/delete/{id}', [GlossaryController::class, 'destroy'])->name('glossary_delete')->middleware('LibraryManager');
-    Route::post('glossary/approve/{id}', [GlossaryController::class, 'approve'])->name('glossary_approve')->middleware('LibraryManager');
+    Route::prefix('glossary')->controller(GlossaryController::class)->group(function(){
+        Route::get('', 'index');
+        Route::post('', 'index')->name('glossary');
+        Route::prefix('glossary')->middleware('LibraryManager')->group(function(){
+            Route::get('create', 'create')->name('glossary_create');
+            Route::post('store', 'store')->name('glossary_store');
+            Route::post('update', 'update')->name('glossary_update');
+            Route::post('delete/{id}', 'destroy')->name('glossary_delete');
+            Route::post('approve/{id}', 'approve')->name('glossary_approve');
+        });
+    });
+
     //Impact Page
     Route::get('/impact/{update?}', [ImpactController::class, 'index']);
 
@@ -245,14 +269,23 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('admin/create_survey_modal_time', [SurveySettingController::class, 'createSurveyModalTime']);
     Route::post('admin/store_survey_modal_time', [SurveySettingController::class, 'storeSurveyModalTime'])->name('store_survey_modal_time');
     //Analytics
-    Route::get('/admin/analytics', [AnalyticsController::class, 'index'])->middleware('admin');
-    Route::post('/admin/analytics', [AnalyticsController::class, 'show'])->name('analytics')->middleware('admin');
-
+    Route::prefix('admin/analytics')->middleware('admin')->group(function(){
+        Route::controller(AnalyticsController::class)->group(function(){
+            Route::get('')->name('analytics-list');
+            Route::post('')->name('analytics');
+        });
+    });
     //admin, glossary
-    Route::get('admin/glossary_subjects', [GlossarySubjectController::class, 'index'])->middleware('admin')->name('glossary_subjects_list');
-    Route::get('admin/glossary_subjects/create', [GlossarySubjectController::class, 'create'])->middleware('admin');
-    Route::get('admin/glossary_subjects/edit/{id}', [GlossarySubjectController::class, 'edit'])->middleware('admin');
-    Route::post('admin/glossary_subjects/update', [GlossarySubjectController::class, 'update'])->middleware('admin')->name('glossary_subjects_update');
+    Route::prefix('admin/glossary_subjects')->middleware('admin')->group(function(){
+        Route::controller(GlossarySubjectController::class)->group(function(){
+            Route::get('',  'index')->name('glossary_subjects_list');
+            Route::get('create',  'create')->name('glossary_subjects_create');
+            Route::get('edit/{id}',  'edit')->name('glossary_subjects_edit');
+            Route::post('update',  'update')->name('glossary_subjects_update');
+        });
+    });
+
+
     //StoryWeaver
     Route::get('/storyweaver/confirm/{landing_page}', [StoryWeaverController::class, 'storyWeaverConfirmation'])->name('storyweaver-confirm')->middleware('auth')->middleware('verified');
     Route::get('/storyweaver/auth', [StoryWeaverController::class, 'storyWeaverAuth'])->name('storyweaver-auth')->middleware('auth')->middleware('verified');

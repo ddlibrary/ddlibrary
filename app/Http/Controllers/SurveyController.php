@@ -62,21 +62,21 @@ class SurveyController extends Controller
 
     public function update($id, Request $request): RedirectResponse
     {
-        $survey = Survey::find($id);
-        $survey->name = $request['name'];
-        $survey->state = $request['state'];
-        $survey->language = $request['language'];
-        $survey->save();
+        Survey::whereId($id)->update([
 
-        return Redirect::back()->with('status', 'Survey Updated!');
+            'name' => $request['name'],
+            'state' => $request['state'],
+            'language' => $request['language'],
+        ]);
+
+        return back()->with('status', 'Survey Updated!');
     }
 
     public function delete($id): RedirectResponse
     {
-        $survey = Survey::find($id);
-        $survey->delete();
+        Survey::whereId($id)->delete();
 
-        return Redirect::back()->with('status', 'Survey Deleted!');
+        return back()->with('status', 'Survey Deleted!');
     }
 
     public function addTranslate($tnid, $lang): View

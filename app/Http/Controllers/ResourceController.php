@@ -248,6 +248,7 @@ class ResourceController extends Controller
         $languages_available = array();
 
         $translation_id = $resource->tnid;
+        $translations = null;
         if($translation_id) {
             $translations = $myResources->getResourceTranslations($translation_id);
             $supportedLocals = array();
@@ -1394,7 +1395,7 @@ class ResourceController extends Controller
         }
         $rs->save();
 
-        return back();
+        return redirect()->back();
     }
 
     /**
@@ -1486,8 +1487,8 @@ class ResourceController extends Controller
     public function viewFile($fileId, $key): BinaryFileResponse
     {
         $secret = config('s3.config.secret');
-        $decrypted_key = decrypt($key);
-        $received_time = $decrypted_key / ($secret ?: 1);
+        $decrypted_key = $$key ? decrypt($key) : [];
+        $received_time = $secret ? $decrypted_key / ($secret ? $secret : 1) : time();
         $current_time = time();
 
         if ($current_time - $received_time < 300) { // 300 - tolerance of 5 minutes

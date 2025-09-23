@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class TaxonomyTerm extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
     /**
      * Indicates if the model should be timestamped.
      *
