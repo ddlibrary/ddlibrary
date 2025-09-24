@@ -31,7 +31,7 @@
                         @endphp
                         @if ($file->file_mime == 'application/pdf')
                             <iframe
-                                src="{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}#toolbar=0"
+                                src="{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}#toolbar=0"
                                 height="500" width="100%"></iframe>
                         @elseif(
                             $file->file_mime == 'application/msword' ||
