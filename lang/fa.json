@@ -385,5 +385,7 @@
     "views": "نمایش‌ها",
     "Are you sure to delete this file?": "شما مایل به حذف این فایل هستید؟",
     "Your file successfully has been deleted.": "فایل موفقانه حذف گردید.",
-    "Operation has failed.": "عملیه صورت نگرفت"
+    "Operation has failed.": "عملیه صورت نگرفت",
+    "Font Size": "اندازه فونت",
+    "Table of Contents": "فهرست مطالب"
 }
