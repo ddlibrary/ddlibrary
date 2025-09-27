@@ -280,6 +280,18 @@ class ResourceController extends Controller
         $favorites = new ResourceFavorite();
         Carbon::setLocale(app()->getLocale());
 
+        $ePub = null;
+        $ePubFile = $resource->attachments->where('file_mime', 'application/epub+zip')->first();
+        if($ePubFile){
+            if(config('app.env') == 'production'){
+                $ePub = asset('files/resources/' . $ePubFile->file_name);
+            }else{
+                $time = time();
+                $key = encrypt(config('s3.config.secret') * $time);
+                $ePub = $this->getEpub($ePubFile, $key);
+            }
+        }
+
         return view('resources.resources_view', compact(
             'resource',
             'relatedItems',
@@ -288,6 +300,7 @@ class ResourceController extends Controller
             'views',
             'translations',
             'favorites',
+            'ePub'
         ));
     }
 
@@ -1512,6 +1525,20 @@ class ResourceController extends Controller
             return response()
                 ->download($temp_file, $resourceAttachment->file_name, [], 'inline')
                 ->deleteFileAfterSend();
+        } else {
+            abort(403);
+        }
+    }
+
+    public function getEpub($resourceAttachment, $key)
+    {
+        $secret = config('s3.config.secret');
+        $decrypted_key = decrypt($key);
+        $received_time = $decrypted_key / ($secret ?: 1);
+        $current_time = time();
+
+        if ($current_time - $received_time < 300) { // 300 - tolerance of 5 minutes
+            return Storage::disk('s3')->url('resources/' . $resourceAttachment->file_name);
         } else {
             abort(403);
         }
