@@ -19,10 +19,6 @@
         @include('layouts.messages')
         <div class="row m-2 mt-md-4">
             <div class="col-md-8">
-                @php
-                    $epubBook = null;
-                    $epubBookKey = null;
-                @endphp
                 @if ($resource->attachments)
                     @foreach ($resource->attachments as $file)
                         @php
@@ -46,13 +42,8 @@
                                         type="audio/mpeg">
                                 </audio>
                             </span>
-                        @elseif($file->file_mime == 'application/epub+zip')
+                        @elseif($ePub)
                             <div>
-                                @php
-                                    $epubBook = $file;
-                                    $epubBookKey = $key;
-                                @endphp
-
                                 <div class="epub-container" id="epubViewer" style="display: none;">
                                     <div class="epub-header">
                                         <h1 class="epub-title" id="epubTitle">@lang('Loading, please wait')</h1>
@@ -442,8 +433,8 @@
 
 @endsection
 @push('scripts')
-    @if ($epubBook)
-        <div id="app" data-file-route="{{ asset('files/resources/' . $epubBook->file_name) }}"></div>
+    @if ($ePub)
+        <div id="app" data-file-route="{{ $ePub }}"></div>
         <script src="{{ asset('epub/epub.js') }}"></script>
     @endif
 @endpush
