@@ -1538,7 +1538,7 @@ class ResourceController extends Controller
         $current_time = time();
 
         if ($current_time - $received_time < 300) { // 300 - tolerance of 5 minutes
-            return Storage::disk('s3')->url('resources/' . $resourceAttachment->file_name);
+            return Storage::disk('s3')->temporaryUrl($resourceAttachment->file_name, now()->addHours(1));
         } else {
             abort(403);
         }
