@@ -283,7 +283,7 @@ class ResourceController extends Controller
         $ePub = null;
         $ePubFile = $resource->attachments->where('file_mime', 'application/epub+zip')->first();
         if($ePubFile){
-            if(config('app.env') == 'production'){
+            if(config('app.env') != 'production'){
                 $ePub = asset('files/resources/' . $ePubFile->file_name);
             }else{
                 $time = time();
