@@ -8,12 +8,14 @@
 @section('page_image')
     {{ getImagefromResource($resource->abstract, '282x254') }}
 @endsection
+<style>
+    .epub-container {
+        overflow: visible !important;
+    }
+</style>
 @section('search')
     @include('layouts.search')
 @endsection
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('epub/epub.css') }}">
-@endpush
 @section('content')
     <div class="container-fluid">
         @include('layouts.messages')
@@ -44,32 +46,31 @@
                             </span>
                         @elseif($ePub)
                             <div>
-                                <div class="epub-container" id="epubViewer" style="display: none;">
-                                    <div class="epub-header">
-                                        <h1 class="epub-title" id="epubTitle">@lang('Loading, please wait')</h1>
-                                        <p class="epub-author" id="epubAuthor">@lang('Author')</p>
+                                <div class="container-fluid p-2" id="epubViewer" style="display: none;">
+                                    <div class="text-center mb-4">
+                                        <h1 class="display-4 fw-light mb-2" id="epubTitle">@lang('Loading, please wait')</h1>
+                                        <p class="fs-5 text-muted" id="epubAuthor">@lang('Author')</p>
                                     </div>
 
-                                    <div class="epub-controls">
-                                        <button class="epub-btn" id="prevBtn"
+                                    <div class="d-flex justify-content-center flex-wrap gap-3 mb-4">
+                                        <button class="btn btn-primary px-4 py-2 rounded-pill" id="prevBtn"
                                             onclick="previousPage()">@lang('Previous')</button>
-                                        <button class="epub-btn" id="tocBtn"
+                                        <button class="btn btn-primary px-4 py-2 rounded-pill" id="tocBtn"
                                             onclick="showTableOfContents()">@lang('Table of Contents')</button>
-                                        <button class="epub-btn" id="fontSizeBtn"
-                                            onclick="toggleFontSize()">@lang('Font Size')
-                                        </button>
-                                        <button class="epub-btn" id="nextBtn"
+                                        <button class="btn btn-primary px-4 py-2 rounded-pill" id="fontSizeBtn"
+                                            onclick="toggleFontSize()">@lang('Font Size')</button>
+                                        <button class="btn btn-primary px-4 py-2 rounded-pill" id="nextBtn"
                                             onclick="nextPage()">@lang('Next')</button>
                                     </div>
 
-                                    <div class="epub-content">
-                                        <div class="epub-page" id="epubContent">
-                                            <!-- EPUB content will be rendered here by epubjs -->
-                                        </div>
-                                    </div>
+                                     <div class="bg-white rounded-3 shadow-lg p-3" style="min-height: 600px; overflow-x: hidden;">
+                                         <div class="fs-5 text-justify w-100" id="epubContent" style="width: 100% !important; overflow-x: hidden;">
+                                             <!-- EPUB content will be rendered here by epubjs -->
+                                         </div>
+                                     </div>
 
-                                    <div class="epub-navigation">
-                                        <button class="epub-btn" onclick="previousPage()">
+                                    <div class="d-flex align-items-center mt-4 p-3 bg-light rounded-3">
+                                        <button class="btn btn-primary me-3" onclick="previousPage()">
                                             @if (Lang::locale() == 'en')
                                                 ←
                                             @else
@@ -77,15 +78,15 @@
                                             @endif
                                             @lang('Previous')
                                         </button>
-                                        <div class="epub-progress">
-                                            <div class="epub-progress-bar d-none">
-                                                <div class="epub-progress-fill" id="progressBar"></div>
+                                        <div class="flex-fill text-center">
+                                            <div class="progress d-none" style="height: 8px;">
+                                                <div class="progress-bar" id="progressBar" style="background: linear-gradient(90deg, #d5b577 0%, #ffa800 100%);"></div>
                                             </div>
-                                            <div class="epub-status" id="epubStatus">
-                                                    Page 1 of 1
+                                            <div class="text-muted small mt-2" id="epubStatus">
+                                                Page 1 of 1
                                             </div>
                                         </div>
-                                        <button class="epub-btn" onclick="nextPage()">@lang('Next')
+                                        <button class="btn btn-primary ms-3" onclick="nextPage()">@lang('Next')
                                             @if (Lang::locale() == 'en')
                                                 →
                                             @else
