@@ -436,6 +436,6 @@
 @push('scripts')
     @if ($ePub)
         <div id="app" data-file-route="{{ $ePub }}"></div>
-        <script src="{{ asset('epub/epub.js') }}"></script>
+        <script src="{{ asset('js/epub.js') }}"></script>
     @endif
 @endpush
