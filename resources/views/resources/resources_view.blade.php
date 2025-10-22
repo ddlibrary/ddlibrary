@@ -115,6 +115,7 @@
                         </span>
                         <span class="">
                             @if (Auth::check())
+                                @if(!$ePub)
                                 @php
                                     $user = Auth::id();
                                     $hash = hash(
@@ -127,6 +128,7 @@
                                     <i class="fa fa-download" aria-hidden="true"></i> @lang('Download')
                                     ({{ formatBytes($file->file_size) }})
                                 </a>
+                                @endif
                             @else
                                 @lang('Please login to download this file.')
                             @endif
