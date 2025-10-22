@@ -79,25 +79,25 @@ class MenuController extends Controller
                     'weight' => 'required',
                 ]
             );
+            $menu = new Menu;
+            $menu->title = $request->input('title');
+            $menu->location = $request->input('location');
+            $menu->path = $request->input('path');
+            if ($request->filled('parent')) {
+                $menu->parent = $request->input('parent');
+            }
+            $menu->status = (int) $request->input('status');
+            $menu->language = $request->input('language');
+            $menu->weight = $request->input('weight');
+    
+            $menu->tnid = ($request->input('tnid')) ? $request->input('tnid') : Menu::max('tnid') + 1;
+    
+            //inserting
+            $menu->save();
         } catch (ValidationException $e) {
             abort(400);
         }
 
-        $menu = new Menu;
-        $menu->title = $request->input('title');
-        $menu->location = $request->input('location');
-        $menu->path = $request->input('path');
-        if ($request->filled('parent')) {
-            $menu->parent = $request->input('parent');
-        }
-        $menu->status = (int) $request->input('status');
-        $menu->language = $request->input('language');
-        $menu->weight = $request->input('weight');
-
-        $menu->tnid = ($request->input('tnid')) ? $request->input('tnid') : Menu::max('tnid') + 1;
-
-        //inserting
-        $menu->save();
 
         return redirect('admin/menu')->with('success', 'Menu translation or new menu successfully added!');
     }

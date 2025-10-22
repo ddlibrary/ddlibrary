@@ -212,8 +212,7 @@ class UserController extends Controller
      */
     public function deleteUser($userId): RedirectResponse
     {
-        $user = User::find($userId);
-        $user->delete();
+        $user = User::whereId($userId)->delete();
 
         return back()->with('error', 'You deleted the record!');
     }
