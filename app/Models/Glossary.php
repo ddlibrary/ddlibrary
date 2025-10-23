@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -16,6 +17,15 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Glossary extends Model
 {
+    use HasFactory;
+
     protected $table = 'glossary';
-    //
+
+    protected $guarded = [];
+
+
+    public function glossarySubject()
+    {
+        return $this->belongsTo(GlossarySubject::class, 'subject', 'id');
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Relations\BelongsToResource;
 use App\Models\Relations\BelongsToUser;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 
 class ResourceView extends Model
 {
+    use HasFactory;
+
     use BelongsToResource, BelongsToUser;
 
     public function getCount(): Collection

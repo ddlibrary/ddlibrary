@@ -63,7 +63,7 @@ class SurveyQuestionOptionController extends Controller
         }
         $created_option->save();
 
-        return Redirect::back()->with('status', 'Question Option Created!');
+        return back()->with('status', 'Question Option Created!');
     }
 
     public function delete($id): RedirectResponse
@@ -71,7 +71,7 @@ class SurveyQuestionOptionController extends Controller
         $option = SurveyQuestionOption::find($id);
         $option->delete();
 
-        return Redirect::back()->with('status', 'Question\'s Option Deleted!');
+        return back()->with('status', 'Question\'s Option Deleted!');
     }
 
     public function addTranslate($tnid, $lang): View
