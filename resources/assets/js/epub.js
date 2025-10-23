@@ -1,3 +1,33 @@
+// Global functions for button clicks
+(function() {
+    // Define the epubViewer variable in the global scope
+    window.epubViewer;
+
+    window.nextPage = function() {
+        if (window.epubViewer) window.epubViewer.nextPage();
+    };
+
+    window.previousPage = function() {
+        if (window.epubViewer) window.epubViewer.previousPage();
+    };
+
+    window.showTableOfContents = function() {
+        if (window.epubViewer) window.epubViewer.showTableOfContents();
+    };
+
+    window.toggleFontSize = function() {
+        if (window.epubViewer) window.epubViewer.toggleFontSize();
+    };
+
+    window.goToPage = function(pageIndex) {
+        if (window.epubViewer) window.epubViewer.goToPage(pageIndex);
+    };
+
+    window.goToChapter = function(href) {
+        if (window.epubViewer) window.epubViewer.goToChapter(href);
+    };
+})();
+
 // Production-ready EPUB Viewer using epubjs
 class EPUBViewer {
     constructor() {
@@ -6,9 +36,9 @@ class EPUBViewer {
         this.currentPage = 0;
         this.totalPages = 0;
         this.currentFontSize = 18;
-        this.fontSizes = [12,14, 16, 18, 20, 22, 24,26,28,30];
+        this.fontSizes = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30];
         this.fontSizeIndex = 2;
-        
+
         this.init();
     }
 
@@ -39,10 +69,7 @@ class EPUBViewer {
             await this.loadMetadata();
             this.setupNavigation();
             this.updateControls();
-            
-            // Clear loading state - EPUB is now loaded
             this.clearLoadingState();
-            
         } catch (error) {
             console.error('Error loading EPUB:', error);
             throw error;
@@ -50,11 +77,8 @@ class EPUBViewer {
     }
 
     clearLoadingState() {
-        // Remove the loading message and show the actual EPUB content
         const contentElement = document.getElementById('epubContent');
         if (contentElement) {
-            // The epubjs rendition should already be rendering content here
-            // Just ensure any loading indicators are cleared
             contentElement.style.minHeight = '600px';
         }
     }
@@ -88,7 +112,7 @@ class EPUBViewer {
                 }
             }
             
-            // Load epubjs
+            // Load ePub.js
             if (typeof ePub === 'undefined') {
                 const epubSources = [
                     'https://unpkg.com/epubjs@0.3.88/dist/epub.min.js',
@@ -118,7 +142,6 @@ class EPUBViewer {
             if (typeof JSZip === 'undefined' || typeof ePub === 'undefined') {
                 throw new Error('Required libraries failed to load');
             }
-            
         } catch (error) {
             console.error('Error loading libraries:', error);
             throw new Error(`Failed to load required libraries: ${error.message}`);
@@ -193,7 +216,6 @@ class EPUBViewer {
 
     updateStatus() {
         if (this.totalPages > 0) {
-         
             document.getElementById('epubStatus').textContent = 
                 ` ${this.currentPage + 1} / ${this.totalPages}`;
         }
@@ -265,35 +287,7 @@ class EPUBViewer {
     }
 }
 
-// Global functions for button clicks
-let epubViewer;
-
-function nextPage() {
-    if (epubViewer) epubViewer.nextPage();
-}
-
-function previousPage() {
-    if (epubViewer) epubViewer.previousPage();
-}
-
-function showTableOfContents() {
-    if (epubViewer) epubViewer.showTableOfContents();
-}
-
-function toggleFontSize() {
-    if (epubViewer) epubViewer.toggleFontSize();
-}
-
-function goToPage(pageIndex) {
-    if (epubViewer) epubViewer.goToPage(pageIndex);
-}
-
-function goToChapter(href) {
-    if (epubViewer) epubViewer.goToChapter(href);
-}
-
 // Initialize EPUB viewer when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    epubViewer = new EPUBViewer();
+    window.epubViewer = new EPUBViewer();
 });
-
