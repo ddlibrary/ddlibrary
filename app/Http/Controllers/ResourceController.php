@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TaxonomyVocabularyEnum;
 use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
 use App\Models\Resource;
@@ -13,6 +14,7 @@ use App\Models\ResourceCreativeCommon;
 use App\Models\ResourceEducationalResource;
 use App\Models\ResourceEducationalUse;
 use App\Models\ResourceFavorite;
+use App\Models\ResourceFile;
 use App\Models\ResourceFlag;
 use App\Models\ResourceIamAuthor;
 use App\Models\ResourceKeyword;
@@ -235,7 +237,7 @@ class ResourceController extends Controller
         DDLClearSession();
         $myResources = new Resource();
 
-        $resource = Resource::with('attachments')->findOrFail($resourceId);
+        $resource = Resource::with('attachments','resourceFile:id,path,thumbnail_path')->findOrFail($resourceId);
 
         if ($resource->status == 0 && ! (isAdmin() || isLibraryManager())) {  // We don't want anyone else to access unpublished resources
             abort(403);
@@ -307,10 +309,12 @@ class ResourceController extends Controller
 
     public function createStepOne(Request $request): Factory|View|Application
     {
-        $this->middleware('auth');
         $resource = $request->session()->get('new_resource_step_1');
+        $myResources = new Resource();
+        $creativeCommons = $myResources->resourceAttributesList('taxonomy_term_data', 10, config('app.locale'), [168,535]); // taxonomy_term_data.tnid [168=Unknown , 535=CC BY / CC BY-SA]
+        $subjects = $myResources->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject);
 
-        return view('resources.resources_modify_step1', compact('resource'));
+        return view('resources.resources_modify_step1', compact('resource', 'creativeCommons', 'subjects'));
     }
 
     public function postStepOne(Request $request): Redirector|Application|RedirectResponse
@@ -322,7 +326,18 @@ class ResourceController extends Controller
             'translator' => 'string|nullable',
             'language' => 'required',
             'abstract' => 'required',
+            'image' => 'nullable|string',
         ]);
+
+        if (isset($validatedData['image'])) {
+            $image = $validatedData['image'];
+            $resosurceFile = ResourceFile::where('uuid', $image)->first();
+
+            $validatedData['resource_image'] = $resosurceFile->path;
+            $validatedData['resource_file_id'] = $resosurceFile->id;
+            unset($validatedData['image']);
+
+        }
 
         $request->session()->put('new_resource_step_1', $validatedData);
 
@@ -470,6 +485,7 @@ class ResourceController extends Controller
             $myResources = new Resource();
 
             $myResources->title = $finalArray['title'];
+            $myResources->resource_file_id = $finalArray['resource_file_id'];
             $myResources->abstract = $finalArray['abstract'];
             $myResources->language = $finalArray['language'];
             $myResources->user_id = Auth::id();
@@ -478,6 +494,10 @@ class ResourceController extends Controller
             //inserting to resource table
             $myResources->save();
 
+            if($myResources->resource_file_id){
+
+                ResourceFile::where(['id' => $myResources->resource_file_id, 'resource_id' => null])->update(['resource_id' => $myResources->id]);
+            }
             $myResources = Resource::find($myResources->id);
             $myResources->tnid = $myResources->id;
             //updating resource table with tnid
@@ -825,11 +845,12 @@ class ResourceController extends Controller
 
         $resource = $request->session()->get('edit_resource_step_1');
         if ($resource == null) {
-            $resource = Resource::with(['authors:id,name', 'translators:id,name', 'publishers:id,name'])->findOrFail($resourceId);
+            $resource = Resource::with(['authors:id,name', 'translators:id,name', 'publishers:id,name', 'resourceFile:id,uuid'])->findOrFail($resourceId);
         }
         $edit = true;
+        $subjects = $myResources->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject);
 
-        return view('resources.resources_modify_step1', compact('resource', 'edit'));
+        return view('resources.resources_modify_step1', compact('resource', 'edit', 'subjects'));
     }
 
     public function postStepOneEdit($resourceId, Request $request): Redirector|Application|RedirectResponse
@@ -843,10 +864,21 @@ class ResourceController extends Controller
             'translator' => 'string|nullable',
             'language' => 'required',
             'abstract' => 'required',
+            'image' => 'nullable'
         ]);
 
         $validatedData['id'] = $resourceId;
         $validatedData['status'] = $request->input('status');
+        if (isset($validatedData['image'])) {
+            $image = $validatedData['image'];
+            $resosurceFile = ResourceFile::where('uuid', $image)->first();
+
+            $validatedData['resource_image'] = $resosurceFile->path;
+            $validatedData['resource_file_id'] = $resosurceFile->id;
+            unset($validatedData['image']);
+
+        }
+
         $request->session()->put('edit_resource_step_1', $validatedData);
 
         return redirect('/resources/edit/step2/'.$resourceId);
@@ -1079,10 +1111,17 @@ class ResourceController extends Controller
             $myResources->title = $finalArray['title'];
             $myResources->abstract = $finalArray['abstract'];
             $myResources->language = $finalArray['language'];
+            $myResources->resource_file_id = $finalArray['resource_file_id'];
             $myResources->status = $finalArray['published'];
             $myResources->published_at = date('Y-m-d H:i:s');
+
             //inserting to resource table
             $myResources->save();
+
+            if($myResources->resource_file_id){
+
+                ResourceFile::where(['id' => $myResources->resource_file_id, 'resource_id' => null])->update(['resource_id' => $myResources->id]);
+            }
 
             //Updating Attachments
             if (isset($finalArray['attc'])) {
@@ -1516,7 +1555,11 @@ class ResourceController extends Controller
 
         if ($current_time - $received_time < 300) { // 300 - tolerance of 5 minutes
             $resourceAttachment = ResourceAttachment::findOrFail($fileId);
-            $file = Storage::disk('s3')->get('resources/'.$resourceAttachment->file_name);
+            $diskType = 's3';
+            if(config('app.env') != 'production'){
+                $diskType = 'public';
+            }
+            $file = Storage::disk($diskType)->get('resources/'.$resourceAttachment->file_name);
             if ($file == null) abort(404);
             $temp_file = tempnam(
                 sys_get_temp_dir(), $resourceAttachment->file_name.'_'
