@@ -7,7 +7,7 @@
 @endsection
 @section('page_image')
 
-        {{  $resource->image ?  $resource->image  : getImagefromResource($resource->abstract, '282x254') }}
+        {{  $resource->resourceFile ?  $resource->resourceFile->path  : getImagefromResource($resource->abstract, '282x254') }}
 @endsection
 <style>
     .epub-container {
@@ -320,7 +320,7 @@
             <div class="col-md-3">
                 <div class="row">
                     <div class="p-3">
-                        <img class="resource-view-img" src="{{ getImagefromResource($resource->abstract, '282x254') }}"
+                        <img class="resource-view-img" src=" {{ $resource->resourceFile ?  $resource->resourceFile->path  : getImagefromResource($resource->abstract, '282x254') }}"
                             alt="Resource Main Image">
                     </div>
                 </div>
