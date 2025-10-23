@@ -37,25 +37,6 @@ class GlossarySubjectController extends Controller
         return view('admin.glossary.glossary_subject_edit', compact('glossary_subject'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return void
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @return void
-     */
-    public function show(int $id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -107,15 +88,5 @@ class GlossarySubjectController extends Controller
         $glossary_subject->save();
 
         return redirect(route('glossary_subjects_list'))->with('status', __('Glossary subject(s) updated!'));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return void
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

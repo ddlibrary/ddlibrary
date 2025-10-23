@@ -237,7 +237,7 @@ class ResourceController extends Controller
         DDLClearSession();
         $myResources = new Resource();
 
-        $resource = Resource::findOrFail($resourceId);
+        $resource = Resource::with('attachments')->findOrFail($resourceId);
 
         if ($resource->status == 0 && ! (isAdmin() || isLibraryManager())) {  // We don't want anyone else to access unpublished resources
             abort(403);
@@ -250,6 +250,7 @@ class ResourceController extends Controller
         $languages_available = array();
 
         $translation_id = $resource->tnid;
+        $translations = null;
         if($translation_id) {
             $translations = $myResources->getResourceTranslations($translation_id);
             $supportedLocals = array();
@@ -282,6 +283,18 @@ class ResourceController extends Controller
         $favorites = new ResourceFavorite();
         Carbon::setLocale(app()->getLocale());
 
+        $ePub = null;
+        $ePubFile = $resource->attachments->where('file_mime', 'application/epub+zip')->first();
+        if($ePubFile){
+            if(config('app.env') != 'production'){
+                $ePub = asset('files/resources/' . $ePubFile->file_name);
+            }else{
+                $time = time();
+                $key = encrypt(config('s3.config.secret') * $time);
+                $ePub = $this->getEpub($ePubFile, $key);
+            }
+        }
+
         return view('resources.resources_view', compact(
             'resource',
             'relatedItems',
@@ -290,6 +303,7 @@ class ResourceController extends Controller
             'views',
             'translations',
             'favorites',
+            'ePub'
         ));
     }
 
@@ -376,7 +390,7 @@ class ResourceController extends Controller
         $new_resource_step_1 = $request->session()->get('new_resource_step_1');
 
         $validatedData = $request->validate([
-            'attachments.*' => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3|max:131072', // Max file size is 128 MB
+            'attachments.*' => 'file|mimes:xlsx,epub,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3|max:131072', // Max file size is 128 MB
             'subject_areas' => 'required',
             'keywords' => 'string|nullable',
             'learning_resources_types' => 'required',
@@ -390,10 +404,13 @@ class ResourceController extends Controller
                 $fileSize = $attachments->getSize();
                 $fileName = $attachments->getClientOriginalName();
                 $fileExtension = \File::extension($fileName);
+                $diskType = 's3';
+                if(config('app.env') != 'production'){
+                    $diskType = 'public';
+                }
                 $uniqueId = uniqid(); // Generate a unique ID
                 $fileName = auth()->user()->id . '_' . $uniqueId . '_' . time() . '.' . $fileExtension;
-                //$attachments->storeAs($fileName,'private');
-                Storage::disk('s3')->put('resources/'.$fileName, file_get_contents($attachments));
+                Storage::disk($diskType)->put('resources/'.$fileName, file_get_contents($attachments));
                 $validatedData['attc'][] = [
                     'file_name' => $fileName,
                     'file_size' => $fileSize,
@@ -991,7 +1008,7 @@ class ResourceController extends Controller
 
         $resource = $request->session()->get('edit_resource_step_2');
         $validatedData = $request->validate([
-            'attachments.*' => 'file|mimes:xlsx,xls,csv,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3',
+            'attachments.*' => 'file|mimes:xlsx,xls,csv,epub,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3',
             'subject_areas' => 'required',
             'keywords' => 'string|nullable',
             'learning_resources_types' => 'required',
@@ -1007,9 +1024,12 @@ class ResourceController extends Controller
                 $fileExtension = \File::extension($fileName);
                 $uniqueId = uniqid(); // Generate a unique ID
                 $fileName = auth()->user()->id . '_' . $uniqueId . '_' . time() . '.' . $fileExtension;
-                //$attachments->storeAs($fileName,'private');
+                $diskType = 's3';
+                if(config('app.env') != 'production'){
+                    $diskType = 'public';
+                }
                 unset($validatedData['attachments']);
-                Storage::disk('s3')->put('resources/'.$fileName, file_get_contents($attachments));
+                Storage::disk($diskType)->put('resources/'.$fileName, file_get_contents($attachments));
                 $validatedData['attc'][] = [
                     'file_name' => $fileName,
                     'file_size' => $fileSize,
@@ -1435,7 +1455,7 @@ class ResourceController extends Controller
         }
         $rs->save();
 
-        return back();
+        return redirect()->back();
     }
 
     /**
@@ -1485,7 +1505,11 @@ class ResourceController extends Controller
                 'filename' => $file_name,
             ];
 
-            $file = Storage::disk('s3')->get('resources/'.$file_name);
+            $diskType = 's3';
+            if(config('app.env') != 'production'){
+                $diskType = 'public';
+            }
+            $file = Storage::disk($diskType)->get('resources/'.$file_name);
 
             if (! $file) {
                 abort('404');
@@ -1527,8 +1551,8 @@ class ResourceController extends Controller
     public function viewFile($fileId, $key): BinaryFileResponse
     {
         $secret = config('s3.config.secret');
-        $decrypted_key = decrypt($key);
-        $received_time = $decrypted_key / ($secret ?: 1);
+        $decrypted_key = $key ? decrypt($key) : [];
+        $received_time = $secret ? $decrypted_key / ($secret ? $secret : 1) : time();
         $current_time = time();
 
         if ($current_time - $received_time < 300) { // 300 - tolerance of 5 minutes
@@ -1543,6 +1567,20 @@ class ResourceController extends Controller
             return response()
                 ->download($temp_file, $resourceAttachment->file_name, [], 'inline')
                 ->deleteFileAfterSend();
+        } else {
+            abort(403);
+        }
+    }
+
+    public function getEpub($resourceAttachment, $key)
+    {
+        $secret = config('s3.config.secret');
+        $decrypted_key = decrypt($key);
+        $received_time = $decrypted_key / ($secret ?: 1);
+        $current_time = time();
+
+        if ($current_time - $received_time < 300) { // 300 - tolerance of 5 minutes
+            return Storage::disk('s3')->temporaryUrl('resources/'.$resourceAttachment->file_name, now()->addHours(1));
         } else {
             abort(403);
         }

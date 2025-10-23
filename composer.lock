@@ -9052,6 +9052,109 @@
             "time": "2020-07-09T08:09:16+00:00"
         },
         {
+            "name": "jasonmccreary/laravel-test-assertions",
+            "version": "v2.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jasonmccreary/laravel-test-assertions.git",
+                "reference": "e60bc8c737e535e55ac85eacf61718616bf0e2d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jasonmccreary/laravel-test-assertions/zipball/e60bc8c737e535e55ac85eacf61718616bf0e2d6",
+                "reference": "e60bc8c737e535e55ac85eacf61718616bf0e2d6",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/testing": "^10.0|^11.0",
+                "mockery/mockery": "^1.4.4",
+                "php": "^8.1",
+                "phpunit/phpunit": "^10.1|^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "JMac\\Testing\\AdditionalAssertionsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JMac\\Testing\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jason McCreary",
+                    "email": "jason@pureconcepts.net"
+                }
+            ],
+            "description": "A set of helpful assertions when testing Laravel applications.",
+            "support": {
+                "issues": "https://github.com/jasonmccreary/laravel-test-assertions/issues",
+                "source": "https://github.com/jasonmccreary/laravel-test-assertions/tree/v2.4.1"
+            },
+            "time": "2024-06-10T14:00:38+00:00"
+        },
+        {
+            "name": "laravel-shift/factory-generator",
+            "version": "v2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel-shift/factory-generator.git",
+                "reference": "90eae4d474d91abf2a0367f26322c5756af3ebff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel-shift/factory-generator/zipball/90eae4d474d91abf2a0367f26322c5756af3ebff",
+                "reference": "90eae4d474d91abf2a0367f26322c5756af3ebff",
+                "shasum": ""
+            },
+            "require": {
+                "fakerphp/faker": "^1.9.1",
+                "illuminate/support": "^10.0|^11.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^8.0|^9.0",
+                "phpunit/phpunit": "^10.5"
+            },
+            "type": "package",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Shift\\FactoryGenerator\\FactoryGeneratorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Shift\\FactoryGenerator\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Generate factories from existing models",
+            "keywords": [
+                "factory",
+                "laravel",
+                "model",
+                "testing"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel-shift/factory-generator/issues",
+                "source": "https://github.com/laravel-shift/factory-generator/tree/v2.0"
+            },
+            "time": "2024-06-18T16:27:21+00:00"
+        },
+        {
             "name": "mockery/mockery",
             "version": "1.6.12",
             "source": {
@@ -11347,5 +11450,5 @@
     "platform-overrides": {
         "php": "8.1"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
