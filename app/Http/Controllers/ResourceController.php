@@ -237,7 +237,7 @@ class ResourceController extends Controller
         DDLClearSession();
         $myResources = new Resource();
 
-        $resource = Resource::with('attachments')->findOrFail($resourceId);
+        $resource = Resource::with('attachments','resourceFile:id,path,thumbnail_path')->findOrFail($resourceId);
 
         if ($resource->status == 0 && ! (isAdmin() || isLibraryManager())) {  // We don't want anyone else to access unpublished resources
             abort(403);
@@ -485,7 +485,6 @@ class ResourceController extends Controller
             $myResources = new Resource();
 
             $myResources->title = $finalArray['title'];
-            $myResources->image = $finalArray['resource_image'];
             $myResources->resource_file_id = $finalArray['resource_file_id'];
             $myResources->abstract = $finalArray['abstract'];
             $myResources->language = $finalArray['language'];
@@ -1112,7 +1111,6 @@ class ResourceController extends Controller
             $myResources->title = $finalArray['title'];
             $myResources->abstract = $finalArray['abstract'];
             $myResources->language = $finalArray['language'];
-            $myResources->image = $finalArray['resource_image'];
             $myResources->resource_file_id = $finalArray['resource_file_id'];
             $myResources->status = $finalArray['published'];
             $myResources->published_at = date('Y-m-d H:i:s');
@@ -1557,7 +1555,11 @@ class ResourceController extends Controller
 
         if ($current_time - $received_time < 300) { // 300 - tolerance of 5 minutes
             $resourceAttachment = ResourceAttachment::findOrFail($fileId);
-            $file = Storage::disk('s3')->get('resources/'.$resourceAttachment->file_name);
+            $diskType = 's3';
+            if(config('app.env') != 'production'){
+                $diskType = 'public';
+            }
+            $file = Storage::disk($diskType)->get('resources/'.$resourceAttachment->file_name);
             if ($file == null) abort(404);
             $temp_file = tempnam(
                 sys_get_temp_dir(), $resourceAttachment->file_name.'_'
