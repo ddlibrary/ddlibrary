@@ -28,46 +28,46 @@ class ExtractResourceImageUrl extends Command
      * Execute the console command.
      */
     public function handle()
-{
-    $resources = Resource::select('id', 'abstract', 'title', 'image', 'language')->get();
-    $baseUrl = config('app.url', 'https://library.darakhtdanesh.org');;
-    
-    foreach ($resources as $resource) {
-        $defaultImage = $baseUrl . Storage::get('files/placeholder_image.png');
-        preg_match('/src=["\']([^"\']+)["\']/', $resource->abstract, $matches);
+    {
+        $resources = Resource::select('id', 'abstract', 'title', 'language')->get();
+        $baseUrl = config('app.url', 'https://library.darakhtdanesh.org');;
+        
+        foreach ($resources as $resource) {
+            $defaultImage = $baseUrl . Storage::get('files/placeholder_image.png');
+            preg_match('/src=["\']([^"\']+)["\']/', $resource->abstract, $matches);
 
-        if (!empty($matches[1])) {
-            $absStr = $matches[1];
+            if (!empty($matches[1])) {
+                $absStr = $matches[1];
 
-            // Replace the old URL if found
-            $absStr = str_replace('https://darakhtdanesh.org/public', $baseUrl, $absStr);
+                // Replace the old URL if found
+                $absStr = str_replace('https://darakhtdanesh.org/public', $baseUrl, $absStr);
 
-            // Skip if the URL contains 'youtube'
-            if (strpos($absStr, 'youtube') === false) {
-                // Check if the image URL is relative or not
-                if (strpos($absStr, 'http') !== 0) {
-                    // It's a relative URL, prepend the base URL
-                    $imageName = basename($absStr); // Get the image name from the URL
+                // Skip if the URL contains 'youtube'
+                if (strpos($absStr, 'youtube') === false) {
+                    // Check if the image URL is relative or not
+                    if (strpos($absStr, 'http') !== 0) {
+                        // It's a relative URL, prepend the base URL
+                        $imageName = basename($absStr); // Get the image name from the URL
 
-                    if ($imageName) {
-                        $defaultImage = $baseUrl . Storage::disk('public')->url($imageName);
+                        if ($imageName) {
+                            $defaultImage = $baseUrl . Storage::disk('public')->url($imageName);
+                        }
+                    } else {
+                        // If it starts with 'http', use it directly
+                        $defaultImage = $absStr;
                     }
-                } else {
-                    // If it starts with 'http', use it directly
-                    $defaultImage = $absStr;
                 }
             }
+
+            $resourceFile = ResourceFile::create([
+                'name' => $resource->title ? $resource->title : 'no title',
+                'path' => $defaultImage,
+                'language' => $resource->language,
+                'thumbnail_path' => $defaultImage,
+                'resource_id' => $resource->id
+            ]);
+
+            $resource->update(['resource_file_id' => $resourceFile->id]);
         }
-
-        $resourceFile = ResourceFile::create([
-            'name' => $resource->title ? $resource->title : 'no title',
-            'path' => $defaultImage,
-            'language' => $resource->language,
-            'thumbnail_path' => $defaultImage,
-            'resource_id' => $resource->id
-        ]);
-
-        $resource->update(['image' => $defaultImage, 'resource_file_id' => $resourceFile->id]);
     }
-}
 }
