@@ -275,9 +275,10 @@ class ResourceControllerTest extends TestCase
     {
         $this->refreshApplicationWithLocale('en');
 
-        $resource = Resource::factory()->create();
+        Resource::factory()->create();
+        $key = encrypt(time());
 
-        $response = $this->get('en/resource/view/999/invalid-key');
+        $response = $this->get("en/resource/view/789/$key");
 
         $response->assertNotFound();
     }
@@ -566,9 +567,11 @@ class ResourceControllerTest extends TestCase
     {
         $this->refreshApplicationWithLocale('en');
 
-        $resource = Resource::factory()->create();
+        Resource::factory()->create();
 
-        $response = $this->get('en/resource/view/999/invalid-key');
+        $key = encrypt(time());
+
+        $response = $this->get("en/resource/view/789/$key");
 
         $response->assertNotFound();
     }
