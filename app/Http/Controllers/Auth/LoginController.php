@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
@@ -141,7 +142,6 @@ class LoginController extends Controller
 
             return $this->sendLockoutResponse($request);
         }
-
         $credentials = $request->only('email', 'password');
         $credentials['user-id'] = null;
         //Checking if user exists
@@ -195,13 +195,14 @@ class LoginController extends Controller
 
     /**
      * Validate the user login request.
+     * @throws ValidationException
      */
     protected function validateLogin(Request $request): void
     {
         $this->validate($request, [
-            'email' => 'required|string',
+            'email' => 'required|string|email',
             'password' => 'required|string',
-            'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule()],
+            'g-recaptcha-response' => [config('app.captcha') == 'no' ? 'nullable' : 'required', new RecaptchaRule()],
         ]);
     }
 

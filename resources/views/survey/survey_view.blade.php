@@ -11,7 +11,7 @@
     $questions_count = \App\Models\SurveyQuestion::getPublishedQuestions($lang)->count();
 ?>
 
-<div id="surveyModal" class="modal" dir="@if ($lang != 'en')rtl@else ltr@endif">
+<div id="surveyModal" class="modal" dir="@if ($lang != 'en') rtl @else ltr @endif">
     <div class="modal-content">
         <div class="modal-header">
             <span class="close" id="survey-close">&times;</span>

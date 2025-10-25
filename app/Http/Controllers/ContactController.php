@@ -99,7 +99,7 @@ class ContactController extends Controller
             'email' => 'required|email',
             'subject' => 'required',
             'message' => 'required',
-            'g-recaptcha-response' => ['required', new RecaptchaRule()],
+            'g-recaptcha-response' => [config('app.captcha') && config('app.captcha') == 'no' ? 'nullable' : 'required' , new RecaptchaRule()],
         ]);
 
         //Saving contact info to the database

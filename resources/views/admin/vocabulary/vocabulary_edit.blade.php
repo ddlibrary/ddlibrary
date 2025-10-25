@@ -16,7 +16,7 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-        <form method="POST" action="{{ route('vocabularyedit', ['vid' => $vocabulary->vid]) }}">
+        <form method="POST" action="{{ route('update-vocabulary', ['vid' => $vocabulary->vid]) }}">
         @csrf
           <table class="table table-bordered" width="100%" cellspacing="0">
               <tr>

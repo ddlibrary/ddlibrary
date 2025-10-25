@@ -1,5 +1,5 @@
 # PHP Version environment variable
-ARG PHP_VERSION
+ARG PHP_VERSION=8.2
 
 FROM php:$PHP_VERSION-fpm
 
@@ -7,23 +7,15 @@ FROM php:$PHP_VERSION-fpm
 WORKDIR /var/www/html
 
 # Install dependencies
-RUN apt-get update && apt-get install -yq --no-install-recommends \
-    libpng-dev \
-    libjpeg62-turbo-dev \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     libfreetype6-dev \
+    libjpeg-dev \
+    libpng-dev \
     libzip-dev \
     libicu-dev \
-    jpegoptim optipng pngquant gifsicle \
-    locales \
-    vim \
+    libwebp-dev \
     nano \
-    git \
-    curl \
-    wget \
-    unzip \
-    imagemagick \
-    ghostscript \
-    poppler-utils
+    procps
 
 RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - && \
     apt-get install -y nodejs \

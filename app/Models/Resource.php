@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Relations\BelongsToUser;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,6 +24,8 @@ use Jenssegers\Agent\Agent;
  */
 class Resource extends Model
 {
+    use HasFactory;
+
     use CausesActivity;
     use LogsActivity;
     use BelongsToUser;
@@ -325,7 +328,7 @@ class Resource extends Model
             })
             ->orderBy('rs.created_at', 'desc')
             ->groupBy('rs.id', 'rs.language', 'rs.title', 'rs.abstract', 'rs.created_at')
-            ->paginate(32);
+            ->paginate(30);
     }
 
     //Total resources based on level
@@ -455,7 +458,7 @@ class Resource extends Model
     public function getResourceTranslations($resourceId): Collection
     {
         return DB::table('resources AS rs')
-            ->select('rs.id', 'rs.language')
+            ->select('rs.id', 'rs.language', 'rs.title')
             ->where('rs.tnid', $resourceId)
             ->get();
     }
