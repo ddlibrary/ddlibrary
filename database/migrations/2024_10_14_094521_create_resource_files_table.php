@@ -13,17 +13,14 @@ return new class extends Migration
     {
         Schema::create('resource_files', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->index();
-            $table->uuid('uuid')->unique();
+            $table->string('label')->index();
             $table->unsignedInteger('taxonomy_term_data_id')->nullable(); // TaxonomyTerm Model - License
             $table->unsignedInteger('resource_id')->nullable();
-            $table->string('path', 500);
+            $table->string('name', 500);
             $table->string('height')->nullable();
             $table->string('width')->nullable();
             $table->string('size')->nullable();
             $table->string('language', 5)->nullable()->index();
-            $table->string('thumbnail_path', 500)->nullable();
-            
             $table->foreign('taxonomy_term_data_id')->references('id')->on('taxonomy_term_data');
             $table->foreign('resource_id')->references('id')->on('resources');
 
