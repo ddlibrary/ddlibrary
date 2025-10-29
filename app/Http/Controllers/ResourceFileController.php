@@ -40,8 +40,8 @@ class ResourceFileController extends Controller
             );
         }
         $file = $request->file('image');
-        $fileName = auth()->user()->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-        $path = 'resources/' . $fileName;
+        $filelabel = auth()->user()->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+        $path = 'resources/' . $filelabel;
 
         $fileSystemDisk = config('filesystems.default', 'local');
 
@@ -49,7 +49,7 @@ class ResourceFileController extends Controller
 
         $imagine = new Imagine();
         $image = $imagine->open($file->getRealPath());
-        $thumbnailPath = 'resources/thumbnails/' . $fileName;
+        $thumbnailPath = 'resources/thumbnails/' . $filelabel;
 
         $tempDirectory = sys_get_temp_dir() . '/resources/thumbnails';
 
@@ -57,9 +57,9 @@ class ResourceFileController extends Controller
             mkdir($tempDirectory, 0755, true);
         }
 
-        $image->resize(new Box(250, 250))->save($tempDirectory . '/' . $fileName);
+        $image->resize(new Box(250, 250))->save($tempDirectory . '/' . $filelabel);
 
-        Storage::disk($fileSystemDisk)->put('public/' . $thumbnailPath, file_get_contents($tempDirectory . '/' . $fileName));
+        Storage::disk($fileSystemDisk)->put('public/' . $thumbnailPath, file_get_contents($tempDirectory . '/' . $filelabel));
 
         $thumbnailFullPath = Storage::disk($fileSystemDisk)->url($thumbnailPath);
         $thumbnailFullPath = str_replace('/storage', '', $thumbnailFullPath);
@@ -68,11 +68,10 @@ class ResourceFileController extends Controller
         $fullPath = str_replace('/storage', '', $fullPath);
 
         $resourceFile = ResourceFile::create([
-            'name' => $request->image_name,
+            'label' => $request->image_name,
             'language' => $request->language,
             'taxonomy_term_data_id' => $request->taxonomy_term_data_id,
-            'path' => $fullPath,
-            'thumbnail_path' => $thumbnailFullPath,
+            'name' => $fullPath,
         ]);
 
         return response()->json([
@@ -88,14 +87,14 @@ class ResourceFileController extends Controller
     public function searchImages(ResourceFileRequest $request)
     {
         $query = ResourceFile::query()
-            ->select('id', 'name', 'thumbnail_path', 'path')
+            ->select('id', 'label', 'name')
             ->where(function ($query) use ($request) {
                 if ($request->subject_area_id) {
                     $resourceFileIds = DB::table('resource_subject_areas')->join('resources', 'resource_subject_areas.resource_id', '=', 'resources.id')->where('tid', $request->subject_area_id)->pluck('resource_file_id');
                     $query->whereIn('id', $resourceFileIds);
                 }
                 if ($request->search) {
-                    $query->where('name', 'like', "%{$request->search}%");
+                    $query->where('label', 'like', "%{$request->search}%");
                 }
             })
             ->where('language', $request->language);
