@@ -11,16 +11,7 @@ class ResourceFile extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['uuid', 'name', 'taxonomy_term_data_id', 'path', 'thumbnail_path', 'language', 'resource_id'];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->uuid = Str::uuid();
-        });
-    }
+    protected $fillable = ['label', 'taxonomy_term_data_id', 'name', 'language', 'resource_id'];
 
     public function resources(): HasMany
     {
