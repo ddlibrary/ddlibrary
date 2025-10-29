@@ -98,12 +98,12 @@
                         <strong>@lang('Image')</strong>
                         <span class="form-required" title="This field is required.">*</span>
                     </label>
-                    <div class="">
+                    <div>
                         <div class="flex-1">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="searchImages()"
                                 data-bs-target="#exampleModal" id="open-file-managers">@lang('Select or upload your image')
                             </button>
-                            <input type="" value="{{ @$resource->resourceFile->id }}" id="resource_file_id"
+                            <input type="hidden" value="{{ @$resource->resourceFile->id }}" id="resource_file_id"
                                 name="resource_file_id" required>
                         </div>
                     </div>
