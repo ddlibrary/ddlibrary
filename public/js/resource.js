@@ -82,8 +82,8 @@ function initializeImageSelection() {
 }
 
 
-function selectImage(uuid, url) {
-    $('#file_uuid').val(uuid);
+function selectImage(id, url) {
+    $('#file_id').val(id);
     displaySelectedImage(url);
     const resourceLists = document.querySelectorAll('.bg-success');
 
@@ -93,7 +93,7 @@ function selectImage(uuid, url) {
     });
 
     // Select the first element with the class 'first-class'
-    const firstElement = document.querySelector(`.image-${uuid}`);
+    const firstElement = document.querySelector(`.image-${id}`);
 
     // Check if the element exists and add the 'bg-success' class
     if (firstElement) {
