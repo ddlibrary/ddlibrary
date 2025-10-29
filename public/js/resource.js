@@ -83,7 +83,7 @@ function initializeImageSelection() {
 
 
 function selectImage(id, url) {
-    $('#file_id').val(id);
+    $('#resource_file_id').val(id);
     displaySelectedImage(url);
     const resourceLists = document.querySelectorAll('.bg-success');
 
