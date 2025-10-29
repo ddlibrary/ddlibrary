@@ -115,10 +115,9 @@
                 </div>
                 {{-- Selected Image Preview --}}
                 <div class="form-group col-6 mb-3">
-
                     <div id="selected-image-preview" class="flex-1 mt-1 border-radius-5 w-100"
-                        style="display: {{ @$resource->image ? 'block' : 'none' }};">
-                        <img id="preview-image" src="{{ @$resource->image }}" class="border-radius-5"
+                        style="display: {{ @$resource->resourceFile?->name ? 'block' : 'none' }};">
+                        <img id="preview-image" src="{{ @$resource->resourceFile?->name }}" class="border-radius-5"
                             style="max-height: 250px;" alt="Selected Image">
                     </div>
                 </div>
