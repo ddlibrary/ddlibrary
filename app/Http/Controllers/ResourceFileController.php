@@ -68,7 +68,6 @@ class ResourceFileController extends Controller
         $fullPath = str_replace('/storage', '', $fullPath);
 
         $resourceFile = ResourceFile::create([
-            'uuid' => Str::uuid(),
             'name' => $request->image_name,
             'language' => $request->language,
             'taxonomy_term_data_id' => $request->taxonomy_term_data_id,
@@ -78,7 +77,7 @@ class ResourceFileController extends Controller
 
         return response()->json([
             'success' => true,
-            'imageUuid' => $resourceFile->uuid,
+            'resource_file_id' => $resourceFile->id,
             'imageUrl' => $fullPath,
             'thumbnailUrl' => $thumbnailFullPath,
             'imageName' => $request->image_name,
@@ -89,7 +88,7 @@ class ResourceFileController extends Controller
     public function searchImages(ResourceFileRequest $request)
     {
         $query = ResourceFile::query()
-            ->select('uuid', 'name', 'thumbnail_path', 'path')
+            ->select('id', 'name', 'thumbnail_path', 'path')
             ->where(function ($query) use ($request) {
                 if ($request->subject_area_id) {
                     $resourceFileIds = DB::table('resource_subject_areas')->join('resources', 'resource_subject_areas.resource_id', '=', 'resources.id')->where('tid', $request->subject_area_id)->pluck('resource_file_id');
