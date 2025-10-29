@@ -2,13 +2,13 @@
     <div class="row g-2">
         @foreach ($files as $file)
             <div class="col-6 col-sm-4 col-md-3" data-id="{{ $file->id }}"
-                onclick="selectImage('{{ $file->id }}', '{{ $file->path }}')">
+                onclick="selectImage('{{ $file->id }}', '{{ $file->name }}')">
                 <div
                     class="position-relative border border-secondary rounded overflow-hidden w-100  h-100 image-{{ $file->id }}">
                     <div class="ratio ratio-1x1">
-                        <img src="{{ $file->thumbnail_path }}" alt="{{ $file->name }}" class="img-fluid">
+                        <img src="{{ $file->name }}" alt="{{ $file->label }}" class="img-fluid">
                     </div>
-                    <p class="text-center mb-0">{{ $file->name }}</p>
+                    <p class="text-center mb-0">{{ $file->label }}</p>
                 </div>
             </div>
         @endforeach
