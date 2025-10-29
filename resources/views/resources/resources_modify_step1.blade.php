@@ -103,8 +103,8 @@
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="searchImages()"
                                 data-bs-target="#exampleModal" id="open-file-managers">@lang('Select or upload your image')
                             </button>
-                            <input type="hidden" value="{{ @$resource->resourceFile->id }}" id="resource_file_id"
-                                name="image" required>
+                            <input type="" value="{{ @$resource->resourceFile->id }}" id="resource_file_id"
+                                name="resource_file_id" required>
                         </div>
                     </div>
                     @if ($errors->has('image'))
