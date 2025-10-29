@@ -271,7 +271,7 @@ class Resource extends Model
         }
 
         return DB::table('resources AS rs')
-            ->select('rs.id', 'rs.language', 'rs.abstract', 'rs.title', 'rs.status','rf.path')
+            ->select('rs.id', 'rs.language', 'rs.abstract', 'rs.title', 'rs.status','rf.name')
             ->leftjoin('resource_files AS rf', 'rf.id','=','rs.resource_file_id')
             ->when($subjectAreaIds != null, function ($query) use ($subjectAreaIds) {
                 return $query
@@ -392,7 +392,7 @@ class Resource extends Model
         }
 
         return DB::table('resources AS rs')
-            ->select('rs.id', 'rs.title', 'rs.abstract', 'rf.path')
+            ->select('rs.id', 'rs.title', 'rs.abstract', 'rf.name')
             ->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
             ->leftjoin('resource_files AS rf', 'rf.id','=','rs.resource_file_id')
             //not to include the record itself in the related items part
