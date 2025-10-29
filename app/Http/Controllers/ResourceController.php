@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TaxonomyVocabularyEnum;
-use App\Jobs\WatermarkPDF;
 use App\Mail\NewComment;
 use App\Models\Resource;
 use App\Models\ResourceAttachment;
@@ -35,14 +34,12 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -237,7 +234,7 @@ class ResourceController extends Controller
         DDLClearSession();
         $myResources = new Resource();
 
-        $resource = Resource::with('attachments','resourceFile:id,path,thumbnail_path')->findOrFail($resourceId);
+        $resource = Resource::with('attachments','resourceFile:id,name')->findOrFail($resourceId);
 
         if ($resource->status == 0 && ! (isAdmin() || isLibraryManager())) {  // We don't want anyone else to access unpublished resources
             abort(403);
@@ -845,7 +842,7 @@ class ResourceController extends Controller
 
         $resource = $request->session()->get('edit_resource_step_1');
         if ($resource == null) {
-            $resource = Resource::with(['authors:id,name', 'translators:id,name', 'publishers:id,name', 'resourceFile:id,uuid'])->findOrFail($resourceId);
+            $resource = Resource::with(['authors:id,name', 'translators:id,name', 'publishers:id,name', 'resourceFile:id,name'])->findOrFail($resourceId);
         }
         $edit = true;
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject);
@@ -864,18 +861,17 @@ class ResourceController extends Controller
             'translator' => 'string|nullable',
             'language' => 'required',
             'abstract' => 'required',
-            'image' => 'nullable'
+            'resource_file_id' => 'nullable'
         ]);
 
         $validatedData['id'] = $resourceId;
         $validatedData['status'] = $request->input('status');
-        if (isset($validatedData['image'])) {
-            $image = $validatedData['image'];
-            $resosurceFile = ResourceFile::where('uuid', $image)->first();
+        if (isset($validatedData['resource_file_id'])) {
+            $resourceFileId = $validatedData['resource_file_id'];
+            $resosurceFile = ResourceFile::find($resourceFileId);
 
             $validatedData['resource_image'] = $resosurceFile->path;
             $validatedData['resource_file_id'] = $resosurceFile->id;
-            unset($validatedData['image']);
 
         }
 
