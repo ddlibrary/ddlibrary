@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Models\Resource;
 use App\Models\ResourceFile;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ExtractResourceImageUrl extends Command
