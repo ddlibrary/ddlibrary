@@ -11,7 +11,7 @@ class ResourceFile extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['label', 'taxonomy_term_data_id', 'name', 'language', 'resource_id'];
+    protected $fillable = ['label', 'taxonomy_term_data_id', 'name', 'language', 'resource_id', 'height', 'width', 'size'];
 
     public function resources(): HasMany
     {
