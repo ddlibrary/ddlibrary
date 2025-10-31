@@ -41,17 +41,17 @@ class ResourceFileController extends Controller
         }
         $file = $request->file('image');
         $filelabel = auth()->user()->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-        $path = 'resources/' . $filelabel;
+        $path =  $filelabel;
 
         $fileSystemDisk = config('filesystems.default', 'local');
 
-        Storage::disk($fileSystemDisk)->put('public/' . $path, file_get_contents($file));
+        Storage::disk($fileSystemDisk)->put($path, file_get_contents($file));
 
         $imagine = new Imagine();
         $image = $imagine->open($file->getRealPath());
-        $thumbnailPath = 'resources/thumbnails/' . $filelabel;
+        $thumbnailPath = 'thumbnails/' . $filelabel;
 
-        $tempDirectory = sys_get_temp_dir() . '/resources/thumbnails';
+        $tempDirectory = sys_get_temp_dir() . '/thumbnails';
 
         if (!file_exists($tempDirectory)) {
             mkdir($tempDirectory, 0755, true);
@@ -59,13 +59,13 @@ class ResourceFileController extends Controller
 
         $image->resize(new Box(250, 250))->save($tempDirectory . '/' . $filelabel);
 
-        Storage::disk($fileSystemDisk)->put('public/' . $thumbnailPath, file_get_contents($tempDirectory . '/' . $filelabel));
+        Storage::disk($fileSystemDisk)->put($thumbnailPath, file_get_contents($tempDirectory . '/' . $filelabel));
 
         $thumbnailFullPath = Storage::disk($fileSystemDisk)->url($thumbnailPath);
         $thumbnailFullPath = str_replace('/storage', '', $thumbnailFullPath);
 
         $fullPath = Storage::disk($fileSystemDisk)->url($path);
-        $fullPath = str_replace('/storage', '', $fullPath);
+        $fullPath = str_replace('/storage/files/', '', $fullPath);
 
         $resourceFile = ResourceFile::create([
             'label' => $request->image_name,
@@ -77,8 +77,8 @@ class ResourceFileController extends Controller
         return response()->json([
             'success' => true,
             'resource_file_id' => $resourceFile->id,
-            'imageUrl' => $fullPath,
-            'thumbnailUrl' => $thumbnailFullPath,
+            'imageUrl' => '/storage/files/'.$fullPath,
+            'thumbnailUrl' => '/storage/files/thumbnails/'.$fullPath,
             'imageName' => $request->image_name,
             'message' => __('Image uploaded successfully'),
         ]);
