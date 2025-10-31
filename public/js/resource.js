@@ -170,7 +170,7 @@ function uploadNewImage() {
         },
         success: function(response) {
             if (response.success) {
-                $('#file_uuid').val(response.imageUuid);
+                $('#resource_file_id').val(response.resource_file_id);
                 displaySelectedImage(response.imageUrl);
 
                 // Clear the form
