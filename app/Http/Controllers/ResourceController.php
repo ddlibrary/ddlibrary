@@ -326,12 +326,6 @@ class ResourceController extends Controller
             'resource_file_id' => 'nullable|numeric',
         ]);
 
-        if (isset($validatedData['resource_file_id'])) {
-            $resource_file_id = $validatedData['resource_file_id'];
-            $resosurceFile = ResourceFile::where('id', $resource_file_id)->first();
-            $validatedData['resource_file_id'] = $resosurceFile->id;
-        }
-
         $request->session()->put('new_resource_step_1', $validatedData);
 
         return redirect('/resources/add/step2');
