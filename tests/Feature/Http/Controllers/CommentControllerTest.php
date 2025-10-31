@@ -94,7 +94,7 @@ class CommentControllerTest extends TestCase
         $user->roles()->attach(5);
         $comment = ResourceComment::factory()->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->get("en/admin/comments/delete/{$comment->id}");
+        $response = $this->actingAs($user)->get("en/admin/resources/comments/delete/{$comment->id}");
 
         $response->assertRedirect();
         $response->assertSessionHas('success');
@@ -135,13 +135,13 @@ class CommentControllerTest extends TestCase
         $comment = ResourceComment::factory()->create(['status' => 0]);
 
         // Test publishing the comment
-        $response = $this->actingAs($admin)->get("/en/admin/comments/published/{$comment->id}");
+        $response = $this->actingAs($admin)->get("/en/admin/resources/comments/published/{$comment->id}");
 
         $response->assertRedirect();
         $this->assertEquals(1, $comment->fresh()->status);
 
         // Test unpublishing the comment
-        $response = $this->actingAs($admin)->get("/en/admin/comments/published/{$comment->id}");
+        $response = $this->actingAs($admin)->get("/en/admin/resources/comments/published/{$comment->id}");
 
         $response->assertRedirect();
         $this->assertEquals(0, $comment->fresh()->status);
@@ -158,7 +158,7 @@ class CommentControllerTest extends TestCase
 
         $comment = ResourceComment::factory()->create();
 
-        $response = $this->actingAs($user)->get("/en/admin/comments/published/{$comment->id}");
+        $response = $this->actingAs($user)->get("/en/admin/resources/comments/published/{$comment->id}");
 
         $response->assertStatus(302);
     }
