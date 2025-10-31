@@ -43,12 +43,21 @@ class ResourceFileController extends Controller
         $filelabel = auth()->user()->id . '_' . time() . '.' . $file->getClientOriginalExtension();
         $path =  $filelabel;
 
+
         $fileSystemDisk = config('filesystems.default', 'local');
 
         Storage::disk($fileSystemDisk)->put($path, file_get_contents($file));
 
         $imagine = new Imagine();
         $image = $imagine->open($file->getRealPath());
+
+        // Get dimensions
+        $width = $image->getSize()->getWidth();
+        $height = $image->getSize()->getHeight();
+
+        // Get file size
+        $size = round($file->getSize() / 1024); // Get with KB
+
         $thumbnailPath = 'thumbnails/' . $filelabel;
 
         $tempDirectory = sys_get_temp_dir() . '/thumbnails';
@@ -72,6 +81,9 @@ class ResourceFileController extends Controller
             'language' => $request->language,
             'taxonomy_term_data_id' => $request->taxonomy_term_data_id,
             'name' => $fullPath,
+            'height' => $height,
+            'width' => $width,
+            'size' => $size
         ]);
 
         return response()->json([
