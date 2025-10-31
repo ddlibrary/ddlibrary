@@ -23,9 +23,7 @@
     <hr class="sidebar-divider my-0">
 
     @php
-        function isActive($segment, $expected) {
-            return $segment == $expected ? 'active-item' : '';
-        }
+        
 
         $segments = [
             request()->segment(3),
