@@ -636,3 +636,7 @@ if (! function_exists('watermark_pdf')) {
         return $pdf->Output('S');  // S: return the document as a string.
     }
 }
+
+function isActive($segment, $expected) {
+    return $segment == $expected ? 'active-item' : '';
+}

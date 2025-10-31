@@ -30,7 +30,7 @@ class ResourceControllerTest extends TestCase
         $admin->roles()->attach(5);
         $this->actingAs($admin);
 
-        $response = $this->get('en/admin/resources');
+        $response = $this->get('en/admin/resources/index');
 
         $response->assertOk();
         $response->assertViewIs('admin.resources.resources');
@@ -275,9 +275,11 @@ class ResourceControllerTest extends TestCase
     {
         $this->refreshApplicationWithLocale('en');
 
-        $resource = Resource::factory()->create();
+        Resource::factory()->create();
 
-        $response = $this->get('en/resource/view/999/invalid-key');
+        $key = encrypt(time());
+
+        $response = $this->get("en/resource/view/999/$key");
 
         $response->assertNotFound();
     }
@@ -566,9 +568,11 @@ class ResourceControllerTest extends TestCase
     {
         $this->refreshApplicationWithLocale('en');
 
-        $resource = Resource::factory()->create();
+        Resource::factory()->create();
 
-        $response = $this->get('en/resource/view/999/invalid-key');
+        $key = encrypt(time());
+
+        $response = $this->get("en/resource/view/999/$key");
 
         $response->assertNotFound();
     }

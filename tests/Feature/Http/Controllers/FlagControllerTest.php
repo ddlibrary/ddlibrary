@@ -26,7 +26,7 @@ class FlagControllerTest extends TestCase
         $admin->roles()->attach(5);
         
         ResourceFlag::factory()->count(15)->create();
-        $response = $this->actingAs($admin)->get(url("en/admin/flags"));
+        $response = $this->actingAs($admin)->get(url("en/admin/resources/flags"));
         
         $response->assertOk();
         $response->assertViewIs('admin.flags.flags_list');

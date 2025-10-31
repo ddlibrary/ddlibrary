@@ -72,7 +72,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('admin/user/delete/{userId}', [UserController::class, 'deleteUser'])->middleware('admin');
     Route::get('admin/user/export', [UserController::class, 'exportUsers'])->middleware('admin');
     //Resources
-    Route::get('admin/resources', [ResourceController::class, 'index'])->middleware('auth');
+    Route::get('admin/resources/index', [ResourceController::class, 'index'])->middleware('auth');
     Route::post('admin/resources', [ResourceController::class, 'index'])->name('resources')->middleware('admin');
     Route::get('resources/list', [ResourceController::class, 'list'])->name('resourceList');
     Route::get('resources/filter', [ResourceController::class, 'resourceFilter'])->name('resourceFilter');
@@ -117,7 +117,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('admin/reports/resources/subjects', [ReportController::class, 'resourceSubjectReport'])->middleware('admin');
     Route::get('admin/reports/languages', [ReportController::class, 'resourceLanguageReport'])->middleware('admin');
     //Downloads
-    Route::get('admin/reports/downloads', [DownloadController::class, 'index'])->middleware('admin');
+    Route::get('admin/analytics/reports/downloads', [DownloadController::class, 'index'])->middleware('admin');
     Route::post('admin/reports/downloads', [DownloadController::class, 'index'])->name('downloads')->middleware('admin');
     Route::get('/about-education-afghanistan', function () {
         return redirect('page/22');
@@ -188,14 +188,14 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::resource('subscribers', SubscriberController::class)->only('index', 'destroy');
 
         //Comments
-        Route::prefix('comments')->controller(CommentController::class)->group(function(){
+        Route::prefix('resources/comments')->controller(CommentController::class)->group(function(){
             Route::get('/', 'index');
             Route::get('delete/{resourceComment}', 'delete');
             Route::get('published/{resourceComment}', 'published')->middleware('admin');
         });
 
         //Flags
-        Route::get('flags', [FlagController::class, 'index']);
+        Route::get('resources/flags', [FlagController::class, 'index']);
         //Taxonomy
         Route::get('taxonomy', [TaxonomyController::class, 'index'])->name('gettaxonomylist');
         Route::post('taxonomy', [TaxonomyController::class, 'index'])->name('posttaxonomylist');
