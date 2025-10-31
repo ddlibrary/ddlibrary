@@ -635,4 +635,19 @@ if (! function_exists('watermark_pdf')) {
 
         return $pdf->Output('S');  // S: return the document as a string.
     }
+
+
+    if (!function_exists('getResourceImage')) {
+        function getResourceImage($image, $isThumbnail = false)
+        {
+            if (strpos($image, '/') !== false) {
+                return $image;
+            }
+
+            if ($isThumbnail) {
+                return "/storage/files/thumbnails/$image";
+            }
+            return "/storage/files/$image";
+        }
+    }
 }
