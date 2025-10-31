@@ -30,7 +30,7 @@ class ResourceControllerTest extends TestCase
         $admin->roles()->attach(5);
         $this->actingAs($admin);
 
-        $response = $this->get('en/admin/resources');
+        $response = $this->get('en/admin/resources/index');
 
         $response->assertOk();
         $response->assertViewIs('admin.resources.resources');
