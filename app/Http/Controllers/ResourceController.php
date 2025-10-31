@@ -856,12 +856,6 @@ class ResourceController extends Controller
 
         $validatedData['id'] = $resourceId;
         $validatedData['status'] = $request->input('status');
-        if (isset($validatedData['resource_file_id'])) {
-            $resourceFileId = $validatedData['resource_file_id'];
-            $resosurceFile = ResourceFile::find($resourceFileId);
-            $validatedData['resource_file_id'] = $resosurceFile->id;
-
-        }
 
         $request->session()->put('edit_resource_step_1', $validatedData);
 
