@@ -323,17 +323,13 @@ class ResourceController extends Controller
             'translator' => 'string|nullable',
             'language' => 'required',
             'abstract' => 'required',
-            'image' => 'nullable|string',
+            'resource_file_id' => 'nullable|numeric',
         ]);
 
-        if (isset($validatedData['image'])) {
-            $image = $validatedData['image'];
-            $resosurceFile = ResourceFile::where('uuid', $image)->first();
-
-            $validatedData['resource_image'] = $resosurceFile->path;
+        if (isset($validatedData['resource_file_id'])) {
+            $resource_file_id = $validatedData['resource_file_id'];
+            $resosurceFile = ResourceFile::where('id', $resource_file_id)->first();
             $validatedData['resource_file_id'] = $resosurceFile->id;
-            unset($validatedData['image']);
-
         }
 
         $request->session()->put('new_resource_step_1', $validatedData);
@@ -869,8 +865,6 @@ class ResourceController extends Controller
         if (isset($validatedData['resource_file_id'])) {
             $resourceFileId = $validatedData['resource_file_id'];
             $resosurceFile = ResourceFile::find($resourceFileId);
-
-            $validatedData['resource_image'] = $resosurceFile->path;
             $validatedData['resource_file_id'] = $resosurceFile->id;
 
         }
