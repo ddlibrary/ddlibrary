@@ -26,7 +26,7 @@ class DownloadControllerTest extends TestCase
         $admin = User::factory()->create();
         $admin->roles()->attach(5);
 
-        $response = $this->actingAs($admin)->get(url('en/admin/reports/downloads'));
+        $response = $this->actingAs($admin)->get(url('en/admin/analytics/reports/downloads'));
 
         $response->assertOk();
         $response->assertViewIs('admin.downloads.download_list');
@@ -36,15 +36,11 @@ class DownloadControllerTest extends TestCase
         $response->assertViewHas('languages');
     }
 
-
-
-
-
     public function test_unauthorized_user_cannot_access_downloads()
     {
         $this->refreshApplicationWithLocale('en');
 
-        $response = $this->get(url('en/admin/reports/downloads'));
+        $response = $this->get(url('en/admin/analytics/reports/downloads'));
 
         $response->assertRedirect(url('login'));
     }
@@ -55,7 +51,7 @@ class DownloadControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get(url('en/admin/reports/downloads'));
+        $response = $this->actingAs($user)->get(url('en/admin/analytics/reports/downloads'));
 
         $response->assertStatus(302);
     }
