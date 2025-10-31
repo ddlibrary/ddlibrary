@@ -7,6 +7,7 @@ use App\Models\TaxonomyTerm;
 use App\Models\TaxonomyVocabulary;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class TaxonomyController extends Controller
@@ -75,6 +76,15 @@ class TaxonomyController extends Controller
         $parentid = $request->input('parent');
 
         $parent = TaxonomyHierarchy::firstOrNew(['tid' => $tid], ['parent' => $parentid]);
+
+        if(!isset($parent->id)){
+            $latestId = DB::table('taxonomy_term_hierarchy')->max('aux_id');
+            $THID = $latestId ? $latestId + 1 : 1;
+        }else{
+            $THID = $parent->id; // taxonomy_term_hierarchy.id
+        }
+
+        $parent->id = $THID;
         $parent->tid = $tid;
         $parent->parent = $parentid;
         $parent->save();
@@ -174,18 +184,20 @@ class TaxonomyController extends Controller
         ]);
 
         //Saving contact info to the database
-        $term = new TaxonomyTerm;
-        $term->vid = $request->input('vid');
-        $term->name = $request->input('name');
-        $term->weight = $request->input('weight');
-        $term->language = $request->input('language');
-        $term->tnid = $tnid;
-        $term->save();
+        $term = TaxonomyTerm::create([
+            'vid' => $request->input('vid'),
+            'name' => $request->input('name'),
+            'weight' => $request->input('weight'),
+            'language' => $request->input('language'),
+            'tnid' => $tnid
+        ]);
 
-        $parent = new TaxonomyHierarchy();
-        $parent->tid = $term->id;
-        $parent->parent = $request->input('parent');
-        $parent->save();
+        TaxonomyHierarchy::insert([
+            'id' => (int)(TaxonomyHierarchy::latest()->value('id') + 1),
+            'tid' => $term->id,
+            'parent' => $request->input('parent') ? $request->input('parent') : 0,
+            'aux_id' => $request->input('aux_id') ? $request->input('aux_id') : $term->id,
+        ]);
 
         return redirect('/admin/taxonomy')->with('success', 'Taxonomy item added successfully!');
     }

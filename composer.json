@@ -20,9 +20,10 @@
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.15",
         "laravel/tinker": "^2.8",
-        "laravel/ui": "^4.5",
+        "laravel/ui": "^4.6",
         "league/flysystem-aws-s3-v3": "^3.28",
         "mcamara/laravel-localization": "^1.8",
+        "predis/predis": "^2.3",
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.6",
         "spatie/laravel-activitylog": "^4.8",
@@ -37,7 +38,9 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
         "phpunit/phpunit": "^10.1",
-        "spatie/laravel-ignition": "^2.0"
+        "spatie/laravel-ignition": "^2.0",
+        "jasonmccreary/laravel-test-assertions": "^2.4",
+        "laravel-shift/factory-generator": "^2.0"
     },
     "autoload": {
         "files": [

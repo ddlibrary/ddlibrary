@@ -1,8 +1,10 @@
 /node_modules
 /public/css
+/public/fonts
 /public/js
 /public/hot
 /public/storage
+/public/images
 /storage
 /vendor
 /.idea
@@ -20,3 +22,4 @@ composer.lock
 /.phpstorm.meta.php
 /_ide_helper.php
 /_ide_helper_models.php
+.phpunit.result.cache

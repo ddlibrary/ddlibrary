@@ -9,10 +9,8 @@
 {{ asset('storage/files/logo-dd.png') }}
 @endsection
 @section('content')
-<section class="general-content">
-    <header>
-        <h1>{{ $page->title }}</h1>
-    </header>
+<div class="container my-3" style="background-color: #ffffff;">
+    <h2 class="pt-3">{{ $page->title }}</h2>
     <article>
         {!! fixImage($page->body, $page->id) !!}
     </article>
@@ -20,5 +18,5 @@
     <a href="{{ URL::to('page/edit/'.$page->id) }}">Edit</a>
     <a href="{{ URL::to('page/translate/'.$page->id.'/'.$page->tnid) }}">Translate</a>
     @endif
-</section>
-@endsection 
+</div>
+@endsection
