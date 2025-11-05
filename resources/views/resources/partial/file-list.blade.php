@@ -2,7 +2,7 @@
     <div class="row g-2">
         @foreach ($files as $file)
             @php
-                $fileName = getResourceImage($file->name);
+                $fileName = getResourceImage($file->name, true);
             @endphp
             <div class="col-6 col-sm-4 col-md-3" data-id="{{ $file->id }}"
                 onclick="selectImage('{{ $file->id }}', '{{ $fileName }}')">

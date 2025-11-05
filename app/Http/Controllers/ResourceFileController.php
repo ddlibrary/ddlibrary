@@ -13,6 +13,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
+use Illuminate\Support\Arr;
 
 class ResourceFileController extends Controller
 {
@@ -41,12 +42,10 @@ class ResourceFileController extends Controller
         }
         $file = $request->file('image');
         $filelabel = auth()->user()->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-        $path =  $filelabel;
+        $path = $filelabel; // relative to the public disk root (storage/app/public/files)
 
-
-        $fileSystemDisk = config('filesystems.default', 'local');
-
-        Storage::disk($fileSystemDisk)->put('public/files/'.$path, file_get_contents($file));
+        // Save original image under public disk root
+        Storage::disk('public')->put($path, file_get_contents($file));
 
         $imagine = new Imagine();
         $image = $imagine->open($file->getRealPath());
@@ -68,27 +67,29 @@ class ResourceFileController extends Controller
 
         $image->resize(new Box(250, 250))->save($tempDirectory . '/' . $filelabel);
 
-        Storage::disk($fileSystemDisk)->put('public/files/'.$thumbnailPath, file_get_contents($tempDirectory . '/' . $filelabel));
-
-        $fullPath = Storage::disk($fileSystemDisk)->url($path);
-        $fullPath = str_replace('/storage/', '', $fullPath);
+        Storage::disk('public')->put($thumbnailPath, file_get_contents($tempDirectory . '/' . $filelabel));
 
         $resourceFile = ResourceFile::create([
-            'label' => $request->image_name,
-            'language' => $request->language,
+            'label' => $request->image_name ?: pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+            'language' => $request->language ?: config('app.locale'),
             'taxonomy_term_data_id' => $request->taxonomy_term_data_id,
-            'name' => $fullPath,
+            'name' => $path,
             'height' => $height,
             'width' => $width,
-            'size' => $size
+            'size' => $size,
         ]);
+
+        // Cleanup temporary thumbnail file
+        $tempThumbFile = $tempDirectory . '/' . $filelabel;
+        if (file_exists($tempThumbFile)) {
+            @unlink($tempThumbFile);
+        }
 
         return response()->json([
             'success' => true,
             'resource_file_id' => $resourceFile->id,
-            'imageUrl' => '/storage/files/'.$fullPath,
-            'thumbnailUrl' => '/storage/files/thumbnails/'.$fullPath,
-            'imageName' => $request->image_name,
+            'imageUrl' => Storage::disk('public')->url($thumbnailPath),
+            'imageName' => $resourceFile->label,
             'message' => __('Image uploaded successfully'),
         ]);
     }
@@ -98,18 +99,23 @@ class ResourceFileController extends Controller
         $query = ResourceFile::query()
             ->select('id', 'label', 'name')
             ->where(function ($query) use ($request) {
-                if ($request->subject_area_id) {
-                    $resourceFileIds = DB::table('resource_subject_areas')->join('resources', 'resource_subject_areas.resource_id', '=', 'resources.id')->where('tid', $request->subject_area_id)->pluck('resource_file_id');
+                $subjectAreaId = $request->input('subject_area_id');
+                $search = $request->input('search');
+                if ($subjectAreaId) {
+                    $resourceFileIds = DB::table('resource_subject_areas')
+                        ->join('resources', 'resource_subject_areas.resource_id', '=', 'resources.id')
+                        ->where('tid', $subjectAreaId)
+                        ->pluck('resource_file_id');
                     $query->whereIn('id', $resourceFileIds);
                 }
-                if ($request->search) {
-                    $query->where('label', 'like', "%{$request->search}%");
+                if (!empty($search)) {
+                    $query->where('label', 'like', "%{$search}%");
                 }
             })
             ->where('language', $request->language);
 
         $count = $query->count();
-        $files = $query->orderByDesc('created_at')->paginate(16)->appends($request->except('page'));
+        $files = $query->orderByDesc('created_at')->paginate(16)->appends(Arr::except($request->all(), ['page']));
 
 
         return view('resources.partial.file-list', compact('count', 'files'));

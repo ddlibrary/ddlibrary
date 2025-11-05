@@ -19,7 +19,7 @@
                 @foreach ($resources->unique('id') AS $resource)
                     @if ($resource->status)
                         <div class="card resource-card col-8 col-md-4 col-xl-3 col-xxl-2 m-1 p-0">
-                            <img class="card-img-top lazyload" data-src="{{ $resource->name ? getResourceImage($resource->name) : getImagefromResource($resource->abstract, '282x254') }}" alt="Resource image" src="">
+                            <img class="card-img-top lazyload" data-src="{{ $resource->name ? getResourceImage($resource->name, true) : getImagefromResource($resource->abstract, '282x254') }}" alt="Resource image" src="">
                             <div class="card-body" style="padding: 0.75rem;">
                                 <p class="card-text">{{ $resource->title }}</p>
                             </div>
