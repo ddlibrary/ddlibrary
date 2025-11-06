@@ -128,10 +128,6 @@ class ExtractResourceImageUrl extends Command
     }
 
     function getFileName($url){
-        if (strpos($url, "https://library.darakhtdanesh.org/storage/files/") !== false) {
-            return str_replace("https://library.darakhtdanesh.org/storage/files/", '', $url);
-        }
-
-        return $url;
+        return str_replace("https://library.darakhtdanesh.org/storage/files/", '', $url);
     }
 }
