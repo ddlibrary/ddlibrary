@@ -6,6 +6,7 @@ use App\Models\Resource;
 use App\Models\ResourceFile;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
+use Imagine\Gd\Imagine;
 
 class ExtractResourceImageUrl extends Command
 {
@@ -28,9 +29,11 @@ class ExtractResourceImageUrl extends Command
      */
     public function handle()
     {
-        $resources = Resource::select('id', 'abstract', 'title', 'language')->get();
-        $baseUrl = config('app.url', 'https://library.darakhtdanesh.org');;
-        
+        $resources = Resource::whereNull('resource_file_id')
+            ->select('id', 'abstract', 'title', 'language', 'resource_file_id')
+            ->get();
+        $baseUrl = config('app.url', 'https://library.darakhtdanesh.org');
+
         foreach ($resources as $resource) {
             $defaultImage = $baseUrl . Storage::get('files/placeholder_image.png');
             preg_match('/src=["\']([^"\']+)["\']/', $resource->abstract, $matches);
@@ -58,14 +61,50 @@ class ExtractResourceImageUrl extends Command
                 }
             }
 
+            // Get image dimensions using Imagine
+            $width = null;
+            $height = null;
+
+            if (!strpos($defaultImage, 'library.darakhtdanesh.org')) {
+              $defaultImage = "https://library.darakhtdanesh.org/$defaultImage";
+            }
+
+            $imagine = new Imagine();
+                try {
+                    $image = $imagine->open($defaultImage);
+                    $size = $image->getSize();
+                    $width = $size->getWidth();
+                    $height = $size->getHeight();
+                } catch (\Throwable $e) {
+                    // If the image cannot be opened, skip this resource
+                    continue;
+                }
+
             $resourceFile = ResourceFile::create([
                 'label' => $resource->title ? $resource->title : 'no title',
                 'name' => $defaultImage,
                 'language' => $resource->language,
-                'resource_id' => $resource->id
+                'resource_id' => $resource->id,
+                'width' => $width,
+                'height' => $height,
             ]);
 
             $resource->update(['resource_file_id' => $resourceFile->id]);
         }
     }
+
+    function checkImageExists($url) {
+    // Encode the URL to handle spaces and special characters
+    $encodedUrl = str_replace(' ', '%20', $url);
+    
+    // Use get_headers to check if the image exists
+    $headers = @get_headers($encodedUrl);
+    
+    // Check if the response is 200 OK
+    if (is_array($headers) && strpos($headers[0], '200') !== false) {
+        return true; // Image exists
+    }
+
+    return false; // Image does not exist
+}
 }
