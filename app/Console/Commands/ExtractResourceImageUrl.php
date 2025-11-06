@@ -29,13 +29,12 @@ class ExtractResourceImageUrl extends Command
      */
     public function handle()
     {
-        $resources = Resource::whereNull('resource_file_id')
-            ->select('id', 'abstract', 'title', 'language', 'resource_file_id')
-            ->get();
+        $resources = Resource::select('id', 'abstract', 'title', 'language', 'resource_file_id')->whereNull('resource_file_id')->get();
+
         $baseUrl = config('app.url', 'https://library.darakhtdanesh.org');
 
         foreach ($resources as $resource) {
-            $defaultImage = $baseUrl . Storage::get('files/placeholder_image.png');
+            $defaultImage = $baseUrl . Storage::url('files/placeholder_image.png');
             preg_match('/src=["\']([^"\']+)["\']/', $resource->abstract, $matches);
 
             if (!empty($matches[1])) {
@@ -49,8 +48,7 @@ class ExtractResourceImageUrl extends Command
                     // Check if the image URL is relative or not
                     if (strpos($absStr, 'http') !== 0) {
                         // It's a relative URL, prepend the base URL
-                        $imageName = basename($absStr); // Get the image name from the URL
-
+                        $imageName = basename($absStr);
                         if ($imageName) {
                             $defaultImage = $baseUrl . Storage::disk('public')->url($imageName);
                         }
@@ -61,27 +59,42 @@ class ExtractResourceImageUrl extends Command
                 }
             }
 
+            // Ensure the default image uses the correct base URL
+            if (!strpos($defaultImage, 'darakhtdanesh.org')) {
+                $defaultImage = "https://library.darakhtdanesh.org/$defaultImage";
+            } else {
+                $defaultImage = $this->replaceUrl($defaultImage);
+            }
+
             // Get image dimensions using Imagine
             $width = null;
             $height = null;
 
-            if (!strpos($defaultImage, 'library.darakhtdanesh.org')) {
-              $defaultImage = "https://library.darakhtdanesh.org/$defaultImage";
-            }
-
             $imagine = new Imagine();
+            try {
+                $image = $imagine->open($defaultImage);
+                $size = $image->getSize();
+                $width = $size->getWidth();
+                $height = $size->getHeight();
+            } catch (\Throwable $e) {
+                // If the image cannot be opened, use the default image
                 try {
-                    $image = $imagine->open($defaultImage);
+                    $image = $imagine->open($baseUrl . Storage::url('files/placeholder_image.png'));
                     $size = $image->getSize();
                     $width = $size->getWidth();
                     $height = $size->getHeight();
+                    $defaultImage = 'placeholder_image.png';
                 } catch (\Throwable $e) {
-                    // If the image cannot be opened, skip this resource
+                    // If the default image cannot be opened, skip this resource
+                    info('Default image also could not be opened for resource ID: ' . $resource->id);
+                    info($e);
                     continue;
                 }
+            }
 
+            // Create the resource file
             $resourceFile = ResourceFile::create([
-                'label' => $resource->title ? $resource->title : 'no title',
+                'label' => $resource->title ?: 'no title',
                 'name' => $defaultImage,
                 'language' => $resource->language,
                 'resource_id' => $resource->id,
@@ -89,22 +102,24 @@ class ExtractResourceImageUrl extends Command
                 'height' => $height,
             ]);
 
+            // Update the resource with the new resource_file_id
             $resource->update(['resource_file_id' => $resourceFile->id]);
         }
     }
 
-    function checkImageExists($url) {
-    // Encode the URL to handle spaces and special characters
-    $encodedUrl = str_replace(' ', '%20', $url);
-    
-    // Use get_headers to check if the image exists
-    $headers = @get_headers($encodedUrl);
-    
-    // Check if the response is 200 OK
-    if (is_array($headers) && strpos($headers[0], '200') !== false) {
-        return true; // Image exists
-    }
+    function replaceUrl($url)
+    {
+        // Define the patterns to check against
+        $patterns = ['https://www.darakhtdanesh.org/laravel-filemanager/app/public', 'https://darakhtdanesh.org/laravel-filemanager/app/public'];
 
-    return false; // Image does not exist
-}
+        // Check if the URL contains any of the specified substrings
+        foreach ($patterns as $pattern) {
+            if (strpos($url, $pattern) !== false) {
+                return str_replace($pattern, 'https://library.darakhtdanesh.org/storage/files/', $url);
+            }
+        }
+
+        // Return the original URL if no patterns are matched
+        return $url;
+    }
 }
