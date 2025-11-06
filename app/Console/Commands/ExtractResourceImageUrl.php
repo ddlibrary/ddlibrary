@@ -34,7 +34,7 @@ class ExtractResourceImageUrl extends Command
         $baseUrl = config('app.url', 'https://library.darakhtdanesh.org');
 
         foreach ($resources as $resource) {
-            $defaultImage = $baseUrl . Storage::url('files/placeholder_image.png');
+            $defaultImage = 'placeholder_image.png';
             preg_match('/src=["\']([^"\']+)["\']/', $resource->abstract, $matches);
 
             if (!empty($matches[1])) {
@@ -119,7 +119,6 @@ class ExtractResourceImageUrl extends Command
             }
         }
 
-        // Return the original URL if no patterns are matched
         return $url;
     }
 }
