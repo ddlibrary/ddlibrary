@@ -34,6 +34,9 @@ class ExtractResourceImageUrl extends Command
         $baseUrl = config('app.url', 'https://library.darakhtdanesh.org');
 
         foreach ($resources as $resource) {
+            // Add console output for the current resource
+            $this->info('Processing resource: ID ' . $resource->id . ', Title: ' . $resource->title);
+
             $defaultImage = 'placeholder_image.png';
             preg_match('/src=["\']([^"\']+)["\']/', $resource->abstract, $matches);
 
@@ -84,18 +87,20 @@ class ExtractResourceImageUrl extends Command
                     $width = $size->getWidth();
                     $height = $size->getHeight();
                     $defaultImage = 'placeholder_image.png';
+                    $this->info('Getting error with resource: ID ' . $resource->id . ', Title: ' . $resource->title. ' '.$e. ' But do not worry we are using default placeholder image');
                 } catch (\Throwable $e) {
                     // If the default image cannot be opened, skip this resource
-                    info('Default image also could not be opened for resource ID: ' . $resource->id);
-                    info($e);
+                    $this->info('Default image also could not be opened for resource ID: ' . $resource->id . ' ' . $e);
+
                     continue;
                 }
             }
 
             // Create the resource file
+            
             $resourceFile = ResourceFile::create([
                 'label' => $resource->title ?: 'no title',
-                'name' => $defaultImage,
+                'name' => $this->getFileName($defaultImage),
                 'language' => $resource->language,
                 'resource_id' => $resource->id,
                 'width' => $width,
@@ -110,13 +115,21 @@ class ExtractResourceImageUrl extends Command
     function replaceUrl($url)
     {
         // Define the patterns to check against
-        $patterns = ['https://www.darakhtdanesh.org/laravel-filemanager/app/public', 'https://darakhtdanesh.org/laravel-filemanager/app/public'];
+        $patterns = ['https://www.darakhtdanesh.org/laravel-filemanager/app/public', 'https://darakhtdanesh.org/laravel-filemanager/app/public', ''];
 
         // Check if the URL contains any of the specified substrings
         foreach ($patterns as $pattern) {
             if (strpos($url, $pattern) !== false) {
-                return str_replace($pattern, 'https://library.darakhtdanesh.org/storage/files/', $url);
+                return str_replace($pattern, '', $url);
             }
+        }
+
+        return $url;
+    }
+
+    function getFileName($url){
+        if (strpos($url, "https://library.darakhtdanesh.org/storage/files/") !== false) {
+            return str_replace("https://library.darakhtdanesh.org/storage/files/", '', $url);
         }
 
         return $url;
