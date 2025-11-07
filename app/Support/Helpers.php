@@ -645,8 +645,12 @@ if (! function_exists('watermark_pdf')) {
             }
 
             if ($isThumbnail) {
-                return Storage::disk('public')->url("thumbnails/$image");
+                $thumbnailPath = "thumbnails/$image";
+                if (Storage::disk('public')->exists($thumbnailPath)) {
+                    return Storage::disk('public')->url($thumbnailPath);
+                }
             }
+
             return Storage::disk('public')->url($image);
         }
     }
