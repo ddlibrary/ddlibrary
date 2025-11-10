@@ -29,9 +29,9 @@ class ExtractResourceImageUrl extends Command
      */
     public function handle()
     {
-        $resources = Resource::select('id', 'abstract', 'title', 'language', 'resource_file_id')->whereNull('resource_file_id')->get();
-
-        $baseUrl = config('app.url', 'https://library.darakhtdanesh.org');
+        $resources = Resource::select('id', 'abstract', 'title', 'language', 'resource_file_id')
+            ->whereNotNull('resource_file_id')
+            ->get();
 
         foreach ($resources as $resource) {
             // Add console output for the current resource
@@ -44,7 +44,7 @@ class ExtractResourceImageUrl extends Command
                 $absStr = $matches[1];
 
                 // Replace the old URL if found
-                $absStr = str_replace('https://darakhtdanesh.org/public', $baseUrl, $absStr);
+                $absStr = str_replace('https://darakhtdanesh.org/public', '', $absStr);
 
                 // Skip if the URL contains 'youtube'
                 if (strpos($absStr, 'youtube') === false) {
@@ -53,7 +53,7 @@ class ExtractResourceImageUrl extends Command
                         // It's a relative URL, prepend the base URL
                         $imageName = basename($absStr);
                         if ($imageName) {
-                            $defaultImage = $baseUrl . Storage::disk('public')->url($imageName);
+                            $defaultImage = $imageName;
                         }
                     } else {
                         // If it starts with 'http', use it directly
@@ -61,46 +61,12 @@ class ExtractResourceImageUrl extends Command
                     }
                 }
             }
-
-            // Ensure the default image uses the correct base URL
-            if (!strpos($defaultImage, 'darakhtdanesh.org')) {
-                $defaultImage = "https://library.darakhtdanesh.org/$defaultImage";
-            } else {
-                $defaultImage = $this->replaceUrl($defaultImage);
-            }
-
-            // Get image dimensions using Imagine
-            $width = null;
-            $height = null;
-
-            $imagine = new Imagine();
-            try {
-                $image = $imagine->open($defaultImage);
-                $size = $image->getSize();
-                $width = $size->getWidth();
-                $height = $size->getHeight();
-            } catch (\Throwable $e) {
-                // If the image cannot be opened, use the default image
-                try {
-                    $image = $imagine->open($baseUrl . Storage::url('files/placeholder_image.png'));
-                    $size = $image->getSize();
-                    $width = $size->getWidth();
-                    $height = $size->getHeight();
-                    $defaultImage = 'placeholder_image.png';
-                    $this->info('Getting error with resource: ID ' . $resource->id . ', Title: ' . $resource->title. ' '.$e. ' But do not worry we are using default placeholder image');
-                } catch (\Throwable $e) {
-                    // If the default image cannot be opened, skip this resource
-                    $this->info('Default image also could not be opened for resource ID: ' . $resource->id . ' ' . $e);
-
-                    continue;
-                }
-            }
+           
 
             // Create the resource file
-            
             $resourceFile = ResourceFile::create([
                 'label' => $resource->title ?: 'no title',
-                'name' => $this->getFileName($defaultImage),
+                'name' => $this->replaceUrl($defaultImage),
                 'language' => $resource->language,
                 'resource_id' => $resource->id,
                 'width' => $width,
@@ -114,20 +80,40 @@ class ExtractResourceImageUrl extends Command
 
     function replaceUrl($url)
     {
-        // Define the patterns to check against
-        $patterns = ['https://www.darakhtdanesh.org/laravel-filemanager/app/public', 'https://darakhtdanesh.org/laravel-filemanager/app/public', ''];
+        if (strpos($url, 'http://darakhtdanesh.org/modules/file/') !== false || strpos($url, 'C:\\Users') !== false) {
+            return 'placeholder_image.png';
+        }
 
-        // Check if the URL contains any of the specified substrings
+        // Define the patterns to check against
+        $patterns = [
+            'https://www.darakhtdanesh.org/laravel-filemanager/app/public/files/',
+            'https://darakhtdanesh.org/laravel-filemanager/app/public/files/',
+            'https://www.darakhtdanesh.org/laravel-filemanager/app/public/',
+            'https://darakhtdanesh.org/storage/files/././', 
+            'https://darakhtdanesh.org/storage/files/./',
+            'https://darakhtdanesh.org/storage/files/',
+            'https://library.darakhtdanesh.org/storage/files/./',
+            'https://library.darakhtdanesh.org/storage/files/',
+            'https://www.ddl.af/laravel-filemanager/app/public/files/',
+            'https://ddl.af/laravel-filemanager/app/public/files/',
+            'https://ddl.af/laravel-filemanager/app/public/', 
+            'https://darakhtdanesh.org/laravel-filemanager/app/public/', 
+            'https://library.darakhtdanesh.org/', 
+            'storage/files/',
+            'https://darakhtdanesh.org/',
+            'files/', 
+            '/'
+        ];
+
+        // Check if the URL contains any of the specified patterns
         foreach ($patterns as $pattern) {
+            // Use rtrim to ensure we handle trailing slashes properly
+            $pattern = rtrim($pattern, '/') . '/'; // ensure pattern ends with a slash
             if (strpos($url, $pattern) !== false) {
                 return str_replace($pattern, '', $url);
             }
         }
 
         return $url;
-    }
-
-    function getFileName($url){
-        return str_replace("https://library.darakhtdanesh.org/storage/files/", '', $url);
     }
 }
