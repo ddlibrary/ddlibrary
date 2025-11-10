@@ -640,10 +640,6 @@ if (! function_exists('watermark_pdf')) {
     if (!function_exists('getResourceImage')) {
         function getResourceImage($image, $isThumbnail = false)
         {
-            if (strpos($image, '/') !== false) {
-                return $image;
-            }
-
             if ($isThumbnail) {
                 $thumbnailPath = "thumbnails/$image";
                 if (Storage::disk('public')->exists($thumbnailPath)) {
