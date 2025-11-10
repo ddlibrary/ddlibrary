@@ -30,7 +30,7 @@ class ExtractResourceImageUrl extends Command
     public function handle()
     {
         $resources = Resource::select('id', 'abstract', 'title', 'language', 'resource_file_id')
-            ->whereNotNull('resource_file_id')
+            ->whereNull('resource_file_id')
             ->get();
 
         foreach ($resources as $resource) {
@@ -69,8 +69,6 @@ class ExtractResourceImageUrl extends Command
                 'name' => $this->replaceUrl($defaultImage),
                 'language' => $resource->language,
                 'resource_id' => $resource->id,
-                'width' => $width,
-                'height' => $height,
             ]);
 
             // Update the resource with the new resource_file_id
