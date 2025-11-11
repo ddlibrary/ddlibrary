@@ -342,10 +342,6 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
 Route::post('/upload-image', [ResourceFileController::class, 'uploadImage'])->name('upload.image');
 Route::get('/search-images', [ResourceFileController::class, 'searchImages'])->name('search.images');
 
-Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {
-    \UniSharp\LaravelFilemanager\Lfm::routes();
-});
-
 /** OTHER PAGES THAT SHOULD NOT BE LOCALIZED **/
 Route::post('resources/favorite', [ResourceController::class, 'resourceFavorite']);
 Route::get('/storage/{resource_id}/{file_id}/{file_name}', FileController::class)->where(['file_name' => '.*']);
