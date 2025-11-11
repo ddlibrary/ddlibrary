@@ -22,6 +22,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ResourceAnalyticsController;
 use App\Http\Controllers\ResourceController;
+use App\Http\Controllers\ResourceFileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SitewideAnalyticsController;
 use App\Http\Controllers\StoryWeaverController;
@@ -337,6 +338,9 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     });
 
 });
+
+Route::post('/upload-image', [ResourceFileController::class, 'uploadImage'])->name('upload.image');
+Route::get('/search-images', [ResourceFileController::class, 'searchImages'])->name('search.images');
 
 Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();

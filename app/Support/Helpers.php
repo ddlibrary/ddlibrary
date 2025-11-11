@@ -635,4 +635,19 @@ if (! function_exists('watermark_pdf')) {
 
         return $pdf->Output('S');  // S: return the document as a string.
     }
+
+
+    if (!function_exists('getResourceImage')) {
+        function getResourceImage($image, $isThumbnail = false)
+        {
+            if ($isThumbnail) {
+                $thumbnailPath = "thumbnails/$image";
+                if (Storage::disk('public')->exists($thumbnailPath)) {
+                    return Storage::disk('public')->url($thumbnailPath);
+                }
+            }
+
+            return Storage::disk('public')->url($image);
+        }
+    }
 }
