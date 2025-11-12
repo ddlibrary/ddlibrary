@@ -275,4 +275,23 @@ class UserControllerTest extends TestCase
             $this->assertEquals($gender, $userProfile->fresh()->gender);
         }
     }
+
+    /**
+     * @test
+     */
+    public function update_gender_sets_success_flash_message(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $userProfile = UserProfile::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->post(route('update.gender'), [
+            'gender' => 'Female',
+        ]);
+
+        $response->assertSessionHas('alert');
+        $alert = session('alert');
+        $this->assertEquals('success', $alert['level']);
+    }
 }
