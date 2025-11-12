@@ -221,4 +221,19 @@ class UserControllerTest extends TestCase
         $response->assertRedirect();
         $this->assertEquals('Male', $userProfile->fresh()->gender);
     }
+
+    /**
+     * @test
+     */
+    public function update_gender_validates_required_field(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $userProfile = UserProfile::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->post(route('update.gender'), []);
+
+        $response->assertSessionHasErrors('gender');
+    }
 }
