@@ -253,4 +253,26 @@ class UserControllerTest extends TestCase
 
         $response->assertSessionHasErrors('gender');
     }
+
+    /**
+     * @test
+     */
+    public function update_gender_accepts_all_valid_values(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $userProfile = UserProfile::factory()->create(['user_id' => $user->id]);
+
+        $validGenders = ['Male', 'Female', 'None'];
+
+        foreach ($validGenders as $gender) {
+            $response = $this->actingAs($user)->post(route('update.gender'), [
+                'gender' => $gender,
+            ]);
+
+            $response->assertRedirect();
+            $this->assertEquals($gender, $userProfile->fresh()->gender);
+        }
+    }
 }
