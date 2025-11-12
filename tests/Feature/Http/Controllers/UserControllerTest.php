@@ -203,4 +203,22 @@ class UserControllerTest extends TestCase
         $response->assertViewHas('page');
         $response->assertViewHas('user');
     }
+
+    /**
+     * @test
+     */
+    public function update_gender_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $userProfile = UserProfile::factory()->create(['user_id' => $user->id, 'gender' => null]);
+
+        $response = $this->actingAs($user)->post(route('update.gender'), [
+            'gender' => 'Male',
+        ]);
+
+        $response->assertRedirect();
+        $this->assertEquals('Male', $userProfile->fresh()->gender);
+    }
 }
