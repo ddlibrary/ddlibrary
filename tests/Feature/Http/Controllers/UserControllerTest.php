@@ -236,4 +236,21 @@ class UserControllerTest extends TestCase
 
         $response->assertSessionHasErrors('gender');
     }
+
+    /**
+     * @test
+     */
+    public function update_gender_validates_allowed_values(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $userProfile = UserProfile::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->post(route('update.gender'), [
+            'gender' => 'Invalid Gender',
+        ]);
+
+        $response->assertSessionHasErrors('gender');
+    }
 }
