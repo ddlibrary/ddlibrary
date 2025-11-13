@@ -68,7 +68,7 @@
                             @endif
                         </div>
                         <div class="d-flex justify-content-between mb-3">
-                            <a href="{{ config('app.google_sso_enabled') == 'no' ? 'javascript:void(0)' : route('login.google') }}"
+                            <a href="{{ config('app.google_sso_enabled') ? route('login.google') : 'javascript:void(0)' }}"
                                class="btn btn-outline-secondary btn-md"
                             >
                                 <i class="fab fa-google"></i>
@@ -76,7 +76,7 @@
                                 @lang('Log in with Google')
                             </a>
                             <div class="d-xl-none"><br></div>
-                            <a href="{{ config('app.facebook_sso_enabled') == 'no' ? 'javascript:void(0)' : route('login.facebook') }}"
+                            <a href="{{ config('app.facebook_sso_enabled') ? route('login.facebook') : 'javascript:void(0)' }}"
                                class="btn btn-outline-secondary btn-md"
                             >
                                 <i class="fab fa-facebook-f"></i>
