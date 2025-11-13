@@ -14,7 +14,7 @@
 
 @push('styles')
     <style>
-        .privacy-policy-content {
+        .policies-content {
             line-height: 1.8;
         }
     </style>
@@ -22,7 +22,7 @@
 
 @section('content')
     <div class="container my-4">
-        <div class="privacy-policy-content rounded shadow-sm">
+        <div class="policies-content rounded shadow-sm">
             <!-- Analytics Opt-Out Section -->
             <div class="card border mt-4">
                 <div class="card-body p-4">
@@ -133,4 +133,4 @@
     </div>
 @endsection
 
-@include('privacy-policy.script')
+@include('policies.script')
