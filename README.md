@@ -188,7 +188,6 @@ Notes:
 - If you need a larger or smaller dataset, adjust the seeder counts in `DatabaseSeeder` or run specific seeders:
   - Native: `php artisan db:seed --class=Database\\Seeders\\YourSeeder`
   - Docker: `docker compose exec app php artisan db:seed --class=Database\\Seeders\\YourSeeder`
-- Legacy `dump.sql` remains in the repo for reference but is deprecated for local dev. Prefer factories/seeders.
 
 ## Common Artisan Commands
 - `php artisan migrate` — Run migrations
