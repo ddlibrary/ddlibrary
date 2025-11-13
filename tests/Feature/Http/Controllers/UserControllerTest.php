@@ -203,4 +203,95 @@ class UserControllerTest extends TestCase
         $response->assertViewHas('page');
         $response->assertViewHas('user');
     }
+
+    /**
+     * @test
+     */
+    public function update_gender_returns_an_ok_response(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $userProfile = UserProfile::factory()->create(['user_id' => $user->id, 'gender' => null]);
+
+        $response = $this->actingAs($user)->post(route('update.gender'), [
+            'gender' => 'Male',
+        ]);
+
+        $response->assertRedirect();
+        $this->assertEquals('Male', $userProfile->fresh()->gender);
+    }
+
+    /**
+     * @test
+     */
+    public function update_gender_validates_required_field(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $userProfile = UserProfile::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->post(route('update.gender'), []);
+
+        $response->assertSessionHasErrors('gender');
+    }
+
+    /**
+     * @test
+     */
+    public function update_gender_validates_allowed_values(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $userProfile = UserProfile::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->post(route('update.gender'), [
+            'gender' => 'Invalid Gender',
+        ]);
+
+        $response->assertSessionHasErrors('gender');
+    }
+
+    /**
+     * @test
+     */
+    public function update_gender_accepts_all_valid_values(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $userProfile = UserProfile::factory()->create(['user_id' => $user->id]);
+
+        $validGenders = ['Male', 'Female', 'None'];
+
+        foreach ($validGenders as $gender) {
+            $response = $this->actingAs($user)->post(route('update.gender'), [
+                'gender' => $gender,
+            ]);
+
+            $response->assertRedirect();
+            $this->assertEquals($gender, $userProfile->fresh()->gender);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function update_gender_sets_success_flash_message(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $userProfile = UserProfile::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->post(route('update.gender'), [
+            'gender' => 'Female',
+        ]);
+
+        $response->assertSessionHas('alert');
+        $alert = session('alert');
+        $this->assertEquals('success', $alert['level']);
+    }
 }
