@@ -18,6 +18,7 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Laracsv\Export;
@@ -232,5 +233,26 @@ class UserController extends Controller
                 'profile.last_name' => 'Last Name',
             ])
             ->download();
+    }
+
+    public function updateGender(Request $request)
+    {
+        $request->validate([
+            'gender' => ['required', Rule::in(['Male', 'Female', 'None'])],
+        ]);
+
+        $userProfile = Auth::user()->profile;
+
+        if ($userProfile) {
+            $userProfile->gender = $request->gender;
+            $userProfile->save();
+        }
+
+        Session::flash('alert', [
+            'message' => __('Your gender successfully updated'),
+            'level' => 'success',
+        ]);
+
+        return back();
     }
 }

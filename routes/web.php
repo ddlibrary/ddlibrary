@@ -73,6 +73,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::post('admin/user/update/{userId}', [UserController::class, 'update'])->name('update_user')->middleware('admin');
     Route::get('admin/user/delete/{userId}', [UserController::class, 'deleteUser'])->middleware('admin');
     Route::get('admin/user/export', [UserController::class, 'exportUsers'])->middleware('admin');
+    Route::post('update-gender', [UserController::class, 'updateGender'])->name('update.gender');
+
     //Resources
     Route::get('admin/resources', [ResourceController::class, 'index'])->middleware('auth');
     Route::post('admin/resources', [ResourceController::class, 'index'])->name('resources')->middleware('admin');

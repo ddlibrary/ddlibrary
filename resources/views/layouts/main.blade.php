@@ -117,6 +117,7 @@
             @if (session()->has('alert'))
                 <x-alert :message="Session::get('alert.message')" :level="Session::get('alert.level')" />
             @endif
+
         </main>
         @include('layouts.footer')
         <!-- Optional JavaScript -->
@@ -124,6 +125,43 @@
     @stack('scripts')
     <script async src="{{ asset('js/all.js') }}"></script>
     @yield('script')
+
+    @if (Auth::check() && Auth::user()->profile->gender == null)
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" 
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">@lang('Please select your gender')</h1>
+                    </div>
+                    <form action="{{ route('update.gender') }}" method="post">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="gender">@lang('Gender')</label>
+                                <select class="form-select" id="gender" name="gender" required>
+                                    <option value="" disabled selected>@lang('Select one of these')</option>
+                                    <option value="Male">@lang('Male')</option>
+                                    <option value="Female">@lang('Female')</option>
+                                    <option value="None">@lang('Prefer not to say')</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">@lang('Submit')</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @sleep(300)
+        <button type="button" class="btn btn-primary open-user-gender-modal d-none" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></button>
+        <script>
+            setTimeout(() => {
+                $(".open-user-gender-modal").trigger('click')
+            }, 100);
+        </script>
+    @endif
 </body>
 
 </html>
