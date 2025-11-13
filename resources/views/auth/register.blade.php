@@ -17,13 +17,13 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-1"></div>
-                            <a href="{{ config('app.google_sso_enabled') == 'no' ? 'javascript:void(0)' : route('login.google') }}" class="btn btn-primary btn-md col-lg-4" type="submit">
+                            <a href="{{ config('app.google_sso_enabled') ? route('login.google') : 'javascript:void(0)' }}" class="btn btn-primary btn-md col-lg-4 {{ config('app.google_sso_enabled') ? '' : 'disabled' }}" type="submit">
                                 <i class="fab fa-google"></i>
                                 <span class="oauth-icon-separator"></span>
                                 @lang('Sign up with Google')
                             </a>
                             <div class="col-md-2"></div><div class="d-lg-none"><br></div>
-                            <a href="{{ config('app.facebook.sso.enabled') == 'no' ? 'javascript:void(0)' : route('login.facebook') }}" class="btn btn-primary btn-md float-md-right col-lg-4" type="submit">
+                            <a href="{{ config('app.facebook_sso_enabled') ? route('login.facebook') : 'javascript:void(0)' }}" class="btn btn-primary btn-md float-md-right col-lg-4 {{ config('app.facebook_sso_enabled') ? '' : 'disabled' }}" type="submit">
                                 <i class="fab fa-facebook-f"></i>
                                 <span class="oauth-icon-separator"></span>
                                 @lang('Sign up with Facebook')
