@@ -73,5 +73,18 @@ class PrivacyPolicyControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('policies.mob_current');
     }
+
+    /**
+     * @test
+     */
+    public function opt_out_returns_view(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $response = $this->get('en/opt-out');
+
+        $response->assertOk();
+        $response->assertViewIs('policies.opt_out');
+    }
 }
 
