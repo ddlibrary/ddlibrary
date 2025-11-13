@@ -69,7 +69,7 @@
                         </div>
                         <div class="d-flex justify-content-between mb-3">
                             <a href="{{ config('app.google_sso_enabled') ? route('login.google') : 'javascript:void(0)' }}"
-                               class="btn btn-outline-secondary btn-md"
+                               class="btn btn-outline-secondary btn-md {{ config('app.google_sso_enabled') ?: 'disabled' }}"
                             >
                                 <i class="fab fa-google"></i>
                                 <span class="oauth-icon-separator"></span>
@@ -77,7 +77,7 @@
                             </a>
                             <div class="d-xl-none"><br></div>
                             <a href="{{ config('app.facebook_sso_enabled') ? route('login.facebook') : 'javascript:void(0)' }}"
-                               class="btn btn-outline-secondary btn-md"
+                               class="btn btn-outline-secondary btn-md {{ config('app.facebook_sso_enabled') ?: 'disabled' }}"
                             >
                                 <i class="fab fa-facebook-f"></i>
                                 <span class="oauth-icon-separator"></span>
