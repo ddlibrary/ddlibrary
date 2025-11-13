@@ -204,7 +204,7 @@ Notes:
 - Serve `public/` via a web server (Nginx/Apache) pointing PHP‑FPM to `artisan`
 
 ## License
-This project is licensed under the MIT License. See the `LICENSE` file if present. (Composer metadata lists license as MIT.)
+
 
 ## To Contribute
 We welcome contributions through PRs that includes code enhancements, new features or any other improvements to the codebase. Please check how you can [contribute](docs/contributing.md) and how you can [submit a pull request](docs/pull-request-guideline.md).
