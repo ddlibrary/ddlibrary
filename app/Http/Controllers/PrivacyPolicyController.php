@@ -16,12 +16,12 @@ class PrivacyPolicyController extends Controller
         DDLClearSession();
 
         if(config('app.locale') == 'en'){
-            return view('privacy-policy.english');
+            return view('policies.privacy_en_web_current');
         }elseif(config('app.locale') == 'ps'){
-            return view('privacy-policy.pashto');
+            return view('policies.privacy_ps_web_current');
         }
 
-        return view('privacy-policy.farsi');
+        return view('policies.privacy_fa_web_current');
     }
 
     public function mobilePrivacyPolicy(Request $request): View
@@ -29,6 +29,6 @@ class PrivacyPolicyController extends Controller
         $this->pageView($request, 'Privacy Policy - Mobile Application');
         DDLClearSession();
 
-        return view('privacy-policy.mobile');
+        return view('policies.mob_current');
     }
 }

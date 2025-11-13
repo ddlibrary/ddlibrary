@@ -19,7 +19,7 @@ class PrivacyPolicyControllerTest extends TestCase
         $response = $this->get('en/privacy-policy');
 
         $response->assertOk();
-        $response->assertViewIs('privacy-policy.english');
+        $response->assertViewIs('policies.privacy_en_web_current');
     }
 
     /**
@@ -32,7 +32,7 @@ class PrivacyPolicyControllerTest extends TestCase
         $response = $this->get('ps/privacy-policy');
 
         $response->assertOk();
-        $response->assertViewIs('privacy-policy.pashto');
+        $response->assertViewIs('policies.privacy_ps_web_current');
     }
 
     /**
@@ -45,7 +45,7 @@ class PrivacyPolicyControllerTest extends TestCase
         $response = $this->get('fa/privacy-policy');
 
         $response->assertOk();
-        $response->assertViewIs('privacy-policy.farsi');
+        $response->assertViewIs('policies.privacy_fa_web_current');
     }
 
     /**
@@ -58,7 +58,7 @@ class PrivacyPolicyControllerTest extends TestCase
         $response = $this->get('uz/privacy-policy');
 
         $response->assertOk();
-        $response->assertViewIs('privacy-policy.farsi');
+        $response->assertViewIs('policies.privacy_fa_web_current');
     }
 
     /**
@@ -71,7 +71,7 @@ class PrivacyPolicyControllerTest extends TestCase
         $response = $this->get('en/mobile-privacy-policy');
 
         $response->assertOk();
-        $response->assertViewIs('privacy-policy.mobile');
+        $response->assertViewIs('policies.mob_current');
     }
 }
 
