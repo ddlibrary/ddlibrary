@@ -164,7 +164,7 @@ High‑level layout:
 - `docs/` — Contribution and other documentation
 
 ## Database (migrations + seeders/factories)
-This project uses Laravel migrations, seeders, and model factories to set up local data. Do not import `dump.sql` for local development.
+This project uses Laravel migrations, seeders, and model factories to set up local data. 
 
 Seed the database after running migrations:
 
