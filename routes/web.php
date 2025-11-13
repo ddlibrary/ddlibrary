@@ -343,6 +343,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::controller(PrivacyPolicyController::class)->group(function(){
         Route::get('privacy-policy', 'index')->name('privacy-policy');
         Route::get('mobile-privacy-policy', 'mobilePrivacyPolicy')->name('mobile-privacy-policy');
+        Route::get('opt-out', 'optOut')->name('opt-out');
     });
 });
 

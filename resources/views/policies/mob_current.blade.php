@@ -445,20 +445,14 @@
                                                 the laws of the jurisdiction in which the Licensed Application was obtained.
                                             </span></span></span></span></span></p>
                     </article>
-                    <div class="mb-4">
-                        <button type="button" class="btn btn-primary mt-2" onclick="gaOptout()">
-                            @lang('Opt-out of Google Analytics')
-                        </button>
-                        <p class="mt-3 small mb-0" id="ga-optout-status"></p>
-                    </div>
 
-                    <div class="border-top pt-4">
-                        <div id="matomo-opt-out"></div>
+                    <div class="mb-4">
+                        <a href="{{ route('opt-out') }}" class="btn btn-primary mt-2" onclick="gaOptout()">
+                            @lang('Opt-out of Google Analytics')
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
-
-@include('policies.script')

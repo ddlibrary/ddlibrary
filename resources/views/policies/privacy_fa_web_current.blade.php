@@ -113,27 +113,22 @@
                             اطلاعات شخصی بازدید کنند.</p>
                     </article>
                     <div class="border-top pt-4">
-                        <h4 class="mb-3">لغو تحلیل‌گری وب</h4>
+                        <h4 class="mb-3">لغو تحلیل گر وب</h4>
                         <p class="mb-4">
-                            اگر نمی‌خواهید بازدیدهای شما در ابزارهای تحلیل‌گری ما ذخیره شود، می‌توانید با گزینه‌های زیر از
+                            اگر نمی‌خواهید بازدیدهای شما در ابزارهای تحلیل گری ما ذخیره شود، می‌توانید با گزینه‌های زیر از
                             ردیابی خارج شوید.
                         </p>
 
                         <div class="mb-4">
-                            <button type="button" class="btn btn-primary mt-2" onclick="gaOptout()">
-                                خروج از گوگل آنالیتیکس
-                            </button>
-                            <p class="mt-3 small mb-0" id="ga-optout-status"></p>
+                            <a href="{{ route('opt-out') }}" class="mt-2">
+                                خروج از تحلیل گر ویب
+                            </a>
                         </div>
 
-                        <div class="border-top pt-4">
-                            <div id="matomo-opt-out"></div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
-
-@include('policies.script')
