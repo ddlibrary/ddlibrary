@@ -154,8 +154,8 @@ return [
     */
 
     'captcha' => env('CAPTCHA', 'no'),
-    'LOGIN_WITH_GOOGLE' => env('GOOGLE_SSO_ENABLED', false),
-    'LOGIN_WITH_FACEBOOK' => env('FACEBOOK_SSO_ENABLED', false),
+    'google_sso_enabled' => env('GOOGLE_SSO_ENABLED', false),
+    'facebook_sso_enabled' => env('FACEBOOK_SSO_ENABLED', false),
 
     /*
     |--------------------------------------------------------------------------
