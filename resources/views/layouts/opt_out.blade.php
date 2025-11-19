@@ -1,11 +1,11 @@
 @extends('layouts.main')
 
 @section('title')
-    @lang('Privacy Policy')
+    @lang('Opt out of Analytics')
 @endsection
 
 @section('description')
-    @lang('Privacy Policy - Darakht-e Danesh Library')
+    @lang('You can opt out of tracking here')
 @endsection
 
 @section('page_image')
