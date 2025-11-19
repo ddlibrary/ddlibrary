@@ -60,15 +60,23 @@
                     @endif
                 </div>
                 <div class="form-group ui-widget col-6 mb-3">
-                    <label for="translator">
-                        @lang('Translator')
-                    </label>
-                    <input class="form-control{{ $errors->has('translator') ? ' is-invalid' : '' }} col-md-6"
+                    <div>
+
+                        <label for="toggle-translation" style="border:1px solid gray;border-radius:3px;padding:0px 5px;">
+                            @lang('This is a work of translation')
+                            <input type="checkbox" onchange="toggleTranslation(this)"
+                                id="toggle-translation" name="checkbox">
+                        </label>
+                        <label for="translator" class="d-none translation">
+                            @lang('Translator')
+                        </label>
+                    </div>
+                    <input class="form-control translation d-none translation {{ $errors->has('translator') ? ' is-invalid' : '' }} col-md-6"
                         id="translator" name="translator" type="text"
                         value="{{ $resource->translators?->pluck('name')->implode(', ') ?? '' }}"
-                        aria-describedby="translatorOptional"
+                        aria-describedby="translatorOptional" placeholder="@lang('Translator')"
                         onkeydown="bringMeAttr('translator','{{ URL::to('resources/attributes/translators') }}')">
-                    <small id="translatorOptional" class="form-text text-muted">
+                    <small id="translatorOptional" class="form-text text-muted d-none translation">
                         @lang('Optional')
                     </small>
                     @if ($errors->has('translator'))
@@ -274,6 +282,11 @@
 @endsection
 @section('script')
     <script src="{{ asset('js/resource.js') }}"></script>
+    <script>
+         function toggleTranslation(checkbox) {
+            $(".translation").removeClasses('display', checkbox.checked ? 'inline-block' : 'none')
+        }
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"
         integrity="sha384-P65gU1u4/dZpqRQ0AVqW+DHPwXmNAR84Qk31dC95hjk0WatF1GsVF1zRm/0uB+o0" crossorigin="anonymous">
