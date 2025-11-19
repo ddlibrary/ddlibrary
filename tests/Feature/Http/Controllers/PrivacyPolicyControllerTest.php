@@ -71,7 +71,7 @@ class PrivacyPolicyControllerTest extends TestCase
         $response = $this->get('en/mobile-privacy-policy');
 
         $response->assertOk();
-        $response->assertViewIs('policies.mob_current');
+        $response->assertViewIs('policies.privacy_en_mob_current');
     }
 
     /**
@@ -84,7 +84,7 @@ class PrivacyPolicyControllerTest extends TestCase
         $response = $this->get('en/opt-out');
 
         $response->assertOk();
-        $response->assertViewIs('policies.opt_out');
+        $response->assertViewIs('layouts.opt_out');
     }
 }
 

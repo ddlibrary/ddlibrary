@@ -29,13 +29,13 @@ class PrivacyPolicyController extends Controller
         $this->pageView($request, 'Privacy Policy - Mobile Application');
         DDLClearSession();
 
-        return view('policies.mob_current');
+        return view('policies.privacy_en_mob_current');
     }
 
     public function optOut(Request $request){
         $this->pageView($request, 'Privacy Policy - Opt Out');
         DDLClearSession();
 
-        return view('policies.opt_out');
+        return view('layouts.opt_out');
     }
 }
