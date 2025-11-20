@@ -146,7 +146,7 @@
                     </label>
                     <div id="editor" class="mb-2">
                         <textarea class="form-control{{ $errors->has('abstract') ? ' is-invalid' : '' }}" name="abstract"
-                            style="height: 200px">{{ @$resource['abstract'] }}</textarea>
+                            style="height: 200px" required>{{ @$resource['abstract'] }}</textarea>
                     </div>
                     @if ($errors->has('abstract'))
                         <span class="invalid-feedback">
