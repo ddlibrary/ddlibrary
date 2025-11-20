@@ -415,7 +415,6 @@ class ResourceControllerTest extends TestCase
             'abstract' => 'This is an abstract.',
         ]);
 
-        // Assert: Check that validation fails for both fields
         $response->assertSessionHasErrors(['publisher']);
     }
 
