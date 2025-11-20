@@ -654,18 +654,15 @@ class ResourceControllerTest extends TestCase
 
         $user = User::factory()->create();
         $secondUser = User::factory()->create();
-        
-        $this->actingAs($user);
-
         $resource = Resource::factory()->create();
-
         ResourceFavorite::insert([
             'resource_id' => $resource->id,
             'user_id' => $secondUser->id,
             'created_at' => now(),
             'updated_at' => now()
         ]);
-
+        
+        $this->actingAs($user);
         $response = $this->post('resources/favorite', [
             'userId' => $user->id,
             'resourceId' => $resource->id,
@@ -680,7 +677,9 @@ class ResourceControllerTest extends TestCase
         ]);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deletes_resource_favorite_when_it_exists()
     {
         $this->refreshApplicationWithLocale('en');
