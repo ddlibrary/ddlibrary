@@ -4,6 +4,7 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Resource;
 use App\Models\ResourceComment;
+use App\Models\ResourceFavorite;
 use App\Models\ResourceFlag;
 use App\Models\TaxonomyTerm;
 use App\Models\User;
@@ -658,9 +659,11 @@ class ResourceControllerTest extends TestCase
 
         $resource = Resource::factory()->create();
 
-        $this->post('resources/favorite', [
-            'userId' => $secondUser->id,
-            'resourceId' => $resource->id,
+        ResourceFavorite::insert([
+            'resource_id' => $resource->id,
+            'user_id' => $secondUser->id,
+            'created_at' => now(),
+            'updated_at' => now()
         ]);
 
         $response = $this->post('resources/favorite', [
@@ -672,6 +675,35 @@ class ResourceControllerTest extends TestCase
                  ->assertJson(['action' => 'added', 'favorite_count' => 2]);
 
         $this->assertDatabaseHas('resource_favorites', [
+            'resource_id' => $resource->id,
+            'user_id' => $user->id,
+        ]);
+    }
+
+    /** @test */
+    public function deletes_resource_favorite_when_it_exists()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $resource = Resource::factory()->create();
+        ResourceFavorite::insert([
+            'resource_id' => $resource->id,
+            'user_id' => $user->id,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        $this->actingAs($user);
+        $response = $this->post('resources/favorite', [
+            'userId' => $user->id,
+            'resourceId' => $resource->id,
+        ]);
+
+        $response->assertStatus(200)
+                 ->assertJson(['action' => 'deleted', 'favorite_count' => 0]);
+
+        $this->assertDatabaseMissing('resource_favorites', [
             'resource_id' => $resource->id,
             'user_id' => $user->id,
         ]);
