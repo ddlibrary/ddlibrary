@@ -144,7 +144,7 @@
                                     class="far fa-lg fa-edit" aria-hidden="true" title="@lang('Edit')"></i></a>
                         @endif
                         &nbsp;
-                        <i class="fa-solid fa-star fa-lg @if (empty($resource->favorites[0])) @else active @endif"
+                        <i class="fa-solid fa-star fa-lg {{ $resource->favorites->contains('id', auth()->id()) ? 'active' : '' }}"
                             title="@lang('Mark this resource as your favorite')" id="resourceFavorite" style="cursor: pointer;"
                             @if (Auth::check()) onclick="favorite('resourceFavorite','{{ URL::to('resources/favorite/') }}','{{ $resource->id }}','{{ Auth::id() }}')"
                            @else
@@ -229,7 +229,7 @@
                     </div>
                     <div class="col-2 text-secondary">
                         <i class="far fa-star"></i> <span
-                            class="text-secondary">{{ $favorites->where('resource_id', $resource->id)->count() }}</span>
+                            class="text-secondary resource-favorites">{{ $resource->favorites->count() }}</span>
                     </div>
                     <div class="col-8 {{ Lang::locale() != 'en' ? 'text-start' : 'text-end' }}">
                         <a href="{{ URL::to('glossary') }}" class="glossary-icon"><i class="fas fa-globe"
