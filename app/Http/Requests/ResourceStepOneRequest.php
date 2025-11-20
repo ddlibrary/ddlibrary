@@ -24,7 +24,7 @@ class ResourceStepOneRequest extends FormRequest
         return [
             'title' => 'required',
             'author' => 'string|nullable',
-            'publisher' => 'string|nullable',
+            'publisher' => 'nullable|string|required_without:author',
             'has_translator' => 'nullable',
             'translator' => 'required_if:has_translator,1|string|nullable',
             'language' => 'required',
