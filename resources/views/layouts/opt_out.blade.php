@@ -26,6 +26,7 @@
             <!-- Analytics Opt-Out Section -->
             <div class="card border mt-4">
                 <div class="card-body p-4">
+                    <h2>@lang('Opt out of Analytics')</h2>
                    
                     <div class="mb-4">
                         <button type="button" class="btn btn-primary mt-2" onclick="gaOptout()">
