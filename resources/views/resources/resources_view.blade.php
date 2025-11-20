@@ -144,7 +144,7 @@
                                     class="far fa-lg fa-edit" aria-hidden="true" title="@lang('Edit')"></i></a>
                         @endif
                         &nbsp;
-                        <i class="fa-solid fa-star fa-lg @if (empty($resource->favorites[0])) @else active @endif"
+                        <i class="fa-solid fa-star fa-lg {{ $resource->favorites->contains('id', auth()->id()) ? 'active' : '' }}"
                             title="@lang('Mark this resource as your favorite')" id="resourceFavorite" style="cursor: pointer;"
                             @if (Auth::check()) onclick="favorite('resourceFavorite','{{ URL::to('resources/favorite/') }}','{{ $resource->id }}','{{ Auth::id() }}')"
                            @else
