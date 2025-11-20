@@ -19,7 +19,6 @@ use App\Http\Controllers\ImpactController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ResourceAnalyticsController;
 use App\Http\Controllers\ResourceController;
@@ -336,11 +335,6 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
             Route::get('glossary', 'index');
             Route::get('reports/glossary', 'view');
         });
-    });
-
-    Route::controller(PrivacyPolicyController::class)->group(function(){
-        Route::get('privacy-policy', 'index')->name('privacy-policy');
-        Route::get('mobile-privacy-policy', 'mobilePrivacyPolicy')->name('mobile-privacy-policy');
     });
 });
 
