@@ -234,7 +234,7 @@ class ResourceController extends Controller
         DDLClearSession();
         $myResources = new Resource();
 
-        $resource = Resource::with('attachments','resourceFile:id,name')->findOrFail($resourceId);
+        $resource = Resource::with(['attachments','resourceFile:id,name','favorites:id'])->findOrFail($resourceId);
 
         if ($resource->status == 0 && ! (isAdmin() || isLibraryManager())) {  // We don't want anyone else to access unpublished resources
             abort(403);
@@ -733,8 +733,6 @@ class ResourceController extends Controller
 
     public function resourceFavorite(Request $request): bool|string
     {
-        $myResources = new Resource();
-
         $resourceId = $request->input('resourceId');
         $userId = $request->input('userId');
 
@@ -742,7 +740,7 @@ class ResourceController extends Controller
             return json_encode('notloggedin');
         }
 
-        $favorite = resourceFavorite::where('resource_id', $resourceId)->first();
+        $favorite = ResourceFavorite::where(['resource_id' => $resourceId, 'user_id' => $userId])->first();
 
         if ($favorite != null) {
             $favorite->delete();
