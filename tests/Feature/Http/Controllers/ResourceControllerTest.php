@@ -629,6 +629,24 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
+    public function resource_favorite_returns_not_logged_in_if_user_id_is_missing()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $resource = Resource::factory()->create();
+
+        $response = $this->post('resources/favorite', [
+            'userId' => null,
+            'resourceId' => $resource->id,
+        ]);
+
+        $response->assertStatus(200)
+                 ->assertJson(['status' => 'notloggedin']);
+    }
+
+    /**
+     * @test
+     */
     public function update_tid_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
