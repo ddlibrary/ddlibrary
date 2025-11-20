@@ -729,29 +729,36 @@ class ResourceController extends Controller
         return redirect('/home');
     }
 
-    public function resourceFavorite(Request $request): bool|string
+    public function resourceFavorite(Request $request): JsonResponse
     {
         $resourceId = $request->input('resourceId');
         $userId = $request->input('userId');
 
-        if (! $userId) {
-            return json_encode('notloggedin');
+        if (!$userId) {
+            return response()->json(['status' => 'notloggedin']);
         }
 
         $favorite = ResourceFavorite::where(['resource_id' => $resourceId, 'user_id' => $userId])->first();
 
-        if ($favorite != null) {
+        if ($favorite) {
             $favorite->delete();
-
-            return json_encode('deleted');
+            $action = 'deleted';
         } else {
-            $favorite = new ResourceFavorite;
-            $favorite->resource_id = $resourceId;
-            $favorite->user_id = $userId;
-            $favorite->save();
-
-            return json_encode('added');
+            ResourceFavorite::insert([
+                'resource_id' => $resourceId,
+                'user_id' => $userId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+            $action = 'added';
         }
+
+        $favoriteCount = ResourceFavorite::where('resource_id', $resourceId)->count();
+
+        return response()->json([
+            'action' => $action,
+            'favorite_count' => $favoriteCount
+        ]);
     }
 
     public function flag(Request $request): Redirector|Application|RedirectResponse
