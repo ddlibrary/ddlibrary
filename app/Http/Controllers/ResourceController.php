@@ -277,7 +277,6 @@ class ResourceController extends Controller
         }
         $this->resourceViewCounter($request, $resourceId);
         $views = new ResourceView();
-        $favorites = new ResourceFavorite();
         Carbon::setLocale(app()->getLocale());
 
         $ePub = null;
@@ -299,7 +298,6 @@ class ResourceController extends Controller
             'languages_available',
             'views',
             'translations',
-            'favorites',
             'ePub'
         ));
     }
