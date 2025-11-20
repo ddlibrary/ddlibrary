@@ -397,6 +397,28 @@ class ResourceControllerTest extends TestCase
         $response->assertSessionDoesntHaveErrors('translator');
     }
 
+    /** @test */
+    public function at_least_one_of_author_or_publisher_is_required()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $response = $this->post('en/resources/add/step1', [
+            'title' => 'Resource Title',
+            'author' => null,
+            'publisher' => null,
+            'has_translator' => 1,
+            'translator' => 'Translator',
+            'language' => 'en',
+            'abstract' => 'This is an abstract.',
+        ]);
+
+        // Assert: Check that validation fails for both fields
+        $response->assertSessionHasErrors(['publisher']);
+    }
+
     /**
      * @test
      */
