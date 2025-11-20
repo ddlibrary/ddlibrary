@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TaxonomyVocabularyEnum;
+use App\Http\Requests\ResourceStepOneRequest;
 use App\Mail\NewComment;
 use App\Models\Resource;
 use App\Models\ResourceAttachment;
@@ -314,17 +315,13 @@ class ResourceController extends Controller
         return view('resources.resources_modify_step1', compact('resource', 'creativeCommons', 'subjects'));
     }
 
-    public function postStepOne(Request $request): Redirector|Application|RedirectResponse
+    public function postStepOne(ResourceStepOneRequest $request): Redirector|Application|RedirectResponse
     {
-        $validatedData = $request->validate([
-            'title' => 'required',
-            'author' => 'string|nullable',
-            'publisher' => 'string|nullable',
-            'translator' => 'string|nullable',
-            'language' => 'required',
-            'abstract' => 'required',
-            'resource_file_id' => 'nullable|numeric',
-        ]);
+        $validatedData = $request->validated();
+
+        if(!$request->has_translator){
+            $validatedData['translator'] = null;
+        }
 
         $request->session()->put('new_resource_step_1', $validatedData);
 
@@ -837,22 +834,19 @@ class ResourceController extends Controller
         $edit = true;
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject);
 
+
         return view('resources.resources_modify_step1', compact('resource', 'edit', 'subjects'));
     }
 
-    public function postStepOneEdit($resourceId, Request $request): Redirector|Application|RedirectResponse
+    public function postStepOneEdit($resourceId, ResourceStepOneRequest $request): Redirector|Application|RedirectResponse
     {
         $this->middleware('admin');
 
-        $validatedData = $request->validate([
-            'title' => 'required',
-            'author' => 'string|nullable',
-            'publisher' => 'string|nullable',
-            'translator' => 'string|nullable',
-            'language' => 'required',
-            'abstract' => 'required',
-            'resource_file_id' => 'nullable'
-        ]);
+        $validatedData = $request->validated();
+
+        if(!$request->has_translator){
+            $validatedData['translator'] = null;
+        }
 
         $validatedData['id'] = $resourceId;
         $validatedData['status'] = $request->input('status');
