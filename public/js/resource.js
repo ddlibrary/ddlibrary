@@ -286,9 +286,10 @@ document.addEventListener('DOMContentLoaded', function() {
 function toggleTranslation(checkbox) {
     if(checkbox.checked){
         $(".translation").removeClass('d-none')
-        $("#translator").val('');
+        $("#translator").val('').attr('required', true);
     }else{
         $(".translation").addClass('d-none');
+        $("#translator").attr('required', false);
     }
 }
 
