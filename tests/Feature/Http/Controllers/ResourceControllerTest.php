@@ -647,6 +647,39 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
+    public function resource_favorite_adds_favorite_when_it_does_not_exist()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $secondUser = User::factory()->create();
+        
+        $this->actingAs($user);
+
+        $resource = Resource::factory()->create();
+
+        $this->post('resources/favorite', [
+            'userId' => $secondUser->id,
+            'resourceId' => $resource->id,
+        ]);
+
+        $response = $this->post('resources/favorite', [
+            'userId' => $user->id,
+            'resourceId' => $resource->id,
+        ]);
+
+        $response->assertStatus(200)
+                 ->assertJson(['action' => 'added', 'favorite_count' => 2]);
+
+        $this->assertDatabaseHas('resource_favorites', [
+            'resource_id' => $resource->id,
+            'user_id' => $user->id,
+        ]);
+    }
+
+    /**
+     * @test
+     */
     public function update_tid_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
