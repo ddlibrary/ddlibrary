@@ -119,7 +119,7 @@
                     </article>
                     <div class="mb-4">
                         <a href="{{ route('opt-out') }}" class="mt-2">
-                            @lang('Opt-out of Google Analytics')
+                            @lang('Opt-out of Analytics')
                         </a>
                     </div>
                 </div>

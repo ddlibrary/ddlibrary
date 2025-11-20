@@ -29,7 +29,7 @@
                    
                     <div class="mb-4">
                         <button type="button" class="btn btn-primary mt-2" onclick="gaOptout()">
-                            @lang('Opt-out of Google Analytics')
+                            @lang('Opt-out of Analytics')
                         </button>
                         <p class="mt-3 small mb-0" id="ga-optout-status"></p>
                     </div>

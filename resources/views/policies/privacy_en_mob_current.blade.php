@@ -448,7 +448,7 @@
 
                     <div class="mb-4">
                         <a href="{{ route('opt-out') }}" class="btn btn-primary mt-2" onclick="gaOptout()">
-                            @lang('Opt-out of Google Analytics')
+                            @lang('Opt-out of Analytics')
                         </a>
                     </div>
                 </div>
