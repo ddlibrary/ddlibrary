@@ -283,3 +283,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function toggleTranslation(checkbox) {
+    if(checkbox.checked){
+        $(".translation").removeClass('d-none')
+        $("#translator").val('');
+    }else{
+        $(".translation").addClass('d-none');
+    }
+}
+

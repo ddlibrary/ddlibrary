@@ -293,16 +293,6 @@
 @endsection
 @section('script')
     <script src="{{ asset('js/resource.js') }}"></script>
-    <script>
-         function toggleTranslation(checkbox) {
-            if(checkbox.checked){
-                $(".translation").removeClass('d-none')
-                $("#translator").val('');
-            }else{
-                $(".translation").addClass('d-none');
-            }
-        }
-    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"
         integrity="sha384-P65gU1u4/dZpqRQ0AVqW+DHPwXmNAR84Qk31dC95hjk0WatF1GsVF1zRm/0uB+o0" crossorigin="anonymous">
