@@ -59,24 +59,7 @@
                         </span>
                     @endif
                 </div>
-                <div class="form-group ui-widget col-6 mb-3">
-                    <label for="translator">
-                        @lang('Translator')
-                    </label>
-                    <input class="form-control{{ $errors->has('translator') ? ' is-invalid' : '' }} col-md-6"
-                        id="translator" name="translator" type="text"
-                        value="{{ $resource->translators?->pluck('name')->implode(', ') ?? '' }}"
-                        aria-describedby="translatorOptional"
-                        onkeydown="bringMeAttr('translator','{{ URL::to('resources/attributes/translators') }}')">
-                    <small id="translatorOptional" class="form-text text-muted">
-                        @lang('Optional')
-                    </small>
-                    @if ($errors->has('translator'))
-                        <span class="invalid-feedback">
-                            <strong>{{ $errors->first('translator') }}</strong>
-                        </span>
-                    @endif
-                </div>
+               
 
 
                 <div class="form-group col-6 mb-3">
@@ -93,6 +76,40 @@
                         @endforeach
                     </select>
                 </div>
+               
+                
+                
+                 <div class="form-group col-6 mb-3">
+                    <div>
+                        <label for="toggle-translation">
+                            @lang('This is a work of translation') 
+                        </label>
+                        <div>
+                            <input type="checkbox" onchange="toggleTranslation(this)" {{ (@$resource['translator'] || old('translator')) || $resource->translators ? 'checked' : '' }}
+                            id="toggle-translation" name="has_translator" value="1">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-6 mb-3">
+                    <div class="translation {{ (@$resource['translator'] || old('translator')) || $resource->translators ? '' : 'd-none' }}">
+                        <div>
+                            <label for="translator" class="">
+                                @lang('Translator')
+                            </label>
+                        </div>
+                        <input class="form-control {{ $errors->has('translator') ? ' is-invalid' : '' }} col-md-6"
+                            id="translator" name="translator" type="text"
+                            value="{{ old('translator') ? old('translator') : (@$resource['translator'] ? @$resource['translator'] : $resource->translators?->pluck('name')->implode(', '))}}"
+                            aria-describedby="translatorOptional" placeholder="@lang('Translator')"
+                            onkeydown="bringMeAttr('translator','{{ URL::to('resources/attributes/translators') }}')">
+                        @if ($errors->has('translator'))
+                            <span class="invalid-feedback">
+                                <strong>{{ $errors->first('translator') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+
                 <div class="form-group col-6 mb-3">
                     <label for="image">
                         <strong>@lang('Image')</strong>
@@ -113,21 +130,23 @@
                         </span><br>
                     @endif
                 </div>
+
                 {{-- Selected Image Preview --}}
                 <div class="form-group col-6 mb-3">
-                    <div id="selected-image-preview" class="flex-1 mt-1 border-radius-5 w-100"
+                    <div id="selected-image-preview" class="flex-1 mt-1 border-radius-5 w-100 overflow-hidden"
                         style="display: {{ @$resource->resourceFile?->name ? 'block' : 'none' }};">
                         <img id="preview-image" src="{{ @$resource->resourceFile ? getResourceImage(@$resource->resourceFile->name, true) : '' }}" class="border-radius-5"
                             style="max-height: 250px;" alt="Selected Image">
                     </div>
                 </div>
+                
                 <div class="form-group mb-3">
                     <label for="abstract">
                         @lang('Abstract')
                     </label>
                     <div id="editor" class="mb-2">
                         <textarea class="form-control{{ $errors->has('abstract') ? ' is-invalid' : '' }}" name="abstract"
-                            style="height: 200px">{{ @$resource['abstract'] }}</textarea>
+                            style="height: 200px" required>{{ @$resource['abstract'] }}</textarea>
                     </div>
                     @if ($errors->has('abstract'))
                         <span class="invalid-feedback">
