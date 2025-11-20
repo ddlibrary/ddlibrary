@@ -372,7 +372,31 @@ class ResourceControllerTest extends TestCase
         // Assert: Check that validation fails
         $response->assertSessionHasErrors('translator');
     }
-    
+
+    /**
+     * @test
+     */
+    public function translator_field_is_nullable_when_has_translator_is_not_checked()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $response = $this->post('en/resources/add/step1', [
+            'title' => 'Resource Title',
+            'author' => 'Author Name',
+            'publisher' => 'Publisher Name',
+            'has_translator' => 0,
+            'translator' => '',
+            'language' => 'en',
+            'abstract' => 'This is an abstract.',
+        ]);
+
+        // Assert: Check there are no validation errors
+        $response->assertSessionDoesntHaveErrors('translator');
+    }
+
     /**
      * @test
      */
