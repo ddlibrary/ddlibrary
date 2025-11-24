@@ -146,7 +146,7 @@
                         &nbsp;
                         <i class="fa-solid fa-star fa-lg {{ $resource->favorites->contains('id', auth()->id()) ? 'active' : '' }}"
                             title="@lang('Mark this resource as your favorite')" id="resourceFavorite" style="cursor: pointer;"
-                            @if (Auth::check()) onclick="favorite('resourceFavorite','{{ URL::to('resources/favorite/') }}','{{ $resource->id }}','{{ Auth::id() }}')"
+                            @if (Auth::check()) onclick="favorite('resourceFavorite','{{ URL::to('resources/favorite/') }}','{{ $resource->id }}')"
                            @else
                                onclick="alert('Please login to mark a resource as your favorite')" @endif></i>
                         &nbsp;
