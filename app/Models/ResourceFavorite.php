@@ -13,6 +13,8 @@ class ResourceFavorite extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['resource_id', 'user_id'];
+
     public function resource(): BelongsTo
     {
         return $this->belongsTo(Resource::class);
