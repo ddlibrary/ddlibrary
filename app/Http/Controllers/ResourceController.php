@@ -732,7 +732,7 @@ class ResourceController extends Controller
     public function resourceFavorite(Request $request): JsonResponse
     {
         $resourceId = $request->input('resourceId');
-        $userId = $request->input('userId');
+        $userId = auth()->id();
 
         if (!$userId) {
             return response()->json(['status' => 'notloggedin']);
@@ -744,11 +744,9 @@ class ResourceController extends Controller
             $favorite->delete();
             $action = 'deleted';
         } else {
-            ResourceFavorite::insert([
+            ResourceFavorite::create([
                 'resource_id' => $resourceId,
                 'user_id' => $userId,
-                'created_at' => now(),
-                'updated_at' => now(),
             ]);
             $action = 'added';
         }
