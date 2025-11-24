@@ -616,28 +616,27 @@ class ResourceControllerTest extends TestCase
         $resource = Resource::factory()->create();
 
         $response = $this->post('resources/favorite', [
-            'userId' => $user->id,
             'resourceId' => $resource->id,
         ]);
 
         $response->assertOk();
+        
         $this->assertDatabaseHas('resource_favorites', [
             'resource_id' => $resource->id,
-            'user_id' => $user->id,
+            'user_id' => $user->id, // Check for the authenticated user
         ]);
     }
 
     /**
      * @test
      */
-    public function resource_favorite_returns_not_logged_in_if_user_id_is_missing()
+    public function resource_favorite_returns_not_logged_in_if_user_is_not_authenticated()
     {
         $this->refreshApplicationWithLocale('en');
 
         $resource = Resource::factory()->create();
 
         $response = $this->post('resources/favorite', [
-            'userId' => null,
             'resourceId' => $resource->id,
         ]);
 
@@ -655,16 +654,15 @@ class ResourceControllerTest extends TestCase
         $user = User::factory()->create();
         $secondUser = User::factory()->create();
         $resource = Resource::factory()->create();
-        ResourceFavorite::insert([
+
+        // Insert existing favorite for another user
+        ResourceFavorite::create([
             'resource_id' => $resource->id,
             'user_id' => $secondUser->id,
-            'created_at' => now(),
-            'updated_at' => now()
         ]);
         
         $this->actingAs($user);
         $response = $this->post('resources/favorite', [
-            'userId' => $user->id,
             'resourceId' => $resource->id,
         ]);
 
@@ -673,7 +671,7 @@ class ResourceControllerTest extends TestCase
 
         $this->assertDatabaseHas('resource_favorites', [
             'resource_id' => $resource->id,
-            'user_id' => $user->id,
+            'user_id' => $user->id, // Ensure it's added for the authenticated user
         ]);
     }
 
@@ -686,16 +684,15 @@ class ResourceControllerTest extends TestCase
 
         $user = User::factory()->create();
         $resource = Resource::factory()->create();
-        ResourceFavorite::insert([
+
+        // Create a favorite for the user
+        ResourceFavorite::create([
             'resource_id' => $resource->id,
             'user_id' => $user->id,
-            'created_at' => now(),
-            'updated_at' => now()
         ]);
 
         $this->actingAs($user);
         $response = $this->post('resources/favorite', [
-            'userId' => $user->id,
             'resourceId' => $resource->id,
         ]);
 
@@ -704,7 +701,7 @@ class ResourceControllerTest extends TestCase
 
         $this->assertDatabaseMissing('resource_favorites', [
             'resource_id' => $resource->id,
-            'user_id' => $user->id,
+            'user_id' => $user->id, // Ensure it's deleted for the authenticated user
         ]);
     }
 
