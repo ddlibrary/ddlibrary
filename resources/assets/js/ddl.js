@@ -142,7 +142,7 @@ function closeNav() {
     document.getElementById("myNav").style.width = "0%";
 }
 
-window.favorite = function (elementId, baseUrl, resourceId, userId) {
+window.favorite = function (elementId, baseUrl, resourceId) {
     let csrf = $('meta[name="csrf-token"]').attr('content');
     
     $.ajax({
@@ -150,7 +150,6 @@ window.favorite = function (elementId, baseUrl, resourceId, userId) {
         url: baseUrl,
         data: {
             resourceId: resourceId,
-            userId: userId,
             _token: csrf
         },
         success: function(data) {
