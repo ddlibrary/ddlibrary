@@ -234,7 +234,12 @@ class ResourceController extends Controller
         DDLClearSession();
         $myResources = new Resource();
 
-        $resource = Resource::with(['attachments','resourceFile:id,name','favorites:id'])->findOrFail($resourceId);
+        $resource = Resource::with(['attachments','resourceFile:id,name'])
+            ->with('favorites', function($query){
+                $query->where('users.id', auth()->id());
+            })
+            ->withCount('favorites')
+            ->findOrFail($resourceId);
 
         if ($resource->status == 0 && ! (isAdmin() || isLibraryManager())) {  // We don't want anyone else to access unpublished resources
             abort(403);
