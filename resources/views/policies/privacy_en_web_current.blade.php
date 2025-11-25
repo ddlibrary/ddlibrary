@@ -92,10 +92,16 @@
 
                         <h3>Opt Out</h3>
 
-                        <p>Right to Learn Afghanistan - Darakht-e Danesh recognizes that users may not wish to be contacted
+                        <p class="mb-0">Right to Learn Afghanistan - Darakht-e Danesh recognizes that users may not wish to
+                            be contacted
                             about new or related products. Right to Learn Afghanistan - Darakht-e Danesh allows you to opt
                             out of any e-mail marketing that may result from use of the site. When you receive an email, you
                             will be given instructions on how to remove yourself from that list.</p>
+                        <div class="mb-4">
+                            <a href="{{ route('opt-out') }}">
+                                @lang('Opt-out of Analytics')
+                            </a>
+                        </div>
 
                         <h3>Release of Information</h3>
 
@@ -117,11 +123,6 @@
                                     href="{{ route('mobile-privacy-policy') }}">visit this link</a>.&nbsp;</strong>
                         </p>
                     </article>
-                    <div class="mb-4">
-                        <a href="{{ route('opt-out') }}" class="mt-2">
-                            @lang('Opt-out of Analytics')
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
