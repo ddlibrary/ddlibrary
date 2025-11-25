@@ -229,7 +229,7 @@
                     </div>
                     <div class="col-2 text-secondary">
                         <i class="far fa-star"></i> <span
-                            class="text-secondary resource-favorites">{{ $resource->favorites->count() }}</span>
+                            class="text-secondary resource-favorites">{{ $resource->favorites_count }}</span>
                     </div>
                     <div class="col-8 {{ Lang::locale() != 'en' ? 'text-start' : 'text-end' }}">
                         <a href="{{ URL::to('glossary') }}" class="glossary-icon"><i class="fas fa-globe"
