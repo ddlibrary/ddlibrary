@@ -2,6 +2,7 @@
 @section('title')
     @lang('Create or edit a resource - step 1')
 @endsection
+
 @section('content')
     <div class="container mt-3">
         <h3>@lang('Create or edit a resource - step 1 of 3')</h3>
@@ -126,7 +127,7 @@
                         @lang('Abstract')
                     </label>
                     <div id="editor" class="mb-2">
-                        <textarea class="form-control{{ $errors->has('abstract') ? ' is-invalid' : '' }}" name="abstract"
+                        <textarea id="abstract" class="form-control{{ $errors->has('abstract') ? ' is-invalid' : '' }}" name="abstract"
                             style="height: 200px">{{ @$resource['abstract'] }}</textarea>
                     </div>
                     @if ($errors->has('abstract'))
@@ -280,4 +281,13 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css"
         integrity="sha384-1arqhTHsGLPVJdhZo8SAycbI+y5k+G7khi5bTZ4BxHJIpCfvWoeSDgXEXXRxB/9G" crossorigin="anonymous">
+
+    <script src="https://cdn.tiny.cloud/1/mf8bbrvkn6flvfn1wc6zh0xwf92lbh2m31fodbpib4xq06q3/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+    <script>
+    tinymce.init({
+        selector: 'textarea#abstract', // Replace this CSS selector to match the placeholder element for TinyMCE
+        plugins: 'code table lists',
+        toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table'
+    });
+</script>
 @endsection
