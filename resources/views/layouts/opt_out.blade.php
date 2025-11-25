@@ -26,12 +26,23 @@
             <!-- Analytics Opt-Out Section -->
             <div class="card border mt-4">
                 <div class="card-body p-4">
-                    <h2>@lang('Opt out of Google Analytics')</h2>
-                   
-                    <div class="mb-4">
-                        <button type="button" class="btn btn-primary mt-2" onclick="gaOptout()">
-                            @lang('Opt-out of Google Analytics')
-                        </button>
+                    <h2>@lang('Opt out of Analytics')</h2>
+
+                    <div class="mb-">
+                        <div class="d-flex gap-4">
+                            <div class="d-flex flex-column">
+                                <span class="small">Opt out of Google Analytics</span>
+                                <button type="button" class="btn btn-primary" onclick="gaOptout()">
+                                    @lang('Opt-out of Google Analytics')
+                                </button>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <span class="small">Opt out of Matomo Analytics</span>
+                                <button type="button" class="btn btn-primary" onclick="gaOptout()">
+                                    @lang('Opt-out of Motamoo Analytics')
+                                </button>
+                            </div>
+                        </div>
                         <p class="mt-3 small mb-0" id="ga-optout-status"></p>
                     </div>
 
