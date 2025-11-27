@@ -282,12 +282,49 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css"
         integrity="sha384-1arqhTHsGLPVJdhZo8SAycbI+y5k+G7khi5bTZ4BxHJIpCfvWoeSDgXEXXRxB/9G" crossorigin="anonymous">
 
-    <script src="https://cdn.tiny.cloud/1/mf8bbrvkn6flvfn1wc6zh0xwf92lbh2m31fodbpib4xq06q3/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
-    <script>
-    tinymce.init({
-        selector: 'textarea#abstract', // Replace this CSS selector to match the placeholder element for TinyMCE
-        plugins: 'code table lists',
-        toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table'
-    });
-</script>
 @endsection
+    @push('scripts')
+        <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+        <script src="{{ asset('ckeditor/config.js') }}"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+                <script src="https://cdn.tiny.cloud/1/mf8bbrvkn6flvfn1wc6zh0xwf92lbh2m31fodbpib4xq06q3/tinymce/8/tinymce.min.js" referrerpolicy="origin"></script>
+
+        <script src="{{ asset('js/tinymce-jquery.min.js') }}"></script>
+
+        <script>
+            // var getUrl = window.location;
+            // var baseUrl = <?php echo json_encode(URL::to('/')); ?>;
+            // var options = {
+            //     filebrowserImageBrowseUrl: baseUrl+'/laravel-filemanager?type=Images',
+            //     filebrowserImageUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Images&_token=',
+            //     filebrowserBrowseUrl: baseUrl+'/laravel-filemanager?type=Files',
+            //     filebrowserUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Files&_token='
+            // };
+            // CKEDITOR.config.contentsLangDirection = '{{ app()->getLocale() != "en"?"rtl":"ltr"}}';
+            // CKEDITOR.config.filebrowserUploadMethod = 'form';
+            // CKEDITOR.replace( 'abstract', options );
+        </script>
+        <script>
+      $('textarea#abstract').tinymce({
+        height: 500,
+        menubar: false,
+        plugins: [
+          'a11ychecker', 'accordion', 'advlist', 'anchor', 'autolink', 'autosave',
+          'charmap', 'code', 'codesample', 'directionality', 'emoticons', 'exportpdf',
+          'exportword', 'fullscreen', 'help', 'image', 'importcss', 'importword',
+          'insertdatetime', 'link', 'lists', 'markdown', 'math', 'media', 'nonbreaking',
+          'pagebreak', 'preview', 'quickbars', 'save', 'searchreplace', 'table',
+          'visualblocks', 'visualchars', 'wordcount'
+        ],
+        toolbar: 'undo redo | accordion accordionremove | ' +
+          'importword exportword exportpdf | math | ' +
+          'blocks fontfamily fontsize | bold italic underline strikethrough | ' +
+          'align numlist bullist | image | table media | image | ' +
+          'lineheight outdent indent | forecolor backcolor removeformat | ' +
+          'charmap emoticons | code fullscreen preview | save print | ' +
+          'pagebreak anchor codesample | ltr rtl',
+        menubar: 'file edit view insert format tools table help'
+      });
+    </script>
+    @endpush
