@@ -90,7 +90,7 @@ $('textarea#abstract').tinymce({
             xhr.send(formData);
         });
     },
-    // Laravel File Manager integration for browsing (same URLs as CKEditor)
+    // Laravel File Manager integration for browsing
     file_picker_callback: function(callback, value, meta) {
         var x = window.innerWidth || document.documentElement.clientWidth || document
             .getElementsByTagName('body')[0].clientWidth;
@@ -99,7 +99,6 @@ $('textarea#abstract').tinymce({
         var type = meta.filetype;
         var url;
 
-        // Use the same URLs as CKEditor
         if (type == 'image') {
             url = filebrowserImageBrowseUrl;
         } else {
@@ -109,11 +108,10 @@ $('textarea#abstract').tinymce({
         // Store the callback for Laravel File Manager to use
         window.tinymceFilePickerCallback = callback;
 
-        // Open Laravel File Manager in a popup window (like CKEditor did)
+        // Open Laravel File Manager in a popup window
         window.open(url, 'FileManager', 'width=' + x * 0.8 + ',height=' + y * 0.8 + ',resizable=yes');
 
         // Laravel File Manager will call window.SetUrl when a file is selected
-        // This matches the behavior of CKEditor's file browser
         window.SetUrl = function(items) {
             if (window.tinymceFilePickerCallback) {
                 if (items && items.length > 0) {
