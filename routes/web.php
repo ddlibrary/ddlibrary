@@ -339,6 +339,10 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         });
     });
 
+    Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {
+        \UniSharp\LaravelFilemanager\Lfm::routes();
+    });
+
 });
 
 Route::post('/upload-image', [ResourceFileController::class, 'uploadImage'])->name('upload.image');
