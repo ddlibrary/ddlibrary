@@ -42,13 +42,13 @@ class ResourceFileController extends Controller
         }
         $file = $request->file('image');
         $filelabel = auth()->user()->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-        $path = $filelabel; // relative to the public disk root (storage/app/public/files)
+        $path = 'files/' . $filelabel; // relative to the public disk root (storage/app/public/files)
 
         $diskType = 's3';
         if(config('app.env') != 'production'){
             $diskType = 'public';
         }
-        Storage::disk($diskType)->put('files/', file_get_contents($file));
+        Storage::disk($diskType)->put($path, file_get_contents($file));
 
         $imagine = new Imagine();
         $image = $imagine->open($file->getRealPath());
@@ -60,7 +60,7 @@ class ResourceFileController extends Controller
         // Get file size
         $size = round($file->getSize() / 1024); // Get with KB
 
-        $thumbnailPath = 'thumbnails/' . $filelabel;
+        $thumbnailPath = 'files/thumbnails/' . $filelabel;
 
         $tempDirectory = sys_get_temp_dir() . '/thumbnails';
 
@@ -70,7 +70,7 @@ class ResourceFileController extends Controller
 
         $image->resize(new Box(250, 250))->save($tempDirectory . '/' . $filelabel);
 
-        Storage::disk($diskType)->put('resources/thumbnails/', file_get_contents($tempDirectory . '/' . $filelabel));
+        Storage::disk($diskType)->put($thumbnailPath, file_get_contents($tempDirectory . '/' . $filelabel));
 
         $resourceFile = ResourceFile::create([
             'label' => $request->image_name ?: pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
@@ -91,7 +91,7 @@ class ResourceFileController extends Controller
         return response()->json([
             'success' => true,
             'resource_file_id' => $resourceFile->id,
-            'imageUrl' => Storage::disk('public')->url($thumbnailPath),
+            'imageUrl' => Storage::disk($diskType)->temporaryUrl($thumbnailPath, now()->addMinutes(5)),
             'imageName' => $resourceFile->label,
             'message' => __('Image uploaded successfully'),
         ]);
