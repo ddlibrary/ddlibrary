@@ -283,3 +283,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function toggleTranslation(checkbox) {
+    if(checkbox.checked){
+        $(".translation").removeClass('d-none')
+        $("#translator").val('').attr('required', true);
+    }else{
+        $(".translation").addClass('d-none');
+        $("#translator").attr('required', false);
+    }
+}
+
+// Make functions globally accessible
+window.setActive = setActive;
+window.searchImages = searchImages;
+window.selectNewImage = selectNewImage;
+window.selectImage = selectImage;
+window.toggleTranslation = toggleTranslation;
+
