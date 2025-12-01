@@ -651,7 +651,7 @@ if (! function_exists('watermark_pdf')) {
                 }
             }
 
-            return Storage::disk($diskType)->temporaryUrl('files/$image', now()->addMinutes(5));
+            return Storage::disk($diskType)->temporaryUrl("files/$image", now()->addMinutes(5));
         }
     }
 }
