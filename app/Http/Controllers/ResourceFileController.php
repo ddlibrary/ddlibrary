@@ -42,7 +42,7 @@ class ResourceFileController extends Controller
         }
         $file = $request->file('image');
         $filelabel = auth()->user()->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-        $path = 'files/' . $filelabel; // relative to the public disk root (storage/app/public/files)
+        $path = 'files/' . $filelabel;
 
         $diskType = 's3';
         if(config('app.env') != 'production'){
@@ -76,7 +76,7 @@ class ResourceFileController extends Controller
             'label' => $request->image_name ?: pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
             'language' => $request->language ?: config('app.locale'),
             'taxonomy_term_data_id' => $request->taxonomy_term_data_id,
-            'name' => $path,
+            'name' => $filelabel,
             'height' => $height,
             'width' => $width,
             'size' => $size,
