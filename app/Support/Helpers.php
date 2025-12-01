@@ -645,13 +645,13 @@ if (! function_exists('watermark_pdf')) {
                 $diskType = 'public';
             }
             if ($isThumbnail) {
-                $thumbnailPath = "thumbnails/$image";
+                $thumbnailPath = "files/thumbnails/$image";
                 if (Storage::disk($diskType)->exists($thumbnailPath)) {
-                    return Storage::disk($diskType)->url($thumbnailPath);
+                    return Storage::disk($diskType)->temporaryUrl($thumbnailPath, now()->addMinutes(5));
                 }
             }
 
-            return Storage::disk($diskType)->url($image);
+            return Storage::disk($diskType)->temporaryUrl('files/$image', now()->addMinutes(5));
         }
     }
 }
