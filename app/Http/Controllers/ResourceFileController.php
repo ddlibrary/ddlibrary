@@ -44,8 +44,11 @@ class ResourceFileController extends Controller
         $filelabel = auth()->user()->id . '_' . time() . '.' . $file->getClientOriginalExtension();
         $path = $filelabel; // relative to the public disk root (storage/app/public/files)
 
-        // Save original image under public disk root
-        Storage::disk('public')->put($path, file_get_contents($file));
+        $diskType = 's3';
+        if(config('app.env') != 'production'){
+            $diskType = 'public';
+        }
+        Storage::disk($diskType)->put('files/', file_get_contents($file));
 
         $imagine = new Imagine();
         $image = $imagine->open($file->getRealPath());
@@ -67,7 +70,7 @@ class ResourceFileController extends Controller
 
         $image->resize(new Box(250, 250))->save($tempDirectory . '/' . $filelabel);
 
-        Storage::disk('public')->put($thumbnailPath, file_get_contents($tempDirectory . '/' . $filelabel));
+        Storage::disk($diskType)->put('resources/thumbnails/', file_get_contents($tempDirectory . '/' . $filelabel));
 
         $resourceFile = ResourceFile::create([
             'label' => $request->image_name ?: pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),

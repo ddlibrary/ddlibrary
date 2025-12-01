@@ -640,14 +640,18 @@ if (! function_exists('watermark_pdf')) {
     if (!function_exists('getResourceImage')) {
         function getResourceImage($image, $isThumbnail = false)
         {
+            $diskType = 's3';
+            if(config('app.env') != 'production'){
+                $diskType = 'public';
+            }
             if ($isThumbnail) {
                 $thumbnailPath = "thumbnails/$image";
-                if (Storage::disk('public')->exists($thumbnailPath)) {
-                    return Storage::disk('public')->url($thumbnailPath);
+                if (Storage::disk($diskType)->exists($thumbnailPath)) {
+                    return Storage::disk($diskType)->url($thumbnailPath);
                 }
             }
 
-            return Storage::disk('public')->url($image);
+            return Storage::disk($diskType)->url($image);
         }
     }
 }
