@@ -10,6 +10,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @see \App\Http\Controllers\ResourceController
@@ -17,7 +19,7 @@ use Tests\TestCase;
 class ResourceControllerTest extends TestCase
 {
     use RefreshDatabase;
-
+    
     /**
      * @test
      */
@@ -694,5 +696,33 @@ class ResourceControllerTest extends TestCase
         $response = $this->get('en/resource/' . $resource->id);
 
         $response->assertForbidden();
+    }
+
+    /**
+     * @test
+     */
+    public function upload_abstract_image_returns_success_response_with_valid_image(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // Create a fake image file
+        $file = UploadedFile::fake()->image('test-image.jpg', 800, 600);
+
+        $response = $this->postJson('/upload-abstract-image', [
+            'upload' => $file,
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'url',
+            'location',
+        ]);
+
+        // Verify the URL contains the expected pattern
+        $responseData = $response->json();
+        $this->assertStringContainsString($user->id . '_', $responseData['url']);
+        $this->assertStringContainsString('.jpg', $responseData['url']);
+        $this->assertEquals($responseData['url'], $responseData['location']);
     }
 }
