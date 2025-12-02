@@ -799,4 +799,60 @@ class ResourceControllerTest extends TestCase
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['upload']);
     }
+
+     /**
+     * @test
+     */
+    public function upload_abstract_image_fails_with_invalid_mime_type(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // Create a fake text file
+        $file = UploadedFile::fake()->create('document.txt', 100);
+
+        $response = $this->postJson('/upload-abstract-image', [
+            'upload' => $file,
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['upload']);
+    }
+
+    /**
+     * @test
+     */
+    public function upload_abstract_image_fails_with_file_exceeding_max_size(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // Create a fake image file larger than 10MB (10240 KB)
+        $file = UploadedFile::fake()->create('large-image.jpg', 10241);
+
+        $response = $this->postJson('/upload-abstract-image', [
+            'upload' => $file,
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['upload']);
+    }
+
+    /**
+     * @test
+     */
+    public function upload_abstract_image_accepts_jpeg_format(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $file = UploadedFile::fake()->image('test.jpeg', 500, 500);
+
+        $response = $this->postJson('/upload-abstract-image', [
+            'upload' => $file,
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('.jpeg', $response->json('url'));
+    }
 }
