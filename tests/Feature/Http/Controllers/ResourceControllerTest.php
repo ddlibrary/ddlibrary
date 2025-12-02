@@ -725,4 +725,31 @@ class ResourceControllerTest extends TestCase
         $this->assertStringContainsString('.jpg', $responseData['url']);
         $this->assertEquals($responseData['url'], $responseData['location']);
     }
+
+    /**
+     * @test
+     */
+    public function upload_abstract_image_stores_file_in_public_disk_in_testing_environment(): void
+    {
+        Storage::fake('public');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $file = UploadedFile::fake()->image('test-image.png', 600, 600);
+
+        $response = $this->postJson('/upload-abstract-image', [
+            'upload' => $file,
+        ]);
+
+        $response->assertStatus(200);
+
+        // Extract filename from response URL
+        $responseData = $response->json();
+        $url = $responseData['url'];
+        $filename = basename(parse_url($url, PHP_URL_PATH));
+
+        // Assert file was stored
+        Storage::disk('public')->assertExists($filename);
+    }
 }
