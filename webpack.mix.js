@@ -13,4 +13,5 @@ let mix = require('laravel-mix');
 mix.sass('resources/assets/sass/app.scss', 'public/css/all.css')
     .js('resources/assets/js/ddl.js', 'public/js/all.js')
     .js('resources/assets/js/epub.js', 'public/js/epub.js')
+    .js('resources/assets/js/resource.js', 'public/js/resource.js')
     .js('resources/assets/js/tinymce.js', 'public/js/tinymce.js');
