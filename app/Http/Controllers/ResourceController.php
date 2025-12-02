@@ -1565,4 +1565,41 @@ class ResourceController extends Controller
             abort(403);
         }
     }
+
+    /**
+     * Upload image for TinyMCE editor
+     * Images are stored and their URLs are embedded in the abstract field
+     */
+    public function uploadAbstractImage(Request $request)
+    {
+        $request->validate([
+            'upload' => 'required|image|mimes:jpeg,jpg,png,gif,bmp|max:10240', // 10MB max
+        ]);
+
+        $file = $request->file('upload');
+        $uniqueId = uniqid();
+        $fileName = auth()->user()->id . '_' . $uniqueId . '_' . time() . '.' . $file->getClientOriginalExtension();
+        
+        // Determine disk type based on environment
+        $diskType = 's3';
+        if(config('app.env') != 'production'){
+            $diskType = 'public';
+        }
+
+        // Store image
+        Storage::disk($diskType)->put($fileName, file_get_contents($file));
+
+        // Generate URL based on disk type
+        if ($diskType === 's3') {
+            $imageUrl = Storage::disk('s3')->url($fileName);
+        } else {
+            $imageUrl = Storage::disk('public')->url($fileName);
+        }
+
+        // Return response in format expected by TinyMCE
+        return response()->json([
+            'url' => $imageUrl,
+            'location' => $imageUrl,
+        ]);
+    }
 }
