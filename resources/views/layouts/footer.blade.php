@@ -16,10 +16,10 @@
                 <div class="footer-right-content">
                     <div class="app-badges mb-3 mb-md-0">
                         <a href="https://play.google.com/store/apps/details?id=com.ddacademi.library" target="_blank" title="@lang('Get it on Google Play')">
-                            <img src="{{ (Lang::locale() != 'en') ?  Storage::disk('s3')->temporaryUrl('files/google-play-badge-fa.png', now()->addMinutes(5)) : Storage::disk('s3')->temporaryUrl('files/google-play-badge-en.png', now()->addMinutes(5)) }}" alt="@lang('Google Play')" class="app-badge">
+                            <img src="{{ (Lang::locale() != 'en') ?  asset('storage/files/google-play-badge-fa.png') : asset('storage/files/google-play-badge-en.png') }}" alt="@lang('Google Play')" class="app-badge">
                         </a>
                         <a href="https://apps.apple.com/us/app/darakht-e-danesh-library/id6745165605" target="_blank" title="@lang('Download on the App Store')">
-                            <img src="{{ Storage::disk('s3')->temporaryUrl('files/app-store-badge-en.svg', now()->addMinutes(5)) }}" alt="@lang('App Store')" class="app-badge">
+                            <img src="{{ asset('storage/files/app-store-badge-en.svg') }}" alt="@lang('App Store')" class="app-badge">
                         </a>
                     </div>
 
