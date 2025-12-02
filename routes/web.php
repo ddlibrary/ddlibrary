@@ -339,14 +339,11 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         });
     });
 
-    Route::prefix('laravel-filemanager')->middleware('web', 'auth')->group(function () {
-        \UniSharp\LaravelFilemanager\Lfm::routes();
-    });
-
 });
 
 Route::post('/upload-image', [ResourceFileController::class, 'uploadImage'])->name('upload.image');
 Route::get('/search-images', [ResourceFileController::class, 'searchImages'])->name('search.images');
+Route::post('/upload-abstract-image', [ResourceController::class, 'uploadAbstractImage'])->name('upload.abstract.image')->middleware('auth');
 
 /** OTHER PAGES THAT SHOULD NOT BE LOCALIZED **/
 Route::post('resources/favorite', [ResourceController::class, 'resourceFavorite']);
