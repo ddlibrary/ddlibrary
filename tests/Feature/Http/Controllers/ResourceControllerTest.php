@@ -752,4 +752,51 @@ class ResourceControllerTest extends TestCase
         // Assert file was stored
         Storage::disk('public')->assertExists($filename);
     }
+
+    /**
+     * @test
+     */
+    public function upload_abstract_image_fails_without_authentication(): void
+    {
+        $file = UploadedFile::fake()->image('test-image.jpg');
+
+        $response = $this->postJson('/upload-abstract-image', [
+            'upload' => $file,
+        ]);
+
+        $response->assertStatus(401);
+    }
+
+    /**
+     * @test
+     */
+    public function upload_abstract_image_fails_without_upload_field(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $response = $this->postJson('/upload-abstract-image', []);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['upload']);
+    }
+
+    /**
+     * @test
+     */
+    public function upload_abstract_image_fails_with_non_image_file(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // Create a fake PDF file
+        $file = UploadedFile::fake()->create('document.pdf', 100);
+
+        $response = $this->postJson('/upload-abstract-image', [
+            'upload' => $file,
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['upload']);
+    }
 }
