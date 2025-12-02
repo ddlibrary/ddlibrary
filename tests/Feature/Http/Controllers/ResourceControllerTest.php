@@ -12,6 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Filesystem\FilesystemAdapter;
 
 /**
  * @see \App\Http\Controllers\ResourceController
@@ -854,5 +855,282 @@ class ResourceControllerTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertStringContainsString('.jpeg', $response->json('url'));
+    }
+
+    /**
+     * @test
+     */
+    public function upload_abstract_image_accepts_png_format(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $file = UploadedFile::fake()->image('test.png', 500, 500);
+
+        $response = $this->postJson('/upload-abstract-image', [
+            'upload' => $file,
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('.png', $response->json('url'));
+    }
+
+    /**
+     * @test
+     */
+    public function upload_abstract_image_accepts_gif_format(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $file = UploadedFile::fake()->image('test.gif', 500, 500);
+
+        $response = $this->postJson('/upload-abstract-image', [
+            'upload' => $file,
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertStringContainsString('.gif', $response->json('url'));
+    }
+
+    /**
+     * @test
+     */
+    public function upload_abstract_image_generates_unique_filename_with_user_id(): void
+    {
+        Storage::fake('public');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $file1 = UploadedFile::fake()->image('test1.jpg', 500, 500);
+        $file2 = UploadedFile::fake()->image('test2.jpg', 500, 500);
+
+        $response1 = $this->postJson('/upload-abstract-image', ['upload' => $file1]);
+        $response2 = $this->postJson('/upload-abstract-image', ['upload' => $file2]);
+
+        $response1->assertStatus(200);
+        $response2->assertStatus(200);
+
+        $url1 = $response1->json('url');
+        $url2 = $response2->json('url');
+
+        // Both URLs should contain user ID
+        $this->assertStringContainsString($user->id . '_', $url1);
+        $this->assertStringContainsString($user->id . '_', $url2);
+
+        // URLs should be different (unique filenames)
+        $this->assertNotEquals($url1, $url2);
+    }
+
+    /**
+     * @test
+     */
+    public function upload_abstract_image_can_be_used_in_tinymce_workflow(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+        
+        Storage::fake('public');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // Step 1: Upload image via TinyMCE
+        $file = UploadedFile::fake()->image('editor-image.jpg', 800, 600);
+
+        $uploadResponse = $this->postJson('/upload-abstract-image', [
+            'upload' => $file,
+        ]);
+
+        $uploadResponse->assertStatus(200);
+        $imageUrl = $uploadResponse->json('url');
+
+        // Step 2: Create resource with image URL in abstract
+        $abstract = '<p>This is a test resource with an image:</p><img src="' . $imageUrl . '" alt="Test Image" />';
+
+        $step1Response = $this->post('en/resources/add/step1', [
+            'title' => 'Resource with TinyMCE Image',
+            'author' => 'Test Author',
+            'publisher' => 'Test Publisher',
+            'translator' => 'Test Translator',
+            'language' => 'en',
+            'abstract' => $abstract,
+        ]);
+
+        $step1Response->assertRedirect('/resources/add/step2');
+
+        // Verify the abstract was stored in session with the image URL
+        $sessionData = session('new_resource_step_1');
+        $this->assertNotNull($sessionData);
+        $this->assertStringContainsString($imageUrl, $sessionData['abstract']);
+        $this->assertStringContainsString('<img src="', $sessionData['abstract']);
+    }
+
+    /**
+     * @test
+     */
+    public function upload_abstract_image_stores_file_in_s3_in_production_environment(): void
+    {
+        // Temporarily set environment to production
+        config(['app.env' => 'production']);
+        Storage::fake('s3');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $file = UploadedFile::fake()->image('production-image.jpg', 800, 600);
+
+        $response = $this->postJson('/upload-abstract-image', [
+            'upload' => $file,
+        ]);
+
+        $response->assertStatus(200);
+
+        // Extract filename from response URL
+        $responseData = $response->json();
+        $url = $responseData['url'];
+        $filename = basename(parse_url($url, PHP_URL_PATH));
+
+        // Assert file was stored in S3
+        Storage::disk('s3')->assertExists($filename);
+
+        // Restore environment
+        config(['app.env' => 'testing']);
+    }
+
+    /**
+     * @test
+     */
+    public function upload_abstract_image_returns_s3_url_in_production_environment(): void
+    {
+        // Temporarily set environment to production
+        config(['app.env' => 'production']);
+        Storage::fake('s3');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $file = UploadedFile::fake()->image('s3-test.png', 600, 600);
+
+        $response = $this->postJson('/upload-abstract-image', [
+            'upload' => $file,
+        ]);
+
+        $response->assertStatus(200);
+
+        $responseData = $response->json();
+        
+        // Verify both url and location are returned
+        $this->assertArrayHasKey('url', $responseData);
+        $this->assertArrayHasKey('location', $responseData);
+        $this->assertEquals($responseData['url'], $responseData['location']);
+
+        // Verify the URL contains the filename pattern
+        $this->assertStringContainsString($user->id . '_', $responseData['url']);
+        $this->assertStringContainsString('.png', $responseData['url']);
+
+        // Restore environment
+        config(['app.env' => 'testing']);
+    }
+
+    /**
+     * @test
+     */
+    public function upload_abstract_image_uses_correct_disk_based_on_environment(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // Test 1: Non-production environment should use public disk
+        config(['app.env' => 'local']);
+        Storage::fake('public');
+        Storage::fake('s3');
+
+        $file1 = UploadedFile::fake()->image('local-test.jpg', 500, 500);
+
+        $response1 = $this->postJson('/upload-abstract-image', [
+            'upload' => $file1,
+        ]);
+
+        $response1->assertStatus(200);
+        $filename1 = basename(parse_url($response1->json('url'), PHP_URL_PATH));
+        
+        // Should be in public disk
+        Storage::disk('public')->assertExists($filename1);
+        // Should NOT be in S3
+        Storage::disk('s3')->assertMissing($filename1);
+
+        // Test 2: Production environment should use S3
+        config(['app.env' => 'production']);
+        Storage::fake('public');
+        Storage::fake('s3');
+
+        $file2 = UploadedFile::fake()->image('prod-test.jpg', 500, 500);
+
+        $response2 = $this->postJson('/upload-abstract-image', [
+            'upload' => $file2,
+        ]);
+
+        $response2->assertStatus(200);
+        $filename2 = basename(parse_url($response2->json('url'), PHP_URL_PATH));
+        
+        // Should be in S3
+        Storage::disk('s3')->assertExists($filename2);
+        // Should NOT be in public disk
+        Storage::disk('public')->assertMissing($filename2);
+
+        // Restore environment
+        config(['app.env' => 'testing']);
+    }
+
+
+    /**
+     * @test
+     */
+    public function upload_abstract_image_s3_url_can_be_used_in_resource_abstract(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+        
+        config(['app.env' => 'production']);
+        Storage::fake('s3');
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // Upload image to S3
+        $file = UploadedFile::fake()->image('s3-resource-image.jpg', 800, 600);
+
+        $uploadResponse = $this->postJson('/upload-abstract-image', [
+            'upload' => $file,
+        ]);
+
+        $uploadResponse->assertStatus(200);
+        $imageUrl = $uploadResponse->json('url');
+
+        // Verify file is in S3
+        $filename = basename(parse_url($imageUrl, PHP_URL_PATH));
+        Storage::disk('s3')->assertExists($filename);
+
+        // Create resource with S3 image URL in abstract
+        $abstract = '<p>Resource with S3 image:</p><img src="' . $imageUrl . '" alt="S3 Image" />';
+
+        $step1Response = $this->post('en/resources/add/step1', [
+            'title' => 'Resource with S3 Image',
+            'author' => 'Test Author',
+            'publisher' => 'Test Publisher',
+            'translator' => 'Test Translator',
+            'language' => 'en',
+            'abstract' => $abstract,
+        ]);
+
+        $step1Response->assertRedirect('/resources/add/step2');
+
+        // Verify the S3 URL was stored in session
+        $sessionData = session('new_resource_step_1');
+        $this->assertNotNull($sessionData);
+        $this->assertStringContainsString($imageUrl, $sessionData['abstract']);
+
+        // Restore environment
+        config(['app.env' => 'testing']);
     }
 }
