@@ -2,7 +2,11 @@
 @section('title')
     @lang('Create or edit a resource - step 1')
 @endsection
-
+@section('style')
+<style>
+    .tox-promotion-link { display:none !important;}
+</style>
+@endsection
 @section('content')
     <div class="container mt-3">
         <h3>@lang('Create or edit a resource - step 1 of 3')</h3>
