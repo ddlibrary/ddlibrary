@@ -285,10 +285,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-    <script src="https://cdn.tiny.cloud/1/mf8bbrvkn6flvfn1wc6zh0xwf92lbh2m31fodbpib4xq06q3/tinymce/8/tinymce.min.js"
-        referrerpolicy="origin"></script>
+    <!-- TinyMCE Free Version from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js" referrerpolicy="origin"></script>
 
-    <script src="{{ asset('js/tinymce-jquery.min.js') }}"></script>
     <script src="{{ asset('js/tinymce.js') }}"></script>
 
 @endsection
