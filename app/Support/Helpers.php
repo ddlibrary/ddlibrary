@@ -644,14 +644,25 @@ if (! function_exists('watermark_pdf')) {
             if(config('app.env') != 'production'){
                 $diskType = 'public';
             }
+            
             if ($isThumbnail) {
                 $thumbnailPath = "files/thumbnails/$image";
                 if (Storage::disk($diskType)->exists($thumbnailPath)) {
-                    return Storage::disk($diskType)->temporaryUrl($thumbnailPath, now()->addMinutes(5));
+                    // Use temporaryUrl for S3, regular url for public disk
+                    if ($diskType === 's3') {
+                        return Storage::disk($diskType)->temporaryUrl($thumbnailPath, now()->addMinutes(5));
+                    }
+                        
+                    return Storage::disk($diskType)->url($thumbnailPath);
                 }
             }
 
-            return Storage::disk($diskType)->temporaryUrl("files/$image", now()->addMinutes(5));
+            // Use temporaryUrl for S3, regular url for public disk
+            if ($diskType === 's3') {
+                return Storage::disk($diskType)->temporaryUrl("files/$image", now()->addMinutes(5));
+            } 
+            
+            return Storage::disk($diskType)->url("files/$image");
         }
     }
 }
