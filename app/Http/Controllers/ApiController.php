@@ -11,6 +11,7 @@ use App\Models\Resource;
 use App\Models\ResourceAttachment;
 use App\Models\ResourceComment;
 use App\Models\ResourceFavorite;
+use App\Models\ResourceFile;
 use App\Models\ResourceView;
 use App\Models\User;
 use App\Models\UserProfile;
@@ -349,10 +350,11 @@ class ApiController extends Controller
         $results = [];
 
         foreach ($resources->unique('id') as $resource) {
+            $fileName = ResourceFile::where('resource_id', $resource->id)->value('name');
             $res['id'] = $resource->id;
             $res['title'] = $resource->title;
             $res['abstract'] = $resource->abstract;
-            $res['img'] = getResourceImage($resource->resourceFile->name, true);
+            $res['img'] = getResourceImage($fileName, true);
 
             if ($lang == $resource->language) {
                 array_push($results, $res);
