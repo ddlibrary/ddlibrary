@@ -44,7 +44,7 @@ class FileController extends Controller
     }
 
     /**
-     * Upload image for TinyMCE editor (abstract field)
+     * Upload image for TinyMCE editor
      */
     public function uploadtImageFromEditor(Request $request)
     {
