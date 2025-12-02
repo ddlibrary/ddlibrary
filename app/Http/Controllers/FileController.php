@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DownloadCount;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FileController extends Controller
@@ -40,5 +41,37 @@ class FileController extends Controller
             $fileDownload->ip_address = request()->ip();
             $fileDownload->save();
         }
+    }
+
+    /**
+     * Upload image for TinyMCE editor (abstract field)
+     */
+    public function uploadtImageFromEditor(Request $request)
+    {
+        $request->validate([
+            'upload' => 'required|image|mimes:jpeg,jpg,png,gif,bmp|max:10240', // 10MB max
+        ]);
+
+        $file = $request->file('upload');
+        $uniqueId = uniqid();
+        $fileName = auth()->user()->id . '_' . $uniqueId . '_' . time() . '.' . $file->getClientOriginalExtension();
+        
+        $diskType = 's3';
+        if(config('app.env') != 'production'){
+            $diskType = 'public';
+        }
+
+        Storage::disk($diskType)->put($fileName, file_get_contents($file));
+
+        if ($diskType === 's3') {
+            $imageUrl = Storage::disk('s3')->url($fileName);
+        } else {
+            $imageUrl = Storage::disk('public')->url($fileName);
+        }
+
+        return response()->json([
+            'url' => $imageUrl,
+            'location' => $imageUrl,
+        ]);
     }
 }
