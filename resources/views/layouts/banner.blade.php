@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg px-2" style="border-radius: 0; background-color: #000000;">
     <a href="{{ URL::to('/') }}" class="navbar-brand" title="Website Logo">
-        <img src="{{ asset('storage/files/logo-dd.png') }}" alt="DDL Logo">
+        <img src="{{ Storage::disk('s3')->temporaryUrl('files/logo-dd.png', now()->addMinutes(5)) }}" alt="DDL Logo">
     </a>
     <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
