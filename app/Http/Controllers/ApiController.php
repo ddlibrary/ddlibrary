@@ -352,7 +352,7 @@ class ApiController extends Controller
             $res['id'] = $resource->id;
             $res['title'] = $resource->title;
             $res['abstract'] = $resource->abstract;
-            $res['img'] = getImagefromResource($resource->abstract);
+            $res['img'] = getResourceImage($resource->resourceFile->name, true);
 
             if ($lang == $resource->language) {
                 array_push($results, $res);
