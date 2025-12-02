@@ -23,7 +23,7 @@
                    class="col-6 col-sm-4 col-lg-2 text-center"
                 >
                     <div class="home-subject-areas">
-                        <img src="{{ Storage::disk('public')->url($subject->file_name) }}" alt="Subject Area Icon">
+                        <img src="{{ Storage::disk('s3')->temporaryUrl('files/'.$subject->file_name, now()->addMinutes(5)) }}" alt="Subject Area Icon">
                         <p>{{ $subject->name }}</p>
                         <p class="resource-count">{{ App\Models\Resource::countSubjectAreas($subject->id)->total }}
                             @lang('Resources')</p>
@@ -119,7 +119,7 @@
                class="col-6 col-sm-4 col-lg-2 text-center"
             >
                 <div class="home-subject-areas">
-                    <img src="{{ Storage::disk('public')->url('StoryWeaver family and friends.svg') }}" alt="Family & friends collection">
+                    <img src="{{ Storage::disk('s3')->temporaryUrl('files/StoryWeaver family and friends.svg', now()->addMinutes(5)) }}" alt="Family & friends collection">
                     <p>@lang('Family & Friends')</p>
                 </div>
             </a>
@@ -128,7 +128,7 @@
                class="col-6 col-sm-4 col-lg-2 text-center"
             >
                 <div class="home-subject-areas">
-                    <img src="{{ Storage::disk('public')->url('StoryWeaver growing up.svg') }}" alt="Growing up collection">
+                    <img src="{{ Storage::disk('s3')->temporaryUrl('files/StoryWeaver growing up.svg', now()->addMinutes(5)) }}" alt="Growing up collection">
                     <p>@lang('Growing Up')</p>
                 </div>
             </a>
@@ -137,7 +137,7 @@
                class="col-6 col-sm-4 col-lg-2 text-center"
             >
                 <div class="home-subject-areas">
-                    <img src="{{ Storage::disk('public')->url('StoryWeaver funny.svg') }}" alt="Funny collection">
+                    <img src="{{ Storage::disk('s3')->temporaryUrl('files/StoryWeaver funny.svg', now()->addMinutes(5)) }}" alt="Funny collection">
                     <p>@lang('Funny')</p>
                 </div>
             </a>
@@ -146,7 +146,7 @@
                class="col-6 col-sm-4 col-lg-2 text-center"
             >
                 <div class="home-subject-areas">
-                    <img src="{{ Storage::disk('public')->url('StoryWeaver STEM.svg') }}" alt="STEM collection">
+                    <img src="{{ Storage::disk('s3')->temporaryUrl('files/StoryWeaver STEM.svg', now()->addMinutes(5)) }}" alt="STEM collection">
                     <p>@lang('STEM')</p>
                 </div>
             </a>
@@ -161,7 +161,7 @@
                class="col-6 col-sm-4 col-lg-2 text-center"
             >
                 <div class="home-subject-areas">
-                    <img src="{{ Storage::disk('public')->url('StoryWeaver pashto.svg') }}" alt="Pashto translation">
+                    <img src="{{ Storage::disk('s3')->temporaryUrl('files/StoryWeaver pashto.svg', now()->addMinutes(5)) }}" alt="Pashto translation">
                     <p>@lang('Pashto')</p>
                 </div>
             </a>
@@ -170,7 +170,7 @@
                class="col-6 col-sm-4 col-lg-2 text-center"
             >
                 <div class="home-subject-areas">
-                    <img src="{{ Storage::disk('public')->url('StoryWeaver dari.svg') }}" alt="Dari/Farsi translation" width="65" height="54">
+                    <img src="{{ Storage::disk('s3')->temporaryUrl('files/StoryWeaver dari.svg', now()->addMinutes(5)) }}" alt="Dari/Farsi translation" width="65" height="54">
                     <p>@lang('Dari/Farsi')</p>
                 </div>
             </a>
