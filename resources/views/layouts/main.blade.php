@@ -19,7 +19,7 @@
     <meta property="og:description" content="@yield('description')" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="shortcut icon" href="{{ asset('storage/files/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ Storage::disk('s3')->temporaryUrl('files/favicon.ico', now()->addMinutes(5)) }}">
 
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 
