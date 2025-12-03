@@ -648,11 +648,21 @@ if (! function_exists('watermark_pdf')) {
             if ($isThumbnail) {
                 $thumbnailPath = "files/thumbnails/$image";
                 if (Storage::disk($diskType)->exists($thumbnailPath)) {
-                    return getFile($thumbnailPath);
+                    // Use temporaryUrl for S3, regular url for public disk
+                    if ($diskType === 's3') {
+                        return Storage::disk($diskType)->temporaryUrl($thumbnailPath, now()->addMinutes(5));
+                    }
+
+                    return Storage::disk($diskType)->url($thumbnailPath);
                 }
             }
 
-            return getFile("files/$image");
+            // Use temporaryUrl for S3, regular url for public disk
+            if ($diskType === 's3') {
+                return Storage::disk($diskType)->temporaryUrl("files/$image", now()->addMinutes(5));
+            } 
+
+            return Storage::disk($diskType)->url("files/$image");
         }
     }
 
