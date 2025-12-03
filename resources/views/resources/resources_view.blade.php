@@ -334,7 +334,7 @@
                                 <div class="row mb-2 similar-resources">
                                     <div class="d-none d-lg-block col-lg-4">
                                         <img class="resource-view-img"
-                                            src="{{ getImagefromResource($item->abstract, '55x50') }}"
+                                            src="{{ getResourceImage($item->name, true) }}"
                                             alt="Resource Image">
                                     </div>
                                     <div class="col-12 col-lg-8">
