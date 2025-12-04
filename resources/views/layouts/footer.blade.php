@@ -9,6 +9,9 @@
                                 <a href="{{ URL::to($fmenu->path) }}" title="{{ $fmenu->title }}">{{ $fmenu->title }}</a>
                             </li>
                         @endforeach
+                        <li class="mx-2">
+                            <a href="{{ route('privacy-policy') }}" title="@lang('Privacy Policy')">@lang('Privacy Policy')</a>
+                        </li>
                     </ul>
                 </div>
             @endif
