@@ -309,7 +309,7 @@
             <div class="col-md-3">
                 <div class="row">
                     <div class="p-3">
-                        <img class="resource-view-img" src=" {{ $resource->resourceFile ?  getResourceImage($resource->resourceFile->name)  : getImagefromResource($resource->abstract, '282x254') }}"
+                        <img class="resource-view-img" src=" {{ $resource->resourceFile ?  getResourceImage($resource->resourceFile->name, true)  : getImagefromResource($resource->abstract, '282x254') }}"
                             alt="Resource Main Image">
                     </div>
                 </div>
