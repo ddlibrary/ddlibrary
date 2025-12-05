@@ -16,7 +16,7 @@
             </li>
             <li class="nav-item">
                 <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}" class="nav-link" title="StoryWeaver">
-                    <img src="{{ URL::to(config('constants.ddlmain_s3_file_storage_url').'/public/img/storyweaver-logo.svg') }}"
+                    <img src="{{ getFile('files/storyweaver-logo.svg') }}"
                          class="storyweaver-logo"
                          alt="StoryWeaver logo"
                     >

@@ -651,13 +651,13 @@ if (! function_exists('watermark_pdf')) {
     }
 
     if (!function_exists('getFile')) {
-        function getFile($file, $forceDownload = false): string
+        function getFile($file): string
         {
             $cloudFront = new CloudFrontService();
             if(config('app.env') != 'production')
                 return Storage::disk('public')->url($file);
             else
-                return $cloudFront->signedUrl($file, 3600, $forceDownload);
+                return $cloudFront->signedUrl($file);
         }
     }
 

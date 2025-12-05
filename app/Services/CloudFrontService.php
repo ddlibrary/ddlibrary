@@ -29,20 +29,6 @@ class CloudFrontService
 
         $unsignedUrl = sprintf('https://%s/%s', $this->domain, ltrim($path, '/'));
 
-        if ($forceDownload) {
-            $disposition = 'attachment; filename="' . basename($path) . '"';
-
-            $query = http_build_query(
-                ['response-content-disposition' => $disposition],
-                '',
-                '&',
-                PHP_QUERY_RFC3986
-            );
-
-            $unsignedUrl = sprintf('https://%s/%s?%s', $this->domain, ltrim($path, '/'), $query);
-
-        }
-
         return $this->client->getSignedUrl([
             'url'         => $unsignedUrl,
             'expires'     => $expires,

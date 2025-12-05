@@ -114,7 +114,7 @@
                             @if (Auth::check())
                                 @if(!$ePub)
                                     <a class="btn btn-primary btn-sm"
-                                        href="{{ getFile('/resources/' . $file->file_name, true) }}">
+                                        href="{{ getFile('/resources/' . $file->file_name) }}" target="_blank">
                                         <i class="fa fa-download" aria-hidden="true"></i> @lang('Download')
                                         ({{ formatBytes($file->file_size) }})
                                     </a>
@@ -309,7 +309,7 @@
             <div class="col-md-3">
                 <div class="row">
                     <div class="p-3">
-                        <img class="resource-view-img" src=" {{ $resource->resourceFile ?  getResourceImage($resource->resourceFile->name, true)  : getImagefromResource($resource->abstract, '282x254') }}"
+                        <img class="resource-view-img" src=" {{ $resource->resourceFile ?  getResourceImage($resource->resourceFile->name)  : getImagefromResource($resource->abstract, '282x254') }}"
                             alt="Resource Main Image">
                     </div>
                 </div>
@@ -323,7 +323,7 @@
                                 <div class="row mb-2 similar-resources">
                                     <div class="d-none d-lg-block col-lg-4">
                                         <img class="resource-view-img"
-                                            src="{{ getResourceImage($item->name, true) }}"
+                                            src="{{ getResourceImage($item->name) }}"
                                             alt="Resource Image">
                                     </div>
                                     <div class="col-12 col-lg-8">
