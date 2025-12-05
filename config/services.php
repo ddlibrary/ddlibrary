@@ -59,4 +59,10 @@ return [
         'secret_key' => env('RECAPTCHAV3_SECRET'),
     ],
 
+    'cloudfront' => [
+        'domain' => env('CLOUDFRONT_DOMAIN'),
+        'key_pair_id' => env('CLOUDFRONT_KEY_PAIR_ID'),
+        'private_key_path' => env('CLOUDFRONT_PRIVATE_KEY_PATH'),
+    ],
+
 ];
