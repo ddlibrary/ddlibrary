@@ -85,8 +85,6 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::post('resources/priorities/exclusion/add/{id}', [ReportController::class, 'resourcePrioritiesExclusionModify'])->middleware('LibraryManager');
     Route::post('resources/priorities/exclusion/remove/{id}', [ReportController::class, 'resourcePrioritiesExclusionModify'])->middleware('LibraryManager');
     Route::get('resource/{resourceId}', [ResourceController::class, 'viewPublicResource']);
-    Route::get('resource/view/{fileId}/{key}', [ResourceController::class, 'viewFile']);
-    Route::get('resource/{resourceId}/download/{fileId}/{hash}', [ResourceController::class, 'downloadFile'])->name('download-file')->middleware('auth')->middleware('verified');
     Route::get('resources', [ResourceController::class, 'list']);
     Route::get('resources/add/step1', [ResourceController::class, 'createStepOne'])->name('step1')->middleware('auth')->middleware('verified');
     Route::post('resources/add/step1', [ResourceController::class, 'postStepOne']);
