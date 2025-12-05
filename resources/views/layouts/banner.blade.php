@@ -16,7 +16,7 @@
             </li>
             <li class="nav-item">
                 <a href="{{ route('storyweaver-confirm', ['landing_page' => 'storyweaver_default']) }}" class="nav-link" title="StoryWeaver">
-                    <img src="{{ getFile('files/storyweaver-logo.svg') }}"
+                    <img src="{{ getFile('public/img/storyweaver-logo.svg') }}"
                          class="storyweaver-logo"
                          alt="StoryWeaver logo"
                     >
