@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Services\CloudFrontService;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use setasign\Fpdi\Fpdi;
@@ -640,16 +641,9 @@ if (! function_exists('watermark_pdf')) {
     if (!function_exists('getResourceImage')) {
         function getResourceImage($image, $isThumbnail = false)
         {
-            $diskType = 's3';
-            if(config('app.env') != 'production'){
-                $diskType = 'public';
-            }
-
             if ($isThumbnail) {
                 $thumbnailPath = "files/thumbnails/$image";
-                if (Storage::disk($diskType)->exists($thumbnailPath)) {
-                    return getFile($thumbnailPath);
-                }
+                return getFile($thumbnailPath);
             }
 
             return getFile("files/$image");
@@ -657,17 +651,13 @@ if (! function_exists('watermark_pdf')) {
     }
 
     if (!function_exists('getFile')) {
-        function getFile($image)
+        function getFile($file, $forceDownload = false): string
         {
-            $diskType = 's3';
-            if(config('app.env') != 'production'){
-                $diskType = 'public';
-            }
-            if ($diskType === 's3') {
-                return Storage::disk($diskType)->temporaryUrl($image, now()->addMinutes(5));
-            } 
-
-            return Storage::disk($diskType)->url($image);
+            $cloudFront = new CloudFrontService();
+            if(config('app.env') != 'production')
+                return Storage::disk('public')->url($file);
+            else
+                return $cloudFront->signedUrl($file, 3600, $forceDownload);
         }
     }
 

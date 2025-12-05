@@ -24,24 +24,20 @@
             <div class="col-md-8">
                 @if ($resource->attachments)
                     @foreach ($resource->attachments as $file)
-                        @php
-                            $time = time();
-                            $key = encrypt(config('s3.config.secret') * $time);
-                        @endphp
                         @if ($file->file_mime == 'application/pdf')
                             <iframe
-                                src="{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}#toolbar=0"
+                                src="{{ getFile('/resources/' . $file->file_name) }}#toolbar=0"
                                 height="500" width="100%"></iframe>
                         @elseif(
                             $file->file_mime == 'application/msword' ||
                                 $file->file_mime == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
                             <iframe
-                                src="{{ URL::to(config('constants.google_doc_viewer_url') . URL::to('/resource/view/' . $file->id . '/' . $key) . '&embedded=true') }}"
+                                src="{{ config('constants.google_doc_viewer_url') . rawurlencode(getFile('/resources/' . $file->file_name)) . '&embedded=true' }}"
                                 height="500" width="100%"></iframe>
                         @elseif($file->file_mime == 'audio/mpeg')
                             <span class="download-item">
                                 <audio controls>
-                                    <source src="{{ URL::to('/resource/view/' . $file->id . '/' . $key) }}"
+                                    <source src="{{ getFile('/resources/' . $file->file_name) }}"
                                         type="audio/mpeg">
                                 </audio>
                             </span>
@@ -117,18 +113,11 @@
                         <span class="">
                             @if (Auth::check())
                                 @if(!$ePub)
-                                @php
-                                    $user = Auth::id();
-                                    $hash = hash(
-                                        'sha256',
-                                        config('s3.config.secret') * ($user + $resource->id + $file->id),
-                                    );
-                                @endphp
-                                <a class="btn btn-primary btn-sm"
-                                    href="{{ URL::to('resource/' . $resource->id . '/download/' . $file->id . '/' . $hash) }}">
-                                    <i class="fa fa-download" aria-hidden="true"></i> @lang('Download')
-                                    ({{ formatBytes($file->file_size) }})
-                                </a>
+                                    <a class="btn btn-primary btn-sm"
+                                        href="{{ getFile('/resources/' . $file->file_name, true) }}">
+                                        <i class="fa fa-download" aria-hidden="true"></i> @lang('Download')
+                                        ({{ formatBytes($file->file_size) }})
+                                    </a>
                                 @endif
                             @else
                                 @lang('Please login to download this file.')

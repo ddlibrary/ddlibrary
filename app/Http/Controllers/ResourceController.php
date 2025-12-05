@@ -283,15 +283,11 @@ class ResourceController extends Controller
 
         $ePub = null;
         $ePubFile = $resource->attachments->where('file_mime', 'application/epub+zip')->first();
-        if($ePubFile){
-            if(config('app.env') != 'production'){
+        if($ePubFile)
+            if(config('app.env') != 'production')
                 $ePub = asset('files/resources/' . $ePubFile->file_name);
-            }else{
-                $time = time();
-                $key = encrypt(config('s3.config.secret') * $time);
-                $ePub = $this->getEpub($ePubFile, $key);
-            }
-        }
+            else
+                $ePub = getFile("resources/$ePubFile->file_name");
 
         return view('resources.resources_view', compact(
             'resource',
@@ -1439,70 +1435,6 @@ class ResourceController extends Controller
         return back()->with('error', 'You deleted the record!');
     }
 
-    /**
-     * Download a watermarked file attached to a resource
-     *
-     *
-     * @param  $time
-     *
-     * @throws FileNotFoundException
-     */
-    public function downloadFile($resourceId, $fileId, $hash): BinaryFileResponse
-    {
-        $secret = config('s3.config.secret');
-        $user = Auth::id();
-        $calculated_hash = hash('sha256', $secret * ($user + $resourceId + $fileId));
-        if ($calculated_hash == $hash) {
-            $resource = Resource::findOrFail($resourceId);
-            $all_attachments = $resource->attachments;
-            $attachment = null;
-            foreach ($all_attachments as $attach) {
-                if ($attach->id == $fileId) {
-                    $attachment = $attach;
-                }
-            }
-            if (! $attachment) {
-                abort(404);
-            }
-
-            $file_name = $attachment->file_name;
-            $file_mime = $attachment->file_mime;
-
-            $headers = [
-                'Content-Type' => $file_mime,
-                'Content-Description' => 'File Transfer',
-                'Content-Disposition' => "attachment; filename={$file_name}",
-                'filename' => $file_name,
-            ];
-
-            $diskType = 's3';
-            if(config('app.env') != 'production'){
-                $diskType = 'public';
-            }
-            $file = Storage::disk($diskType)->get('resources/'.$file_name);
-
-            if (! $file) {
-                abort('404');
-            }
-
-            $temp_file = tempnam(
-                sys_get_temp_dir(), $file_name.'_'
-            );
-            file_put_contents($temp_file, $file);
-            /** TODO: Fix watermark PDF files
-            if (! $attachment->file_watermarked && $file_mime == 'application/pdf') {
-                WatermarkPDF::dispatch($attachment, $temp_file, $resource);
-            }
-            */
-
-            return response()
-                ->download($temp_file, $file_name, $headers)
-                ->deleteFileAfterSend();
-        } else {
-            abort(403);
-        }
-    }
-
     public function getValidatedData(mixed $resource, array $validatedData): array
     {
         if (isset($resource['attc'])) {
@@ -1516,34 +1448,6 @@ class ResourceController extends Controller
         }
 
         return $validatedData;
-    }
-
-    public function viewFile($fileId, $key): BinaryFileResponse
-    {
-        $secret = config('s3.config.secret');
-        $decrypted_key = $key ? decrypt($key) : [];
-        $received_time = $secret ? $decrypted_key / ($secret ? $secret : 1) : time();
-        $current_time = time();
-
-        if ($current_time - $received_time < 300) { // 300 - tolerance of 5 minutes
-            $resourceAttachment = ResourceAttachment::findOrFail($fileId);
-            $diskType = 's3';
-            if(config('app.env') != 'production'){
-                $diskType = 'public';
-            }
-            $file = Storage::disk($diskType)->get('resources/'.$resourceAttachment->file_name);
-            if ($file == null) abort(404);
-            $temp_file = tempnam(
-                sys_get_temp_dir(), $resourceAttachment->file_name.'_'
-            );
-            file_put_contents($temp_file, $file);
-
-            return response()
-                ->download($temp_file, $resourceAttachment->file_name, [], 'inline')
-                ->deleteFileAfterSend();
-        } else {
-            abort(403);
-        }
     }
 
     public function getEpub($resourceAttachment, $key)
