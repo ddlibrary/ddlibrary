@@ -85,6 +85,7 @@
                                     <th>TITLE</th>
                                     <th>ADDED BY</th>
                                     <th>PUBLISHED</th>
+                                    <th>CREATED</th>
                                     <th>UPDATED</th>
                                     <th>LANGUAGE</th>
                                     <th>OPERATIONS</th>
@@ -96,6 +97,7 @@
                                     <th>TITLE</th>
                                     <th>ADDED BY</th>
                                     <th>PUBLISHED</th>
+                                    <th>CREATED</th>
                                     <th>UPDATED</th>
                                     <th>LANGUAGE</th>
                                     <th>OPERATIONS</th>
@@ -115,6 +117,7 @@
                                         <td><a
                                                 href="{{ URL::to('admin/resource/published/' . $resource->id) }}">{{ $resource->status == 0 ? 'Not Published' : 'Published' }}</a>
                                         </td>
+                                        <td>{{ $resource->created_at }}</td>
                                         <td>{{ $resource->updated_at }}</td>
                                         <td>{{ fixLanguage($resource->language) }}</td>
                                         <td>
