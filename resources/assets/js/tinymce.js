@@ -3,6 +3,7 @@ var csrfToken = $('meta[name="csrf-token"]').attr('content');
 // Initialize TinyMCE for all textareas with .editor class
 tinymce.init({
     selector: 'textarea.editor',
+    license_key: 'gpl',
     height: 500,
     menubar: false,
     // Only FREE plugins
