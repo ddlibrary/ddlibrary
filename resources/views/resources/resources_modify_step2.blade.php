@@ -58,27 +58,31 @@
                 <label for="subject_areas">
                     <strong>@lang('Subject Areas') {{ en('Subject Areas') }}</strong>
                 </label>
-                <select class="form-select{{ $errors->has('subject_areas') ? ' is-invalid' : '' }}" id="subject_areas"
-                    name="subject_areas[]" size="10" required multiple>
-                    @foreach ($subjects as $item)
-                        @if ($item->parent == 0)
-                            <optgroup label="{{ $item->name }}">
-                                <option value="{{ $item->id }}"
-                                    {{ $resourceSubjectAreas != null ? (in_array($item->id, $resourceSubjectAreas) ? 'selected' : '') : '' }}>
-                                    {{ $item->name }}</option>
-                                <?php if (isset($subjects) && isset($item)) {
-                                    $parentItems = $subjects->where('parent', $item->id);
-                                }
-                                ?>
-                                @foreach ($parentItems as $pitem)
-                                    <option value="{{ $pitem->id }}"
-                                        {{ $resourceSubjectAreas != null ? (in_array($pitem->id, $resourceSubjectAreas) ? 'selected' : '') : '' }}>
-                                        {{ $pitem->name . termEn($pitem->id) }}</option>
-                                @endforeach
-                            </optgroup>
-                        @endif
-                    @endforeach
-                </select>
+                <div class="searchable-select-wrapper" id="subject_areas_wrapper">
+                    <input type="text" class="form-control form-control-sm mb-2" id="subject_areas_search" 
+                           placeholder="@lang('Search')..." style="display: none;">
+                    <select class="form-select{{ $errors->has('subject_areas') ? ' is-invalid' : '' }}" id="subject_areas"
+                        name="subject_areas[]" size="10" required multiple>
+                        @foreach ($subjects as $item)
+                            @if ($item->parent == 0)
+                                <optgroup label="{{ $item->name }}">
+                                    <option value="{{ $item->id }}"
+                                        {{ $resourceSubjectAreas != null ? (in_array($item->id, $resourceSubjectAreas) ? 'selected' : '') : '' }}>
+                                        {{ $item->name }}</option>
+                                    <?php if (isset($subjects) && isset($item)) {
+                                        $parentItems = $subjects->where('parent', $item->id);
+                                    }
+                                    ?>
+                                    @foreach ($parentItems as $pitem)
+                                        <option value="{{ $pitem->id }}"
+                                            {{ $resourceSubjectAreas != null ? (in_array($pitem->id, $resourceSubjectAreas) ? 'selected' : '') : '' }}>
+                                            {{ $pitem->name . termEn($pitem->id) }}</option>
+                                    @endforeach
+                                </optgroup>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
 
                 @if ($errors->has('subject_areas'))
                     <span class="invalid-feedback">
@@ -206,5 +210,120 @@
                 $(`.${attachment}`).remove()
             }
         }
+
+        // Searchable Subject Areas functionality
+        (function() {
+            const subjectAreasSelect = document.getElementById('subject_areas');
+            const subjectAreasSearch = document.getElementById('subject_areas_search');
+            const subjectAreasWrapper = document.getElementById('subject_areas_wrapper');
+            
+            if (!subjectAreasSelect || !subjectAreasSearch) return;
+
+            // Show search box when select is focused/clicked
+            subjectAreasSelect.addEventListener('focus', function() {
+                subjectAreasSearch.style.display = 'block';
+                setTimeout(function() {
+                    subjectAreasSearch.focus();
+                }, 0);
+            });
+
+            subjectAreasSelect.addEventListener('click', function() {
+                subjectAreasSearch.style.display = 'block';
+                setTimeout(function() {
+                    subjectAreasSearch.focus();
+                }, 0);
+            });
+
+            // Store all original options
+            const originalOptions = [];
+            const optgroups = subjectAreasSelect.querySelectorAll('optgroup');
+            
+            optgroups.forEach(function(optgroup) {
+                const groupLabel = optgroup.getAttribute('label');
+                const options = Array.from(optgroup.querySelectorAll('option'));
+                originalOptions.push({
+                    optgroup: optgroup,
+                    label: groupLabel,
+                    options: options.map(function(opt) {
+                        return {
+                            element: opt,
+                            value: opt.value,
+                            text: opt.textContent.trim()
+                        };
+                    })
+                });
+            });
+
+            // Filter function
+            function filterOptions(searchTerm) {
+                const searchLower = searchTerm.toLowerCase().trim();
+                
+                originalOptions.forEach(function(group) {
+                    let groupMatches = false;
+                    let hasVisibleOptions = false;
+
+                    // Check if group label matches
+                    if (group.label.toLowerCase().includes(searchLower)) {
+                        groupMatches = true;
+                    }
+
+                    // Filter options within the group
+                    group.options.forEach(function(option) {
+                        const optionMatches = option.text.toLowerCase().includes(searchLower);
+                        
+                        if (searchTerm === '' || groupMatches || optionMatches) {
+                            option.element.style.display = '';
+                            hasVisibleOptions = true;
+                        } else {
+                            option.element.style.display = 'none';
+                        }
+                    });
+
+                    // Show/hide optgroup based on matches
+                    if (searchTerm === '' || hasVisibleOptions) {
+                        group.optgroup.style.display = '';
+                    } else {
+                        group.optgroup.style.display = 'none';
+                    }
+                });
+            }
+
+            // Handle search input
+            subjectAreasSearch.addEventListener('input', function(e) {
+                filterOptions(e.target.value);
+            });
+
+            // Handle keyboard navigation
+            subjectAreasSearch.addEventListener('keydown', function(e) {
+                // Allow arrow keys to pass through to select
+                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    subjectAreasSelect.focus();
+                    // Trigger arrow key on select
+                    const event = new KeyboardEvent('keydown', {
+                        key: e.key,
+                        bubbles: true
+                    });
+                    subjectAreasSelect.dispatchEvent(event);
+                }
+            });
+
+            // Hide search box when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!subjectAreasWrapper.contains(e.target)) {
+                    subjectAreasSearch.style.display = 'none';
+                    subjectAreasSearch.value = '';
+                    filterOptions('');
+                }
+            });
+
+            // Keep search box visible when interacting with select
+            subjectAreasSelect.addEventListener('mousedown', function() {
+                subjectAreasSearch.style.display = 'block';
+                setTimeout(function() {
+                    subjectAreasSearch.focus();
+                }, 0);
+            });
+        })();
     </script>
 @endpush
