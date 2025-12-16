@@ -77,7 +77,7 @@
         </form>
     </div>
 </section>
-@push('scripts')
+@endsection
+@section('script')
      <x-head.tinymce-config/>
-@endpush
 @endsection
