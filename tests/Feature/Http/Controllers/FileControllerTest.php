@@ -266,14 +266,20 @@ class FileControllerTest extends TestCase
 
         $storedFileName = $s3Files[0];
 
+        // For S3, files are stored with 'files/' prefix
+        $this->assertStringStartsWith('files/', $storedFileName);
+        
+        // Extract just the filename (without 'files/' prefix)
+        $fileName = str_replace('files/', '', $storedFileName);
+
         // Filename should start with user ID
-        $this->assertStringStartsWith((string) $user->id . '_', $storedFileName);
+        $this->assertStringStartsWith((string) $user->id . '_', $fileName);
 
         // Filename should end with .jpg
-        $this->assertStringEndsWith('.jpg', $storedFileName);
+        $this->assertStringEndsWith('.jpg', $fileName);
 
         // Filename should not contain original name (for security)
-        $this->assertStringNotContainsString('original-name', $storedFileName);
+        $this->assertStringNotContainsString('original-name', $fileName);
 
         // Reset environment
         config(['app.env' => $originalEnv]);
@@ -671,8 +677,10 @@ class FileControllerTest extends TestCase
         $imageUrl = $uploadResponse->json('url');
 
         // Verify file is in S3
+        // For S3, files are stored with 'files/' prefix
         $filename = basename(parse_url($imageUrl, PHP_URL_PATH));
-        Storage::disk('s3')->assertExists($filename);
+        $s3Path = 'files/' . $filename;
+        Storage::disk('s3')->assertExists($s3Path);
 
         // Create news with S3 image URL in summary (textarea.editor)
         $summary = '<p>News with S3 image:</p><img src="' . $imageUrl . '" alt="S3 Image" />';
