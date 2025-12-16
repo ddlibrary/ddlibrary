@@ -17,20 +17,4 @@ mix.sass('resources/assets/sass/app.scss', 'public/css/all.css')
     .js('resources/assets/js/epub.js', 'public/js/epub.js')
     .js('resources/assets/js/resource.js', 'public/js/resource.js')
     .js('resources/assets/js/tinymce.js', 'public/js/tinymce.js')
-    .copyDirectory('vendor/tinymce/tinymce', 'public/js/tinymce')
-    .then(() => {
-        // Clean up manifest: remove TinyMCE directory entries
-        const manifestPath = path.resolve(__dirname, 'public/mix-manifest.json');
-        if (fs.existsSync(manifestPath)) {
-            const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-            const filteredManifest = {};
-
-            for (const [key, value] of Object.entries(manifest)) {
-                if (!key.startsWith('/js/tinymce/')) {
-                    filteredManifest[key] = value;
-                }
-            }
-
-            fs.writeFileSync(manifestPath, JSON.stringify(filteredManifest, null, 4));
-        }
-    });
+    .copyDirectory('vendor/tinymce/tinymce', 'public/js/tinymce');
