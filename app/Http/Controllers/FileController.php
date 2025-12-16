@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Imagine\Image\ImagineInterface;
+use Imagine\Image\Box;
 
 class FileController extends Controller
 {
@@ -61,17 +63,74 @@ class FileController extends Controller
             $diskType = 'public';
         }
 
-        Storage::disk($diskType)->put($fileName, file_get_contents($file));
+        $path = ($diskType === 's3') ? 'files/' . $fileName : $fileName;
 
-        if ($diskType === 's3') {
-            $imageUrl = Storage::disk('s3')->url($fileName);
-        } else {
-            $imageUrl = Storage::disk('public')->url($fileName);
+        $imagine = $this->getImagineInstance();
+
+        $image = $imagine->open($file->getRealPath());
+
+        $originalSize = $image->getSize();
+        $maxWidth = 1920; // Maximum width for compression
+        $maxHeight = 1920; // Maximum height for compression
+
+        // Resize if image is too large (maintain aspect ratio)
+        if ($originalSize->getWidth() > $maxWidth || $originalSize->getHeight() > $maxHeight) {
+            $ratio = min($maxWidth / $originalSize->getWidth(), $maxHeight / $originalSize->getHeight());
+            $newWidth = (int) ($originalSize->getWidth() * $ratio);
+            $newHeight = (int) ($originalSize->getHeight() * $ratio);
+            $image = $image->resize(new Box($newWidth, $newHeight));
         }
+
+        // Create temporary file for compressed image
+        $tempDirectory = sys_get_temp_dir() . '/tinymce_uploads';
+        if (!file_exists($tempDirectory)) {
+            mkdir($tempDirectory, 0755, true);
+        }
+        $tempFilePath = $tempDirectory . '/' . $fileName;
+
+        // Save with compression
+        $extension = strtolower($file->getClientOriginalExtension());
+        $options = [];
+
+        if (in_array($extension, ['jpg', 'jpeg'])) {
+            $options['quality'] = 85;
+        } elseif ($extension === 'png') {
+            $options['png_compression_level'] = 6;
+        }
+
+        $image->save($tempFilePath, $options);
+
+        // Store the compressed image
+        Storage::disk($diskType)->put($path, file_get_contents($tempFilePath));
+
+        // Cleanup temporary file
+        if (file_exists($tempFilePath)) {
+            @unlink($tempFilePath);
+        }
+
+        $imageUrl = Storage::disk($diskType)->url($path);
 
         return response()->json([
             'url' => $imageUrl,
             'location' => $imageUrl,
         ]);
+    }
+
+    /**
+     * Get Imagine instance, preferring Imagick if available
+     */
+    private function getImagineInstance(): ImagineInterface
+    {
+        // Try Imagick first if extension is available
+        if (extension_loaded('imagick')) {
+            try {
+                return new \Imagine\Imagick\Imagine();
+            } catch (\Exception $e) {
+                // Fall back to Gd if Imagick fails
+            }
+        }
+        
+        // Fall back to Gd
+        return new \Imagine\Gd\Imagine();
     }
 }
