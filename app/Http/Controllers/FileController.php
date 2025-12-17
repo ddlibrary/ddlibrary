@@ -63,7 +63,7 @@ class FileController extends Controller
             $diskType = 'public';
         }
 
-        $path = ($diskType === 's3') ? 'files/' . $fileName : $fileName;
+        $path = ($diskType === 's3') ? 'files/thumbnails/' . $fileName : "thumbnails/$fileName";
 
         $imagine = $this->getImagineInstance();
 
