@@ -58,10 +58,12 @@ class FileControllerTest extends TestCase
         $this->assertNotEmpty($responseData['location']);
         $this->assertEquals($responseData['url'], $responseData['location']);
 
-        // Verify file was stored - extract filename from URL
+        // Verify file was stored - extract path from URL
         $url = $responseData['url'];
-        $fileName = basename(parse_url($url, PHP_URL_PATH));
-        Storage::disk('public')->assertExists($fileName);
+        $urlPath = parse_url($url, PHP_URL_PATH);
+        // URL is /storage/files/thumbnails/{filename}, so path is thumbnails/{filename}
+        $path = 'thumbnails/' . basename($urlPath);
+        Storage::disk('public')->assertExists($path);
     }
 
     /**
@@ -266,11 +268,11 @@ class FileControllerTest extends TestCase
 
         $storedFileName = $s3Files[0];
 
-        // For S3, files are stored with 'files/' prefix
-        $this->assertStringStartsWith('files/', $storedFileName);
+        // For S3, files are stored with 'files/thumbnails/' prefix
+        $this->assertStringStartsWith('files/thumbnails/', $storedFileName);
         
-        // Extract just the filename (without 'files/' prefix)
-        $fileName = str_replace('files/', '', $storedFileName);
+        // Extract just the filename (without 'files/thumbnails/' prefix)
+        $fileName = str_replace('files/thumbnails/', '', $storedFileName);
 
         // Filename should start with user ID
         $this->assertStringStartsWith((string) $user->id . '_', $fileName);
@@ -677,9 +679,9 @@ class FileControllerTest extends TestCase
         $imageUrl = $uploadResponse->json('url');
 
         // Verify file is in S3
-        // For S3, files are stored with 'files/' prefix
+        // For S3, files are stored with 'files/thumbnails/' prefix
         $filename = basename(parse_url($imageUrl, PHP_URL_PATH));
-        $s3Path = 'files/' . $filename;
+        $s3Path = 'files/thumbnails/' . $filename;
         Storage::disk('s3')->assertExists($s3Path);
 
         // Create news with S3 image URL in summary (textarea.editor)
@@ -736,8 +738,10 @@ class FileControllerTest extends TestCase
         $imageUrl = $uploadResponse->json('url');
 
         // Verify file is in public disk
+        // For public disk, files are stored in 'thumbnails/' directory
         $filename = basename(parse_url($imageUrl, PHP_URL_PATH));
-        Storage::disk('public')->assertExists($filename);
+        $path = 'thumbnails/' . $filename;
+        Storage::disk('public')->assertExists($path);
 
         // Create news with public disk image URL in summary and body (textarea.editor)
         $summary = '<p>News with public image:</p><img src="' . $imageUrl . '" alt="Public Image" />';
