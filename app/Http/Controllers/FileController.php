@@ -108,7 +108,7 @@ class FileController extends Controller
             @unlink($tempFilePath);
         }
 
-        $imageUrl = Storage::disk($diskType)->url($path);
+        $imageUrl = getFile("thumbnails/$fileName");
 
         return response()->json([
             'url' => $imageUrl,
