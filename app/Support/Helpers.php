@@ -72,7 +72,7 @@ if (! function_exists('giveMeResourceIcon')) {
 //Abstracts in Drupal installation had /sites/default/files/learn-1044078_960_720_0.jpg type image links
 //In here, I am fixing that and applying Laravel's way of showing images
 if (! function_exists('fixImage')) {
-    function fixImage($abstract, $resource_id)
+    function fixImage($abstract, $resource_id, $isThumbnail = false)
     {
         //To replace hardcoded url to dynamic base_url
         $abstract = str_replace('http://www.darakhtdanesh.org/', URL::to('/').'/', $abstract);
@@ -88,6 +88,7 @@ if (! function_exists('fixImage')) {
 				";
             }
         }
+        
 
         preg_match_all('/src="([^"]*)"/', $abstract, $matches);
         if ($matches[1]) {
@@ -99,6 +100,9 @@ if (! function_exists('fixImage')) {
                 if (strpos($absStr, 'youtube') == false && strpos($absStr, 'google') == false) {
                     $absArray = explode('/', $absStr);
                     $imageName = last($absArray);
+                    if($isThumbnail){
+                        $imageName = "thumbnails/$imageName";
+                    }
                     if (Storage::disk('public')->exists($imageName)) {
                         $fixedImage = Storage::disk('public')->url($imageName);
                     } else {
@@ -110,7 +114,6 @@ if (! function_exists('fixImage')) {
                 }
             }
             $finalFixedStr = str_replace($originalMe, $replaceMe, $abstract);
-
             return $finalFixedStr;
         } else {
             return $abstract;
