@@ -38,7 +38,7 @@
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <div id="editor">
-                <textarea class="form-control editor {{ $errors->has('summary') ? ' is-invalid' : '' }}" name="summary" style="height: 200px">{!! $page->summary !!}</textarea>
+                <textarea class="form-control editor {{ $errors->has('summary') ? ' is-invalid' : '' }}" name="summary" style="height: 200px">{!! fixImage($page->summary, $page->id, true) !!}</textarea>
             </div>
             @if ($errors->has('summary'))
                 <span class="invalid-feedback">
@@ -52,7 +52,7 @@
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <div id="editor">
-                <textarea class="form-control editor {{ $errors->has('body') ? ' is-invalid' : '' }}" name="body" style="height: 200px">{!! $page->body !!}</textarea>
+                <textarea class="form-control editor {{ $errors->has('body') ? ' is-invalid' : '' }}" name="body" style="height: 200px">{!! fixImage($page->body, $page->id, true) !!}</textarea>
             </div>
             @if ($errors->has('body'))
                 <span class="invalid-feedback">
