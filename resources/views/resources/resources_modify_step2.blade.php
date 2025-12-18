@@ -58,27 +58,31 @@
                 <label for="subject_areas">
                     <strong>@lang('Subject Areas') {{ en('Subject Areas') }}</strong>
                 </label>
-                <select class="form-select{{ $errors->has('subject_areas') ? ' is-invalid' : '' }}" id="subject_areas"
-                    name="subject_areas[]" size="10" required multiple>
-                    @foreach ($subjects as $item)
-                        @if ($item->parent == 0)
-                            <optgroup label="{{ $item->name }}">
-                                <option value="{{ $item->id }}"
-                                    {{ $resourceSubjectAreas != null ? (in_array($item->id, $resourceSubjectAreas) ? 'selected' : '') : '' }}>
-                                    {{ $item->name }}</option>
-                                <?php if (isset($subjects) && isset($item)) {
-                                    $parentItems = $subjects->where('parent', $item->id);
-                                }
-                                ?>
-                                @foreach ($parentItems as $pitem)
-                                    <option value="{{ $pitem->id }}"
-                                        {{ $resourceSubjectAreas != null ? (in_array($pitem->id, $resourceSubjectAreas) ? 'selected' : '') : '' }}>
-                                        {{ $pitem->name . termEn($pitem->id) }}</option>
-                                @endforeach
-                            </optgroup>
-                        @endif
-                    @endforeach
-                </select>
+                <div class="searchable-select-wrapper" id="subject_areas_wrapper">
+                    <input type="text" class="form-control form-control-sm mb-2" id="subject_areas_search" 
+                           placeholder="@lang('Search')..." style="display: none;">
+                    <select class="form-select{{ $errors->has('subject_areas') ? ' is-invalid' : '' }}" id="subject_areas"
+                        name="subject_areas[]" size="10" required multiple>
+                        @foreach ($subjects as $item)
+                            @if ($item->parent == 0)
+                                <optgroup label="{{ $item->name }}">
+                                    <option value="{{ $item->id }}"
+                                        {{ $resourceSubjectAreas != null ? (in_array($item->id, $resourceSubjectAreas) ? 'selected' : '') : '' }}>
+                                        {{ $item->name }}</option>
+                                    <?php if (isset($subjects) && isset($item)) {
+                                        $parentItems = $subjects->where('parent', $item->id);
+                                    }
+                                    ?>
+                                    @foreach ($parentItems as $pitem)
+                                        <option value="{{ $pitem->id }}"
+                                            {{ $resourceSubjectAreas != null ? (in_array($pitem->id, $resourceSubjectAreas) ? 'selected' : '') : '' }}>
+                                            {{ $pitem->name . termEn($pitem->id) }}</option>
+                                    @endforeach
+                                </optgroup>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
 
                 @if ($errors->has('subject_areas'))
                     <span class="invalid-feedback">
