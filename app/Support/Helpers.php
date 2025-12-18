@@ -101,12 +101,13 @@ if (! function_exists('fixImage')) {
                     $absArray = explode('/', $absStr);
                     $imageName = last($absArray);
                     if($isThumbnail){
-                        $imageName = "thumbnails/$imageName";
-                    }
-                    if (Storage::disk('public')->exists($imageName)) {
-                        $fixedImage = Storage::disk('public')->url($imageName);
-                    } else {
-                        $fixedImage = '';
+                        $fixedImage = getFile("thumbnails/$imageName");
+                    }else{
+                        if (Storage::disk('public')->exists($imageName)) {
+                            $fixedImage = Storage::disk('public')->url($imageName);
+                        } else {
+                            $fixedImage = '';
+                        }
                     }
 
                     array_push($replaceMe, $fixedImage);
