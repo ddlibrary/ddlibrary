@@ -15,11 +15,11 @@
         <h1>{{ $news->title }}</h1>
     </header>
     <article>
-        {!! fixImage($news->body, $news->id) !!}
+        {!! $news->body !!}
     </article>
     @if (isAdmin())
-    <a href="{{ URL::to('news/edit/'.$news->id) }}">Edit</a>
-    <a href="{{ URL::to('news/translate/'.$news->id.'/'.$news->tnid) }}">Translate</a>
+    <a class="btn btn-primary mt-2" href="{{ URL::to('news/edit/'.$news->id) }}">Edit</a>
+    <a class="btn btn-primary mt-2" href="{{ URL::to('news/translate/'.$news->id.'/'.$news->tnid) }}">Translate</a>
     @endif
 </section>
 @endsection 

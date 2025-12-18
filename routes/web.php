@@ -341,6 +341,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
 
 Route::post('/upload-image', [ResourceFileController::class, 'uploadImage'])->name('upload.image');
 Route::get('/search-images', [ResourceFileController::class, 'searchImages'])->name('search.images');
+Route::post('upload-image-from-editor', [FileController::class, 'uploadtImageFromEditor'])->name('upload.image.from.editor')->middleware('auth');
 
 /** OTHER PAGES THAT SHOULD NOT BE LOCALIZED **/
 Route::post('resources/favorite', [ResourceController::class, 'resourceFavorite']);

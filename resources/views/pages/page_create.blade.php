@@ -38,7 +38,7 @@
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <div id="editor">
-                <textarea class="form-control{{ $errors->has('summary') ? ' is-invalid' : '' }}" name="summary" style="height: 200px">{{ old('summary') }}</textarea>
+                <textarea class="form-control editor {{ $errors->has('summary') ? ' is-invalid' : '' }}" name="summary" style="height: 200px">{{ old('summary') }}</textarea>
             </div>
             @if ($errors->has('summary'))
                 <span class="invalid-feedback">
@@ -52,7 +52,7 @@
                 <span class="form-required" title="This field is required.">*</span>
             </label>
             <div id="editor">
-                <textarea class="form-control{{ $errors->has('body') ? ' is-invalid' : '' }}" name="body" style="height: 200px">{{ old('body') }}</textarea>
+                <textarea class="form-control editor {{ $errors->has('body') ? ' is-invalid' : '' }}" name="body" style="height: 200px">{{ old('body') }}</textarea>
             </div>
             @if ($errors->has('body'))
                 <span class="invalid-feedback">
@@ -73,33 +73,7 @@
         </form>
     </div>
 </section>
-@push('scripts')
-    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('ckeditor/config.js') }}"></script>
-    
-    <script>
-        var getUrl = window.location;
-        var baseUrl = <?php echo json_encode(URL::to('/')); ?>;
-        var options = {
-            filebrowserImageBrowseUrl: baseUrl+'/laravel-filemanager?type=Images',
-            filebrowserImageUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Images&_token=',
-            filebrowserBrowseUrl: baseUrl+'/laravel-filemanager?type=Files',
-            filebrowserUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Files&_token='
-        };
-        CKEDITOR.replace( 'summary', options );
-    </script>
-
-    <script>
-        var getUrl = window.location;
-        var baseUrl = <?php echo json_encode(URL::to('/')); ?>;
-        var options = {
-            filebrowserImageBrowseUrl: baseUrl+'/laravel-filemanager?type=Images',
-            filebrowserImageUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Images&_token=',
-            filebrowserBrowseUrl: baseUrl+'/laravel-filemanager?type=Files',
-            filebrowserUploadUrl: baseUrl+'/laravel-filemanager/upload?type=Files&_token='
-        };
-        CKEDITOR.config.contentsLangDirection = '{{ app()->getLocale() != "en"?"rtl":"ltr"}}';
-        CKEDITOR.replace( 'body', options );
-    </script>
-@endpush
+@endsection
+@section('script')
+     <x-head.tinymce-config/>
 @endsection

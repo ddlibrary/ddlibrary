@@ -12,11 +12,11 @@
 <div class="container my-3" style="background-color: #ffffff;">
     <h2 class="pt-3">{{ $page->title }}</h2>
     <article>
-        {!! fixImage($page->body, $page->id) !!}
+        {!! $page->body !!}
     </article>
     @if (isAdmin())
-    <a href="{{ URL::to('page/edit/'.$page->id) }}">Edit</a>
-    <a href="{{ URL::to('page/translate/'.$page->id.'/'.$page->tnid) }}">Translate</a>
+    <a class="btn btn-primary mt-2" href="{{ URL::to('page/edit/'.$page->id) }}">Edit</a>
+    <a class="btn btn-primary mt-2" href="{{ URL::to('page/translate/'.$page->id.'/'.$page->tnid) }}">Translate</a>
     @endif
 </div>
 @endsection
