@@ -218,11 +218,15 @@ class ApiController extends Controller
     // Single Resource
     public function resource($id)
     {
-        $resource = Resource::where('id', $id)->get();
-        $fileName = ResourceFile::where('resource_id', $id)->value('name');
-        $resource->img = getResourceImage($fileName, true);
-
-        return $resource;
+        $resource = Resource::query()
+                ->leftJoin('resource_files', 'resources.id', '=', 'resource_files.resource_id')
+                ->select('resources.*', 'resource_files.name as file_name')
+                ->where('resources.id', $id)
+                ->firstOrFail();
+        
+        $resource->img = getResourceImage($resource->file_name, true);
+        unset($resource->file_name);
+        return response()->json($resource);
     }
 
     // Resource Categories
