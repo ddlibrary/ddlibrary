@@ -4,10 +4,12 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Models\News;
 use App\Models\User;
+use App\Services\CloudFrontService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Mockery;
 use Tests\TestCase;
 
 /**
@@ -16,6 +18,12 @@ use Tests\TestCase;
 class FileControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
+
+    protected function tearDown(): void
+    {
+        Mockery::close();
+        parent::tearDown();
+    }
 
     /**
      * @test
@@ -107,6 +115,12 @@ class FileControllerTest extends TestCase
         $originalEnv = config('app.env');
         config(['app.env' => 'production']);
 
+        // Mock CloudFrontService
+        $mockCloudFront = Mockery::mock(CloudFrontService::class);
+        $mockCloudFront->shouldReceive('signedUrl')
+            ->andReturn('https://cloudfront.example.com/files/thumbnails/test.jpg');
+        $this->app->instance(CloudFrontService::class, $mockCloudFront);
+
         $user = User::factory()->create();
         $file = UploadedFile::fake()->image('test-image.gif', 150, 150);
 
@@ -140,6 +154,12 @@ class FileControllerTest extends TestCase
         // Set to production environment
         $originalEnv = config('app.env');
         config(['app.env' => 'production']);
+
+        // Mock CloudFrontService
+        $mockCloudFront = Mockery::mock(CloudFrontService::class);
+        $mockCloudFront->shouldReceive('signedUrl')
+            ->andReturn('https://cloudfront.example.com/files/thumbnails/test.jpg');
+        $this->app->instance(CloudFrontService::class, $mockCloudFront);
 
         $user = User::factory()->create();
         $file = UploadedFile::fake()->image('test-image.png', 200, 200);
@@ -175,6 +195,14 @@ class FileControllerTest extends TestCase
         // Set to production environment
         $originalEnv = config('app.env');
         config(['app.env' => 'production']);
+
+        // Mock CloudFrontService
+        $mockCloudFront = Mockery::mock(CloudFrontService::class);
+        $mockCloudFront->shouldReceive('signedUrl')
+            ->andReturnUsing(function ($path) {
+                return 'https://cloudfront.example.com/' . $path;
+            });
+        $this->app->instance(CloudFrontService::class, $mockCloudFront);
 
         $user = User::factory()->create();
 
@@ -228,6 +256,12 @@ class FileControllerTest extends TestCase
         // Test production (S3 disk)
         config(['app.env' => 'production']);
 
+        // Mock CloudFrontService for production
+        $mockCloudFront = Mockery::mock(CloudFrontService::class);
+        $mockCloudFront->shouldReceive('signedUrl')
+            ->andReturn('https://cloudfront.example.com/files/thumbnails/test2.jpg');
+        $this->app->instance(CloudFrontService::class, $mockCloudFront);
+
         $file2 = UploadedFile::fake()->image('test2.jpg', 100, 100);
         $response2 = $this->actingAs($user)->post(route('upload.image.from.editor'), [
             'upload' => $file2,
@@ -252,6 +286,14 @@ class FileControllerTest extends TestCase
         // Set to production environment
         $originalEnv = config('app.env');
         config(['app.env' => 'production']);
+
+        // Mock CloudFrontService
+        $mockCloudFront = Mockery::mock(CloudFrontService::class);
+        $mockCloudFront->shouldReceive('signedUrl')
+            ->andReturnUsing(function ($path) {
+                return 'https://cloudfront.example.com/' . $path;
+            });
+        $this->app->instance(CloudFrontService::class, $mockCloudFront);
 
         $user = User::factory()->create();
         $file = UploadedFile::fake()->image('original-name.jpg', 100, 100);
@@ -299,6 +341,12 @@ class FileControllerTest extends TestCase
         $originalEnv = config('app.env');
         config(['app.env' => 'production']);
 
+        // Mock CloudFrontService
+        $mockCloudFront = Mockery::mock(CloudFrontService::class);
+        $mockCloudFront->shouldReceive('signedUrl')
+            ->andReturn('https://cloudfront.example.com/files/thumbnails/test.jpg');
+        $this->app->instance(CloudFrontService::class, $mockCloudFront);
+
         $user = User::factory()->create();
         $file = UploadedFile::fake()->image('test.jpg', 100, 100);
 
@@ -333,6 +381,14 @@ class FileControllerTest extends TestCase
         // Set to production environment
         $originalEnv = config('app.env');
         config(['app.env' => 'production']);
+
+        // Mock CloudFrontService
+        $mockCloudFront = Mockery::mock(CloudFrontService::class);
+        $mockCloudFront->shouldReceive('signedUrl')
+            ->andReturnUsing(function ($path) {
+                return 'https://cloudfront.example.com/' . $path;
+            });
+        $this->app->instance(CloudFrontService::class, $mockCloudFront);
 
         $user = User::factory()->create();
 
@@ -664,6 +720,14 @@ class FileControllerTest extends TestCase
         $originalEnv = config('app.env');
         config(['app.env' => 'production']);
         Storage::fake('s3');
+
+        // Mock CloudFrontService
+        $mockCloudFront = Mockery::mock(CloudFrontService::class);
+        $mockCloudFront->shouldReceive('signedUrl')
+            ->andReturnUsing(function ($path) {
+                return 'https://cloudfront.example.com/' . $path;
+            });
+        $this->app->instance(CloudFrontService::class, $mockCloudFront);
 
         $user = User::factory()->create();
         $user->roles()->attach(5); // Admin role
