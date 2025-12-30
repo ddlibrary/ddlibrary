@@ -219,7 +219,8 @@ class ApiController extends Controller
     public function resource($id)
     {
         $resource = Resource::where('id', $id)->get();
-        $resource->image = $resource->resourceFile ? getResourceImage($resource->resourceFile->name, true) : getImagefromResource($resource->abstract);
+        $fileName = ResourceFile::where('resource_id', $id)->value('name');
+        $resource->img = getResourceImage($fileName, true);
 
         return $resource;
     }
