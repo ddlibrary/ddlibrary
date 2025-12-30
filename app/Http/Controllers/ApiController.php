@@ -1,7 +1,5 @@
 <?php
 
-// php artisan serve --host 192.168.0.103 to host with IP
-
 namespace App\Http\Controllers;
 
 use App\Models\Menu;
@@ -220,7 +218,10 @@ class ApiController extends Controller
     // Single Resource
     public function resource($id)
     {
-        return Resource::where('id', $id)->get();
+        $resource = Resource::where('id', $id)->get();
+        $resource->image = $resource->resourceFile ? getResourceImage($resource->resourceFile->name, true) : getImagefromResource($resource->abstract);
+
+        return $resource;
     }
 
     // Resource Categories
