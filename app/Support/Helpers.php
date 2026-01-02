@@ -101,7 +101,7 @@ if (! function_exists('fixImage')) {
                     $absArray = explode('/', $absStr);
                     $imageName = last($absArray);
                     if($isThumbnail){
-                        $fixedImage = getFile("thumbnails/$imageName");
+                        $fixedImage = getFile("files/thumbnails/$imageName");
                     }else{
                         if (Storage::disk('public')->exists($imageName)) {
                             $fixedImage = Storage::disk('public')->url($imageName);
