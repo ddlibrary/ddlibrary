@@ -822,7 +822,7 @@ class ResourceController extends Controller
         $myResources = new Resource();
 
         $resource = $request->session()->get('edit_resource_step_1');
-        if ($resource and ($resourceId !== $resource->id)) $resource = null;
+        if ($resource and ($resourceId != $resource->id)) $resource = null;
         if ($resource == null) {
             $resource = Resource::with(['authors:id,name', 'translators:id,name', 'publishers:id,name', 'resourceFile:id,name'])->findOrFail($resourceId);
         }
@@ -856,11 +856,11 @@ class ResourceController extends Controller
         $this->middleware('admin');
 
         $resource1 = $request->session()->get('edit_resource_step_1');
-        if ($resource1 and ($resourceId !== $resource1->id)) $resource1 = null;
 
-        if (! $resource1) {
+        if (!$resource1) {
             return redirect('/resources/edit/step1');
         }
+        if ($resourceId != $resource1['id']) $resource1 = null;
 
         $myResources = new Resource();
 
@@ -874,11 +874,11 @@ class ResourceController extends Controller
         $resource = $request->session()->get('edit_resource_step_2');
 
         if (isset($resource['subject_areas'])) {
-            $resourceSubjectAreas = $resource['subject_areas'].toArray();
+            $resourceSubjectAreas = $resource['subject_areas'];
         } else {
             $dataSubjects = $myResources->resourceAttributes($resourceId, 'resource_subject_areas', 'tid', 'taxonomy_term_data');
             foreach ($dataSubjects as $item) {
-                array_push($resourceSubjectAreas, $item->id);
+                $resourceSubjectAreas[] = $item->id;
             }
         }
 
@@ -887,7 +887,7 @@ class ResourceController extends Controller
         } else {
             $dataResourceTypes = $myResources->resourceAttributes($resourceId, 'resource_learning_resource_types', 'tid', 'taxonomy_term_data');
             foreach ($dataResourceTypes as $item) {
-                array_push($resourceLearningResourceTypes, $item->id);
+                $resourceLearningResourceTypes[] = $item->id;
             }
         }
 
@@ -896,7 +896,7 @@ class ResourceController extends Controller
         } else {
             $dataKeywords = $myResources->resourceAttributes($resourceId, 'resource_keywords', 'tid', 'taxonomy_term_data');
             foreach ($dataKeywords as $item) {
-                array_push($resourceKeywords, $item->name);
+                $resourceKeywords[] = $item->name;
             }
         }
 
@@ -905,7 +905,7 @@ class ResourceController extends Controller
         } else {
             $dataEducationalUse = $myResources->resourceAttributes($resourceId, 'resource_educational_uses', 'tid', 'taxonomy_term_data');
             foreach ($dataEducationalUse as $item) {
-                array_push($editEducationalUse, $item->id);
+                $editEducationalUse[] = $item->id;
             }
         }
 
@@ -914,7 +914,7 @@ class ResourceController extends Controller
         } else {
             $dataLevels = $myResources->resourceAttributes($resourceId, 'resource_levels', 'tid', 'taxonomy_term_data');
             foreach ($dataLevels as $item) {
-                array_push($resourceLevels, $item->id);
+                $resourceLevels[] = $item->id;
             }
         }
 
