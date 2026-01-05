@@ -47,7 +47,7 @@
                     </label>
                     <input class="form-control{{ $errors->has('publisher') ? ' is-invalid' : '' }} col-md-6" id="publisher"
                         name="publisher" type="text"
-                        value="{{ old('publisher') ? old('publisher') : $resource->publishers->pluck('name')->implode(', ') }}"
+                        value="{{ old('publisher') ? old('publisher') : $resource->publishers?->pluck('name')->implode(', ') }}"
                         aria-describedby="publisherOptional"
                         onkeydown="bringMeAttr('publisher','{{ URL::to('resources/attributes/publishers') }}')">
                     <small id="publisherOptional" class="form-text text-muted">
@@ -85,13 +85,13 @@
                             @lang('This is a work of translation')
                         </label>
                         <div>
-                            <input type="checkbox" onchange="toggleTranslation(this)" {{ old('translator') || $resource->translators->pluck('name')->implode(', ') ? 'checked' : '' }}
+                            <input type="checkbox" onchange="toggleTranslation(this)" {{ old('translator') || $resource->translators?->pluck('name')->implode(', ') ? 'checked' : '' }}
                             id="toggle-translation" name="has_translator" value="1">
                         </div>
                     </div>
                 </div>
                 <div class="form-group col-6 mb-3">
-                    <div class="translation {{ old('translator') || $resource->translators->pluck('name')->implode(', ') ? '' : 'd-none' }}">
+                    <div class="translation {{ old('translator') || $resource->translators?->pluck('name')->implode(', ') ? '' : 'd-none' }}">
                         <div>
                             <label for="translator" class="">
                                 @lang('Translator')
