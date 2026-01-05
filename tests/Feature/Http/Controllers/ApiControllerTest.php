@@ -32,21 +32,18 @@ class ApiControllerTest extends TestCase
         $response->assertOk();
 
         $response->assertJsonStructure([
-            '*' => [
-                'id',
-                'title',
-                'abstract',
-                'created_at',
-                'updated_at',
-            ],
+            'id',
+            'title',
+            'abstract',
+            'created_at',
+            'updated_at',
         ]);
 
         $responseData = $response->json();
         
-        $this->assertCount(1, $responseData);
-        $this->assertEquals($resource->id, $responseData[0]['id']);
-        $this->assertEquals($resource->name, $responseData[0]['name']);
-        $this->assertEquals($resource->description, $responseData[0]['description']);
+        $this->assertEquals($resource->id, $responseData['id']);
+        $this->assertEquals($resource->title, $responseData['title']);
+        $this->assertEquals($resource->abstract, $responseData['abstract']);
     }
 
     /**
