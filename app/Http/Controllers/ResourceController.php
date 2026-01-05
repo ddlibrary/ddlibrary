@@ -63,8 +63,6 @@ class ResourceController extends Controller
 
     public function index(Request $request): Factory|View|Application
     {
-        $this->middleware('admin');
-
         //setting the search session empty
         DDLClearSession();
 
@@ -824,7 +822,7 @@ class ResourceController extends Controller
         $myResources = new Resource();
 
         $resource = $request->session()->get('edit_resource_step_1');
-        if ($resourceId !== $resource->id) $resource = null;
+        if ($resource and ($resourceId !== $resource->id)) $resource = null;
         if ($resource == null) {
             $resource = Resource::with(['authors:id,name', 'translators:id,name', 'publishers:id,name', 'resourceFile:id,name'])->findOrFail($resourceId);
         }
@@ -858,7 +856,7 @@ class ResourceController extends Controller
         $this->middleware('admin');
 
         $resource1 = $request->session()->get('edit_resource_step_1');
-        if ($resourceId !== $resource1->id) $resource = null;
+        if ($resource1 and ($resourceId !== $resource1->id)) $resource1 = null;
 
         if (! $resource1) {
             return redirect('/resources/edit/step1');
