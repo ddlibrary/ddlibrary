@@ -842,9 +842,7 @@ class ResourceController extends Controller
         if(!$request->has_translator){
             $validatedData['translator'] = null;
         }
-
         $validatedData['id'] = $resourceId;
-        $validatedData['status'] = $request->input('status');
 
         $request->session()->put('edit_resource_step_1', $validatedData);
 
@@ -1035,7 +1033,7 @@ class ResourceController extends Controller
         $creativeCommonsOther = $myResources->resourceAttributesList('taxonomy_term_data', 26);
 
         $resource['id'] = $resourceId;
-        $resource['status'] = $resource1['status'];
+        $resource['status'] = $dbRecords->status;
         $edit = true;
 
         return view('resources.resources_modify_step3', compact('dbRecords', 'edit', 'resource', 'creativeCommons', 'creativeCommonsOther'));
