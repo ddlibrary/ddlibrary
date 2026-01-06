@@ -858,7 +858,6 @@ class ResourceController extends Controller
         if (!$resource1) {
             return redirect('/resources/edit/step1');
         }
-        if ($resourceId != $resource1['id']) $resource1 = null;
 
         $myResources = new Resource();
 
@@ -870,6 +869,7 @@ class ResourceController extends Controller
         $resourceAttachments = [];
 
         $resource = $request->session()->get('edit_resource_step_2');
+        if ($resource and ($resourceId != $resource['id'])) $resource = null;
 
         if (isset($resource['subject_areas'])) {
             $resourceSubjectAreas = $resource['subject_areas'];
@@ -1024,6 +1024,7 @@ class ResourceController extends Controller
         }
 
         $resource = $request->session()->get('edit_resource_step_3');
+        if ($resource and ($resourceId != $resource['id'])) $resource = null;
 
         $dbRecords = Resource::find($resourceId);
 
