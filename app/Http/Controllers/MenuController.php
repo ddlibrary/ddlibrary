@@ -201,4 +201,42 @@ class MenuController extends Controller
 
         return view('admin.menu.menu_translate', compact('translations', 'locals', 'tnid', 'id'));
     }
+
+    /**
+     * Delete selected menu translations or all translations that share the same tnid
+     */
+    public function destroy(Request $request, $menuId): RedirectResponse
+    {
+        $menu = Menu::findOrFail($menuId);
+        $tnid = $menu->tnid;
+
+
+
+        // Check if specific menu IDs were selected
+        $selectedIds = $request->input('selected_ids');
+        
+        if ($selectedIds) {
+            // Delete only selected menu items
+            $ids = explode(',', $selectedIds);
+            $ids = array_filter($ids); // Remove empty values
+            
+            if (count($ids) > 0) {
+                // Verify all selected IDs belong to the same tnid
+                $selectedMenus = Menu::whereIn('id', $ids)
+                    ->where('tnid', $tnid)
+                    ->get();
+
+                
+                if ($selectedMenus->count() > 0) {
+                    Menu::whereIn('id', $ids)->delete();
+                    $message = count($ids) === 1 
+                        ? 'Menu translation deleted successfully!' 
+                        : count($ids) . ' menu translations deleted successfully!';
+                    return redirect('admin/menu/translate/'.$menu->id)->with('success', $message);
+                }
+            }
+        }
+
+        return back();
+    }
 }
