@@ -233,7 +233,12 @@ class ResourceController extends Controller
         DDLClearSession();
         $myResources = new Resource();
 
-        $resource = Resource::with('attachments','resourceFile:id,name')->findOrFail($resourceId);
+        $resource = Resource::with(['attachments','resourceFile:id,name'])
+            ->with('favorites', function($query){
+                $query->where('users.id', auth()->id());
+            })
+            ->withCount('favorites')
+            ->findOrFail($resourceId);
 
         if ($resource->status == 0 && ! (isAdmin() || isLibraryManager())) {  // We don't want anyone else to access unpublished resources
             abort(403);
@@ -276,7 +281,6 @@ class ResourceController extends Controller
         }
         $this->resourceViewCounter($request, $resourceId);
         $views = new ResourceView();
-        $favorites = new ResourceFavorite();
         Carbon::setLocale(app()->getLocale());
 
         $ePub = null;
@@ -294,7 +298,6 @@ class ResourceController extends Controller
             'languages_available',
             'views',
             'translations',
-            'favorites',
             'ePub'
         ));
     }
@@ -722,31 +725,34 @@ class ResourceController extends Controller
         return redirect('/home');
     }
 
-    public function resourceFavorite(Request $request): bool|string
+    public function resourceFavorite(Request $request): JsonResponse
     {
-        $myResources = new Resource();
-
         $resourceId = $request->input('resourceId');
-        $userId = $request->input('userId');
+        $userId = auth()->id();
 
-        if (! $userId) {
-            return json_encode('notloggedin');
+        if (!$userId) {
+            return response()->json(['status' => 'notloggedin']);
         }
 
-        $favorite = resourceFavorite::where('resource_id', $resourceId)->first();
+        $favorite = ResourceFavorite::where(['resource_id' => $resourceId, 'user_id' => $userId])->first();
 
-        if ($favorite != null) {
+        if ($favorite) {
             $favorite->delete();
-
-            return json_encode('deleted');
+            $action = 'deleted';
         } else {
-            $favorite = new ResourceFavorite;
-            $favorite->resource_id = $resourceId;
-            $favorite->user_id = $userId;
-            $favorite->save();
-
-            return json_encode('added');
+            ResourceFavorite::create([
+                'resource_id' => $resourceId,
+                'user_id' => $userId,
+            ]);
+            $action = 'added';
         }
+
+        $favoriteCount = ResourceFavorite::where('resource_id', $resourceId)->count();
+
+        return response()->json([
+            'action' => $action,
+            'favorite_count' => $favoriteCount
+        ]);
     }
 
     public function flag(Request $request): Redirector|Application|RedirectResponse

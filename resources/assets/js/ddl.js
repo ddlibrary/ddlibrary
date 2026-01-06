@@ -257,26 +257,36 @@ function closeNav() {
     document.getElementById("myNav").style.width = "0%";
 }
 
-window.favorite = function (elementId, baseUrl, resourceId, userId)
-{
+window.favorite = function (elementId, baseUrl, resourceId) {
     let csrf = $('meta[name="csrf-token"]').attr('content');
+    
     $.ajax({
         type: "POST",
         url: baseUrl,
-        data: {resourceId : resourceId, userId : userId, _token : csrf }, // appears as $_GET['id'] @ your backend side
+        data: {
+            resourceId: resourceId,
+            _token: csrf
+        },
         success: function(data) {
-            console.log(data);
-            var obj = JSON.parse(data);
-            // data is ur summary
-            if(obj == "added"){
-                $('#'+elementId).addClass("active");  
-            }else if(obj == "deleted"){
-                $('#'+elementId).removeClass("active");     
-            }else if(obj == "notloggedin"){
+
+            if (data.action === "added") {
+                $('#' + elementId).addClass("active");
+                updateFavoriteCount(data.favorite_count);
+            } else if (data.action === "deleted") {
+                $('#' + elementId).removeClass("active");
+                updateFavoriteCount(data.favorite_count);
+            } else if (data.action === "notloggedin") {
                 $('#favoriteModal').show();
             }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error occurred: " + error);
         }
     });
+}
+
+function updateFavoriteCount(count) {
+    $(".resource-favorites").text(count);
 }
 
 window.showHide = function (itself, elementId)

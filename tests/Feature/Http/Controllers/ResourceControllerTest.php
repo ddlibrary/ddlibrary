@@ -4,6 +4,7 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Resource;
 use App\Models\ResourceComment;
+use App\Models\ResourceFavorite;
 use App\Models\ResourceFlag;
 use App\Models\TaxonomyTerm;
 use App\Models\User;
@@ -684,14 +685,92 @@ class ResourceControllerTest extends TestCase
         $resource = Resource::factory()->create();
 
         $response = $this->post('resources/favorite', [
-            'userId' => $user->id,
             'resourceId' => $resource->id,
         ]);
 
         $response->assertOk();
+        
         $this->assertDatabaseHas('resource_favorites', [
             'resource_id' => $resource->id,
+            'user_id' => $user->id, // Check for the authenticated user
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function resource_favorite_returns_not_logged_in_if_user_is_not_authenticated()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $resource = Resource::factory()->create();
+
+        $response = $this->post('resources/favorite', [
+            'resourceId' => $resource->id,
+        ]);
+
+        $response->assertStatus(200)
+                 ->assertJson(['status' => 'notloggedin']);
+    }
+
+    /**
+     * @test
+     */
+    public function resource_favorite_adds_favorite_when_it_does_not_exist()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $secondUser = User::factory()->create();
+        $resource = Resource::factory()->create();
+
+        // Insert existing favorite for another user
+        ResourceFavorite::create([
+            'resource_id' => $resource->id,
+            'user_id' => $secondUser->id,
+        ]);
+        
+        $this->actingAs($user);
+        $response = $this->post('resources/favorite', [
+            'resourceId' => $resource->id,
+        ]);
+
+        $response->assertStatus(200)
+                 ->assertJson(['action' => 'added', 'favorite_count' => 2]);
+
+        $this->assertDatabaseHas('resource_favorites', [
+            'resource_id' => $resource->id,
+            'user_id' => $user->id, // Ensure it's added for the authenticated user
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function deletes_resource_favorite_when_it_exists()
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        $resource = Resource::factory()->create();
+
+        // Create a favorite for the user
+        ResourceFavorite::create([
+            'resource_id' => $resource->id,
             'user_id' => $user->id,
+        ]);
+
+        $this->actingAs($user);
+        $response = $this->post('resources/favorite', [
+            'resourceId' => $resource->id,
+        ]);
+
+        $response->assertStatus(200)
+                 ->assertJson(['action' => 'deleted', 'favorite_count' => 0]);
+
+        $this->assertDatabaseMissing('resource_favorites', [
+            'resource_id' => $resource->id,
+            'user_id' => $user->id, // Ensure it's deleted for the authenticated user
         ]);
     }
 
