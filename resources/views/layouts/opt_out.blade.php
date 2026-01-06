@@ -41,6 +41,7 @@
                     </div>
 
                     <div class="border-top pt-4">
+                        <span class="small">Opt out of Google Analytics</span> <br>
                         <div id="matomo-opt-out"></div>
                     </div>
                 </div>
