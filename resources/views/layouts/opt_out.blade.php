@@ -36,12 +36,6 @@
                                     @lang('Opt-out of Google Analytics')
                                 </button>
                             </div>
-                            <div class="d-flex flex-column">
-                                <span class="small">Opt out of Matomo Analytics</span>
-                                <button type="button" class="btn btn-primary" onclick="gaOptout()">
-                                    @lang('Opt-out of Motamoo Analytics')
-                                </button>
-                            </div>
                         </div>
                         <p class="mt-3 small mb-0" id="ga-optout-status"></p>
                     </div>
