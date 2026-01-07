@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,7 +24,7 @@ class Glossary extends Model
 
     protected $guarded = [];
 
-    public function glossarySubject()
+    public function glossarySubject(): BelongsTo
     {
         return $this->belongsTo(GlossarySubject::class, 'subject', 'id');
     }

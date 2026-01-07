@@ -25,7 +25,7 @@ class ExtractResourceImageUrl extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $resources = Resource::select('id', 'abstract', 'title', 'language', 'resource_file_id')
             ->whereNull('resource_file_id')

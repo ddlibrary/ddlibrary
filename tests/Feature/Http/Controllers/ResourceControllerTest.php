@@ -362,7 +362,7 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
-    public function translator_field_is_required_when_has_translator_is_checked()
+    public function translator_field_is_required_when_has_translator_is_checked(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -386,7 +386,7 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
-    public function translator_field_is_nullable_when_has_translator_is_not_checked()
+    public function translator_field_is_nullable_when_has_translator_is_not_checked(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -408,7 +408,7 @@ class ResourceControllerTest extends TestCase
     }
 
     /** @test */
-    public function at_least_one_of_author_or_publisher_is_required()
+    public function at_least_one_of_author_or_publisher_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -708,7 +708,7 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
-    public function resource_favorite_returns_not_logged_in_if_user_is_not_authenticated()
+    public function resource_favorite_returns_not_logged_in_if_user_is_not_authenticated(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -725,7 +725,7 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
-    public function resource_favorite_adds_favorite_when_it_does_not_exist()
+    public function resource_favorite_adds_favorite_when_it_does_not_exist(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -756,7 +756,7 @@ class ResourceControllerTest extends TestCase
     /**
      * @test
      */
-    public function deletes_resource_favorite_when_it_exists()
+    public function deletes_resource_favorite_when_it_exists(): void
     {
         $this->refreshApplicationWithLocale('en');
 
