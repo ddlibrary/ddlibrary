@@ -63,7 +63,7 @@ class MenuControllerTest extends TestCase
 
         $menu = Menu::factory()->create();
 
-        $response = $this->actingAs($admin)->get('en/admin/menu/edit/' . $menu->id);
+        $response = $this->actingAs($admin)->get('en/admin/menu/edit/'.$menu->id);
 
         $response->assertOk();
         $response->assertViewIs('admin.menu.menu_edit');
@@ -214,7 +214,7 @@ class MenuControllerTest extends TestCase
 
         $menu = Menu::factory()->create();
 
-        $response = $this->actingAs($admin)->get('en/admin/menu/translate/' . $menu->id);
+        $response = $this->actingAs($admin)->get('en/admin/menu/translate/'.$menu->id);
 
         $response->assertOk();
         $response->assertViewIs('admin.menu.menu_translate');
@@ -243,7 +243,7 @@ class MenuControllerTest extends TestCase
             ]),
         );
 
-        $response->assertRedirect('admin/menu/edit/' . $menu->id);
+        $response->assertRedirect('admin/menu/edit/'.$menu->id);
         $this->assertDatabaseHas('menus', ['title' => 'Updated Menu']);
     }
 

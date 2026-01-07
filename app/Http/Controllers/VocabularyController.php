@@ -10,16 +10,16 @@ use Yajra\Datatables\Datatables;
 
 class VocabularyController extends Controller
 {
-    //Index Function
+    // Index Function
     public function index(): View
     {
         return view('admin.vocabulary.vocabulary_list');
     }
 
-    //Ajax get vocabularies Function
+    // Ajax get vocabularies Function
     public function getVocabularies()
     {
-        //return dataTables::of(TaxonomyVocabulary::query())->make(true);
+        // return dataTables::of(TaxonomyVocabulary::query())->make(true);
         $vocs = TaxonomyVocabulary::select(['vid', 'name', 'weight', 'language']);
 
         return Datatables::of($vocs)
@@ -30,13 +30,13 @@ class VocabularyController extends Controller
             ->make(true);
     }
 
-    //Vocabulary Create Function
+    // Vocabulary Create Function
     public function create(): View
     {
         return view('admin.vocabulary.vocabulary_create');
     }
 
-    //Vocabulary Store Function
+    // Vocabulary Store Function
     public function store(Request $request): RedirectResponse
     {
         $attr = $this->validate($request, [
@@ -44,7 +44,7 @@ class VocabularyController extends Controller
             'weight' => 'required',
             'language' => 'required',
         ]);
-        $row = new TaxonomyVocabulary();
+        $row = new TaxonomyVocabulary;
         $row->name = $request->name;
         $row->weight = $request->weight;
         $row->language = $request->language;
@@ -53,7 +53,7 @@ class VocabularyController extends Controller
         return redirect('/admin/vocabulary')->with('success', 'Vocabulary item created successfully!');
     }
 
-    //Vocabulary Edit Function
+    // Vocabulary Edit Function
     public function edit($vid): View
     {
         $vocabulary = TaxonomyVocabulary::find($vid);
@@ -61,7 +61,7 @@ class VocabularyController extends Controller
         return view('admin.vocabulary.vocabulary_edit', compact('vocabulary'));
     }
 
-    //Vocabulary Update Function
+    // Vocabulary Update Function
     public function update(Request $request, $vid): RedirectResponse
     {
         $this->validate($request, [
@@ -69,7 +69,7 @@ class VocabularyController extends Controller
             'weight' => 'required',
             'language' => 'required',
         ]);
-        //Updating vocabulary info to the database
+        // Updating vocabulary info to the database
         $vocabulary = TaxonomyVocabulary::find($vid);
         $vocabulary->name = $request->input('name');
         $vocabulary->weight = $request->input('weight');

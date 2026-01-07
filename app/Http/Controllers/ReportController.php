@@ -45,7 +45,7 @@ class ReportController extends Controller
 
     public function gaReport(): \Illuminate\View\View
     {
-        //retrieve visitors and pageview data for the current day and the last seven days
+        // retrieve visitors and pageview data for the current day and the last seven days
         $totalVisitorsAndPageViews = Analytics::fetchTotalVisitorsAndPageViews(Period::days(30));
         $mostVisitedPages = Analytics::fetchMostVisitedPages(Period::days(30), 10);
         $topReferrers = Analytics::fetchTopReferrers(Period::days(30), 10);

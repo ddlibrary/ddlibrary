@@ -61,7 +61,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
     Route::get('/', [HomeController::class, 'index']);
     Route::get('/admin', [DashboardController::class, 'index'])->middleware('admin');
-    //Users
+    // Users
     Route::get('admin/users', [UserController::class, 'index'])->middleware('admin');
     Route::post('admin/users', [UserController::class, 'index'])->name('user')->middleware('admin');
     Route::get('admin/users/users-data', [UserController::class, 'usersData'])->middleware('admin');
@@ -75,7 +75,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('admin/user/export', [UserController::class, 'exportUsers'])->middleware('admin');
     Route::post('update-gender', [UserController::class, 'updateGender'])->name('update.gender');
 
-    //Resources
+    // Resources
     Route::get('admin/resources', [ResourceController::class, 'index'])->middleware('auth');
     Route::post('admin/resources', [ResourceController::class, 'index'])->name('resources')->middleware('admin');
     Route::get('resources/list', [ResourceController::class, 'list'])->name('resourceList');
@@ -106,38 +106,38 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('resources/edit/step3/{resourceId}', [ResourceController::class, 'createStepThreeEdit'])->name('edit3')->middleware('LibraryManager');
     Route::post('resources/edit/step3/{resourceId}', [ResourceController::class, 'postStepThreeEdit'])->middleware('LibraryManager');
     Route::post('resource/{resourceId}', [ResourceController::class, 'updateTid'])->middleware('admin')->name('updatetid');
-    //delete file
+    // delete file
     Route::get('delete/file/{resourceId}/{fileName}', [ResourceController::class, 'deleteFile'])->name('delete-file');
-    //Contact
+    // Contact
     Route::get('contact-us', [ContactController::class, 'create']);
     Route::post('contact-us', [ContactController::class, 'store'])->name('contact')->middleware(ProtectAgainstSpam::class);
     Route::get('admin/contacts', [ContactController::class, 'index'])->middleware('admin');
     Route::get('admin/contacts/read/{id}', [ContactController::class, 'read'])->middleware('admin');
     Route::get('admin/contacts/delete/{id}', [ContactController::class, 'delete'])->middleware('admin');
-    //Report
+    // Report
     Route::get('admin/reports/impact_report', [ReportController::class, 'impactReport'])->name('impact-report')->middleware('admin');
     Route::get('admin/reports/ga', [ReportController::class, 'gaReport'])->middleware('admin');
     Route::get('admin/reports/resources', [ReportController::class, 'resourceReport'])->middleware('admin');
     Route::get('admin/reports/resources/subjects', [ReportController::class, 'resourceSubjectReport'])->middleware('admin');
     Route::get('admin/reports/languages', [ReportController::class, 'resourceLanguageReport'])->middleware('admin');
-    //Downloads
+    // Downloads
     Route::get('admin/reports/downloads', [DownloadController::class, 'index'])->middleware('admin');
     Route::post('admin/reports/downloads', [DownloadController::class, 'index'])->name('downloads')->middleware('admin');
     Route::get('/about-education-afghanistan', function () {
         return redirect('page/22');
     });
 
-    //Pages
-    Route::controller(PageController::class)->group(function(){
+    // Pages
+    Route::controller(PageController::class)->group(function () {
         Route::get('page/{pageId}', 'view')->where('pageId', '[0-9]+');
-        Route::middleware('admin')->group(function(){
-            Route::prefix('admin')->group(function(){
+        Route::middleware('admin')->group(function () {
+            Route::prefix('admin')->group(function () {
                 Route::get('pages', 'index');
                 Route::get('get-pages', 'getPages')->name('getpages');
                 Route::get('pages/view/{pageId}', 'view');
             });
-            
-            Route::prefix('page')->group(function(){
+
+            Route::prefix('page')->group(function () {
                 Route::get('edit/{pageId}', 'edit');
                 Route::post('update/{pageId}', 'update')->name('update_page');
                 Route::get('create', 'create');
@@ -149,15 +149,15 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         });
     });
 
-    //News
-    Route::controller(NewsController::class)->group(function(){
+    // News
+    Route::controller(NewsController::class)->group(function () {
         Route::get('news/{newsId}', 'view')->where('newsId', '[0-9]+');
-        Route::middleware('admin')->group(function(){
+        Route::middleware('admin')->group(function () {
 
             Route::get('admin/news', 'index');
             Route::get('admin/get-news', 'getNews')->name('getnews');
 
-            Route::prefix('news')->group(function(){
+            Route::prefix('news')->group(function () {
                 Route::get('edit/{newsId}', 'edit');
                 Route::post('update/{newsId}', 'update')->name('update_news');
                 Route::get('create', 'create');
@@ -168,9 +168,9 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
             });
         });
     });
-    //Menu
-    Route::prefix('admin')->middleware('admin')->group(function(){
-        Route::controller(MenuController::class)->group(function(){
+    // Menu
+    Route::prefix('admin')->middleware('admin')->group(function () {
+        Route::controller(MenuController::class)->group(function () {
             Route::get('menu', 'index');
             Route::post('menu', 'index')->name('menulist');
             Route::get('menu/add/{menuId}', 'create');
@@ -184,24 +184,24 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
             Route::get('menu/ajax_get_parents', 'ajax_get_parents')->name('ajax_get_parents');
         });
 
-        //Settings
-        Route::controller(SettingController::class)->group(function(){
+        // Settings
+        Route::controller(SettingController::class)->group(function () {
             Route::get('settings', 'edit');
             Route::put('settings/{setting}', 'update');
         });
 
         Route::resource('subscribers', SubscriberController::class)->only('index', 'destroy');
 
-        //Comments
-        Route::prefix('comments')->controller(CommentController::class)->group(function(){
+        // Comments
+        Route::prefix('comments')->controller(CommentController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('delete/{resourceComment}', 'delete');
             Route::get('published/{resourceComment}', 'published')->middleware('admin');
         });
 
-        //Flags
+        // Flags
         Route::get('flags', [FlagController::class, 'index']);
-        //Taxonomy
+        // Taxonomy
         Route::prefix('taxonomy')->controller(TaxonomyController::class)->group(function(){
             Route::get('', 'index')->name('gettaxonomylist');
             Route::post('', 'index')->name('posttaxonomylist');
@@ -219,23 +219,23 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
             Route::post('subject-area', 'storeOrUpdateSubjectArea')->name('subject_area.store_or_update');
         });
 
-        //Taxonomy Vocabulary
+        // Taxonomy Vocabulary
         Route::get('vocabulary', [VocabularyController::class, 'index'])->name('vocabularylist');
         Route::get('vocabularies', [VocabularyController::class, 'getVocabularies'])->name('getvocabularies');
         Route::get('vocabulary/create', [VocabularyController::class, 'create'])->name('vocabularycreate');
         Route::post('vocabulary/store', [VocabularyController::class, 'store'])->name('vocabularystore');
         Route::get('vocabulary/edit/{vid}', [VocabularyController::class, 'edit'])->name('vocabularyedit');
         Route::post('vocabulary/edit/{vid}', [VocabularyController::class, 'update'])->name('update-vocabulary');
-        //Sync
+        // Sync
         Route::get('/sync', [SyncController::class, 'index']);
         Route::get('/run_sync', [SyncController::class, 'SyncIt']);
     });
 
-    //Glossary
-    Route::prefix('glossary')->controller(GlossaryController::class)->group(function(){
+    // Glossary
+    Route::prefix('glossary')->controller(GlossaryController::class)->group(function () {
         Route::get('', 'index');
         Route::post('', 'index')->name('glossary');
-        Route::prefix('glossary')->middleware('LibraryManager')->group(function(){
+        Route::prefix('glossary')->middleware('LibraryManager')->group(function () {
             Route::get('create', 'create')->name('glossary_create');
             Route::post('store', 'store')->name('glossary_store');
             Route::post('update', 'update')->name('glossary_update');
@@ -244,10 +244,10 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         });
     });
 
-    //Impact Page
+    // Impact Page
     Route::get('/impact/{update?}', [ImpactController::class, 'index']);
 
-    //admin, survey
+    // admin, survey
     Route::get('admin/surveys', [SurveyController::class, 'index']);
     Route::get('admin/survey/edit/{id}', [SurveyController::class, 'edit']);
     Route::get('admin/survey/view/{id}/{tnid}', [SurveyController::class, 'view']);
@@ -257,52 +257,51 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('admin/survey/delete/{id}', [SurveyController::class, 'delete']);
     Route::post('admin/update_survey/{id}', [SurveyController::class, 'update'])->name('update_survey');
     Route::post('admin/survey/create', [SurveyController::class, 'store'])->name('create_survey');
-    //question
+    // question
     Route::get('admin/survey/questions/{id}', [SurveyQuestionController::class, 'index']);
     Route::get('admin/survey/{surveyid}/question/view/{id}/{tnid}', [SurveyQuestionController::class, 'view']);
     Route::get('admin/survey/question/add/translate/{id}/{lang}', [SurveyQuestionController::class, 'addTranslate']);
     Route::post('admin/survey/question/add', [SurveyQuestionController::class, 'store'])->name('create_question');
     Route::get('admin/survey/question/add/{id}', [SurveyQuestionController::class, 'create']);
     Route::get('admin/survey/question/delete/{id}', [SurveyQuestionController::class, 'delete']);
-    //option
+    // option
     Route::get('admin/survey/question/option/delete/{id}', [SurveyQuestionOptionController::class, 'delete']);
     Route::get('admin/survey/{survey_id}/question/{id}/view_options', [SurveyQuestionOptionController::class, 'index']);
     Route::get('admin/survey/question/{questionid}/option/{optionid}/view/{tnid}', [SurveyQuestionOptionController::class, 'view']);
     Route::get('admin/survey/question/option/add/translate/{id}/{lang}', [SurveyQuestionOptionController::class, 'addTranslate']);
     Route::get('admin/survey/{survey_id}/question/{id}/option/create', [SurveyQuestionOptionController::class, 'create']);
     Route::post('admin/survey/question/option/add', [SurveyQuestionOptionController::class, 'store'])->name('create_option');
-    //result
+    // result
     Route::get('admin/survey_questions', [SurveyAnswerController::class, 'allQuestions']);
     Route::get('admin/survey_question/answers/{id}', [SurveyAnswerController::class, 'questionAnswers']);
     Route::post('/survey/store', [SurveyAnswerController::class, 'storeUserSurvey'])->name('survey');
-    //setting
+    // setting
     Route::get('admin/survey_time', [SurveySettingController::class, 'getSurveyModalTime']);
     Route::get('admin/edit_survey_modal_time', [SurveySettingController::class, 'editSurveyModalTime']);
     Route::post('admin/update_survey_modal_time/{id}', [SurveySettingController::class, 'updateSurveyModalTime'])->name('update_survey_modal_time');
     Route::get('admin/create_survey_modal_time', [SurveySettingController::class, 'createSurveyModalTime']);
     Route::post('admin/store_survey_modal_time', [SurveySettingController::class, 'storeSurveyModalTime'])->name('store_survey_modal_time');
-    //Analytics
-    Route::prefix('admin/analytics')->middleware('admin')->group(function(){
-        Route::controller(AnalyticsController::class)->group(function(){
+    // Analytics
+    Route::prefix('admin/analytics')->middleware('admin')->group(function () {
+        Route::controller(AnalyticsController::class)->group(function () {
             Route::get('')->name('analytics-list');
             Route::post('')->name('analytics');
         });
     });
-    //admin, glossary
-    Route::prefix('admin/glossary_subjects')->middleware('admin')->group(function(){
-        Route::controller(GlossarySubjectController::class)->group(function(){
-            Route::get('',  'index')->name('glossary_subjects_list');
-            Route::get('create',  'create')->name('glossary_subjects_create');
-            Route::get('edit/{id}',  'edit')->name('glossary_subjects_edit');
-            Route::post('update',  'update')->name('glossary_subjects_update');
+    // admin, glossary
+    Route::prefix('admin/glossary_subjects')->middleware('admin')->group(function () {
+        Route::controller(GlossarySubjectController::class)->group(function () {
+            Route::get('', 'index')->name('glossary_subjects_list');
+            Route::get('create', 'create')->name('glossary_subjects_create');
+            Route::get('edit/{id}', 'edit')->name('glossary_subjects_edit');
+            Route::post('update', 'update')->name('glossary_subjects_update');
         });
     });
 
-
-    //StoryWeaver
+    // StoryWeaver
     Route::get('/storyweaver/confirm/{landing_page}', [StoryWeaverController::class, 'storyWeaverConfirmation'])->name('storyweaver-confirm')->middleware('auth')->middleware('verified');
     Route::get('/storyweaver/auth', [StoryWeaverController::class, 'storyWeaverAuth'])->name('storyweaver-auth')->middleware('auth')->middleware('verified');
-    //Adding old DDL routes
+    // Adding old DDL routes
     Route::get('/user/register', [RegisterController::class, 'showRegistrationForm']);
     Route::get('/user', [LoginController::class, 'showLoginForm']);
     Route::get('/access-library', [ResourceController::class, 'createStepOne'])->middleware('auth')->middleware('verified');
@@ -318,7 +317,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('/support-library', function () {
         return redirect('page/21');
     });
-    //Auth
+    // Auth
     Route::middleware(ProtectAgainstSpam::class)->group(function () {
         Auth::routes(['verify' => true]);
     });
@@ -333,23 +332,22 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::post('', 'store')->name('subscribe.store');
     });
 
-    
     // Analytics
-    Route::prefix('admin/analytics')->middleware('admin')->group(function(){
+    Route::prefix('admin/analytics')->middleware('admin')->group(function () {
         Route::get('user', [UserAnalyticsController::class, 'index']);
         Route::get('resource', [ResourceAnalyticsController::class, 'index']);
-        Route::controller(SitewideAnalyticsController::class)->group(function(){
+        Route::controller(SitewideAnalyticsController::class)->group(function () {
             Route::get('sitewide', 'index');
             Route::get('reports/sitewide', 'view');
         });
 
-        Route::controller(GlossaryAnalyticsController::class)->group(function(){
+        Route::controller(GlossaryAnalyticsController::class)->group(function () {
             Route::get('glossary', 'index');
             Route::get('reports/glossary', 'view');
         });
     });
 
-    Route::controller(PrivacyPolicyController::class)->group(function(){
+    Route::controller(PrivacyPolicyController::class)->group(function () {
         Route::get('privacy-policy', 'index')->name('privacy-policy');
         Route::get('mobile-privacy-policy', 'mobilePrivacyPolicy')->name('mobile-privacy-policy');
         Route::get('opt-out', 'optOut')->name('opt-out');

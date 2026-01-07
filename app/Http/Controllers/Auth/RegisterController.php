@@ -18,7 +18,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -65,7 +64,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm(): View
     {
-        $myResources = new Resource();
+        $myResources = new Resource;
         $countries = $myResources->resourceAttributesList('taxonomy_term_data', 15);
         $provinces = $myResources->resourceAttributesList('taxonomy_term_data', 12)->all();
         $gmail_signup_url = 'https://accounts.google.com/signup';
@@ -81,14 +80,14 @@ class RegisterController extends Controller
         return Validator::make(
             $data,
             [
-                'email' => 'required|string|email|max:255|unique:users|nullable|regex:/^([a-zA-Z\d\._-]+)@(?!fmail.com)/', //Regex to block fmail.com domain
+                'email' => 'required|string|email|max:255|unique:users|nullable|regex:/^([a-zA-Z\d\._-]+)@(?!fmail.com)/', // Regex to block fmail.com domain
                 'password' => ['required', 'confirmed', Password::min(8)->numbers()->symbols()],
                 'first_name' => 'required|string|max:255',
                 'last_name' => 'string|max:255|nullable',
                 'gender' => 'required',
                 'country' => 'required',
                 'city' => 'nullable',
-                'g-recaptcha-response' => [config('app.captcha') == 'no' ? 'nullable' : 'required', new RecaptchaRule()],
+                'g-recaptcha-response' => [config('app.captcha') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
             ],
             [
                 'password.regex' => __('The password you entered doesn\'t have any special characters (!@#$%^&.) and (or) digits (0-9).'),
@@ -104,7 +103,7 @@ class RegisterController extends Controller
      */
     protected function create(Request $request): User
     {
-        $user = new User();
+        $user = new User;
         $user->username = $this->getUserName($request['email']);
         $user->password = Hash::make($request['password']);
         $user->email = $request['email'];
@@ -124,7 +123,7 @@ class RegisterController extends Controller
             'last_name' => $data['last_name'],
             'country' => $data['country'],
             'city' => $data['city'] ? $data['city'] : ($data['city_other'] ? $data['city_other'] : null),
-            'gender' => $data['gender']
+            'gender' => $data['gender'],
         ]);
     }
 
@@ -160,7 +159,7 @@ class RegisterController extends Controller
             $this->storeUserProfile($request, $user);
 
             // Assign role to user
-            $user->roles()->attach(6); //6 is library user from roles table
+            $user->roles()->attach(6); // 6 is library user from roles table
 
             // Subscribe
             /* TODO: Insert name and user_id into the table as well */

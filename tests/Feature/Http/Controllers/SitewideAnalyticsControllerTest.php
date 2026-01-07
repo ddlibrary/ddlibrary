@@ -56,7 +56,7 @@ class SitewideAnalyticsControllerTest extends TestCase
         $admin = User::factory()->create();
         $admin->roles()->attach(5);
         $this->actingAs($admin);
-        
+
         $devices = Device::factory()->times(3)->create();
         $browsers = Browser::factory()->times(3)->create();
         $platforms = Platform::factory()->times(3)->create();
@@ -96,5 +96,4 @@ class SitewideAnalyticsControllerTest extends TestCase
         // Check if pagination is working
         $this->assertCount(15, $response->viewData('views'));
     }
-
 }

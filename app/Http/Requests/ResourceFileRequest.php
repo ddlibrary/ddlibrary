@@ -28,8 +28,8 @@ class ResourceFileRequest extends FormRequest
             'subject_area_id' => ['nullable', 'numeric'],
             'language' => [
                 'required',
-                Rule::in($this->getAvailableLanguages())
-            ]
+                Rule::in($this->getAvailableLanguages()),
+            ],
         ];
     }
 
@@ -40,6 +40,6 @@ class ResourceFileRequest extends FormRequest
      */
     private function getAvailableLanguages(): array
     {
-        return array_map(fn($lang) => $lang->value, LanguageEnum::cases());
+        return array_map(fn ($lang) => $lang->value, LanguageEnum::cases());
     }
 }

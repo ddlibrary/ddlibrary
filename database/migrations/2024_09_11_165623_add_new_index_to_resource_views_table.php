@@ -16,7 +16,7 @@ return new class extends Migration
             $table->index(['is_bot', 'resource_id']);
             $table->index(['is_bot', 'resource_id', 'created_at']);
             $table->index(['created_at', 'is_bot']);
-            $table->index(['created_at', 'is_bot','user_id']);
+            $table->index(['created_at', 'is_bot', 'user_id']);
         });
     }
 
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->dropIndex(['is_bot', 'resource_id']);
             $table->dropIndex(['is_bot', 'resource_id', 'created_at']);
             $table->dropIndex(['created_at', 'is_bot']);
-            $table->dropIndex(['created_at', 'is_bot','user_id']);
+            $table->dropIndex(['created_at', 'is_bot', 'user_id']);
         });
     }
 };
