@@ -13,9 +13,12 @@ class GlossaryPageView extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'is_bot' => 'boolean',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'is_bot' => 'boolean',
+        ];
+    }
 
     public function glossarySubject()
     {
