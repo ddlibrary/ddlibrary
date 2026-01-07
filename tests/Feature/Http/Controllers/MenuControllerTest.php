@@ -554,6 +554,41 @@ class MenuControllerTest extends TestCase
         $this->assertDatabaseMissing('menus', ['id' => $menu->id]);
     }
 
+    /**
+     * @test
+     */
+    public function destroy_deletes_sub_menu_without_children(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        // Create parent menu
+        $parentMenu = Menu::factory()->create([
+            'parent' => 0,
+            'tnid' => null,
+        ]);
+
+        // Create sub-menu
+        $subMenu = Menu::factory()->create([
+            'parent' => $parentMenu->id,
+            'tnid' => null,
+        ]);
+
+        // Delete sub-menu
+        $response = $this->actingAs($admin)->delete(route('delete_menu', $subMenu->id));
+
+        $response->assertRedirect('admin/menu');
+        $response->assertSessionHas('success', 'Menu deleted successfully!');
+        
+        // Verify sub-menu is deleted
+        $this->assertDatabaseMissing('menus', ['id' => $subMenu->id]);
+        
+        // Verify parent menu still exists
+        $this->assertDatabaseHas('menus', ['id' => $parentMenu->id]);
+    }
+
     protected function data($merge = [])
     {
         return array_merge(
