@@ -269,6 +269,48 @@ class MenuControllerTest extends TestCase
         $this->assertDatabaseMissing('menus', ['id' => $menu->id]);
     }
 
+    /**
+     * @test
+     */
+    public function destroy_deletes_menu_and_all_translations_with_same_tnid(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $tnid = Menu::max('tnid') + 1;
+        
+        // Create menu with translations
+        $menuEn = Menu::factory()->create([
+            'tnid' => $tnid,
+            'language' => 'en',
+            'parent' => 0,
+        ]);
+
+        $menuFa = Menu::factory()->create([
+            'tnid' => $tnid,
+            'language' => 'fa',
+            'parent' => 0,
+        ]);
+
+        $menuPs = Menu::factory()->create([
+            'tnid' => $tnid,
+            'language' => 'ps',
+            'parent' => 0,
+        ]);
+
+        $response = $this->actingAs($admin)->delete(route('delete_menu', $menuEn->id));
+
+        $response->assertRedirect('admin/menu');
+        $response->assertSessionHas('success', 'Menu and all translations deleted successfully!');
+        
+        // Verify all translations are deleted
+        $this->assertDatabaseMissing('menus', ['id' => $menuEn->id]);
+        $this->assertDatabaseMissing('menus', ['id' => $menuFa->id]);
+        $this->assertDatabaseMissing('menus', ['id' => $menuPs->id]);
+    }
+
     protected function data($merge = [])
     {
         return array_merge(
