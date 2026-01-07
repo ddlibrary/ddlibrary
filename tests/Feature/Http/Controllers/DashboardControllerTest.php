@@ -51,7 +51,7 @@ class DashboardControllerTest extends TestCase
         $response->assertSee(Page::count());
     }
 
-    public function test_dashboard_page_is_accessible_to_authenticated_admin_users()
+    public function test_dashboard_page_is_accessible_to_authenticated_admin_users(): void
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
@@ -62,7 +62,7 @@ class DashboardControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_dashboard_page_is_not_accessible_to_normal_authenticated_users()
+    public function test_dashboard_page_is_not_accessible_to_normal_authenticated_users(): void
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
@@ -72,7 +72,7 @@ class DashboardControllerTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function test_dashboard_page_is_not_accessible_to_guests()
+    public function test_dashboard_page_is_not_accessible_to_guests(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -81,7 +81,7 @@ class DashboardControllerTest extends TestCase
         $response->assertRedirect('login');
     }
 
-    public function test_dashboard_contains_user_specific_information()
+    public function test_dashboard_contains_user_specific_information(): void
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
@@ -93,7 +93,7 @@ class DashboardControllerTest extends TestCase
         $response->assertSee($user->name);
     }
 
-    public function test_dashboard_loads_required_components()
+    public function test_dashboard_loads_required_components(): void
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
