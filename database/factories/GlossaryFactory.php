@@ -24,9 +24,9 @@ class GlossaryFactory extends Factory
     {
         return [
             'subject' => GlossarySubject::factory()->create()->id,
-            'name_en' => $this->faker->name,
-            'name_fa' => $this->faker->name,
-            'name_ps' => $this->faker->name,
+            'name_en' => $this->faker->name(),
+            'name_fa' => $this->faker->name(),
+            'name_ps' => $this->faker->name(),
         ];
     }
 }
