@@ -237,7 +237,7 @@ class MenuController extends Controller
 
         // If no specific IDs selected, delete all menus with the same tnid (from menu list)
         if ($tnid) {
-            $menus = Menu::where('tnid', $tnid)->get();
+            Menu::where('tnid', $tnid)->get();
             return redirect('admin/menu')->with('success', 'Menu and all translations deleted successfully!');
         } else {
             // If no tnid, just delete this single menu
