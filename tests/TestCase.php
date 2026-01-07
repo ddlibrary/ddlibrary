@@ -8,7 +8,7 @@ use Mcamara\LaravelLocalization\LaravelLocalization;
 
 abstract class TestCase extends BaseTestCase
 {
-    use AdditionalAssertions, CreatesApplication;
+    use AdditionalAssertions;
 
     protected function refreshApplicationWithLocale($locale)
     {
