@@ -15,12 +15,12 @@ class ResourceFactory extends Factory
     {
         return [
             'user_id' => \App\Models\User::factory(),
-            'title' => $this->faker->title,
+            'title' => $this->faker->title(),
             'abstract' => $this->faker->text(),
             'language' => 'en',
             'status' => 1,
             'tnid' => null,
-            'title' => $this->faker->title,
+            'title' => $this->faker->title(),
 
         ];
     }

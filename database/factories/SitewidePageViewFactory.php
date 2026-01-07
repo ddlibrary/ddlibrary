@@ -29,12 +29,12 @@ class SitewidePageViewFactory extends Factory
     public function definition(): array
     {
         return [
-            'page_url' => $this->faker->url,
-            'user_agent' => $this->faker->userAgent,
-            'browser' => $this->faker->word,
-            'title' => $this->faker->sentence,
-            'is_bot' => $this->faker->boolean,
-            'language' => $this->faker->languageCode,
+            'page_url' => $this->faker->url(),
+            'user_agent' => $this->faker->userAgent(),
+            'browser' => $this->faker->word(),
+            'title' => $this->faker->sentence(),
+            'is_bot' => $this->faker->boolean(),
+            'language' => $this->faker->languageCode(),
             'gender' => $this->faker->randomElement(['male', 'female', null]),
             'device_id' => Device::factory(),
             'platform_id' => Platform::factory(),
