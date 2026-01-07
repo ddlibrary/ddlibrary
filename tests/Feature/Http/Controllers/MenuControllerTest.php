@@ -247,6 +247,28 @@ class MenuControllerTest extends TestCase
         $this->assertDatabaseHas('menus', ['title' => 'Updated Menu']);
     }
 
+    /**
+     * @test
+     */
+    public function destroy_deletes_single_menu_without_translations(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $menu = Menu::factory()->create([
+            'tnid' => null,
+            'parent' => 0,
+        ]);
+
+        $response = $this->actingAs($admin)->delete(route('delete_menu', $menu->id));
+
+        $response->assertRedirect('admin/menu');
+        $response->assertSessionHas('success', 'Menu deleted successfully!');
+        $this->assertDatabaseMissing('menus', ['id' => $menu->id]);
+    }
+
     protected function data($merge = [])
     {
         return array_merge(
