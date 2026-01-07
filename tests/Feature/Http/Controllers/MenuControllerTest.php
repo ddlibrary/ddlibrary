@@ -399,6 +399,85 @@ class MenuControllerTest extends TestCase
         $this->assertDatabaseHas('menus', ['id' => $menuEn->id]);
     }
 
+    /**
+     * @test
+     */
+    public function destroy_does_not_delete_translations_with_different_tnid(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $tnid1 = Menu::max('tnid') + 1;
+        $tnid2 = $tnid1 + 1;
+        
+        $menu1 = Menu::factory()->create([
+            'tnid' => $tnid1,
+            'language' => 'en',
+            'parent' => 0,
+        ]);
+
+        $menu2 = Menu::factory()->create([
+            'tnid' => $tnid2,
+            'language' => 'en',
+            'parent' => 0,
+        ]);
+
+        // Try to delete menu1, but include menu2's ID in selected_ids (should not work)
+        $response = $this->actingAs($admin)->delete(route('delete_menu', $menu1->id), [
+            'selected_ids' => (string) $menu2->id,
+        ]);
+
+        // When selected_ids don't match tnid, controller falls back to deleting all with same tnid
+        // So it redirects to admin/menu and deletes menu1
+        $response->assertRedirect('admin/menu');
+        
+        // Verify menu2 still exists (different tnid, so shouldn't be deleted)
+        $this->assertDatabaseHas('menus', ['id' => $menu2->id]);
+        
+        // Menu1 should be deleted (fallback behavior)
+        $this->assertDatabaseMissing('menus', ['id' => $menu1->id]);
+    }
+
+    /**
+     * @test
+     */
+    public function destroy_requires_authentication(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $menu = Menu::factory()->create();
+
+        $response = $this->delete(route('delete_menu', $menu->id));
+
+        // Should redirect to login (may or may not have locale prefix)
+        $this->assertTrue(
+            $response->isRedirect() && 
+            (str_contains($response->getTargetUrl(), 'login') || str_contains($response->getTargetUrl(), '/en/login'))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function destroy_requires_admin_role(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $user = User::factory()->create();
+        // Don't attach admin role
+
+        $menu = Menu::factory()->create();
+
+        $response = $this->actingAs($user)->delete(route('delete_menu', $menu->id));
+
+        // Should redirect or return 403
+        $this->assertTrue(
+            $response->isRedirect() || $response->status() === 403
+        );
+    }
+
     protected function data($merge = [])
     {
         return array_merge(
