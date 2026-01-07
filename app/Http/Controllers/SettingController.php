@@ -21,7 +21,7 @@ class SettingController extends Controller
      */
     public function edit(): View
     {
-        $setting =  Setting::first();
+        $setting = Setting::first();
 
         return view('admin.settings.settings_view', compact('setting'));
     }

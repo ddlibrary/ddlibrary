@@ -5,15 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ResourceFileRequest;
 use App\Models\ResourceFile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
-use Illuminate\Support\Arr;
 
 class ResourceFileController extends Controller
 {
@@ -41,16 +40,16 @@ class ResourceFileController extends Controller
             );
         }
         $file = $request->file('image');
-        $filelabel = auth()->user()->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-        $path = 'files/' . $filelabel;
+        $filelabel = auth()->user()->id.'_'.time().'.'.$file->getClientOriginalExtension();
+        $path = 'files/'.$filelabel;
 
         $diskType = 's3';
-        if(config('app.env') != 'production'){
+        if (config('app.env') != 'production') {
             $diskType = 'public';
         }
         Storage::disk($diskType)->put($path, file_get_contents($file));
 
-        $imagine = new Imagine();
+        $imagine = new Imagine;
         $image = $imagine->open($file->getRealPath());
 
         // Get dimensions
@@ -60,17 +59,17 @@ class ResourceFileController extends Controller
         // Get file size
         $size = round($file->getSize() / 1024); // Get with KB
 
-        $thumbnailPath = 'files/thumbnails/' . $filelabel;
+        $thumbnailPath = 'files/thumbnails/'.$filelabel;
 
-        $tempDirectory = sys_get_temp_dir() . '/thumbnails';
+        $tempDirectory = sys_get_temp_dir().'/thumbnails';
 
-        if (!file_exists($tempDirectory)) {
+        if (! file_exists($tempDirectory)) {
             mkdir($tempDirectory, 0755, true);
         }
 
-        $image->resize(new Box(250, 250))->save($tempDirectory . '/' . $filelabel);
+        $image->resize(new Box(250, 250))->save($tempDirectory.'/'.$filelabel);
 
-        Storage::disk($diskType)->put($thumbnailPath, file_get_contents($tempDirectory . '/' . $filelabel));
+        Storage::disk($diskType)->put($thumbnailPath, file_get_contents($tempDirectory.'/'.$filelabel));
 
         $resourceFile = ResourceFile::create([
             'label' => $request->image_name ?: pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
@@ -83,7 +82,7 @@ class ResourceFileController extends Controller
         ]);
 
         // Cleanup temporary thumbnail file
-        $tempThumbFile = $tempDirectory . '/' . $filelabel;
+        $tempThumbFile = $tempDirectory.'/'.$filelabel;
         if (file_exists($tempThumbFile)) {
             @unlink($tempThumbFile);
         }
@@ -111,7 +110,7 @@ class ResourceFileController extends Controller
                         ->pluck('resource_file_id');
                     $query->whereIn('id', $resourceFileIds);
                 }
-                if (!empty($search)) {
+                if (! empty($search)) {
                     $query->where('label', 'like', "%{$search}%");
                 }
             })
@@ -119,7 +118,6 @@ class ResourceFileController extends Controller
 
         $count = $query->count();
         $files = $query->orderByDesc('created_at')->paginate(16)->appends(Arr::except($request->all(), ['page']));
-
 
         return view('resources.partial.file-list', compact('count', 'files'));
     }

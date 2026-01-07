@@ -13,13 +13,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class UserProfileFactory extends Factory
 {
-
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
     protected $model = UserProfile::class;
+
     /**
      * Define the model's default state.
      *
@@ -31,7 +31,7 @@ class UserProfileFactory extends Factory
             'user_id' => User::factory()->create(),
             'first_name' => $this->faker->name(),
             'last_name' => $this->faker->lastName(),
-            'gender' => "Male",
+            'gender' => 'Male',
             'country' => TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::UserCountry->value]),
             'city' => TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::UserDistricts->value]),
             'phone' => $this->faker->numberBetween(10, 30000),

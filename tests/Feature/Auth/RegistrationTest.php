@@ -195,7 +195,7 @@ class RegistrationTest extends TestCase
         );
 
         $response->assertRedirect('en/register');
-        $response->assertSessionHasErrors(['password' => "The password field must contain at least one symbol."]);
+        $response->assertSessionHasErrors(['password' => 'The password field must contain at least one symbol.']);
         $this->assertNull(User::first());
     }
 

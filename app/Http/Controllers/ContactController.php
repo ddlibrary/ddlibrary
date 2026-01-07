@@ -21,6 +21,7 @@ use Illuminate\View\View;
 class ContactController extends Controller
 {
     use SitewidePageViewTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -70,16 +71,16 @@ class ContactController extends Controller
 
         if (Auth::check()) {
             $user = auth()->user();
-            
+
             if ($user->email) {
                 return view('contacts.contacts_view', [
-                    'email' => $user->email, 
-                    'fullname' => $user->profile->first_name . ' ' . $user->profile->last_name
+                    'email' => $user->email,
+                    'fullname' => $user->profile->first_name.' '.$user->profile->last_name,
                 ]);
             }
         }
 
-        //setting the search session empty
+        // setting the search session empty
         DDLClearSession();
 
         return view('contacts.contacts_view');
@@ -99,11 +100,11 @@ class ContactController extends Controller
             'email' => 'required|email',
             'subject' => 'required',
             'message' => 'required',
-            'g-recaptcha-response' => [config('app.captcha') && config('app.captcha') == 'no' ? 'nullable' : 'required' , new RecaptchaRule()],
+            'g-recaptcha-response' => [config('app.captcha') && config('app.captcha') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
         ]);
 
-        //Saving contact info to the database
-        $contact = new Contact();
+        // Saving contact info to the database
+        $contact = new Contact;
         $contact->name = $request->input('name');
         $contact->email = $request->input('email');
         $contact->subject = $request->input('subject');

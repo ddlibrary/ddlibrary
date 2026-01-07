@@ -13,6 +13,7 @@ use Tests\TestCase;
 class SubscribeRequestTest extends TestCase
 {
     use RefreshDatabase;
+
     /** @var \App\Http\Requests\SubscribeRequest */
     private $subject;
 
@@ -20,7 +21,7 @@ class SubscribeRequestTest extends TestCase
     {
         parent::setUp();
 
-        $this->subject = new \App\Http\Requests\SubscribeRequest();
+        $this->subject = new \App\Http\Requests\SubscribeRequest;
     }
 
     /**
@@ -127,12 +128,12 @@ class SubscribeRequestTest extends TestCase
         $response->assertSessionHasErrors('email');
     }
 
-     public function test_name_is_required()
+    public function test_name_is_required()
     {
         $this->refreshApplicationWithLocale('en');
-        
+
         $user = User::factory()->create();
-        
+
         $requestData = [
             'email' => 'test@example.com',
         ];
@@ -145,7 +146,7 @@ class SubscribeRequestTest extends TestCase
     public function test_email_must_be_unique()
     {
         $this->refreshApplicationWithLocale('en');
-        
+
         $user = User::factory()->create();
 
         Subscriber::create([
@@ -167,9 +168,8 @@ class SubscribeRequestTest extends TestCase
     public function test_name_must_be_string()
     {
         $this->refreshApplicationWithLocale('en');
-        
-        $user = User::factory()->create();
 
+        $user = User::factory()->create();
 
         $requestData = [
             'email' => 'test@example.com',
@@ -187,9 +187,9 @@ class SubscribeRequestTest extends TestCase
         $this->app['config']->set('captcha.enabled', true);
 
         $this->refreshApplicationWithLocale('en');
-        
+
         $user = User::factory()->create();
-        
+
         $requestData = [
             'email' => 'test@example.com',
             'name' => 'Test User',
@@ -206,9 +206,9 @@ class SubscribeRequestTest extends TestCase
         $this->app['config']->set('captcha.enabled', false);
 
         $this->refreshApplicationWithLocale('en');
-        
+
         $user = User::factory()->create();
-        
+
         $requestData = [
             'email' => 'test@example.com',
             'name' => 'Test User',
