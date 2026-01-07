@@ -22,8 +22,8 @@ class TaxonomyTermFactory extends Factory
     {
         return [
             'vid' => $this->faker->numberBetween(6, 26),
-            'name' => $this->faker->name,
-            'weight' => $this->faker->boolean,
+            'name' => $this->faker->name(),
+            'weight' => $this->faker->boolean(),
             'language' => LanguageEnum::English->value,
             'tnid' => 0,
         ];
