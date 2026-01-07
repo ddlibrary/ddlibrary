@@ -478,6 +478,50 @@ class MenuControllerTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function destroy_returns_404_for_non_existent_menu(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $response = $this->actingAs($admin)->delete(route('delete_menu', 99999));
+
+        $response->assertNotFound();
+    }
+
+    /**
+     * @test
+     */
+    public function destroy_handles_empty_selected_ids(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $tnid = Menu::max('tnid') + 1;
+        
+        $menu = Menu::factory()->create([
+            'tnid' => $tnid,
+            'language' => 'en',
+            'parent' => 0,
+        ]);
+
+        // Send empty selected_ids
+        $response = $this->actingAs($admin)->delete(route('delete_menu', $menu->id), [
+            'selected_ids' => '',
+        ]);
+
+        // Should delete all translations (fallback behavior)
+        $response->assertRedirect('admin/menu');
+        $response->assertSessionHas('success', 'Menu and all translations deleted successfully!');
+        $this->assertDatabaseMissing('menus', ['id' => $menu->id]);
+    }
+
     protected function data($merge = [])
     {
         return array_merge(
