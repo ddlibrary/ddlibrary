@@ -11,8 +11,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TaxonomyTermFactory extends Factory
 {
-    protected $model = TaxonomyTerm::class;
-
     /**
      * Define the model's default state.
      *
