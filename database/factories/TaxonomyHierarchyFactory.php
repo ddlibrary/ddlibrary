@@ -19,7 +19,7 @@ class TaxonomyHierarchyFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => (int)(TaxonomyHierarchy::latest()->value('id') + 1),
+            'id' => (int) (TaxonomyHierarchy::latest()->value('id') + 1),
             'tid' => TaxonomyTerm::factory()->create()->id,
             'parent' => 1,
             'aux_id' => TaxonomyTerm::factory()->create()->id,

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @method static orderBy(string $string, string $string1)
@@ -23,8 +24,7 @@ class Glossary extends Model
 
     protected $guarded = [];
 
-
-    public function glossarySubject()
+    public function glossarySubject(): BelongsTo
     {
         return $this->belongsTo(GlossarySubject::class, 'subject', 'id');
     }

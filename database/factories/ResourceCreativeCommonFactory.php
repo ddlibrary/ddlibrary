@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\ResourceCreativeCommon;
 
 class ResourceCreativeCommonFactory extends Factory
 {

@@ -5,9 +5,9 @@ namespace Tests\Feature\Http\Controllers;
 use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
+use Tests\TestCase;
 
 /**
  * @see \App\Http\Controllers\StoryWeaverController

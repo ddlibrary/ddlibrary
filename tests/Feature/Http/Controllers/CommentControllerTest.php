@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Resource;
 use App\Models\ResourceComment;
 use App\Models\Setting;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
@@ -23,14 +23,14 @@ class CommentControllerTest extends TestCase
     public function comment_creates_a_new_resource_comment_and_redirects(): void
     {
         $this->refreshApplicationWithLocale('en');
-        
+
         Mail::fake();
 
         $user = User::factory()->create();
         $resource = Resource::factory()->create();
 
         // Create a setting for website_email
-        Setting::factory()->create(['id' => 1,'website_email' => 'test@example.com']);
+        Setting::factory()->create(['id' => 1, 'website_email' => 'test@example.com']);
 
         $response = $this->actingAs($user)->post('/en/resources/comment', [
             'userid' => $user->id,
@@ -38,7 +38,7 @@ class CommentControllerTest extends TestCase
             'comment' => 'This is a test comment.',
         ]);
 
-        $response->assertRedirect('resource/' . $resource->id);
+        $response->assertRedirect('resource/'.$resource->id);
         $response->assertSessionHas('alert.message', __('Your comment is recorded. It will be published after a review.'));
         $response->assertSessionHas('alert.level', 'success');
 
@@ -55,14 +55,14 @@ class CommentControllerTest extends TestCase
             Mail::assertNotSent(\App\Mail\NewComment::class);
         }
     }
-    
+
     /**
      * @test
      */
     public function store_creates_a_new_comment_and_redirects(): void
     {
         $this->refreshApplicationWithLocale('en');
-        
+
         $user = User::factory()->create();
         $resource = Resource::factory()->create();
 
@@ -82,14 +82,13 @@ class CommentControllerTest extends TestCase
         ]);
     }
 
-
     /**
      * @test
      */
     public function destroy_deletes_comment_and_redirects(): void
     {
         $this->refreshApplicationWithLocale('en');
-        
+
         $user = User::factory()->create();
         $user->roles()->attach(5);
         $comment = ResourceComment::factory()->create(['user_id' => $user->id]);
@@ -126,7 +125,7 @@ class CommentControllerTest extends TestCase
     public function published_toggles_comment_status_and_redirects(): void
     {
         $this->refreshApplicationWithLocale('en');
-        
+
         // Create an admin user
         $admin = User::factory()->create();
         $admin->roles()->attach(5);
@@ -153,7 +152,7 @@ class CommentControllerTest extends TestCase
     public function published_requires_admin_access(): void
     {
         $this->refreshApplicationWithLocale('en');
-        
+
         $user = User::factory()->create();
 
         $comment = ResourceComment::factory()->create();

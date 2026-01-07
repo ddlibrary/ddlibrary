@@ -44,7 +44,7 @@ class SettingControllerTest extends TestCase
 
         $setting = Setting::factory()->create();
 
-        $response = $this->post('en/admin/settings/' . $setting->id, [
+        $response = $this->post('en/admin/settings/'.$setting->id, [
             '_method' => 'PUT',
             'website_name' => 'Darakht-e Danesh Library',
             'website_slogan' => 'Free and open educational resources for Afghanistan',
@@ -72,7 +72,7 @@ class SettingControllerTest extends TestCase
 
         $setting = Setting::factory()->create();
 
-        $response = $this->post('en/admin/settings/' . $setting->id, [
+        $response = $this->post('en/admin/settings/'.$setting->id, [
             '_method' => 'PUT',
             'website_name' => '',
             'website_slogan' => '',

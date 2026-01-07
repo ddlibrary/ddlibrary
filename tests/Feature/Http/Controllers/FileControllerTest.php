@@ -70,7 +70,7 @@ class FileControllerTest extends TestCase
         $url = $responseData['url'];
         $urlPath = parse_url($url, PHP_URL_PATH);
         // URL is /storage/files/thumbnails/{filename}, so path is thumbnails/{filename}
-        $path = 'thumbnails/' . basename($urlPath);
+        $path = 'thumbnails/'.basename($urlPath);
         Storage::disk('public')->assertExists($path);
     }
 
@@ -94,7 +94,7 @@ class FileControllerTest extends TestCase
 
         $response->assertStatus(200);
         $responseData = $response->json();
-        
+
         // Verify URL contains storage path
         $this->assertStringContainsString('storage', $responseData['url']);
 
@@ -200,7 +200,7 @@ class FileControllerTest extends TestCase
         $mockCloudFront = Mockery::mock(CloudFrontService::class);
         $mockCloudFront->shouldReceive('signedUrl')
             ->andReturnUsing(function ($path) {
-                return 'https://cloudfront.example.com/' . $path;
+                return 'https://cloudfront.example.com/'.$path;
             });
         $this->app->instance(CloudFrontService::class, $mockCloudFront);
 
@@ -291,7 +291,7 @@ class FileControllerTest extends TestCase
         $mockCloudFront = Mockery::mock(CloudFrontService::class);
         $mockCloudFront->shouldReceive('signedUrl')
             ->andReturnUsing(function ($path) {
-                return 'https://cloudfront.example.com/' . $path;
+                return 'https://cloudfront.example.com/'.$path;
             });
         $this->app->instance(CloudFrontService::class, $mockCloudFront);
 
@@ -312,12 +312,12 @@ class FileControllerTest extends TestCase
 
         // For S3, files are stored with 'files/thumbnails/' prefix
         $this->assertStringStartsWith('files/thumbnails/', $storedFileName);
-        
+
         // Extract just the filename (without 'files/thumbnails/' prefix)
         $fileName = str_replace('files/thumbnails/', '', $storedFileName);
 
         // Filename should start with user ID
-        $this->assertStringStartsWith((string) $user->id . '_', $fileName);
+        $this->assertStringStartsWith((string) $user->id.'_', $fileName);
 
         // Filename should end with .jpg
         $this->assertStringEndsWith('.jpg', $fileName);
@@ -386,7 +386,7 @@ class FileControllerTest extends TestCase
         $mockCloudFront = Mockery::mock(CloudFrontService::class);
         $mockCloudFront->shouldReceive('signedUrl')
             ->andReturnUsing(function ($path) {
-                return 'https://cloudfront.example.com/' . $path;
+                return 'https://cloudfront.example.com/'.$path;
             });
         $this->app->instance(CloudFrontService::class, $mockCloudFront);
 
@@ -414,7 +414,7 @@ class FileControllerTest extends TestCase
 
             // Verify filename has correct extension
             $storedFile = end($s3Files);
-            $this->assertStringEndsWith('.' . $type, $storedFile);
+            $this->assertStringEndsWith('.'.$type, $storedFile);
         }
 
         // Reset environment
@@ -609,7 +609,7 @@ class FileControllerTest extends TestCase
         $fileName = basename(parse_url($url, PHP_URL_PATH));
 
         // Filename should start with user ID
-        $this->assertStringStartsWith((string) $user->id . '_', $fileName);
+        $this->assertStringStartsWith((string) $user->id.'_', $fileName);
     }
 
     /**
@@ -637,7 +637,7 @@ class FileControllerTest extends TestCase
             $fileName = basename(parse_url($url, PHP_URL_PATH));
 
             // Filename should end with correct extension
-            $this->assertStringEndsWith('.' . $ext, $fileName);
+            $this->assertStringEndsWith('.'.$ext, $fileName);
         }
     }
 
@@ -658,7 +658,7 @@ class FileControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/json');
-        
+
         $responseData = $response->json();
         $this->assertIsString($responseData['url']);
         $this->assertNotEmpty($responseData['url']);
@@ -715,7 +715,7 @@ class FileControllerTest extends TestCase
     public function uploadt_image_from_editor_s3_url_can_be_used_in_editor_textarea(): void
     {
         $this->refreshApplicationWithLocale('en');
-        
+
         // Set to production environment for S3
         $originalEnv = config('app.env');
         config(['app.env' => 'production']);
@@ -725,7 +725,7 @@ class FileControllerTest extends TestCase
         $mockCloudFront = Mockery::mock(CloudFrontService::class);
         $mockCloudFront->shouldReceive('signedUrl')
             ->andReturnUsing(function ($path) {
-                return 'https://cloudfront.example.com/' . $path;
+                return 'https://cloudfront.example.com/'.$path;
             });
         $this->app->instance(CloudFrontService::class, $mockCloudFront);
 
@@ -745,13 +745,13 @@ class FileControllerTest extends TestCase
         // Verify file is in S3
         // For S3, files are stored with 'files/thumbnails/' prefix
         $filename = basename(parse_url($imageUrl, PHP_URL_PATH));
-        $s3Path = 'files/thumbnails/' . $filename;
+        $s3Path = 'files/thumbnails/'.$filename;
         Storage::disk('s3')->assertExists($s3Path);
 
         // Create news with S3 image URL in summary (textarea.editor)
-        $summary = '<p>News with S3 image:</p><img src="' . $imageUrl . '" alt="S3 Image" />';
-        $body = '<p>Body content with S3 image:</p><img src="' . $imageUrl . '" alt="S3 Image" />';
-        
+        $summary = '<p>News with S3 image:</p><img src="'.$imageUrl.'" alt="S3 Image" />';
+        $body = '<p>Body content with S3 image:</p><img src="'.$imageUrl.'" alt="S3 Image" />';
+
         $newsResponse = $this->post(route('add_news'), [
             'title' => 'News with S3 Image',
             'language' => 'en',
@@ -782,7 +782,7 @@ class FileControllerTest extends TestCase
     public function uploadt_image_from_editor_public_disk_url_can_be_used_in_editor_textarea(): void
     {
         $this->refreshApplicationWithLocale('en');
-        
+
         // Set to non-production environment for public disk
         $originalEnv = config('app.env');
         config(['app.env' => 'local']);
@@ -804,13 +804,13 @@ class FileControllerTest extends TestCase
         // Verify file is in public disk
         // For public disk, files are stored in 'thumbnails/' directory
         $filename = basename(parse_url($imageUrl, PHP_URL_PATH));
-        $path = 'thumbnails/' . $filename;
+        $path = 'thumbnails/'.$filename;
         Storage::disk('public')->assertExists($path);
 
         // Create news with public disk image URL in summary and body (textarea.editor)
-        $summary = '<p>News with public image:</p><img src="' . $imageUrl . '" alt="Public Image" />';
-        $body = '<p>Body content with public image:</p><img src="' . $imageUrl . '" alt="Public Image" />';
-        
+        $summary = '<p>News with public image:</p><img src="'.$imageUrl.'" alt="Public Image" />';
+        $body = '<p>Body content with public image:</p><img src="'.$imageUrl.'" alt="Public Image" />';
+
         $newsResponse = $this->post(route('add_news'), [
             'title' => 'News with Public Image',
             'language' => 'en',

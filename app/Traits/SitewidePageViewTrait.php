@@ -14,7 +14,7 @@ trait SitewidePageViewTrait
 {
     public function pageView(Request $request, $title = null): void
     {
-        /*    
+        /*
         TODO: this is not sustainable if we don't cleanup the log every month
         $languageCode = $this->getLanguageCode();
 
@@ -41,7 +41,7 @@ trait SitewidePageViewTrait
                 'updated_at' => now(),
             ]);
         }
-        */ 
+        */
     }
 
     protected function getLanguageCode(): ?string
