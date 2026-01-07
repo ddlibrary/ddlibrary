@@ -210,13 +210,11 @@ class MenuController extends Controller
         $menu = Menu::findOrFail($menuId);
         $tnid = $menu->tnid;
 
-
-
         // Check if specific menu IDs were selected
         $selectedIds = $request->input('selected_ids');
         
         if ($selectedIds) {
-            // Delete only selected menu items
+            // Delete only selected menu items (from translate page)
             $ids = explode(',', $selectedIds);
             $ids = array_filter($ids); // Remove empty values
             
@@ -237,6 +235,14 @@ class MenuController extends Controller
             }
         }
 
-        return back();
+        // If no specific IDs selected, delete all menus with the same tnid (from menu list)
+        if ($tnid) {
+            $menus = Menu::where('tnid', $tnid)->get();
+            return redirect('admin/menu')->with('success', 'Menu and all translations deleted successfully!');
+        } else {
+            // If no tnid, just delete this single menu
+            $menu->delete();
+            return redirect('admin/menu')->with('success', 'Menu deleted successfully!');
+        }
     }
 }
