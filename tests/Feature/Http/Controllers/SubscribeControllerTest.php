@@ -36,7 +36,7 @@ class SubscribeControllerTest extends TestCase
     }
 
     /** @test */
-    public function en_authenticated_and_verified_user_can_subscribe()
+    public function en_authenticated_and_verified_user_can_subscribe(): void
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
@@ -56,7 +56,7 @@ class SubscribeControllerTest extends TestCase
     }
 
     /** @test */
-    public function en_unverified_user_can_not_subscribe()
+    public function en_unverified_user_can_not_subscribe(): void
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create(['email_verified_at' => null]);
@@ -70,7 +70,7 @@ class SubscribeControllerTest extends TestCase
     }
 
     /** @test */
-    public function en_name_field_is_required()
+    public function en_name_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
@@ -86,7 +86,7 @@ class SubscribeControllerTest extends TestCase
     }
 
     /** @test */
-    public function en_email_field_is_required()
+    public function en_email_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
@@ -102,7 +102,7 @@ class SubscribeControllerTest extends TestCase
     }
 
     /** @test */
-    public function en_email_should_be_a_valid_email()
+    public function en_email_should_be_a_valid_email(): void
     {
         $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
@@ -118,7 +118,7 @@ class SubscribeControllerTest extends TestCase
     }
 
     /** @test */
-    public function en_email_field_is_unique()
+    public function en_email_field_is_unique(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -158,7 +158,7 @@ class SubscribeControllerTest extends TestCase
     }
 
     /** @test */
-    public function fa_authenticated_and_verified_user_can_subscribe()
+    public function fa_authenticated_and_verified_user_can_subscribe(): void
     {
         $this->refreshApplicationWithLocale('fa');
         $user = User::factory()->create();
@@ -178,7 +178,7 @@ class SubscribeControllerTest extends TestCase
     }
 
     /** @test */
-    public function fa_unverified_user_can_not_subscribe()
+    public function fa_unverified_user_can_not_subscribe(): void
     {
         $this->refreshApplicationWithLocale('fa');
         $user = User::factory()->create(['email_verified_at' => null]);
@@ -192,7 +192,7 @@ class SubscribeControllerTest extends TestCase
     }
 
     /** @test */
-    public function fa_name_field_is_required()
+    public function fa_name_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('fa');
         $user = User::factory()->create();
@@ -208,7 +208,7 @@ class SubscribeControllerTest extends TestCase
     }
 
     /** @test */
-    public function fa_email_field_is_required()
+    public function fa_email_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('fa');
         $user = User::factory()->create();
@@ -224,7 +224,7 @@ class SubscribeControllerTest extends TestCase
     }
 
     /** @test */
-    public function fa_email_should_be_a_valid_email()
+    public function fa_email_should_be_a_valid_email(): void
     {
         $this->refreshApplicationWithLocale('fa');
         $user = User::factory()->create();
@@ -240,7 +240,7 @@ class SubscribeControllerTest extends TestCase
     }
 
     /** @test */
-    public function fa_email_field_is_unique()
+    public function fa_email_field_is_unique(): void
     {
         $this->refreshApplicationWithLocale('fa');
 

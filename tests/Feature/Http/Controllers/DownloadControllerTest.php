@@ -34,7 +34,7 @@ class DownloadControllerTest extends TestCase
         $response->assertViewHas('languages');
     }
 
-    public function test_unauthorized_user_cannot_access_downloads()
+    public function test_unauthorized_user_cannot_access_downloads(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -43,7 +43,7 @@ class DownloadControllerTest extends TestCase
         $response->assertRedirect(url('login'));
     }
 
-    public function test_non_admin_user_cannot_access_downloads()
+    public function test_non_admin_user_cannot_access_downloads(): void
     {
         $this->refreshApplicationWithLocale('en');
 

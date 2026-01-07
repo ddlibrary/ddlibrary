@@ -103,7 +103,7 @@ class VocabularyControllerTest extends TestCase
     }
 
     /** @test */
-    public function name_field_is_required()
+    public function name_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -116,7 +116,7 @@ class VocabularyControllerTest extends TestCase
     }
 
     /** @test */
-    public function weight_field_is_required()
+    public function weight_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -129,7 +129,7 @@ class VocabularyControllerTest extends TestCase
     }
 
     /** @test */
-    public function language_field_is_required()
+    public function language_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -170,7 +170,7 @@ class VocabularyControllerTest extends TestCase
     }
 
     /** @test */
-    public function update_name_field_is_required()
+    public function update_name_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -185,7 +185,7 @@ class VocabularyControllerTest extends TestCase
     }
 
     /** @test */
-    public function update_weight_field_is_required()
+    public function update_weight_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -200,7 +200,7 @@ class VocabularyControllerTest extends TestCase
     }
 
     /** @test */
-    public function update_language_field_is_required()
+    public function update_language_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
