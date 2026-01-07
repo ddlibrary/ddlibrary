@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Browser;
 use App\Models\Device;
 use App\Models\Platform;
-use App\Models\SitewidePageView;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

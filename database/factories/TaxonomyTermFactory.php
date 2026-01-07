@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Enums\LanguageEnum;
-use App\Models\TaxonomyTerm;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

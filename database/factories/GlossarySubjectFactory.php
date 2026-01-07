@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\GlossarySubject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
