@@ -522,6 +522,38 @@ class MenuControllerTest extends TestCase
         $this->assertDatabaseMissing('menus', ['id' => $menu->id]);
     }
 
+    /**
+     * @test
+     */
+    public function destroy_handles_invalid_selected_ids(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $tnid = Menu::max('tnid') + 1;
+        
+        $menu = Menu::factory()->create([
+            'tnid' => $tnid,
+            'language' => 'en',
+            'parent' => 0,
+        ]);
+
+        // Send invalid selected_ids (non-existent menu IDs)
+        $response = $this->actingAs($admin)->delete(route('delete_menu', $menu->id), [
+            'selected_ids' => '99999,99998',
+        ]);
+
+        // When selected_ids don't match, controller falls back to deleting all with same tnid
+        // So it redirects to admin/menu and deletes the menu
+        $response->assertRedirect('admin/menu');
+        $response->assertSessionHas('success', 'Menu and all translations deleted successfully!');
+        
+        // Menu should be deleted (fallback behavior)
+        $this->assertDatabaseMissing('menus', ['id' => $menu->id]);
+    }
+
     protected function data($merge = [])
     {
         return array_merge(
