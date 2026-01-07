@@ -30,6 +30,10 @@
           <ol class="dd-list">
             @foreach ($menuRecords as $indexkey => $menu)
             @if($menu->parent == 0)
+            <?php
+              // Check if this menu has sub-menus
+              $hasSubMenus = $menuRecords->where('parent', $menu->id)->count() > 0;
+            ?>
             <li class="dd-item dd-item-alt" data-id="{{ $menu->id }}">
                 <div class="dd-handle"></div>
                 <div class="dd-content"> {{ $menu->title }} - {{ $menu->location }}
@@ -38,7 +42,9 @@
                   </span>
                   <span style="float:right;">
                     <a href="menu/edit/{{$menu->id}}"><i class="fa fa-edit"></i> Edit</a> &nbsp; &nbsp;
-                    <a href="menu/translate/{{$menu->id}}"><i class="fa fa-language"></i> Translate</a> &nbsp; &nbsp;
+                    <a href="menu/translate/{{$menu->id}}"><i class="fa fa-language"></i> Translate</a>
+                    @if(!$hasSubMenus)
+                    &nbsp; &nbsp;
                     <form method="POST" action="{{ route('delete_menu', $menu->id) }}" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this menu and all its translations? This action cannot be undone.');">
                       @csrf
                       @method('DELETE')
@@ -46,6 +52,7 @@
                         <i class="fa fa-trash"></i> Delete
                       </button>
                     </form>
+                    @endif
                   </span>
                 </div>
 
