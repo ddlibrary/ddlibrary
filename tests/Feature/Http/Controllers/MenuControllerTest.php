@@ -589,6 +589,53 @@ class MenuControllerTest extends TestCase
         $this->assertDatabaseHas('menus', ['id' => $parentMenu->id]);
     }
 
+    /**
+     * @test
+     */
+    public function destroy_deletes_menu_with_translations_and_sub_menus(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+
+        $tnid = Menu::max('tnid') + 1;
+        
+        // Create parent menu with translations
+        $parentMenuEn = Menu::factory()->create([
+            'tnid' => $tnid,
+            'language' => 'en',
+            'parent' => 0,
+        ]);
+
+        $parentMenuFa = Menu::factory()->create([
+            'tnid' => $tnid,
+            'language' => 'fa',
+            'parent' => 0,
+        ]);
+
+        // Create sub-menus
+        $subMenu1 = Menu::factory()->create([
+            'parent' => $parentMenuEn->id,
+            'tnid' => null,
+        ]);
+
+        $subMenu2 = Menu::factory()->create([
+            'parent' => $parentMenuEn->id,
+            'tnid' => null,
+        ]);
+
+        // Delete parent menu (should delete all translations)
+        $response = $this->actingAs($admin)->delete(route('delete_menu', $parentMenuEn->id));
+
+        $response->assertRedirect('admin/menu');
+        $response->assertSessionHas('success', 'Menu and all translations deleted successfully!');
+        
+        // Verify parent menu translations are deleted
+        $this->assertDatabaseMissing('menus', ['id' => $parentMenuEn->id]);
+        $this->assertDatabaseMissing('menus', ['id' => $parentMenuFa->id]);
+    }
+
     protected function data($merge = [])
     {
         return array_merge(
