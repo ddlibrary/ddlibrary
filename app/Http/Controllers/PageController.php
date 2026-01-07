@@ -15,22 +15,20 @@ use Yajra\Datatables\Datatables;
 class PageController extends Controller
 {
     use SitewidePageViewTrait;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     public function index(): \Illuminate\View\View
     {
         return view('admin.pages.pages_list');
     }
 
-    //Ajax get pages Function
+    // Ajax get pages Function
     public function getPages()
     {
         $page = Page::select(['id', 'title', 'language', 'created_at', 'updated_at']);
@@ -53,7 +51,7 @@ class PageController extends Controller
     public function view(Request $request, $pageId): Factory|View|Application
     {
         $this->pageView($request, 'Contact us');
-        //setting the search session empty
+        // setting the search session empty
         DDLClearSession();
 
         $page = Page::findOrFail($pageId);
@@ -73,7 +71,7 @@ class PageController extends Controller
 
     public function create(): \Illuminate\View\View
     {
-        //setting the search session empty
+        // setting the search session empty
         DDLClearSession();
 
         return view('pages.page_create');
@@ -95,12 +93,12 @@ class PageController extends Controller
         $page->language = $request->input('language');
         $page->user_id = Auth::id();
         $page->status = $request->input('published');
-        //inserting
+        // inserting
         $page->save();
 
         $page = Page::find($page->id);
         $page->tnid = $page->id;
-        //updating with tnid
+        // updating with tnid
         $page->save();
 
         return redirect('page/'.$page->id)->with('success', 'Item successfully created!');
@@ -130,7 +128,7 @@ class PageController extends Controller
         $page->language = $request->input('language');
         $page->user_id = Auth::id();
         $page->status = $request->input('published');
-        //inserting
+        // inserting
         $page->save();
 
         return redirect('page/'.$id)->with('success', 'Item successfully updated!');
@@ -166,7 +164,7 @@ class PageController extends Controller
         $page->user_id = Auth::id();
         $page->tnid = $tnid;
         $page->status = $request->input('published');
-        //inserting
+        // inserting
         $page->save();
 
         return redirect('page/'.$page->id)->with('success', 'Item successfully updated!');

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class SitewidePageView extends Model
 {
     use BelongsToUser, HasFactory;
-    
+
     protected $guarded = [];
 
     protected $casts = [
@@ -30,5 +30,4 @@ class SitewidePageView extends Model
     {
         return $this->belongsTo(Device::class);
     }
-
 }

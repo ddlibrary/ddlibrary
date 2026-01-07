@@ -77,7 +77,7 @@ class TaxonomyControllerTest extends TestCase
         $taxonomyVocabularies = TaxonomyVocabulary::factory()->times(3)->create();
         TaxonomyTerm::factory()->times(3)->create();
 
-        $response = $this->actingAs($admin)->get('en/admin/taxonomy/edit/' . $taxonomyVocabularies->first()->vid . "/$taxonomyTerm->id");
+        $response = $this->actingAs($admin)->get('en/admin/taxonomy/edit/'.$taxonomyVocabularies->first()->vid."/$taxonomyTerm->id");
 
         $response->assertOk();
         $response->assertViewIs('admin.taxonomy.taxonomy_edit');

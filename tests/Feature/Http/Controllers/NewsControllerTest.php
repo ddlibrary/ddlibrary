@@ -103,7 +103,7 @@ class NewsControllerTest extends TestCase
 
         $news = News::factory()->create();
 
-        $response = $this->get('en/news/edit/' . $news->id);
+        $response = $this->get('en/news/edit/'.$news->id);
 
         $response->assertOk();
         $response->assertViewIs('news.news_edit');
@@ -139,7 +139,7 @@ class NewsControllerTest extends TestCase
 
         $news = News::factory()->create();
 
-        $response = $this->get('en/news/translate/' . $news->id . '/' . $news->tnid);
+        $response = $this->get('en/news/translate/'.$news->id.'/'.$news->tnid);
 
         $response->assertOk();
         $response->assertViewIs('news.news_translate');
@@ -167,7 +167,7 @@ class NewsControllerTest extends TestCase
             'published' => 1,
         ]);
 
-        $response->assertRedirect('news/' . $news->id);
+        $response->assertRedirect('news/'.$news->id);
         $this->assertDatabaseHas('news', ['title' => 'Updated News Title']);
     }
 
@@ -184,7 +184,7 @@ class NewsControllerTest extends TestCase
 
         $news = News::factory()->create();
 
-        $response = $this->get('en/news/' . $news->id);
+        $response = $this->get('en/news/'.$news->id);
 
         $response->assertOk();
         $response->assertViewIs('news.news_view');

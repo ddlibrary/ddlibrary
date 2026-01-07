@@ -18,8 +18,8 @@ use App\Models\ResourceSharePermission;
 use App\Models\ResourceTranslationRight;
 use App\Models\TaxonomyTerm;
 use App\Models\User;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 
 /**
@@ -109,7 +109,7 @@ class ResourceControllerTest extends TestCase
             'comment' => 'This is a test comment.',
         ]);
 
-        $response->assertRedirect('resource/' . $resource->id);
+        $response->assertRedirect('resource/'.$resource->id);
         $this->assertDatabaseHas('resource_comments', [
             'resource_id' => $resource->id,
             'user_id' => $user->id,
@@ -272,7 +272,7 @@ class ResourceControllerTest extends TestCase
 
         $resource = Resource::factory()->create();
 
-        $response = $this->get('en/admin/resource/delete/' . $resource->id);
+        $response = $this->get('en/admin/resource/delete/'.$resource->id);
 
         $response->assertRedirect();
         $this->assertEquals(0, Resource::whereId($resource->id)->count());
@@ -290,7 +290,6 @@ class ResourceControllerTest extends TestCase
         $key = encrypt(time()); // or any other value you need to encrypt
 
         $response = $this->get("en/resource/view/99999/{$key}");
-
 
         $response->assertNotFound();
     }
@@ -314,7 +313,7 @@ class ResourceControllerTest extends TestCase
             'details' => 'This is a spam resource.',
         ]);
 
-        $response->assertRedirect('resource/' . $resource->id);
+        $response->assertRedirect('resource/'.$resource->id);
         $this->assertEquals('This is a spam resource.', ResourceFlag::where('resource_id', $resource->id)->value('details'));
     }
 
@@ -442,7 +441,7 @@ class ResourceControllerTest extends TestCase
 
         $resource = Resource::factory()->create();
 
-        $response = $this->post('en/resources/edit/step1/' . $resource->id, [
+        $response = $this->post('en/resources/edit/step1/'.$resource->id, [
             'title' => 'Updated Resource',
             'author' => 'Updated Author',
             'publisher' => 'Updated Publisher',
@@ -451,7 +450,7 @@ class ResourceControllerTest extends TestCase
             'abstract' => 'Updated abstract.',
         ]);
 
-        $response->assertRedirect('/resources/edit/step2/' . $resource->id);
+        $response->assertRedirect('/resources/edit/step2/'.$resource->id);
     }
 
     /**
@@ -534,13 +533,13 @@ class ResourceControllerTest extends TestCase
         $resource = Resource::factory()->create();
         $taxonomyTerm = TaxonomyTerm::factory()->create();
 
-        $response = $this->post('en/resources/edit/step3/' . $resource->id, [
+        $response = $this->post('en/resources/edit/step3/'.$resource->id, [
             'translation_rights' => 1,
             'educational_resource' => 1,
             'copyright_holder' => null,
         ]);
 
-        $response->assertRedirect('/resource/' . $resource->id);
+        $response->assertRedirect('/resource/'.$resource->id);
 
         $this->assertEquals('updated title', Resource::whereId($resource->id)->value('title'));
     }
@@ -638,7 +637,7 @@ class ResourceControllerTest extends TestCase
             'level' => TaxonomyTerm::where('vid', 13)->latest()->take(1)->pluck('id'),
         ]);
 
-        $response->assertRedirect('/resources/edit/step3/' . $resource->id);
+        $response->assertRedirect('/resources/edit/step3/'.$resource->id);
     }
 
     /**
@@ -672,7 +671,7 @@ class ResourceControllerTest extends TestCase
         $resource = Resource::factory()->create(['status' => 0]); // Start with an unpublished status
 
         // Make the request to the published route
-        $response = $this->get('en/admin/resource/published/' . $resource->id);
+        $response = $this->get('en/admin/resource/published/'.$resource->id);
 
         // Assert that the response is a redirect (302)
         $response->assertRedirect();
@@ -699,7 +698,7 @@ class ResourceControllerTest extends TestCase
         ]);
 
         $response->assertOk();
-        
+
         $this->assertDatabaseHas('resource_favorites', [
             'resource_id' => $resource->id,
             'user_id' => $user->id, // Check for the authenticated user
@@ -720,7 +719,7 @@ class ResourceControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-                 ->assertJson(['status' => 'notloggedin']);
+            ->assertJson(['status' => 'notloggedin']);
     }
 
     /**
@@ -739,14 +738,14 @@ class ResourceControllerTest extends TestCase
             'resource_id' => $resource->id,
             'user_id' => $secondUser->id,
         ]);
-        
+
         $this->actingAs($user);
         $response = $this->post('resources/favorite', [
             'resourceId' => $resource->id,
         ]);
 
         $response->assertStatus(200)
-                 ->assertJson(['action' => 'added', 'favorite_count' => 2]);
+            ->assertJson(['action' => 'added', 'favorite_count' => 2]);
 
         $this->assertDatabaseHas('resource_favorites', [
             'resource_id' => $resource->id,
@@ -776,7 +775,7 @@ class ResourceControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-                 ->assertJson(['action' => 'deleted', 'favorite_count' => 0]);
+            ->assertJson(['action' => 'deleted', 'favorite_count' => 0]);
 
         $this->assertDatabaseMissing('resource_favorites', [
             'resource_id' => $resource->id,
@@ -799,7 +798,7 @@ class ResourceControllerTest extends TestCase
         $resource = Resource::factory()->create(['primary_tnid' => false]);
         $resource->tnid = $resource->id;
         $resource->save();
-        
+
         $translatedResource = Resource::factory()->create(['primary_tnid' => false]);
         $translatedResource->tnid = $translatedResource->id;
         $translatedResource->save();
@@ -830,7 +829,7 @@ class ResourceControllerTest extends TestCase
             ->times(3)
             ->create(['resource_id' => $resource->id]);
 
-        $response = $this->get('en/resource/' . $resource->id);
+        $response = $this->get('en/resource/'.$resource->id);
 
         $response->assertOk();
         $response->assertViewIs('resources.resources_view');
@@ -849,7 +848,7 @@ class ResourceControllerTest extends TestCase
 
         $resource = Resource::factory()->create(['status' => 0]); // Assuming status 0 means unpublished
 
-        $response = $this->get('en/resource/' . $resource->id);
+        $response = $this->get('en/resource/'.$resource->id);
 
         $response->assertForbidden();
     }

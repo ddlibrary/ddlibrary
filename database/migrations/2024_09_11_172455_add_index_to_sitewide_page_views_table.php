@@ -18,12 +18,12 @@ return new class extends Migration
             $table->index(['is_bot', 'platform_id', 'created_at']);
             $table->index(['is_bot', 'gender', 'created_at']);
             $table->index(['is_bot', 'created_at']);
-            $table->index(['is_bot', 'created_at','user_id']);
-            $table->index(['is_bot','page_url', 'title']);
-            $table->index(['is_bot', 'created_at','page_url', 'title']);
+            $table->index(['is_bot', 'created_at', 'user_id']);
+            $table->index(['is_bot', 'page_url', 'title']);
+            $table->index(['is_bot', 'created_at', 'page_url', 'title']);
         });
     }
-    
+
     /**
      * Reverse the migrations.
      */
@@ -36,9 +36,9 @@ return new class extends Migration
             $table->dropIndex(['is_bot', 'platform_id', 'created_at']);
             $table->dropIndex(['is_bot', 'gender', 'created_at']);
             $table->dropIndex(['is_bot', 'created_at']);
-            $table->dropIndex(['is_bot', 'created_at','user_id']);
-            $table->dropIndex(['is_bot','page_url', 'title']);
-            $table->dropIndex(['is_bot','created_at','page_url', 'title']);
+            $table->dropIndex(['is_bot', 'created_at', 'user_id']);
+            $table->dropIndex(['is_bot', 'page_url', 'title']);
+            $table->dropIndex(['is_bot', 'created_at', 'page_url', 'title']);
         });
     }
 };

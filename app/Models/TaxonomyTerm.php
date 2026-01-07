@@ -14,6 +14,7 @@ class TaxonomyTerm extends Model
     use HasFactory;
 
     protected $guarded = [];
+
     /**
      * Indicates if the model should be timestamped.
      *
@@ -49,7 +50,8 @@ class TaxonomyTerm extends Model
         }
     }
 
-    public function resources(){
+    public function resources()
+    {
         return $this->hasMany(ResourceSubjectArea::class, 'tid');
     }
 

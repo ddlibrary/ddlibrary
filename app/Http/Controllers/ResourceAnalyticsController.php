@@ -6,7 +6,6 @@ use App\Enums\LanguageEnum;
 use App\Enums\TaxonomyVocabularyEnum;
 use App\Models\DownloadCount;
 use App\Models\Resource;
-use App\Models\ResourceSubjectArea;
 use App\Models\ResourceView;
 use App\Models\TaxonomyTerm;
 use App\Traits\GenderTrait;
@@ -18,7 +17,7 @@ use Illuminate\View\View;
 
 class ResourceAnalyticsController extends Controller
 {
-    use LanguageTrait, GenderTrait;
+    use GenderTrait, LanguageTrait;
 
     public function index(Request $request): View
     {
@@ -89,6 +88,7 @@ class ResourceAnalyticsController extends Controller
 
         return $totalResources->map(function ($item) {
             $item['language'] = LanguageEnum::tryFrom($item['language'])?->name ?? $item['language'];
+
             return $item;
         });
     }
@@ -221,6 +221,7 @@ class ResourceAnalyticsController extends Controller
                 $query->where('gender', $request->gender);
             });
         }
+
         return $query->count();
     }
 }

@@ -18,7 +18,7 @@ use Illuminate\View\View;
 
 class GlossaryAnalyticsController extends Controller
 {
-    use LanguageTrait, GenderTrait, GlossaryPageViewConditionTrait;
+    use GenderTrait, GlossaryPageViewConditionTrait, LanguageTrait;
 
     public function index(Request $request): View
     {
@@ -29,7 +29,6 @@ class GlossaryAnalyticsController extends Controller
         $platforms = Platform::all(['id', 'name']);
         $glossarySubjects = GlossarySubject::all(['id', 'en']);
         $status = $request->status == 2 ? 'Created' : 'Views';
-
 
         $totalViews = $this->getTotalViews($request);
         $totalRegisteredUsersViews = $this->getTotalViews($request, 'no');
@@ -57,7 +56,6 @@ class GlossaryAnalyticsController extends Controller
                 },
             ])
             ->get();
-
 
         $totalGuestViews = $this->getTotalViews($request, 'yes');
         $totalViewsBasedOnLanguage = $this->getTotalViewsBasedOnLanguage($request);
@@ -94,6 +92,7 @@ class GlossaryAnalyticsController extends Controller
 
         return $totalResources->map(function ($item) {
             $item['language'] = LanguageEnum::tryFrom($item['language'])?->name ?? $item['language'];
+
             return $item;
         });
     }
@@ -108,7 +107,7 @@ class GlossaryAnalyticsController extends Controller
         $glossarySubjects = GlossarySubject::all(['id', 'en']);
 
         $query = GlossaryPageView::query()->with(['glossarySubject:id,en', 'platform:id,name', 'device:id,name', 'browser:id,name', 'user:id', 'user.profile:id,user_id,first_name,last_name']);
-        $query = $this->filterPageViews($query, $request);   
+        $query = $this->filterPageViews($query, $request);
         $views = $query->paginate()
             ->appends($request->except(['page']));
 

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Survey extends Model
 {
     use HasFactory;
-    
+
     /**
      * Get the questions for the survey.
      */

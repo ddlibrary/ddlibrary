@@ -42,7 +42,7 @@ class VocabularyControllerTest extends TestCase
 
         $taxonomyVocabulary = TaxonomyVocabulary::factory()->create();
 
-        $response = $this->actingAs($user)->get('en/admin/vocabulary/edit/' . $taxonomyVocabulary->vid);
+        $response = $this->actingAs($user)->get('en/admin/vocabulary/edit/'.$taxonomyVocabulary->vid);
 
         $response->assertOk();
         $response->assertViewIs('admin.vocabulary.vocabulary_edit');

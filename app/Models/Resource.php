@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -11,10 +11,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Jenssegers\Agent\Agent;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\CausesActivity;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Jenssegers\Agent\Agent;
 
 /**
  * @method static find($resourceId)
@@ -23,9 +23,8 @@ use Jenssegers\Agent\Agent;
  */
 class Resource extends Model
 {
-    use HasFactory;
-
     use CausesActivity;
+    use HasFactory;
     use LogsActivity;
 
     protected $guarded = [];
@@ -232,7 +231,7 @@ class Resource extends Model
             ->get();
     }
 
-    //Total resources based on language
+    // Total resources based on language
     public function totalResourcesByLanguage(): Collection
     {
         return DB::table('resources AS rs')
@@ -241,7 +240,7 @@ class Resource extends Model
             ->get();
     }
 
-    //Total resources based on subject area List
+    // Total resources based on subject area List
     public function totalResourcesBySubject($lang = 'en', $date_from = '', $date_to = ''): Collection
     {
         return DB::table('resource_subject_areas AS rsa')
@@ -271,8 +270,8 @@ class Resource extends Model
         }
 
         return DB::table('resources AS rs')
-            ->select('rs.id', 'rs.language', 'rs.abstract', 'rs.title', 'rs.status','rf.name')
-            ->leftjoin('resource_files AS rf', 'rf.id','=','rs.resource_file_id')
+            ->select('rs.id', 'rs.language', 'rs.abstract', 'rs.title', 'rs.status', 'rf.name')
+            ->leftjoin('resource_files AS rf', 'rf.id', '=', 'rs.resource_file_id')
             ->when($subjectAreaIds != null, function ($query) use ($subjectAreaIds) {
                 return $query
                     ->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
@@ -332,7 +331,7 @@ class Resource extends Model
             ->paginate(30);
     }
 
-    //Total resources based on level
+    // Total resources based on level
     public function totalResourcesByLevel($lang = 'en'): Collection
     {
         return DB::table('resource_levels AS rl')
@@ -346,7 +345,7 @@ class Resource extends Model
             ->get();
     }
 
-    //Total resources based on Resource Type
+    // Total resources based on Resource Type
     public function totalResourcesByType($lang = 'en'): Collection
     {
         return DB::table('resource_learning_resource_types AS rlrt')
@@ -360,7 +359,7 @@ class Resource extends Model
             ->get();
     }
 
-    //Total resources by attachment type (format)
+    // Total resources by attachment type (format)
     public function totalResourcesByFormat($lang = 'en'): Collection
     {
         return DB::table('resources AS rs')
@@ -373,7 +372,7 @@ class Resource extends Model
             ->get();
     }
 
-    //Total resources by attachment type (format)
+    // Total resources by attachment type (format)
     public function downloadCounts($date_from, $date_to)
     {
         return DB::table('download_counts')
@@ -394,8 +393,8 @@ class Resource extends Model
         return DB::table('resources AS rs')
             ->select('rs.id', 'rs.title', 'rs.abstract', 'rf.name')
             ->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
-            ->leftjoin('resource_files AS rf', 'rf.id','=','rs.resource_file_id')
-            //not to include the record itself in the related items part
+            ->leftjoin('resource_files AS rf', 'rf.id', '=', 'rs.resource_file_id')
+            // not to include the record itself in the related items part
             ->where('rs.id', '!=', $resourceId)
             ->where('rs.status', 1)
             ->whereIn('rsa.tid', $ids)
@@ -467,7 +466,8 @@ class Resource extends Model
 
     public function updateResourceCounter($data): int
     {
-        $agent = new Agent();
+        $agent = new Agent;
+
         return DB::table('resource_views')->insertGetId([
             'resource_id' => $data['resource_id'],
             'user_id' => $data['userid'],
@@ -485,11 +485,13 @@ class Resource extends Model
         return LogOptions::defaults()->logOnly(['title', 'created_at']);
     }
 
-    public function downloads(){
+    public function downloads()
+    {
         return $this->hasMany(DownloadCount::class);
     }
 
-    public function resourceViews(){
+    public function resourceViews()
+    {
         return $this->hasMany(ResourceView::class);
     }
 

@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\ResourceTranslationRight;
 
 class ResourceTranslationRightFactory extends Factory
 {

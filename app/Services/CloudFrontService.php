@@ -7,8 +7,11 @@ use Aws\CloudFront\CloudFrontClient;
 class CloudFrontService
 {
     protected CloudFrontClient $client;
+
     protected string $domain;
+
     protected string $keyPairId;
+
     protected string $privateKeyPath;
 
     public function __construct()
@@ -30,11 +33,10 @@ class CloudFrontService
         $unsignedUrl = sprintf('https://%s/%s', $this->domain, ltrim($path, '/'));
 
         return $this->client->getSignedUrl([
-            'url'         => $unsignedUrl,
-            'expires'     => $expires,
+            'url' => $unsignedUrl,
+            'expires' => $expires,
             'key_pair_id' => $this->keyPairId,
             'private_key' => $this->privateKeyPath,
         ]);
     }
 }
-

@@ -23,7 +23,6 @@ class Glossary extends Model
 
     protected $guarded = [];
 
-
     public function glossarySubject()
     {
         return $this->belongsTo(GlossarySubject::class, 'subject', 'id');

@@ -19,7 +19,7 @@ class TaxonomyVocabularyFactory extends Factory
         return [
             'name' => $this->faker->name,
             'weight' => $this->faker->numberBetween(0, 10),
-            'language' => 'en'
+            'language' => 'en',
         ];
     }
 }

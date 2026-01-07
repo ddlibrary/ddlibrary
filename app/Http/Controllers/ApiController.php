@@ -18,7 +18,6 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -111,7 +110,7 @@ class ApiController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255|unique:users|nullable|regex:/^([a-zA-Z\d\._-]+)@(?!fmail.com)/', //Regex to block fmail.com domain
+            'email' => 'required|string|email|max:255|unique:users|nullable|regex:/^([a-zA-Z\d\._-]+)@(?!fmail.com)/', // Regex to block fmail.com domain
             'password' => 'required|string|min:8|regex:/^(?=.*[0-9])(?=.*[!@#$%^&.]).*$/',
         ], [
             'password.regex' => __('The password you entered doesn\'t have any special characters (!@#$%^&.) and (or) digits (0-9).'),
@@ -122,7 +121,7 @@ class ApiController extends Controller
             return $validator->errors()->jsonSerialize();
         }
 
-        $user = new User();
+        $user = new User;
         $user->username = $this->getUserName($request['email']);
         $user->password = Hash::make($request->password);
         $user->email = $request->email;
@@ -134,13 +133,13 @@ class ApiController extends Controller
 
         auth()->login($user);
 
-        $userProfile = new UserProfile();
+        $userProfile = new UserProfile;
         $userProfile->user_id = $user->id;
         $userProfile->save();
 
         $userRole = new UserRole;
         $userRole->user_id = $user->id;
-        $userRole->role_id = 6; //library user from roles table
+        $userRole->role_id = 6; // library user from roles table
         $userRole->save();
 
         return ['token' => $user->createToken($user->username)->plainTextToken, 'user' => $user->username];
@@ -185,7 +184,7 @@ class ApiController extends Controller
     // News View
     public function newsView($id): View
     {
-        //setting the search session empty
+        // setting the search session empty
         DDLClearSession();
 
         $news = News::find($id);
@@ -219,20 +218,21 @@ class ApiController extends Controller
     public function resource($id)
     {
         $resource = Resource::query()
-                ->leftJoin('resource_files', 'resources.id', '=', 'resource_files.resource_id')
-                ->select('resources.*', 'resource_files.name as file_name')
-                ->where('resources.id', $id)
-                ->firstOrFail();
-        
+            ->leftJoin('resource_files', 'resources.id', '=', 'resource_files.resource_id')
+            ->select('resources.*', 'resource_files.name as file_name')
+            ->where('resources.id', $id)
+            ->firstOrFail();
+
         $resource->img = getResourceImage($resource->file_name, true);
         unset($resource->file_name);
+
         return response()->json($resource);
     }
 
     // Resource Categories
     public function resourceCategories($lang = 'en')
     {
-        $resource = new Resource();
+        $resource = new Resource;
 
         return $resource->subjectIconsAndTotal($lang);
     }
@@ -240,13 +240,13 @@ class ApiController extends Controller
     // Resource Attributes
     public function resourceAttributes($resourceId)
     {
-        //setting the search session empty
+        // setting the search session empty
         DDLClearSession();
 
-        $myResources = new Resource();
-        $views = new ResourceView();
+        $myResources = new Resource;
+        $views = new ResourceView;
 
-        $attachments = new ResourceAttachment();
+        $attachments = new ResourceAttachment;
         $attachments = $attachments->where('resource_id', $resourceId)->get();
 
         $resource = Resource::findOrFail($resourceId);
@@ -373,7 +373,7 @@ class ApiController extends Controller
     // Featured Resources
     public function featuredResources($lang = 'en')
     {
-        $resource = new Resource();
+        $resource = new Resource;
 
         return $resource->featuredCollections($lang);
     }
@@ -381,9 +381,9 @@ class ApiController extends Controller
     // Filter Resources
     public function filterResources(Request $request)
     {
-        $myResources = new Resource();
+        $myResources = new Resource;
 
-        //Getting all whatever in the parameterBag
+        // Getting all whatever in the parameterBag
         $everything = $request->all();
 
         if (isset($everything['search'])) {
@@ -394,24 +394,24 @@ class ApiController extends Controller
         $levelIds = [];
         $typeIds = [];
 
-        //if subject_area exists in the request
+        // if subject_area exists in the request
         if ($request->filled('subject_area')) {
             $subjectAreaIds = $everything['subject_area'];
         }
 
-        //if level exists in the request
+        // if level exists in the request
         if ($request->filled('level')) {
             $levelIds = $everything['level'];
         }
 
-        //if type exists
+        // if type exists
         if ($request->filled('type')) {
             $typeIds = $everything['type'];
         }
 
-        $views = new ResourceView();
-        $favorites = new ResourceFavorite();
-        $comments = new ResourceComment();
+        $views = new ResourceView;
+        $favorites = new ResourceFavorite;
+        $comments = new ResourceComment;
         $resources = $myResources->paginateResourcesBy($request);
 
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data', 8);

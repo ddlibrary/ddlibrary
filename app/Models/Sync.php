@@ -8,7 +8,7 @@ class Sync extends Model
 {
     public function getResources()
     {
-        $remoteResources = new Resource();
+        $remoteResources = new Resource;
         $remoteResources->setConnection('mysql_remote');
 
         return $remoteResources->all();

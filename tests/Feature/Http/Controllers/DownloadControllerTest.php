@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\Models\DownloadCount;
 use App\Models\User;
-use App\Models\Resource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -35,10 +33,6 @@ class DownloadControllerTest extends TestCase
         $response->assertViewHas('genders');
         $response->assertViewHas('languages');
     }
-
-
-
-
 
     public function test_unauthorized_user_cannot_access_downloads()
     {

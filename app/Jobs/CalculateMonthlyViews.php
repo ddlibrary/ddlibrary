@@ -2,9 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\Resource;
 use App\Models\SitewidePageView;
-use App\Models\TaxonomyTerm;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -30,11 +28,11 @@ class CalculateMonthlyViews implements ShouldQueue
     public function handle(): void
     {
         $monthlyViews = SitewidePageView::where('created_at', '>', \Carbon\Carbon::now()->subDays(30))
-            ->where(function($views)  {
-                $views->where(function($query) {
+            ->where(function ($views) {
+                $views->where(function ($query) {
                     $query->where('is_bot', false);
                 })
-                    ->where(function($query) {
+                    ->where(function ($query) {
                         $query->where('browser', '!=', 'Mozilla')
                             ->where('platform_id', '!=', 0);
                     });

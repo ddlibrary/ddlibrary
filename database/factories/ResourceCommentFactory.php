@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Resource;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ResourceCommentFactory extends Factory
 {
@@ -19,7 +19,7 @@ class ResourceCommentFactory extends Factory
             'resource_id' => Resource::factory()->create(),
             'user_id' => User::factory()->create(),
             'comment' => $this->faker->text(),
-            'status' => 1
+            'status' => 1,
         ];
     }
 }

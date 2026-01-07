@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class TaxonomyVocabulary extends Model
 {
     use HasFactory;
+
     /**
      * Indicates if the model should be timestamped.
      *
