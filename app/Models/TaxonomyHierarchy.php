@@ -13,5 +13,5 @@ class TaxonomyHierarchy extends Model
 
     protected $table = 'taxonomy_term_hierarchy';
 
-    protected $fillable = ['tid'];
+    protected $fillable = ['id', 'tid', 'parent', 'aux_id'];
 }
