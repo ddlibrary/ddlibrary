@@ -314,7 +314,7 @@ class MenuControllerTest extends TestCase
     /**
      * @test
      */
-    public function deletes_selected_translations_from_translate_page(): void
+    public function destroy_deletes_all_translations_from_translate_page(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -342,102 +342,16 @@ class MenuControllerTest extends TestCase
             'parent' => 0,
         ]);
 
-        // Delete only selected translations (fa and ps, but not en)
-        $selectedIds = $menuFa->id . ',' . $menuPs->id;
+        // Delete all translations from translate page
+        $response = $this->actingAs($admin)->delete(route('delete_menu', $menuEn->id));
 
-        $response = $this->actingAs($admin)->delete(route('delete_menu', $menuEn->id), [
-            'selected_ids' => $selectedIds,
-        ]);
-
-        $response->assertRedirect('admin/menu/translate/' . $menuEn->id);
-        $response->assertSessionHas('success', '2 menu translations deleted successfully!');
+        $response->assertRedirect('admin/menu');
+        $response->assertSessionHas('success', 'Menu and all translations deleted successfully!');
         
-        // Verify selected translations are deleted
+        // Verify all translations are deleted
+        $this->assertDatabaseMissing('menus', ['id' => $menuEn->id]);
         $this->assertDatabaseMissing('menus', ['id' => $menuFa->id]);
         $this->assertDatabaseMissing('menus', ['id' => $menuPs->id]);
-        
-        // Verify English menu still exists
-        $this->assertDatabaseHas('menus', ['id' => $menuEn->id]);
-    }
-
-    /**
-     * @test
-     */
-    public function deletes_single_selected_translation(): void
-    {
-        $this->refreshApplicationWithLocale('en');
-
-        $admin = User::factory()->create();
-        $admin->roles()->attach(5);
-
-        $tnid = Menu::max('tnid') + 1;
-        
-        $menuEn = Menu::factory()->create([
-            'tnid' => $tnid,
-            'language' => 'en',
-            'parent' => 0,
-        ]);
-
-        $menuFa = Menu::factory()->create([
-            'tnid' => $tnid,
-            'language' => 'fa',
-            'parent' => 0,
-        ]);
-
-        // Delete only one translation
-        $response = $this->actingAs($admin)->delete(route('delete_menu', $menuEn->id), [
-            'selected_ids' => (string) $menuFa->id,
-        ]);
-
-        $response->assertRedirect('admin/menu/translate/' . $menuEn->id);
-        $response->assertSessionHas('success', 'Menu translation deleted successfully!');
-        
-        // Verify selected translation is deleted
-        $this->assertDatabaseMissing('menus', ['id' => $menuFa->id]);
-        
-        // Verify English menu still exists
-        $this->assertDatabaseHas('menus', ['id' => $menuEn->id]);
-    }
-
-    /**
-     * @test
-     */
-    public function destroy_does_not_delete_translations_with_different_tnid(): void
-    {
-        $this->refreshApplicationWithLocale('en');
-
-        $admin = User::factory()->create();
-        $admin->roles()->attach(5);
-
-        $tnid1 = Menu::max('tnid') + 1;
-        $tnid2 = $tnid1 + 1;
-        
-        $menu1 = Menu::factory()->create([
-            'tnid' => $tnid1,
-            'language' => 'en',
-            'parent' => 0,
-        ]);
-
-        $menu2 = Menu::factory()->create([
-            'tnid' => $tnid2,
-            'language' => 'en',
-            'parent' => 0,
-        ]);
-
-        // Try to delete menu1, but include menu2's ID in selected_ids (should not work)
-        $response = $this->actingAs($admin)->delete(route('delete_menu', $menu1->id), [
-            'selected_ids' => (string) $menu2->id,
-        ]);
-
-        // When selected_ids don't match tnid, controller falls back to deleting all with same tnid
-        // So it redirects to admin/menu and deletes menu1
-        $response->assertRedirect('admin/menu');
-        
-        // Verify menu2 still exists (different tnid, so shouldn't be deleted)
-        $this->assertDatabaseHas('menus', ['id' => $menu2->id]);
-        
-        // Menu1 should be deleted (fallback behavior)
-        $this->assertDatabaseMissing('menus', ['id' => $menu1->id]);
     }
 
     /**
@@ -493,66 +407,6 @@ class MenuControllerTest extends TestCase
         $response->assertNotFound();
     }
 
-    /**
-     * @test
-     */
-    public function destroy_handles_empty_selected_ids(): void
-    {
-        $this->refreshApplicationWithLocale('en');
-
-        $admin = User::factory()->create();
-        $admin->roles()->attach(5);
-
-        $tnid = Menu::max('tnid') + 1;
-        
-        $menu = Menu::factory()->create([
-            'tnid' => $tnid,
-            'language' => 'en',
-            'parent' => 0,
-        ]);
-
-        // Send empty selected_ids
-        $response = $this->actingAs($admin)->delete(route('delete_menu', $menu->id), [
-            'selected_ids' => '',
-        ]);
-
-        // Should delete all translations (fallback behavior)
-        $response->assertRedirect('admin/menu');
-        $response->assertSessionHas('success', 'Menu and all translations deleted successfully!');
-        $this->assertDatabaseMissing('menus', ['id' => $menu->id]);
-    }
-
-    /**
-     * @test
-     */
-    public function destroy_handles_invalid_selected_ids(): void
-    {
-        $this->refreshApplicationWithLocale('en');
-
-        $admin = User::factory()->create();
-        $admin->roles()->attach(5);
-
-        $tnid = Menu::max('tnid') + 1;
-        
-        $menu = Menu::factory()->create([
-            'tnid' => $tnid,
-            'language' => 'en',
-            'parent' => 0,
-        ]);
-
-        // Send invalid selected_ids (non-existent menu IDs)
-        $response = $this->actingAs($admin)->delete(route('delete_menu', $menu->id), [
-            'selected_ids' => '99999,99998',
-        ]);
-
-        // When selected_ids don't match, controller falls back to deleting all with same tnid
-        // So it redirects to admin/menu and deletes the menu
-        $response->assertRedirect('admin/menu');
-        $response->assertSessionHas('success', 'Menu and all translations deleted successfully!');
-        
-        // Menu should be deleted (fallback behavior)
-        $this->assertDatabaseMissing('menus', ['id' => $menu->id]);
-    }
 
     /**
      * @test
