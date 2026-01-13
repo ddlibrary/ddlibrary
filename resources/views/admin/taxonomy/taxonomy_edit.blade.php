@@ -72,7 +72,14 @@
                             }
                             
                             $translationName = $translation ? $translation->name : '';
-                            $currentParent = $currentParents[$translation->language ?? $localeCode] ?? ($currentParents[$localeCode] ?? 0);
+                            // Get parent for this translation - try by language first, then by term id
+                            $currentParent = 0;
+                            if ($translation) {
+                                $transLang = $translation->language ?? 'und';
+                                $currentParent = $currentParents[$transLang] ?? $currentParents['tid_' . $translation->id] ?? 0;
+                            } else {
+                                $currentParent = $currentParents[$localeCode] ?? 0;
+                            }
                         ?>
                         <div class="card mb-3" style="border-left: 4px solid #007bff;">
                             <div class="card-body">
