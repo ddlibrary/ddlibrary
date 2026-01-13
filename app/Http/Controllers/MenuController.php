@@ -203,46 +203,21 @@ class MenuController extends Controller
     }
 
     /**
-     * Delete selected menu translations or all translations that share the same tnid
+     * Delete all menu translations that share the same tnid
      */
-    public function destroy(Request $request, $menuId): RedirectResponse
+    public function destroy($menuId): RedirectResponse
     {
         $menu = Menu::findOrFail($menuId);
         $tnid = $menu->tnid;
 
-        // Check if specific menu IDs were selected
-        $selectedIds = $request->input('selected_ids');
-        
-        if ($selectedIds) {
-            // Delete only selected menu items (from translate page)
-            $ids = explode(',', $selectedIds);
-            $ids = array_filter($ids); // Remove empty values
-            
-            if (count($ids) > 0) {
-                // Verify all selected IDs belong to the same tnid
-                $selectedMenus = Menu::whereIn('id', $ids)
-                    ->where('tnid', $tnid)
-                    ->get();
-
-                
-                if ($selectedMenus->count() > 0) {
-                    Menu::whereIn('id', $ids)->delete();
-                    $message = count($ids) === 1 
-                        ? 'Menu translation deleted successfully!' 
-                        : count($ids) . ' menu translations deleted successfully!';
-                    return redirect('admin/menu/translate/'.$menu->id)->with('success', $message);
-                }
-            }
-        }
-
-        // If no specific IDs selected, delete all menus with the same tnid (from menu list)
         if ($tnid) {
+            // Delete all menus with the same tnid (all translations)
             Menu::where('tnid', $tnid)->delete();
             return redirect('admin/menu')->with('success', 'Menu and all translations deleted successfully!');
-        } else {
-            // If no tnid, just delete this single menu
-            $menu->delete();
-            return redirect('admin/menu')->with('success', 'Menu deleted successfully!');
         }
+
+        // If no tnid, just delete this single menu
+        $menu->delete();
+        return redirect('admin/menu')->with('success', 'Menu deleted successfully!');
     }
 }
