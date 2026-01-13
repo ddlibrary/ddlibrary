@@ -76,6 +76,7 @@
                                         <th class="text-center" style="width: 50px;">#</th>
                                         <th>Vocabulary</th>
                                         <th class="text-center" style="width: 80px;">Weight</th>
+                                        <th style="width: 150px;">Parent</th>
                                         @foreach ($supportedLocales as $localeCode => $localeProperties)
                                             <th>{{ $localeProperties['name'] }}</th>
                                         @endforeach
@@ -83,13 +84,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($groupedTerms as $index => $translations)
+                                    @foreach ($groupedTerms as $index => $termData)
                                         <?php
+                                        $translations = $termData['translations'];
+                                        $level = $termData['level'] ?? 0;
                                         $firstTerm = $translations->first();
                                         $vocabName = $firstTerm->vocabulary->name ?? 'N/A';
                                         $weight = $firstTerm->weight ?? 0;
                                         $tnid = $firstTerm->tnid ?? $firstTerm->id;
                                         $vid = $firstTerm->vid;
+                                        
+                                        // Get parent information for this term (check first term's id)
+                                        $parentData = $parentInfo[$firstTerm->id] ?? ['parent_id' => 0, 'parent_name' => null];
+                                        $isTopLevel = $parentData['parent_id'] == 0;
                                         
                                         // Create array of translations by language code
                                         $translationsByLang = [];
@@ -105,12 +112,68 @@
                                                 }
                                             }
                                         }
+                                        
+                                        // Calculate indentation and tree lines
+                                        $indentPx = $level * 25; // 25px per level
+                                        
+                                        // Determine if this is the last child at this level
+                                        $isLastAtLevel = true;
+                                        if ($level > 0) {
+                                            for ($i = $index + 1; $i < count($groupedTerms); $i++) {
+                                                $nextLevel = $groupedTerms[$i]['level'] ?? 0;
+                                                if ($nextLevel < $level) {
+                                                    break; // Reached parent level or higher
+                                                }
+                                                if ($nextLevel == $level) {
+                                                    $isLastAtLevel = false;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        
+                                        // Build tree prefix string
+                                        $treePrefix = '';
+                                        if ($level > 0) {
+                                            // For each parent level, check if we need vertical lines
+                                            for ($l = 0; $l < $level - 1; $l++) {
+                                                // Check if there are more siblings at this level after current item
+                                                $hasMoreSiblings = false;
+                                                for ($i = $index + 1; $i < count($groupedTerms); $i++) {
+                                                    $nextLevel = $groupedTerms[$i]['level'] ?? 0;
+                                                    if ($nextLevel <= $l) {
+                                                        break;
+                                                    }
+                                                    if ($nextLevel == $l + 1) {
+                                                        $hasMoreSiblings = true;
+                                                        break;
+                                                    }
+                                                }
+                                                $treePrefix .= $hasMoreSiblings ? '│&nbsp;&nbsp;' : '&nbsp;&nbsp;&nbsp;&nbsp;';
+                                            }
+                                            // Add connector for current item
+                                            $treePrefix .= $isLastAtLevel ? '└──&nbsp;' : '├──&nbsp;';
+                                        }
                                         ?>
-                                        <tr>
+                                        <tr class="{{ $isTopLevel ? '' : 'table-secondary' }}">
                                             <td class="text-center">{{ $index + 1 }}</td>
-                                            <td><strong>{{ $vocabName }}</strong></td>
+                                            <td>
+                                                <div style="padding-left: {{ $indentPx }}px;">
+                                                    {!! $treePrefix !!}<strong>{{ $vocabName }}</strong>
+                                                </div>
+                                            </td>
                                             <td class="text-center">
                                                 <span class="badge badge-info">{{ $weight }}</span>
+                                            </td>
+                                            <td>
+                                                @if ($isTopLevel)
+                                                    <span class="badge badge-success">
+                                                        <i class="fa fa-level-up-alt"></i> Top Level
+                                                    </span>
+                                                @else
+                                                    <span class="badge badge-secondary" title="Parent ID: {{ $parentData['parent_id'] }}">
+                                                        <i class="fa fa-level-down-alt"></i> {{ $parentData['parent_name'] ?? 'Unknown' }}
+                                                    </span>
+                                                @endif
                                             </td>
                                             @foreach ($supportedLocales as $localeCode => $localeProperties)
                                                 <td>
