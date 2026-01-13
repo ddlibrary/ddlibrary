@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TaxonomyHierarchy;
 use App\Models\TaxonomyTerm;
 use App\Models\TaxonomyVocabulary;
+use App\Services\TaxonomyService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,13 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class TaxonomyController extends Controller
 {
+    protected TaxonomyService $taxonomyService;
+
+    public function __construct(TaxonomyService $taxonomyService)
+    {
+        $this->taxonomyService = $taxonomyService;
+    }
+
     public function index(Request $request): View
     {
         $this->middleware('admin');
@@ -27,84 +35,14 @@ class TaxonomyController extends Controller
             return view('admin.taxonomy.taxonomy_list', compact('vocabulary', 'supportedLocales'));
         }
 
-        // Get all unique tnids for the filtered vocabulary
-        $baseQuery = TaxonomyTerm::where('vid', $vocabularyId);
-        
-        if ($termName) {
-            $baseQuery->where('name', 'like', '%' . $termName . '%');
-        }
-
-        // Get distinct tnids (grouping by tnid)
-        $tnids = (clone $baseQuery)
-            ->whereNotNull('tnid')
-            ->where('tnid', '!=', 0)
-            ->distinct()
-            ->pluck('tnid')
-            ->toArray();
-
-        // Also include terms with tnid = 0 or null (no translations)
-        $singleTerms = (clone $baseQuery)
-            ->where(function($q) {
-                $q->whereNull('tnid')
-                  ->orWhere('tnid', 0);
-            })
-            ->get();
-
-        // Get all translations grouped by tnid
-        $groupedTerms = [];
-        foreach ($tnids as $tnid) {
-            $translations = TaxonomyTerm::where('tnid', $tnid)
-                ->where('vid', $vocabularyId)
-                ->orderBy('weight')
-                ->get();
-            
-            if ($translations->isNotEmpty()) {
-                $groupedTerms[] = $translations;
-            }
-        }
-
-        // Add single terms (no translations) to the list
-        foreach ($singleTerms as $singleTerm) {
-            $groupedTerms[] = collect([$singleTerm]);
-        }
-        
-        // Also include terms with invalid language values (NULL, empty, or 'und')
-        $invalidLanguageTerms = (clone $baseQuery)
-            ->where(function($q) {
-                $q->whereNull('language')
-                  ->orWhere('language', '')
-                  ->orWhere('language', 'und');
-            })
-            ->where(function($q) {
-                $q->whereNull('tnid')
-                  ->orWhere('tnid', 0);
-            })
-            ->get();
-        
-        foreach ($invalidLanguageTerms as $invalidTerm) {
-            // Check if this term is not already in groupedTerms
-            $exists = false;
-            foreach ($groupedTerms as $group) {
-                if ($group->contains('id', $invalidTerm->id)) {
-                    $exists = true;
-                    break;
-                }
-            }
-            if (!$exists) {
-                $groupedTerms[] = collect([$invalidTerm]);
-            }
-        }
-
-        // Sort by weight (use first term's weight in each group)
-        usort($groupedTerms, function($a, $b) {
-            $weightA = $a->first()->weight ?? 0;
-            $weightB = $b->first()->weight ?? 0;
-            return $weightA <=> $weightB;
-        });
+        // Use service to get grouped terms with hierarchy
+        $result = $this->taxonomyService->getGroupedTermsWithHierarchy($vocabularyId, $termName);
+        $groupedTerms = $result['groupedTerms'];
+        $parentInfo = $result['parentInfo'];
 
         $supportedLocales = LaravelLocalization::getSupportedLocales();
 
-        return view('admin.taxonomy.taxonomy_list', compact('groupedTerms', 'vocabulary', 'supportedLocales'));
+        return view('admin.taxonomy.taxonomy_list', compact('groupedTerms', 'vocabulary', 'supportedLocales', 'parentInfo'));
     }
 
     public function edit($vid, $tid): View
@@ -112,12 +50,16 @@ class TaxonomyController extends Controller
         $term = TaxonomyTerm::findOrFail($tid);
         $tnid = $term->tnid;
         
-        // If tnid is 0, null, or equals the term id, it means no translations exist yet
-        // Otherwise, get all translations with the same tnid
-        if ($tnid && $tnid != 0 && $tnid != $tid) {
+        // Get all translations with the same tnid
+        // If tnid exists and is not 0, get all terms with that tnid
+        if ($tnid && $tnid != 0) {
             $translations = TaxonomyTerm::where('tnid', $tnid)->get();
+            // Ensure we include the term itself if it's not in the collection
+            if (!$translations->contains('id', $tid)) {
+                $translations->push($term);
+            }
         } else {
-            // No translations yet, just use this term
+            // No tnid set yet, just use this term
             $translations = collect([$term]);
         }
         
@@ -128,7 +70,10 @@ class TaxonomyController extends Controller
         $currentParents = [];
         foreach ($translations as $trans) {
             $hierarchy = TaxonomyHierarchy::where('tid', $trans->id)->first();
-            $currentParents[$trans->language] = $hierarchy && isset($hierarchy->parent) ? $hierarchy->parent : 0;
+            $lang = $trans->language ?? 'und';
+            $currentParents[$lang] = $hierarchy && isset($hierarchy->parent) ? $hierarchy->parent : 0;
+            // Also store by term id for lookup
+            $currentParents['tid_' . $trans->id] = $hierarchy && isset($hierarchy->parent) ? $hierarchy->parent : 0;
         }
         
         // Pre-load parents for existing translations only (will be loaded via AJAX for others)
@@ -158,9 +103,12 @@ class TaxonomyController extends Controller
         $tnid = $term->tnid;
         
         // If tnid is not set or is 0, use the term's id as tnid
-        if (!$tnid || $tnid == 0 || $tnid == $tid) {
+        // But if tnid equals tid, that's actually correct - it means this is the first term
+        // and all other terms should have this tnid
+        if (!$tnid || $tnid == 0) {
             $tnid = $tid;
         }
+        // If tnid equals tid, that's fine - it means this term is the root of the translation group
         
         $newVid = $request->input('vid');
         $weight = $request->input('weight');
@@ -170,6 +118,7 @@ class TaxonomyController extends Controller
 
         // Update or create translations for each language
         foreach ($names as $language => $name) {
+            $name = trim($name);
             if (empty($name)) {
                 continue; // Skip empty names
             }
@@ -333,6 +282,7 @@ class TaxonomyController extends Controller
 
         // Create translations for each language
         foreach ($names as $language => $name) {
+            $name = trim($name);
             if (empty($name)) {
                 continue; // Skip empty names
             }
