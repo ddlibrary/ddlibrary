@@ -1499,7 +1499,8 @@ class ResourceController extends Controller
             Session::flash('error', 'Failed to delete resource. Please try again.');
 
         }
-        return back();
+        
+        return redirect('admin/resources');
     }
 
     public function getValidatedData(mixed $resource, array $validatedData): array
