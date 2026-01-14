@@ -75,14 +75,18 @@ class TaxonomyControllerTest extends TestCase
         $taxonomyVocabularies = TaxonomyVocabulary::factory()->times(3)->create();
         TaxonomyTerm::factory()->times(3)->create();
 
-        $response = $this->actingAs($admin)->get('en/admin/taxonomy/edit/' . $taxonomyVocabularies->first()->vid . "/$taxonomyTerm->id");
+        $response = $this->actingAs($admin)->get('en/admin/taxonomy/edit/' . $taxonomyTerm->vid . "/$taxonomyTerm->id");
 
         $response->assertOk();
         $response->assertViewIs('admin.taxonomy.taxonomy_edit');
         $response->assertViewHas('term');
         $response->assertViewHas('vocabulary');
-        $response->assertViewHas('parents');
-        $response->assertViewHas('theParent');
+        $response->assertViewHas('translations');
+        $response->assertViewHas('allParents');
+        $response->assertViewHas('currentParents');
+        $response->assertViewHas('supportedLocales');
+        $response->assertViewHas('tnid');
+        $response->assertViewHas('vid');
     }
 
     /**
@@ -90,20 +94,28 @@ class TaxonomyControllerTest extends TestCase
      */
     public function index_returns_an_ok_response(): void
     {
-        TaxonomyTerm::factory()->times(3)->create();
-        TaxonomyVocabulary::factory()->times(3)->create();
+        $vocabulary = TaxonomyVocabulary::factory()->create();
+        TaxonomyTerm::factory()->create(['vid' => $vocabulary->vid]);
+        TaxonomyVocabulary::factory()->times(2)->create();
 
         $this->refreshApplicationWithLocale('en');
 
         $admin = User::factory()->create();
         $admin->roles()->attach(5);
 
+        // Test without vocabulary (should show search form only)
         $response = $this->actingAs($admin)->get(route('gettaxonomylist'));
-
         $response->assertOk();
         $response->assertViewIs('admin.taxonomy.taxonomy_list');
-        $response->assertViewHas('terms');
-        $response->assertViewHas('searchBar');
+        $response->assertViewHas('vocabulary');
+        $response->assertViewHas('supportedLocales');
+
+        // Test with vocabulary filter
+        $response = $this->actingAs($admin)->get(route('gettaxonomylist', ['vocabulary' => $vocabulary->vid]));
+        $response->assertOk();
+        $response->assertViewIs('admin.taxonomy.taxonomy_list');
+        $response->assertViewHas('vocabulary');
+        $response->assertViewHas('supportedLocales');
     }
 
     /**
@@ -122,14 +134,29 @@ class TaxonomyControllerTest extends TestCase
 
         $response = $this->actingAs($admin)->post('en/admin/taxonomy/store', [
             'vid' => $vocabulary->vid,
-            'name' => 'New taxonomy',
             'weight' => 1,
-            'language' => 'en',
+            'names' => [
+                'en' => 'New taxonomy',
+                'fa' => 'تاکسونومی جدید',
+            ],
+            'parents' => [
+                'en' => 0,
+                'fa' => 0,
+            ],
         ]);
 
         $response->assertRedirect();
-        $this->assertEquals(1, TaxonomyTerm::where('vid', $vocabulary->vid)->count());
-        $this->assertEquals('New taxonomy', TaxonomyTerm::where('vid', $vocabulary->vid)->value('name'));
+        $this->assertGreaterThanOrEqual(1, TaxonomyTerm::where('vid', $vocabulary->vid)->count());
+        $this->assertDatabaseHas('taxonomy_term_data', [
+            'vid' => $vocabulary->vid,
+            'name' => 'New taxonomy',
+            'language' => 'en',
+        ]);
+        $this->assertDatabaseHas('taxonomy_term_data', [
+            'vid' => $vocabulary->vid,
+            'name' => 'تاکسونومی جدید',
+            'language' => 'fa',
+        ]);
     }
 
     /**
@@ -190,15 +217,18 @@ class TaxonomyControllerTest extends TestCase
 
         $taxonomyTerm = TaxonomyTerm::factory()->create();
         TaxonomyVocabulary::factory()->times(3)->create();
-        $vocabulary = TaxonomyVocabulary::factory()->create();
 
-        $response = $this->actingAs($admin)->get(route('taxonomyedit', ['vid' => $vocabulary->vid, 'tid' => $taxonomyTerm->id]));
+        $response = $this->actingAs($admin)->get(route('taxonomyedit', ['vid' => $taxonomyTerm->vid, 'tid' => $taxonomyTerm->id]));
 
         $response->assertOk();
         $response->assertViewIs('admin.taxonomy.taxonomy_edit');
         $response->assertViewHas('term');
         $response->assertViewHas('vocabulary');
-        $response->assertViewHas('parents');
-        $response->assertViewHas('theParent');
+        $response->assertViewHas('translations');
+        $response->assertViewHas('allParents');
+        $response->assertViewHas('currentParents');
+        $response->assertViewHas('supportedLocales');
+        $response->assertViewHas('tnid');
+        $response->assertViewHas('vid');
     }
 }
