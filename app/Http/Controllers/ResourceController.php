@@ -41,6 +41,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -1434,10 +1435,71 @@ class ResourceController extends Controller
      */
     public function deleteResource($resourceId): RedirectResponse
     {
-        $resource = Resource::find($resourceId);
-        $resource->delete();
+        $this->middleware('admin');
 
-        return back()->with('error', 'You deleted the record!');
+        $resource = Resource::findOrFail($resourceId);
+
+        DB::beginTransaction();
+
+        try {
+            // 1. Delete physical attachment files from storage and database records
+            $attachments = ResourceAttachment::where('resource_id', $resourceId)->get();
+            $diskType = config('app.env') != 'production' ? 'public' : 's3';
+            
+            foreach ($attachments as $attachment) {
+                try {
+                    // Delete physical file from storage
+                    Storage::disk($diskType)->delete('resources/' . $attachment->file_name);
+                } catch (\Exception $e) {
+                    Log::warning("Failed to delete attachment file: {$attachment->file_name}", [
+                        'error' => $e->getMessage(),
+                        'resource_id' => $resourceId
+                    ]);
+                }
+            }
+            
+            // Delete attachment records from database
+            ResourceAttachment::where('resource_id', $resourceId)->delete();
+
+            // 2. Handle ResourceFile relationship
+            if ($resource->resource_file_id) {
+                $resourceFile = ResourceFile::find($resource->resource_file_id);
+                
+                if ($resourceFile) {
+                    if ($resourceFile->resource_id == $resourceId) {
+                        $otherResourcesUsingFile = Resource::where('resource_file_id', $resourceFile->id)
+                            ->where('id', '!=', $resourceId)
+                            ->exists();
+                        
+                        if (!$otherResourcesUsingFile) {
+                            $resource->resource_file_id = null;
+                            $resource->save();
+                            $resourceFile->delete();
+                        } else {
+                            $resourceFile->resource_id = null;
+                            $resourceFile->save();
+                        }
+                    }else{
+                        $resource->resource_file_id = null;
+                        $resource->save();
+                    }
+                }
+            }
+
+            // 3. Delete the resource
+            $resource->delete();
+
+            DB::commit();
+
+            Session::flash('success', 'Resource deleted successfully.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Session::flash('error', 'Failed to delete resource. Please try again.');
+
+        }
+        return back();
     }
 
     public function getValidatedData(mixed $resource, array $validatedData): array
