@@ -5,14 +5,25 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="{{ URL::to('admin') }}">Menu</a>
+        <a href="{{ URL::to('admin/menu') }}">Menu</a>
       </li>
       <li class="breadcrumb-item active">Translation</li>
     </ol>
+    <!-- Success/Error Messages -->
+    @include('layouts.messages')
     <!-- Example DataTables Card-->
     <div class="card mb-3">
       <div class="card-header">
         <i class="fa fa-table"></i> Menu Translations
+        @if($tnid)
+        <form method="POST" action="{{ route('delete_menu', $id) }}" style="display: inline-block; float: right;" onsubmit="return confirm('Are you sure you want to delete all translations of this menu? This action cannot be undone.');">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn btn-danger">
+            <i class="fa fa-trash"></i> Delete All
+          </button>
+        </form>
+        @endif
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -24,6 +35,7 @@
                     <th> Action </th>
                 </tr>
               </thead>
+              <tbody>
               @if($translations)
                 @foreach($locals as $key=>$value)
                 <?php
@@ -55,7 +67,7 @@
               </tr>
               @endforeach
               @endif
-              </tr>
+              </tbody>
             </table>
         </div>
       </div>
@@ -65,4 +77,19 @@
 </div>
 <!-- /.content-wrapper-->
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Show success message using toastr if available
+    @if(session('success'))
+        toastr.success('{{ session('success') }}', 'Success');
+    @endif
+
+    @if(session('error'))
+        toastr.error('{{ session('error') }}', 'Error');
+    @endif
+});
+</script>
+@endpush
 
