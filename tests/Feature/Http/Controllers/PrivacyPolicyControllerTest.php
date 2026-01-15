@@ -49,7 +49,7 @@ class PrivacyPolicyControllerTest extends TestCase
     }
 
     /**
-     * @test    
+     * @test
      */
     public function privacy_policy_returns_farsi_with_other_locales_view(): void
     {
@@ -87,4 +87,3 @@ class PrivacyPolicyControllerTest extends TestCase
         $response->assertViewIs('layouts.opt_out');
     }
 }
-

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\Models\SurveyAnswer;
 use App\Models\SurveyQuestion;
 use App\Models\SurveyQuestionOption;
 use App\Models\User;
@@ -52,7 +51,7 @@ class SurveyAnswerControllerTest extends TestCase
         $surveyQuestion = SurveyQuestion::factory()->create();
         $surveyQuestionOption = SurveyQuestionOption::factory()->create(['question_id' => $surveyQuestion->id]);
 
-        $response = $this->actingAs($admin)->get('en/admin/survey_question/answers/' . $surveyQuestion->id);
+        $response = $this->actingAs($admin)->get('en/admin/survey_question/answers/'.$surveyQuestion->id);
 
         $response->assertOk();
         $response->assertViewIs('admin.surveys.result.result');
@@ -77,7 +76,6 @@ class SurveyAnswerControllerTest extends TestCase
         $surveyQuestionOption = SurveyQuestionOption::factory()->create(['question_id' => $surveyQuestion->id]);
         $surveyQuestionOption->tnid = $surveyQuestionOption->id;
         $surveyQuestionOption->save();
-
 
         // Prepare the request data
         $requestData = [

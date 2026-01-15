@@ -4,7 +4,6 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Resource;
 use App\Models\Role;
-use App\Models\TaxonomyVocabulary;
 use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -135,7 +134,7 @@ class UserControllerTest extends TestCase
             'country' => 1,
         ]);
 
-        $response->assertRedirect('/admin/user/edit/' . $user->id);
+        $response->assertRedirect('/admin/user/edit/'.$user->id);
         $updatedUser = User::find($user->id);
         $this->assertEquals('abcd@email.com', $updatedUser->email);
         $this->assertEquals('Ahmadi', $updatedUser->profile->last_name);

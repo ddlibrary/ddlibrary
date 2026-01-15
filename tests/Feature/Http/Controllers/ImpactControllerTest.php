@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @see \App\Http\Controllers\ImpactController

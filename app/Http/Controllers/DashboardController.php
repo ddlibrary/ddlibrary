@@ -24,19 +24,19 @@ class DashboardController extends Controller
     {
         DDLClearSession();
 
-        //total users in number for the dashboard
+        // total users in number for the dashboard
         $totalUsers = User::count();
-        //latest users for the dashboard
+        // latest users for the dashboard
         $latestUsers = User::orderBy('id', 'desc')->take(5)->get();
-        //total resources in number for the dashboard
+        // total resources in number for the dashboard
         $totalResources = Resource::count();
-        //latest resources for the dashboard
+        // latest resources for the dashboard
         $latestResources = Resource::orderBy('id', 'desc')->take(5)->get();
         $totalNews = News::count();
-        //latest news for the dashboard
+        // latest news for the dashboard
         $latestNews = News::orderBy('id', 'desc')->take(5)->get();
         $totalPages = Page::count();
-        //latest pages for the dashboard
+        // latest pages for the dashboard
         $latestPages = Page::orderBy('id', 'desc')->take(5)->get();
 
         return view('admin.main', compact(

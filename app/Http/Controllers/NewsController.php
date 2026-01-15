@@ -13,22 +13,20 @@ use Yajra\Datatables\Datatables;
 class NewsController extends Controller
 {
     use SitewidePageViewTrait;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     public function index(): View
     {
         return view('admin.news.news_list');
     }
 
-    //Ajax get News Function
+    // Ajax get News Function
     public function getNews()
     {
         $news = News::select(['id', 'title', 'language', 'created_at', 'updated_at']);
@@ -50,10 +48,10 @@ class NewsController extends Controller
 
     public function view(Request $request, $newsId): View
     {
-        //setting the search session empty
+        // setting the search session empty
         DDLClearSession();
 
-        $myNews = new News();
+        $myNews = new News;
 
         $news = News::find($newsId);
         $this->pageView($request, $news->title);
@@ -70,7 +68,7 @@ class NewsController extends Controller
 
     public function create(): View
     {
-        //setting the search session empty
+        // setting the search session empty
         DDLClearSession();
 
         return view('news.news_create');
@@ -92,12 +90,12 @@ class NewsController extends Controller
         $news->language = $request->input('language');
         $news->user_id = Auth::id();
         $news->status = $request->input('published');
-        //inserting
+        // inserting
         $news->save();
 
         $news = News::find($news->id);
         $news->tnid = $news->id;
-        //updating with tnid
+        // updating with tnid
         $news->save();
 
         return redirect('news/'.$news->id)->with('success', 'Item successfully created!');
@@ -127,7 +125,7 @@ class NewsController extends Controller
         $news->language = $request->input('language');
         $news->user_id = Auth::id();
         $news->status = $request->input('published');
-        //inserting
+        // inserting
         $news->save();
 
         return redirect('news/'.$id)->with('success', 'Item successfully updated!');
@@ -163,7 +161,7 @@ class NewsController extends Controller
         $news->user_id = Auth::id();
         $news->tnid = $tnid;
         $news->status = $request->input('published');
-        //inserting
+        // inserting
         $news->save();
 
         return redirect('news/'.$news->id)->with('success', 'Item successfully updated!');

@@ -2,13 +2,13 @@
 
 namespace Tests;
 
-use JMac\Testing\Traits\AdditionalAssertions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use JMac\Testing\Traits\AdditionalAssertions;
 use Mcamara\LaravelLocalization\LaravelLocalization;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication, AdditionalAssertions;
+    use AdditionalAssertions;
 
     protected function refreshApplicationWithLocale($locale)
     {

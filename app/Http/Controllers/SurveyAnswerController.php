@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\SurveyAnswer;
 use App\Models\SurveyQuestion;
 use App\Models\SurveyQuestionOption;
-use Config;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -45,7 +44,7 @@ class SurveyAnswerController extends Controller
                 $question = SurveyQuestion::find($key);
                 $answer = SurveyQuestionOption::find($value);
 
-                $surveyAnswer = new SurveyAnswer();
+                $surveyAnswer = new SurveyAnswer;
                 $surveyAnswer->question_id = $question->tnid;
                 $surveyAnswer->answer_id = $answer->tnid;
                 $surveyAnswer->ip = \Request::ip();
@@ -60,7 +59,7 @@ class SurveyAnswerController extends Controller
                 $question = SurveyQuestion::find($value);
                 $answer = SurveyQuestionOption::find($key);
 
-                $surveyAnswer = new SurveyAnswer();
+                $surveyAnswer = new SurveyAnswer;
                 $surveyAnswer->question_id = $question->tnid;
                 $surveyAnswer->answer_id = $answer->tnid;
                 $surveyAnswer->ip = \Request::ip();
@@ -74,7 +73,7 @@ class SurveyAnswerController extends Controller
                 // key is question and value the text inserted
                 $question = SurveyQuestion::find($key);
 
-                $surveyAnswer = new SurveyAnswer();
+                $surveyAnswer = new SurveyAnswer;
                 $surveyAnswer->question_id = $key;
                 $surveyAnswer->answer_id = $question->tnid;
                 $surveyAnswer->description = $value;

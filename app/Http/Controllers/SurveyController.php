@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Survey;
 use App\Models\SurveyQuestion;
-use Config;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -35,7 +34,7 @@ class SurveyController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $survey = new Survey();
+        $survey = new Survey;
         $survey->name = $request['name'];
         $survey->state = $request['state'];
         $survey->language = $request['language'];
