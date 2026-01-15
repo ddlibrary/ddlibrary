@@ -1469,19 +1469,16 @@ class ResourceController extends Controller
                     if ($resourceFile->resource_id == $resourceId) {
                         $otherResourcesUsingFile = Resource::where('resource_file_id', $resourceFile->id)
                             ->where('id', '!=', $resourceId)
-                            ->exists();
+                            ->first();
                         
                         if (!$otherResourcesUsingFile) {
                             $resource->resource_file_id = null;
                             $resource->save();
                             $resourceFile->delete();
                         } else {
-                            $resourceFile->resource_id = null;
+                            $resourceFile->resource_id = $otherResourcesUsingFile->id;
                             $resourceFile->save();
                         }
-                    }else{
-                        $resource->resource_file_id = null;
-                        $resource->save();
                     }
                 }
             }
