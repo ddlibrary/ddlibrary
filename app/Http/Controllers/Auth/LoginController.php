@@ -199,7 +199,7 @@ class LoginController extends Controller
      */
     protected function validateLogin(Request $request): void
     {
-        $this->validate($request, [
+        $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
             'g-recaptcha-response' => [config('app.captcha') == 'no' ? 'nullable' : 'required', new RecaptchaRule],

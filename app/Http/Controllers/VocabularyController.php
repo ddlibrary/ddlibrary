@@ -39,7 +39,7 @@ class VocabularyController extends Controller
     // Vocabulary Store Function
     public function store(Request $request): RedirectResponse
     {
-        $attr = $this->validate($request, [
+        $attr = $request->validate([
             'name' => 'required',
             'weight' => 'required',
             'language' => 'required',
@@ -64,7 +64,7 @@ class VocabularyController extends Controller
     // Vocabulary Update Function
     public function update(Request $request, $vid): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'name' => 'required',
             'weight' => 'required',
             'language' => 'required',

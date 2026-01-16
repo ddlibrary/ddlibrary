@@ -68,8 +68,8 @@ class MenuController extends Controller
     public function store(Request $request): RedirectResponse
     {
         try {
-            $this->validate(
-                $request, [
+            $request->validate(
+                [
                     'title' => 'required',
                     'location' => 'required',
                     'path' => 'required',
@@ -112,7 +112,7 @@ class MenuController extends Controller
 
     public function update(Request $request, $menuId): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'title' => 'required',
             'location' => 'required',
             'path' => 'required',

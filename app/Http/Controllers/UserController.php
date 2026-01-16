@@ -158,7 +158,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $userId): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'username' => 'required',
             'password' => 'nullable',
             'email' => 'required',

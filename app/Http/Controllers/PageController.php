@@ -79,7 +79,7 @@ class PageController extends Controller
 
     public function store(Request $request, Page $page): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'title' => 'required',
             'language' => 'required',
             'summary' => 'required',
@@ -113,7 +113,7 @@ class PageController extends Controller
 
     public function update(Request $request, Page $page, $id): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'title' => 'required',
             'language' => 'required',
             'summary' => 'required',
@@ -149,7 +149,7 @@ class PageController extends Controller
 
     public function addPostTranslate(Request $request, Page $page, $tnid, $lang): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'title' => 'required',
             'language' => 'nullable',
             'summary' => 'required',

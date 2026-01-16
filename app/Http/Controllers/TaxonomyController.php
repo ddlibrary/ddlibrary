@@ -56,7 +56,7 @@ class TaxonomyController extends Controller
 
     public function update(Request $request, $vid, $tid): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'vid' => 'required',
             'name' => 'required',
             'weight' => 'required',
@@ -123,7 +123,7 @@ class TaxonomyController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'vid' => 'required',
             'name' => 'required',
             'weight' => 'required',
@@ -179,7 +179,7 @@ class TaxonomyController extends Controller
 
     public function storeTranslate(Request $request, $tnid): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'vid' => 'required',
             'name' => 'required',
             'weight' => 'required',

@@ -76,7 +76,7 @@ class NewsController extends Controller
 
     public function store(Request $request, News $news): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'title' => 'required',
             'language' => 'required',
             'summary' => 'required',
@@ -110,7 +110,7 @@ class NewsController extends Controller
 
     public function update(Request $request, News $news, $id): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'title' => 'required',
             'language' => 'required',
             'summary' => 'required',
@@ -146,7 +146,7 @@ class NewsController extends Controller
 
     public function addPostTranslate(Request $request, News $news, $tnid, $lang): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'title' => 'required',
             'language' => 'nullable',
             'summary' => 'required',
