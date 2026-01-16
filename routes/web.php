@@ -181,7 +181,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
             Route::post('menu/translate/{menuId}', 'translate_menu')->name('translateMenu');
             Route::delete('menu/{menuId}', 'destroy')->name('delete_menu');
             Route::get('menu/sort', 'sort')->name('sort_menu');
-            Route::get('menu/ajax_get_parents', 'ajax_get_parents')->name('ajax_get_parents');
+            Route::get('menu/ajax_get_parents', 'ajaxGetParents')->name('ajax_get_parents');
         });
 
         // Settings
