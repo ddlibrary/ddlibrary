@@ -72,29 +72,6 @@ class RegisterController extends Controller
         return view('auth.register', compact('countries', 'provinces', 'gmail_signup_url'));
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     */
-    protected function validator(array $data): \Illuminate\Contracts\Validation\Validator
-    {
-        return Validator::make(
-            $data,
-            [
-                'email' => 'required|string|email|max:255|unique:users|nullable|regex:/^([a-zA-Z\d\._-]+)@(?!fmail.com)/', // Regex to block fmail.com domain
-                'password' => ['required', 'confirmed', Password::min(8)->numbers()->symbols()],
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'string|max:255|nullable',
-                'gender' => 'required',
-                'country' => 'required',
-                'city' => 'nullable',
-                'g-recaptcha-response' => [config('app.captcha') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
-            ],
-            [
-                'password.regex' => __('The password you entered doesn\'t have any special characters (!@#$%^&.) and (or) digits (0-9).'),
-                'email.regex' => __('Please enter a valid email.'),
-            ],
-        );
-    }
 
     /**
      * Create a new user instance after a valid registration.
@@ -137,7 +114,18 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        $this->validator($request->all())->validate();
+        $request->validate([
+            'email' => 'required|string|email|max:255|unique:users|nullable|regex:/^([a-zA-Z\d\._-]+)@(?!fmail.com)/',
+            'password' => ['required', 'confirmed', Password::min(8)->numbers()->symbols()],
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'string|max:255|nullable',
+            'gender' => 'required',
+            'country' => 'required',
+            'city' => 'nullable',
+            'g-recaptcha-response' => [config('app.captcha') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
+        ], [
+            'email.regex' => __('Please enter a valid email.'),
+        ]);
 
         try {
             DB::beginTransaction();
@@ -146,7 +134,7 @@ class RegisterController extends Controller
             $user = $this->create($request);
 
             // Send email verification
-            if (env('SEND_EMAIL') && env('SEND_EMAIL') != 'no') {
+            if (config('mail.send_email') == 'yes') {
                 if ($user->email) {
                     event(new Registered($user));
                 }
@@ -159,7 +147,7 @@ class RegisterController extends Controller
             $this->storeUserProfile($request, $user);
 
             // Assign role to user
-            $user->roles()->attach(6); // 6 is library user from roles table
+            $user->roles()->attach(6); // 6 is library user from 'roles' table
 
             // Subscribe
             /* TODO: Insert name and user_id into the table as well */
