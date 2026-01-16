@@ -167,7 +167,7 @@ class MenuController extends Controller
         echo true;
     }
 
-    public function ajax_get_parents(Request $request)
+    public function ajaxGetParents(Request $request): void
     {
         $id = $request->input('id');
         $loc = $request->input('loc');
