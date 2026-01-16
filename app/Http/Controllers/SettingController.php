@@ -35,7 +35,7 @@ class SettingController extends Controller
      */
     public function update(Request $request, Setting $setting): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'website_name' => 'required',
             'website_slogan' => 'required',
             'website_email' => 'required',

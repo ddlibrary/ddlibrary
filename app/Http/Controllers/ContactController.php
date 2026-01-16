@@ -95,7 +95,7 @@ class ContactController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'name' => 'required',
             'email' => 'required|email',
             'subject' => 'required',
