@@ -131,7 +131,11 @@ class LoginController extends Controller
     // Overwriting the AuthenticatesUsers trait login method
     public function login(Request $request)
     {
-        $this->validateLogin($request);
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+            'g-recaptcha-response' => [config('app.captcha') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
+        ]);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
@@ -190,20 +194,6 @@ class LoginController extends Controller
         } else {
             return $this->sendFailedLoginResponse($request);
         }
-    }
-
-    /**
-     * Validate the user login request.
-     *
-     * @throws ValidationException
-     */
-    protected function validateLogin(Request $request): void
-    {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-            'g-recaptcha-response' => [config('app.captcha') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
-        ]);
     }
 
     /**
