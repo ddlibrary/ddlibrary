@@ -152,7 +152,7 @@ tinymce.init({
 });
 
 // Sync TinyMCE content to textareas before form submission
-document.getElementById('news-form').addEventListener('submit', function(e) {
+document.getElementById('form-id').addEventListener('submit', function(e) {
     // Get textareas by name
     var summaryTextarea = document.querySelector('textarea[name="summary"]');
     var bodyTextarea = document.querySelector('textarea[name="body"]');
