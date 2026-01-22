@@ -6,7 +6,7 @@
     </header>
     <div class="content-body">
         @include('layouts.messages')
-        <form method="POST" action="{{ route('update_news', $news->id) }}" id="news-form">
+        <form method="POST" action="{{ route('update_news', $news->id) }}" id="form-id">
         @csrf
         <div class="form-item">
             <label for="title"> 
