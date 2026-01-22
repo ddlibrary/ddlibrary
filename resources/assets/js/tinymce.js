@@ -1,4 +1,4 @@
-var csrfToken = $('meta[name="csrf-token"]').attr('content');
+var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 // Initialize TinyMCE for all textareas with .editor class
 tinymce.init({
