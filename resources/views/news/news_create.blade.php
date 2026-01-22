@@ -6,7 +6,7 @@
     </header>
     <div class="content-body">
         @include('layouts.messages')
-        <form method="POST" action="{{ route('add_news') }}">
+        <form method="POST" action="{{ route('add_news') }}" id="news-form">
         @csrf
         <div class="form-item">
             <label for="title"> 
