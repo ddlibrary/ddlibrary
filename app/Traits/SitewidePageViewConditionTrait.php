@@ -35,11 +35,11 @@ trait SitewidePageViewConditionTrait
         }
 
         if ($request->is_bot) {
-            $query->where('is_bot', $request->is_bot ==1 ? true : false);
+            $query->where('is_bot', $request->is_bot == 1 ? true : false);
         }
-        
+
         if ($request->date_from && $request->date_to) {
-            $query->whereBetween('created_at', [$request->date_from . ' 00:00:00', $request->date_to . ' 23:59:59']);
+            $query->whereBetween('created_at', [$request->date_from.' 00:00:00', $request->date_to.' 23:59:59']);
         }
 
         return $query;

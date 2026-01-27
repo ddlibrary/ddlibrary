@@ -40,7 +40,7 @@ class ForgotPasswordController extends Controller
     {
         $this->validate($request, [
             'email' => 'required|email',
-            'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule()],
+            'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
         ]);
     }
 }

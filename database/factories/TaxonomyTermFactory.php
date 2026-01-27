@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Enums\LanguageEnum;
-use App\Models\TaxonomyTerm;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -11,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TaxonomyTermFactory extends Factory
 {
-    protected $model = TaxonomyTerm::class;
     /**
      * Define the model's default state.
      *
@@ -20,9 +18,9 @@ class TaxonomyTermFactory extends Factory
     public function definition(): array
     {
         return [
-            'vid' => $this->faker->numberBetween(6,26),
-            'name' => $this->faker->name,
-            'weight' => $this->faker->boolean,
+            'vid' => $this->faker->numberBetween(6, 26),
+            'name' => $this->faker->name(),
+            'weight' => $this->faker->boolean(),
             'language' => LanguageEnum::English->value,
             'tnid' => 0,
         ];

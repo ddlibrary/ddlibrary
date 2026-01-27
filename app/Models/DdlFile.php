@@ -12,5 +12,4 @@ class DdlFile extends Model
     protected $guarded = [];
 
     protected $table = 'files';
-
 }
