@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class TaxonomyController extends Controller
 {
@@ -16,24 +17,41 @@ class TaxonomyController extends Controller
     {
         $this->middleware('admin');
 
-        $terms = TaxonomyTerm::orderBy('vid', 'desc')->orderBy('weight')
-            ->name(request('term'))
-            ->vocabulary(request('vocabulary'))
-            ->language(request('language'))
-            ->paginate(10);
-
         $vocabulary = TaxonomyVocabulary::all('vid AS val', 'name');
+        $vocabularyId = $request->input('vocabulary');
+        $name = $request->input('term');
 
-        $args = [
-            'route' => 'gettaxonomylist',
-            'filters' => $request,
-            'vocabulary' => $vocabulary,
-        ];
-        //creating search bar
-        $createSearchBar = new SearchController();
-        $searchBar = $createSearchBar->searchBar($args);
+        $groupedTerms = [];
+        
+        if ($vocabularyId) {
+            $query = TaxonomyTerm::with('vocabulary');
+            
+            $query->where('vid', $vocabularyId);
+            
+            if ($name) {
+                $query->where('name', 'like', '%' . $name . '%');
+            }
 
-        return view('admin.taxonomy.taxonomy_list', compact('terms', 'searchBar'));
+            $terms = $query->orderBy('vid', 'desc')->orderBy('weight')->get();
+            
+            $groupedByTnid = $terms->groupBy(function($term) {
+                return $term->tnid ?: $term->id;
+            });
+            
+            $groupedTerms = $groupedByTnid->map(function($translations) {
+                return [
+                    'translations' => $translations,
+                    'first_term' => $translations->first()
+                ];
+            })->values()->all();
+        }
+
+        // Get supported locales for view
+        $laguages = LaravelLocalization::getSupportedLocales();
+
+       
+
+        return view('admin.taxonomy.taxonomy_list', compact('groupedTerms', 'vocabulary', 'laguages', 'vocabularyId'));
     }
 
     public function edit($vid, $tid): View
