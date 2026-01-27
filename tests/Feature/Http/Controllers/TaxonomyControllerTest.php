@@ -81,8 +81,9 @@ class TaxonomyControllerTest extends TestCase
         $response->assertViewIs('admin.taxonomy.taxonomy_edit');
         $response->assertViewHas('term');
         $response->assertViewHas('vocabulary');
-        $response->assertViewHas('parents');
-        $response->assertViewHas('theParent');
+        $response->assertViewHas('supportedLocales');
+        $response->assertViewHas('translationData');
+        $response->assertViewHas('vid');
     }
 
     /**
@@ -102,8 +103,9 @@ class TaxonomyControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('admin.taxonomy.taxonomy_list');
-        $response->assertViewHas('terms');
-        $response->assertViewHas('searchBar');
+        $response->assertViewHas('groupedTerms');
+        $response->assertViewHas('vocabulary');
+        $response->assertViewHas('laguages');
     }
 
     /**
@@ -122,9 +124,9 @@ class TaxonomyControllerTest extends TestCase
 
         $response = $this->actingAs($admin)->post('en/admin/taxonomy/store', [
             'vid' => $vocabulary->vid,
-            'name' => 'New taxonomy',
+            'names' => ['en' => 'New taxonomy'],
             'weight' => 1,
-            'language' => 'en',
+            'parents' => ['en' => 0],
         ]);
 
         $response->assertRedirect();
@@ -198,7 +200,8 @@ class TaxonomyControllerTest extends TestCase
         $response->assertViewIs('admin.taxonomy.taxonomy_edit');
         $response->assertViewHas('term');
         $response->assertViewHas('vocabulary');
-        $response->assertViewHas('parents');
-        $response->assertViewHas('theParent');
+        $response->assertViewHas('supportedLocales');
+        $response->assertViewHas('translationData');
+        $response->assertViewHas('vid');
     }
 }
