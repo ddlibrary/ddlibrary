@@ -203,11 +203,13 @@ class TaxonomyController extends Controller
         return view('admin.taxonomy.taxonomy_translate', compact('translations', 'supportedLocals', 'tnid', 'tid'));
     }
 
-    public function create(): View
+    public function create(Request $request): View
     {
         $vocabulary = TaxonomyVocabulary::all();
+        $supportedLocales = LaravelLocalization::getSupportedLocales();
+        $selectedVocabulary = $request->input('vocabulary');
 
-        return view('admin.taxonomy.taxonomy_create', compact('vocabulary'));
+        return view('admin.taxonomy.taxonomy_create', compact('vocabulary', 'supportedLocales', 'selectedVocabulary'));
     }
 
     public function getParentTaxonomy(Request $request)
