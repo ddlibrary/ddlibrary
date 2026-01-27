@@ -267,25 +267,57 @@ class TaxonomyController extends Controller
     {
         $this->validate($request, [
             'vid' => 'required',
-            'name' => 'required',
             'weight' => 'required',
-            'language' => 'required',
+            'names' => 'required|array',
         ]);
 
-        //Saving contact info to the database
-        $term = new TaxonomyTerm;
-        $term->vid = $request->input('vid');
-        $term->name = $request->input('name');
-        $term->weight = $request->input('weight');
-        $term->language = $request->input('language');
+        $vid = $request->input('vid');
+        $weight = $request->input('weight');
+        $names = $request->input('names', []);
+        $parents = $request->input('parents', []);
+        
+        $firstTermId = null;
+        $tnid = null;
 
-        $term->save();
+        foreach ($names as $language => $name) {
+            $name = trim($name);
+            if (empty($name)) {
+                continue;
+            }
 
-        $term->tnid = $term->id;
-        //updating with tnid
-        $term->save();
+            $term = new TaxonomyTerm();
+            $term->vid = $vid;
+            $term->name = $name;
+            $term->weight = $weight;
+            $term->language = $language;
+            $term->save();
 
-        return redirect('/admin/taxonomy')->with('success', 'Taxonomy item created successfully!');
+            if (!$firstTermId) {
+                $firstTermId = $term->id;
+                $tnid = $term->id;
+            }
+
+            $term->tnid = $tnid;
+            $term->save();
+
+            $parentId = $parents[$language] ?? 0;
+            $latestId = DB::table('taxonomy_term_hierarchy')->max('aux_id');
+            $hierarchyId = $latestId ? $latestId + 1 : 1;
+            
+            $hierarchy = new TaxonomyHierarchy();
+            $hierarchy->id = $hierarchyId;
+            $hierarchy->tid = $term->id;
+            $hierarchy->parent = $parentId;
+            $hierarchy->aux_id = $term->id;
+            $hierarchy->save();
+        }
+
+        $redirectUrl = route('gettaxonomylist');
+        if ($request->has('vid')) {
+            $redirectUrl .= '?vocabulary=' . $request->input('vid');
+        }
+
+        return redirect($redirectUrl)->with('success', 'Taxonomy item created successfully!');
     }
 
     public function createTranslate($tid, $tnid, $lang)
