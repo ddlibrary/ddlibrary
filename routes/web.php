@@ -206,6 +206,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::get('taxonomy/translate/{tid}', [TaxonomyController::class, 'translate']);
         Route::get('taxonomy/create', [TaxonomyController::class, 'create'])->name('taxonomycreate');
         Route::post('taxonomy/store', [TaxonomyController::class, 'store'])->name('taxonomystore');
+        Route::get('taxonomy/get-parent-taxonomy', [TaxonomyController::class, 'getParentTaxonomy'])->name('get-parent-taxonomy');
         Route::get('taxonomy/create-translate/{tid}/{tnid}/{lang}', [TaxonomyController::class, 'createTranslate'])->name('taxonomytranslatecreate');
         Route::post('taxonomy/store-translate/{tnid}', [TaxonomyController::class, 'storeTranslate'])->name('taxonomytranslatestore');
         //Taxonomy Vocabulary
