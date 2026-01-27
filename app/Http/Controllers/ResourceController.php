@@ -31,6 +31,7 @@ use App\Models\TaxonomyTerm;
 use App\Traits\LanguageTrait;
 use App\Traits\SitewidePageViewTrait;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -1472,6 +1473,26 @@ class ResourceController extends Controller
                             ->first();
                         
                         if (!$otherResourcesUsingFile) {
+                            $diskType = config('app.env') != 'production' ? 'public' : 's3';
+
+                            try {
+                                Storage::disk($diskType)->delete('files/' . $resourceFile->name);
+                            } catch (Exception $e) {
+                                Log::warning("Failed to delete ResourceFile main file: {$resourceFile->name}", [
+                                    'error' => $e->getMessage(),
+                                    'resource_file_id' => $resourceFile->id
+                                ]);
+                            }
+
+                            try {
+                                Storage::disk($diskType)->delete('files/thumbnails/' . $resourceFile->name);
+                            } catch (Exception $e) {
+                                Log::warning("Failed to delete ResourceFile thumbnail: {$resourceFile->name}", [
+                                    'error' => $e->getMessage(),
+                                    'resource_file_id' => $resourceFile->id
+                                ]);
+                            }
+
                             $resource->resource_file_id = null;
                             $resource->save();
                             $resourceFile->delete();
