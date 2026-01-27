@@ -193,7 +193,7 @@ class TaxonomyController extends Controller
             $translations = null;
         }
 
-        $locals = \LaravelLocalization::getSupportedLocales();
+        $locals = LaravelLocalization::getSupportedLocales();
         $supportedLocals = [];
 
         foreach ($locals as $key => $value) {
