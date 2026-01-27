@@ -56,17 +56,54 @@ class TaxonomyController extends Controller
 
     public function edit($vid, $tid): View
     {
-        $term = TaxonomyTerm::find($tid);
-        $vocabulary = TaxonomyVocabulary::all();
-        $parents = TaxonomyTerm::where('vid', $vid)->get();
-        $theParent = TaxonomyHierarchy::where('tid', $tid)->first();
-        if (isset($theParent->parent)) {
-            $theParent = $theParent->parent;
+        $term = TaxonomyTerm::findOrFail($tid);
+        $tnid = $term->tnid;
+        
+        if ($tnid && $tnid != 0) {
+            $translations = TaxonomyTerm::where('tnid', $tnid)->get();
+            if (!$translations->contains('id', $tid)) {
+                $translations->push($term);
+            }
         } else {
-            $theParent = 0;
+            $translations = collect([$term]);
+        }
+        
+        $vocabulary = TaxonomyVocabulary::all();
+        $supportedLocales = LaravelLocalization::getSupportedLocales();
+        
+        $translationData = [];
+        foreach ($supportedLocales as $localeCode => $localeProperties) {
+            $translation = $translations->where('language', $localeCode)->first();
+            
+            if (!$translation) {
+                $translation = $translations->first(function($t) {
+                    $lang = $t->language;
+                    return empty($lang) || $lang === 'und';
+                });
+            }
+            
+            $parentId = 0;
+            if ($translation) {
+                $hierarchy = TaxonomyHierarchy::where('tid', $translation->id)->first();
+                $parentId = $hierarchy && isset($hierarchy->parent) ? $hierarchy->parent : 0;
+            }
+            
+            $translationData[$localeCode] = [
+                'translation' => $translation,
+                'name' => $translation ? $translation->name : '',
+                'term_id' => $translation ? $translation->id : null,
+                'parent_id' => $parentId,
+                'has_invalid_lang' => $translation && ($translation->language !== $localeCode),
+            ];
         }
 
-        return view('admin.taxonomy.taxonomy_edit', compact('term', 'vocabulary', 'parents', 'theParent'));
+        return view('admin.taxonomy.taxonomy_edit', compact(
+            'term', 
+            'vocabulary', 
+            'supportedLocales',
+            'translationData',
+            'vid'
+        ));
     }
 
     public function update(Request $request, $vid, $tid): RedirectResponse
@@ -134,6 +171,57 @@ class TaxonomyController extends Controller
         $vocabulary = TaxonomyVocabulary::all();
 
         return view('admin.taxonomy.taxonomy_create', compact('vocabulary'));
+    }
+
+    public function getParentTaxonomy(Request $request)
+    {
+        $vid = $request->input('vid');
+        
+        if (!$vid) {
+            return response()->json([]);
+        }
+        
+        $parents = TaxonomyTerm::where('vid', $vid)
+            ->orderBy('weight')
+            ->orderBy('name')
+            ->get();
+        
+        $result = [];
+        $supportedLocales = LaravelLocalization::getSupportedLocales();
+        
+        foreach ($parents as $parent) {
+            $language = $parent->language;
+            
+            if (empty($language) || $language === 'und' || !isset($supportedLocales[$language])) {
+                foreach ($supportedLocales as $localeCode => $localeProperties) {
+                    if (!isset($result[$localeCode])) {
+                        $result[$localeCode] = [];
+                    }
+                    $result[$localeCode][] = [
+                        'id' => $parent->id,
+                        'name' => $parent->name . ' (' . ($language ?: 'und') . ')',
+                        'language' => $language ?: 'und',
+                    ];
+                }
+            } else {
+                if (!isset($result[$language])) {
+                    $result[$language] = [];
+                }
+                $result[$language][] = [
+                    'id' => $parent->id,
+                    'name' => $parent->name,
+                    'language' => $language,
+                ];
+            }
+        }
+        
+        foreach ($result as $lang => $terms) {
+            usort($result[$lang], function($a, $b) {
+                return strcmp($a['name'], $b['name']);
+            });
+        }
+        
+        return response()->json($result);
     }
 
     public function store(Request $request): RedirectResponse
