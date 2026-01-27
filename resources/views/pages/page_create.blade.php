@@ -6,7 +6,7 @@
     </header>
     <div class="content-body">
         @include('layouts.messages')
-        <form method="POST" action="{{ route('add_page') }}">
+        <form method="POST" action="{{ route('add_page') }}" id="form-id">
         @csrf
         <div class="form-item">
             <label for="title"> 
