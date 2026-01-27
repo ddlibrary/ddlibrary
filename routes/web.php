@@ -201,12 +201,12 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::get('flags', [FlagController::class, 'index']);
         //Taxonomy
         Route::get('taxonomy', [TaxonomyController::class, 'index'])->name('gettaxonomylist');
-        Route::post('taxonomy', [TaxonomyController::class, 'index'])->name('posttaxonomylist');
         Route::get('taxonomy/edit/{vid}/{tid}', [TaxonomyController::class, 'edit'])->name('taxonomyedit');
         Route::post('taxonomy/update/{vid}/{tid}', [TaxonomyController::class, 'update'])->name('update-taxonomy');
         Route::get('taxonomy/translate/{tid}', [TaxonomyController::class, 'translate']);
         Route::get('taxonomy/create', [TaxonomyController::class, 'create'])->name('taxonomycreate');
         Route::post('taxonomy/store', [TaxonomyController::class, 'store'])->name('taxonomystore');
+        Route::get('taxonomy/get-parent-taxonomy', [TaxonomyController::class, 'getParentTaxonomy'])->name('get-parent-taxonomy');
         Route::get('taxonomy/create-translate/{tid}/{tnid}/{lang}', [TaxonomyController::class, 'createTranslate'])->name('taxonomytranslatecreate');
         Route::post('taxonomy/store-translate/{tnid}', [TaxonomyController::class, 'storeTranslate'])->name('taxonomytranslatestore');
         //Taxonomy Vocabulary
