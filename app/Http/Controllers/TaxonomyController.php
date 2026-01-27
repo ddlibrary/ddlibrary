@@ -110,41 +110,78 @@ class TaxonomyController extends Controller
     {
         $this->validate($request, [
             'vid' => 'required',
-            'name' => 'required',
             'weight' => 'required',
-            'language' => 'required',
+            'names' => 'required|array',
         ]);
 
-        //Saving contact info to the database
-        $term = TaxonomyTerm::find($tid);
-        $term->vid = $request->input('vid');
-        $term->name = $request->input('name');
-        $term->weight = $request->input('weight');
-        $term->language = $request->input('language');
+        $term = TaxonomyTerm::findOrFail($tid);
+        $tnid = $term->tnid;
+        
+        if (!$tnid || $tnid == 0) {
+            $tnid = $tid;
+        }
+        
+        $newVid = $request->input('vid');
+        $weight = $request->input('weight');
+        $names = $request->input('names', []);
+        $termIds = $request->input('term_ids', []);
+        $parents = $request->input('parents', []);
 
-        if ($term->tnid == 0) {
-            $term->tnid = $tid;
+        foreach ($names as $language => $name) {
+            $name = trim($name);
+            if (empty($name)) {
+                continue;
+            }
+
+            $termId = $termIds[$language] ?? null;
+            
+            if ($termId) {
+                $translation = TaxonomyTerm::find($termId);
+                if ($translation) {
+                    $translation->vid = $newVid;
+                    $translation->name = $name;
+                    $translation->weight = $weight;
+                    $translation->tnid = $tnid;
+                    $translation->save();
+                }
+            } else {
+                $translation = new TaxonomyTerm();
+                $translation->vid = $newVid;
+                $translation->name = $name;
+                $translation->weight = $weight;
+                $translation->language = $language;
+                $translation->tnid = $tnid;
+                $translation->save();
+                $termId = $translation->id;
+            }
+
+            $parentId = $parents[$language] ?? 0;
+            $hierarchy = TaxonomyHierarchy::where('tid', $termId)->first();
+            
+            if (!$hierarchy) {
+                $latestId = DB::table('taxonomy_term_hierarchy')->max('aux_id');
+                $THID = $latestId ? $latestId + 1 : 1;
+                $hierarchy = new TaxonomyHierarchy();
+                $hierarchy->id = $THID;
+                $hierarchy->tid = $termId;
+                $hierarchy->aux_id = $termId;
+            }
+            
+            $hierarchy->parent = $parentId;
+            $hierarchy->save();
         }
 
+        $term->tnid = $tnid;
+        $term->vid = $newVid;
+        $term->weight = $weight;
         $term->save();
 
-        $parentid = $request->input('parent');
-
-        $parent = TaxonomyHierarchy::firstOrNew(['tid' => $tid], ['parent' => $parentid]);
-
-        if(!isset($parent->id)){
-            $latestId = DB::table('taxonomy_term_hierarchy')->max('aux_id');
-            $THID = $latestId ? $latestId + 1 : 1;
-        }else{
-            $THID = $parent->id; // taxonomy_term_hierarchy.id
+        $redirectUrl = route('gettaxonomylist');
+        if ($request->has('vid')) {
+            $redirectUrl .= '?vocabulary=' . $request->input('vid');
         }
 
-        $parent->id = $THID;
-        $parent->tid = $tid;
-        $parent->parent = $parentid;
-        $parent->save();
-
-        return redirect('/admin/taxonomy')->with('success', 'Taxonomy item updated successfully!');
+        return redirect($redirectUrl)->with('success', 'Taxonomy item updated successfully!');
     }
 
     public function translate($tid): View
