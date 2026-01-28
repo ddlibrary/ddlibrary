@@ -1,5 +1,6 @@
 @extends('admin.layout')
 @section('admin.content')
+
     <div class="content-wrapper">
         <div class="container-fluid">
             <!-- Breadcrumbs-->
@@ -9,8 +10,8 @@
                 </li>
                 <li class="breadcrumb-item active">Resources</li>
             </ol>
-            
             <div class="pb-4">
+                @include('layouts.messages')
                 <form method="POST" action="{{ route('resources') }}">
                     @csrf
                     <div class="row">
@@ -75,7 +76,6 @@
                     <i class="fa fa-table"></i> All Resources
                 </div>
                 <div class="card-body">
-
                     <span>Total: <strong>{{ $resources->total() }}</strong></span>
                     <div class="table-responsive">
                         <table class="table table-bordered" width="100%" cellspacing="0">
