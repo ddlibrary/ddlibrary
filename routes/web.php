@@ -114,6 +114,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('admin/contacts/read/{id}', [ContactController::class, 'read'])->middleware('admin');
     Route::get('admin/contacts/delete/{id}', [ContactController::class, 'delete'])->middleware('admin');
     //Report
+    Route::get('admin/reports/impact_report', [ReportController::class, 'impactReport'])->name('impact-report')->middleware('admin');
     Route::get('admin/reports/ga', [ReportController::class, 'gaReport'])->middleware('admin');
     Route::get('admin/reports/resources', [ReportController::class, 'resourceReport'])->middleware('admin');
     Route::get('admin/reports/resources/subjects', [ReportController::class, 'resourceSubjectReport'])->middleware('admin');

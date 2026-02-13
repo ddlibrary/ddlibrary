@@ -65,4 +65,8 @@ return [
         'private_key_path' => env('CLOUDFRONT_PRIVATE_KEY_PATH'),
     ],
 
+    'matomo' => [
+        'url' => env('MATOMO_URL'),
+        'site_id' => env('MATOMO_SITE_ID'),
+    ],
 ];
