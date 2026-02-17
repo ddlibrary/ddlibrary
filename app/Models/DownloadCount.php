@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class DownloadCount extends Model
 {
     use HasFactory;
-
+    protected $fillable = ['resource_id', 'file_id', 'user_id', 'ip_address'];
     public function getCount()
     {
         return DB::table('download_counts AS dc')
