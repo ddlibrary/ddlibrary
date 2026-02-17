@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\TaxonomyVocabularyEnum;
 use App\Http\Requests\ResourceStepOneRequest;
 use App\Mail\NewComment;
+use App\Models\DownloadCount;
 use App\Models\Resource;
 use App\Models\ResourceAttachment;
 use App\Models\ResourceAuthor;
@@ -1548,5 +1549,28 @@ class ResourceController extends Controller
         } else {
             abort(403);
         }
+    }
+
+    public function resourceDownloadCounter(Request $request)
+    {
+        $validated = $request->validate([
+            'resource_id' => 'required|integer|exists:resources,id',
+            'file_id' => [
+                'required',
+                'integer',
+                'exists:resource_attachments,id,resource_id,' . $request->resource_id
+            ],
+        ]);
+
+        $counted = DownloadCount::create([
+            'resource_id' => $validated['resource_id'],
+            'file_id' => $validated['file_id'],
+            'user_id' => auth()->id() ?? 0,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'id'      => $counted->id
+        ], 201);
     }
 }

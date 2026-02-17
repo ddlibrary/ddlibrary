@@ -114,7 +114,13 @@
                             @if (Auth::check())
                                 @if(!$ePub)
                                     <a class="btn btn-primary btn-sm"
-                                        href="{{ getFile('/resources/' . $file->file_name) }}" target="_blank">
+                                       href="{{ getFile('/resources/' . $file->file_name) }}"
+                                       target="_blank"
+                                       id="track-downloads-btn"
+                                       data-file="{{ $file->id }}"
+                                       data-resource="{{ $resource->id }}"
+                                       onclick="downloadCounter(this)"
+                                    >
                                         <i class="fa fa-download" aria-hidden="true"></i> @lang('Download')
                                         ({{ formatBytes($file->file_size) }})
                                     </a>
