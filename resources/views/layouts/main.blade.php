@@ -50,12 +50,15 @@
     <script>
       var _paq = window._paq = window._paq || [];
       /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      @auth
+      _paq.push(['setUserId', '{{ hash('sha256', auth()->id() . config('app.key')) }}']);
+      @endauth
       _paq.push(['trackPageView']);
       _paq.push(['enableLinkTracking']);
       (function() {
-        var u="//analytics.darakhtdanesh.org/";
+        var u="//{{ config('services.matomo.url') }}/";
         _paq.push(['setTrackerUrl', u+'matomo.php']);
-        _paq.push(['setSiteId', '1']);
+        _paq.push(['setSiteId', '{{ config('services.matomo.site_id') }}']);
         var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
         g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
       })();

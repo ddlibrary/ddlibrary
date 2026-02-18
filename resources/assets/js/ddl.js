@@ -6,6 +6,7 @@ import 'jquery-ui/ui/widgets/autocomplete.js';
 import 'jquery-ui/ui/widgets/datepicker.js';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import '../../assets/js/lazysizes.min.js';
+import axios from "axios";
 
 if(window.jQuery){
     $(document).ready(function(){
@@ -409,4 +410,19 @@ function togglePassword(icon='password-toggle-icon', input = 'user-password') {
         toggleIcon.classList.add("fa-eye");
         passwordInput.setAttribute("type", "text");
     }
+}
+
+window.downloadCounter = function(element) {
+    const data = {
+        file_id: element.getAttribute('data-file'),
+        resource_id: element.getAttribute('data-resource'),
+    };
+
+    axios.post('/resource/download_counter', data)
+        .then(response => {
+            console.log('Record stored successfully:', response.data);
+        })
+        .catch(error => {
+            console.error('Error storing record:', error);
+        });
 }

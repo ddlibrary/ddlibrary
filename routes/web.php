@@ -86,6 +86,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::post('resources/priorities/exclusion/add/{id}', [ReportController::class, 'resourcePrioritiesExclusionModify'])->middleware('LibraryManager');
     Route::post('resources/priorities/exclusion/remove/{id}', [ReportController::class, 'resourcePrioritiesExclusionModify'])->middleware('LibraryManager');
     Route::get('resource/{resourceId}', [ResourceController::class, 'viewPublicResource']);
+    Route::post('resource/download_counter', [ResourceController::class, 'resourceDownloadCounter'])->middleware('auth');
     Route::get('resources', [ResourceController::class, 'list']);
     Route::get('resources/add/step1', [ResourceController::class, 'createStepOne'])->name('step1')->middleware('auth')->middleware('verified');
     Route::post('resources/add/step1', [ResourceController::class, 'postStepOne']);
@@ -114,6 +115,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('admin/contacts/read/{id}', [ContactController::class, 'read'])->middleware('admin');
     Route::get('admin/contacts/delete/{id}', [ContactController::class, 'delete'])->middleware('admin');
     //Report
+    Route::get('admin/reports/impact_report', [ReportController::class, 'impactReport'])->name('impact-report')->middleware('admin');
     Route::get('admin/reports/ga', [ReportController::class, 'gaReport'])->middleware('admin');
     Route::get('admin/reports/resources', [ReportController::class, 'resourceReport'])->middleware('admin');
     Route::get('admin/reports/resources/subjects', [ReportController::class, 'resourceSubjectReport'])->middleware('admin');
