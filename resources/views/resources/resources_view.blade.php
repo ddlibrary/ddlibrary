@@ -9,11 +9,13 @@
 
         {{  $resource->resourceFile ?  getResourceImage($resource->resourceFile->name, true)  : getImagefromResource($resource->abstract, '282x254') }}
 @endsection
-<style>
-    .epub-container {
-        overflow: visible !important;
-    }
-</style>
+@section('style')
+    <style>
+        .epub-container {
+            overflow: visible !important;
+        }
+    </style>
+@endsection
 @section('search')
     @include('layouts.search')
 @endsection
