@@ -2,203 +2,178 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TaxonomyHierarchy;
+use App\Http\Requests\Admin\TaxonomyTermCreateRequest;
 use App\Models\TaxonomyTerm;
 use App\Models\TaxonomyVocabulary;
+use App\Services\TaxonomyService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use App\Http\Requests\Admin\TaxonomyTermListRequest;
+use App\Http\Requests\Admin\TaxonomyTermRequest;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class TaxonomyController extends Controller
 {
-    public function index(Request $request): View
+    protected $taxonomyService;
+
+    public function __construct(TaxonomyService $taxonomyService)
     {
-        $this->middleware('admin');
-
-        $terms = TaxonomyTerm::orderBy('vid', 'desc')->orderBy('weight')
-            ->name(request('term'))
-            ->vocabulary(request('vocabulary'))
-            ->language(request('language'))
-            ->paginate(10);
-
-        $vocabulary = TaxonomyVocabulary::all('vid AS val', 'name');
-
-        $args = [
-            'route' => 'gettaxonomylist',
-            'filters' => $request,
-            'vocabulary' => $vocabulary,
-        ];
-        //creating search bar
-        $createSearchBar = new SearchController();
-        $searchBar = $createSearchBar->searchBar($args);
-
-        return view('admin.taxonomy.taxonomy_list', compact('terms', 'searchBar'));
+        $this->taxonomyService = $taxonomyService;
     }
-
-    public function edit($vid, $tid): View
+    public function index(TaxonomyTermListRequest $request): View
     {
-        $term = TaxonomyTerm::find($tid);
-        $vocabulary = TaxonomyVocabulary::all();
-        $parents = TaxonomyTerm::where('vid', $vid)->get();
-        $theParent = TaxonomyHierarchy::where('tid', $tid)->first();
-        if (isset($theParent->parent)) {
-            $theParent = $theParent->parent;
-        } else {
-            $theParent = 0;
+        $taxonomyVocabularies = TaxonomyVocabulary::all(['vid', 'name']);
+
+        $taxonomyVocabularyId = $request->input('taxonomy_vocabulary_id');
+        $name = $request->input('term');
+        $language = $request->input('language', 'en');
+
+        $terms = [];
+        if ($taxonomyVocabularyId) {
+            $terms = TaxonomyTerm::with(['vocabulary', 'translations'])->where([
+                'vid' => $taxonomyVocabularyId,
+                'language' => $language
+            ])
+            ->where(function($query) use ($name){
+                $query->where('name', 'like', "%$name%");
+            })
+            ->orderBy('vid', 'desc')->orderBy('weight')->get();
         }
 
-        return view('admin.taxonomy.taxonomy_edit', compact('term', 'vocabulary', 'parents', 'theParent'));
+        $languages = LaravelLocalization::getSupportedLocales();
+
+        return view('admin.taxonomy.taxonomy_list', compact('taxonomyVocabularies', 'terms', 'languages', 'taxonomyVocabularyId'));
     }
 
-    public function update(Request $request, $vid, $tid): RedirectResponse
+    public function create(TaxonomyTermCreateRequest $request): View|RedirectResponse
     {
-        $this->validate($request, [
-            'vid' => 'required',
-            'name' => 'required',
-            'weight' => 'required',
-            'language' => 'required',
-        ]);
+        $selectedVocabulary = $request->input('vid');
 
-        //Saving contact info to the database
-        $term = TaxonomyTerm::find($tid);
-        $term->vid = $request->input('vid');
-        $term->name = $request->input('name');
-        $term->weight = $request->input('weight');
-        $term->language = $request->input('language');
+        $parents = null;
 
-        if ($term->tnid == 0) {
-            $term->tnid = $tid;
-        }
-
-        $term->save();
-
-        $parentid = $request->input('parent');
-
-        $parent = TaxonomyHierarchy::firstOrNew(['tid' => $tid], ['parent' => $parentid]);
-
-        if(!isset($parent->id)){
-            $latestId = DB::table('taxonomy_term_hierarchy')->max('aux_id');
-            $THID = $latestId ? $latestId + 1 : 1;
-        }else{
-            $THID = $parent->id; // taxonomy_term_hierarchy.id
-        }
-
-        $parent->id = $THID;
-        $parent->tid = $tid;
-        $parent->parent = $parentid;
-        $parent->save();
-
-        return redirect('/admin/taxonomy')->with('success', 'Taxonomy item updated successfully!');
-    }
-
-    public function translate($tid): View
-    {
-        $tnid = TaxonomyTerm::find($tid)->tnid;
-        if ($tnid) {
-            $translations = TaxonomyTerm::where('tnid', $tnid)->get();
-        } else {
-            $translations = null;
-        }
-
-        $locals = \LaravelLocalization::getSupportedLocales();
-        $supportedLocals = [];
-
-        foreach ($locals as $key => $value) {
-            array_push($supportedLocals, $key);
-        }
-
-        return view('admin.taxonomy.taxonomy_translate', compact('translations', 'supportedLocals', 'tnid', 'tid'));
-    }
-
-    public function create(): View
-    {
-        $vocabulary = TaxonomyVocabulary::all();
-
-        return view('admin.taxonomy.taxonomy_create', compact('vocabulary'));
-    }
-
-    public function store(Request $request): RedirectResponse
-    {
-        $this->validate($request, [
-            'vid' => 'required',
-            'name' => 'required',
-            'weight' => 'required',
-            'language' => 'required',
-        ]);
-
-        //Saving contact info to the database
-        $term = new TaxonomyTerm;
-        $term->vid = $request->input('vid');
-        $term->name = $request->input('name');
-        $term->weight = $request->input('weight');
-        $term->language = $request->input('language');
-
-        $term->save();
-
-        $term->tnid = $term->id;
-        //updating with tnid
-        $term->save();
-
-        return redirect('/admin/taxonomy')->with('success', 'Taxonomy item created successfully!');
-    }
-
-    public function createTranslate($tid, $tnid, $lang)
-    {
-        $vocabulary = TaxonomyVocabulary::all();
-        $vid = TaxonomyTerm::where('tnid', $tnid)->first()->vid;
-        $weight = TaxonomyTerm::where('tnid', $tnid)->first()->weight;
-        $parents = TaxonomyTerm::where('vid', $vid)->get();
-        $sourceParent = TaxonomyHierarchy::where('tid', $tid)->first()->parent;
-        if ($sourceParent) {
-            $parentTermTnid = TaxonomyTerm::where('id', $sourceParent)->first()->tnid;
-            $parentTranslation = TaxonomyTerm::where('tnid', $parentTermTnid)->where('language', $lang)->first();
-            //If the parent is translated in current language
-            if ($parentTranslation) {
-                $theParent = $parentTranslation->id;
-            } else {
-                return 'First translate the parent';
+        if ($selectedVocabulary) {
+            if (TaxonomyVocabulary::where('vid', $selectedVocabulary)->doesntExist()) {
+                return redirect()->route('taxonomycreate')->with('error', 'This vocabulary does not exist!');
             }
-        } else {
-            $theParent = 0;
+
+            $parents = TaxonomyTerm::where('vid', $selectedVocabulary)
+                ->orderBy('weight')
+                ->orderBy('name')
+                ->get();
         }
 
-        return view('admin.taxonomy.taxonomy_create_translate', compact(
-            'vocabulary',
-            'tnid',
-            'vid',
-            'lang',
-            'weight',
+        $taxonomyVocabularies = TaxonomyVocabulary::all(['vid', 'name']);
+        $supportedLocales = LaravelLocalization::getSupportedLocales();
+
+        return view('admin.taxonomy.taxonomy_create', compact('taxonomyVocabularies', 'parents', 'supportedLocales', 'selectedVocabulary'));
+    }
+
+    public function store(TaxonomyTermRequest $request): RedirectResponse
+    {
+        DB::beginTransaction();
+
+        try {
+            $vid = $request->input('vid');
+            $weight = $request->input('weight');
+            $names = $request->input('names', []);
+            $parents = $request->input('parents', []);
+            $tnid = null;
+
+            foreach ($names as $language => $name) {
+                $name = trim($name);
+                if ($name === '') {
+                    continue;
+                }
+
+                $parentId = $parents[$language] ?? 0;
+                $term = $this->taxonomyService->saveTranslationTerm($vid, $name, $weight, $language, $tnid, $parentId, null);
+
+                if ($tnid === null) {
+                    $tnid = $term->id;
+                    $term->update(['tnid' => $tnid]);
+                }
+            }
+
+            DB::commit();
+            return redirect()->route('gettaxonomylist', ['taxonomy_vocabulary_id' => $vid])
+                            ->with('success', 'Taxonomy item created successfully!');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->with('error', 'Taxonomy item was not created!');
+        }
+    }
+
+    public function edit(TaxonomyTermCreateRequest $request, TaxonomyVocabulary $taxonomyVocabulary, $tid): View|RedirectResponse
+    {
+        $vid = $request->vid ?? $taxonomyVocabulary->vid;
+
+        if ($vid !== $taxonomyVocabulary->vid && TaxonomyVocabulary::where('vid', $vid)->doesntExist()) {
+            return redirect()->route('taxonomyedit', [$taxonomyVocabulary->vid, $tid])
+                            ->with('error', 'This vocabulary does not exist!');
+        }
+
+        $term = TaxonomyTerm::with(['translations','translations.taxonomyHierarchy:parent,tid','vocabulary'])->findOrFail($tid);
+        $parents = TaxonomyTerm::where('vid', $vid)->orderBy('weight')->orderBy('name')->get();
+        $supportedLocales = LaravelLocalization::getSupportedLocales();
+        
+        $translationData = [];
+        foreach ($supportedLocales as $localeCode => $localeProperties) {
+            $translation = $term->translations->where('language', $localeCode)->first();
+            
+            $translationData[$localeCode] = [
+                'name' => $translation->name ?? '',
+                'term_id' => $translation->id ?? null,
+                'parent_id' => $translation->taxonomyHierarchy->parent ?? null,
+            ];
+        }
+
+        $taxonomyVocabularies = TaxonomyVocabulary::all(['vid', 'name']);
+
+        return view('admin.taxonomy.taxonomy_edit', compact(
+            'taxonomyVocabularies',
+            'supportedLocales',
+            'translationData',
             'parents',
-            'theParent'
+            'term',
+            'vid'
         ));
     }
+    
 
-    public function storeTranslate(Request $request, $tnid): RedirectResponse
+    public function update(TaxonomyTermRequest $request, $vid, $tid): RedirectResponse
     {
-        $this->validate($request, [
-            'vid' => 'required',
-            'name' => 'required',
-            'weight' => 'required',
-            'language' => 'required',
-        ]);
+        DB::beginTransaction();
 
-        //Saving contact info to the database
-        $term = TaxonomyTerm::create([
-            'vid' => $request->input('vid'),
-            'name' => $request->input('name'),
-            'weight' => $request->input('weight'),
-            'language' => $request->input('language'),
-            'tnid' => $tnid
-        ]);
+        try {
+            $term = TaxonomyTerm::findOrFail($tid);
 
-        TaxonomyHierarchy::insert([
-            'id' => (int)(TaxonomyHierarchy::latest()->value('id') + 1),
-            'tid' => $term->id,
-            'parent' => $request->input('parent') ? $request->input('parent') : 0,
-            'aux_id' => $request->input('aux_id') ? $request->input('aux_id') : $term->id,
-        ]);
+            $tnid = $term->tnid ?: $tid;
+            $vid = $request->input('vid');
+            $weight = $request->input('weight');
+            $names = $request->input('names', []);
+            $termIds = $request->input('term_ids', []);
+            $parents = $request->input('parents', []);
 
-        return redirect('/admin/taxonomy')->with('success', 'Taxonomy item added successfully!');
+            foreach ($names as $language => $name) {
+                $name = trim($name);
+                if (empty($name)) {
+                    continue;
+                }
+
+                $termId = $termIds[$language] ?? null;
+                $parentId = $parents[$language] ?? 0;
+
+                $this->taxonomyService->saveTranslationTerm($vid, $name, $weight, $language, $tnid, $parentId, $termId);
+            }
+
+            DB::commit();
+            return redirect()->route('gettaxonomylist', ['taxonomy_vocabulary_id' => $vid])
+                            ->with('success', 'Taxonomy item updated successfully!');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->with('error', 'Taxonomy item was not updated!');
+        }
     }
+
 }

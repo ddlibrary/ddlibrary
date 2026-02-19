@@ -52,4 +52,16 @@ class TaxonomyTerm extends Model
     public function resources(){
         return $this->hasMany(ResourceSubjectArea::class, 'tid');
     }
+
+    public function translations(){
+        return $this->hasMany(TaxonomyTerm::class, 'tnid', 'tnid')->where('tnid','>',0);
+    }
+
+    public function translationsByLanguage(){
+        return $this->translations->keyBy('language');
+    }
+
+    public function taxonomyHierarchy(){
+        return $this->hasOne(TaxonomyHierarchy::class, 'tid');
+    }
 }
