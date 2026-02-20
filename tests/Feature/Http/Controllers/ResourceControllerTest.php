@@ -1500,4 +1500,199 @@ class ResourceControllerTest extends TestCase
 
         $response->assertRedirect('/resources/edit/step1');
     }
+
+    // Step 3
+    /**
+     * @test
+     */
+    public function edit_step_three_get_displays_correct_resource_values_from_database(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $creativeCommons = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::CreativeCommons->value, 'name' => 'CC BY']);
+        $creativeCommonsOther = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::SharePermission->value, 'name' => 'CC BY-SA']);
+
+        $resource = Resource::factory()->create(['status' => 1]);
+
+        ResourceTranslationRight::factory()->create([
+            'resource_id' => $resource->id,
+            'value' => 1,
+        ]);
+        ResourceEducationalResource::factory()->create([
+            'resource_id' => $resource->id,
+            'value' => 1,
+        ]);
+        ResourceIamAuthor::factory()->create([
+            'resource_id' => $resource->id,
+            'value' => 1,
+        ]);
+        ResourceCopyrightHolder::factory()->create([
+            'resource_id' => $resource->id,
+            'value' => 'Original Copyright Holder',
+        ]);
+        ResourceSharePermission::factory()->create([
+            'resource_id' => $resource->id,
+            'tid' => $creativeCommonsOther->id,
+        ]);
+        $resource->creativeCommons()->attach($creativeCommons->id);
+
+        Session::put('edit_resource_step_1', [
+            'id' => $resource->id,
+            'title' => 'Step 1 Title',
+            'author' => 'Author',
+            'publisher' => 'Publisher',
+            'language' => 'en',
+            'abstract' => 'Abstract',
+        ]);
+        Session::put('edit_resource_step_2', [
+            'id' => $resource->id,
+            'subject_areas' => [],
+            'learning_resources_types' => [],
+            'keywords' => '',
+            'educational_use' => [],
+            'level' => [],
+        ]);
+
+        $response = $this->get("en/resources/edit/step3/{$resource->id}");
+
+        $response->assertOk();
+        $response->assertViewIs('resources.resources_modify_step3');
+        $response->assertViewHas('dbRecords');
+        $response->assertViewHas('resource');
+        $response->assertViewHas('edit', true);
+        $response->assertViewHas('creativeCommons');
+        $response->assertViewHas('creativeCommonsOther');
+
+        $dbRecords = $response->viewData('dbRecords');
+        $this->assertEquals($resource->id, $dbRecords->id);
+        $this->assertEquals(1, $dbRecords->status);
+
+        $this->assertNotNull($dbRecords->TranslationRights);
+        $this->assertEquals(1, $dbRecords->TranslationRights->value);
+
+        $this->assertTrue($dbRecords->EducationalResources->isNotEmpty());
+        $this->assertEquals(1, $dbRecords->EducationalResources->first()->value);
+
+        $this->assertNotNull($dbRecords->IamAuthors);
+        $this->assertEquals(1, $dbRecords->IamAuthors->value);
+
+        $this->assertNotNull($dbRecords->CopyrightHolder);
+        $this->assertEquals('Original Copyright Holder', $dbRecords->CopyrightHolder->value);
+
+        $this->assertTrue($dbRecords->creativeCommons->contains($creativeCommons->id));
+
+        $this->assertNotNull($dbRecords->SharePermissions);
+        $this->assertEquals($creativeCommonsOther->id, $dbRecords->SharePermissions->tid);
+
+        $resourceView = $response->viewData('resource');
+        $this->assertEquals(1, $resourceView['status']);
+    }
+
+    /**
+     * @test
+     */
+    public function edit_step_three_post_saves_all_three_steps_to_database(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $subjectArea = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceSubject->value, 'name' => 'Mathematics']);
+        $learningType = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceType->value, 'name' => 'Book']);
+        $educationalUse = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::EducationalUse->value, 'name' => 'Assignment']);
+        $level = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceLevels->value, 'name' => 'High School']);
+        $creativeCommons = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::CreativeCommons->value, 'name' => 'CC BY']);
+        $resourceFile = ResourceFile::create(['name' => 'test-file.pdf', 'label' => 'Test File', 'language' => 'en', 'resource_id' => null]);
+
+        $resource = Resource::factory()->create([
+            'title' => 'Original Title',
+            'abstract' => 'Original Abstract',
+            'language' => 'en',
+            'status' => 0,
+        ]);
+
+        $step1 = [
+            'id' => $resource->id,
+            'title' => 'Updated Title Step 1',
+            'abstract' => 'Updated Abstract Step 1',
+            'language' => 'fa',
+            'author' => 'Author One,Author Two',
+            'publisher' => 'Publisher Name',
+            'translator' => 'Translator Name',
+            'resource_file_id' => $resourceFile->id,
+        ];
+        $step2 = [
+            'id' => $resource->id,
+            'subject_areas' => [$subjectArea->id],
+            'learning_resources_types' => [$learningType->id],
+            'educational_use' => [$educationalUse->id],
+            'level' => [$level->id],
+            'keywords' => 'keyword1,keyword2',
+        ];
+
+        $response = $this->withSession([
+            'edit_resource_step_1' => $step1,
+            'edit_resource_step_2' => $step2,
+        ])->post("en/resources/edit/step3/{$resource->id}", [
+            'translation_rights' => 1,
+            'educational_resource' => 1,
+            'iam_author' => 0,
+            'copyright_holder' => 'Updated Copyright Holder',
+            'creative_commons' => $creativeCommons->id,
+            'creative_commons_other' => 0,
+            'published' => 1,
+        ]);
+
+        $response->assertRedirect();
+
+        $resource->refresh();
+        $this->assertEquals('Updated Title Step 1', $resource->title);
+        $this->assertEquals('Updated Abstract Step 1', $resource->abstract);
+        $this->assertEquals('fa', $resource->language);
+        $this->assertEquals($resourceFile->id, $resource->resource_file_id);
+        $this->assertEquals(1, $resource->status);
+
+        $this->assertGreaterThan(0, $resource->authors()->count());
+        $this->assertGreaterThan(0, $resource->publishers()->count());
+        $this->assertGreaterThan(0, $resource->translators()->count());
+
+        $this->assertTrue($resource->subjects->contains($subjectArea->id));
+        $this->assertTrue($resource->LearningResourceTypes->contains($learningType->id));
+        $this->assertTrue($resource->levels->contains($level->id));
+        $this->assertGreaterThan(0, ResourceKeyword::where('resource_id', $resource->id)->count());
+        $this->assertTrue(ResourceEducationalUse::where('resource_id', $resource->id)->where('tid', $educationalUse->id)->exists());
+
+        $this->assertNotNull($resource->TranslationRights);
+        $this->assertEquals(1, $resource->TranslationRights->value);
+        $this->assertTrue($resource->EducationalResources->isNotEmpty());
+        $this->assertEquals(1, $resource->EducationalResources->first()->value);
+        $this->assertNotNull($resource->CopyrightHolder);
+        $this->assertEquals('Updated Copyright Holder', $resource->CopyrightHolder->value);
+        $this->assertTrue($resource->creativeCommons->contains($creativeCommons->id));
+        $this->assertNotNull($resource->IamAuthors);
+        $this->assertEquals(0, $resource->IamAuthors->value);
+    }
+
+    /**
+     * @test
+     */
+    public function edit_step_three_get_redirects_to_step_one_if_steps_not_in_session(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $resource = Resource::factory()->create();
+
+        // Without setting step 1 and step 2 in session
+        $response = $this->get("en/resources/edit/step3/{$resource->id}");
+
+        $response->assertRedirect('/resources/edit/step1');
+    }
 }
