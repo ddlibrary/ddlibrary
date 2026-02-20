@@ -1227,4 +1227,277 @@ class ResourceControllerTest extends TestCase
 
         $response->assertSessionHasErrors('publisher');
     }
+
+    // Step 2
+    /**
+     * @test
+     */
+    public function edit_step_two_get_displays_correct_resource_values_from_database(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $subjectArea1 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceSubject->value, 'name' => 'Mathematics']);
+        $subjectArea2 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceSubject->value, 'name' => 'Physics']);
+        $learningType1 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceType->value, 'name' => 'Book']);
+        $learningType2 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceType->value, 'name' => 'Video']);
+        $educationalUse1 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::EducationalUse->value, 'name' => 'Assignment']);
+        $educationalUse2 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::EducationalUse->value, 'name' => 'Lecture']);
+        $level1 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceLevels->value, 'name' => 'High School']);
+        $level2 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceLevels->value, 'name' => 'University']);
+        $keywordTerm1 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::Keywords->value, 'name' => 'algebra']);
+        $keywordTerm2 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::Keywords->value, 'name' => 'geometry']);
+
+        $resource = Resource::factory()->create();
+        $resource->subjects()->attach([$subjectArea1->id, $subjectArea2->id]);
+        $resource->LearningResourceTypes()->attach([$learningType1->id, $learningType2->id]);
+        $resource->levels()->attach([$level1->id, $level2->id]);
+        ResourceKeyword::factory()->create(['resource_id' => $resource->id, 'tid' => $keywordTerm1->id]);
+        ResourceKeyword::factory()->create(['resource_id' => $resource->id, 'tid' => $keywordTerm2->id]);
+        ResourceEducationalUse::factory()->create(['resource_id' => $resource->id, 'tid' => $educationalUse1->id]);
+        ResourceEducationalUse::factory()->create(['resource_id' => $resource->id, 'tid' => $educationalUse2->id]);
+        ResourceAttachment::factory()->create([
+            'resource_id' => $resource->id,
+            'file_name' => 'test-attachment.pdf',
+            'file_size' => 1024,
+            'file_mime' => 'application/pdf',
+        ]);
+
+        Session::put('edit_resource_step_1', [
+            'id' => $resource->id,
+            'title' => 'Step 1 Title',
+            'author' => 'Author',
+            'publisher' => 'Publisher',
+            'language' => 'en',
+            'abstract' => 'Abstract',
+        ]);
+
+        $response = $this->get("en/resources/edit/step2/{$resource->id}");
+
+        $response->assertOk();
+        $response->assertViewIs('resources.resources_modify_step2');
+        $response->assertViewHas('resource');
+        $response->assertViewHas('edit', true);
+        $response->assertViewHas('resourceSubjectAreas');
+        $response->assertViewHas('resourceLearningResourceTypes');
+        $response->assertViewHas('editEducationalUse');
+        $response->assertViewHas('resourceLevels');
+        $response->assertViewHas('resourceKeywords');
+        $response->assertViewHas('resourceAttachments');
+        $response->assertViewHas('subjects');
+        $response->assertViewHas('learningResourceTypes');
+        $response->assertViewHas('educationalUse');
+        $response->assertViewHas('levels');
+
+        $resourceArr = $response->viewData('resource');
+        $this->assertEquals($resource->id, $resourceArr['id']);
+
+        $resourceSubjectAreas = $response->viewData('resourceSubjectAreas');
+        $this->assertContains($subjectArea1->id, $resourceSubjectAreas);
+        $this->assertContains($subjectArea2->id, $resourceSubjectAreas);
+        $this->assertCount(2, $resourceSubjectAreas);
+
+        $resourceLearningResourceTypes = $response->viewData('resourceLearningResourceTypes');
+        $this->assertContains($learningType1->id, $resourceLearningResourceTypes);
+        $this->assertContains($learningType2->id, $resourceLearningResourceTypes);
+        $this->assertCount(2, $resourceLearningResourceTypes);
+
+        $editEducationalUse = $response->viewData('editEducationalUse');
+        $this->assertContains($educationalUse1->id, $editEducationalUse);
+        $this->assertContains($educationalUse2->id, $editEducationalUse);
+        $this->assertCount(2, $editEducationalUse);
+
+        $resourceLevels = $response->viewData('resourceLevels');
+        $this->assertContains($level1->id, $resourceLevels);
+        $this->assertContains($level2->id, $resourceLevels);
+        $this->assertCount(2, $resourceLevels);
+
+        $resourceKeywords = $response->viewData('resourceKeywords');
+        $this->assertStringContainsString('algebra', $resourceKeywords);
+        $this->assertStringContainsString('geometry', $resourceKeywords);
+
+        $resourceAttachments = $response->viewData('resourceAttachments');
+        $this->assertCount(1, $resourceAttachments);
+        $this->assertArrayHasKey('file_name', $resourceAttachments[0]);
+        $this->assertArrayHasKey('file_size', $resourceAttachments[0]);
+        $this->assertArrayHasKey('file_mime', $resourceAttachments[0]);
+        $this->assertEquals('test-attachment.pdf', $resourceAttachments[0]['file_name']);
+        $this->assertEquals(1024, $resourceAttachments[0]['file_size']);
+        $this->assertEquals('application/pdf', $resourceAttachments[0]['file_mime']);
+    }
+
+    /**
+     * @test
+     */
+    public function edit_step_two_post_stores_data_in_session_not_database(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        // Create taxonomy terms
+        $subjectArea = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceSubject->value, 'name' => 'Mathematics']);
+        $learningResourceType = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceType->value, 'name' => 'Book']);
+        $educationalUse = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::EducationalUse->value, 'name' => 'Assignment']);
+        $level = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceLevels->value, 'name' => 'High School']);
+
+        // Create resource in database
+        $resource = Resource::factory()->create();
+
+        // Store original values in database
+        $resource->subjects()->attach($subjectArea->id);
+        $originalSubjectCount = $resource->subjects()->count();
+
+        // Set up step 1 in session
+        Session::put('edit_resource_step_1', [
+            'id' => $resource->id,
+            'title' => 'Step 1 Title',
+            'author' => 'Author',
+            'publisher' => 'Publisher',
+            'language' => 'en',
+            'abstract' => 'Abstract',
+        ]);
+
+        // POST edit step 2 with new data
+        $response = $this->post("en/resources/edit/step2/{$resource->id}", [
+            'subject_areas' => [$subjectArea->id],
+            'learning_resources_types' => [$learningResourceType->id],
+            'educational_use' => [$educationalUse->id],
+            'level' => [$level->id],
+            'keywords' => 'new keyword',
+        ]);
+
+        // Should redirect to step 3
+        $response->assertRedirect('/resources/edit/step3/' . $resource->id);
+
+        // Verify data is stored in session
+        $this->assertNotNull(Session::get('edit_resource_step_2'));
+        $sessionData = Session::get('edit_resource_step_2');
+        $this->assertContains($subjectArea->id, $sessionData['subject_areas']);
+        $this->assertContains($learningResourceType->id, $sessionData['learning_resources_types']);
+        $this->assertContains($educationalUse->id, $sessionData['educational_use']);
+        $this->assertContains($level->id, $sessionData['level']);
+
+        // Verify data is NOT saved to database
+        $resource->refresh();
+        $this->assertEquals($originalSubjectCount, $resource->subjects()->count());
+        $this->assertEquals(0, $resource->LearningResourceTypes()->count());
+    }
+
+    /**
+     * @test
+     */
+    public function edit_step_two_get_uses_session_data_if_available(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $subjectArea1 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceSubject->value, 'name' => 'Mathematics']);
+        $subjectArea2 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceSubject->value, 'name' => 'Physics']);
+        $learningType1 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceType->value, 'name' => 'Book']);
+        $learningType2 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceType->value, 'name' => 'Video']);
+        $educationalUse1 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::EducationalUse->value, 'name' => 'Assignment']);
+        $educationalUse2 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::EducationalUse->value, 'name' => 'Lecture']);
+        $level1 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceLevels->value, 'name' => 'High School']);
+        $level2 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceLevels->value, 'name' => 'University']);
+
+        $resource = Resource::factory()->create();
+        $resource->subjects()->attach($subjectArea1->id);
+        $resource->LearningResourceTypes()->attach($learningType1->id);
+        $keywordTerm = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::Keywords->value, 'name' => 'db-keyword']);
+        ResourceKeyword::factory()->create(['resource_id' => $resource->id, 'tid' => $keywordTerm->id]);
+        ResourceEducationalUse::factory()->create(['resource_id' => $resource->id, 'tid' => $educationalUse1->id]);
+        $resource->levels()->attach($level1->id);
+        ResourceAttachment::factory()->create([
+            'resource_id' => $resource->id,
+            'file_name' => 'db-attachment.pdf',
+            'file_size' => 512,
+            'file_mime' => 'application/pdf',
+        ]);
+
+        Session::put('edit_resource_step_1', [
+            'id' => $resource->id,
+            'title' => 'Step 1 Title',
+            'author' => 'Author',
+            'publisher' => 'Publisher',
+            'language' => 'en',
+            'abstract' => 'Abstract',
+        ]);
+
+        Session::put('edit_resource_step_2', [
+            'id' => $resource->id,
+            'subject_areas' => [$subjectArea2->id],
+            'learning_resources_types' => [$learningType2->id],
+            'educational_use' => [$educationalUse1->id, $educationalUse2->id],
+            'level' => [$level1->id, $level2->id],
+            'keywords' => 'session-keyword-one,session-keyword-two',
+            'attc' => [
+                ['file_name' => 'session-file.pdf', 'file_size' => 1024, 'file_mime' => 'application/pdf'],
+            ],
+        ]);
+
+        $response = $this->get("en/resources/edit/step2/{$resource->id}");
+
+        $response->assertOk();
+        $response->assertViewIs('resources.resources_modify_step2');
+        $response->assertViewHas('resourceSubjectAreas');
+        $response->assertViewHas('resourceLearningResourceTypes');
+        $response->assertViewHas('editEducationalUse');
+        $response->assertViewHas('resourceLevels');
+        $response->assertViewHas('resourceKeywords');
+        $response->assertViewHas('resourceAttachments');
+
+        $this->assertContains($subjectArea2->id, $response->viewData('resourceSubjectAreas'));
+        $this->assertNotContains($subjectArea1->id, $response->viewData('resourceSubjectAreas'));
+        $this->assertCount(1, $response->viewData('resourceSubjectAreas'));
+
+        $this->assertContains($learningType2->id, $response->viewData('resourceLearningResourceTypes'));
+        $this->assertNotContains($learningType1->id, $response->viewData('resourceLearningResourceTypes'));
+        $this->assertCount(1, $response->viewData('resourceLearningResourceTypes'));
+
+        $editEducationalUse = $response->viewData('editEducationalUse');
+        $this->assertContains($educationalUse1->id, $editEducationalUse);
+        $this->assertContains($educationalUse2->id, $editEducationalUse);
+        $this->assertCount(2, $editEducationalUse);
+
+        $resourceLevels = $response->viewData('resourceLevels');
+        $this->assertContains($level1->id, $resourceLevels);
+        $this->assertContains($level2->id, $resourceLevels);
+        $this->assertCount(2, $resourceLevels);
+
+        $resourceKeywords = $response->viewData('resourceKeywords');
+        $this->assertStringContainsString('session-keyword-one', $resourceKeywords);
+        $this->assertStringContainsString('session-keyword-two', $resourceKeywords);
+        $this->assertStringNotContainsString('db-keyword', $resourceKeywords);
+
+        $resourceAttachments = $response->viewData('resourceAttachments');
+        $this->assertCount(1, $resourceAttachments);
+        $this->assertEquals('session-file.pdf', $resourceAttachments[0]['file_name']);
+        $this->assertEquals(1024, $resourceAttachments[0]['file_size']);
+    }
+
+    /**
+     * @test
+     */
+    public function edit_step_two_get_redirects_to_step_one_if_step_one_not_in_session(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $resource = Resource::factory()->create();
+
+        // Without setting step 1 in session
+        $response = $this->get("en/resources/edit/step2/{$resource->id}");
+
+        $response->assertRedirect('/resources/edit/step1');
+    }
 }
