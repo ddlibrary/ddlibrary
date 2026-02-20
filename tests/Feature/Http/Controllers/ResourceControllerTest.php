@@ -2,10 +2,20 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use App\Enums\TaxonomyVocabularyEnum;
 use App\Models\Resource;
+use App\Models\ResourceAttachment;
 use App\Models\ResourceComment;
+use App\Models\ResourceCopyrightHolder;
+use App\Models\ResourceEducationalResource;
+use App\Models\ResourceEducationalUse;
 use App\Models\ResourceFavorite;
+use App\Models\ResourceFile;
 use App\Models\ResourceFlag;
+use App\Models\ResourceIamAuthor;
+use App\Models\ResourceKeyword;
+use App\Models\ResourceSharePermission;
+use App\Models\ResourceTranslationRight;
 use App\Models\TaxonomyTerm;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
@@ -842,5 +852,379 @@ class ResourceControllerTest extends TestCase
         $response = $this->get('en/resource/' . $resource->id);
 
         $response->assertForbidden();
+    }
+
+    // Step One
+    /**
+     * @test
+     */
+    public function edit_step_one_get_displays_correct_resource_values_from_database(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $author1 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceAuthor->value, 'name' => 'Author One']);
+        $author2 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceAuthor->value, 'name' => 'Author Two']);
+        $publisher = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourcePublisher->value, 'name' => 'Publisher']);
+        $translator1 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceTranslator->value, 'name' => 'Translator One']);
+        $translator2 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceTranslator->value, 'name' => 'Translator Two']);
+        $resourceFile = ResourceFile::create(['name' => 'test-file.pdf', 'label' => 'Test File', 'language' => 'en', 'resource_id' => null]);
+
+        $resource = Resource::factory()->create([
+            'title' => 'Original Title',
+            'abstract' => 'Original Abstract',
+            'language' => 'en',
+            'resource_file_id' => $resourceFile->id,
+        ]);
+        $resource->authors()->attach([$author1->id, $author2->id]);
+        $resource->publishers()->attach($publisher->id);
+        $resource->translators()->attach([$translator1->id, $translator2->id]);
+        $resourceFile->update(['resource_id' => $resource->id]);
+
+        $response = $this->get(route('edit1', ['resourceId' => $resource->id]));
+        $response->assertOk();
+        $response->assertViewIs('resources.resources_modify_step1');
+        $response->assertViewHas('resource');
+
+        $viewResource = $response->viewData('resource');
+        $this->assertEquals('Original Title', $viewResource->title);
+        $this->assertEquals('Original Abstract', $viewResource->abstract);
+        $this->assertEquals('en', $viewResource->language);
+        $this->assertEquals($resourceFile->id, $viewResource->resource_file_id);
+        $this->assertTrue($viewResource->authors->contains($author1->id) && $viewResource->authors->contains($author2->id));
+        $this->assertCount(2, $viewResource->authors);
+        $this->assertContains('Author One', $viewResource->authors->pluck('name')->toArray());
+        $this->assertContains('Author Two', $viewResource->authors->pluck('name')->toArray());
+        $this->assertTrue($viewResource->publishers->contains($publisher->id));
+        $this->assertContains('Publisher', $viewResource->publishers->pluck('name')->toArray());
+        $this->assertTrue($viewResource->translators->contains($translator1->id) && $viewResource->translators->contains($translator2->id));
+        $this->assertCount(2, $viewResource->translators);
+        $this->assertContains('Translator One', $viewResource->translators->pluck('name')->toArray());
+        $this->assertContains('Translator Two', $viewResource->translators->pluck('name')->toArray());
+        $this->assertFalse($viewResource->translators->isEmpty(), 'This is a work of translation checkbox should be checked');
+        $this->assertNotNull($viewResource->resourceFile);
+        $this->assertEquals($resourceFile->id, $viewResource->resourceFile->id);
+    }
+
+    /**
+     * @test
+     */
+    public function edit_step_one_post_stores_data_in_session_not_database(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $oldAuthor1 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceAuthor->value, 'name' => 'Old Author One']);
+        $oldAuthor2 = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceAuthor->value, 'name' => 'Old Author Two']);
+        $oldPublisher = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourcePublisher->value, 'name' => 'Old Publisher']);
+        $oldTranslator = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceTranslator->value, 'name' => 'Old Translator']);
+        $oldResourceFile = ResourceFile::create(['name' => 'old-file.pdf', 'label' => 'Old File', 'language' => 'en', 'resource_id' => null]);
+
+        $resource = Resource::factory()->create([
+            'title' => 'Original Title',
+            'abstract' => 'Original Abstract',
+            'language' => 'en',
+            'resource_file_id' => $oldResourceFile->id,
+        ]);
+        $resource->authors()->attach([$oldAuthor1->id, $oldAuthor2->id]);
+        $resource->publishers()->attach($oldPublisher->id);
+        $resource->translators()->attach($oldTranslator->id);
+        $oldResourceFile->update(['resource_id' => $resource->id]);
+
+        $newResourceFile = ResourceFile::create(['name' => 'new-file.pdf', 'label' => 'New File', 'language' => 'en', 'resource_id' => null]);
+        $newValues = [
+            'title' => 'Updated Title',
+            'abstract' => 'Updated Abstract',
+            'language' => 'fa',
+            'author' => 'New Author',
+            'publisher' => 'New Publisher',
+            'has_translator' => 1,
+            'translator' => 'New Translator',
+            'resource_file_id' => $newResourceFile->id,
+        ];
+        $response = $this->post(route('edit1', ['resourceId' => $resource->id]), $newValues);
+        $response->assertRedirect('/resources/edit/step2/' . $resource->id);
+
+        // Verify data is stored in session
+        $sessionData = Session::get('edit_resource_step_1');
+        $this->assertNotNull($sessionData);
+        $this->assertEquals('Updated Title', $sessionData['title']);
+        $this->assertEquals('Updated Abstract', $sessionData['abstract']);
+        $this->assertEquals('fa', $sessionData['language']);
+        $this->assertEquals($resource->id, $sessionData['id']);
+
+        // Verify data is NOT saved to database (original values should remain)
+        $resource->refresh();
+        $this->assertEquals('Original Title', $resource->title);
+        $this->assertEquals('Original Abstract', $resource->abstract);
+        $this->assertEquals('en', $resource->language);
+        $this->assertEquals($oldResourceFile->id, $resource->resource_file_id);
+        $this->assertTrue($resource->authors->contains($oldAuthor1->id) && $resource->authors->contains($oldAuthor2->id));
+        $this->assertTrue($resource->publishers->contains($oldPublisher->id));
+        $this->assertTrue($resource->translators->contains($oldTranslator->id));
+    }
+
+    /**
+     * @test
+     */
+    public function edit_step_one_get_displays_correctly_when_no_author_only_publisher(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $publisherTerm = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourcePublisher->value, 'name' => 'Only Publisher']);
+        $resource = Resource::factory()->create([
+            'title' => 'Resource Without Author',
+            'abstract' => 'Abstract',
+            'language' => 'en',
+        ]);
+        $resource->publishers()->attach($publisherTerm->id);
+
+        $response = $this->get(route('edit1', ['resourceId' => $resource->id]));
+
+        $response->assertOk();
+        $response->assertViewIs('resources.resources_modify_step1');
+        $viewResource = $response->viewData('resource');
+        $this->assertEquals(0, $viewResource->authors->count());
+        $this->assertEquals(1, $viewResource->publishers->count());
+        $this->assertTrue($viewResource->publishers->contains($publisherTerm->id));
+    }
+
+     /**
+     * @test
+     */
+    public function edit_step_one_get_displays_correctly_when_no_publisher_only_author(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $authorTerm = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceAuthor->value, 'name' => 'Only Author']);
+        $resource = Resource::factory()->create([
+            'title' => 'Resource Without Publisher',
+            'abstract' => 'Abstract',
+            'language' => 'en',
+        ]);
+        $resource->authors()->attach($authorTerm->id);
+
+        $response = $this->get(route('edit1', ['resourceId' => $resource->id]));
+
+        $response->assertOk();
+        $response->assertViewIs('resources.resources_modify_step1');
+        $viewResource = $response->viewData('resource');
+        $this->assertEquals(1, $viewResource->authors->count());
+        $this->assertTrue($viewResource->authors->contains($authorTerm->id));
+        $this->assertEquals(0, $viewResource->publishers->count());
+    }
+
+    /**
+     * @test
+     */
+    public function edit_step_one_get_displays_correctly_when_no_translator(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $authorTerm = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceAuthor->value, 'name' => 'Author']);
+        $resource = Resource::factory()->create([
+            'title' => 'Resource Without Translator',
+            'abstract' => 'Abstract',
+            'language' => 'en',
+        ]);
+        $resource->authors()->attach($authorTerm->id);
+        $resource->translators()->detach();
+
+        $response = $this->get(route('edit1', ['resourceId' => $resource->id]));
+
+        $response->assertOk();
+        $response->assertViewIs('resources.resources_modify_step1');
+        $viewResource = $response->viewData('resource');
+        $this->assertEquals(0, $viewResource->translators->count());
+        $this->assertTrue($viewResource->translators->isEmpty(), 'This is a work of translation checkbox should be unchecked when no translator');
+    }
+
+    /**
+     * @test
+     */
+    public function edit_step_one_get_displays_correctly_when_no_resource_file(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $authorTerm = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::ResourceAuthor->value, 'name' => 'Author']);
+        $resource = Resource::factory()->create([
+            'title' => 'Resource Without File',
+            'abstract' => 'Abstract',
+            'language' => 'en',
+            'resource_file_id' => null,
+        ]);
+        $resource->authors()->attach($authorTerm->id);
+
+        $response = $this->get(route('edit1', ['resourceId' => $resource->id]));
+
+        $response->assertOk();
+        $response->assertViewIs('resources.resources_modify_step1');
+        $viewResource = $response->viewData('resource');
+        $this->assertNull($viewResource->resource_file_id);
+        $this->assertNull($viewResource->resourceFile);
+    }
+
+    /**
+     * @test
+     */
+    public function edit_step_one_post_accepts_when_no_author_only_publisher(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $resource = Resource::factory()->create();
+
+        $response = $this->post(route('edit1', ['resourceId' => $resource->id]), [
+            'title' => 'Title',
+            'abstract' => 'Abstract',
+            'language' => 'en',
+            'author' => '',
+            'publisher' => 'Publisher Only',
+            'has_translator' => 0,
+            'translator' => '',
+            'resource_file_id' => null,
+        ]);
+
+        $response->assertRedirect('/resources/edit/step2/' . $resource->id);
+        $sessionData = Session::get('edit_resource_step_1');
+        $this->assertEquals('Publisher Only', $sessionData['publisher']);
+        $this->assertEmpty($sessionData['author'] ?? '');
+    }
+
+    /**
+     * @test
+     */
+    public function edit_step_one_post_accepts_when_no_publisher_only_author(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $resource = Resource::factory()->create();
+
+        $response = $this->post(route('edit1', ['resourceId' => $resource->id]), [
+            'title' => 'Title',
+            'abstract' => 'Abstract',
+            'language' => 'en',
+            'author' => 'Author Only',
+            'publisher' => '',
+            'has_translator' => 0,
+            'translator' => '',
+            'resource_file_id' => null,
+        ]);
+
+        $response->assertRedirect('/resources/edit/step2/' . $resource->id);
+        $sessionData = Session::get('edit_resource_step_1');
+        $this->assertEquals('Author Only', $sessionData['author']);
+    }
+
+    /**
+     * @test
+     */
+    public function edit_step_one_post_accepts_when_no_translator(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $resource = Resource::factory()->create();
+
+        $response = $this->post(route('edit1', ['resourceId' => $resource->id]), [
+            'title' => 'Title',
+            'abstract' => 'Abstract',
+            'language' => 'en',
+            'author' => 'Author',
+            'publisher' => 'Publisher',
+            'has_translator' => 0,
+            'translator' => '',
+            'resource_file_id' => null,
+        ]);
+
+        $response->assertRedirect('/resources/edit/step2/' . $resource->id);
+        $sessionData = Session::get('edit_resource_step_1');
+        $this->assertNull($sessionData['translator'] ?? null);
+    }
+
+    /**
+     * @test
+     */
+    public function edit_step_one_post_accepts_when_no_resource_file(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $resource = Resource::factory()->create();
+
+        $response = $this->post(route('edit1', ['resourceId' => $resource->id]), [
+            'title' => 'Title',
+            'abstract' => 'Abstract',
+            'language' => 'en',
+            'author' => 'Author',
+            'publisher' => 'Publisher',
+            'has_translator' => 0,
+            'translator' => '',
+            'resource_file_id' => null,
+        ]);
+
+        $response->assertRedirect('/resources/edit/step2/' . $resource->id);
+        $sessionData = Session::get('edit_resource_step_1');
+        $this->assertArrayHasKey('resource_file_id', $sessionData);
+        $this->assertTrue($sessionData['resource_file_id'] === '' || $sessionData['resource_file_id'] === null);
+    }
+
+    /**
+     * @test
+     */
+    public function edit_step_one_post_fails_when_both_author_and_publisher_empty(): void
+    {
+        $this->refreshApplicationWithLocale('en');
+
+        $admin = User::factory()->create();
+        $admin->roles()->attach(5);
+        $this->actingAs($admin);
+
+        $resource = Resource::factory()->create();
+
+        $response = $this->post(route('edit1', ['resourceId' => $resource->id]), [
+            'title' => 'Title',
+            'abstract' => 'Abstract',
+            'language' => 'en',
+            'author' => '',
+            'publisher' => '',
+            'has_translator' => 0,
+            'translator' => '',
+            'resource_file_id' => null,
+        ]);
+
+        $response->assertSessionHasErrors('publisher');
     }
 }
