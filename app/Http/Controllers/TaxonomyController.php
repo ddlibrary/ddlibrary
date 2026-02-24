@@ -240,6 +240,7 @@ class TaxonomyController extends Controller
 
     public function storeOrUpdateSubjectArea(SubjectAreaRequest $request): RedirectResponse
     {
+        $operation = $request->tnid ? "updated" : "created";
         DB::beginTransaction();
 
         try {
@@ -267,10 +268,10 @@ class TaxonomyController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('subject_areas.index')->with('success', 'Subject Area updated successfully!');
+            return redirect()->route('subject_areas.index')->with('success', "Subject Area $operation successfully!");
         } catch (\Exception $e) {
             DB::rollback();
-            return back()->with('error', 'Subject Area was not updated!'.$e);
+            return back()->with('error', 'Subject Area was not ' . $operation . '!' . $e->getMessage());
         }
     }
 
