@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TaxonomyVocabularyEnum;
+use App\Http\Requests\SubjectAreaRequest;
 use App\Models\TaxonomyHierarchy;
 use App\Models\TaxonomyTerm;
 use App\Models\TaxonomyVocabulary;
@@ -9,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class TaxonomyController extends Controller
 {
@@ -200,5 +203,101 @@ class TaxonomyController extends Controller
         ]);
 
         return redirect('/admin/taxonomy')->with('success', 'Taxonomy item added successfully!');
+    }
+
+    public function subjectAreas(): View
+    {
+        $terms = TaxonomyTerm::where('vid', TaxonomyVocabularyEnum::ResourceSubject->value)->get();
+        $languages = LaravelLocalization::getSupportedLocales();
+
+        $subjectAreas = $terms->groupBy('tnid')->map(function ($translations) {
+            return $translations->keyBy('language')->map(fn ($t) => $t->name);
+        });
+
+        return view('admin.taxonomy.subject-area.index', compact('subjectAreas', 'languages'));
+    }
+
+    public function editOrCreateSubjectArea($tnid = null)
+    {
+        $vid = TaxonomyVocabularyEnum::ResourceSubject->value;
+
+        if ($tnid !== null && $tnid > 0 && TaxonomyTerm::where('vid', $vid)->where('tnid', $tnid)->doesntExist()) {
+            abort(404);
+        }
+
+        $terms = TaxonomyTerm::with('taxonomyHierarchy')->where(['vid' => $vid, 'tnid' => $tnid])->get();
+        $languages = LaravelLocalization::getSupportedLocales();
+        $parents = TaxonomyTerm::where('vid', $vid)->get();
+
+        $terms = array_reduce(array_keys($languages), function ($carry, $localeCode) use ($terms) {
+            $term = $terms->where('language', $localeCode)->first();
+            $carry[$localeCode] = ['term' => $term];
+            return $carry;
+        }, []);
+
+        return view('admin.taxonomy.subject-area.edit', compact('parents', 'terms', 'languages', 'tnid'));
+    }
+
+    public function storeOrUpdateSubjectArea(SubjectAreaRequest $request): RedirectResponse
+    {
+        DB::beginTransaction();
+
+        try {
+            $vid        = TaxonomyVocabularyEnum::ResourceSubject->value;
+            $parents    = $request->input('parent', []);
+            $weights    = $request->input('weight',[]);
+            $names      = $request->input('name', []);
+            $termIds    = $request->input('id', []);
+            $tnid       = $request->tnid ?? 0;
+
+            foreach ($names as $language => $name) {
+                $name = trim($name);
+                if (!empty($name)) {
+                    $weight = $weights[$language] ?? null;
+                    $termId = $termIds[$language] ?? null;
+                    $parentId = $parents[$language] ?? 0;
+
+                    $term = $this->saveSubjectAreaTranslation($vid, $name, $weight, $language, $tnid, $parentId, $termId);
+
+                    if ($tnid == 0) {
+                        $tnid = $term->id;
+                        $term->update(['tnid' => $tnid]);
+                    }
+                }
+            }
+
+            DB::commit();
+            return redirect()->route('subject_areas.index')->with('success', 'Subject Area updated successfully!');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->with('error', 'Subject Area was not updated!'.$e);
+        }
+    }
+
+    private function saveSubjectAreaTranslation($vid, $name, $weight, $language, $tnid, $parentId, $termId = null): TaxonomyTerm
+    {
+        $term = $termId ? TaxonomyTerm::find($termId) : new TaxonomyTerm();
+        $term->vid = $vid;
+        $term->name = $name;
+        $term->weight = $weight;
+        $term->language = $language;
+        $term->tnid = $tnid;
+        $term->save();
+
+        $hierarchy = TaxonomyHierarchy::where('tid', $term->id)->first();
+
+        if ($hierarchy) {
+            $hierarchy->parent = $parentId;
+            $hierarchy->save();
+        } else {
+            TaxonomyHierarchy::create([
+                'id' => 0,
+                'tid' => $term->id,
+                'parent' => $parentId,
+            ]);
+            TaxonomyHierarchy::where(['tid' => $term->id, 'parent' => $parentId])->update(['id' => DB::raw('aux_id')]);
+        }
+
+        return $term;
     }
 }
