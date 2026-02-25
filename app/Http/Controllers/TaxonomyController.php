@@ -229,11 +229,9 @@ class TaxonomyController extends Controller
         $languages = LaravelLocalization::getSupportedLocales();
         $parents = TaxonomyTerm::where('vid', $vid)->get();
 
-        $terms = array_reduce(array_keys($languages), function ($carry, $localeCode) use ($terms) {
-            $term = $terms->where('language', $localeCode)->first();
-            $carry[$localeCode] = ['term' => $term];
-            return $carry;
-        }, []);
+        $terms = $terms->keyBy('language')->map(function ($term) {
+            return ['term' => $term];
+        });
 
         return view('admin.taxonomy.subject-area.edit', compact('parents', 'terms', 'languages', 'tnid'));
     }
