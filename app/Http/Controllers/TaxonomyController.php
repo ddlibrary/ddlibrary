@@ -227,7 +227,7 @@ class TaxonomyController extends Controller
 
         $terms = TaxonomyTerm::with('taxonomyHierarchy')->where(['vid' => $vid, 'tnid' => $tnid])->get();
         $languages = LaravelLocalization::getSupportedLocales();
-        $parents = TaxonomyTerm::where('vid', $vid)->get();
+        $parents = TaxonomyTerm::where('vid', $vid)->where('tnid','!=', $tnid)->get();
 
         $terms = $terms->keyBy('language')->map(function ($term) {
             return ['term' => $term];
