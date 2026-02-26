@@ -260,7 +260,9 @@ class TaxonomyController extends Controller
 
                     if ($tnid == 0) {
                         $tnid = $term->id;
-                        $term->update(['tnid' => $tnid]);
+
+                        $term->tnid = $tnid;
+                        $term->save();
                     }
                 }
             }
