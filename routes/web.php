@@ -202,15 +202,23 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         //Flags
         Route::get('flags', [FlagController::class, 'index']);
         //Taxonomy
-        Route::get('taxonomy', [TaxonomyController::class, 'index'])->name('gettaxonomylist');
-        Route::post('taxonomy', [TaxonomyController::class, 'index'])->name('posttaxonomylist');
-        Route::get('taxonomy/edit/{vid}/{tid}', [TaxonomyController::class, 'edit'])->name('taxonomyedit');
-        Route::post('taxonomy/update/{vid}/{tid}', [TaxonomyController::class, 'update'])->name('update-taxonomy');
-        Route::get('taxonomy/translate/{tid}', [TaxonomyController::class, 'translate']);
-        Route::get('taxonomy/create', [TaxonomyController::class, 'create'])->name('taxonomycreate');
-        Route::post('taxonomy/store', [TaxonomyController::class, 'store'])->name('taxonomystore');
-        Route::get('taxonomy/create-translate/{tid}/{tnid}/{lang}', [TaxonomyController::class, 'createTranslate'])->name('taxonomytranslatecreate');
-        Route::post('taxonomy/store-translate/{tnid}', [TaxonomyController::class, 'storeTranslate'])->name('taxonomytranslatestore');
+        Route::prefix('taxonomy')->controller(TaxonomyController::class)->group(function(){
+            Route::get('', 'index')->name('gettaxonomylist');
+            Route::post('', 'index')->name('posttaxonomylist');
+            Route::get('edit/{vid}/{tid}', 'edit')->name('taxonomyedit');
+            Route::post('update/{vid}/{tid}', 'update')->name('update-taxonomy');
+            Route::get('translate/{tid}', 'translate');
+            Route::get('create', 'create')->name('taxonomycreate');
+            Route::post('store', 'store')->name('taxonomystore');
+            Route::get('create-translate/{tid}/{tnid}/{lang}', 'createTranslate')->name('taxonomytranslatecreate');
+            Route::post('store-translate/{tnid}', 'storeTranslate')->name('taxonomytranslatestore');
+
+            // Subject areas routes
+            Route::get('subject-areas', 'subjectAreas')->name('subject_areas.index');
+            Route::get('subject-area/edit-or-create/{tnid?}', 'editOrCreateSubjectArea')->where('tnid', '[1-9][0-9]*')->name('subject_area.edit_or_create');
+            Route::post('subject-area', 'storeOrUpdateSubjectArea')->name('subject_area.store_or_update');
+        });
+
         //Taxonomy Vocabulary
         Route::get('vocabulary', [VocabularyController::class, 'index'])->name('vocabularylist');
         Route::get('vocabularies', [VocabularyController::class, 'getVocabularies'])->name('getvocabularies');

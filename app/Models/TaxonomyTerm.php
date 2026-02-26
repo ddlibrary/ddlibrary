@@ -52,4 +52,9 @@ class TaxonomyTerm extends Model
     public function resources(){
         return $this->hasMany(ResourceSubjectArea::class, 'tid');
     }
+
+    public function taxonomyHierarchy(): HasOne
+    {
+        return $this->hasOne(TaxonomyHierarchy::class, 'tid');
+    }
 }
