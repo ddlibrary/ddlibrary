@@ -17,7 +17,7 @@ class SurveySettingFactory extends Factory
     public function definition(): array
     {
         return [
-            'time' => $this->faker->numberBetween(1,4000),
+            'time' => $this->faker->numberBetween(1, 4000),
         ];
     }
 }

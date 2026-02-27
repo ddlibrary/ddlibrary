@@ -4,9 +4,9 @@ namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Survey;
 use App\Models\SurveyQuestion;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Models\User;
 
 /**
  * @see \App\Http\Controllers\SurveyController
@@ -84,7 +84,7 @@ class SurveyControllerTest extends TestCase
 
         $survey = Survey::factory()->create();
 
-        $response = $this->actingAs($admin)->get('en/admin/survey/edit/' . $survey->id);
+        $response = $this->actingAs($admin)->get('en/admin/survey/edit/'.$survey->id);
 
         $response->assertOk();
         $response->assertViewIs('admin.surveys.survey.edit');

@@ -15,9 +15,9 @@ class PrivacyPolicyController extends Controller
         $this->pageView($request, 'Privacy Policy');
         DDLClearSession();
 
-        if(config('app.locale') == 'en'){
+        if (config('app.locale') == 'en') {
             return view('policies.privacy_en_web_current');
-        }elseif(config('app.locale') == 'ps'){
+        } elseif (config('app.locale') == 'ps') {
             return view('policies.privacy_ps_web_current');
         }
 
@@ -32,7 +32,8 @@ class PrivacyPolicyController extends Controller
         return view('policies.privacy_en_mob_current');
     }
 
-    public function optOut(Request $request){
+    public function optOut(Request $request)
+    {
         $this->pageView($request, 'Privacy Policy - Opt Out');
         DDLClearSession();
 

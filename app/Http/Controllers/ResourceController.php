@@ -32,8 +32,6 @@ use App\Models\TaxonomyTerm;
 use App\Traits\LanguageTrait;
 use App\Traits\SitewidePageViewTrait;
 use Carbon\Carbon;
-use Exception;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -43,33 +41,30 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Mcamara\LaravelLocalization\Exceptions\SupportedLocalesNotDefined;
 use Mcamara\LaravelLocalization\LaravelLocalization;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
 
 class ResourceController extends Controller
 {
     use LanguageTrait, SitewidePageViewTrait;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function index(Request $request): Factory|View|Application
     {
-        //setting the search session empty
+        // setting the search session empty
         DDLClearSession();
 
-        $myResources = new Resource();
+        $myResources = new Resource;
         $languages = $this->getLanguages();
 
         $resources = $myResources->filterResources($request->all());
@@ -89,7 +84,7 @@ class ResourceController extends Controller
         // Check if both resources are self-referential
         if ($translatedResource->tnid == $translatedResource->id && $resource->tnid == $resource->id) {
             // Case 1: Both are not primary
-            if (!$translatedResource->primary_tnid && !$resource->primary_tnid) {
+            if (! $translatedResource->primary_tnid && ! $resource->primary_tnid) {
                 $resource->primary_tnid = true;
                 $resource->save();
 
@@ -102,6 +97,7 @@ class ResourceController extends Controller
                     'message' => __('Both resources are primary and cannot be linked.'),
                     'level' => 'danger',
                 ]);
+
                 return back();
             }
         }
@@ -144,27 +140,27 @@ class ResourceController extends Controller
 
     public function list(Request $request): Factory|View|Application
     {
-        //setting the search session empty
+        // setting the search session empty
         DDLClearSession();
         $this->pageView($request, 'Resource List');
 
-        $resource = new Resource();
+        $resource = new Resource;
 
-        //Getting all whatever in the parameterBag
+        // Getting all whatever in the parameterBag
         $everything = $request->all();
 
         if (isset($everything['search'])) {
             session(['search' => $everything['search']]);
         }
 
-        if(
+        if (
             $request->filled('subjectAreaParent')
             or
             $request->filled('subjectAreaChild')
         ) {
-            $subjectAreaParentIds = array();
-            $parentIdsfromChildren = array();
-            $subjectAreaChildIds = array();
+            $subjectAreaParentIds = [];
+            $parentIdsfromChildren = [];
+            $subjectAreaChildIds = [];
 
             if ($request->filled('subjectAreaParent')) {
                 $subjectAreaParentIds = $everything['subjectAreaParent'];
@@ -172,7 +168,7 @@ class ResourceController extends Controller
 
             if ($request->filled('subjectAreaChild')) {
                 $subjectAreaChildIds = $everything['subjectAreaChild'];
-                $parentIdsfromChildren = (new Resource())
+                $parentIdsfromChildren = (new Resource)
                     ->resourceAttributesList('taxonomy_term_data', 8)  // 8 being subject areas
                     ->whereIn('id', $subjectAreaChildIds)
                     ->pluck('parent')
@@ -189,7 +185,6 @@ class ResourceController extends Controller
                 )
             );
 
-
             $finalSubjectAreaIds = array_merge($noDuplicateParentAreaIds, $subjectAreaChildIds);
             $finalSubjectAreaIds = array_map('strval', $finalSubjectAreaIds);
             $request->query->remove('subjectAreaParent');
@@ -197,32 +192,33 @@ class ResourceController extends Controller
         }
         $resources = $resource->paginateResourcesBy($request);
 
-        $views = new ResourceView();
-        $favorites = new ResourceFavorite();
-        $comments = new ResourceComment();
+        $views = new ResourceView;
+        $favorites = new ResourceFavorite;
+        $comments = new ResourceComment;
 
         return view('resources.resources_list', compact('resources', 'views', 'favorites', 'comments'));
     }
 
     public function resourceFilter(): Factory|View|Application
     {
-        $resourceObject = new Resource();
+        $resourceObject = new Resource;
         $parentSubjects = $resourceObject
-            ->resourceAttributesList('taxonomy_term_data',8)  // 8 being subject areas
+            ->resourceAttributesList('taxonomy_term_data', 8)  // 8 being subject areas
             ->where('parent', 0);
         $resourceTypes = $resourceObject->resourceAttributesList('taxonomy_term_data', 7);  // 7 being resource types
         $literacyLevels = $resourceObject
             ->resourceAttributesList('taxonomy_term_data', 13)
-            ->where('parent', 0);// 13 being resource literacy levels
+            ->where('parent', 0); // 13 being resource literacy levels
 
         return view('resources.resources_filter', compact('parentSubjects', 'resourceTypes', 'literacyLevels'));
     }
 
     public function getSubjectChildren(Request $request): array
     {
-        $subjectIds = explode(',',$request->input('IDs'));
-        return (new Resource())
-            ->resourceAttributesList('taxonomy_term_data',8)  // 8 being subject areas
+        $subjectIds = explode(',', $request->input('IDs'));
+
+        return (new Resource)
+            ->resourceAttributesList('taxonomy_term_data', 8)  // 8 being subject areas
             ->whereIn('parent', $subjectIds)
             ->pluck('id', 'name')
             ->toArray();
@@ -234,10 +230,10 @@ class ResourceController extends Controller
     public function viewPublicResource(Request $request, $resourceId): View|Factory|Redirector|RedirectResponse|Application
     {
         DDLClearSession();
-        $myResources = new Resource();
+        $myResources = new Resource;
 
-        $resource = Resource::with(['attachments','resourceFile:id,name'])
-            ->with('favorites', function($query){
+        $resource = Resource::with(['attachments', 'resourceFile:id,name'])
+            ->with('favorites', function ($query) {
                 $query->where('users.id', auth()->id());
             })
             ->withCount('favorites')
@@ -251,14 +247,14 @@ class ResourceController extends Controller
 
         $relatedItems = $myResources->getRelatedResources($resourceId, $resource->subjects);
         $comments = ResourceComment::where('resource_id', $resourceId)->published()->get();
-        $languages_available = array();
+        $languages_available = [];
 
         $translation_id = $resource->tnid;
         $translations = null;
-        if($translation_id) {
+        if ($translation_id) {
             $translations = $myResources->getResourceTranslations($translation_id);
-            $supportedLocals = array();
-            $newId = array();
+            $supportedLocals = [];
+            $newId = [];
             foreach (config('laravellocalization.localesOrder') as $localeCode) {
                 $supportedLocals[] = $localeCode;
             }
@@ -271,9 +267,9 @@ class ResourceController extends Controller
                 }
             }
 
-            foreach ((new LaravelLocalization)->getSupportedLocales() as $localeCode => $properties) {
-                if(isset($newId[$localeCode]) && $newId != 0) {
-                    $currentUrl = explode('/',url()->current());
+            foreach (\LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
+                if (isset($newId[$localeCode]) && $newId != 0) {
+                    $currentUrl = explode('/', url()->current());
                     $index = count($currentUrl) - 1;
                     $currentUrl[$index] = $newId[$localeCode];
                     $newUrl = implode('/', $currentUrl);
@@ -283,16 +279,18 @@ class ResourceController extends Controller
             }
         }
         $this->resourceViewCounter($request, $resourceId);
-        $views = new ResourceView();
+        $views = new ResourceView;
         Carbon::setLocale(app()->getLocale());
 
         $ePub = null;
         $ePubFile = $resource->attachments->where('file_mime', 'application/epub+zip')->first();
-        if($ePubFile)
-            if(config('app.env') != 'production')
-                $ePub = asset('files/resources/' . $ePubFile->file_name);
-            else
+        if ($ePubFile) {
+            if (config('app.env') != 'production') {
+                $ePub = asset('files/resources/'.$ePubFile->file_name);
+            } else {
                 $ePub = getFile("resources/$ePubFile->file_name");
+            }
+        }
 
         return view('resources.resources_view', compact(
             'resource',
@@ -308,8 +306,8 @@ class ResourceController extends Controller
     public function createStepOne(Request $request): Factory|View|Application
     {
         $resource = $request->session()->get('new_resource_step_1');
-        $myResources = new Resource();
-        $creativeCommons = $myResources->resourceAttributesList('taxonomy_term_data', 10, config('app.locale'), [168,535]); // taxonomy_term_data.tnid [168=Unknown , 535=CC BY / CC BY-SA]
+        $myResources = new Resource;
+        $creativeCommons = $myResources->resourceAttributesList('taxonomy_term_data', 10, config('app.locale'), [168, 535]); // taxonomy_term_data.tnid [168=Unknown , 535=CC BY / CC BY-SA]
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject);
 
         return view('resources.resources_modify_step1', compact('resource', 'creativeCommons', 'subjects'));
@@ -319,7 +317,7 @@ class ResourceController extends Controller
     {
         $validatedData = $request->validated();
 
-        if(!$request->has_translator){
+        if (! $request->has_translator) {
             $validatedData['translator'] = null;
         }
 
@@ -341,9 +339,9 @@ class ResourceController extends Controller
         $resourceSubjectAreas = $resource['subject_areas'];
         $resourceLearningResourceTypes = $resource['learning_resources_types'];
         $editEducationalUse = $resource['educational_use'];
-        //$resourceKeywords = json_encode($resource['keywords']);
+        // $resourceKeywords = json_encode($resource['keywords']);
 
-        $myResources = new Resource();
+        $myResources = new Resource;
 
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data', 8);
         $keywords = $myResources->resourceAttributesList('taxonomy_term_data', 23);
@@ -389,11 +387,11 @@ class ResourceController extends Controller
                 $fileName = $attachments->getClientOriginalName();
                 $fileExtension = \File::extension($fileName);
                 $diskType = 's3';
-                if(config('app.env') != 'production'){
+                if (config('app.env') != 'production') {
                     $diskType = 'public';
                 }
                 $uniqueId = uniqid(); // Generate a unique ID
-                $fileName = auth()->user()->id . '_' . $uniqueId . '_' . time() . '.' . $fileExtension;
+                $fileName = auth()->user()->id.'_'.$uniqueId.'_'.time().'.'.$fileExtension;
                 Storage::disk($diskType)->put('resources/'.$fileName, file_get_contents($attachments));
                 $validatedData['attc'][] = [
                     'file_name' => $fileName,
@@ -422,7 +420,7 @@ class ResourceController extends Controller
 
         $resource = $request->session()->get('new_resource_step_3');
 
-        $myResources = new Resource();
+        $myResources = new Resource;
 
         $creativeCommons = $myResources->resourceAttributesList('taxonomy_term_data', 10);
         $creativeCommonsOther = $myResources->resourceAttributesList('taxonomy_term_data', 26);
@@ -466,7 +464,7 @@ class ResourceController extends Controller
         $finalArray = array_merge($resource1, $resource2, $resource3);
 
         $result = DB::transaction(function () use ($finalArray) {
-            $myResources = new Resource();
+            $myResources = new Resource;
 
             $myResources->title = $finalArray['title'];
             $myResources->resource_file_id = $finalArray['resource_file_id'];
@@ -475,21 +473,21 @@ class ResourceController extends Controller
             $myResources->user_id = Auth::id();
             $myResources->status = $finalArray['published'];
             $myResources->published_at = date('Y-m-d H:i:s');
-            //inserting to resource table
+            // inserting to resource table
             $myResources->save();
 
-            if($myResources->resource_file_id){
+            if ($myResources->resource_file_id) {
 
                 ResourceFile::where(['id' => $myResources->resource_file_id, 'resource_id' => null])->update(['resource_id' => $myResources->id]);
             }
             $myResources = Resource::find($myResources->id);
             $myResources->tnid = $myResources->id;
-            //updating resource table with tnid
+            // updating resource table with tnid
             $myResources->save();
 
             if (isset($finalArray['attc'])) {
                 foreach ($finalArray['attc'] as $attc) {
-                    $myAttachments = new ResourceAttachment();
+                    $myAttachments = new ResourceAttachment;
                     $myAttachments->resource_id = $myResources->id;
                     $myAttachments->file_name = $attc['file_name'];
                     $myAttachments->file_mime = $attc['file_mime'];
@@ -498,15 +496,15 @@ class ResourceController extends Controller
                 }
             }
 
-            //Inserting Subject Areas
+            // Inserting Subject Areas
             foreach ($finalArray['subject_areas'] as $subject) {
-                $mySubjects = new ResourceSubjectArea();
+                $mySubjects = new ResourceSubjectArea;
                 $mySubjects->resource_id = $myResources->id;
                 $mySubjects->tid = $subject;
                 $mySubjects->save();
             }
 
-            //Inserting Keywords
+            // Inserting Keywords
             $keywords = trim($finalArray['keywords'], ',');
             $keywords = explode(',', $keywords);
             foreach ($keywords as $kw) {
@@ -514,12 +512,12 @@ class ResourceController extends Controller
                     ->where('vid', 23)
                     ->first();
 
-                $myKeywords = new ResourceKeyword();
+                $myKeywords = new ResourceKeyword;
                 $myKeywords->resource_id = $myResources->id;
                 if ($theTaxonomy != null) {
                     $myKeywords->tid = $theTaxonomy->id;
                 } else {
-                    $myTaxonomy = new TaxonomyTerm();
+                    $myTaxonomy = new TaxonomyTerm;
                     $myTaxonomy->vid = 23;
                     $myTaxonomy->name = trim($kw);
                     $myTaxonomy->language = $finalArray['language'];
@@ -529,7 +527,7 @@ class ResourceController extends Controller
                 $myKeywords->save();
             }
 
-            //Inserting Authors
+            // Inserting Authors
             if (isset($finalArray['author'])) {
                 $authors = trim($finalArray['author'], ',');
                 $authors = explode(',', $authors);
@@ -538,13 +536,13 @@ class ResourceController extends Controller
                         ->where('vid', 24)
                         ->first();
 
-                    $myAuthor = new ResourceAuthor();
+                    $myAuthor = new ResourceAuthor;
                     $myAuthor->resource_id = $myResources->id;
 
                     if ($theTaxonomy != null) {
                         $myAuthor->tid = $theTaxonomy->id;
                     } else {
-                        $myTaxonomy = new TaxonomyTerm();
+                        $myTaxonomy = new TaxonomyTerm;
                         $myTaxonomy->vid = 24;
                         $myTaxonomy->name = $author;
                         $myTaxonomy->language = $finalArray['language'];
@@ -556,20 +554,20 @@ class ResourceController extends Controller
                 }
             }
 
-            //Inserting Publishers
+            // Inserting Publishers
             if (isset($finalArray['publisher'])) {
                 $publisherName = trim($finalArray['publisher'], ',');
                 $theTaxonomy = TaxonomyTerm::where('name', $publisherName)
                     ->where('vid', 9)
                     ->first();
 
-                $myPublisher = new ResourcePublisher();
+                $myPublisher = new ResourcePublisher;
                 $myPublisher->resource_id = $myResources->id;
 
                 if ($theTaxonomy != null) {
                     $myPublisher->tid = $theTaxonomy->id;
                 } else {
-                    $myTaxonomy = new TaxonomyTerm();
+                    $myTaxonomy = new TaxonomyTerm;
                     $myTaxonomy->vid = 9;
                     $myTaxonomy->name = $publisherName;
                     $myTaxonomy->language = $finalArray['language'];
@@ -580,7 +578,7 @@ class ResourceController extends Controller
                 $myPublisher->save();
             }
 
-            //Inserting Translators
+            // Inserting Translators
             if (isset($finalArray['translator'])) {
                 $translators = trim($finalArray['translator'], ',');
                 $translators = explode(',', $translators);
@@ -589,13 +587,13 @@ class ResourceController extends Controller
                         ->where('vid', 24)
                         ->first();
 
-                    $myTranslator = new ResourceTranslator();
+                    $myTranslator = new ResourceTranslator;
                     $myTranslator->resource_id = $myResources->id;
 
                     if ($theTaxonomy != null) {
                         $myTranslator->tid = $theTaxonomy->id;
                     } else {
-                        $myTaxonomy = new TaxonomyTerm();
+                        $myTaxonomy = new TaxonomyTerm;
                         $myTaxonomy->vid = 24;
                         $myTaxonomy->name = $translator;
                         $myTaxonomy->language = $finalArray['language'];
@@ -607,73 +605,73 @@ class ResourceController extends Controller
                 }
             }
 
-            //Inserting Learning Resource Types
+            // Inserting Learning Resource Types
             foreach ($finalArray['learning_resources_types'] as $ltype) {
-                $myLearningType = new ResourceLearningResourceType();
+                $myLearningType = new ResourceLearningResourceType;
                 $myLearningType->resource_id = $myResources->id;
                 $myLearningType->tid = $ltype;
                 $myLearningType->save();
             }
 
-            //Inserting Educational Use
+            // Inserting Educational Use
             foreach ($finalArray['educational_use'] as $edus) {
-                $myEdu = new ResourceEducationalUse();
+                $myEdu = new ResourceEducationalUse;
                 $myEdu->resource_id = $myResources->id;
                 $myEdu->tid = $edus;
                 $myEdu->save();
             }
 
-            //Inserting Resource Levels
+            // Inserting Resource Levels
             foreach ($finalArray['level'] as $level) {
-                $myLevel = new ResourceLevel();
+                $myLevel = new ResourceLevel;
                 $myLevel->resource_id = $myResources->id;
                 $myLevel->tid = $level;
                 $myLevel->save();
             }
 
-            //Inserting Translation Rights
+            // Inserting Translation Rights
             if (isset($finalArray['translation_rights'])) {
-                $myTranslationRight = new ResourceTranslationRight();
+                $myTranslationRight = new ResourceTranslationRight;
                 $myTranslationRight->resource_id = $myResources->id;
                 $myTranslationRight->value = $finalArray['translation_rights'];
                 $myTranslationRight->save();
             }
 
-            //Inserting Educational Resource
+            // Inserting Educational Resource
             if (isset($finalArray['educational_resource'])) {
-                $myEduResource = new ResourceEducationalResource();
+                $myEduResource = new ResourceEducationalResource;
                 $myEduResource->resource_id = $myResources->id;
                 $myEduResource->value = $finalArray['educational_resource'];
                 $myEduResource->save();
             }
 
-            //Inserting ResourceIamAuthor
+            // Inserting ResourceIamAuthor
             if (isset($finalArray['iam_author'])) {
-                $myIamAuthor = new ResourceIamAuthor();
+                $myIamAuthor = new ResourceIamAuthor;
                 $myIamAuthor->resource_id = $myResources->id;
                 $myIamAuthor->value = $finalArray['iam_author'];
                 $myIamAuthor->save();
             }
 
-            //Inserting Copyright Holder
+            // Inserting Copyright Holder
             if (isset($finalArray['copyright_holder'])) {
-                $myCopyrightHolder = new ResourceCopyrightHolder();
+                $myCopyrightHolder = new ResourceCopyrightHolder;
                 $myCopyrightHolder->resource_id = $myResources->id;
                 $myCopyrightHolder->value = $finalArray['copyright_holder'];
                 $myCopyrightHolder->save();
             }
 
-            //Inserting Creative Commons
+            // Inserting Creative Commons
             if (isset($finalArray['creative_commons'])) {
-                $myCC = new ResourceCreativeCommon();
+                $myCC = new ResourceCreativeCommon;
                 $myCC->resource_id = $myResources->id;
                 $myCC->tid = $finalArray['creative_commons'];
                 $myCC->save();
             }
 
-            //Inserting Sharing Permission
+            // Inserting Sharing Permission
             if (isset($finalArray['creative_commons_other'])) {
-                $mySharePermit = new ResourceSharePermission();
+                $mySharePermit = new ResourceSharePermission;
                 $mySharePermit->resource_id = $myResources->id;
                 $mySharePermit->tid = $finalArray['creative_commons_other'];
                 $mySharePermit->save();
@@ -709,19 +707,25 @@ class ResourceController extends Controller
 
     public function attributes(string $entity, Request $request): JsonResponse|Redirector|RedirectResponse|Application
     {
-        $myResources = new Resource();
+        $myResources = new Resource;
         $keyword = $request->only('term');
         if (! $keyword) {
             return redirect('/home');
         }
         $vid = null;
-        if ($entity == "authors") $vid = 24;
-        elseif ($entity == "publishers") $vid = 9;
-        elseif ($entity == "translators") $vid = 22;
-        elseif ($entity == "keywords") $vid = 23;
+        if ($entity == 'authors') {
+            $vid = 24;
+        } elseif ($entity == 'publishers') {
+            $vid = 9;
+        } elseif ($entity == 'translators') {
+            $vid = 22;
+        } elseif ($entity == 'keywords') {
+            $vid = 23;
+        }
 
         if ($vid) {
-            $records = $myResources->searchResourceAttributes($keyword['term'],'taxonomy_term_data', $vid);
+            $records = $myResources->searchResourceAttributes($keyword['term'], 'taxonomy_term_data', $vid);
+
             return response()->json($records->toArray());
         }
 
@@ -733,7 +737,7 @@ class ResourceController extends Controller
         $resourceId = $request->input('resourceId');
         $userId = auth()->id();
 
-        if (!$userId) {
+        if (! $userId) {
             return response()->json(['status' => 'notloggedin']);
         }
 
@@ -754,7 +758,7 @@ class ResourceController extends Controller
 
         return response()->json([
             'action' => $action,
-            'favorite_count' => $favoriteCount
+            'favorite_count' => $favoriteCount,
         ]);
     }
 
@@ -809,7 +813,7 @@ class ResourceController extends Controller
 
     public function resourceViewCounter(Request $request, $resourceId): void
     {
-        $myResources = new Resource();
+        $myResources = new Resource;
 
         $userAgentParser = parse_user_agent($request);
         $userAgent = [
@@ -828,16 +832,17 @@ class ResourceController extends Controller
     {
         $this->middleware('admin');
 
-        $myResources = new Resource();
+        $myResources = new Resource;
 
         $resource = $request->session()->get('edit_resource_step_1');
-        if ($resource and ($resourceId != $resource->id)) $resource = null;
+        if ($resource and ($resourceId != $resource->id)) {
+            $resource = null;
+        }
         if ($resource == null) {
             $resource = Resource::with(['authors:id,name', 'translators:id,name', 'publishers:id,name', 'resourceFile:id,name'])->findOrFail($resourceId);
         }
         $edit = true;
         $subjects = $myResources->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject);
-
 
         return view('resources.resources_modify_step1', compact('resource', 'edit', 'subjects'));
     }
@@ -848,7 +853,7 @@ class ResourceController extends Controller
 
         $validatedData = $request->validated();
 
-        if(!$request->has_translator){
+        if (! $request->has_translator) {
             $validatedData['translator'] = null;
         }
         $validatedData['id'] = $resourceId;
@@ -864,11 +869,11 @@ class ResourceController extends Controller
 
         $resource1 = $request->session()->get('edit_resource_step_1');
 
-        if (!$resource1) {
+        if (! $resource1) {
             return redirect('/resources/edit/step1');
         }
 
-        $myResources = new Resource();
+        $myResources = new Resource;
 
         $resourceSubjectAreas = [];
         $resourceLearningResourceTypes = [];
@@ -878,7 +883,9 @@ class ResourceController extends Controller
         $resourceAttachments = [];
 
         $resource = $request->session()->get('edit_resource_step_2');
-        if ($resource and ($resourceId != $resource['id'])) $resource = null;
+        if ($resource and ($resourceId != $resource['id'])) {
+            $resource = null;
+        }
 
         if (isset($resource['subject_areas'])) {
             $resourceSubjectAreas = $resource['subject_areas'];
@@ -997,9 +1004,9 @@ class ResourceController extends Controller
                 $fileName = $attachments->getClientOriginalName();
                 $fileExtension = \File::extension($fileName);
                 $uniqueId = uniqid(); // Generate a unique ID
-                $fileName = auth()->user()->id . '_' . $uniqueId . '_' . time() . '.' . $fileExtension;
+                $fileName = auth()->user()->id.'_'.$uniqueId.'_'.time().'.'.$fileExtension;
                 $diskType = 's3';
-                if(config('app.env') != 'production'){
+                if (config('app.env') != 'production') {
                     $diskType = 'public';
                 }
                 unset($validatedData['attachments']);
@@ -1033,11 +1040,13 @@ class ResourceController extends Controller
         }
 
         $resource = $request->session()->get('edit_resource_step_3');
-        if ($resource and ($resourceId != $resource['id'])) $resource = null;
+        if ($resource and ($resourceId != $resource['id'])) {
+            $resource = null;
+        }
 
         $dbRecords = Resource::find($resourceId);
 
-        $myResources = new Resource();
+        $myResources = new Resource;
 
         $creativeCommons = $myResources->resourceAttributesList('taxonomy_term_data', 10);
         $creativeCommonsOther = $myResources->resourceAttributesList('taxonomy_term_data', 26);
@@ -1091,19 +1100,19 @@ class ResourceController extends Controller
             $myResources->status = $finalArray['published'];
             $myResources->published_at = date('Y-m-d H:i:s');
 
-            //inserting to resource table
+            // inserting to resource table
             $myResources->save();
 
-            if($myResources->resource_file_id){
+            if ($myResources->resource_file_id) {
 
                 ResourceFile::where(['id' => $myResources->resource_file_id, 'resource_id' => null])->update(['resource_id' => $myResources->id]);
             }
 
-            //Updating Attachments
+            // Updating Attachments
             if (isset($finalArray['attc'])) {
                 ResourceAttachment::where('resource_id', $resourceId)->delete();
                 foreach ($finalArray['attc'] as $attc) {
-                    $myAttachments = new ResourceAttachment();
+                    $myAttachments = new ResourceAttachment;
                     $myAttachments->resource_id = $resourceId;
                     $myAttachments->file_name = $attc['file_name'];
                     $myAttachments->file_mime = $attc['file_mime'];
@@ -1112,19 +1121,19 @@ class ResourceController extends Controller
                 }
             }
 
-            //Deleting Subject Areas
+            // Deleting Subject Areas
             $theSubjects = ResourceSubjectArea::where('resource_id', $resourceId);
             $theSubjects?->delete();
 
-            //Inserting Subject Areas
+            // Inserting Subject Areas
             foreach ($finalArray['subject_areas'] as $subject) {
-                $mySubjects = new ResourceSubjectArea();
+                $mySubjects = new ResourceSubjectArea;
                 $mySubjects->resource_id = $myResources->id;
                 $mySubjects->tid = $subject;
                 $mySubjects->save();
             }
 
-            //Delete Keywords
+            // Delete Keywords
             $theKeyword = ResourceKeyword::where('resource_id', $resourceId);
             $theKeyword?->delete();
 
@@ -1138,18 +1147,18 @@ class ResourceController extends Controller
                             ->first();
 
                         if ($theTaxonomy != null) {
-                            $myKeywords = new ResourceKeyword();
+                            $myKeywords = new ResourceKeyword;
                             $myKeywords->resource_id = $myResources->id;
                             $myKeywords->tid = $theTaxonomy->id;
                             $myKeywords->save();
                         } else {
-                            $myTaxonomy = new TaxonomyTerm();
+                            $myTaxonomy = new TaxonomyTerm;
                             $myTaxonomy->vid = 23;
                             $myTaxonomy->name = trim($kw);
                             $myTaxonomy->language = $finalArray['language'];
                             $myTaxonomy->save();
 
-                            $myKeywords = new ResourceKeyword();
+                            $myKeywords = new ResourceKeyword;
                             $myKeywords->resource_id = $myResources->id;
                             $myKeywords->tid = $myTaxonomy->id;
                             $myKeywords->save();
@@ -1158,11 +1167,11 @@ class ResourceController extends Controller
                 }
             }
 
-            //Deleting Authors
+            // Deleting Authors
             $theAuthors = ResourceAuthor::where('resource_id', $resourceId);
             $theAuthors?->delete();
 
-            //Inserting Authors
+            // Inserting Authors
             $authors = trim($finalArray['author'], ',');
             $authors = explode(',', $authors);
             foreach ($authors as $author) {
@@ -1170,12 +1179,12 @@ class ResourceController extends Controller
                     ->where('vid', 24)
                     ->first();
 
-                $myAuthor = new ResourceAuthor();
+                $myAuthor = new ResourceAuthor;
                 $myAuthor->resource_id = $resourceId;
                 if ($theTaxonomy != null) {
                     $myAuthor->tid = $theTaxonomy->id;
                 } else {
-                    $myTaxonomy = new TaxonomyTerm();
+                    $myTaxonomy = new TaxonomyTerm;
                     $myTaxonomy->vid = 24;
                     $myTaxonomy->name = $author;
                     $myTaxonomy->language = $finalArray['language'];
@@ -1186,25 +1195,25 @@ class ResourceController extends Controller
                 $myAuthor->save();
             }
 
-            //Deleting Publishers
+            // Deleting Publishers
             $thePublisher = ResourcePublisher::where('resource_id', $resourceId);
             if ($thePublisher != null) {
                 $thePublisher->delete();
             }
 
-            //Inserting Publisher
+            // Inserting Publisher
             if (isset($finalArray['publisher'])) {
                 $publisherName = trim($finalArray['publisher'], ',');
                 $theTaxonomy = TaxonomyTerm::where('name', $publisherName)
                     ->where('vid', 9)
                     ->first();
 
-                $myPublisher = new ResourcePublisher();
+                $myPublisher = new ResourcePublisher;
                 $myPublisher->resource_id = $resourceId;
                 if ($theTaxonomy != null) {
                     $myPublisher->tid = $theTaxonomy->id;
                 } else {
-                    $myTaxonomy = new TaxonomyTerm();
+                    $myTaxonomy = new TaxonomyTerm;
                     $myTaxonomy->vid = 9;
                     $myTaxonomy->name = $publisherName;
                     $myTaxonomy->language = $finalArray['language'];
@@ -1215,11 +1224,11 @@ class ResourceController extends Controller
                 $myPublisher->save();
             }
 
-            //Deleting Translators
+            // Deleting Translators
             $theTranslator = ResourceTranslator::where('resource_id', $resourceId);
             $theTranslator?->delete();
 
-            //Inserting Translators
+            // Inserting Translators
             if (isset($finalArray['translator'])) {
                 $translators = trim($finalArray['translator'], ',');
                 $translators = explode(',', $translators);
@@ -1228,13 +1237,13 @@ class ResourceController extends Controller
                         ->where('vid', 24)
                         ->first();
 
-                    $myTranslator = new ResourceTranslator();
+                    $myTranslator = new ResourceTranslator;
                     $myTranslator->resource_id = $resourceId;
                     if ($theTaxonomy != null) {
                         $myTranslator->tid = $theTaxonomy->id;
                         $myTranslator->save();
                     } else {
-                        $myTaxonomy = new TaxonomyTerm();
+                        $myTaxonomy = new TaxonomyTerm;
                         $myTaxonomy->vid = 24;
                         $myTaxonomy->name = $translator;
                         $myTaxonomy->language = $finalArray['language'];
@@ -1246,109 +1255,109 @@ class ResourceController extends Controller
                 }
             }
 
-            //Deleting Learning Resource Types
+            // Deleting Learning Resource Types
             $theLearningResourceType = ResourceLearningResourceType::where('resource_id', $resourceId);
             $theLearningResourceType?->delete();
 
-            //Inserting Learning Resource Types
+            // Inserting Learning Resource Types
             foreach ($finalArray['learning_resources_types'] as $ltype) {
-                $myLearningType = new ResourceLearningResourceType();
+                $myLearningType = new ResourceLearningResourceType;
                 $myLearningType->resource_id = $resourceId;
                 $myLearningType->tid = $ltype;
                 $myLearningType->save();
             }
 
-            //Deleting Educational Use
+            // Deleting Educational Use
             $theEduUse = ResourceEducationalUse::where('resource_id', $resourceId);
             $theEduUse?->delete();
 
-            //Inserting Educational Use
+            // Inserting Educational Use
             foreach ($finalArray['educational_use'] as $edus) {
-                $myEdu = new ResourceEducationalUse();
+                $myEdu = new ResourceEducationalUse;
                 $myEdu->resource_id = $resourceId;
                 $myEdu->tid = $edus;
                 $myEdu->save();
             }
 
-            //Deleting Levels
+            // Deleting Levels
             $theLevels = ResourceLevel::where('resource_id', $resourceId);
             $theLevels?->delete();
 
-            //Inserting Resource Levels
+            // Inserting Resource Levels
             foreach ($finalArray['level'] as $level) {
-                $myLevel = new ResourceLevel();
+                $myLevel = new ResourceLevel;
                 $myLevel->resource_id = $resourceId;
                 $myLevel->tid = $level;
                 $myLevel->save();
             }
 
-            //Deleting Translation Rights
+            // Deleting Translation Rights
             $theTransRight = ResourceTranslationRight::where('resource_id', $resourceId);
             $theTransRight?->delete();
 
             if (isset($finalArray['translation_rights'])) {
-                //Inserting Translation Rights
-                $myTranslationRight = new ResourceTranslationRight();
+                // Inserting Translation Rights
+                $myTranslationRight = new ResourceTranslationRight;
                 $myTranslationRight->resource_id = $resourceId;
                 $myTranslationRight->value = $finalArray['translation_rights'];
                 $myTranslationRight->save();
             }
 
-            //Deleting Educational Resource
+            // Deleting Educational Resource
             $theEduResource = ResourceEducationalResource::where('resource_id', $resourceId);
             $theEduResource?->delete();
 
             if (isset($finalArray['educational_resource'])) {
-                //Inserting Educational Resource
-                $myEduResource = new ResourceEducationalResource();
+                // Inserting Educational Resource
+                $myEduResource = new ResourceEducationalResource;
                 $myEduResource->resource_id = $resourceId;
                 $myEduResource->value = $finalArray['educational_resource'];
                 $myEduResource->save();
             }
 
-            //Deleting I am author
+            // Deleting I am author
             $theIamAuthor = ResourceIamAuthor::where('resource_id', $resourceId);
             $theIamAuthor?->delete();
 
             if (isset($finalArray['iam_author'])) {
-                //Inserting i am author
-                $myIamAuthor = new ResourceIamAuthor();
+                // Inserting i am author
+                $myIamAuthor = new ResourceIamAuthor;
                 $myIamAuthor->resource_id = $resourceId;
                 $myIamAuthor->value = $finalArray['iam_author'];
                 $myIamAuthor->save();
             }
 
-            //Deleting Copyright Holder
+            // Deleting Copyright Holder
             $theCopyrightHolder = ResourceCopyrightHolder::where('resource_id', $resourceId);
             $theCopyrightHolder?->delete();
 
             if (isset($finalArray['copyright_holder'])) {
-                //Inserting Copyright Holder
-                $myCopyrightHolder = new ResourceCopyrightHolder();
+                // Inserting Copyright Holder
+                $myCopyrightHolder = new ResourceCopyrightHolder;
                 $myCopyrightHolder->resource_id = $resourceId;
                 $myCopyrightHolder->value = $finalArray['copyright_holder'];
                 $myCopyrightHolder->save();
             }
 
-            //Deleting Creative Commons
+            // Deleting Creative Commons
             $theCC = ResourceCreativeCommon::where('resource_id', $resourceId);
             $theCC?->delete();
 
             if (isset($finalArray['creative_commons'])) {
-                //Inserting Creative Commons
-                $myCC = new ResourceCreativeCommon();
+                // Inserting Creative Commons
+                $myCC = new ResourceCreativeCommon;
                 $myCC->resource_id = $resourceId;
                 $myCC->tid = $finalArray['creative_commons'];
                 $myCC->save();
             }
 
-            //Deleting Creative Commons
+            // Deleting Creative Commons
             $theCCOther = ResourceSharePermission::where('resource_id', $resourceId);
             $theCCOther?->delete();
 
             if (isset($finalArray['creative_commons_other'])) {
-                //Inserting Sharing Permission
-                $mySharePermit = new ResourceSharePermission();
+                // Inserting Sharing Permission
+                $mySharePermit = new ResourceSharePermission;
                 $mySharePermit->resource_id = $resourceId;
                 $mySharePermit->tid = $finalArray['creative_commons_other'];
                 $mySharePermit->save();
@@ -1362,7 +1371,7 @@ class ResourceController extends Controller
                 'message' => __('Resource updated successfully'),
                 'level' => 'success',
             ]);
-            
+
             return redirect("resource/$resourceId");
         }
 
@@ -1381,12 +1390,12 @@ class ResourceController extends Controller
         DB::beginTransaction();
 
         try {
-            Storage::disk('s3')->delete('resources/' . $fileName);
+            Storage::disk('s3')->delete('resources/'.$fileName);
 
             ResourceAttachment::where('resource_id', $resourceId)->where('file_name', $fileName)->delete();
 
             $resource = Resource::find($request->resourceId);
-           
+
             $dataAttachments = $resource->resourceAttachments($resourceId)->toArray();
             foreach ($dataAttachments as $item) {
                 $resourceAttachments[] = [
@@ -1412,6 +1421,7 @@ class ResourceController extends Controller
                 'message' => __('Operation has failed.'),
                 'level' => 'danger',
             ]);
+
             return redirect("resources/edit/step2/$resourceId");
         }
     }
@@ -1447,7 +1457,7 @@ class ResourceController extends Controller
             // 1. Delete physical attachment files from storage and database records
             $attachments = ResourceAttachment::where('resource_id', $resourceId)->get();
             $diskType = config('app.env') != 'production' ? 'public' : 's3';
-            
+
             foreach ($attachments as $attachment) {
                 try {
                     // Delete physical file from storage
@@ -1459,20 +1469,20 @@ class ResourceController extends Controller
                     ]);
                 }
             }
-            
+
             // Delete attachment records from database
             ResourceAttachment::where('resource_id', $resourceId)->delete();
 
             // 2. Handle ResourceFile relationship
             if ($resource->resource_file_id) {
                 $resourceFile = ResourceFile::find($resource->resource_file_id);
-                
+
                 if ($resourceFile) {
                     if ($resourceFile->resource_id == $resourceId) {
                         $otherResourcesUsingFile = Resource::where('resource_file_id', $resourceFile->id)
                             ->where('id', '!=', $resourceId)
                             ->first();
-                        
+
                         if (!$otherResourcesUsingFile) {
                             $diskType = config('app.env') != 'production' ? 'public' : 's3';
 
@@ -1518,7 +1528,7 @@ class ResourceController extends Controller
             Session::flash('error', 'Failed to delete resource. Please try again.');
 
         }
-        
+
         return redirect('admin/resources');
     }
 

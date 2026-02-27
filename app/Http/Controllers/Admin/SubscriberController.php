@@ -11,10 +11,11 @@ use Illuminate\View\View;
 
 class SubscriberController extends Controller
 {
-    public function index(Request $request): View{
+    public function index(Request $request): View
+    {
         $query = Subscriber::query();
 
-        if($request->search){
+        if ($request->search) {
             $query->whereAny([
                 'name',
                 'email',
@@ -27,7 +28,8 @@ class SubscriberController extends Controller
         return view('admin.subscriber.index', compact('subscribers', 'totalSubscribers'));
     }
 
-    public function destroy(Subscriber $subscriber): RedirectResponse{
+    public function destroy(Subscriber $subscriber): RedirectResponse
+    {
         $subscriber->delete();
 
         return back();

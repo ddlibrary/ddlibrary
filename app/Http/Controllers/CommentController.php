@@ -18,7 +18,7 @@ class CommentController extends Controller
     public function published(ResourceComment $resourceComment)
     {
         $resourceComment->update([
-            'status' => $resourceComment->status == 1 ? 0 : 1
+            'status' => $resourceComment->status == 1 ? 0 : 1,
         ]);
 
         return back();

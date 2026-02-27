@@ -22,7 +22,7 @@ class MenuController extends Controller
 
     public function index(Request $request): View
     {
-        //setting the search session empty
+        // setting the search session empty
         DDLClearSession();
 
         $menuRecords = Menu::orderBy('weight')
@@ -38,8 +38,8 @@ class MenuController extends Controller
             'filters' => $request,
             'vocabulary' => $vocabulary,
         ];
-        //creating search bar
-        $createSearchBar = new SearchController();
+        // creating search bar
+        $createSearchBar = new SearchController;
         $searchBar = $createSearchBar->searchBar($args);
 
         return view('admin.menu.menu_list', compact('menuRecords', 'searchBar'));
@@ -50,7 +50,7 @@ class MenuController extends Controller
         $menu = Menu::find($id);
         $new_menu = false;
         if (! $menu) {
-            $menu = new Menu();
+            $menu = new Menu;
             $new_menu = true;
         }
         $locations = $menu->distinct()->pluck('location');
@@ -68,8 +68,8 @@ class MenuController extends Controller
     public function store(Request $request): RedirectResponse
     {
         try {
-            $this->validate(
-                $request, [
+            $request->validate(
+                [
                     'title' => 'required',
                     'location' => 'required',
                     'path' => 'required',
@@ -89,15 +89,14 @@ class MenuController extends Controller
             $menu->status = (int) $request->input('status');
             $menu->language = $request->input('language');
             $menu->weight = $request->input('weight');
-    
+
             $menu->tnid = ($request->input('tnid')) ? $request->input('tnid') : Menu::max('tnid') + 1;
-    
-            //inserting
+
+            // inserting
             $menu->save();
         } catch (ValidationException $e) {
             abort(400);
         }
-
 
         return redirect('admin/menu')->with('success', 'Menu translation or new menu successfully added!');
     }
@@ -113,7 +112,7 @@ class MenuController extends Controller
 
     public function update(Request $request, $menuId): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'title' => 'required',
             'location' => 'required',
             'path' => 'required',
@@ -133,7 +132,7 @@ class MenuController extends Controller
         $menu->status = (int) $request->input('status');
         $menu->language = $request->input('language');
         $menu->weight = $request->input('weight');
-        //inserting
+        // inserting
         $menu->save();
 
         return redirect('admin/menu/edit/'.$menuId)->with('success', 'Item successfully updated!');
@@ -168,7 +167,7 @@ class MenuController extends Controller
         echo true;
     }
 
-    public function ajax_get_parents(Request $request)
+    public function ajaxGetParents(Request $request): void
     {
         $id = $request->input('id');
         $loc = $request->input('loc');

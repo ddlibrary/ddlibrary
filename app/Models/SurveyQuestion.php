@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class SurveyQuestion extends Model
 {
-
     use HasFactory;
+
     /**
      * Get the survey that owns the question.
      */

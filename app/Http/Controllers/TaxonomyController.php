@@ -32,8 +32,8 @@ class TaxonomyController extends Controller
             'filters' => $request,
             'vocabulary' => $vocabulary,
         ];
-        //creating search bar
-        $createSearchBar = new SearchController();
+        // creating search bar
+        $createSearchBar = new SearchController;
         $searchBar = $createSearchBar->searchBar($args);
 
         return view('admin.taxonomy.taxonomy_list', compact('terms', 'searchBar'));
@@ -56,14 +56,14 @@ class TaxonomyController extends Controller
 
     public function update(Request $request, $vid, $tid): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'vid' => 'required',
             'name' => 'required',
             'weight' => 'required',
             'language' => 'required',
         ]);
 
-        //Saving contact info to the database
+        // Saving contact info to the database
         $term = TaxonomyTerm::find($tid);
         $term->vid = $request->input('vid');
         $term->name = $request->input('name');
@@ -80,10 +80,10 @@ class TaxonomyController extends Controller
 
         $parent = TaxonomyHierarchy::firstOrNew(['tid' => $tid], ['parent' => $parentid]);
 
-        if(!isset($parent->id)){
+        if (! isset($parent->id)) {
             $latestId = DB::table('taxonomy_term_hierarchy')->max('aux_id');
             $THID = $latestId ? $latestId + 1 : 1;
-        }else{
+        } else {
             $THID = $parent->id; // taxonomy_term_hierarchy.id
         }
 
@@ -123,14 +123,14 @@ class TaxonomyController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'vid' => 'required',
             'name' => 'required',
             'weight' => 'required',
             'language' => 'required',
         ]);
 
-        //Saving contact info to the database
+        // Saving contact info to the database
         $term = new TaxonomyTerm;
         $term->vid = $request->input('vid');
         $term->name = $request->input('name');
@@ -140,7 +140,7 @@ class TaxonomyController extends Controller
         $term->save();
 
         $term->tnid = $term->id;
-        //updating with tnid
+        // updating with tnid
         $term->save();
 
         return redirect('/admin/taxonomy')->with('success', 'Taxonomy item created successfully!');
@@ -156,7 +156,7 @@ class TaxonomyController extends Controller
         if ($sourceParent) {
             $parentTermTnid = TaxonomyTerm::where('id', $sourceParent)->first()->tnid;
             $parentTranslation = TaxonomyTerm::where('tnid', $parentTermTnid)->where('language', $lang)->first();
-            //If the parent is translated in current language
+            // If the parent is translated in current language
             if ($parentTranslation) {
                 $theParent = $parentTranslation->id;
             } else {
@@ -179,24 +179,24 @@ class TaxonomyController extends Controller
 
     public function storeTranslate(Request $request, $tnid): RedirectResponse
     {
-        $this->validate($request, [
+        $request->validate([
             'vid' => 'required',
             'name' => 'required',
             'weight' => 'required',
             'language' => 'required',
         ]);
 
-        //Saving contact info to the database
+        // Saving contact info to the database
         $term = TaxonomyTerm::create([
             'vid' => $request->input('vid'),
             'name' => $request->input('name'),
             'weight' => $request->input('weight'),
             'language' => $request->input('language'),
-            'tnid' => $tnid
+            'tnid' => $tnid,
         ]);
 
         TaxonomyHierarchy::insert([
-            'id' => (int)(TaxonomyHierarchy::latest()->value('id') + 1),
+            'id' => (int) (TaxonomyHierarchy::latest()->value('id') + 1),
             'tid' => $term->id,
             'parent' => $request->input('parent') ? $request->input('parent') : 0,
             'aux_id' => $request->input('aux_id') ? $request->input('aux_id') : $term->id,

@@ -13,6 +13,7 @@ use Tests\TestCase;
 class SubscribeRequestTest extends TestCase
 {
     use RefreshDatabase;
+
     /** @var \App\Http\Requests\SubscribeRequest */
     private $subject;
 
@@ -20,7 +21,7 @@ class SubscribeRequestTest extends TestCase
     {
         parent::setUp();
 
-        $this->subject = new \App\Http\Requests\SubscribeRequest();
+        $this->subject = new \App\Http\Requests\SubscribeRequest;
     }
 
     /**
@@ -96,7 +97,7 @@ class SubscribeRequestTest extends TestCase
         ]);
     }
 
-    public function test_email_is_required()
+    public function test_email_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -111,7 +112,7 @@ class SubscribeRequestTest extends TestCase
         $response->assertSessionHasErrors('email');
     }
 
-    public function test_email_must_be_valid_email_format()
+    public function test_email_must_be_valid_email_format(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -127,12 +128,12 @@ class SubscribeRequestTest extends TestCase
         $response->assertSessionHasErrors('email');
     }
 
-     public function test_name_is_required()
+    public function test_name_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
-        
+
         $user = User::factory()->create();
-        
+
         $requestData = [
             'email' => 'test@example.com',
         ];
@@ -142,10 +143,10 @@ class SubscribeRequestTest extends TestCase
         $response->assertSessionHasErrors('name');
     }
 
-    public function test_email_must_be_unique()
+    public function test_email_must_be_unique(): void
     {
         $this->refreshApplicationWithLocale('en');
-        
+
         $user = User::factory()->create();
 
         Subscriber::create([
@@ -164,12 +165,11 @@ class SubscribeRequestTest extends TestCase
         $response->assertSessionHasErrors('email');
     }
 
-    public function test_name_must_be_string()
+    public function test_name_must_be_string(): void
     {
         $this->refreshApplicationWithLocale('en');
-        
-        $user = User::factory()->create();
 
+        $user = User::factory()->create();
 
         $requestData = [
             'email' => 'test@example.com',
@@ -181,15 +181,15 @@ class SubscribeRequestTest extends TestCase
         $response->assertSessionHasErrors('name');
     }
 
-    public function test_recaptcha_response_is_required_when_enabled()
+    public function test_recaptcha_response_is_required_when_enabled(): void
     {
         // Temporarily set CAPTCHA to enabled
         $this->app['config']->set('captcha.enabled', true);
 
         $this->refreshApplicationWithLocale('en');
-        
+
         $user = User::factory()->create();
-        
+
         $requestData = [
             'email' => 'test@example.com',
             'name' => 'Test User',
@@ -201,14 +201,14 @@ class SubscribeRequestTest extends TestCase
         $response->assertSessionHasErrors('g-recaptcha-response');
     }
 
-    public function test_recaptcha_response_is_nullable_when_disabled()
+    public function test_recaptcha_response_is_nullable_when_disabled(): void
     {
         $this->app['config']->set('captcha.enabled', false);
 
         $this->refreshApplicationWithLocale('en');
-        
+
         $user = User::factory()->create();
-        
+
         $requestData = [
             'email' => 'test@example.com',
             'name' => 'Test User',

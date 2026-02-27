@@ -25,7 +25,7 @@ class SubscribeRequest extends FormRequest
         return [
             'email' => 'required|email|unique:subscribers,email',
             'name' => 'required|string',
-            'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule()],
+            'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
         ];
     }
 }

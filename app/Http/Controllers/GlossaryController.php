@@ -18,6 +18,7 @@ use Illuminate\View\View;
 class GlossaryController extends Controller
 {
     use GlossaryPageViewTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -34,7 +35,7 @@ class GlossaryController extends Controller
                 ->orWhere('name_fa', 'like', '%'.request('text').'%')
                 ->orWhere('name_ps', 'like', '%'.request('text').'%')
                 ->where('flagged_for_review', '!=', true)
-                ->paginate (15);
+                ->paginate(15);
         } elseif ($request->filled('subject') && ! $request->filled('text')) {
             $glossary = Glossary::orderBy('id', 'desc')
                 ->where('subject', request('subject'))
@@ -87,7 +88,7 @@ class GlossaryController extends Controller
             'pashto' => 'required_without_all:farsi,english',
             'subject' => 'required',
         ]);
-        $glossary = new Glossary();
+        $glossary = new Glossary;
         $glossary->name_en = $validatedData['english'];
         $glossary->name_fa = $validatedData['farsi'];
         $glossary->name_ps = $validatedData['pashto'];

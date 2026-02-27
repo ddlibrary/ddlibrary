@@ -17,9 +17,9 @@ class TaxonomyVocabularyFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
+            'name' => $this->faker->name(),
             'weight' => $this->faker->numberBetween(0, 10),
-            'language' => 'en'
+            'language' => 'en',
         ];
     }
 }

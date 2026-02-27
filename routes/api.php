@@ -32,7 +32,7 @@ Route::post('/register', [ApiController::class, 'register']);
 Route::get('/pages/{lang?}', [ApiController::class, 'pages']);
 Route::get('/page/{id}', [ApiController::class, 'page']);
 Route::get('/page_view/{id}', [ApiController::class, 'pageView']);
-//News items
+// News items
 Route::get('/news_list/{lang?}', [ApiController::class, 'newsList']);
 Route::get('/news/{id}', [ApiController::class, 'news']);
 Route::get('/news_view/{id}', [ApiController::class, 'newsView']);

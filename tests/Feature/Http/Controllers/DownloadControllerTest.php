@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\Models\DownloadCount;
 use App\Models\User;
-use App\Models\Resource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -36,11 +34,7 @@ class DownloadControllerTest extends TestCase
         $response->assertViewHas('languages');
     }
 
-
-
-
-
-    public function test_unauthorized_user_cannot_access_downloads()
+    public function test_unauthorized_user_cannot_access_downloads(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -49,7 +43,7 @@ class DownloadControllerTest extends TestCase
         $response->assertRedirect(url('login'));
     }
 
-    public function test_non_admin_user_cannot_access_downloads()
+    public function test_non_admin_user_cannot_access_downloads(): void
     {
         $this->refreshApplicationWithLocale('en');
 

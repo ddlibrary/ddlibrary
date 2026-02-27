@@ -189,11 +189,11 @@ class User extends Authenticatable implements MustVerifyEmail
             ->first();
     }
 
-    //Total users based on gender
+    // Total users based on gender
     public function totalUsersByGender($request): Collection
     {
-        $start = Carbon::parse($request->date_from)->startOfDay();  //2016-09-29 00:00:00.000000
-        $end = Carbon::parse($request->date_to)->endOfDay(); //2016-09-29 23:59:59.000000
+        $start = Carbon::parse($request->date_from)->startOfDay();  // 2016-09-29 00:00:00.000000
+        $end = Carbon::parse($request->date_to)->endOfDay(); // 2016-09-29 23:59:59.000000
 
         return DB::table('users')
             ->select('user_profiles.gender')
@@ -207,7 +207,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ->get();
     }
 
-    //Total users based on country
+    // Total users based on country
     public function totalUsersByCountry(): Collection
     {
         return DB::table('user_profiles AS up')
@@ -222,7 +222,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ->get();
     }
 
-    //Total users based on roles
+    // Total users based on roles
     public function totalResourcesByRoles(): Collection
     {
         return DB::table('roles')

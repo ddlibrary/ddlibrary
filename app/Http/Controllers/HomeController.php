@@ -12,12 +12,12 @@ use BladeView;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
 use Illuminate\View\View;
 
 class HomeController extends Controller
 {
     use SitewidePageViewTrait;
+
     /**
      * Create a new controller instance.
      *
@@ -35,14 +35,14 @@ class HomeController extends Controller
      */
     public function index(Request $request): View
     {
-        //setting the search session empty
+        // setting the search session empty
         DDLClearSession();
-        $languageCode =  config('app.locale');
+        $languageCode = config('app.locale');
         $this->pageView($request, "Home Page $languageCode");
 
-        $resources = new Resource();
+        $resources = new Resource;
 
-        //latest news for the homepage
+        // latest news for the homepage
         $latestNews = News::where('language', $languageCode)->where('status', 1)->orderBy('id', 'desc')->take(4)->get();
         $subjectAreas = $resources->subjectIconsAndTotal();
         $featured = $resources->featuredCollections();

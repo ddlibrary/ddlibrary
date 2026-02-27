@@ -2,38 +2,41 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Relations\BelongsToUser;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class GlossaryPageView extends Model
 {
-    use HasFactory;
-
     use BelongsToUser;
+    use HasFactory;
 
     protected $guarded = [];
 
-    protected $casts = [
-        'is_bot' => 'boolean',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'is_bot' => 'boolean',
+        ];
+    }
 
-    public function glossarySubject()
+    public function glossarySubject(): BelongsTo
     {
         return $this->belongsTo(GlossarySubject::class);
     }
 
-    public function platform()
+    public function platform(): BelongsTo
     {
         return $this->belongsTo(Platform::class);
     }
 
-    public function browser()
+    public function browser(): BelongsTo
     {
         return $this->belongsTo(Browser::class);
     }
 
-    public function device()
+    public function device(): BelongsTo
     {
         return $this->belongsTo(Device::class);
     }

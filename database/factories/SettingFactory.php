@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Setting;
 
 class SettingFactory extends Factory
 {
@@ -15,9 +14,9 @@ class SettingFactory extends Factory
     public function definition(): array
     {
         return [
-            'website_name' => $this->faker->name,
-            'website_slogan' => $this->faker->name,
-            'website_email' => $this->faker->name,
+            'website_name' => $this->faker->name(),
+            'website_slogan' => $this->faker->name(),
+            'website_email' => $this->faker->name(),
         ];
     }
 }

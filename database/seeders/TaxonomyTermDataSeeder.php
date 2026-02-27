@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class TaxonomyTermDataSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $data = [
             [

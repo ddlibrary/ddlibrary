@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\ResourceLevel;
 
 class ResourceLevelFactory extends Factory
 {

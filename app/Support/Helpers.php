@@ -69,12 +69,12 @@ if (! function_exists('giveMeResourceIcon')) {
     }
 }
 
-//Abstracts in Drupal installation had /sites/default/files/learn-1044078_960_720_0.jpg type image links
-//In here, I am fixing that and applying Laravel's way of showing images
+// Abstracts in Drupal installation had /sites/default/files/learn-1044078_960_720_0.jpg type image links
+// In here, I am fixing that and applying Laravel's way of showing images
 if (! function_exists('fixImage')) {
     function fixImage($abstract, $resource_id, $isThumbnail = false)
     {
-        //To replace hardcoded url to dynamic base_url
+        // To replace hardcoded url to dynamic base_url
         $abstract = str_replace('http://www.darakhtdanesh.org/', URL::to('/').'/', $abstract);
 
         if (env('DDL_LITE') == 'yes') {
@@ -88,7 +88,6 @@ if (! function_exists('fixImage')) {
 				";
             }
         }
-        
 
         preg_match_all('/src="([^"]*)"/', $abstract, $matches);
         if ($matches[1]) {
@@ -100,9 +99,9 @@ if (! function_exists('fixImage')) {
                 if (strpos($absStr, 'youtube') == false && strpos($absStr, 'google') == false) {
                     $absArray = explode('/', $absStr);
                     $imageName = last($absArray);
-                    if($isThumbnail){
+                    if ($isThumbnail) {
                         $fixedImage = getFile("files/thumbnails/$imageName");
-                    }else{
+                    } else {
                         if (Storage::disk('public')->exists($imageName)) {
                             $fixedImage = Storage::disk('public')->url($imageName);
                         } else {
@@ -115,6 +114,7 @@ if (! function_exists('fixImage')) {
                 }
             }
             $finalFixedStr = str_replace($originalMe, $replaceMe, $abstract);
+
             return $finalFixedStr;
         } else {
             return $abstract;
@@ -157,7 +157,7 @@ if (! function_exists('unpackResourceObject')) {
 if (! function_exists('checkUserPassword')) {
     function checkUserPassword($planePassword, $userPassword)
     {
-        //include(app_path() . '/support/DrupalPasswordHasher.php');
+        // include(app_path() . '/support/DrupalPasswordHasher.php');
 
         if (user_check_password($planePassword, $userPassword)) {
             return true;
@@ -185,7 +185,7 @@ if (! function_exists('getCountry')) {
 if (! function_exists('isAdmin')) {
     function isAdmin(): bool
     {
-        $user = new User();
+        $user = new User;
 
         if ($user->isAdministrator(Auth::id())) {
             return true;
@@ -198,7 +198,7 @@ if (! function_exists('isAdmin')) {
 if (! function_exists('isNormalUser')) {
     function isNormalUser(): bool
     {
-        $user = new User();
+        $user = new User;
 
         if ($user->isNormalUser(Auth::id())) {
             return true;
@@ -211,7 +211,7 @@ if (! function_exists('isNormalUser')) {
 if (! function_exists('isLibraryManager')) {
     function isLibraryManager(): bool
     {
-        $user = new User();
+        $user = new User;
 
         if ($user->isLibraryManager(Auth::id())) {
             return true;
@@ -419,7 +419,7 @@ function parse_user_agent(?string $u_agent = null): array
 if (! function_exists('DDLClearSession')) {
     function DDLClearSession()
     {
-        //setting the search session empty
+        // setting the search session empty
         if (
             session()->has('resource1') ||
             session()->has('resource2') ||
@@ -562,7 +562,7 @@ if (! function_exists('get_license_buttons')) {
 if (! function_exists('watermark_pdf')) {
     function watermark_pdf($file, $logo, $license_button_1, $license_button_2)
     {
-        $pdf = new FPDI();
+        $pdf = new FPDI;
         try {
             $pages = $pdf->setSourceFile($file);
         } catch (PdfParserException) {
@@ -641,12 +641,12 @@ if (! function_exists('watermark_pdf')) {
         return $pdf->Output('S');  // S: return the document as a string.
     }
 
-
-    if (!function_exists('getResourceImage')) {
+    if (! function_exists('getResourceImage')) {
         function getResourceImage($image, $isThumbnail = false)
         {
             if ($isThumbnail) {
                 $thumbnailPath = "files/thumbnails/$image";
+
                 return getFile($thumbnailPath);
             }
 
@@ -654,13 +654,14 @@ if (! function_exists('watermark_pdf')) {
         }
     }
 
-    if (!function_exists('getFile')) {
+    if (! function_exists('getFile')) {
         function getFile($file): string
         {
-            if(config('app.env') != 'production')
+            if (config('app.env') != 'production') {
                 return Storage::disk('public')->url($file);
-            else
+            } else {
                 return app(CloudFrontService::class)->signedUrl($file);
+            }
         }
     }
 

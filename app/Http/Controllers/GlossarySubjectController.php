@@ -37,7 +37,6 @@ class GlossarySubjectController extends Controller
         return view('admin.glossary.glossary_subject_edit', compact('glossary_subject'));
     }
 
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -71,7 +70,7 @@ class GlossarySubjectController extends Controller
         ]);
 
         if ($validatedData['id'] == 'new') {
-            $glossary_subject = new GlossarySubject();
+            $glossary_subject = new GlossarySubject;
         } else {
             $glossary_subject = GlossarySubject::findOrFail($validatedData['id']);
         }
