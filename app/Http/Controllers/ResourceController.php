@@ -267,7 +267,7 @@ class ResourceController extends Controller
                 }
             }
 
-            foreach ((new LaravelLocalization)->getSupportedLocales() as $localeCode => $properties) {
+            foreach (\LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
                 if (isset($newId[$localeCode]) && $newId != 0) {
                     $currentUrl = explode('/', url()->current());
                     $index = count($currentUrl) - 1;
