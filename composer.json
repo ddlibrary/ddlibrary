@@ -11,7 +11,6 @@
         "php": "^8.4",
         "aws/aws-sdk-php": "^3.316",
         "barryvdh/laravel-translation-manager": "^0.6.2",
-        "doctrine/dbal": "^3.8",
         "fakerphp/faker": "^1.23",
         "guzzlehttp/guzzle": "^7.8",
         "imagine/imagine": "^1.5",
