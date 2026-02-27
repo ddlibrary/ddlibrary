@@ -8,7 +8,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "aws/aws-sdk-php": "^3.316",
         "barryvdh/laravel-translation-manager": "^0.6.2",
         "doctrine/dbal": "^3.8",
@@ -82,10 +82,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true,
-        "process-timeout": 3600,
-        "platform": {
-            "php": "8.1"
-        }
+        "process-timeout": 3600
     },
     "minimum-stability": "stable",
     "prefer-stable": true
