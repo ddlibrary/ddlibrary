@@ -49,7 +49,9 @@ jobs:
           DB_PORT: 3306
           DB_DATABASE: testing
           DB_USERNAME: root
-        run: php artisan migrate --force
+        run: |
+          php artisan migrate --force
+          php artisan db:seed --force
 
       - name: Execute tests
         env:
