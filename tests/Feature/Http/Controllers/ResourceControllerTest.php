@@ -630,11 +630,11 @@ class ResourceControllerTest extends TestCase
         $resource = Resource::factory()->create();
 
         $response = $this->post("en/resources/edit/step2/$resource->id", [
-            'subject_areas' => TaxonomyTerm::where('vid', 8)->latest()->take(1)->pluck('id'),
+            'subject_areas' => TaxonomyTerm::where('vid', 8)->orderBy('id', 'desc')->take(1)->pluck('id'),
             'keywords' => 'keyword',
-            'learning_resources_types' => TaxonomyTerm::where('vid', 7)->latest()->take(1)->pluck('id'),
-            'educational_use' => TaxonomyTerm::where('vid', 25)->latest()->take(1)->pluck('id'),
-            'level' => TaxonomyTerm::where('vid', 13)->latest()->take(1)->pluck('id'),
+            'learning_resources_types' => TaxonomyTerm::where('vid', 7)->orderBy('id', 'desc')->take(1)->pluck('id'),
+            'educational_use' => TaxonomyTerm::where('vid', 25)->orderBy('id', 'desc')->take(1)->pluck('id'),
+            'level' => TaxonomyTerm::where('vid', 13)->orderBy('id', 'desc')->take(1)->pluck('id'),
         ]);
 
         $response->assertRedirect('/resources/edit/step3/'.$resource->id);
