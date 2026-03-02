@@ -29,8 +29,10 @@ class CommentControllerTest extends TestCase
         $user = User::factory()->create();
         $resource = Resource::factory()->create();
 
-        // Create a setting for website_email
-        Setting::factory()->create(['id' => 1, 'website_email' => 'test@example.com']);
+        Setting::updateOrCreate(
+            ['id' => 1],
+            ['website_email' => 'test@example.com']
+        );
 
         $response = $this->actingAs($user)->post('/en/resources/comment', [
             'userid' => $user->id,
