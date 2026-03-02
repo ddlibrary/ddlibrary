@@ -57,7 +57,13 @@ class SubscribeRequestTest extends TestCase
     public function test_store_creates_new_subscriber(): void
     {
         $this->refreshApplicationWithLocale('en');
+        // DEBUG: Force check if roles exist
+        $roleCount = \DB::table('roles')->count();
+        $roleFive = \DB::table('roles')->where('id', 5)->first();
 
+        if (!$roleFive) {
+            throw new \Exception("Database has $roleCount roles, but ID 5 is missing!");
+        }
         $user = User::factory()->create();
         $user->roles()->attach(5);
 
