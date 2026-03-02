@@ -56,7 +56,7 @@ class SettingControllerTest extends TestCase
             'id' => $setting->id,
             'website_name' => 'Darakht-e Danesh Library',
             'website_slogan' => 'Free and open educational resources for Afghanistan',
-            'website_email' => 'support@darakhtdanesh.org',
+            'website_email' => 'support@example.com',
         ]);
     }
 
