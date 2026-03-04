@@ -18,7 +18,7 @@ class SurveyQuestionFactory extends Factory
     public function definition(): array
     {
         return [
-            'text' => $this->faker->text(200),
+            'text' => $this->faker->text(150),
             'survey_id' => Survey::factory()->create(),
             'type' => 'single_choice',
             'language' => 'en',
