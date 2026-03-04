@@ -80,7 +80,7 @@ class GlossarySubjectControllerTest extends TestCase
         $response = $this->actingAs($admin)->post(route('glossary_subjects_update'), $updatedData);
 
         $response->assertRedirect();
-        $this->assertDatabaseHas('glossary_subjects', ['id' => $subject->id, 'name_en' => 'english']);
+        $this->assertDatabaseHas('glossary_subjects', ['id' => $subject->id, 'en' => 'english']);
     }
 
     public function test_non_admin_cannot_access_glossary_subjects(): void
