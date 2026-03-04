@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 /**
@@ -12,7 +13,7 @@ use Tests\TestCase;
  */
 class SubscribeControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, WithFaker;
 
     /** @test */
     public function en_authenticated_user_can_visit_subscribe_page(): void
@@ -245,12 +246,13 @@ class SubscribeControllerTest extends TestCase
         $this->refreshApplicationWithLocale('fa');
 
         $user = User::factory()->create();
-        Subscriber::factory()->create(['email' => 'test@email.com']);
+        $email = $this->faker->unique()->safeEmail();
+        Subscriber::factory()->create(['email' => $email]);
 
         $response = $this->actingAs($user)->post(
             '/fa/subscribe',
             $this->data([
-                'email' => 'test@email.com',
+                'email' => $email,
             ]),
         );
 

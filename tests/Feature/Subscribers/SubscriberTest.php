@@ -5,11 +5,12 @@ namespace Tests\Feature\Subscribers;
 use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class SubscriberTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, withFaker;
 
     /** @test */
     public function en_authenticated_user_can_visit_subscribe_page(): void
@@ -120,12 +121,13 @@ class SubscriberTest extends TestCase
         $this->refreshApplicationWithLocale('en');
 
         $user = User::factory()->create();
-        Subscriber::factory()->create(['email' => 'test@email.com']);
+        $email = $this->faker->unique()->safeEmail();
+        Subscriber::factory()->create(['email' => $email]);
 
         $response = $this->actingAs($user)->post(
             '/en/subscribe',
             $this->data([
-                'email' => 'test@email.com',
+                'email' => $email,
             ]),
         );
 
@@ -242,12 +244,13 @@ class SubscriberTest extends TestCase
         $this->refreshApplicationWithLocale('fa');
 
         $user = User::factory()->create();
-        Subscriber::factory()->create(['email' => 'test@email.com']);
+        $email = $this->faker->unique()->safeEmail();
+        Subscriber::factory()->create(['email' => $email]);
 
         $response = $this->actingAs($user)->post(
             '/fa/subscribe',
             $this->data([
-                'email' => 'test@email.com',
+                'email' => $email,
             ]),
         );
 

@@ -99,7 +99,7 @@ class VocabularyControllerTest extends TestCase
 
         $response->assertRedirect('/admin/vocabulary');
 
-        $this->assertEquals('New vocabulary', TaxonomyVocabulary::latest()->value('name'));
+        $this->assertEquals('New vocabulary', TaxonomyVocabulary::orderByDesc('vid')->value('name'));
     }
 
     /** @test */
