@@ -30,9 +30,6 @@ jobs:
           extensions: mbstring, dom, curl, libxml, mysql, pdo_mysql
           tools: composer:v2
 
-      - name: Copy .env
-        run: php -r "file_exists('.env') || copy('.env.testing', '.env');"
-
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
@@ -41,17 +38,6 @@ jobs:
 
       - name: Directory Permissions
         run: chmod -R 775 storage bootstrap/cache
-
-      - name: Run Migrations
-        env:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: testing
-          DB_USERNAME: root
-        run: |
-          php artisan migrate --force
-          php artisan db:seed --force
 
       - name: Execute tests
         env:
