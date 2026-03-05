@@ -65,6 +65,7 @@ class RegistrationTest extends TestCase
     /** @test */
     public function name_field_is_required(): void
     {
+        dump('Before before data(): ' . \App\Models\User::count());
         $this->refreshApplicationWithLocale('en');
         dump('Before data(): ' . \App\Models\User::count());
         $response = $this->from('en/register')->post(
