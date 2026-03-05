@@ -14,7 +14,6 @@ use Tests\TestCase;
 class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
-    protected bool $seed = false;
 
     /** @test */
     public function guest_can_view_registration_page(): void
