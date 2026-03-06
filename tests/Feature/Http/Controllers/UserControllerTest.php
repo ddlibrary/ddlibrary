@@ -69,6 +69,8 @@ class UserControllerTest extends TestCase
         $response = $this->actingAs($user)->get('en/admin/user/export');
 
         $response->assertOk();
+        $response->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
+        $response->assertHeader('Content-Disposition', 'attachment; filename="users.csv"');
     }
 
     /**

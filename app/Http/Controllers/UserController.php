@@ -223,16 +223,20 @@ class UserController extends Controller
      */
     public function exportUsers()
     {
-        $users = User::get(); // All users
-        // $userProfiles = UserProfile::with('first_name','last_name')->get();
+        $users = User::get();
         $csvExporter = new Export;
-        $csvExporter
-            ->build($users, [
-                'email' => 'Email Address',
-                'profile.first_name' => 'First Name',
-                'profile.last_name' => 'Last Name',
-            ])
-            ->download();
+        $csvExporter->build($users, [
+            'email' => 'Email Address',
+            'profile.first_name' => 'First Name',
+            'profile.last_name' => 'Last Name',
+        ]);
+
+        $csvOutput = (string) $csvExporter->getWriter();
+
+        return response($csvOutput, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="users.csv"',
+        ]);
     }
 
     public function updateGender(Request $request)
