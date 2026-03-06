@@ -5,8 +5,6 @@ namespace App\Console\Commands;
 use App\Models\Resource;
 use App\Models\ResourceFile;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
-use Imagine\Gd\Imagine;
 
 class ExtractResourceImageUrl extends Command
 {
@@ -27,7 +25,7 @@ class ExtractResourceImageUrl extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $resources = Resource::select('id', 'abstract', 'title', 'language', 'resource_file_id')
             ->whereNull('resource_file_id')
@@ -35,12 +33,12 @@ class ExtractResourceImageUrl extends Command
 
         foreach ($resources as $resource) {
             // Add console output for the current resource
-            $this->info('Processing resource: ID ' . $resource->id . ', Title: ' . $resource->title);
+            $this->info('Processing resource: ID '.$resource->id.', Title: '.$resource->title);
 
             $defaultImage = 'placeholder_image.png';
             preg_match('/src=["\']([^"\']+)["\']/', $resource->abstract, $matches);
 
-            if (!empty($matches[1])) {
+            if (! empty($matches[1])) {
                 $absStr = $matches[1];
 
                 // Replace the old URL if found
@@ -61,7 +59,6 @@ class ExtractResourceImageUrl extends Command
                     }
                 }
             }
-           
 
             // Create the resource file
             $resourceFile = ResourceFile::create([
@@ -76,7 +73,7 @@ class ExtractResourceImageUrl extends Command
         }
     }
 
-    function replaceUrl($url)
+    public function replaceUrl($url)
     {
         if (strpos($url, 'http://darakhtdanesh.org/modules/file/') !== false || strpos($url, 'C:\\Users') !== false) {
             return 'placeholder_image.png';
@@ -87,26 +84,26 @@ class ExtractResourceImageUrl extends Command
             'https://www.darakhtdanesh.org/laravel-filemanager/app/public/files/',
             'https://darakhtdanesh.org/laravel-filemanager/app/public/files/',
             'https://www.darakhtdanesh.org/laravel-filemanager/app/public/',
-            'https://darakhtdanesh.org/storage/files/././', 
+            'https://darakhtdanesh.org/storage/files/././',
             'https://darakhtdanesh.org/storage/files/./',
             'https://darakhtdanesh.org/storage/files/',
             'https://library.darakhtdanesh.org/storage/files/./',
             'https://library.darakhtdanesh.org/storage/files/',
             'https://www.ddl.af/laravel-filemanager/app/public/files/',
             'https://ddl.af/laravel-filemanager/app/public/files/',
-            'https://ddl.af/laravel-filemanager/app/public/', 
-            'https://darakhtdanesh.org/laravel-filemanager/app/public/', 
-            'https://library.darakhtdanesh.org/', 
+            'https://ddl.af/laravel-filemanager/app/public/',
+            'https://darakhtdanesh.org/laravel-filemanager/app/public/',
+            'https://library.darakhtdanesh.org/',
             'storage/files/',
             'https://darakhtdanesh.org/',
-            'files/', 
-            '/'
+            'files/',
+            '/',
         ];
 
         // Check if the URL contains any of the specified patterns
         foreach ($patterns as $pattern) {
             // Use rtrim to ensure we handle trailing slashes properly
-            $pattern = rtrim($pattern, '/') . '/'; // ensure pattern ends with a slash
+            $pattern = rtrim($pattern, '/').'/'; // ensure pattern ends with a slash
             if (strpos($url, $pattern) !== false) {
                 return str_replace($pattern, '', $url);
             }

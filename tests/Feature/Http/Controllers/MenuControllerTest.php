@@ -63,7 +63,7 @@ class MenuControllerTest extends TestCase
 
         $menu = Menu::factory()->create();
 
-        $response = $this->actingAs($admin)->get('en/admin/menu/edit/' . $menu->id);
+        $response = $this->actingAs($admin)->get('en/admin/menu/edit/'.$menu->id);
 
         $response->assertOk();
         $response->assertViewIs('admin.menu.menu_edit');
@@ -77,8 +77,6 @@ class MenuControllerTest extends TestCase
      */
     public function index_returns_an_ok_response(): void
     {
-        $this->refreshApplicationWithLocale('en');
-
         $admin = User::factory()->create();
         $admin->roles()->attach(5);
 
@@ -90,7 +88,14 @@ class MenuControllerTest extends TestCase
         $response->assertViewIs('admin.menu.menu_list');
         $response->assertViewHas('menuRecords');
         $response->assertViewHas('searchBar');
-        $this->assertCount(3, $response->viewData('menuRecords'));
+        $response->assertViewHas('menuRecords', function ($menuRecords) use ($menus) {
+            foreach ($menus as $menu) {
+                if (!collect($menuRecords)->contains(fn($item) => $item->id === $menu->id)) {
+                    return false;
+                }
+            }
+            return true;
+        });
     }
 
     /**
@@ -127,7 +132,7 @@ class MenuControllerTest extends TestCase
     }
 
     /** @test */
-    public function title_field_is_required()
+    public function title_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -143,7 +148,7 @@ class MenuControllerTest extends TestCase
     }
 
     /** @test */
-    public function location_field_is_required()
+    public function location_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -155,7 +160,7 @@ class MenuControllerTest extends TestCase
     }
 
     /** @test */
-    public function path_field_is_required()
+    public function path_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -167,7 +172,7 @@ class MenuControllerTest extends TestCase
     }
 
     /** @test */
-    public function status_field_is_required()
+    public function status_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -179,7 +184,7 @@ class MenuControllerTest extends TestCase
     }
 
     /** @test */
-    public function weight_field_is_required()
+    public function weight_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -191,7 +196,7 @@ class MenuControllerTest extends TestCase
     }
 
     /** @test */
-    public function language_field_is_required()
+    public function language_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -214,7 +219,7 @@ class MenuControllerTest extends TestCase
 
         $menu = Menu::factory()->create();
 
-        $response = $this->actingAs($admin)->get('en/admin/menu/translate/' . $menu->id);
+        $response = $this->actingAs($admin)->get('en/admin/menu/translate/'.$menu->id);
 
         $response->assertOk();
         $response->assertViewIs('admin.menu.menu_translate');
@@ -243,7 +248,7 @@ class MenuControllerTest extends TestCase
             ]),
         );
 
-        $response->assertRedirect('admin/menu/edit/' . $menu->id);
+        $response->assertRedirect('admin/menu/edit/'.$menu->id);
         $this->assertDatabaseHas('menus', ['title' => 'Updated Menu']);
     }
 

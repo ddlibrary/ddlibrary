@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\DownloadCount;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Imagine\Image\ImagineInterface;
 use Imagine\Image\Box;
+use Imagine\Image\ImagineInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FileController extends Controller
 {
     public function __construct()
     {
-        //$this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     public function __invoke($resource_id, $file_id, $file_path): BinaryFileResponse
@@ -33,7 +33,7 @@ class FileController extends Controller
     {
 
         if (is_numeric($resource_id) && is_numeric($file_id)) {
-            $fileDownload = new DownloadCount();
+            $fileDownload = new DownloadCount;
 
             $userAgentParser = parse_user_agent(request());
 
@@ -56,14 +56,14 @@ class FileController extends Controller
 
         $file = $request->file('upload');
         $uniqueId = uniqid();
-        $fileName = auth()->user()->id . '_' . $uniqueId . '_' . time() . '.' . $file->getClientOriginalExtension();
-        
+        $fileName = auth()->user()->id.'_'.$uniqueId.'_'.time().'.'.$file->getClientOriginalExtension();
+
         $diskType = 's3';
-        if(config('app.env') != 'production'){
+        if (config('app.env') != 'production') {
             $diskType = 'public';
         }
 
-        $path = ($diskType === 's3') ? 'files/thumbnails/' . $fileName : "thumbnails/$fileName";
+        $path = ($diskType === 's3') ? 'files/thumbnails/'.$fileName : "thumbnails/$fileName";
 
         $imagine = $this->getImagineInstance();
 
@@ -82,11 +82,11 @@ class FileController extends Controller
         }
 
         // Create temporary file for compressed image
-        $tempDirectory = sys_get_temp_dir() . '/tinymce_uploads';
-        if (!file_exists($tempDirectory)) {
+        $tempDirectory = sys_get_temp_dir().'/tinymce_uploads';
+        if (! file_exists($tempDirectory)) {
             mkdir($tempDirectory, 0755, true);
         }
-        $tempFilePath = $tempDirectory . '/' . $fileName;
+        $tempFilePath = $tempDirectory.'/'.$fileName;
 
         // Save with compression
         $extension = strtolower($file->getClientOriginalExtension());
@@ -124,13 +124,13 @@ class FileController extends Controller
         // Try Imagick first if extension is available
         if (extension_loaded('imagick')) {
             try {
-                return new \Imagine\Imagick\Imagine();
+                return new \Imagine\Imagick\Imagine;
             } catch (\Exception $e) {
                 // Fall back to Gd if Imagick fails
             }
         }
-        
+
         // Fall back to Gd
-        return new \Imagine\Gd\Imagine();
+        return new \Imagine\Gd\Imagine;
     }
 }

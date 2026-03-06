@@ -17,12 +17,16 @@ class SettingsSeeder extends Seeder
                 'id' => '1',
                 'website_name' => 'Darakht-e Danesh Library',
                 'website_slogan' => 'Free and open educational resources for Afghanistan',
-                'website_email' => 'support@darakhtdanesh.org',
+                'website_email' => 'support@example.com',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
         ];
 
-        DB::table('settings')->insert($data);
+        DB::table('settings')->upsert(
+            $data,
+            ['id'],
+            ['website_name', 'website_slogan', 'website_email', 'updated_at']
+        );
     }
 }

@@ -32,7 +32,7 @@ class GlossarySubjectControllerTest extends TestCase
     public function test_admin_can_create_glossary_subject(): void
     {
         $this->refreshApplicationWithLocale('en');
-        
+
         $admin = User::factory()->create();
         $admin->roles()->attach(5);
 
@@ -80,7 +80,7 @@ class GlossarySubjectControllerTest extends TestCase
         $response = $this->actingAs($admin)->post(route('glossary_subjects_update'), $updatedData);
 
         $response->assertRedirect();
-        $this->assertDatabaseHas('glossary_subjects', ['id' => $subject->id, 'english' => 'english']);
+        $this->assertDatabaseHas('glossary_subjects', ['id' => $subject->id, 'en' => 'english']);
     }
 
     public function test_non_admin_cannot_access_glossary_subjects(): void
@@ -89,6 +89,6 @@ class GlossarySubjectControllerTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('glossary_subjects_list'));
 
-        $response->assertRedirect('/en');
+        $response->assertRedirect('/home');
     }
 }

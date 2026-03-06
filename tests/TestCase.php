@@ -2,19 +2,30 @@
 
 namespace Tests;
 
-use JMac\Testing\Traits\AdditionalAssertions;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use JMac\Testing\Traits\AdditionalAssertions;
 use Mcamara\LaravelLocalization\LaravelLocalization;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication, AdditionalAssertions;
+    use AdditionalAssertions;
+    protected bool $seed = true;
+    protected string $defaultLocale = 'en';
 
-    protected function refreshApplicationWithLocale($locale)
+    protected function setUp(): void
     {
-        self::tearDown();
-        putenv(LaravelLocalization::ENV_ROUTE_KEY.'='.$locale);
-        self::setUp();
+        putenv(LaravelLocalization::ENV_ROUTE_KEY . '=' . $this->defaultLocale);
+        parent::setUp();
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    protected function refreshApplicationWithLocale(string $locale): void
+    {
+        putenv(LaravelLocalization::ENV_ROUTE_KEY . '=' . $locale);
+        app()->make(LaravelLocalization::class)->setLocale($locale);
     }
 
     protected function tearDown(): void

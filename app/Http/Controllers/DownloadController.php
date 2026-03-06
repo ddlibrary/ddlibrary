@@ -26,9 +26,9 @@ class DownloadController extends Controller
 
         // Gender
         if ($request->gender) {
-            if($request->gender == 'guest'){
+            if ($request->gender == 'guest') {
                 $query->where('user_id', 0);
-            }else{
+            } else {
                 $query->whereHas('user.profile', function ($query) use ($request) {
                     $query->where('gender', $request->gender);
                 });
