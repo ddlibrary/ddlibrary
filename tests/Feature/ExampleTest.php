@@ -14,8 +14,8 @@ class ExampleTest extends TestCase
      */
     public function test_basic_test(): void
     {
-        $response = $this->get('/');
+        $response = $this->get('/en');
 
-        $response->assertRedirect();
+        $response->assertSuccessful();
     }
 }

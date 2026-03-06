@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers;
+namespace Tests\Feature\Subscribers;
 
 use App\Models\Subscriber;
 use App\Models\User;
@@ -8,19 +8,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-/**
- * @see \App\Http\Controllers\SubscribeController
- */
-class SubscribeControllerTestEn extends TestCase
+class SubscriberEnTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase, withFaker;
     protected string $defaultLocale = 'en';
 
     /** @test */
     public function en_authenticated_user_can_visit_subscribe_page(): void
     {
-        $this->refreshApplicationWithLocale('en');
-
         $user = User::factory()->create();
         $response = $this->actingAs($user)->get('/en/subscribe');
 
@@ -30,8 +25,6 @@ class SubscribeControllerTestEn extends TestCase
     /** @test */
     public function en_unauthenticated_user_is_redirected_to_login_page(): void
     {
-        $this->refreshApplicationWithLocale('en');
-
         $response = $this->get('/en/subscribe');
 
         $response->assertStatus(302)->assertRedirect('/en/login');
@@ -40,7 +33,6 @@ class SubscribeControllerTestEn extends TestCase
     /** @test */
     public function en_authenticated_and_verified_user_can_subscribe(): void
     {
-        $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/en/subscribe', $this->data(['name' => 'New User', '_method' => 'post']));
@@ -60,7 +52,6 @@ class SubscribeControllerTestEn extends TestCase
     /** @test */
     public function en_unverified_user_can_not_subscribe(): void
     {
-        $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create(['email_verified_at' => null]);
 
         $response = $this->actingAs($user)->post('/en/subscribe', $this->data(['_method' => 'post']));
@@ -74,7 +65,6 @@ class SubscribeControllerTestEn extends TestCase
     /** @test */
     public function en_name_field_is_required(): void
     {
-        $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post(
@@ -90,7 +80,6 @@ class SubscribeControllerTestEn extends TestCase
     /** @test */
     public function en_email_field_is_required(): void
     {
-        $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post(
@@ -106,7 +95,6 @@ class SubscribeControllerTestEn extends TestCase
     /** @test */
     public function en_email_should_be_a_valid_email(): void
     {
-        $this->refreshApplicationWithLocale('en');
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post(
@@ -122,15 +110,14 @@ class SubscribeControllerTestEn extends TestCase
     /** @test */
     public function en_email_field_is_unique(): void
     {
-        $this->refreshApplicationWithLocale('en');
-
         $user = User::factory()->create();
-        Subscriber::factory()->create(['email' => 'test@email.com']);
+        $email = $this->faker->unique()->safeEmail();
+        Subscriber::factory()->create(['email' => $email]);
 
         $response = $this->actingAs($user)->post(
             '/en/subscribe',
             $this->data([
-                'email' => 'test@email.com',
+                'email' => $email,
             ]),
         );
 

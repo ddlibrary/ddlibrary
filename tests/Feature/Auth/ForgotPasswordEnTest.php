@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ForgotPasswordTestEn extends TestCase
+class ForgotPasswordEnTest extends TestCase
 {
     use RefreshDatabase;
     protected string $defaultLocale = 'en';

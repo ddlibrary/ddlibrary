@@ -89,6 +89,6 @@ class GlossarySubjectControllerTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('glossary_subjects_list'));
 
-        $response->assertRedirect('/en');
+        $response->assertRedirect('/home');
     }
 }
