@@ -65,9 +65,7 @@ class RegistrationTest extends TestCase
     /** @test */
     public function name_field_is_required(): void
     {
-        dump('Before before data(): ' . \App\Models\User::count());
         $this->refreshApplicationWithLocale('en');
-        dump('Before data(): ' . \App\Models\User::count());
         $response = $this->from('en/register')->post(
             'en/register',
             $this->data([
@@ -77,7 +75,6 @@ class RegistrationTest extends TestCase
 
         $response->assertRedirect('en/register');
         $response->assertSessionHasErrors('first_name');
-        dd('After data(): ' . \App\Models\User::count(), \App\Models\User::first()->toArray());
         $this->assertNull(User::first());
     }
 
