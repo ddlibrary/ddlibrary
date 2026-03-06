@@ -10,6 +10,7 @@ use Mcamara\LaravelLocalization\LaravelLocalization;
 abstract class TestCase extends BaseTestCase
 {
     use AdditionalAssertions;
+    protected bool $seed = true;
 
     /**
      * @throws BindingResolutionException
