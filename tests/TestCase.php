@@ -17,8 +17,8 @@ abstract class TestCase extends BaseTestCase
     protected function refreshApplicationWithLocale($locale): void
     {
         putenv(LaravelLocalization::ENV_ROUTE_KEY.'='.$locale);
-        $this->refreshApplication();
-        $this->app->make(LaravelLocalization::class)->setLocale($locale);
+        // $this->refreshApplication();
+        app()->make(LaravelLocalization::class)->setLocale($locale);
     }
 
     protected function tearDown(): void
