@@ -80,7 +80,7 @@ class StoryWeaverController extends Controller
             }
         }
 
-        $client = new Client;
+        $client = app(Client::class);
         try {
             $response = $client->request(
                 'POST', $storyweaver_url, [
