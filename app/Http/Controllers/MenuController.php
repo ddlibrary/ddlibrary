@@ -164,7 +164,7 @@ class MenuController extends Controller
             }
         }
 
-        echo true;
+        return response()->json(['success' => true]);
     }
 
     public function ajaxGetParents(Request $request)
