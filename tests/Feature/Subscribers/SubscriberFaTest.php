@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class SubscriberTestFa extends TestCase
+class SubscriberFaTest extends TestCase
 {
     use RefreshDatabase, withFaker;
     protected string $defaultLocale = 'fa';

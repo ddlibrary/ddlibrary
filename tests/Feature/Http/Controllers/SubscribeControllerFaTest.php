@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Subscribers;
+namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Subscriber;
 use App\Models\User;
@@ -8,34 +8,37 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class SubscriberTestEn extends TestCase
+/**
+ * @see \App\Http\Controllers\SubscribeController
+ */
+class SubscribeControllerFaTest extends TestCase
 {
-    use RefreshDatabase, withFaker;
-    protected string $defaultLocale = 'en';
-
+    use RefreshDatabase, WithFaker;
+    protected string $defaultLocale = 'fa';
+    // Farsi
     /** @test */
-    public function en_authenticated_user_can_visit_subscribe_page(): void
+    public function fa_authenticated_user_can_visit_subscribe_page(): void
     {
         $user = User::factory()->create();
-        $response = $this->actingAs($user)->get('/en/subscribe');
+        $response = $this->actingAs($user)->get('/fa/subscribe');
 
         $response->assertStatus(200)->assertViewIs('subscribe.index');
     }
 
     /** @test */
-    public function en_unauthenticated_user_is_redirected_to_login_page(): void
+    public function fa_unauthenticated_user_is_redirected_to_login_page(): void
     {
-        $response = $this->get('/en/subscribe');
+        $response = $this->get('/fa/subscribe');
 
-        $response->assertStatus(302)->assertRedirect('/en/login');
+        $response->assertStatus(302)->assertRedirect('/fa/login');
     }
 
     /** @test */
-    public function en_authenticated_and_verified_user_can_subscribe(): void
+    public function fa_authenticated_and_verified_user_can_subscribe(): void
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post('/en/subscribe', $this->data(['name' => 'New User', '_method' => 'post']));
+        $response = $this->actingAs($user)->post('/fa/subscribe', $this->data(['name' => 'New User', '_method' => 'post']));
         $response->assertStatus(302)->assertRedirect('home');
 
         $this->assertDatabaseHas('subscribers', [
@@ -50,12 +53,12 @@ class SubscriberTestEn extends TestCase
     }
 
     /** @test */
-    public function en_unverified_user_can_not_subscribe(): void
+    public function fa_unverified_user_can_not_subscribe(): void
     {
         $user = User::factory()->create(['email_verified_at' => null]);
 
-        $response = $this->actingAs($user)->post('/en/subscribe', $this->data(['_method' => 'post']));
-        $response->assertStatus(302)->assertRedirect('en/email/verify');
+        $response = $this->actingAs($user)->post('/fa/subscribe', $this->data(['_method' => 'post']));
+        $response->assertStatus(302)->assertRedirect('fa/email/verify');
 
         $user->refresh();
 
@@ -63,65 +66,65 @@ class SubscriberTestEn extends TestCase
     }
 
     /** @test */
-    public function en_name_field_is_required(): void
+    public function fa_name_field_is_required(): void
     {
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post(
-            '/en/subscribe',
+            '/fa/subscribe',
             $this->data([
                 'name' => '',
             ]),
         );
 
-        $response->assertSessionHasErrors(['name' => 'The name field is required.']);
+        $response->assertSessionHasErrors(['name' => 'فیلد نام الزامی است']);
     }
 
     /** @test */
-    public function en_email_field_is_required(): void
+    public function fa_email_field_is_required(): void
     {
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post(
-            '/en/subscribe',
+            '/fa/subscribe',
             $this->data([
                 'email' => '',
             ]),
         );
 
-        $response->assertSessionHasErrors(['email' => 'The email field is required.']);
+        $response->assertSessionHasErrors(['email' => 'فیلد ایمیل آدرس الزامی است']);
     }
 
     /** @test */
-    public function en_email_should_be_a_valid_email(): void
+    public function fa_email_should_be_a_valid_email(): void
     {
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post(
-            '/en/subscribe',
+            '/fa/subscribe',
             $this->data([
                 'email' => 'email',
             ]),
         );
 
-        $response->assertSessionHasErrors(['email' => 'The email field must be a valid email address.']);
+        $response->assertSessionHasErrors(['email' => 'فرمت ایمیل آدرس معتبر نیست.']);
     }
 
     /** @test */
-    public function en_email_field_is_unique(): void
+    public function fa_email_field_is_unique(): void
     {
         $user = User::factory()->create();
         $email = $this->faker->unique()->safeEmail();
         Subscriber::factory()->create(['email' => $email]);
 
         $response = $this->actingAs($user)->post(
-            '/en/subscribe',
+            '/fa/subscribe',
             $this->data([
                 'email' => $email,
             ]),
         );
 
-        $response->assertSessionHasErrors(['email' => 'The email has already been taken.']);
+        $response->assertSessionHasErrors(['email' => 'ایمیل آدرس قبلا انتخاب شده است.']);
     }
 
     protected function data($merge = [])

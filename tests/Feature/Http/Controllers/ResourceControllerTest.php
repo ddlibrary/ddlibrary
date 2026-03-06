@@ -1633,7 +1633,6 @@ class ResourceControllerTest extends TestCase
             'keywords' => 'keyword1,keyword2',
         ];
 
-        $shareTaxonomy = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::SharePermissions->value]);
         $response = $this->withSession([
             'edit_resource_step_1' => $step1,
             'edit_resource_step_2' => $step2,
