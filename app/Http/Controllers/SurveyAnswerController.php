@@ -75,7 +75,7 @@ class SurveyAnswerController extends Controller
 
                 $surveyAnswer = new SurveyAnswer;
                 $surveyAnswer->question_id = $key;
-                $surveyAnswer->answer_id = $question->tnid;
+                $surveyAnswer->answer_id = null;
                 $surveyAnswer->description = $value;
                 $surveyAnswer->ip = \Request::ip();
                 $surveyAnswer->language = \LaravelLocalization::getCurrentLocale();
