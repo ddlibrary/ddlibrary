@@ -11,14 +11,20 @@ abstract class TestCase extends BaseTestCase
 {
     use AdditionalAssertions;
     protected bool $seed = true;
+    protected string $defaultLocale = 'en';
+
+    protected function setUp(): void
+    {
+        putenv(LaravelLocalization::ENV_ROUTE_KEY . '=' . $this->defaultLocale);
+        parent::setUp();
+    }
 
     /**
      * @throws BindingResolutionException
      */
-    protected function refreshApplicationWithLocale($locale): void
+    protected function refreshApplicationWithLocale(string $locale): void
     {
-        putenv(LaravelLocalization::ENV_ROUTE_KEY.'='.$locale);
-        // $this->refreshApplication();
+        putenv(LaravelLocalization::ENV_ROUTE_KEY . '=' . $locale);
         app()->make(LaravelLocalization::class)->setLocale($locale);
     }
 
