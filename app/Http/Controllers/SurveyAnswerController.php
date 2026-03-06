@@ -70,7 +70,7 @@ class SurveyAnswerController extends Controller
 
         if ($request->descriptive) {
             foreach ($request->descriptive as $key => $value) {
-                // key is question and value the text inserted
+                // the key is the question and value the text inserted
                 $question = SurveyQuestion::find($key);
 
                 $surveyAnswer = new SurveyAnswer;
@@ -82,6 +82,6 @@ class SurveyAnswerController extends Controller
                 $surveyAnswer->save();
             }
         }
-        echo true;
+        return response()->json(['success' => true]);
     }
 }

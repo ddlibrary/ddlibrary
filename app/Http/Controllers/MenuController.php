@@ -167,7 +167,7 @@ class MenuController extends Controller
         echo true;
     }
 
-    public function ajaxGetParents(Request $request): void
+    public function ajaxGetParents(Request $request)
     {
         $id = $request->input('id');
         $loc = $request->input('loc');
@@ -179,7 +179,7 @@ class MenuController extends Controller
             $data .= ($parent->id == $id) ? 'selected' : '';
             $data .= '>'.$parent->title.'</option>';
         }
-        echo $data;
+        return response($data, 200, ['Content-Type' => 'text/html']);
     }
 
     public function translate($id = ''): View
