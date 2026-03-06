@@ -309,7 +309,7 @@ class ResourceControllerTest extends TestCase
         $response = $this->post(route('flag'), [
             'userid' => $user->id,
             'resource_id' => $resource->id,
-            'type' => 'spam',
+            'type' => 3, // Spam
             'details' => 'This is a spam resource.',
         ]);
 
@@ -1633,6 +1633,7 @@ class ResourceControllerTest extends TestCase
             'keywords' => 'keyword1,keyword2',
         ];
 
+        $shareTaxonomy = TaxonomyTerm::factory()->create(['vid' => TaxonomyVocabularyEnum::SharePermissions->value]);
         $response = $this->withSession([
             'edit_resource_step_1' => $step1,
             'edit_resource_step_2' => $step2,
@@ -1642,7 +1643,6 @@ class ResourceControllerTest extends TestCase
             'iam_author' => 0,
             'copyright_holder' => 'Updated Copyright Holder',
             'creative_commons' => $creativeCommons->id,
-            'creative_commons_other' => 0,
             'published' => 1,
         ]);
 

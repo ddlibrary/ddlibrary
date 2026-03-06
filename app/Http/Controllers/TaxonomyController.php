@@ -196,7 +196,7 @@ class TaxonomyController extends Controller
         ]);
 
         TaxonomyHierarchy::insert([
-            'id' => (int) (TaxonomyHierarchy::latest()->value('id') + 1),
+            'id' => (int) (TaxonomyHierarchy::orderByDesc('id')->value('id') + 1),
             'tid' => $term->id,
             'parent' => $request->input('parent') ? $request->input('parent') : 0,
             'aux_id' => $request->input('aux_id') ? $request->input('aux_id') : $term->id,
