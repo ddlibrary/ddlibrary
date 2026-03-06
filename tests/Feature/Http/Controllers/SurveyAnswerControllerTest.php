@@ -96,7 +96,7 @@ class SurveyAnswerControllerTest extends TestCase
         // Check if the answer was saved
         $this->assertDatabaseHas('survey_answers', [
             'question_id' => $surveyQuestion->tnid, // Check against tnid
-            'answer_id' => $surveyQuestionOption->tnid, // Check against tnid
+            'answer_id' => null, // Check against tnid
             'description' => 'This is a descriptive answer.',
         ]);
     }

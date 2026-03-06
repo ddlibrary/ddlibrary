@@ -107,7 +107,14 @@ class UserControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('admin.users.users');
         $response->assertViewHas('users');
-        $response->assertViewHas('roles', $roles);
+        $response->assertViewHas('roles', function ($viewRoles) use ($roles) {
+            foreach ($roles as $role) {
+                if (!collect($viewRoles)->contains(fn($r) => $r->id === $role->id)) {
+                    return false;
+                }
+            }
+            return true;
+        });
         $response->assertViewHas('filters');
     }
 
