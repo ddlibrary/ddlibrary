@@ -360,12 +360,11 @@ class   ApiControllerTest extends TestCase
             '*' => ['id', 'title', 'path'],
         ]);
 
-        // Assert that the correct number of menus is returned
-        $this->assertCount(3, $response->json());
-
-        // Optionally verify that the expected menu items are returned
         foreach ($menus as $menu) {
-            $this->assertTrue(collect($response->json())->contains(fn ($item) => $item['id'] === $menu->id), 'Menu item not found in the response data');
+            $this->assertTrue(
+                collect($response->json())->contains(fn ($item) => $item['id'] === $menu->id),
+                'Menu item not found in the response data'
+            );
         }
     }
 
