@@ -15,6 +15,7 @@ use Tests\TestCase;
 class UserControllerTest extends TestCase
 {
     use RefreshDatabase;
+    protected bool $seed = false;
 
     /**
      * @test
