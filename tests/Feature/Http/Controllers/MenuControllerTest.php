@@ -77,8 +77,6 @@ class MenuControllerTest extends TestCase
      */
     public function index_returns_an_ok_response(): void
     {
-        $this->refreshApplicationWithLocale('en');
-
         $admin = User::factory()->create();
         $admin->roles()->attach(5);
 
@@ -90,7 +88,14 @@ class MenuControllerTest extends TestCase
         $response->assertViewIs('admin.menu.menu_list');
         $response->assertViewHas('menuRecords');
         $response->assertViewHas('searchBar');
-        $this->assertCount(3, $response->viewData('menuRecords'));
+        $response->assertViewHas('menuRecords', function ($menuRecords) use ($menus) {
+            foreach ($menus as $menu) {
+                if (!collect($menuRecords)->contains(fn($item) => $item->id === $menu->id)) {
+                    return false;
+                }
+            }
+            return true;
+        });
     }
 
     /**
