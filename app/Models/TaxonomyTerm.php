@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -30,7 +31,8 @@ class TaxonomyTerm extends Model
         return $this->hasOne(TaxonomyVocabulary::class, 'vid', 'vid');
     }
 
-    public function scopeName($query, $name)
+    #[Scope]
+    protected function name($query, $name)
     {
         if (! is_null($name)) {
             return $query->where('name', 'like', '%'.$name.'%');
@@ -44,7 +46,8 @@ class TaxonomyTerm extends Model
         }
     }
 
-    public function scopeLanguage($query, $language)
+    #[Scope]
+    protected function language($query, $language)
     {
         if (! is_null($language)) {
             return $query->where('language', $language);

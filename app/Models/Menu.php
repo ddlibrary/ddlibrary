@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +26,8 @@ class Menu extends Model
 {
     use HasFactory;
 
-    public function scopeMenu()
+    #[Scope]
+    protected function menu()
     {
         $records = DB::table('menus')
             ->select(
@@ -42,21 +44,24 @@ class Menu extends Model
         return $records;
     }
 
-    public function scopeTitle($query, $title)
+    #[Scope]
+    protected function title($query, $title)
     {
         if (! is_null($title)) {
             return $query->where('title', 'like', '%'.$title.'%');
         }
     }
 
-    public function scopeLocation($query, $location)
+    #[Scope]
+    protected function location($query, $location)
     {
         if (! is_null($location)) {
             return $query->where('location', $location);
         }
     }
 
-    public function scopeLanguage($query, $language)
+    #[Scope]
+    protected function language($query, $language)
     {
         if (! is_null($language)) {
             return $query->where('language', $language);

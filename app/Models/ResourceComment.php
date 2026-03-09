@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,7 +23,8 @@ class ResourceComment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function scopePublished($query)
+    #[Scope]
+    protected function published($query)
     {
         return $query->where('status', 1);
     }
