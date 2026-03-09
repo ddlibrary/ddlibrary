@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use App\Models\Menu;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
-class MenuController extends Controller
+class MenuController extends Controller implements HasMiddleware
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware('admin');
+        return [
+            'admin',
+        ];
     }
 
     public function index(Request $request): View
