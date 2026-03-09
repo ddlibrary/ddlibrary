@@ -15,6 +15,7 @@ use Tests\TestCase;
 class UserControllerTest extends TestCase
 {
     use RefreshDatabase;
+
     protected bool $seed = false;
 
     /**
@@ -111,10 +112,11 @@ class UserControllerTest extends TestCase
         $response->assertViewHas('users');
         $response->assertViewHas('roles', function ($viewRoles) use ($roles) {
             foreach ($roles as $role) {
-                if (!collect($viewRoles)->contains(fn($r) => $r->id === $role->id)) {
+                if (! collect($viewRoles)->contains(fn ($r) => $r->id === $role->id)) {
                     return false;
                 }
             }
+
             return true;
         });
         $response->assertViewHas('filters');

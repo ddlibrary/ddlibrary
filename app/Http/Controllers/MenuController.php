@@ -179,6 +179,7 @@ class MenuController extends Controller
             $data .= ($parent->id == $id) ? 'selected' : '';
             $data .= '>'.$parent->title.'</option>';
         }
+
         return response($data, 200, ['Content-Type' => 'text/html']);
     }
 
@@ -212,11 +213,13 @@ class MenuController extends Controller
         if ($tnid) {
             // Delete all menus with the same tnid (all translations)
             Menu::where('tnid', $tnid)->delete();
+
             return redirect('admin/menu')->with('success', 'Menu and all translations deleted successfully!');
         }
 
         // If no tnid, just delete this single menu
         $menu->delete();
+
         return redirect('admin/menu')->with('success', 'Menu deleted successfully!');
     }
 }

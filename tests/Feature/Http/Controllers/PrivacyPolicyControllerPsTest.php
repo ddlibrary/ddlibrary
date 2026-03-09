@@ -8,6 +8,7 @@ use Tests\TestCase;
 class PrivacyPolicyControllerPsTest extends TestCase
 {
     use RefreshDatabase;
+
     protected string $defaultLocale = 'ps';
 
     /**

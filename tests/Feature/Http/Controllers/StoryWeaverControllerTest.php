@@ -43,7 +43,7 @@ class StoryWeaverControllerTest extends TestCase
             ])),
         ]);
         $handlerStack = HandlerStack::create($mock);
-        $this->app->bind(Client::class, fn() => new Client(['handler' => $handlerStack]));
+        $this->app->bind(Client::class, fn () => new Client(['handler' => $handlerStack]));
 
         $response = $this->actingAs($admin)->get(route('storyweaver-auth'));
 
@@ -112,7 +112,7 @@ class StoryWeaverControllerTest extends TestCase
             new Response(422),
         ]);
         $handlerStack = HandlerStack::create($mock);
-        $this->app->bind(Client::class, fn() => new Client(['handler' => $handlerStack]));
+        $this->app->bind(Client::class, fn () => new Client(['handler' => $handlerStack]));
 
         $response = $this->actingAs($admin)->get(route('storyweaver-auth'));
 

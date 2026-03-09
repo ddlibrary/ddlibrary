@@ -14,6 +14,7 @@ use Tests\TestCase;
 class SubscribeControllerEnTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
+
     protected string $defaultLocale = 'en';
 
     /** @test */

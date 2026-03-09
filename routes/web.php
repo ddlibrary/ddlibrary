@@ -202,7 +202,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         // Flags
         Route::get('flags', [FlagController::class, 'index']);
         // Taxonomy
-        Route::prefix('taxonomy')->controller(TaxonomyController::class)->group(function(){
+        Route::prefix('taxonomy')->controller(TaxonomyController::class)->group(function () {
             Route::get('', 'index')->name('gettaxonomylist');
             Route::post('', 'index')->name('posttaxonomylist');
             Route::get('edit/{vid}/{tid}', 'edit')->name('taxonomyedit');

@@ -82,6 +82,7 @@ class SurveyAnswerController extends Controller
                 $surveyAnswer->save();
             }
         }
+
         return response()->json(['success' => true]);
     }
 }

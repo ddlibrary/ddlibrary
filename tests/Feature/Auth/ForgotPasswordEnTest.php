@@ -9,6 +9,7 @@ use Tests\TestCase;
 class ForgotPasswordEnTest extends TestCase
 {
     use RefreshDatabase;
+
     protected string $defaultLocale = 'en';
 
     /** @test */

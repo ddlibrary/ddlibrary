@@ -14,6 +14,7 @@ use Tests\TestCase;
 class SurveyAnswerControllerTest extends TestCase
 {
     use RefreshDatabase;
+
     protected bool $seed = false;
 
     /**

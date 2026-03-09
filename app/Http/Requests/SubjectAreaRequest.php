@@ -51,6 +51,7 @@ class SubjectAreaRequest extends FormRequest
         return function (string $attribute, mixed $value, \Closure $fail): void {
             if (! is_array($value)) {
                 $fail(__('At least one term name is required.'));
+
                 return;
             }
             $filled = array_filter($value, fn ($v) => is_string($v) && trim($v) !== '');

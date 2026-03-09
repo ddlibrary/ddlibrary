@@ -45,7 +45,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Mcamara\LaravelLocalization\Exceptions\SupportedLocalesNotDefined;
-use Mcamara\LaravelLocalization\LaravelLocalization;
 use Throwable;
 
 class ResourceController extends Controller
@@ -104,7 +103,7 @@ class ResourceController extends Controller
 
         // Handle cases where one resource is primary
         if ($resource->primary_tnid) {
-            if($translatedResource->tnid != $resource->id){
+            if ($translatedResource->tnid != $resource->id) {
                 $translatedResource->tnid = $resource->id;
                 $translatedResource->save();
             }
@@ -1461,11 +1460,11 @@ class ResourceController extends Controller
             foreach ($attachments as $attachment) {
                 try {
                     // Delete physical file from storage
-                    Storage::disk($diskType)->delete('resources/' . $attachment->file_name);
+                    Storage::disk($diskType)->delete('resources/'.$attachment->file_name);
                 } catch (\Exception $e) {
                     Log::warning("Failed to delete attachment file: {$attachment->file_name}", [
                         'error' => $e->getMessage(),
-                        'resource_id' => $resourceId
+                        'resource_id' => $resourceId,
                     ]);
                 }
             }
@@ -1483,24 +1482,24 @@ class ResourceController extends Controller
                             ->where('id', '!=', $resourceId)
                             ->first();
 
-                        if (!$otherResourcesUsingFile) {
+                        if (! $otherResourcesUsingFile) {
                             $diskType = config('app.env') != 'production' ? 'public' : 's3';
 
                             try {
-                                Storage::disk($diskType)->delete('files/' . $resourceFile->name);
+                                Storage::disk($diskType)->delete('files/'.$resourceFile->name);
                             } catch (Exception $e) {
                                 Log::warning("Failed to delete ResourceFile main file: {$resourceFile->name}", [
                                     'error' => $e->getMessage(),
-                                    'resource_file_id' => $resourceFile->id
+                                    'resource_file_id' => $resourceFile->id,
                                 ]);
                             }
 
                             try {
-                                Storage::disk($diskType)->delete('files/thumbnails/' . $resourceFile->name);
+                                Storage::disk($diskType)->delete('files/thumbnails/'.$resourceFile->name);
                             } catch (Exception $e) {
                                 Log::warning("Failed to delete ResourceFile thumbnail: {$resourceFile->name}", [
                                     'error' => $e->getMessage(),
-                                    'resource_file_id' => $resourceFile->id
+                                    'resource_file_id' => $resourceFile->id,
                                 ]);
                             }
 
@@ -1568,7 +1567,7 @@ class ResourceController extends Controller
             'file_id' => [
                 'required',
                 'integer',
-                'exists:resource_attachments,id,resource_id,' . $request->resource_id
+                'exists:resource_attachments,id,resource_id,'.$request->resource_id,
             ],
         ]);
 
@@ -1580,7 +1579,7 @@ class ResourceController extends Controller
 
         return response()->json([
             'success' => true,
-            'id'      => $counted->id
+            'id' => $counted->id,
         ], 201);
     }
 }

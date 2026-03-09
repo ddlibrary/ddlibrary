@@ -16,7 +16,7 @@ use Tests\TestCase;
 /**
  * @see \App\Http\Controllers\ApiController
  */
-class   ApiControllerTest extends TestCase
+class ApiControllerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -466,7 +466,7 @@ class   ApiControllerTest extends TestCase
 
         foreach ($menus as $menu) {
             $this->assertTrue(
-                collect($response->json('data'))->contains(fn($item) => $item['id'] === $menu->id),
+                collect($response->json('data'))->contains(fn ($item) => $item['id'] === $menu->id),
                 'Menu item not found in the response data'
             );
         }

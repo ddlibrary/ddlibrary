@@ -20,7 +20,6 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -71,7 +70,6 @@ class RegisterController extends Controller
 
         return view('auth.register', compact('countries', 'provinces', 'gmail_signup_url'));
     }
-
 
     /**
      * Create a new user instance after a valid registration.

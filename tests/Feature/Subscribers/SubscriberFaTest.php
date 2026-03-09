@@ -11,6 +11,7 @@ use Tests\TestCase;
 class SubscriberFaTest extends TestCase
 {
     use RefreshDatabase, withFaker;
+
     protected string $defaultLocale = 'fa';
 
     /** @test */
