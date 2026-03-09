@@ -7,6 +7,8 @@ return [
             'driver' => 'local',
             'root' => storage_path('app'),
             'throw' => false,
+            'serve' => true,
+            'report' => false,
         ],
 
         'public' => [
@@ -15,6 +17,7 @@ return [
             'url' => env('APP_URL').'/storage/files',
             'visibility' => 'public',
             'throw' => false,
+            'report' => false,
         ],
 
         'private' => [
