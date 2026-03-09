@@ -31,8 +31,6 @@ class SyncController extends Controller
 {
     public function index(): View
     {
-        $this->middleware('admin');
-
         $rmResource = new Resource;
         $rmDdlFile = new DdlFile;
         $rmNews = new News;
@@ -81,8 +79,6 @@ class SyncController extends Controller
 
     public function SyncIt(): RedirectResponse
     {
-        $this->middleware('admin');
-
         $rmResource = new Resource;
         $rmDdlFile = new DdlFile;
         $rmNews = new News;

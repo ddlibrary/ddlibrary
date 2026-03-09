@@ -829,8 +829,6 @@ class ResourceController extends Controller
 
     public function createStepOneEdit($resourceId, Request $request): Factory|View|Application
     {
-        $this->middleware('admin');
-
         $myResources = new Resource;
 
         $resource = $request->session()->get('edit_resource_step_1');
@@ -848,8 +846,6 @@ class ResourceController extends Controller
 
     public function postStepOneEdit($resourceId, ResourceStepOneRequest $request): Redirector|Application|RedirectResponse
     {
-        $this->middleware('admin');
-
         $validatedData = $request->validated();
 
         if (! $request->has_translator) {
@@ -864,8 +860,6 @@ class ResourceController extends Controller
 
     public function createStepTwoEdit($resourceId, Request $request): View|Factory|Redirector|RedirectResponse|Application
     {
-        $this->middleware('admin');
-
         $resource1 = $request->session()->get('edit_resource_step_1');
 
         if (! $resource1) {
@@ -984,8 +978,6 @@ class ResourceController extends Controller
 
     public function postStepTwoEdit($resourceId, Request $request): Redirector|Application|RedirectResponse
     {
-        $this->middleware('admin');
-
         $resource = $request->session()->get('edit_resource_step_2');
         $validatedData = $request->validate([
             'attachments.*' => 'file|mimes:xlsx,xls,csv,epub,jpg,jpeg,png,bmp,mpga,ppt,pptx,doc,docx,pdf,tif,tiff,mp3',
@@ -1029,8 +1021,6 @@ class ResourceController extends Controller
 
     public function createStepThreeEdit($resourceId, Request $request): View|Factory|Redirector|RedirectResponse|Application
     {
-        $this->middleware('admin');
-
         $resource1 = $request->session()->get('edit_resource_step_1');
         $resource2 = $request->session()->get('edit_resource_step_2');
 
@@ -1064,8 +1054,6 @@ class ResourceController extends Controller
      */
     public function postStepThreeEdit($resourceId, Request $request): Redirector|Application|RedirectResponse
     {
-        $this->middleware('admin');
-
         $validatedData = $request->validate([
             'translation_rights' => 'integer',
             'educational_resource' => 'integer',
@@ -1384,8 +1372,6 @@ class ResourceController extends Controller
 
     public function deleteFile(Request $request, $resourceId, $fileName): Redirector|Application|RedirectResponse
     {
-        $this->middleware('admin');
-
         DB::beginTransaction();
 
         try {
@@ -1427,8 +1413,6 @@ class ResourceController extends Controller
 
     public function published($resourceId): RedirectResponse
     {
-        $this->middleware('admin');
-
         $rs = Resource::find($resourceId);
         if ($rs->status == 1) {
             $rs->status = 0;
@@ -1446,8 +1430,6 @@ class ResourceController extends Controller
      */
     public function deleteResource($resourceId): RedirectResponse
     {
-        $this->middleware('admin');
-
         $resource = Resource::findOrFail($resourceId);
 
         DB::beginTransaction();

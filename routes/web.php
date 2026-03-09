@@ -106,8 +106,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('resources/edit/step3/{resourceId}', [ResourceController::class, 'createStepThreeEdit'])->name('edit3')->middleware('LibraryManager');
     Route::post('resources/edit/step3/{resourceId}', [ResourceController::class, 'postStepThreeEdit'])->middleware('LibraryManager');
     Route::post('resource/{resourceId}', [ResourceController::class, 'updateTid'])->middleware('admin')->name('updatetid');
-    // delete file
-    Route::get('delete/file/{resourceId}/{fileName}', [ResourceController::class, 'deleteFile'])->name('delete-file');
+    // delete a file
+    Route::get('delete/file/{resourceId}/{fileName}', [ResourceController::class, 'deleteFile'])->name('delete-file')->middleware('LibraryManager');;
     // Contact
     Route::get('contact-us', [ContactController::class, 'create']);
     Route::post('contact-us', [ContactController::class, 'store'])->name('contact')->middleware(ProtectAgainstSpam::class);
@@ -202,8 +202,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::get('flags', [FlagController::class, 'index']);
         // Taxonomy
         Route::prefix('taxonomy')->controller(TaxonomyController::class)->group(function () {
-            Route::get('', 'index')->name('gettaxonomylist');
-            Route::post('', 'index')->name('posttaxonomylist');
+            Route::get('', 'index')->name('gettaxonomylist')->middleware('admin');
+            Route::post('', 'index')->name('posttaxonomylist')->middleware('admin');
             Route::get('edit/{vid}/{tid}', 'edit')->name('taxonomyedit');
             Route::post('update/{vid}/{tid}', 'update')->name('update-taxonomy');
             Route::get('translate/{tid}', 'translate');
@@ -226,8 +226,8 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         Route::get('vocabulary/edit/{vid}', [VocabularyController::class, 'edit'])->name('vocabularyedit');
         Route::post('vocabulary/edit/{vid}', [VocabularyController::class, 'update'])->name('update-vocabulary');
         // Sync
-        Route::get('/sync', [SyncController::class, 'index']);
-        Route::get('/run_sync', [SyncController::class, 'SyncIt']);
+        Route::get('/sync', [SyncController::class, 'index'])->middleware('admin');
+        Route::get('/run_sync', [SyncController::class, 'SyncIt'])->middleware('admin');;
     });
 
     // Glossary
@@ -247,39 +247,56 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
     Route::get('/impact/{update?}', [ImpactController::class, 'index']);
 
     // admin, survey
-    Route::get('admin/surveys', [SurveyController::class, 'index']);
-    Route::get('admin/survey/edit/{id}', [SurveyController::class, 'edit']);
-    Route::get('admin/survey/view/{id}/{tnid}', [SurveyController::class, 'view']);
-    Route::get('admin/survey/report/{id}', [SurveyController::class, 'report'])->middleware('admin');
-    Route::get('admin/survey/add/translate/{id}/{lang}', [SurveyController::class, 'addTranslate']);
-    Route::get('admin/survey/create', [SurveyController::class, 'create']);
-    Route::get('admin/survey/delete/{id}', [SurveyController::class, 'delete']);
-    Route::post('admin/update_survey/{id}', [SurveyController::class, 'update'])->name('update_survey');
-    Route::post('admin/survey/create', [SurveyController::class, 'store'])->name('create_survey');
-    // question
-    Route::get('admin/survey/questions/{id}', [SurveyQuestionController::class, 'index']);
-    Route::get('admin/survey/{surveyid}/question/view/{id}/{tnid}', [SurveyQuestionController::class, 'view']);
-    Route::get('admin/survey/question/add/translate/{id}/{lang}', [SurveyQuestionController::class, 'addTranslate']);
-    Route::post('admin/survey/question/add', [SurveyQuestionController::class, 'store'])->name('create_question');
-    Route::get('admin/survey/question/add/{id}', [SurveyQuestionController::class, 'create']);
-    Route::get('admin/survey/question/delete/{id}', [SurveyQuestionController::class, 'delete']);
-    // option
-    Route::get('admin/survey/question/option/delete/{id}', [SurveyQuestionOptionController::class, 'delete']);
-    Route::get('admin/survey/{survey_id}/question/{id}/view_options', [SurveyQuestionOptionController::class, 'index']);
-    Route::get('admin/survey/question/{questionid}/option/{optionid}/view/{tnid}', [SurveyQuestionOptionController::class, 'view']);
-    Route::get('admin/survey/question/option/add/translate/{id}/{lang}', [SurveyQuestionOptionController::class, 'addTranslate']);
-    Route::get('admin/survey/{survey_id}/question/{id}/option/create', [SurveyQuestionOptionController::class, 'create']);
-    Route::post('admin/survey/question/option/add', [SurveyQuestionOptionController::class, 'store'])->name('create_option');
-    // result
-    Route::get('admin/survey_questions', [SurveyAnswerController::class, 'allQuestions']);
-    Route::get('admin/survey_question/answers/{id}', [SurveyAnswerController::class, 'questionAnswers']);
-    Route::post('/survey/store', [SurveyAnswerController::class, 'storeUserSurvey'])->name('survey');
-    // setting
-    Route::get('admin/survey_time', [SurveySettingController::class, 'getSurveyModalTime']);
-    Route::get('admin/edit_survey_modal_time', [SurveySettingController::class, 'editSurveyModalTime']);
-    Route::post('admin/update_survey_modal_time/{id}', [SurveySettingController::class, 'updateSurveyModalTime'])->name('update_survey_modal_time');
-    Route::get('admin/create_survey_modal_time', [SurveySettingController::class, 'createSurveyModalTime']);
-    Route::post('admin/store_survey_modal_time', [SurveySettingController::class, 'storeSurveyModalTime'])->name('store_survey_modal_time');
+    Route::prefix('admin')->middleware('admin')->group(function () {
+        Route::controller(SurveyController::class)->group(function () {
+            Route::get('surveys', 'index');
+            Route::get('survey/edit/{id}', 'edit');
+            Route::get('survey/view/{id}/{tnid}', 'view');
+            Route::get('survey/report/{id}', 'report');
+            Route::get('survey/add/translate/{id}/{lang}', 'addTranslate');
+            Route::get('survey/create', 'create');
+            Route::get('survey/delete/{id}', 'delete');
+            Route::post('update_survey/{id}', 'update')->name('update_survey');
+            Route::post('survey/create', 'store')->name('create_survey');
+        });
+
+        // question
+        Route::controller(SurveyQuestionController::class)->group(function () {
+            Route::get('survey/questions/{id}', 'index');
+            Route::get('survey/{surveyid}/question/view/{id}/{tnid}', 'view');
+            Route::get('survey/question/add/translate/{id}/{lang}', 'addTranslate');
+            Route::post('survey/question/add', 'store')->name('create_question');
+            Route::get('survey/question/add/{id}', 'create');
+            Route::get('survey/question/delete/{id}', 'delete');
+        });
+
+        // option
+        Route::controller(SurveyQuestionOptionController::class)->group(function () {
+            Route::get('survey/question/option/delete/{id}', 'delete');
+            Route::get('survey/{survey_id}/question/{id}/view_options', 'index');
+            Route::get('survey/question/{questionid}/option/{optionid}/view/{tnid}', 'view');
+            Route::get('survey/question/option/add/translate/{id}/{lang}', 'addTranslate');
+            Route::get('survey/{survey_id}/question/{id}/option/create', 'create');
+            Route::post('survey/question/option/add', 'store')->name('create_option');
+        });
+
+        // result
+        Route::controller(SurveyAnswerController::class)->group(function () {
+            Route::get('survey_questions', 'allQuestions');
+            Route::get('survey_question/answers/{id}', 'questionAnswers');
+        });
+
+        // setting
+        Route::controller(SurveySettingController::class)->group(function () {
+            Route::get('survey_time', 'getSurveyModalTime');
+            Route::get('edit_survey_modal_time', 'editSurveyModalTime');
+            Route::post('update_survey_modal_time/{id}', 'updateSurveyModalTime')->name('update_survey_modal_time');
+            Route::get('create_survey_modal_time', 'createSurveyModalTime');
+            Route::post('store_survey_modal_time', 'storeSurveyModalTime')->name('store_survey_modal_time');
+        });
+    });
+
+    Route::post('/survey/store', [SurveyAnswerController::class, 'storeUserSurvey'])->name('survey')->middleware('admin');
     // Analytics
     Route::prefix('admin/analytics')->middleware('admin')->group(function () {
         Route::controller(AnalyticsController::class)->group(function () {

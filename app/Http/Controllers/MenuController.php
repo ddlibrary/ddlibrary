@@ -25,7 +25,7 @@ class MenuController extends Controller implements HasMiddleware
 
         $menuRecords = Menu::orderBy('weight')
             ->title(request('term'))
-            ->location(request('vocabulary'))
+            ->byLocation(request('vocabulary'))
             ->language(request('language'))
             ->get();
 

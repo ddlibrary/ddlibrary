@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
  * @property array|mixed|string|null     title
  * @property array|mixed|string|null     parent
  * @property array|mixed|string|null     path
- * @property array|mixed|string|null     location
+ * @property array|mixed|string|null     ocation
  * @property array|mixed|string|null     language
  * @property array|mixed|string|null     weight
  * @property array|int|mixed|string|null tnid  // translation id (translations are chained)
@@ -53,7 +53,7 @@ class Menu extends Model
     }
 
     #[Scope]
-    protected function location($query, $location)
+    protected function byLocation($query, $location)
     {
         if (! is_null($location)) {
             return $query->where('location', $location);
