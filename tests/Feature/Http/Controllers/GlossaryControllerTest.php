@@ -67,7 +67,12 @@ class GlossaryControllerTest extends TestCase
         $response = $this->actingAs($user)->post(route('glossary_store'), $data);
 
         $response->assertRedirect(url('en/glossary'));
-        $this->assertDatabaseHas('glossary', $data);
+        $this->assertDatabaseHas('glossary', [
+            'name_en' => $data['english'],
+            'name_fa' => $data['farsi'],
+            'name_ps' => $data['pashto'],
+            'subject' => $data['subject'],
+        ]);
     }
 
     /**

@@ -1,5 +1,5 @@
 # PHP Version environment variable
-ARG PHP_VERSION=8.2
+ARG PHP_VERSION=8.4
 
 FROM php:$PHP_VERSION-fpm
 
@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libzip-dev \
     libicu-dev \
     libwebp-dev \
+    mariadb-client \
     nano \
     procps
 

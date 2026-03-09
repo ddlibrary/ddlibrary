@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\Models\Survey;
-use App\Models\SurveyQuestion;
 use App\Models\News;
 use App\Models\Resource;
+use App\Models\Survey;
+use App\Models\SurveyQuestion;
 use App\Models\SurveyQuestionOption;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

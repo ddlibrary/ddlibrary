@@ -76,12 +76,13 @@ class PageControllerTest extends TestCase
 
         $page = Page::factory()->create();
 
-        $response = $this->get('en/page/edit/' . $page->id);
+        $response = $this->get('en/page/edit/'.$page->id);
 
         $response->assertOk();
         $response->assertViewIs('pages.page_edit');
         $response->assertViewHas('page', $page);
     }
+
     /**
      * @test
      */
@@ -102,12 +103,12 @@ class PageControllerTest extends TestCase
             'published' => 1,
         ]);
 
-        $response->assertRedirect('page/' . $page->id);
+        $response->assertRedirect('page/'.$page->id);
         $this->assertDatabaseHas('pages', ['title' => 'Updated Page Title']);
     }
 
     /** @test */
-    public function update_title_field_is_required()
+    public function update_title_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -140,7 +141,7 @@ class PageControllerTest extends TestCase
 
         $page = Page::factory()->create();
 
-        $response = $this->get('en/page/' . $page->id);
+        $response = $this->get('en/page/'.$page->id);
 
         $response->assertOk();
         $response->assertViewIs('pages.pages_view');
@@ -162,7 +163,7 @@ class PageControllerTest extends TestCase
         $page1 = Page::factory()->create();
         $page2 = Page::factory()->create(['tnid' => $page1->id]);
 
-        $response = $this->get('en/page/translate/' . $page2->id . '/' . $page2->tnid);
+        $response = $this->get('en/page/translate/'.$page2->id.'/'.$page2->tnid);
 
         $response->assertOk();
         $response->assertViewIs('pages.page_translate');
@@ -220,13 +221,13 @@ class PageControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user); // Regular user without admin privileges
 
-        $response = $this->get('en/page/' . $page->id);
+        $response = $this->get('en/page/'.$page->id);
 
         $response->assertForbidden();
     }
 
     /** @test */
-    public function title_field_is_required()
+    public function title_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -238,7 +239,7 @@ class PageControllerTest extends TestCase
     }
 
     /** @test */
-    public function language_field_is_required()
+    public function language_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -250,7 +251,7 @@ class PageControllerTest extends TestCase
     }
 
     /** @test */
-    public function summary_field_is_required()
+    public function summary_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -262,7 +263,7 @@ class PageControllerTest extends TestCase
     }
 
     /** @test */
-    public function body_field_is_required()
+    public function body_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -274,7 +275,7 @@ class PageControllerTest extends TestCase
     }
 
     /** @test */
-    public function published_field_must_be_an_integer()
+    public function published_field_must_be_an_integer(): void
     {
         $this->refreshApplicationWithLocale('en');
         $admin = User::factory()->create();
@@ -286,7 +287,7 @@ class PageControllerTest extends TestCase
     }
 
     /** @test */
-    public function update_language_field_is_required()
+    public function update_language_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -307,7 +308,7 @@ class PageControllerTest extends TestCase
     }
 
     /** @test */
-    public function update_summary_field_is_required()
+    public function update_summary_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -328,7 +329,7 @@ class PageControllerTest extends TestCase
     }
 
     /** @test */
-    public function update_body_field_is_required()
+    public function update_body_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -349,7 +350,7 @@ class PageControllerTest extends TestCase
     }
 
     /** @test */
-    public function update_published_field_must_be_an_integer()
+    public function update_published_field_must_be_an_integer(): void
     {
         $this->refreshApplicationWithLocale('en');
 

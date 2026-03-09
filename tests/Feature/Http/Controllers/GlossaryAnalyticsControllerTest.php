@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Device;
 use App\Models\Browser;
-use App\Models\Platform;
+use App\Models\Device;
 use App\Models\GlossarySubject;
+use App\Models\Platform;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -81,7 +81,7 @@ class GlossaryAnalyticsControllerTest extends TestCase
     public function test_non_admin_cannot_access_glossary_analytics(): void
     {
         $this->refreshApplicationWithLocale('en');
-        
+
         $nonAdminUser = User::factory()->create();
         $nonAdminUser->roles()->attach(6);
 

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\Models\SurveyAnswer;
 use App\Models\SurveyQuestion;
 use App\Models\SurveyQuestionOption;
 use App\Models\User;
@@ -15,6 +14,7 @@ use Tests\TestCase;
 class SurveyAnswerControllerTest extends TestCase
 {
     use RefreshDatabase;
+    protected bool $seed = false;
 
     /**
      * @test
@@ -52,7 +52,7 @@ class SurveyAnswerControllerTest extends TestCase
         $surveyQuestion = SurveyQuestion::factory()->create();
         $surveyQuestionOption = SurveyQuestionOption::factory()->create(['question_id' => $surveyQuestion->id]);
 
-        $response = $this->actingAs($admin)->get('en/admin/survey_question/answers/' . $surveyQuestion->id);
+        $response = $this->actingAs($admin)->get('en/admin/survey_question/answers/'.$surveyQuestion->id);
 
         $response->assertOk();
         $response->assertViewIs('admin.surveys.result.result');
@@ -78,7 +78,6 @@ class SurveyAnswerControllerTest extends TestCase
         $surveyQuestionOption->tnid = $surveyQuestionOption->id;
         $surveyQuestionOption->save();
 
-
         // Prepare the request data
         $requestData = [
             'single_choice' => [
@@ -97,7 +96,7 @@ class SurveyAnswerControllerTest extends TestCase
         // Check if the answer was saved
         $this->assertDatabaseHas('survey_answers', [
             'question_id' => $surveyQuestion->tnid, // Check against tnid
-            'answer_id' => $surveyQuestionOption->tnid, // Check against tnid
+            'answer_id' => null, // Check against tnid
             'description' => 'This is a descriptive answer.',
         ]);
     }

@@ -44,11 +44,11 @@ class SettingControllerTest extends TestCase
 
         $setting = Setting::factory()->create();
 
-        $response = $this->post('en/admin/settings/' . $setting->id, [
+        $response = $this->post('en/admin/settings/'.$setting->id, [
             '_method' => 'PUT',
             'website_name' => 'Darakht-e Danesh Library',
             'website_slogan' => 'Free and open educational resources for Afghanistan',
-            'website_email' => 'support@darakhtdanesh.org',
+            'website_email' => 'support@example.com',
         ]);
 
         $response->assertRedirect('/admin/settings');
@@ -56,7 +56,7 @@ class SettingControllerTest extends TestCase
             'id' => $setting->id,
             'website_name' => 'Darakht-e Danesh Library',
             'website_slogan' => 'Free and open educational resources for Afghanistan',
-            'website_email' => 'support@darakhtdanesh.org',
+            'website_email' => 'support@example.com',
         ]);
     }
 
@@ -72,7 +72,7 @@ class SettingControllerTest extends TestCase
 
         $setting = Setting::factory()->create();
 
-        $response = $this->post('en/admin/settings/' . $setting->id, [
+        $response = $this->post('en/admin/settings/'.$setting->id, [
             '_method' => 'PUT',
             'website_name' => '',
             'website_slogan' => '',

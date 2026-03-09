@@ -12,7 +12,7 @@ use Tests\TestCase;
 class UserAnalyticsControllerTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     /**
      * @test
      */
