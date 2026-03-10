@@ -272,6 +272,9 @@ class Resource extends Model
         }
 
         return DB::table('resources AS rs')
+            ->leftJoin(DB::raw('(SELECT resource_id, COUNT(*) AS views_count FROM resource_views GROUP BY resource_id) AS rv'), 'rv.resource_id', '=', 'rs.id')
+            ->leftJoin(DB::raw('(SELECT resource_id, COUNT(*) AS comments_count FROM resource_comments GROUP BY resource_id) AS rc'), 'rc.resource_id', '=', 'rs.id')
+            ->leftJoin(DB::raw('(SELECT resource_id, COUNT(*) AS favorites_count FROM resource_favorites GROUP BY resource_id) AS rfav'), 'rfav.resource_id', '=', 'rs.id')
             ->select([
                 'rs.id',
                 'rs.language',
@@ -279,9 +282,9 @@ class Resource extends Model
                 'rs.title',
                 'rs.status',
                 'rf.name',
-                DB::raw('(SELECT COUNT(*) FROM resource_views rv WHERE rv.resource_id = rs.id) AS views_count'),
-                DB::raw('(SELECT COUNT(*) FROM resource_comments rc WHERE rc.resource_id = rs.id) AS comments_count'),
-                DB::raw('(SELECT COUNT(*) FROM resource_favorites rfav WHERE rfav.resource_id = rs.id) AS favorites_count'),
+                DB::raw('COALESCE(rv.views_count, 0) AS views_count'),
+                DB::raw('COALESCE(rc.comments_count, 0) AS comments_count'),
+                DB::raw('COALESCE(rfav.favorites_count, 0) AS favorites_count'),
             ])
             ->leftjoin('resource_files AS rf', 'rf.id', '=', 'rs.resource_file_id')
             ->when($subjectAreaIds != null, function ($query) use ($subjectAreaIds) {
@@ -335,7 +338,18 @@ class Resource extends Model
                 $query->where('rs.id', '>=', 11479)->orWhere('rs.id', '<', 10378); // TODO: remove after restoration
             })
             ->orderBy('rs.created_at', 'desc')
-            ->groupBy('rs.id', 'rs.language', 'rs.title', 'rs.status', 'rf.name', 'rs.abstract', 'rs.created_at')
+            ->groupBy(
+                'rs.id',
+                'rs.language',
+                'rs.title',
+                'rs.status',
+                'rf.name',
+                'rs.abstract',
+                'rs.created_at',
+                'rv.views_count',
+                'rc.comments_count',
+                'rfav.favorites_count'
+            )
             ->paginate(30);
     }
 
