@@ -24,4 +24,6 @@ composer.lock
 /_ide_helper.php
 /_ide_helper_models.php
 .phpunit.result.cache
+phpunit.xml.bak
+/.phpunit.cache
 /storage/pail
