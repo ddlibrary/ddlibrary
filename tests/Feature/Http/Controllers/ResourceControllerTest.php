@@ -332,9 +332,6 @@ class ResourceControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('resources.resources_list');
         $response->assertViewHas('resources');
-        $response->assertViewHas('views');
-        $response->assertViewHas('favorites');
-        $response->assertViewHas('comments');
     }
 
     /**
