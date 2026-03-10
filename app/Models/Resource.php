@@ -272,19 +272,13 @@ class Resource extends Model
         }
 
         return DB::table('resources AS rs')
-            ->leftJoin(DB::raw('(SELECT resource_id, COUNT(*) AS views_count FROM resource_views GROUP BY resource_id) AS rv'), 'rv.resource_id', '=', 'rs.id')
-            ->leftJoin(DB::raw('(SELECT resource_id, COUNT(*) AS comments_count FROM resource_comments GROUP BY resource_id) AS rc'), 'rc.resource_id', '=', 'rs.id')
-            ->leftJoin(DB::raw('(SELECT resource_id, COUNT(*) AS favorites_count FROM resource_favorites GROUP BY resource_id) AS rfav'), 'rfav.resource_id', '=', 'rs.id')
             ->select([
                 'rs.id',
                 'rs.language',
                 'rs.abstract',
                 'rs.title',
                 'rs.status',
-                'rf.name',
-                DB::raw('COALESCE(rv.views_count, 0) AS views_count'),
-                DB::raw('COALESCE(rc.comments_count, 0) AS comments_count'),
-                DB::raw('COALESCE(rfav.favorites_count, 0) AS favorites_count'),
+                'rf.name'
             ])
             ->leftjoin('resource_files AS rf', 'rf.id', '=', 'rs.resource_file_id')
             ->when($subjectAreaIds != null, function ($query) use ($subjectAreaIds) {
@@ -346,9 +340,6 @@ class Resource extends Model
                 'rf.name',
                 'rs.abstract',
                 'rs.created_at',
-                'rv.views_count',
-                'rc.comments_count',
-                'rfav.favorites_count'
             )
             ->paginate(30);
     }

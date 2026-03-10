@@ -22,11 +22,11 @@
                         <div class="card-body" style="padding: 0.75rem;">
                             <p class="card-text">{{ $resource->title }}</p>
                         </div>
-                        <div class="card-footer text-muted resource-list-footer-style-override">
-                            <span><i class="fa-solid fa-eye"></i> {{ $resource->views_count }}</span>
-                            <span class="resource-list-card-footer-separator"><i class="fa-solid fa-comments"></i> {{ $resource->comments_count }}</span>
-                            <span class="resource-list-card-footer-separator"><i class="fa-solid fa-star"></i> {{ $resource->favorites_count }}</span>
-                        </div>
+{{--                        <div class="card-footer text-muted resource-list-footer-style-override">--}}
+{{--                            <span><i class="fa-solid fa-eye"></i> {{ $resource->views_count }}</span>--}}
+{{--                            <span class="resource-list-card-footer-separator"><i class="fa-solid fa-comments"></i> {{ $resource->comments_count }}</span>--}}
+{{--                            <span class="resource-list-card-footer-separator"><i class="fa-solid fa-star"></i> {{ $resource->favorites_count }}</span>--}}
+{{--                        </div>--}}
                         <a href="{{ URL::to('resource/'.$resource->id) }}" class="stretched-link"></a>
                     </div>
                 @endforeach
