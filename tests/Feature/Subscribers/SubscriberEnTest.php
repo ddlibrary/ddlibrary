@@ -11,6 +11,7 @@ use Tests\TestCase;
 class SubscriberEnTest extends TestCase
 {
     use RefreshDatabase, withFaker;
+
     protected string $defaultLocale = 'en';
 
     /** @test */

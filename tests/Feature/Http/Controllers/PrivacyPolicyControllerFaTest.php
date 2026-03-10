@@ -8,6 +8,7 @@ use Tests\TestCase;
 class PrivacyPolicyControllerFaTest extends TestCase
 {
     use RefreshDatabase;
+
     protected string $defaultLocale = 'fa';
 
     /**

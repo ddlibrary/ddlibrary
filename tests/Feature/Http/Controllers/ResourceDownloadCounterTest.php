@@ -24,7 +24,7 @@ class ResourceDownloadCounterTest extends TestCase
 
         $payload = [
             'resource_id' => $resource->id,
-            'file_id' => $attachment->id
+            'file_id' => $attachment->id,
         ];
 
         $response = $this->postJson(action([ResourceController::class, 'resourceDownloadCounter']), $payload);
@@ -38,7 +38,7 @@ class ResourceDownloadCounterTest extends TestCase
             'id',
         ]);
 
-        $this->assertDatabaseHas((new DownloadCount())->getTable(), [
+        $this->assertDatabaseHas((new DownloadCount)->getTable(), [
             'resource_id' => $resource->id,
             'file_id' => $attachment->id,
             'user_id' => 0,
@@ -64,6 +64,6 @@ class ResourceDownloadCounterTest extends TestCase
 
         $response->assertStatus(422);
 
-        $this->assertDatabaseCount((new DownloadCount())->getTable(), 0);
+        $this->assertDatabaseCount((new DownloadCount)->getTable(), 0);
     }
 }

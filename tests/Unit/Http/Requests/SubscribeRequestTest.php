@@ -61,7 +61,7 @@ class SubscribeRequestTest extends TestCase
         $roleCount = \DB::table('roles')->count();
         $roleFive = \DB::table('roles')->where('id', 5)->first();
 
-        if (!$roleFive) {
+        if (! $roleFive) {
             throw new \Exception("Database has $roleCount roles, but ID 5 is missing!");
         }
         $user = User::factory()->create();

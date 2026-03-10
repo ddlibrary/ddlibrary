@@ -5,19 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Menu;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
-class MenuController extends Controller
+class MenuController extends Controller implements HasMiddleware
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware('admin');
+        return [
+            'admin',
+        ];
     }
 
     public function index(Request $request): View
@@ -27,7 +25,7 @@ class MenuController extends Controller
 
         $menuRecords = Menu::orderBy('weight')
             ->title(request('term'))
-            ->location(request('vocabulary'))
+            ->byLocation(request('vocabulary'))
             ->language(request('language'))
             ->get();
 
@@ -179,6 +177,7 @@ class MenuController extends Controller
             $data .= ($parent->id == $id) ? 'selected' : '';
             $data .= '>'.$parent->title.'</option>';
         }
+
         return response($data, 200, ['Content-Type' => 'text/html']);
     }
 
@@ -212,11 +211,13 @@ class MenuController extends Controller
         if ($tnid) {
             // Delete all menus with the same tnid (all translations)
             Menu::where('tnid', $tnid)->delete();
+
             return redirect('admin/menu')->with('success', 'Menu and all translations deleted successfully!');
         }
 
         // If no tnid, just delete this single menu
         $menu->delete();
+
         return redirect('admin/menu')->with('success', 'Menu deleted successfully!');
     }
 }

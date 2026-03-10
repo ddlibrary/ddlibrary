@@ -17,8 +17,6 @@ class TaxonomyController extends Controller
 {
     public function index(Request $request): View
     {
-        $this->middleware('admin');
-
         $terms = TaxonomyTerm::orderBy('vid', 'desc')->orderBy('weight')
             ->name(request('term'))
             ->vocabulary(request('vocabulary'))
@@ -227,7 +225,7 @@ class TaxonomyController extends Controller
 
         $terms = TaxonomyTerm::with('taxonomyHierarchy')->where(['vid' => $vid, 'tnid' => $tnid])->get();
         $languages = LaravelLocalization::getSupportedLocales();
-        $parents = TaxonomyTerm::where('vid', $vid)->where('tnid','!=', $tnid)->get();
+        $parents = TaxonomyTerm::where('vid', $vid)->where('tnid', '!=', $tnid)->get();
 
         $terms = $terms->keyBy('language')->map(function ($term) {
             return ['term' => $term];
@@ -238,20 +236,20 @@ class TaxonomyController extends Controller
 
     public function storeOrUpdateSubjectArea(SubjectAreaRequest $request): RedirectResponse
     {
-        $operation = $request->tnid ? "updated" : "created";
+        $operation = $request->tnid ? 'updated' : 'created';
         DB::beginTransaction();
 
         try {
-            $vid        = TaxonomyVocabularyEnum::ResourceSubject->value;
-            $parents    = $request->input('parent', []);
-            $weights    = $request->input('weight',[]);
-            $names      = $request->input('name', []);
-            $termIds    = $request->input('id', []);
-            $tnid       = $request->tnid ?? 0;
+            $vid = TaxonomyVocabularyEnum::ResourceSubject->value;
+            $parents = $request->input('parent', []);
+            $weights = $request->input('weight', []);
+            $names = $request->input('name', []);
+            $termIds = $request->input('id', []);
+            $tnid = $request->tnid ?? 0;
 
             foreach ($names as $language => $name) {
                 $name = trim($name);
-                if (!empty($name)) {
+                if (! empty($name)) {
                     $weight = $weights[$language] ?? null;
                     $termId = $termIds[$language] ?? null;
                     $parentId = $parents[$language] ?? 0;
@@ -268,16 +266,18 @@ class TaxonomyController extends Controller
             }
 
             DB::commit();
+
             return redirect()->route('subject_areas.index')->with('success', "Subject Area $operation successfully!");
         } catch (\Exception $e) {
             DB::rollback();
-            return back()->with('error', 'Subject Area was not ' . $operation . '!' . $e->getMessage());
+
+            return back()->with('error', 'Subject Area was not '.$operation.'!'.$e->getMessage());
         }
     }
 
     private function saveSubjectAreaTranslation($vid, $name, $weight, $language, $tnid, $parentId, $termId = null): TaxonomyTerm
     {
-        $term = $termId ? TaxonomyTerm::find($termId) : new TaxonomyTerm();
+        $term = $termId ? TaxonomyTerm::find($termId) : new TaxonomyTerm;
         $term->vid = $vid;
         $term->name = $name;
         $term->weight = $weight;

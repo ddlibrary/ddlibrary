@@ -32,8 +32,6 @@ class UserController extends Controller
      */
     public function index(Request $request): View
     {
-        $this->middleware('admin');
-
         $usersModel = new User;
 
         $users = $usersModel->filterUsers($request->all());
@@ -137,7 +135,6 @@ class UserController extends Controller
      */
     public function edit($userId): View
     {
-        $this->middleware('admin');
         $myResources = new Resource;
         $user = User::where('id', $userId)->first();
         $countries = $myResources->resourceAttributesList('taxonomy_term_data', 15);

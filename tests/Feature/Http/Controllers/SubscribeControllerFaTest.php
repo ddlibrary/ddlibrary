@@ -14,7 +14,9 @@ use Tests\TestCase;
 class SubscribeControllerFaTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
+
     protected string $defaultLocale = 'fa';
+
     // Farsi
     /** @test */
     public function fa_authenticated_user_can_visit_subscribe_page(): void

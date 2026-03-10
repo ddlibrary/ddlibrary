@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -80,7 +81,8 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the list of users to display as a table in the admin/users
      */
-    public function scopeUsers($query): Collection
+    #[Scope]
+    protected function users($query): Collection
     {
         return DB::table('users')
             ->select(

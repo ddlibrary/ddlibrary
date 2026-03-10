@@ -12,7 +12,6 @@ class SurveyAnswerController extends Controller
 {
     public function allQuestions(): View
     {
-        $this->middleware('admin');
         $lang = config('app.locale');
         $survey_questions = SurveyQuestion::where('language', $lang)->get();
 
@@ -21,7 +20,6 @@ class SurveyAnswerController extends Controller
 
     public function questionAnswers($id): View
     {
-        $this->middleware('admin');
         $question = SurveyQuestion::find($id);
 
         $descriptive_answers = null;
@@ -82,6 +80,7 @@ class SurveyAnswerController extends Controller
                 $surveyAnswer->save();
             }
         }
+
         return response()->json(['success' => true]);
     }
 }

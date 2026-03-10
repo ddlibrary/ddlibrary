@@ -6,18 +6,16 @@ use App\Models\News;
 use App\Models\Page;
 use App\Models\Resource;
 use App\Models\User;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\View\View;
 
-class DashboardController extends Controller
+class DashboardController extends Controller implements HasMiddleware
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware('admin');
+        return [
+            'admin',
+        ];
     }
 
     public function index(): View

@@ -16,16 +16,16 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
-class RegisterController extends Controller
+class RegisterController extends Controller implements HasMiddleware
 {
     /*
     |--------------------------------------------------------------------------
@@ -47,14 +47,11 @@ class RegisterController extends Controller
      */
     protected $redirectTo = '/home';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware('guest');
+        return [
+            'guest',
+        ];
     }
 
     /**
@@ -71,7 +68,6 @@ class RegisterController extends Controller
 
         return view('auth.register', compact('countries', 'provinces', 'gmail_signup_url'));
     }
-
 
     /**
      * Create a new user instance after a valid registration.

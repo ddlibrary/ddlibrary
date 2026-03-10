@@ -90,10 +90,11 @@ class MenuControllerTest extends TestCase
         $response->assertViewHas('searchBar');
         $response->assertViewHas('menuRecords', function ($menuRecords) use ($menus) {
             foreach ($menus as $menu) {
-                if (!collect($menuRecords)->contains(fn($item) => $item->id === $menu->id)) {
+                if (! collect($menuRecords)->contains(fn ($item) => $item->id === $menu->id)) {
                     return false;
                 }
             }
+
             return true;
         });
     }
@@ -285,7 +286,7 @@ class MenuControllerTest extends TestCase
         $admin->roles()->attach(5);
 
         $tnid = Menu::max('tnid') + 1;
-        
+
         // Create menu with translations
         $menuEn = Menu::factory()->create([
             'tnid' => $tnid,
@@ -309,7 +310,7 @@ class MenuControllerTest extends TestCase
 
         $response->assertRedirect('admin/menu');
         $response->assertSessionHas('success', 'Menu and all translations deleted successfully!');
-        
+
         // Verify all translations are deleted
         $this->assertDatabaseMissing('menus', ['id' => $menuEn->id]);
         $this->assertDatabaseMissing('menus', ['id' => $menuFa->id]);
@@ -327,7 +328,7 @@ class MenuControllerTest extends TestCase
         $admin->roles()->attach(5);
 
         $tnid = Menu::max('tnid') + 1;
-        
+
         // Create menu with translations
         $menuEn = Menu::factory()->create([
             'tnid' => $tnid,
@@ -352,7 +353,7 @@ class MenuControllerTest extends TestCase
 
         $response->assertRedirect('admin/menu');
         $response->assertSessionHas('success', 'Menu and all translations deleted successfully!');
-        
+
         // Verify all translations are deleted
         $this->assertDatabaseMissing('menus', ['id' => $menuEn->id]);
         $this->assertDatabaseMissing('menus', ['id' => $menuFa->id]);
@@ -372,7 +373,7 @@ class MenuControllerTest extends TestCase
 
         // Should redirect to login (may or may not have locale prefix)
         $this->assertTrue(
-            $response->isRedirect() && 
+            $response->isRedirect() &&
             (str_contains($response->getTargetUrl(), 'login') || str_contains($response->getTargetUrl(), '/en/login'))
         );
     }
@@ -412,7 +413,6 @@ class MenuControllerTest extends TestCase
         $response->assertNotFound();
     }
 
-
     /**
      * @test
      */
@@ -440,10 +440,10 @@ class MenuControllerTest extends TestCase
 
         $response->assertRedirect('admin/menu');
         $response->assertSessionHas('success', 'Menu deleted successfully!');
-        
+
         // Verify sub-menu is deleted
         $this->assertDatabaseMissing('menus', ['id' => $subMenu->id]);
-        
+
         // Verify parent menu still exists
         $this->assertDatabaseHas('menus', ['id' => $parentMenu->id]);
     }
@@ -459,7 +459,7 @@ class MenuControllerTest extends TestCase
         $admin->roles()->attach(5);
 
         $tnid = Menu::max('tnid') + 1;
-        
+
         // Create parent menu with translations
         $parentMenuEn = Menu::factory()->create([
             'tnid' => $tnid,
@@ -489,7 +489,7 @@ class MenuControllerTest extends TestCase
 
         $response->assertRedirect('admin/menu');
         $response->assertSessionHas('success', 'Menu and all translations deleted successfully!');
-        
+
         // Verify parent menu translations are deleted
         $this->assertDatabaseMissing('menus', ['id' => $parentMenuEn->id]);
         $this->assertDatabaseMissing('menus', ['id' => $parentMenuFa->id]);

@@ -254,14 +254,14 @@ class ReportController extends Controller
     {
         $request->validate([
             'from' => 'date|before:to',
-            'to'   => 'date|after:from',
+            'to' => 'date|after:from',
         ]);
         $from = $request->input('from');
         $to = $request->input('to');
-        $resources_count = DB::table('resources')->whereBetween('created_at', [$from, $to] )->count();
+        $resources_count = DB::table('resources')->whereBetween('created_at', [$from, $to])->count();
         $registered_users_count = DB::table('users')
             ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
-            ->whereBetween('users.created_at', [$from, $to] )
+            ->whereBetween('users.created_at', [$from, $to])
             ->selectRaw("
             count(*) as total_users_count,
             count(case when user_profiles.gender = 'Male' then 1 end) as male_count,
@@ -270,7 +270,8 @@ class ReportController extends Controller
             count(case when user_profiles.gender is null then 1 end) as unknown_count
             ")
             ->first();
-        $resources_download_count = DB::table('download_counts')->whereBetween('created_at', [$from, $to] )->count();
+        $resources_download_count = DB::table('download_counts')->whereBetween('created_at', [$from, $to])->count();
+
         return view('admin.reports.impact_report', compact('resources_count', ('registered_users_count'), 'resources_download_count'));
     }
 }

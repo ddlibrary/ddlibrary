@@ -8,7 +8,9 @@ use Tests\TestCase;
 class PrivacyPolicyControllerEnTest extends TestCase
 {
     use RefreshDatabase;
+
     protected string $defaultLocale = 'en';
+
     /**
      * @test
      */
@@ -18,7 +20,6 @@ class PrivacyPolicyControllerEnTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('policies.privacy_en_web_current');
     }
-
 
     /**
      * @test

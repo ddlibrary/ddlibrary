@@ -10,12 +10,14 @@ use Mcamara\LaravelLocalization\LaravelLocalization;
 abstract class TestCase extends BaseTestCase
 {
     use AdditionalAssertions;
+
     protected bool $seed = true;
+
     protected string $defaultLocale = 'en';
 
     protected function setUp(): void
     {
-        putenv(LaravelLocalization::ENV_ROUTE_KEY . '=' . $this->defaultLocale);
+        putenv(LaravelLocalization::ENV_ROUTE_KEY.'='.$this->defaultLocale);
         parent::setUp();
     }
 
@@ -24,7 +26,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function refreshApplicationWithLocale(string $locale): void
     {
-        putenv(LaravelLocalization::ENV_ROUTE_KEY . '=' . $locale);
+        putenv(LaravelLocalization::ENV_ROUTE_KEY.'='.$locale);
         app()->make(LaravelLocalization::class)->setLocale($locale);
     }
 

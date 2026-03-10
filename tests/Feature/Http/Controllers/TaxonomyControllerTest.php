@@ -437,7 +437,8 @@ class TaxonomyControllerTest extends TestCase
         $response->assertSessionHasErrors('weight');
     }
 
-    private function modifyTaxonomyHierarchy(){
+    private function modifyTaxonomyHierarchy()
+    {
         if (DB::getDriverName() === 'sqlite') {
             // Test-only: drop then recreate table with nullable aux_id and trigger for auto value
             DB::statement('DROP TABLE IF EXISTS taxonomy_term_hierarchy');

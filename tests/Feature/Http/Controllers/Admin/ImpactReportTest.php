@@ -19,7 +19,7 @@ class ImpactReportTest extends TestCase
         $this->withoutMiddleware();
 
         $from = Carbon::parse('2024-01-01 00:00:00');
-        $to   = Carbon::parse('2024-01-31 23:59:59');
+        $to = Carbon::parse('2024-01-31 23:59:59');
 
         // Resources: 2 in range, 1 out of range
         Resource::factory()->create(['created_at' => Carbon::parse('2024-01-10 12:00:00')]);
@@ -54,7 +54,7 @@ class ImpactReportTest extends TestCase
 
         $response = $this->get(action([ReportController::class, 'impactReport'], [
             'from' => $from->toDateTimeString(),
-            'to'   => $to->toDateTimeString(),
+            'to' => $to->toDateTimeString(),
         ]));
 
         $response->assertOk();
@@ -79,7 +79,7 @@ class ImpactReportTest extends TestCase
 
         $response = $this->get(action([ReportController::class, 'impactReport'], [
             'from' => '2024-02-01 00:00:00',
-            'to'   => '2024-01-01 00:00:00',
+            'to' => '2024-01-01 00:00:00',
         ]));
 
         // Laravel validation on a GET typically redirects back (302)

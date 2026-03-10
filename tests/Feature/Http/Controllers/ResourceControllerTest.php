@@ -946,7 +946,7 @@ class ResourceControllerTest extends TestCase
             'resource_file_id' => $newResourceFile->id,
         ];
         $response = $this->post(route('edit1', ['resourceId' => $resource->id]), $newValues);
-        $response->assertRedirect('/resources/edit/step2/' . $resource->id);
+        $response->assertRedirect('/resources/edit/step2/'.$resource->id);
 
         // Verify data is stored in session
         $sessionData = Session::get('edit_resource_step_1');
@@ -996,7 +996,7 @@ class ResourceControllerTest extends TestCase
         $this->assertTrue($viewResource->publishers->contains($publisherTerm->id));
     }
 
-     /**
+    /**
      * @test
      */
     public function edit_step_one_get_displays_correctly_when_no_publisher_only_author(): void
@@ -1106,7 +1106,7 @@ class ResourceControllerTest extends TestCase
             'resource_file_id' => null,
         ]);
 
-        $response->assertRedirect('/resources/edit/step2/' . $resource->id);
+        $response->assertRedirect('/resources/edit/step2/'.$resource->id);
         $sessionData = Session::get('edit_resource_step_1');
         $this->assertEquals('Publisher Only', $sessionData['publisher']);
         $this->assertEmpty($sessionData['author'] ?? '');
@@ -1136,7 +1136,7 @@ class ResourceControllerTest extends TestCase
             'resource_file_id' => null,
         ]);
 
-        $response->assertRedirect('/resources/edit/step2/' . $resource->id);
+        $response->assertRedirect('/resources/edit/step2/'.$resource->id);
         $sessionData = Session::get('edit_resource_step_1');
         $this->assertEquals('Author Only', $sessionData['author']);
     }
@@ -1165,7 +1165,7 @@ class ResourceControllerTest extends TestCase
             'resource_file_id' => null,
         ]);
 
-        $response->assertRedirect('/resources/edit/step2/' . $resource->id);
+        $response->assertRedirect('/resources/edit/step2/'.$resource->id);
         $sessionData = Session::get('edit_resource_step_1');
         $this->assertNull($sessionData['translator'] ?? null);
     }
@@ -1194,7 +1194,7 @@ class ResourceControllerTest extends TestCase
             'resource_file_id' => null,
         ]);
 
-        $response->assertRedirect('/resources/edit/step2/' . $resource->id);
+        $response->assertRedirect('/resources/edit/step2/'.$resource->id);
         $sessionData = Session::get('edit_resource_step_1');
         $this->assertArrayHasKey('resource_file_id', $sessionData);
         $this->assertTrue($sessionData['resource_file_id'] === '' || $sessionData['resource_file_id'] === null);
@@ -1371,7 +1371,7 @@ class ResourceControllerTest extends TestCase
         ]);
 
         // Should redirect to step 3
-        $response->assertRedirect('/resources/edit/step3/' . $resource->id);
+        $response->assertRedirect('/resources/edit/step3/'.$resource->id);
 
         // Verify data is stored in session
         $this->assertNotNull(Session::get('edit_resource_step_2'));

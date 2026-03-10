@@ -29,8 +29,6 @@ class ContactController extends Controller
      */
     public function index(): View
     {
-        $this->middleware('admin');
-
         $records = Contact::orderBy('id', 'desc')->paginate(10);
 
         return view('admin.contacts.contact_list', compact('records'));
