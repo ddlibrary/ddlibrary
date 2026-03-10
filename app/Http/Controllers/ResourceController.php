@@ -189,13 +189,10 @@ class ResourceController extends Controller
             $request->query->remove('subjectAreaParent');
             $request->query->add(['subject_area' => $finalSubjectAreaIds]);
         }
+
         $resources = $resource->paginateResourcesBy($request);
 
-        $views = new ResourceView;
-        $favorites = new ResourceFavorite;
-        $comments = new ResourceComment;
-
-        return view('resources.resources_list', compact('resources', 'views', 'favorites', 'comments'));
+        return view('resources.resources_list', compact('resources'));
     }
 
     public function resourceFilter(): Factory|View|Application

@@ -16,21 +16,19 @@
     <div class="container-fluid">
         @if (!$resources->isEmpty())
             <div class="row justify-content-center">
-                @foreach ($resources->unique('id') AS $resource)
-                    @if ($resource->status)
-                        <div class="card resource-card col-8 col-md-4 col-xl-3 col-xxl-2 m-1 p-0">
-                            <img class="card-img-top lazyload" data-src="{{ $resource->name ? getResourceImage($resource->name, true) : getImagefromResource($resource->abstract, '282x254') }}" alt="Resource image" src="">
-                            <div class="card-body" style="padding: 0.75rem;">
-                                <p class="card-text">{{ $resource->title }}</p>
-                            </div>
-                            <div class="card-footer text-muted resource-list-footer-style-override">
-                                <span><i class="fa-solid fa-eye"></i> {{ $views->where('resource_id', $resource->id)->count() }}</span>
-                                <span class="resource-list-card-footer-separator"><i class="fa-solid fa-comments"></i> {{ $comments->where('resource_id', $resource->id)->count() }}</span>
-                                <span class="resource-list-card-footer-separator"><i class="fa-solid fa-star"></i> {{ $favorites->where('resource_id', $resource->id)->count() }}</span>
-                            </div>
-                            <a href="{{ URL::to('resource/'.$resource->id) }}" class="stretched-link"></a>
+                @foreach ($resources AS $resource)
+                    <div class="card resource-card col-8 col-md-4 col-xl-3 col-xxl-2 m-1 p-0">
+                        <img class="card-img-top lazyload" data-src="{{ $resource->name ? getResourceImage($resource->name, true) : getImagefromResource($resource->abstract, '282x254') }}" alt="Resource image" src="">
+                        <div class="card-body" style="padding: 0.75rem;">
+                            <p class="card-text">{{ $resource->title }}</p>
                         </div>
-                    @endif
+                        <div class="card-footer text-muted resource-list-footer-style-override">
+                            <span><i class="fa-solid fa-eye"></i> {{ $resource->views_count }}</span>
+                            <span class="resource-list-card-footer-separator"><i class="fa-solid fa-comments"></i> {{ $resource->comments_count }}</span>
+                            <span class="resource-list-card-footer-separator"><i class="fa-solid fa-star"></i> {{ $resource->favorites_count }}</span>
+                        </div>
+                        <a href="{{ URL::to('resource/'.$resource->id) }}" class="stretched-link"></a>
+                    </div>
                 @endforeach
             </div>
         @else
