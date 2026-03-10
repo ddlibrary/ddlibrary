@@ -272,31 +272,39 @@ class Resource extends Model
         }
 
         return DB::table('resources AS rs')
-            ->select('rs.id', 'rs.language', 'rs.abstract', 'rs.title', 'rs.status', 'rf.name')
+            ->select([
+                'rs.id',
+                'rs.language',
+                'rs.abstract',
+                'rs.title',
+                'rs.status',
+                'rf.name',
+                DB::raw('(SELECT COUNT(*) FROM resource_views rv WHERE rv.resource_id = rs.id) AS views_count'),
+                DB::raw('(SELECT COUNT(*) FROM resource_comments rc WHERE rc.resource_id = rs.id) AS comments_count'),
+                DB::raw('(SELECT COUNT(*) FROM resource_favorites rfav WHERE rfav.resource_id = rs.id) AS favorites_count'),
+            ])
             ->leftjoin('resource_files AS rf', 'rf.id', '=', 'rs.resource_file_id')
             ->when($subjectAreaIds != null, function ($query) use ($subjectAreaIds) {
                 return $query
                     ->join('resource_subject_areas AS rsa', 'rsa.resource_id', '=', 'rs.id')
                     ->join('taxonomy_term_hierarchy AS tth', 'tth.tid', '=', 'rsa.tid')
-                    ->where('tth.parent', $subjectAreaIds)
-                    ->where('rs.status', 1)
-                    ->orWhere('tth.tid', $subjectAreaIds)
-                    ->groupBy('tth.tid');
+                    ->where(function ($q) use ($subjectAreaIds) {
+                        $q->whereIn('tth.parent', (array) $subjectAreaIds)
+                            ->orWhereIn('tth.tid', (array) $subjectAreaIds);
+                    });
             })
             ->when($levelIds != null, function ($query) use ($levelIds) {
                 return $query->join('resource_levels AS rl', function ($join) use ($levelIds) {
                     $join
                         ->on('rl.resource_id', '=', 'rs.id')
-                        ->where('rl.tid', $levelIds)
-                        ->where('rs.status', 1);
+                        ->where('rl.tid', $levelIds);
                 });
             })
             ->when($typeIds != null, function ($query) use ($typeIds) {
                 return $query->join('resource_learning_resource_types AS rlrt', function ($join) use ($typeIds) {
                     $join
                         ->on('rlrt.resource_id', '=', 'rs.id')
-                        ->where('rlrt.tid', $typeIds)
-                        ->where('rs.status', 1);
+                        ->where('rlrt.tid', $typeIds);
                 });
             })
             ->when($searchQuery != null, function ($query) use ($searchQuery) {
@@ -314,14 +322,12 @@ class Resource extends Model
                             ->orwhere('ttd.name', 'like', '%'.$searchQuery.'%')
                             ->orwhere('ttdp.name', 'like', '%'.$searchQuery.'%')
                             ->orwhere('ttdt.name', 'like', '%'.$searchQuery.'%');
-                    })
-                    ->where('rs.status', 1);
+                    });
             })
             ->when($request->filled('publisher'), function ($query) use ($request) {
                 return $query
                     ->leftJoin('resource_publishers AS rpub', 'rpub.resource_id', '=', 'rs.id')
-                    ->where('rpub.tid', $request['publisher'])
-                    ->where('rs.status', 1);
+                    ->where('rpub.tid', $request['publisher']);
             })
             ->where('rs.language', config('app.locale'))
             ->where('rs.status', 1)
@@ -329,7 +335,7 @@ class Resource extends Model
                 $query->where('rs.id', '>=', 11479)->orWhere('rs.id', '<', 10378); // TODO: remove after restoration
             })
             ->orderBy('rs.created_at', 'desc')
-            ->groupBy('rs.id', 'rs.language', 'rs.title', 'rs.abstract', 'rs.created_at')
+            ->groupBy('rs.id', 'rs.language', 'rs.title', 'rs.status', 'rf.name', 'rs.abstract', 'rs.created_at')
             ->paginate(30);
     }
 
