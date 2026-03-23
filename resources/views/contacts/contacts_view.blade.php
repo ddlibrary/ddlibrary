@@ -16,7 +16,7 @@
         <header>
             <h1>@lang('Contact Us')</h1>
         </header>
-        <div class="content-body" style="display: flex;flex-wrap: wrap;">
+        <div class="content-body d-flex flex-column flex-md-row">
             <form method="POST" action="{{ route('contact') }}" style="flex: 1;" id="contact-form">
                 @honeypot
                 @csrf
@@ -93,7 +93,7 @@
                     </div>
                 </div>
             </form>
-            <div style="flex:2; flex-direction:column;">
+            <div style="flex:2" class="d-flex flex-column">
                 <div class="sidebar" style="padding: 1em;">
                     <h3>@lang('Want to schedule a demo of the DD Library at your school, college or institution? Send us a request using the contact form on this page.')</h3>
                 </div>
