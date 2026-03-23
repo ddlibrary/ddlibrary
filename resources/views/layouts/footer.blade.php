@@ -39,7 +39,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         {{-- Copyright --}}
         <div class="row mt-3">
