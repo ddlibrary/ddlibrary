@@ -27,7 +27,7 @@
                 <a class="nav-link" href="{{ URL::to('add/resourcefile') }}"><i class="fas fa-upload"></i> @lang('Submit a resource')</a>
             </li>
         </ul>
-        <ul class="navbar-nav align-items-center">
+        <ul class="navbar-nav align-items-lg-center">
             @php
                 $currentLocale = LaravelLocalization::getCurrentLocale();
                 $currentPath = request()->path();
