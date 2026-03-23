@@ -29,7 +29,7 @@
 
                         <div class="col-md-8">
                             <input id="email" type="email"
-                                class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" style="width: 377px;"
+                                class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"
                                 name="email" value="{{ old('email') }}" required>
 
                         </div>
