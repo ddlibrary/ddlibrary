@@ -10,7 +10,7 @@
             action="@if ($edit) {{ route('edit2', $resource['id']) }}@else{{ route('step2') }} @endif"
             enctype="multipart/form-data">
             @csrf
-            <div class=" col-6">
+            <div class=" col-sm-12 col-md-6">
                 <div class="form-group">
                     <label for="attachments">
                         @lang('Attachments')
@@ -54,7 +54,7 @@
 
                 </div>
             </div>
-            <div class="form-item col-6">
+            <div class="form-item col-sm-12 col-md-6">
                 <label for="subject_areas">
                     <strong>@lang('Subject Areas') {{ en('Subject Areas') }}</strong>
                 </label>
@@ -90,7 +90,7 @@
                     </span><br>
                 @endif
             </div>
-            <div class="form-item col-6">
+            <div class="form-item col-sm-12 col-md-6">
                 <label for="keywords">
                     <strong>@lang('Keywords') {{ en('Keywords') }}</strong>
                 </label>
@@ -106,7 +106,7 @@
                     </span><br>
                 @endif
             </div>
-            <div class="form-item col-6">
+            <div class="form-item col-sm-12 col-md-6">
                 <label for="learning_resources_types">
                     <strong>@lang('Learning Resources Types') {{ en('Learning Resources Types') }}</strong>
                 </label>
@@ -125,7 +125,7 @@
                     </span><br>
                 @endif
             </div>
-            <div class="form-item col-6">
+            <div class="form-item col-sm-12 col-md-6">
                 <label for="educational_use">
                     <strong>@lang('Educational Use') {{ en('Educational Use') }}</strong>
                 </label>
