@@ -67,7 +67,7 @@
                                 >
                             @endif
                         </div>
-                        <div class="d-flex justify-content-between mb-3">
+                        <div class="d-flex justify-content-between mb-3 gap-1">
                             <a href="{{ config('app.google_sso_enabled') ? route('login.google') : 'javascript:void(0)' }}"
                                class="btn btn-outline-secondary btn-md {{ config('app.google_sso_enabled') ? '' : 'disabled' }}"
                             >
