@@ -88,8 +88,8 @@ class PageController extends Controller
         ]);
 
         $page->title = $request->input('title');
-        $page->summary = $request->input('summary');
-        $page->body = $request->input('body');
+        $page->summary = fixImage($request->input('summary'), '', false, true);
+        $page->body = fixImage($request->input('body'), '', false, true);
         $page->language = $request->input('language');
         $page->user_id = Auth::id();
         $page->status = $request->input('published');
@@ -123,8 +123,8 @@ class PageController extends Controller
 
         $page = Page::find($id);
         $page->title = $request->input('title');
-        $page->summary = $request->input('summary');
-        $page->body = $request->input('body');
+        $page->summary = fixImage($request->input('summary'), '', false, true);
+        $page->body = fixImage($request->input('body'), '', false, true);
         $page->language = $request->input('language');
         $page->user_id = Auth::id();
         $page->status = $request->input('published');

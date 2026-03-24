@@ -85,8 +85,8 @@ class NewsController extends Controller
         ]);
 
         $news->title = $request->input('title');
-        $news->summary = $request->input('summary');
-        $news->body = $request->input('body');
+        $news->summary = fixImage($request->input('summary'), '', false, true);
+        $news->body = fixImage($request->input('body'), '', false, true);
         $news->language = $request->input('language');
         $news->user_id = Auth::id();
         $news->status = $request->input('published');
@@ -120,8 +120,8 @@ class NewsController extends Controller
 
         $news = News::find($id);
         $news->title = $request->input('title');
-        $news->summary = $request->input('summary');
-        $news->body = $request->input('body');
+        $news->summary = fixImage($request->input('summary'), '', false, true);
+        $news->body = fixImage($request->input('body'), '', false, true);
         $news->language = $request->input('language');
         $news->user_id = Auth::id();
         $news->status = $request->input('published');
