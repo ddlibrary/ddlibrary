@@ -108,7 +108,7 @@ class FileController extends Controller
             @unlink($tempFilePath);
         }
 
-        $imageUrl = getFile("thumbnails/$fileName");
+        $imageUrl = getFile("files/thumbnails/$fileName");
 
         return response()->json([
             'url' => $imageUrl,
