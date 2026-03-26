@@ -15,7 +15,7 @@
         "guzzlehttp/guzzle": "^7.10",
         "imagine/imagine": "^1.5",
         "jenssegers/agent": "^2.6",
-        "laravel/framework": "^12.55",
+        "laravel/framework": "^12.56",
         "laravel/helpers": "^1.8",
         "laravel/sanctum": "^4.3",
         "laravel/socialite": "^5.25",
