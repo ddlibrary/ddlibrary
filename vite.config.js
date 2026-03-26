@@ -23,4 +23,10 @@ export default defineConfig({
             '../webfonts': path.resolve(__dirname, 'node_modules/@fortawesome/fontawesome-free/webfonts'),
         },
     },
+    optimizeDeps: {
+        include: ['jquery'],
+    },
+    define: {
+        global: 'window',
+    },
 });

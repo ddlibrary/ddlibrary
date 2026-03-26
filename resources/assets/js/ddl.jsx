@@ -1,16 +1,15 @@
 import '../css/ddl.css';
 import $ from 'jquery';
 import Cookies from 'js-cookie';
+import 'bootstrap/dist/js/bootstrap.bundle';
+import lazysizes from 'lazysizes';
+import axios from "axios";
 
 window.Cookies = Cookies;
-window.$ = window.jQuery = $; // Make jQuery globally available
+window.$ = window.jQuery = $;
 
-// Import jQuery UI
-import 'jquery-ui/ui/widgets/autocomplete.js';
-import 'jquery-ui/ui/widgets/datepicker.js';
-import 'bootstrap/dist/js/bootstrap.bundle';
-import '../../assets/js/lazysizes.min.js';
-import axios from "axios";
+await import('jquery-ui/ui/widgets/autocomplete.js');
+await import('jquery-ui/ui/widgets/datepicker.js');
 
 if(window.jQuery){
     $(document).ready(function(){
