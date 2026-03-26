@@ -161,9 +161,6 @@
 </script>
 
 
-{{-- Survey submission --}}
-<script src="{{ asset('js/js.cookie.min.js') }}"></script>
-
 <script>
     if(window.jQuery){
         $(function () {
