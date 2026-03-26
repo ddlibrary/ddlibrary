@@ -54,6 +54,7 @@ services:
     restart: unless-stopped
     ports:
       - "9000:9000"
+      - "5173:5173"
     networks:
       - ddlmain-network
   redis:

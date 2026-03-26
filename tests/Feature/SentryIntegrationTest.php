@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Illuminate\Support\Facades\Route;
-use Sentry\Laravel\Facade as Sentry;
 use Tests\TestCase;
 use Exception;
 use Sentry\State\HubInterface;

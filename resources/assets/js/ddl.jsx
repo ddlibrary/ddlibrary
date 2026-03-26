@@ -1,3 +1,4 @@
+import '../css/ddl.css';
 import $ from 'jquery';
 window.$ = window.jQuery = $; // Make jQuery globally available
 

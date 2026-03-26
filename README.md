@@ -57,7 +57,7 @@ docker compose exec app php artisan key:generate
 docker compose exec app php artisan storage:link
 # Install JS dependencies and build assets
 docker compose exec app npm ci
-docker compose exec app npm run development
+docker compose exec app npm run dev
 # Run database migrations (and seed if applicable)
 docker compose exec app php artisan migrate
 # docker compose exec app php artisan db:seed   # TODO: enable if seeds exist/required
@@ -70,7 +70,7 @@ composer install
 php artisan key:generate
 php artisan storage:link
 npm ci
-npm run development
+npm run dev
 # Set up your database (create schema), then:
 php artisan migrate
 # php artisan db:seed   # TODO: enable if seeds exist/required
@@ -80,11 +80,11 @@ App will be available at http://127.0.0.1:8080
 
 ## NPM Scripts
 Defined in `package.json`:
-- `npm run development` — Build assets in development mode
-- `npm run watch` — Build and watch for changes
-- `npm run watch-poll` — Watch with polling (useful in Docker/VMs)
-- `npm run hot` — HMR via Mix
-- `npm run production` — Build minified production assets
+- `npm run dev` — Build assets in development mode
+- `npm run dev` — Build and watch for changes
+- `npm run dev-poll` — Watch with polling (useful in Docker/VMs)
+- `npm run dev` — HMR via Mix
+- `npm run build` — Build minified production assets
 
 ## Composer Scripts
 Defined in `composer.json`:
@@ -196,7 +196,7 @@ Notes:
 - `php artisan queue:work` — Run queue worker (if using a queue driver)
 
 ## Deployment
-- Build production assets: `npm run production`
+- Build production assets: `npm run build`
 - Ensure correct `.env` for environment and set `APP_KEY`
 - Configure `FILESYSTEM_DISK` and S3 credentials if storing on S3
 - Run database migrations

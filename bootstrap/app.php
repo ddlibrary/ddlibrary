@@ -39,6 +39,6 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        if (app()->isProduction())
+        if (app()->isProduction() || app()->environment('testing'))
             Integration::handles($exceptions);
     })->create();

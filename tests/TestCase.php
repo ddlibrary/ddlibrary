@@ -19,6 +19,7 @@ abstract class TestCase extends BaseTestCase
     {
         putenv(LaravelLocalization::ENV_ROUTE_KEY.'='.$this->defaultLocale);
         parent::setUp();
+        $this->withoutVite();
     }
 
     /**

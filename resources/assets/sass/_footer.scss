@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $color-text-light: #f8f9fa;
 $color-dark-bg: #343a40;
 $color-link: #ffffff;
@@ -86,15 +88,15 @@ $color-youtube: #ff0000;
 
       &.twitter {
         color: $color-twitter;
-        &:hover { color: lighten($color-twitter, 15%); }
+        &:hover { color: color.adjust($color-twitter, 15%); }
       }
       &.facebook {
         color: $color-facebook;
-        &:hover { color: lighten($color-facebook, 15%); }
+        &:hover { color: color.adjust($color-facebook, 15%); }
       }
       &.youtube {
         color: $color-youtube;
-        &:hover { color: lighten($color-youtube, 15%); }
+        &:hover { color: color.adjust($color-youtube, 15%); }
       }
     }
   }
@@ -104,6 +106,6 @@ $color-youtube: #ff0000;
   }
 
   .text-muted {
-    color: lighten($color-dark-bg, 50%) !important;
+    color: color.adjust($color-dark-bg, 50%) !important;
   }
 }

@@ -119,7 +119,7 @@
 <!-- /.container-fluid-->
 <!-- /.content-wrapper-->
 @push('scripts')
-    <script src="{{ asset('js/ddl.js') }}"></script>
+    @vite('resources/assets/js/ddl.jsx')
     <script>
         $(document).ready(function(){
             $('#country').trigger('change');

@@ -20,7 +20,7 @@
 
     <link rel="shortcut icon" href="{{ getFile('files/favicon.ico', now()->addMinutes(5)) }}">
 
-    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+    @vite(['resources/assets/sass/app.scss', 'resources/assets/js/ddl.jsx'])
 
     @if (Lang::locale() != 'en')
         <link rel="stylesheet" href="{{ asset('css/local.css') }}">
