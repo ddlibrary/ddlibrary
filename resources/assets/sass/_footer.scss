@@ -88,15 +88,15 @@ $color-youtube: #ff0000;
 
       &.twitter {
         color: $color-twitter;
-        &:hover { color: color.adjust($color-twitter, 15%); }
+        &:hover { color: color.adjust($color-twitter, $lightness: 15%); }
       }
       &.facebook {
         color: $color-facebook;
-        &:hover { color: color.adjust($color-facebook, 15%); }
+        &:hover { color: color.adjust($color-facebook, $lightness: 15%); }
       }
       &.youtube {
         color: $color-youtube;
-        &:hover { color: color.adjust($color-youtube, 15%); }
+        &:hover { color: color.adjust($color-youtube, $lightness: 15%); }
       }
     }
   }
@@ -106,6 +106,6 @@ $color-youtube: #ff0000;
   }
 
   .text-muted {
-    color: color.adjust($color-dark-bg, 50%) !important;
+    color: color.adjust($color-dark-bg, $lightness: 50%) !important;
   }
 }

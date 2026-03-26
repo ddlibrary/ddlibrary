@@ -1,3 +1,6 @@
+import JSZip from 'jszip';
+import ePub from 'epubjs';
+
 // Global functions for button clicks
 (function() {
     // Define the epubViewer variable in the global scope
@@ -54,7 +57,6 @@ class EPUBViewer {
 
     async loadEPUB() {
         try {
-            await this.loadLibraries();
             const route = document.getElementById('app').dataset.fileRoute;
             this.book = new ePub(route);
             
@@ -80,71 +82,6 @@ class EPUBViewer {
         const contentElement = document.getElementById('epubContent');
         if (contentElement) {
             contentElement.style.minHeight = '600px';
-        }
-    }
-
-    async loadLibraries() {
-        try {
-            // Load JSZip
-            if (typeof JSZip === 'undefined') {
-                const jszipSources = [
-                    'https://unpkg.com/jszip@3.10.1/dist/jszip.min.js',
-                    'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js'
-                ];
-                
-                let jszipLoaded = false;
-                for (const source of jszipSources) {
-                    try {
-                        const response = await fetch(source);
-                        if (response.ok) {
-                            const script = await response.text();
-                            eval(script);
-                            jszipLoaded = true;
-                            break;
-                        }
-                    } catch (e) {
-                        console.log(`Failed to load JSZip from ${source}`);
-                    }
-                }
-                
-                if (!jszipLoaded) {
-                    throw new Error('Failed to load JSZip library');
-                }
-            }
-            
-            // Load ePub.js
-            if (typeof ePub === 'undefined') {
-                const epubSources = [
-                    'https://unpkg.com/epubjs@0.3.88/dist/epub.min.js',
-                    'https://cdn.jsdelivr.net/npm/epubjs@0.3.88/dist/epub.min.js'
-                ];
-                
-                let epubLoaded = false;
-                for (const source of epubSources) {
-                    try {
-                        const response = await fetch(source);
-                        if (response.ok) {
-                            const script = await response.text();
-                            eval(script);
-                            epubLoaded = true;
-                            break;
-                        }
-                    } catch (e) {
-                        console.log(`Failed to load epubjs from ${source}`);
-                    }
-                }
-                
-                if (!epubLoaded) {
-                    throw new Error('Failed to load epubjs library');
-                }
-            }
-            
-            if (typeof JSZip === 'undefined' || typeof ePub === 'undefined') {
-                throw new Error('Required libraries failed to load');
-            }
-        } catch (error) {
-            console.error('Error loading libraries:', error);
-            throw new Error(`Failed to load required libraries: ${error.message}`);
         }
     }
 
