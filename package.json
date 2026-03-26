@@ -19,6 +19,7 @@
     "dependencies": {
         "epubjs": "^0.3.93",
         "jquery-ui": "^1.14.1",
+        "js-cookie": "^3.0.5",
         "jszip": "^3.10.1"
     }
 }

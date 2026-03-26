@@ -125,7 +125,6 @@
         <!-- Optional JavaScript -->
     </div>
     @stack('scripts')
-    <script async src="{{ asset('js/all.js') }}"></script>
     @yield('script')
 
     @if (Auth::check() && Auth::user()->profile->gender == null)

@@ -1,5 +1,8 @@
 import '../css/ddl.css';
 import $ from 'jquery';
+import Cookies from 'js-cookie';
+
+window.Cookies = Cookies;
 window.$ = window.jQuery = $; // Make jQuery globally available
 
 // Import jQuery UI

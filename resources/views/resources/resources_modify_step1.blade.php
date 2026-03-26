@@ -292,7 +292,7 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ asset('js/resource.js') }}"></script>
+    @vite('resources/assets/js/resource.jsx')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"
         integrity="sha384-P65gU1u4/dZpqRQ0AVqW+DHPwXmNAR84Qk31dC95hjk0WatF1GsVF1zRm/0uB+o0" crossorigin="anonymous">
