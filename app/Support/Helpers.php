@@ -72,7 +72,7 @@ if (! function_exists('giveMeResourceIcon')) {
 // Abstracts in Drupal installation had /sites/default/files/learn-1044078_960_720_0.jpg type image links
 // In here, I am fixing that and applying Laravel's way of showing images
 if (! function_exists('fixImage')) {
-    function fixImage($abstract, $resource_id, $isThumbnail = false)
+    function fixImage($abstract, $resource_id, $isThumbnail = false, $onlyFileName = false)
     {
         // To replace hardcoded url to dynamic base_url
         $abstract = str_replace('http://www.darakhtdanesh.org/', URL::to('/').'/', $abstract);
@@ -99,13 +99,19 @@ if (! function_exists('fixImage')) {
                 if (strpos($absStr, 'youtube') == false && strpos($absStr, 'google') == false) {
                     $absArray = explode('/', $absStr);
                     $imageName = last($absArray);
-                    if ($isThumbnail) {
-                        $fixedImage = getFile("files/thumbnails/$imageName");
-                    } else {
-                        if (Storage::disk('public')->exists($imageName)) {
-                            $fixedImage = Storage::disk('public')->url($imageName);
-                        } else {
-                            $fixedImage = '';
+                    if($onlyFileName){
+                        $imageName = explode('?', $imageName, 2)[0];
+                        $fixedImage = $imageName;
+                    }else{
+                        if($isThumbnail){
+                            $imageName = explode('?', $imageName, 2)[0];
+                            $fixedImage = getFile("files/thumbnails/$imageName");
+                        }else{
+                            if (Storage::disk('public')->exists($imageName)) {
+                                $fixedImage = Storage::disk('public')->url($imageName);
+                            } else {
+                                $fixedImage = '';
+                            }
                         }
                     }
 
