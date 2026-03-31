@@ -43,7 +43,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_returns_success_response_with_valid_image(): void
+    public function upload_image_from_editor_returns_success_response_with_valid_image(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('public');
@@ -77,7 +77,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_stores_file_in_public_disk_in_non_production_environment(): void
+    public function upload_image_from_editor_stores_file_in_public_disk_in_non_production_environment(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('public');
@@ -106,7 +106,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_stores_file_in_s3_in_production_environment(): void
+    public function upload_image_from_editor_stores_file_in_s3_in_production_environment(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('s3');
@@ -146,7 +146,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_uses_s3_url_in_production(): void
+    public function upload_image_from_editor_uses_s3_url_in_production(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('s3');
@@ -187,7 +187,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_stores_different_files_in_s3(): void
+    public function upload_image_from_editor_stores_different_files_in_s3(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('s3');
@@ -232,7 +232,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_switches_between_public_and_s3_based_on_environment(): void
+    public function upload_image_from_editor_switches_between_public_and_s3_based_on_environment(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('public');
@@ -278,7 +278,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_s3_storage_creates_correct_filename(): void
+    public function upload_image_from_editor_s3_storage_creates_correct_filename(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('s3');
@@ -332,7 +332,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_s3_url_format_is_correct(): void
+    public function upload_image_from_editor_s3_url_format_is_correct(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('s3');
@@ -373,7 +373,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_s3_handles_all_valid_image_types(): void
+    public function upload_image_from_editor_s3_handles_all_valid_image_types(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('s3');
@@ -424,7 +424,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_validates_upload_field_is_required(): void
+    public function upload_image_from_editor_validates_upload_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -441,7 +441,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_validates_upload_must_be_an_image(): void
+    public function upload_image_from_editor_validates_upload_must_be_an_image(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -461,7 +461,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_validates_file_size_max_10mb(): void
+    public function upload_image_from_editor_validates_file_size_max_10mb(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -482,7 +482,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_accepts_valid_image_formats(): void
+    public function upload_image_from_editor_accepts_valid_image_formats(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('public');
@@ -513,7 +513,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_rejects_invalid_mime_types(): void
+    public function upload_image_from_editor_rejects_invalid_mime_types(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -541,7 +541,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_requires_authentication(): void
+    public function upload_image_from_editor_requires_authentication(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -557,7 +557,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_generates_unique_filename(): void
+    public function upload_image_from_editor_generates_unique_filename(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('public');
@@ -590,7 +590,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_filename_includes_user_id(): void
+    public function upload_image_from_editor_filename_includes_user_id(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('public');
@@ -615,7 +615,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_preserves_file_extension(): void
+    public function upload_image_from_editor_preserves_file_extension(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('public');
@@ -644,7 +644,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_returns_json_response(): void
+    public function upload_image_from_editor_returns_json_response(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('public');
@@ -669,7 +669,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_url_and_location_are_same(): void
+    public function upload_image_from_editor_url_and_location_are_same(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('public');
@@ -689,7 +689,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_handles_large_valid_image(): void
+    public function upload_image_from_editor_handles_large_valid_image(): void
     {
         $this->refreshApplicationWithLocale('en');
         Storage::fake('public');
@@ -712,7 +712,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_s3_url_can_be_used_in_editor_textarea(): void
+    public function upload_image_from_editor_s3_url_can_be_used_in_editor_textarea(): void
     {
         $this->refreshApplicationWithLocale('en');
 
@@ -781,7 +781,7 @@ class FileControllerTest extends TestCase
     /**
      * @test
      */
-    public function uploadt_image_from_editor_public_disk_url_can_be_used_in_editor_textarea(): void
+    public function upload_image_from_editor_public_disk_url_can_be_used_in_editor_textarea(): void
     {
         $this->refreshApplicationWithLocale('en');
 
