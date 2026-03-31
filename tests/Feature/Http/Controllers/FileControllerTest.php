@@ -748,6 +748,8 @@ class FileControllerTest extends TestCase
         $s3Path = 'files/thumbnails/'.$filename;
         Storage::disk('s3')->assertExists($s3Path);
 
+        
+
         // Create news with S3 image URL in summary (textarea.editor)
         $summary = '<p>News with S3 image:</p><img src="'.$imageUrl.'" alt="S3 Image" />';
         $body = '<p>Body content with S3 image:</p><img src="'.$imageUrl.'" alt="S3 Image" />';
@@ -769,8 +771,8 @@ class FileControllerTest extends TestCase
 
         $news = News::where('title', 'News with S3 Image')->first();
         $this->assertNotNull($news);
-        $this->assertStringContainsString($imageUrl, $news->summary);
-        $this->assertStringContainsString($imageUrl, $news->body);
+        $this->assertStringContainsString($imageUrl, fixImage($news->summary, $news->id, true));
+        $this->assertStringContainsString($imageUrl, fixImage($news->body, $news->id, true));
 
         // Restore environment
         config(['app.env' => $originalEnv]);
@@ -828,8 +830,8 @@ class FileControllerTest extends TestCase
 
         $news = News::where('title', 'News with Public Image')->first();
         $this->assertNotNull($news);
-        $this->assertStringContainsString($imageUrl, $news->summary);
-        $this->assertStringContainsString($imageUrl, $news->body);
+        $this->assertStringContainsString($imageUrl, fixImage($news->summary, $news->id, true));
+        $this->assertStringContainsString($imageUrl, fixImage($news->body, $news->id, true));
 
         // Restore environment
         config(['app.env' => $originalEnv]);
