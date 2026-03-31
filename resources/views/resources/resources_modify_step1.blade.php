@@ -12,7 +12,7 @@
 
             <div class="row">
 
-                <div class="form-group col-6 mb-3">
+                <div class="form-group col-sm-12 col-md-6 mb-3">
                     <label for="title">
                         @lang('Title')
                     </label>
@@ -24,7 +24,7 @@
                         </span>
                     @endif
                 </div>
-                <div class="form-group ui-widget col-6 mb-3">
+                <div class="form-group ui-widget col-sm-12 col-md-6 mb-3">
                     <label for="author">
                         @lang('Author')
                     </label>
@@ -41,7 +41,7 @@
                         </span>
                     @endif
                 </div>
-                <div class="form-group ui-widget col-6 mb-3">
+                <div class="form-group ui-widget col-sm-12 col-md-6 mb-3">
                     <label for="publisher">
                         @lang('Publisher')
                     </label>
@@ -62,7 +62,7 @@
                
 
 
-                <div class="form-group col-6 mb-3">
+                <div class="form-group col-sm-12 col-md-6 mb-3">
                     <label for="language">
                         @lang('Language')
                     </label>
@@ -79,7 +79,7 @@
                
                 
                 
-                 <div class="form-group col-6 mb-3">
+                 <div class="form-group col-sm-12 col-md-6 mb-3">
                     <div>
                         <label for="toggle-translation">
                             @lang('This is a work of translation')
@@ -90,7 +90,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group col-6 mb-3">
+                <div class="form-group col-sm-12 col-md-6 mb-3">
                     <div class="translation {{ old('translator') || $resource->translators?->pluck('name')->implode(', ') ? '' : 'd-none' }}">
                         <div>
                             <label for="translator" class="">
@@ -110,7 +110,7 @@
                     </div>
                 </div>
 
-                <div class="form-group col-6 mb-3">
+                <div class="form-group col-sm-12 col-md-6 mb-3">
                     <label for="image">
                         <strong>@lang('Image')</strong>
                         <span class="form-required" title="This field is required.">*</span>
@@ -132,7 +132,7 @@
                 </div>
 
                 {{-- Selected Image Preview --}}
-                <div class="form-group col-6 mb-3">
+                <div class="form-group col-sm-12 col-md-6 mb-3">
                     <div id="selected-image-preview" class="flex-1 mt-1 border-radius-5 w-100 overflow-hidden"
                         style="display: {{ @$resource->resourceFile?->name ? 'block' : 'none' }};">
                         <img id="preview-image" src="{{ @$resource->resourceFile ? getResourceImage(@$resource->resourceFile->name, true) : '' }}" class="border-radius-5"
@@ -172,7 +172,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 </div>
-                <div class="modal-body d-flex flex-column flex-md-row">
+                <div class="modal-body d-flex flex-column flex-lg-row">
                     <div class="image-manager-options d-flex flex-column p-1 bg-light border-end"
                         style="min-width: 250px;">
                         <button id="select-image-option" class="btn btn-outline-primary mb-2 active"
@@ -187,7 +187,7 @@
                         <div id="select-image-content">
                             <h3>@lang('Select image from file manager') <span id="result"></span></h3>
                             <div class="row mb-4">
-                                <div class="col">
+                                <div class="col-md-12 col-xl-6">
                                     <label for="subject_areas" class="form-label">
                                         <strong>@lang('Subject Areas') {{ en('Subject Areas') }}</strong>
                                         <span class="text-danger" title="This field is required.">*</span>
@@ -216,7 +216,7 @@
                                         </span>
                                     @endif
                                 </div>
-                                <div class="col">
+                                <div class="col-md-12 col-xl-6">
                                     <label for="search-input" class="form-label">
                                         <strong>@lang('Search by image name')</strong>
                                         <span class="text-danger" title="This field is required.">*</span>

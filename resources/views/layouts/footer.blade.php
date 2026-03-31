@@ -2,20 +2,20 @@
     <div class="container-fluid">
         <div class="row align-items-center">
             @if($menu)
-                <div class="col-md-6 col-lg-8 mb-3 mb-md-0">
-                    <ul class="footer-nav">
+                <div class="col-sm-12 col-md-6 col-lg-8 mb-3 mb-md-0">
+                    <ul class="footer-nav flex-column flex-md-row">
                         @foreach ($menu->where('location', 'footer-menu')->where('language', app()->getLocale()) as $fmenu)
                             <li>
                                 <a href="{{ URL::to($fmenu->path) }}" title="{{ $fmenu->title }}">{{ $fmenu->title }}</a>
                             </li>
                         @endforeach
-                        <li class="mx-2">
+                        <li class="mx-md-2">
                             <a href="{{ route('privacy-policy') }}" title="@lang('Privacy Policy')">@lang('Privacy Policy')</a>
                         </li>
                     </ul>
                 </div>
             @endif
-            <div class="col-md-6 col-lg-4 text-md-end">
+            <div class="col-sm-12 col-md-6 col-lg-4 text-md-end">
                 <div class="footer-right-content">
                     <div class="app-badges mb-3 mb-md-0">
                         <a href="https://play.google.com/store/apps/details?id=com.ddacademi.library" target="_blank" title="@lang('Get it on Google Play')">
@@ -39,7 +39,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         {{-- Copyright --}}
         <div class="row mt-3">

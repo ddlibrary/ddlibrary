@@ -4,7 +4,7 @@
             @php
                 $fileName = getResourceImage($file->name, true);
             @endphp
-            <div class="col-6 col-sm-4 col-md-3" data-id="{{ $file->id }}"
+            <div class="col-md-12 col-lg-4" data-id="{{ $file->id }}"
                 onclick="selectImage('{{ $file->id }}', '{{ $fileName }}')">
                 <div
                     class="position-relative border border-secondary rounded overflow-hidden w-100  h-100 image-{{ $file->id }}">

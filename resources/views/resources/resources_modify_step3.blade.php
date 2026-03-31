@@ -64,7 +64,7 @@
                 </span><br>
                 @endif
             </div>
-            <div class="form-item col-6">
+            <div class="form-item col-sm-12 col-md-6">
                 <label for="copyright_holder">
                     <strong>@lang('License/Copyright Holder') {{ en('License/Copyright Holder') }}</strong>
                 </label>

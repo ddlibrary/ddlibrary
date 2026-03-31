@@ -39,6 +39,10 @@ $color-youtube: #ff0000;
       &:last-child {
         margin-right: 0;
       }
+
+      @media (max-width: 768px) {
+        margin-right: 0rem;
+      }
     }
   }
 

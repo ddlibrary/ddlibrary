@@ -942,4 +942,13 @@ tr:nth-child(even){background-color: #f2f2f2}
         flex-wrap: wrap;
         justify-content: center;
     }
+
+    main {
+        margin: 0 auto 1em;
+        min-height: 76vh;
+    }
+
+    ul.pagination > li:nth-child(n+5):nth-last-child(n+5) {
+        display: none;
+    }
 }

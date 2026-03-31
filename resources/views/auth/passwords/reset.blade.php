@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="form-item">
-                    <input type="submit" class="form-control" value="{{ __('Reset Password') }}">
+                    <input type="submit" class="btn btn-primary btn-md" value="{{ __('Reset Password') }}">
                 </div>
             </form>
         </div>
