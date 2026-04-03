@@ -22,14 +22,36 @@ class ResourceStepOneRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required',
-            'author' => 'string|nullable',
-            'publisher' => 'nullable|string|required_without:author',
-            'has_translator' => 'nullable',
-            'translator' => 'required_if:has_translator,1|string|nullable',
-            'language' => 'required',
-            'abstract' => 'required',
-            'resource_file_id' => 'nullable|numeric',
+            'title' => [
+                'required',
+            ],
+            'author' => [
+                'string',
+                'nullable',
+            ],
+            'publisher' => [
+                'nullable',
+                'string',
+                'required_without:author',
+            ],
+            'has_translator' => [
+                'nullable',
+            ],
+            'translator' => [
+                'required_if:has_translator,1',
+                'string',
+                'nullable',
+            ],
+            'language' => [
+                'required',
+            ],
+            'abstract' => [
+                'required',
+            ],
+            'resource_file_id' => [
+                'nullable',
+                'numeric',
+            ],
         ];
     }
 }
