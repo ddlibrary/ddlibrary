@@ -62,7 +62,7 @@ class SubjectAreaRequest extends FormRequest
             'id.*' => [
                 'nullable',
                 'integer',
-                'exists:taxonomy_term_data,id',
+                Rule::exists('taxonomy_term_data', 'id'),
             ],
         ];
     }

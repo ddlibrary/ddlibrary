@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\RecaptchaRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SubscribeRequest extends FormRequest
 {
@@ -26,7 +27,7 @@ class SubscribeRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
-                'unique:subscribers,email',
+                Rule::unique('subscribers', 'email'),
             ],
             'name' => [
                 'required',

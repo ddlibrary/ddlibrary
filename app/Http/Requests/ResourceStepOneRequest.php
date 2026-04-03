@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ResourceStepOneRequest extends FormRequest
 {
@@ -38,7 +39,7 @@ class ResourceStepOneRequest extends FormRequest
                 'nullable',
             ],
             'translator' => [
-                'required_if:has_translator,1',
+                Rule::requiredIf(fn () => $this->boolean('has_translator') === false),
                 'string',
                 'nullable',
             ],
