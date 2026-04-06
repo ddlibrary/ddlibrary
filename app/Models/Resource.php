@@ -326,7 +326,9 @@ class Resource extends Model
                     ->leftJoin('resource_publishers AS rpub', 'rpub.resource_id', '=', 'rs.id')
                     ->where('rpub.tid', $request['publisher']);
             })
-            ->where('rs.language', config('app.locale'))
+            ->when($request->input('language'), function($query) use ($request){
+               return $query->where('rs.language', $request->input('language'));
+            })
             ->where('rs.status', 1)
             ->where(function ($query) {
                 $query->where('rs.id', '>=', 11479)->orWhere('rs.id', '<', 10378); // TODO: remove after restoration
