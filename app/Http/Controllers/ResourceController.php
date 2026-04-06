@@ -206,7 +206,9 @@ class ResourceController extends Controller
             ->resourceAttributesList('taxonomy_term_data', 13)
             ->where('parent', 0); // 13 being resource literacy levels
 
-        return view('resources.resources_filter', compact('parentSubjects', 'resourceTypes', 'literacyLevels'));
+        $languages = $this->getLanguages();
+
+        return view('resources.resources_filter', compact('parentSubjects', 'resourceTypes', 'literacyLevels', 'languages'));
     }
 
     public function getSubjectChildren(Request $request): array
