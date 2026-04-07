@@ -73,9 +73,9 @@
             <div class="form-item col-12 col-md-6 my-3 ">
                 <label for="search">@lang('Language')</label>
                 <select name="language" class="form-control">
-                    <option value="">...</option>
+                    <option value="all" @selected(request('language') === 'all')>...</option>
                     @foreach($languages as $index => $language)
-                        <option value="{{ $index }}" @selected($index == config('app.locale'))>{{ $language['native']}}</option>
+                        <option value="{{ $index }}" @selected($index == config('app.locale') && request('language') !== 'all')>{{ $language['native']}}</option>
                     @endforeach
                 </select>
             </div>
