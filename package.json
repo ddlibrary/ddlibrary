@@ -14,7 +14,7 @@
         "laravel-vite-plugin": "^3.0.0",
         "lodash": "^4.17.23",
         "sass": "^1.56.1",
-        "vite": "^8.0.3"
+        "vite": "^8.0.5"
     },
     "dependencies": {
         "epubjs": "^0.3.93",
