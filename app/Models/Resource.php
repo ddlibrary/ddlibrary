@@ -326,9 +326,15 @@ class Resource extends Model
                     ->leftJoin('resource_publishers AS rpub', 'rpub.resource_id', '=', 'rs.id')
                     ->where('rpub.tid', $request['publisher']);
             })
-            ->when($request->input('language'), function($query) use ($request){
-               return $query->where('rs.language', $request->input('language'));
-            })
+            ->when(
+                $request->has('language'),
+                fn ($q) => $q->when(
+                    $request->filled('language') && $request->input('language') != 'all',
+                    fn ($q2) => $q2->where('rs.language', $request->input('language')),
+                    fn ($q2) => $q2
+                ),
+                fn ($q) => $q->where('rs.language', config('app.locale'))
+            )
             ->where('rs.status', 1)
             ->where(function ($query) {
                 $query->where('rs.id', '>=', 11479)->orWhere('rs.id', '<', 10378); // TODO: remove after restoration
