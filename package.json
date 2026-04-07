@@ -17,7 +17,7 @@
         "vite": "^8.0.5"
     },
     "dependencies": {
-        "epubjs": "^0.3.93",
+        "epubjs": "^0.4.2",
         "jquery-ui": "^1.14.1",
         "js-cookie": "^3.0.5",
         "jszip": "^3.10.1",
