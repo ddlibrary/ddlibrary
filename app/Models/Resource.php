@@ -327,14 +327,9 @@ class Resource extends Model
                     ->where('rpub.tid', $request['publisher']);
             })
             ->when(
-                $request->has('language'),
+                $request->filled('language'),
                 function ($query) use ($request) {
-                    return $query->when(
-                        $request->filled('language') && $request->input('language') !== 'all',
-                        function ($query) use ($request) {
-                            return $query->where('rs.language', $request->input('language'));
-                        }
-                    );
+                    return $query->whereIn('rs.language', $request['language']);
                 },
                 function ($query) {
                     return $query->where('rs.language', config('app.locale'));

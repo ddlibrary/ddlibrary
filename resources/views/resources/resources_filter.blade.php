@@ -66,18 +66,22 @@
                     @endforeach
                 </select>
             </div>
+            <div class="form-group col-md-3 my-3">
+                <label for="language">@lang('Language')</label>
+                <select class="form-control"
+                        name="language[]"
+                        id="language"
+                        multiple
+                        size="5"
+                >
+                    @foreach($languages as $index => $language)
+                        <option value="{{ $index }}">{{ $language['native']}}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="form-item col-12 col-md-6 my-3 {{ (Lang::locale() != 'en') ? 'ms-auto' : 'me-auto' }}">
                 <label for="search">@lang('Keywords')</label>
                 <input type="text" name="search" class="form-control" placeholder="@lang('Keywords to filter by')">
-            </div>
-            <div class="form-item col-12 col-md-6 my-3 ">
-                <label for="search">@lang('Language')</label>
-                <select name="language" class="form-control">
-                    <option value="all" @selected(request('language') === 'all')>...</option>
-                    @foreach($languages as $index => $language)
-                        <option value="{{ $index }}" @selected($index == config('app.locale') && request('language') !== 'all')>{{ $language['native']}}</option>
-                    @endforeach
-                </select>
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary col-md-4 col-4 my-2" value="@lang('Apply filters')">
