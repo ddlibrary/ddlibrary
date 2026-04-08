@@ -328,12 +328,17 @@ class Resource extends Model
             })
             ->when(
                 $request->has('language'),
-                fn ($q) => $q->when(
-                    $request->filled('language') && $request->input('language') != 'all',
-                    fn ($q2) => $q2->where('rs.language', $request->input('language')),
-                    fn ($q2) => $q2
-                ),
-                fn ($q) => $q->where('rs.language', config('app.locale'))
+                function ($query) use ($request) {
+                    return $query->when(
+                        $request->filled('language') && $request->input('language') !== 'all',
+                        function ($query) use ($request) {
+                            return $query->where('rs.language', $request->input('language'));
+                        }
+                    );
+                },
+                function ($query) {
+                    return $query->where('rs.language', config('app.locale'));
+                }
             )
             ->where('rs.status', 1)
             ->where(function ($query) {
