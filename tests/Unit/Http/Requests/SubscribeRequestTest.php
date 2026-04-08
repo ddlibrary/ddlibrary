@@ -5,6 +5,7 @@ namespace Tests\Unit\Http\Requests;
 use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Validation\Rule;
 use Tests\TestCase;
 
 /**
@@ -44,7 +45,7 @@ class SubscribeRequestTest extends TestCase
         $this->assertValidationRules(
             [
                 'g-recaptcha-response' => [],
-                'email' => ['required', 'email', 'unique:subscribers,email'],
+                'email' => ['required', 'email', Rule::unique('subscribers', 'email')],
                 'name' => ['required', 'string'],
             ],
             $actual,

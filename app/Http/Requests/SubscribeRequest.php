@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\RecaptchaRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SubscribeRequest extends FormRequest
 {
@@ -23,8 +24,15 @@ class SubscribeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email|unique:subscribers,email',
-            'name' => 'required|string',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('subscribers', 'email'),
+            ],
+            'name' => [
+                'required',
+                'string',
+            ],
             'g-recaptcha-response' => [env('CAPTCHA') && env('CAPTCHA') == 'no' ? 'nullable' : 'required', new RecaptchaRule],
         ];
     }

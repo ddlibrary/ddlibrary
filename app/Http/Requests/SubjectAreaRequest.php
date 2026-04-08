@@ -32,14 +32,38 @@ class SubjectAreaRequest extends FormRequest
                 'min:1',
                 Rule::exists('taxonomy_term_data', 'tnid')->where('vid', $vid),
             ],
-            'weight' => 'required|array',
-            'weight.*' => 'nullable|integer',
+            'weight' => [
+                'required',
+                'array',
+            ],
+            'weight.*' => [
+                'nullable',
+                'integer',
+            ],
             'name' => ['required', 'array', $this->atLeastOneNameFilled()],
-            'name.*' => 'nullable|string|max:255',
-            'parent' => 'nullable|array',
-            'parent.*' => 'nullable|integer|min:0',
-            'id' => 'nullable|array',
-            'id.*' => 'nullable|integer|exists:taxonomy_term_data,id',
+            'name.*' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'parent' => [
+                'nullable',
+                'array',
+            ],
+            'parent.*' => [
+                'nullable',
+                'integer',
+                'min:0',
+            ],
+            'id' => [
+                'nullable',
+                'array',
+            ],
+            'id.*' => [
+                'nullable',
+                'integer',
+                Rule::exists('taxonomy_term_data', 'id'),
+            ],
         ];
     }
 
