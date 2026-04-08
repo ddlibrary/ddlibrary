@@ -3,14 +3,14 @@
 'Darakht‑e danesh' means "knowledge tree" in Dari, one of the official languages of Afghanistan. The Darakht‑e Danesh Online Library for Educators is a repository of open educational resources for teachers, teacher trainers, school administrators, literacy workers and others involved in furthering education in Afghanistan. These open source resources include lesson plans, pedagogical tools, exercises, experiments, reading texts, work books, curricula and other resources for use in Afghan classrooms.
 
 ## Overview
-This repository contains the web application that powers the Darakht‑e Danesh Library. It is a Laravel 10 application (PHP) with a Vue/JavaScript front‑end built using Laravel Mix (Webpack). It ships with a Dockerized development environment (Nginx + PHP‑FPM + MySQL + Redis).
+This repository contains the web application that powers the Darakht‑e Danesh Library. It is a Laravel 12 application (PHP) with a Vue/JavaScript front‑end built using Vite. It ships with a Dockerized development environment (Nginx + PHP‑FPM + MySQL + Redis).
 
 ## Tech Stack
-- Language: PHP 8.1+ (composer platform set to 8.1)
-- Framework: Laravel 10
-- Front‑end: Vue 3, Bootstrap 5, jQuery; built with Laravel Mix (Webpack)
+- Language: PHP 8.4+ (composer platform set to 8.4)
+- Framework: Laravel 12
+- Front‑end: Vue 3, Bootstrap 5, jQuery; built with Vite
 - Package managers: Composer (PHP), npm (Node)
-- Database: MySQL 8 (dev via Docker; tests use SQLite in‑memory)
+- Database: MySQL 8 (dev via Docker; tests use MySQL)
 - Caching/Queues: Redis (via Docker) and Laravel queue; default sync driver in .env
 - Storage: Local filesystem and AWS S3 via Flysystem
 - Web server (dev): Nginx proxying to PHP‑FPM (Docker)
@@ -23,9 +23,9 @@ Option A — With Docker (recommended for development):
 - docker-compose v2+
 
 Option B — Without Docker (native):
-- PHP 8.1+ with extensions commonly required by Laravel (OpenSSL, PDO, Mbstring, Tokenizer, XML, Ctype, JSON, BCMath, Fileinfo)
+- PHP 8.4+ with extensions commonly required by Laravel (OpenSSL, PDO, Mbstring, Tokenizer, XML, Ctype, JSON, BCMath, Fileinfo)
 - Composer 2.x
-- Node.js 16–20 and npm 8+
+- Node.js 18+ and npm 9+
 - MySQL 8 and Redis (optional for local queues/cache)
 
 ## Getting Started
@@ -57,7 +57,7 @@ docker compose exec app php artisan key:generate
 docker compose exec app php artisan storage:link
 # Install JS dependencies and build assets
 docker compose exec app npm ci
-docker compose exec app npm run dev
+docker compose exec app npm run build
 # Run database migrations (and seed if applicable)
 docker compose exec app php artisan migrate
 # docker compose exec app php artisan db:seed   # TODO: enable if seeds exist/required
@@ -70,7 +70,7 @@ composer install
 php artisan key:generate
 php artisan storage:link
 npm ci
-npm run dev
+npm run build
 # Set up your database (create schema), then:
 php artisan migrate
 # php artisan db:seed   # TODO: enable if seeds exist/required
@@ -80,14 +80,14 @@ App will be available at http://127.0.0.1:8080
 
 ## NPM Scripts
 Defined in `package.json`:
-- `npm run dev` — Build assets in development mode
-- `npm run dev` — Build and watch for changes
-- `npm run dev-poll` — Watch with polling (useful in Docker/VMs)
-- `npm run dev` — HMR via Mix
-- `npm run build` — Build minified production assets
+- `npm run dev` — Build assets and watch for changes using Vite
+- `npm run build` — Build minified production assets using Vite
 
 ## Composer Scripts
 Defined in `composer.json`:
+- `npm run dev` — Runs the application and its dependencies (Vite, queue, etc.) concurrently for local development.
+- `npm run setup` — Initial setup script to install dependencies, generate key, migrate, and build assets.
+- `npm run test` — Clears configuration and runs PHPUnit tests.
 - `post-root-package-install` — Copies `.env.local` to `.env` if not present
 - `post-create-project-cmd` — Generates app key
 - `post-autoload-dump` — Laravel package discovery
@@ -146,7 +146,7 @@ docker compose exec app php artisan test
 # or
 docker compose exec app ./vendor/bin/phpunit
 ```
-Tests use an in‑memory SQLite database as configured in `phpunit.xml`.
+Tests use a MySQL database as configured in `phpunit.xml`.
 
 ## Project Structure
 High‑level layout:
@@ -200,7 +200,7 @@ Notes:
 - Ensure correct `.env` for environment and set `APP_KEY`
 - Configure `FILESYSTEM_DISK` and S3 credentials if storing on S3
 - Run database migrations
-- Serve `public/` via a web server (Nginx/Apache) pointing PHP‑FPM to `artisan`
+- Serve `public/` via a web server (Nginx/Apache)
 
 ## License
 The project is published under an MIT license. 
