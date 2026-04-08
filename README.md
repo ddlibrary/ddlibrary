@@ -8,7 +8,7 @@ This repository contains the web application that powers the Darakht‑e Danesh 
 ## Tech Stack
 - Language: PHP 8.4+ (composer platform set to 8.4)
 - Framework: Laravel 12
-- Front‑end: Vue 3, Bootstrap 5, jQuery; built with Vite
+- Front‑end: Bootstrap 5, jQuery; built with Vite
 - Package managers: Composer (PHP), npm (Node)
 - Database: MySQL 8 (dev via Docker; tests use MySQL)
 - Caching/Queues: Redis (via Docker) and Laravel queue; default sync driver in .env
