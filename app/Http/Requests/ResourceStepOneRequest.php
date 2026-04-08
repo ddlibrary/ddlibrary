@@ -39,7 +39,7 @@ class ResourceStepOneRequest extends FormRequest
                 'nullable',
             ],
             'translator' => [
-                Rule::requiredIf(fn () => $this->boolean('has_translator') === false),
+                Rule::requiredIf(fn () => $this->boolean('has_translator') === true),
                 'string',
                 'nullable',
             ],
