@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\LanguageEnum;
 use App\Enums\TaxonomyVocabularyEnum;
 use App\Http\Requests\ResourceStepOneRequest;
 use App\Http\Requests\UpdateResourceFilterOptionsRequest;
@@ -47,8 +46,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Mcamara\LaravelLocalization\Exceptions\SupportedLocalesNotDefined;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Throwable;
 
 class ResourceController extends Controller
