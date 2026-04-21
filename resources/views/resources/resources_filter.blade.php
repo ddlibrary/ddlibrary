@@ -103,23 +103,33 @@
 
         function getFilterOptions() {
             const language = document.querySelector('#language').value;
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            toggleLoading(true)
             $.ajax({
-                type: 'GET',
-                url: "{{ route('filter.update-options') }}?language=" + encodeURIComponent(language),
+                type: 'POST',
+                url: "{{ route('filter.update-options') }}",
+                dataType: 'json',
+                data: { _token: csrfToken, language },
                 success: function (res) {
                     const subjectAreaParent = document.getElementById('selectSubjectAreaParent');
-                    const subjectChild = document.getElementById('selectSubjectAreaChild');
                     const resourceType = document.getElementById('selectResourceType');
                     const literacyLevel = document.getElementById('selectLiteracyLevel');
-
+                    
+                    document.getElementById('selectSubjectAreaChild').innerHTML ='';
                     subjectAreaParent.innerHTML = '';
-                    subjectChild.innerHTML = '';
                     resourceType.innerHTML = '';
                     literacyLevel.innerHTML = '';
 
                     appendOptions(subjectAreaParent, res.subjectAreas);
                     appendOptions(resourceType, res.resourceTypes);
                     appendOptions(literacyLevel, res.literacyLevels);
+                },
+                error: function() {
+                    alert("@lang('Failed to load filter options. Please try again.')");
+                },
+                complete: function() {
+                    toggleLoading(false);
+                    
                 }
             });
         }
@@ -130,6 +140,21 @@
             for (const optionName in optionsMap) {
                 const optionId = optionsMap[optionName];
                 selectElement.append(new Option(optionName, optionId));
+            }
+        }
+
+        function toggleLoading(isLoading) {
+            const btn = document.querySelector('input[type="submit"]');
+            const container = document.querySelector('#advanced-filter-container');
+            
+            if (isLoading) {
+                btn.disabled = true;
+                btn.value = "@lang('Loading, please wait')";
+                container.style.opacity = '0.6';
+            } else {
+                btn.disabled = false;
+                btn.value = "@lang('Apply filters')";
+                container.style.opacity = '1';
             }
         }
     </script>

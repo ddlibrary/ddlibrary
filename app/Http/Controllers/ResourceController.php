@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\LanguageEnum;
 use App\Enums\TaxonomyVocabularyEnum;
 use App\Http\Requests\ResourceStepOneRequest;
+use App\Http\Requests\UpdateResourceFilterOptionsRequest;
 use App\Mail\NewComment;
 use App\Models\DownloadCount;
 use App\Models\Resource;
@@ -45,6 +47,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Mcamara\LaravelLocalization\Exceptions\SupportedLocalesNotDefined;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Throwable;
 
 class ResourceController extends Controller
@@ -223,27 +227,43 @@ class ResourceController extends Controller
             ->toArray();
     }
 
-    public function updateFilterOptions(Request $request){
-        $subjectAreas = (new Resource)
-            ->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject->value, $request->language)->where('parent', 0)
-            ->pluck('id', 'name')
-            ->toArray();
+    public function updateFilterOptions(UpdateResourceFilterOptionsRequest $request)
+    {
+        try {
+            $language = $request->input('language');
 
-        $resourceTypes = (new Resource)
-            ->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceType->value , $request->language)->where('parent', 0)
-            ->pluck('id', 'name')
-            ->toArray();
+            $subjectAreas = (new Resource)
+                ->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject->value, $language)
+                ->where('parent', 0)
+                ->pluck('id', 'name')
+                ->toArray();
 
-        $literacyLevels = (new Resource)
-            ->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceLevels->value, $request->language)->where('parent', 0)
-            ->pluck('id', 'name')
-            ->toArray();
+            $resourceTypes = (new Resource)
+                ->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceType->value, $language)
+                ->where('parent', 0)
+                ->pluck('id', 'name')
+                ->toArray();
 
-        return response()->json([
-            'subjectAreas' => $subjectAreas,
-            'resourceTypes' => $resourceTypes,
-            'literacyLevels' => $literacyLevels,
-        ]);
+            $literacyLevels = (new Resource)
+                ->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceLevels->value, $language)
+                ->where('parent', 0)
+                ->pluck('id', 'name')
+                ->toArray();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('Filter options updated successfully.'),
+                'subjectAreas' => $subjectAreas,
+                'resourceTypes' => $resourceTypes,
+                'literacyLevels' => $literacyLevels,
+            ]);
+
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => __('Something went wrong while updating filter options.')
+            ], 500);
+        }
     }
 
     /**
