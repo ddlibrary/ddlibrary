@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -14,9 +15,7 @@ class SettingControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -32,9 +31,7 @@ class SettingControllerTest extends TestCase
         $response->assertViewHas(['setting']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function update_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -60,9 +57,7 @@ class SettingControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function update_fails_without_required_fields(): void
     {
         $this->refreshApplicationWithLocale('en');

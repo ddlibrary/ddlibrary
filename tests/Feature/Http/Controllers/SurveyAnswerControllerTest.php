@@ -6,6 +6,7 @@ use App\Models\SurveyQuestion;
 use App\Models\SurveyQuestionOption;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -17,9 +18,7 @@ class SurveyAnswerControllerTest extends TestCase
 
     protected bool $seed = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function all_questions_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -39,9 +38,7 @@ class SurveyAnswerControllerTest extends TestCase
         $response->assertViewHas('survey_questions', $surveyQuestions);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function question_answers_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -61,9 +58,7 @@ class SurveyAnswerControllerTest extends TestCase
         $response->assertViewHas('survey_question_options', $surveyQuestion->options);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function store_user_survey_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');

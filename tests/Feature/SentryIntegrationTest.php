@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Exception;
 use Sentry\State\HubInterface;
@@ -11,6 +12,7 @@ use Mockery;
 
 class SentryIntegrationTest extends TestCase
 {
+    #[Test]
     public function test_reports_exceptions_to_sentry()
     {
         // 1. Arrange: Define a route that throws an exception

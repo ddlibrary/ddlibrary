@@ -6,6 +6,7 @@ use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class SubscriberFaTest extends TestCase
@@ -14,7 +15,7 @@ class SubscriberFaTest extends TestCase
 
     protected string $defaultLocale = 'fa';
 
-    /** @test */
+    #[Test]
     public function fa_authenticated_user_can_visit_subscribe_page(): void
     {
         $user = User::factory()->create();
@@ -23,14 +24,14 @@ class SubscriberFaTest extends TestCase
         $response->assertStatus(200)->assertViewIs('subscribe.index');
     }
 
-    /** @test */
+    #[Test]
     public function fa_unauthenticated_user_is_redirected_to_login_page(): void
     {
         $response = $this->get('/fa/subscribe');
         $response->assertStatus(302)->assertRedirect('/fa/login');
     }
 
-    /** @test */
+    #[Test]
     public function fa_authenticated_and_verified_user_can_subscribe(): void
     {
         $user = User::factory()->create();
@@ -49,7 +50,7 @@ class SubscriberFaTest extends TestCase
         $this->assertEquals($user->subscription->name, 'New User');
     }
 
-    /** @test */
+    #[Test]
     public function fa_unverified_user_can_not_subscribe(): void
     {
         $user = User::factory()->create(['email_verified_at' => null]);
@@ -62,7 +63,7 @@ class SubscriberFaTest extends TestCase
         $this->assertEquals(0, $user->subscription()->count());
     }
 
-    /** @test */
+    #[Test]
     public function fa_name_field_is_required(): void
     {
         $user = User::factory()->create();
@@ -77,7 +78,7 @@ class SubscriberFaTest extends TestCase
         $response->assertSessionHasErrors(['name' => 'فیلد نام الزامی است']);
     }
 
-    /** @test */
+    #[Test]
     public function fa_email_field_is_required(): void
     {
         $user = User::factory()->create();
@@ -92,7 +93,7 @@ class SubscriberFaTest extends TestCase
         $response->assertSessionHasErrors(['email' => 'فیلد ایمیل آدرس الزامی است']);
     }
 
-    /** @test */
+    #[Test]
     public function fa_email_should_be_a_valid_email(): void
     {
         $user = User::factory()->create();
@@ -107,7 +108,7 @@ class SubscriberFaTest extends TestCase
         $response->assertSessionHasErrors(['email' => 'فرمت ایمیل آدرس معتبر نیست.']);
     }
 
-    /** @test */
+    #[Test]
     public function fa_email_field_is_unique(): void
     {
         $user = User::factory()->create();

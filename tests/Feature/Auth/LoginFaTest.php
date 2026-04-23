@@ -4,6 +4,7 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LoginFaTest extends TestCase
@@ -12,7 +13,7 @@ class LoginFaTest extends TestCase
 
     protected string $defaultLocale = 'fa';
 
-    /** @test */
+    #[Test]
     public function fa_guest_can_visit_login_page(): void
     {
         $response = $this->get('/fa/login');
@@ -27,7 +28,7 @@ class LoginFaTest extends TestCase
         $response->assertSee('ورود به سیستم');
     }
 
-    /** @test */
+    #[Test]
     public function fa_user_can_login_with_valid_credential(): void
     {
         $user = User::factory()->create(['email' => 'fa@email.com', 'password' => bcrypt('Pass@123')]);
@@ -41,7 +42,7 @@ class LoginFaTest extends TestCase
         $this->assertAuthenticatedAs($user);
     }
 
-    /** @test */
+    #[Test]
     public function fa_disable_user_cannot_login_with_valid_credential(): void
     {
         User::factory()->create(['email' => 'fa_disable_user@email.com', 'password' => bcrypt('Pass@123'), 'status' => false]);
@@ -63,7 +64,7 @@ class LoginFaTest extends TestCase
         $response->assertRedirect('home');
     }
 
-    /** @test */
+    #[Test]
     public function fa_user_cannot_login_with_invalid_password(): void
     {
         $user = User::factory()->create(['password' => bcrypt('Pass@123')]);
@@ -82,7 +83,7 @@ class LoginFaTest extends TestCase
         $this->assertGuest();
     }
 
-    /** @test */
+    #[Test]
     public function fa_user_cannot_login_with_invalid_email(): void
     {
         User::factory()->create(['email' => 'email@mail.com', 'password' => bcrypt('Pass@123')]);

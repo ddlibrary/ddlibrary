@@ -8,6 +8,7 @@ use App\Models\GlossarySubject;
 use App\Models\Platform;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -17,6 +18,7 @@ class GlossaryAnalyticsControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    #[Test]
     public function test_index_glossary_analytics(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -51,6 +53,7 @@ class GlossaryAnalyticsControllerTest extends TestCase
         ]);
     }
 
+    #[Test]
     public function test_view_glossary_analytics_report(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -78,6 +81,7 @@ class GlossaryAnalyticsControllerTest extends TestCase
         ]);
     }
 
+    #[Test]
     public function test_non_admin_cannot_access_glossary_analytics(): void
     {
         $this->refreshApplicationWithLocale('en');

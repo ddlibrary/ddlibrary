@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class PrivacyPolicyControllerUzTest extends TestCase
@@ -11,9 +12,7 @@ class PrivacyPolicyControllerUzTest extends TestCase
 
     protected string $defaultLocale = 'uz';
 
-    /**
-     * @test
-     */
+    #[Test]
     public function privacy_policy_returns_farsi_with_other_locales_view(): void
     {
         $response = $this->get('uz/privacy-policy');

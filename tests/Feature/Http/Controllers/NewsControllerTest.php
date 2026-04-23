@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use App\Models\News;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -14,9 +15,7 @@ class NewsControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function index_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -30,9 +29,7 @@ class NewsControllerTest extends TestCase
         $response->assertViewIs('admin.news.news_list');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function add_post_translate_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -57,9 +54,7 @@ class NewsControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function create_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -73,9 +68,7 @@ class NewsControllerTest extends TestCase
         $response->assertViewIs('news.news_create');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function store_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -90,9 +83,7 @@ class NewsControllerTest extends TestCase
         $this->assertDatabaseHas('news', ['title' => 'Sample News Title']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -110,9 +101,7 @@ class NewsControllerTest extends TestCase
         $response->assertViewHas('news', $news);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_news_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -126,9 +115,7 @@ class NewsControllerTest extends TestCase
         $response->assertOk();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function translate_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -147,9 +134,7 @@ class NewsControllerTest extends TestCase
         $response->assertViewHas('news_self');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function update_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -171,9 +156,7 @@ class NewsControllerTest extends TestCase
         $this->assertDatabaseHas('news', ['title' => 'Updated News Title']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function view_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -192,7 +175,7 @@ class NewsControllerTest extends TestCase
         $response->assertViewHas('translations');
     }
 
-    /** @test */
+    #[Test]
     public function title_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -204,7 +187,7 @@ class NewsControllerTest extends TestCase
         $response->assertSessionHasErrors(['title' => 'The title field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function language_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -216,7 +199,7 @@ class NewsControllerTest extends TestCase
         $response->assertSessionHasErrors(['language' => 'The language field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function summary_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -228,7 +211,7 @@ class NewsControllerTest extends TestCase
         $response->assertSessionHasErrors(['summary' => 'The summary field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function body_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -240,7 +223,7 @@ class NewsControllerTest extends TestCase
         $response->assertSessionHasErrors(['body' => 'The body field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function published_field_must_be_an_integer(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -252,7 +235,7 @@ class NewsControllerTest extends TestCase
         $response->assertSessionHasErrors(['published' => 'The published field must be an integer.']);
     }
 
-    /** @test */
+    #[Test]
     public function update_title_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -273,7 +256,7 @@ class NewsControllerTest extends TestCase
         $response->assertSessionHasErrors(['title' => 'The title field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function update_language_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -294,7 +277,7 @@ class NewsControllerTest extends TestCase
         $response->assertSessionHasErrors(['language' => 'The language field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function update_summary_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -315,7 +298,7 @@ class NewsControllerTest extends TestCase
         $response->assertSessionHasErrors(['summary' => 'The summary field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function update_body_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -336,7 +319,7 @@ class NewsControllerTest extends TestCase
         $response->assertSessionHasErrors(['body' => 'The body field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function update_published_field_must_be_an_integer(): void
     {
         $this->refreshApplicationWithLocale('en');

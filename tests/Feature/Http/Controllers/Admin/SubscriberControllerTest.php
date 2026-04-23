@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers\Admin;
 use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -14,9 +15,7 @@ class SubscriberControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function destroy_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -31,9 +30,7 @@ class SubscriberControllerTest extends TestCase
         $this->assertModelMissing($subscriber);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function index_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');

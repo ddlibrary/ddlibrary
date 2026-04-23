@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use App\Models\Menu;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -14,9 +15,7 @@ class MenuControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ajax_get_parents_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -31,9 +30,7 @@ class MenuControllerTest extends TestCase
         $response->assertOk();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function create_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -51,9 +48,7 @@ class MenuControllerTest extends TestCase
         $response->assertViewHas('parents');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -72,9 +67,7 @@ class MenuControllerTest extends TestCase
         $response->assertViewHas('parents');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function index_returns_an_ok_response(): void
     {
         $admin = User::factory()->create();
@@ -99,9 +92,7 @@ class MenuControllerTest extends TestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sort_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -116,9 +107,7 @@ class MenuControllerTest extends TestCase
         $response->assertOk();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function store_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -132,7 +121,7 @@ class MenuControllerTest extends TestCase
         $this->assertDatabaseHas('menus', ['title' => 'New Menu']);
     }
 
-    /** @test */
+    #[Test]
     public function title_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -148,7 +137,7 @@ class MenuControllerTest extends TestCase
         $response->assertStatus(400);
     }
 
-    /** @test */
+    #[Test]
     public function location_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -160,7 +149,7 @@ class MenuControllerTest extends TestCase
         $response->assertStatus(400);
     }
 
-    /** @test */
+    #[Test]
     public function path_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -172,7 +161,7 @@ class MenuControllerTest extends TestCase
         $response->assertStatus(400);
     }
 
-    /** @test */
+    #[Test]
     public function status_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -184,7 +173,7 @@ class MenuControllerTest extends TestCase
         $response->assertStatus(400);
     }
 
-    /** @test */
+    #[Test]
     public function weight_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -196,7 +185,7 @@ class MenuControllerTest extends TestCase
         $response->assertStatus(400);
     }
 
-    /** @test */
+    #[Test]
     public function language_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -208,9 +197,7 @@ class MenuControllerTest extends TestCase
         $response->assertStatus(400);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function translate_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -230,9 +217,7 @@ class MenuControllerTest extends TestCase
         $response->assertViewHas('id', $menu->id);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function update_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -253,9 +238,7 @@ class MenuControllerTest extends TestCase
         $this->assertDatabaseHas('menus', ['title' => 'Updated Menu']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function destroy_deletes_single_menu_without_translations(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -275,9 +258,7 @@ class MenuControllerTest extends TestCase
         $this->assertDatabaseMissing('menus', ['id' => $menu->id]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function destroy_deletes_menu_and_all_translations_with_same_tnid(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -317,9 +298,7 @@ class MenuControllerTest extends TestCase
         $this->assertDatabaseMissing('menus', ['id' => $menuPs->id]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function destroy_deletes_all_translations_from_translate_page(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -360,9 +339,7 @@ class MenuControllerTest extends TestCase
         $this->assertDatabaseMissing('menus', ['id' => $menuPs->id]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function destroy_requires_authentication(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -378,9 +355,7 @@ class MenuControllerTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function destroy_requires_admin_role(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -398,9 +373,7 @@ class MenuControllerTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function destroy_returns_404_for_non_existent_menu(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -413,9 +386,7 @@ class MenuControllerTest extends TestCase
         $response->assertNotFound();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function destroy_deletes_sub_menu_without_children(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -448,9 +419,7 @@ class MenuControllerTest extends TestCase
         $this->assertDatabaseHas('menus', ['id' => $parentMenu->id]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function destroy_deletes_menu_with_translations_and_sub_menus(): void
     {
         $this->refreshApplicationWithLocale('en');

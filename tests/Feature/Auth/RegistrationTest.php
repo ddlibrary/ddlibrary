@@ -9,13 +9,14 @@ use App\Models\TaxonomyTerm;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function guest_can_view_registration_page(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -26,7 +27,7 @@ class RegistrationTest extends TestCase
         $response->assertViewIs('auth.register');
     }
 
-    /** @test */
+    #[Test]
     public function user_can_register_with_basic_details(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -62,7 +63,7 @@ class RegistrationTest extends TestCase
         $this->assertEquals($libraryUserRole->name, $user->roles->value('name'));
     }
 
-    /** @test */
+    #[Test]
     public function name_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -79,7 +80,7 @@ class RegistrationTest extends TestCase
         $this->assertNull(User::first());
     }
 
-    /** @test */
+    #[Test]
     public function last_name_field_is_nullable(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -94,7 +95,7 @@ class RegistrationTest extends TestCase
         $response->assertRedirect('email/verify');
     }
 
-    /** @test */
+    #[Test]
     public function email_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -111,7 +112,7 @@ class RegistrationTest extends TestCase
         $this->assertNull(User::first());
     }
 
-    /** @test */
+    #[Test]
     public function email_should_be_unique(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -129,7 +130,7 @@ class RegistrationTest extends TestCase
         $this->assertCount(1, User::all());
     }
 
-    /** @test */
+    #[Test]
     public function country_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -146,7 +147,7 @@ class RegistrationTest extends TestCase
         $this->assertNull(User::first());
     }
 
-    /** @test */
+    #[Test]
     public function gender_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -163,7 +164,7 @@ class RegistrationTest extends TestCase
         $this->assertNull(User::first());
     }
 
-    /** @test */
+    #[Test]
     public function passwords_must_match(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -181,7 +182,7 @@ class RegistrationTest extends TestCase
         $this->assertNull(User::first());
     }
 
-    /** @test */
+    #[Test]
     public function easy_password_fail(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -199,7 +200,7 @@ class RegistrationTest extends TestCase
         $this->assertNull(User::first());
     }
 
-    /** @test */
+    #[Test]
     public function test_password_must_be_at_least_8_chars_long(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -217,7 +218,7 @@ class RegistrationTest extends TestCase
         $this->assertNull(User::first());
     }
 
-    /** @test */
+    #[Test]
     public function thrown_error_if_password_and_confirmation_do_not_match(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -235,7 +236,7 @@ class RegistrationTest extends TestCase
         $this->assertNull(User::first());
     }
 
-    /** @test */
+    #[Test]
     public function old_session_inputs(): void
     {
         $this->refreshApplicationWithLocale('en');

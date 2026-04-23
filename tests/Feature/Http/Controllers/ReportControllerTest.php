@@ -8,6 +8,7 @@ use App\Models\ResourceSubjectArea;
 use App\Models\TaxonomyTerm;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -17,9 +18,7 @@ class ReportControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resource_language_report_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -37,9 +36,7 @@ class ReportControllerTest extends TestCase
         $response->assertOk();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resource_priorities_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -57,9 +54,7 @@ class ReportControllerTest extends TestCase
         $response->assertViewHas('subjects_list');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resource_priorities_exclusion_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -77,9 +72,7 @@ class ReportControllerTest extends TestCase
         $response->assertViewHas('subjects_list');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resource_report_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -95,9 +88,7 @@ class ReportControllerTest extends TestCase
         $response->assertViewHas('supported_locales');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resource_subject_report_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');

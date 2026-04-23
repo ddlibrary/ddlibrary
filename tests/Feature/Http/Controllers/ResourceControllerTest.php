@@ -20,6 +20,7 @@ use App\Models\TaxonomyTerm;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Session;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -29,9 +30,7 @@ class ResourceControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function index_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -49,9 +48,7 @@ class ResourceControllerTest extends TestCase
         $response->assertViewHas('languages');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function attributes_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -91,9 +88,7 @@ class ResourceControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function comment_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -117,9 +112,7 @@ class ResourceControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function create_step_one_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -134,9 +127,7 @@ class ResourceControllerTest extends TestCase
         $response->assertViewHas('resource');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function create_step_one_edit_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -153,9 +144,7 @@ class ResourceControllerTest extends TestCase
         $response->assertViewIs('resources.resources_modify_step1');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function create_step_three_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -168,9 +157,7 @@ class ResourceControllerTest extends TestCase
         $response->assertRedirect('/resources/add/step1');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function create_step_three_edit_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -212,9 +199,7 @@ class ResourceControllerTest extends TestCase
         $response->assertViewHas('resource');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function create_step_two_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -228,9 +213,7 @@ class ResourceControllerTest extends TestCase
         $response->assertRedirect('/resources/add/step1');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function create_step_two_edit_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -259,9 +242,7 @@ class ResourceControllerTest extends TestCase
         $response->assertViewIs('resources.resources_modify_step2');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function delete_resource_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -278,9 +259,7 @@ class ResourceControllerTest extends TestCase
         $this->assertEquals(0, Resource::whereId($resource->id)->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function download_file_aborts_with_a_404(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -294,9 +273,7 @@ class ResourceControllerTest extends TestCase
         $response->assertNotFound();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flag_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -317,9 +294,7 @@ class ResourceControllerTest extends TestCase
         $this->assertEquals('This is a spam resource.', ResourceFlag::where('resource_id', $resource->id)->value('details'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function list_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -334,9 +309,7 @@ class ResourceControllerTest extends TestCase
         $response->assertViewHas('resources');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function post_step_one_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -356,9 +329,7 @@ class ResourceControllerTest extends TestCase
         $response->assertRedirect('/resources/add/step2');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function translator_field_is_required_when_has_translator_is_checked(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -380,9 +351,7 @@ class ResourceControllerTest extends TestCase
         $response->assertSessionHasErrors('translator');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function translator_field_is_nullable_when_has_translator_is_not_checked(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -404,7 +373,7 @@ class ResourceControllerTest extends TestCase
         $response->assertSessionDoesntHaveErrors('translator');
     }
 
-    /** @test */
+    #[Test]
     public function at_least_one_of_author_or_publisher_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -425,9 +394,7 @@ class ResourceControllerTest extends TestCase
         $response->assertSessionHasErrors(['publisher']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function post_step_one_edit_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -450,9 +417,7 @@ class ResourceControllerTest extends TestCase
         $response->assertRedirect('/resources/edit/step2/'.$resource->id);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function post_step_three_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -493,9 +458,7 @@ class ResourceControllerTest extends TestCase
         $response->assertRedirect('/home');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function post_step_three_edit_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -541,9 +504,7 @@ class ResourceControllerTest extends TestCase
         $this->assertEquals('updated title', Resource::whereId($resource->id)->value('title'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function post_step_two_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -590,9 +551,7 @@ class ResourceControllerTest extends TestCase
         $response->assertRedirect('/resources/add/step3');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function post_step_two_edit_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -637,9 +596,7 @@ class ResourceControllerTest extends TestCase
         $response->assertRedirect('/resources/edit/step3/'.$resource->id);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function view_file_aborts_with_a_404(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -653,9 +610,7 @@ class ResourceControllerTest extends TestCase
         $response->assertNotFound();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function published_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -678,9 +633,7 @@ class ResourceControllerTest extends TestCase
         $this->assertEquals(1, $resource->status);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resource_favorite_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -702,9 +655,7 @@ class ResourceControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resource_favorite_returns_not_logged_in_if_user_is_not_authenticated(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -719,9 +670,7 @@ class ResourceControllerTest extends TestCase
             ->assertJson(['status' => 'notloggedin']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resource_favorite_adds_favorite_when_it_does_not_exist(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -750,9 +699,7 @@ class ResourceControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deletes_resource_favorite_when_it_exists(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -780,9 +727,7 @@ class ResourceControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function update_tid_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -814,9 +759,7 @@ class ResourceControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function view_public_resource_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -836,9 +779,7 @@ class ResourceControllerTest extends TestCase
         $response->assertViewHas('translations');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function view_public_resource_aborts_with_a_403(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -851,9 +792,7 @@ class ResourceControllerTest extends TestCase
     }
 
     // Step One
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_one_get_displays_correct_resource_values_from_database(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -904,9 +843,7 @@ class ResourceControllerTest extends TestCase
         $this->assertEquals($resourceFile->id, $viewResource->resourceFile->id);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_one_post_stores_data_in_session_not_database(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -964,9 +901,7 @@ class ResourceControllerTest extends TestCase
         $this->assertTrue($resource->translators->contains($oldTranslator->id));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_one_get_displays_correctly_when_no_author_only_publisher(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -993,9 +928,7 @@ class ResourceControllerTest extends TestCase
         $this->assertTrue($viewResource->publishers->contains($publisherTerm->id));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_one_get_displays_correctly_when_no_publisher_only_author(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -1022,9 +955,7 @@ class ResourceControllerTest extends TestCase
         $this->assertEquals(0, $viewResource->publishers->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_one_get_displays_correctly_when_no_translator(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -1050,9 +981,7 @@ class ResourceControllerTest extends TestCase
         $this->assertTrue($viewResource->translators->isEmpty(), 'This is a work of translation checkbox should be unchecked when no translator');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_one_get_displays_correctly_when_no_resource_file(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -1079,9 +1008,7 @@ class ResourceControllerTest extends TestCase
         $this->assertNull($viewResource->resourceFile);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_one_post_accepts_when_no_author_only_publisher(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -1109,9 +1036,7 @@ class ResourceControllerTest extends TestCase
         $this->assertEmpty($sessionData['author'] ?? '');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_one_post_accepts_when_no_publisher_only_author(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -1138,9 +1063,7 @@ class ResourceControllerTest extends TestCase
         $this->assertEquals('Author Only', $sessionData['author']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_one_post_accepts_when_no_translator(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -1167,9 +1090,7 @@ class ResourceControllerTest extends TestCase
         $this->assertNull($sessionData['translator'] ?? null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_one_post_accepts_when_no_resource_file(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -1197,9 +1118,7 @@ class ResourceControllerTest extends TestCase
         $this->assertTrue($sessionData['resource_file_id'] === '' || $sessionData['resource_file_id'] === null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_one_post_fails_when_both_author_and_publisher_empty(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -1225,9 +1144,7 @@ class ResourceControllerTest extends TestCase
     }
 
     // Step 2
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_two_get_displays_correct_resource_values_from_database(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -1324,9 +1241,7 @@ class ResourceControllerTest extends TestCase
         $this->assertEquals('application/pdf', $resourceAttachments[0]['file_mime']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_two_post_stores_data_in_session_not_database(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -1384,9 +1299,7 @@ class ResourceControllerTest extends TestCase
         $this->assertEquals(0, $resource->LearningResourceTypes()->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_two_get_uses_session_data_if_available(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -1478,9 +1391,7 @@ class ResourceControllerTest extends TestCase
         $this->assertEquals(1024, $resourceAttachments[0]['file_size']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_two_get_redirects_to_step_one_if_step_one_not_in_session(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -1498,9 +1409,7 @@ class ResourceControllerTest extends TestCase
     }
 
     // Step 3
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_three_get_displays_correct_resource_values_from_database(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -1587,9 +1496,7 @@ class ResourceControllerTest extends TestCase
         $this->assertEquals(1, $resourceView['status']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_three_post_saves_all_three_steps_to_database(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -1672,9 +1579,7 @@ class ResourceControllerTest extends TestCase
         $this->assertEquals(0, $resource->IamAuthors->value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_step_three_get_redirects_to_step_one_if_steps_not_in_session(): void
     {
         $this->refreshApplicationWithLocale('en');

@@ -8,12 +8,14 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ImpactReportTest extends TestCase
 {
     use RefreshDatabase;
 
+    #[Test]
     public function test_impact_report_returns_view_with_expected_counts(): void
     {
         $this->withoutMiddleware();
@@ -73,6 +75,7 @@ class ImpactReportTest extends TestCase
         $this->assertSame(1, (int) $registered->unknown_count);
     }
 
+    #[Test]
     public function test_impact_report_rejects_invalid_date_range(): void
     {
         $this->withoutMiddleware();

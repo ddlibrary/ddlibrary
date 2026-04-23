@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -25,9 +26,7 @@ class FileControllerTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invoke_aborts_with_a_404_for_non_existent_file(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -40,9 +39,7 @@ class FileControllerTest extends TestCase
         $response->assertNotFound();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_returns_success_response_with_valid_image(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -74,9 +71,7 @@ class FileControllerTest extends TestCase
         Storage::disk('public')->assertExists($path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_stores_file_in_public_disk_in_non_production_environment(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -103,9 +98,7 @@ class FileControllerTest extends TestCase
         $this->assertNotEmpty($files);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_stores_file_in_s3_in_production_environment(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -143,9 +136,7 @@ class FileControllerTest extends TestCase
         config(['app.env' => $originalEnv]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_uses_s3_url_in_production(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -184,9 +175,7 @@ class FileControllerTest extends TestCase
         config(['app.env' => $originalEnv]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_stores_different_files_in_s3(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -229,9 +218,7 @@ class FileControllerTest extends TestCase
         config(['app.env' => $originalEnv]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_switches_between_public_and_s3_based_on_environment(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -275,9 +262,7 @@ class FileControllerTest extends TestCase
         config(['app.env' => $originalEnv]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_s3_storage_creates_correct_filename(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -329,9 +314,7 @@ class FileControllerTest extends TestCase
         config(['app.env' => $originalEnv]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_s3_url_format_is_correct(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -370,9 +353,7 @@ class FileControllerTest extends TestCase
         config(['app.env' => $originalEnv]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_s3_handles_all_valid_image_types(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -421,9 +402,7 @@ class FileControllerTest extends TestCase
         config(['app.env' => $originalEnv]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_validates_upload_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -438,9 +417,7 @@ class FileControllerTest extends TestCase
         $response->assertJsonValidationErrors(['upload']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_validates_upload_must_be_an_image(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -458,9 +435,7 @@ class FileControllerTest extends TestCase
         $response->assertJsonValidationErrors(['upload']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_validates_file_size_max_10mb(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -479,9 +454,7 @@ class FileControllerTest extends TestCase
         $response->assertJsonValidationErrors(['upload']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_accepts_valid_image_formats(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -510,9 +483,7 @@ class FileControllerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_rejects_invalid_mime_types(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -538,9 +509,7 @@ class FileControllerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_requires_authentication(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -554,9 +523,7 @@ class FileControllerTest extends TestCase
         $response->assertRedirect(route('login'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_generates_unique_filename(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -587,9 +554,7 @@ class FileControllerTest extends TestCase
         $this->assertNotEquals($url1, $url2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_filename_includes_user_id(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -612,9 +577,7 @@ class FileControllerTest extends TestCase
         $this->assertStringStartsWith((string) $user->id.'_', $fileName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_preserves_file_extension(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -641,9 +604,7 @@ class FileControllerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_returns_json_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -666,9 +627,7 @@ class FileControllerTest extends TestCase
         $this->assertNotEmpty($responseData['location']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_url_and_location_are_same(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -686,9 +645,7 @@ class FileControllerTest extends TestCase
         $this->assertEquals($responseData['url'], $responseData['location']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_handles_large_valid_image(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -709,9 +666,7 @@ class FileControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_s3_url_can_be_used_in_editor_textarea(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -778,9 +733,7 @@ class FileControllerTest extends TestCase
         config(['app.env' => $originalEnv]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function upload_image_from_editor_public_disk_url_can_be_used_in_editor_textarea(): void
     {
         $this->refreshApplicationWithLocale('en');

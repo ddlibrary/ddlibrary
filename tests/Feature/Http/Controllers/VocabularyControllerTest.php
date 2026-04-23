@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use App\Models\TaxonomyVocabulary;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -14,9 +15,7 @@ class VocabularyControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function create_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -30,9 +29,7 @@ class VocabularyControllerTest extends TestCase
         $response->assertViewIs('admin.vocabulary.vocabulary_create');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -49,9 +46,7 @@ class VocabularyControllerTest extends TestCase
         $response->assertViewHas('vocabulary');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_vocabularies_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -64,9 +59,7 @@ class VocabularyControllerTest extends TestCase
         $response->assertOk();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function index_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -80,9 +73,7 @@ class VocabularyControllerTest extends TestCase
         $response->assertViewIs('admin.vocabulary.vocabulary_list');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function store_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -102,7 +93,7 @@ class VocabularyControllerTest extends TestCase
         $this->assertEquals('New vocabulary', TaxonomyVocabulary::orderByDesc('vid')->value('name'));
     }
 
-    /** @test */
+    #[Test]
     public function name_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -115,7 +106,7 @@ class VocabularyControllerTest extends TestCase
         $response->assertSessionHasErrors(['name' => 'The name field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function weight_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -128,7 +119,7 @@ class VocabularyControllerTest extends TestCase
         $response->assertSessionHasErrors(['weight' => 'The weight field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function language_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -141,9 +132,7 @@ class VocabularyControllerTest extends TestCase
         $response->assertSessionHasErrors(['language' => 'The language field is required.']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function update_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -169,7 +158,7 @@ class VocabularyControllerTest extends TestCase
         $this->assertEquals('fa', TaxonomyVocabulary::where('vid', $taxonomyVocabulary->vid)->value('language'));
     }
 
-    /** @test */
+    #[Test]
     public function update_name_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -184,7 +173,7 @@ class VocabularyControllerTest extends TestCase
         $response->assertSessionHasErrors(['name' => 'The name field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function update_weight_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -199,7 +188,7 @@ class VocabularyControllerTest extends TestCase
         $response->assertSessionHasErrors(['weight' => 'The weight field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function update_language_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');

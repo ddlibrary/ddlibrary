@@ -6,6 +6,7 @@ use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -17,7 +18,7 @@ class SubscribeControllerEnTest extends TestCase
 
     protected string $defaultLocale = 'en';
 
-    /** @test */
+    #[Test]
     public function en_authenticated_user_can_visit_subscribe_page(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -28,7 +29,7 @@ class SubscribeControllerEnTest extends TestCase
         $response->assertStatus(200)->assertViewIs('subscribe.index');
     }
 
-    /** @test */
+    #[Test]
     public function en_unauthenticated_user_is_redirected_to_login_page(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -38,7 +39,7 @@ class SubscribeControllerEnTest extends TestCase
         $response->assertStatus(302)->assertRedirect('/en/login');
     }
 
-    /** @test */
+    #[Test]
     public function en_authenticated_and_verified_user_can_subscribe(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -58,7 +59,7 @@ class SubscribeControllerEnTest extends TestCase
         $this->assertEquals($user->subscription->name, 'New User');
     }
 
-    /** @test */
+    #[Test]
     public function en_unverified_user_can_not_subscribe(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -72,7 +73,7 @@ class SubscribeControllerEnTest extends TestCase
         $this->assertEquals(0, $user->subscription()->count());
     }
 
-    /** @test */
+    #[Test]
     public function en_name_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -88,7 +89,7 @@ class SubscribeControllerEnTest extends TestCase
         $response->assertSessionHasErrors(['name' => 'The name field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function en_email_field_is_required(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -104,7 +105,7 @@ class SubscribeControllerEnTest extends TestCase
         $response->assertSessionHasErrors(['email' => 'The email field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function en_email_should_be_a_valid_email(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -120,7 +121,7 @@ class SubscribeControllerEnTest extends TestCase
         $response->assertSessionHasErrors(['email' => 'The email field must be a valid email address.']);
     }
 
-    /** @test */
+    #[Test]
     public function en_email_field_is_unique(): void
     {
         $this->refreshApplicationWithLocale('en');

@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -14,9 +15,7 @@ class ContactControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function create_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -28,9 +27,7 @@ class ContactControllerTest extends TestCase
         $response->assertViewHas('fullname');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function delete_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -45,9 +42,7 @@ class ContactControllerTest extends TestCase
         $this->assertDatabaseMissing('contacts', ['id' => $contact->id]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function index_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -63,9 +58,7 @@ class ContactControllerTest extends TestCase
         $this->assertCount(3, $response->viewData('records'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function read_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -81,9 +74,7 @@ class ContactControllerTest extends TestCase
         $response->assertStatus(302);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function store_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');

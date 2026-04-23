@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use App\Models\GlossarySubject;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -14,6 +15,7 @@ class GlossarySubjectControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    #[Test]
     public function test_admin_can_view_glossary_subjects_list(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -29,6 +31,7 @@ class GlossarySubjectControllerTest extends TestCase
         $response->assertSee($glossarySubjects[0]->name);
     }
 
+    #[Test]
     public function test_admin_can_create_glossary_subject(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -43,6 +46,7 @@ class GlossarySubjectControllerTest extends TestCase
         $response->assertViewHas('glossary_subject');
     }
 
+    #[Test]
     public function test_admin_can_edit_glossary_subject(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -58,6 +62,7 @@ class GlossarySubjectControllerTest extends TestCase
         $response->assertSee($subject->name);
     }
 
+    #[Test]
     public function test_admin_can_update_glossary_subject(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -83,6 +88,7 @@ class GlossarySubjectControllerTest extends TestCase
         $this->assertDatabaseHas('glossary_subjects', ['id' => $subject->id, 'en' => 'english']);
     }
 
+    #[Test]
     public function test_non_admin_cannot_access_glossary_subjects(): void
     {
         $user = User::factory()->create();

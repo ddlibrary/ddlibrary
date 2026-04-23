@@ -4,6 +4,7 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ForgotPasswordFaTest extends TestCase
@@ -12,7 +13,7 @@ class ForgotPasswordFaTest extends TestCase
 
     protected string $defaultLocale = 'fa';
 
-    /** @test */
+    #[Test]
     public function fa_user_can_view_forgot_password_page(): void
     {
         $this->refreshApplicationWithLocale('fa');
@@ -25,7 +26,7 @@ class ForgotPasswordFaTest extends TestCase
         $response->assertSee('آدرس ایمیل شما');
     }
 
-    /** @test */
+    #[Test]
     public function fa_getting_error_if_email_does_not_exist(): void
     {
         $this->refreshApplicationWithLocale('fa');
