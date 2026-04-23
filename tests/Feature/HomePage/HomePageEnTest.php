@@ -3,6 +3,7 @@
 namespace Tests\Feature\HomePage;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class HomePageEnTest extends TestCase
@@ -11,7 +12,7 @@ class HomePageEnTest extends TestCase
 
     protected string $defaultLocale = 'en';
 
-    /** @test */
+    #[Test]
     public function user_can_visit_english_home_page(): void
     {
         $response = $this->get('/en');

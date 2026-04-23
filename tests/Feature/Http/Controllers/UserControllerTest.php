@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -18,9 +19,7 @@ class UserControllerTest extends TestCase
 
     protected bool $seed = false;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function delete_user_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -35,9 +34,7 @@ class UserControllerTest extends TestCase
         $this->assertEquals(0, User::find($admin->id));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -56,9 +53,7 @@ class UserControllerTest extends TestCase
         $response->assertViewHas('roles');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function export_users_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -74,9 +69,7 @@ class UserControllerTest extends TestCase
         $response->assertHeader('Content-Disposition', 'attachment; filename="users.csv"');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function favorites_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -94,9 +87,7 @@ class UserControllerTest extends TestCase
         $response->assertViewHas('resources');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function index_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -122,9 +113,7 @@ class UserControllerTest extends TestCase
         $response->assertViewHas('filters');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function update_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -152,9 +141,7 @@ class UserControllerTest extends TestCase
         $this->assertEquals('Ahmadi', $updatedUser->profile->last_name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function update_profile_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -174,9 +161,7 @@ class UserControllerTest extends TestCase
         $this->assertEquals('new_email@email.com', User::whereId($user->id)->value('email'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uploaded_resources_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -195,9 +180,7 @@ class UserControllerTest extends TestCase
         $response->assertViewHas('resources');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function view_user_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -215,9 +198,7 @@ class UserControllerTest extends TestCase
         $response->assertViewHas('user');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function update_gender_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -233,9 +214,7 @@ class UserControllerTest extends TestCase
         $this->assertEquals('Male', $userProfile->fresh()->gender);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function update_gender_validates_required_field(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -248,9 +227,7 @@ class UserControllerTest extends TestCase
         $response->assertSessionHasErrors('gender');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function update_gender_validates_allowed_values(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -265,9 +242,7 @@ class UserControllerTest extends TestCase
         $response->assertSessionHasErrors('gender');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function update_gender_accepts_all_valid_values(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -287,9 +262,7 @@ class UserControllerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function update_gender_sets_success_flash_message(): void
     {
         $this->refreshApplicationWithLocale('en');

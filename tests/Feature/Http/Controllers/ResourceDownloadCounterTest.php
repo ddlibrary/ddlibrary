@@ -7,12 +7,14 @@ use App\Models\DownloadCount;
 use App\Models\Resource;
 use App\Models\ResourceAttachment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ResourceDownloadCounterTest extends TestCase
 {
     use RefreshDatabase;
 
+    #[Test]
     public function test_it_creates_a_download_count_row_and_returns_201(): void
     {
         $this->withoutMiddleware();
@@ -45,6 +47,7 @@ class ResourceDownloadCounterTest extends TestCase
         ]);
     }
 
+    #[Test]
     public function test_it_rejects_file_id_that_does_not_belong_to_resource(): void
     {
         $this->withoutMiddleware();

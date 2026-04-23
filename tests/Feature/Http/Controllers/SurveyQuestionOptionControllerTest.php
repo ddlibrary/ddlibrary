@@ -7,6 +7,7 @@ use App\Models\SurveyQuestion;
 use App\Models\SurveyQuestionOption;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -16,9 +17,7 @@ class SurveyQuestionOptionControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function add_translate_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -41,9 +40,7 @@ class SurveyQuestionOptionControllerTest extends TestCase
 
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function create_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -64,9 +61,7 @@ class SurveyQuestionOptionControllerTest extends TestCase
 
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function delete_returns_an_ok_response(): void
     {
 
@@ -85,9 +80,7 @@ class SurveyQuestionOptionControllerTest extends TestCase
 
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function index_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -111,9 +104,7 @@ class SurveyQuestionOptionControllerTest extends TestCase
 
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function store_returns_an_ok_response(): void
     {
 
@@ -135,9 +126,7 @@ class SurveyQuestionOptionControllerTest extends TestCase
 
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function view_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');

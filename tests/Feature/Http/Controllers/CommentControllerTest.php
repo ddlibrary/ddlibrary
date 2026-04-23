@@ -8,6 +8,7 @@ use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -17,9 +18,7 @@ class CommentControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function comment_creates_a_new_resource_comment_and_redirects(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -58,9 +57,7 @@ class CommentControllerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function store_creates_a_new_comment_and_redirects(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -84,9 +81,7 @@ class CommentControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function destroy_deletes_comment_and_redirects(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -103,9 +98,7 @@ class CommentControllerTest extends TestCase
         $this->assertEquals(0, ResourceComment::where('id', $comment->id)->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function comment_redirects_to_login_if_userid_is_empty(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -121,9 +114,7 @@ class CommentControllerTest extends TestCase
         $response->assertRedirect('en/login');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function published_toggles_comment_status_and_redirects(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -148,9 +139,7 @@ class CommentControllerTest extends TestCase
         $this->assertEquals(0, $comment->fresh()->status);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function published_requires_admin_access(): void
     {
         $this->refreshApplicationWithLocale('en');

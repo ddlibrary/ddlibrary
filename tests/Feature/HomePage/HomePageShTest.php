@@ -3,6 +3,7 @@
 namespace Tests\Feature\HomePage;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class HomePageShTest extends TestCase
@@ -11,7 +12,7 @@ class HomePageShTest extends TestCase
 
     protected string $defaultLocale = 'sh';
 
-    /** @test */
+    #[Test]
     public function user_can_visit_sh_home_page(): void
     {
         $response = $this->get('/sh');

@@ -6,6 +6,7 @@ use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Validation\Rule;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -25,9 +26,7 @@ class SubscribeRequestTest extends TestCase
         $this->subject = new \App\Http\Requests\SubscribeRequest;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authorize(): void
     {
         $actual = $this->subject->authorize();
@@ -35,9 +34,7 @@ class SubscribeRequestTest extends TestCase
         $this->assertTrue($actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rules(): void
     {
         $actual = $this->subject->rules();
@@ -52,9 +49,7 @@ class SubscribeRequestTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function test_store_creates_new_subscriber(): void
     {
         $this->refreshApplicationWithLocale('en');

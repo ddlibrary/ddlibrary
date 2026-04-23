@@ -3,6 +3,7 @@
 namespace Tests\Feature\HomePage;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class HomePageMjTest extends TestCase
@@ -11,7 +12,7 @@ class HomePageMjTest extends TestCase
 
     protected string $defaultLocale = 'mj';
 
-    /** @test */
+    #[Test]
     public function user_can_visit_mj_home_page(): void
     {
         $response = $this->get('/mj');

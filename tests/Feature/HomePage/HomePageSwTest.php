@@ -3,6 +3,7 @@
 namespace Tests\Feature\HomePage;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class HomePageSwTest extends TestCase
@@ -11,7 +12,7 @@ class HomePageSwTest extends TestCase
 
     protected string $defaultLocale = 'sw';
 
-    /** @test */
+    #[Test]
     public function user_can_visit_sw_home_page(): void
     {
         $response = $this->get('/sw');

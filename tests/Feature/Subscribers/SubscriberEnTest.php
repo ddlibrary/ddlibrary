@@ -6,6 +6,7 @@ use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class SubscriberEnTest extends TestCase
@@ -14,7 +15,7 @@ class SubscriberEnTest extends TestCase
 
     protected string $defaultLocale = 'en';
 
-    /** @test */
+    #[Test]
     public function en_authenticated_user_can_visit_subscribe_page(): void
     {
         $user = User::factory()->create();
@@ -23,7 +24,7 @@ class SubscriberEnTest extends TestCase
         $response->assertStatus(200)->assertViewIs('subscribe.index');
     }
 
-    /** @test */
+    #[Test]
     public function en_unauthenticated_user_is_redirected_to_login_page(): void
     {
         $response = $this->get('/en/subscribe');
@@ -31,7 +32,7 @@ class SubscriberEnTest extends TestCase
         $response->assertStatus(302)->assertRedirect('/en/login');
     }
 
-    /** @test */
+    #[Test]
     public function en_authenticated_and_verified_user_can_subscribe(): void
     {
         $user = User::factory()->create();
@@ -50,7 +51,7 @@ class SubscriberEnTest extends TestCase
         $this->assertEquals($user->subscription->name, 'New User');
     }
 
-    /** @test */
+    #[Test]
     public function en_unverified_user_can_not_subscribe(): void
     {
         $user = User::factory()->create(['email_verified_at' => null]);
@@ -63,7 +64,7 @@ class SubscriberEnTest extends TestCase
         $this->assertEquals(0, $user->subscription()->count());
     }
 
-    /** @test */
+    #[Test]
     public function en_name_field_is_required(): void
     {
         $user = User::factory()->create();
@@ -78,7 +79,7 @@ class SubscriberEnTest extends TestCase
         $response->assertSessionHasErrors(['name' => 'The name field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function en_email_field_is_required(): void
     {
         $user = User::factory()->create();
@@ -93,7 +94,7 @@ class SubscriberEnTest extends TestCase
         $response->assertSessionHasErrors(['email' => 'The email field is required.']);
     }
 
-    /** @test */
+    #[Test]
     public function en_email_should_be_a_valid_email(): void
     {
         $user = User::factory()->create();
@@ -108,7 +109,7 @@ class SubscriberEnTest extends TestCase
         $response->assertSessionHasErrors(['email' => 'The email field must be a valid email address.']);
     }
 
-    /** @test */
+    #[Test]
     public function en_email_field_is_unique(): void
     {
         $user = User::factory()->create();

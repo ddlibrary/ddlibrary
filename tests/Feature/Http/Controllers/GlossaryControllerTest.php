@@ -6,6 +6,7 @@ use App\Models\Glossary;
 use App\Models\GlossarySubject;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -15,9 +16,7 @@ class GlossaryControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function test_index_returns_a_successful_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -31,9 +30,7 @@ class GlossaryControllerTest extends TestCase
         $response->assertViewIs('glossary.glossary_list');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function test_create_returns_a_successful_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -47,9 +44,7 @@ class GlossaryControllerTest extends TestCase
         $response->assertViewIs('glossary.create');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function test_store_creates_new_glossary_item(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -75,9 +70,7 @@ class GlossaryControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function test_update_glossary_item(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -105,9 +98,7 @@ class GlossaryControllerTest extends TestCase
         $this->assertEquals($glossary->name_en, 'Updated English');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function test_delete_glossary_item(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -123,9 +114,7 @@ class GlossaryControllerTest extends TestCase
         $this->assertDatabaseMissing('glossary', ['id' => $glossary->id]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function test_approve_glossary_item(): void
     {
         $this->refreshApplicationWithLocale('en');

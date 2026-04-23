@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class PrivacyPolicyControllerPsTest extends TestCase
@@ -11,9 +12,7 @@ class PrivacyPolicyControllerPsTest extends TestCase
 
     protected string $defaultLocale = 'ps';
 
-    /**
-     * @test
-     */
+    #[Test]
     public function privacy_policy_returns_pashto_view(): void
     {
         $response = $this->get('ps/privacy-policy');

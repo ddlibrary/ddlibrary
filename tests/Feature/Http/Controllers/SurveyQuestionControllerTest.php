@@ -6,6 +6,7 @@ use App\Models\Survey;
 use App\Models\SurveyQuestion;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -15,9 +16,7 @@ class SurveyQuestionControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function add_translate_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -38,9 +37,7 @@ class SurveyQuestionControllerTest extends TestCase
         $response->assertViewHas('question');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function create_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -58,9 +55,7 @@ class SurveyQuestionControllerTest extends TestCase
         $response->assertViewHas('survey', $survey);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function delete_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -76,9 +71,7 @@ class SurveyQuestionControllerTest extends TestCase
         $this->assertEquals(0, SurveyQuestion::find($surveyQuestion->id));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function index_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -98,9 +91,7 @@ class SurveyQuestionControllerTest extends TestCase
         $this->assertEquals(4, SurveyQuestion::count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function store_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -135,9 +126,7 @@ class SurveyQuestionControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function view_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');

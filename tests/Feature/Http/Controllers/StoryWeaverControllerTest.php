@@ -11,6 +11,7 @@ use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -20,9 +21,7 @@ class StoryWeaverControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function story_weaver_auth_returns_an_ok_response(): void
     {
         $admin = User::factory()->create();
@@ -50,9 +49,7 @@ class StoryWeaverControllerTest extends TestCase
         $response->assertRedirect('https://storyweaver.org/redirect');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function story_weaver_auth_aborts_with_a_500(): void
     {
         $admin = User::factory()->create();
@@ -72,9 +69,7 @@ class StoryWeaverControllerTest extends TestCase
         $response->assertStatus(500);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function story_weaver_auth_aborts_with_a_405(): void
     {
         $admin = User::factory()->create();
@@ -92,9 +87,7 @@ class StoryWeaverControllerTest extends TestCase
         $response->assertStatus(405);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function story_weaver_auth_aborts_with_a_422(): void
     {
         $admin = User::factory()->create();
@@ -119,9 +112,7 @@ class StoryWeaverControllerTest extends TestCase
         $response->assertStatus(422);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function story_weaver_confirmation_returns_an_ok_response(): void
     {
         $admin = User::factory()->create();

@@ -8,6 +8,7 @@ use App\Models\Platform;
 use App\Models\SitewidePageView;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -17,9 +18,7 @@ class SitewideAnalyticsControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function index_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -46,9 +45,7 @@ class SitewideAnalyticsControllerTest extends TestCase
 
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function view_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -70,9 +67,7 @@ class SitewideAnalyticsControllerTest extends TestCase
 
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function view_returns_an_ok_response_with_pagination(): void
     {
         $this->refreshApplicationWithLocale('en');

@@ -9,6 +9,7 @@ use App\Models\TaxonomyVocabulary;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -18,9 +19,7 @@ class TaxonomyControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function create_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -36,9 +35,7 @@ class TaxonomyControllerTest extends TestCase
         $response->assertViewHas('vocabulary');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function create_translate_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -62,9 +59,7 @@ class TaxonomyControllerTest extends TestCase
         $response->assertViewHas('weight');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -87,9 +82,7 @@ class TaxonomyControllerTest extends TestCase
         $response->assertViewHas('theParent');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function index_returns_an_ok_response(): void
     {
         TaxonomyTerm::factory()->times(3)->create();
@@ -108,9 +101,7 @@ class TaxonomyControllerTest extends TestCase
         $response->assertViewHas('searchBar');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function store_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -134,9 +125,7 @@ class TaxonomyControllerTest extends TestCase
         $this->assertEquals('New taxonomy', TaxonomyTerm::where('vid', $vocabulary->vid)->value('name'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function store_translate_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -157,9 +146,7 @@ class TaxonomyControllerTest extends TestCase
         $response->assertRedirect();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function translate_returns_an_ok_response(): void
     {
         $taxonomyTerm = TaxonomyTerm::factory()->create();
@@ -180,9 +167,7 @@ class TaxonomyControllerTest extends TestCase
         $response->assertViewHas('tid');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function update_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -206,9 +191,7 @@ class TaxonomyControllerTest extends TestCase
 
     // Subject areas tests
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subject_areas_index_route_returns_ok(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -232,9 +215,7 @@ class TaxonomyControllerTest extends TestCase
         $response->assertViewHas('languages');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subject_area_edit_or_create_route_without_tnid_returns_ok(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -252,9 +233,7 @@ class TaxonomyControllerTest extends TestCase
         $response->assertViewHas('tnid');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subject_area_edit_or_create_route_with_valid_tnid_returns_ok(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -281,9 +260,7 @@ class TaxonomyControllerTest extends TestCase
         $response->assertViewHas('tnid');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subject_area_edit_or_create_route_returns_404_when_tnid_not_found(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -296,9 +273,7 @@ class TaxonomyControllerTest extends TestCase
         $response->assertStatus(404);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subject_area_store_or_update_route_create_success(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -325,9 +300,7 @@ class TaxonomyControllerTest extends TestCase
         $this->assertGreaterThan(0, $term->tnid);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subject_area_store_or_update_route_update_success(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -378,9 +351,7 @@ class TaxonomyControllerTest extends TestCase
         $this->assertSame(2, $termFa->weight);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subject_area_store_or_update_validation_fails_when_all_names_empty(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -397,9 +368,7 @@ class TaxonomyControllerTest extends TestCase
         $response->assertSessionHasErrors('name');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subject_area_store_or_update_validation_fails_when_tnid_does_not_exist(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -418,9 +387,7 @@ class TaxonomyControllerTest extends TestCase
         $response->assertSessionHasErrors('tnid');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subject_area_store_or_update_validation_fails_when_weight_not_array(): void
     {
         $this->refreshApplicationWithLocale('en');

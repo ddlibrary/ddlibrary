@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -20,9 +21,7 @@ class ApiControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resource_returns_an_ok_response(): void
     {
         $resource = Resource::factory()->create();
@@ -46,9 +45,7 @@ class ApiControllerTest extends TestCase
         $this->assertEquals($resource->abstract, $responseData['abstract']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function register_returns_an_ok_response(): void
     {
         $requestData = [
@@ -84,9 +81,7 @@ class ApiControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pages_returns_an_ok_response(): void
     {
         $pages = Page::factory()
@@ -129,9 +124,7 @@ class ApiControllerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function page_view_returns_an_ok_response(): void
     {
         $page = Page::factory()->create();
@@ -153,9 +146,7 @@ class ApiControllerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function page_returns_an_ok_response(): void
     {
         $pages = Page::factory()->count(3)->create();
@@ -177,9 +168,7 @@ class ApiControllerTest extends TestCase
         $this->assertEquals($pageItem->body, $response->json()[0]['body']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function news_view_returns_an_ok_response(): void
     {
         $news = News::factory()->create();
@@ -201,9 +190,7 @@ class ApiControllerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function delete_returns_an_ok_response(): void
     {
         $user = User::factory()->create();
@@ -223,9 +210,7 @@ class ApiControllerTest extends TestCase
         $this->assertEquals(null, $deletedUser->profile->city);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function favorites_returns_an_ok_response(): void
     {
         $user = User::factory()->create();
@@ -248,9 +233,7 @@ class ApiControllerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function user_returns_an_ok_response(): void
     {
         $user = User::factory()->create();
@@ -267,9 +250,7 @@ class ApiControllerTest extends TestCase
         $this->assertEquals($user->email, $response->json('email'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resources_returns_an_ok_response(): void
     {
         $resources = Resource::factory()
@@ -293,9 +274,7 @@ class ApiControllerTest extends TestCase
         $this->assertCount(12, $response->json('data'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resource_offset_returns_an_ok_response(): void
     {
         $resources = Resource::factory()
@@ -336,9 +315,7 @@ class ApiControllerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function links_returns_an_ok_response(): void
     {
         // Create 3 menu items with language 'en' and location 'bottom-menu'
@@ -368,9 +345,7 @@ class ApiControllerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function login_returns_an_ok_response(): void
     {
         $user = User::factory()->create([
@@ -395,9 +370,7 @@ class ApiControllerTest extends TestCase
         $this->assertAuthenticatedAs($user);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function logout_returns_an_ok_response(): void
     {
         $user = User::factory()->create([
@@ -417,9 +390,7 @@ class ApiControllerTest extends TestCase
         $this->assertCount(0, $user->tokens);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function news_returns_an_ok_response(): void
     {
         $newsItems = News::factory()->count(3)->create();
@@ -441,9 +412,7 @@ class ApiControllerTest extends TestCase
         $this->assertEquals($newsItem->body, $response->json()[0]['body']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function news_list_returns_an_ok_response(): void
     {
         $menus = News::factory()

@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers;
 use App\Models\SurveySetting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -14,9 +15,7 @@ class SurveySettingControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function create_survey_modal_time_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -30,9 +29,7 @@ class SurveySettingControllerTest extends TestCase
         $response->assertViewIs('admin.surveys.setting.create');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function edit_survey_modal_time_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -50,9 +47,7 @@ class SurveySettingControllerTest extends TestCase
         $response->assertViewHas('survey_modal_time');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_survey_modal_time_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -70,9 +65,7 @@ class SurveySettingControllerTest extends TestCase
         $response->assertViewHas('survey_modal_time');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function store_survey_modal_time_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
@@ -88,9 +81,7 @@ class SurveySettingControllerTest extends TestCase
         $this->assertEquals(40000, SurveySetting::value('time'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function update_survey_modal_time_returns_an_ok_response(): void
     {
         $this->refreshApplicationWithLocale('en');
