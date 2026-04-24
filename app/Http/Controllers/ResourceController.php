@@ -224,28 +224,16 @@ class ResourceController extends Controller
             ->toArray();
     }
 
-    public function updateFilterOptions(UpdateResourceFilterOptionsRequest $request)
+    public function updateFilterOptions(UpdateResourceFilterOptionsRequest $request): JsonResponse
     {
         try {
             $language = $request->input('language');
 
-            $subjectAreas = (new Resource)
-                ->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject->value, $language)
-                ->where('parent', 0)
-                ->pluck('id', 'name')
-                ->toArray();
+            $subjectAreas = $this->getResourceAttributesList(TaxonomyVocabularyEnum::ResourceSubject->value, $language);
 
-            $resourceTypes = (new Resource)
-                ->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceType->value, $language)
-                ->where('parent', 0)
-                ->pluck('id', 'name')
-                ->toArray();
+            $resourceTypes = $this->getResourceAttributesList(TaxonomyVocabularyEnum::ResourceType->value, $language);
 
-            $literacyLevels = (new Resource)
-                ->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceLevels->value, $language)
-                ->where('parent', 0)
-                ->pluck('id', 'name')
-                ->toArray();
+            $literacyLevels = $this->getResourceAttributesList(TaxonomyVocabularyEnum::ResourceLevels->value, $language);
 
             return response()->json([
                 'success' => true,
@@ -261,6 +249,15 @@ class ResourceController extends Controller
                 'message' => __('Something went wrong while updating filter options.')
             ], 500);
         }
+    }
+
+    private function getResourceAttributesList($vid, $language): array
+    {
+        return (new Resource)
+            ->resourceAttributesList('taxonomy_term_data', $vid, $language)
+            ->where('parent', 0)
+            ->pluck('id', 'name')
+            ->toArray();
     }
 
     /**
