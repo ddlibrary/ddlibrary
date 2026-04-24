@@ -1,15 +1,11 @@
 import '../css/ddl.css';
-import $ from 'jquery';
+import './bootstrap.js';
+import 'jquery-ui/dist/jquery-ui';
 import Cookies from 'js-cookie';
 import 'bootstrap/dist/js/bootstrap.bundle';
-import lazysizes from 'lazysizes';
 import axios from "axios";
 
 window.Cookies = Cookies;
-window.$ = window.jQuery = $;
-
-await import('jquery-ui/ui/widgets/autocomplete.js');
-await import('jquery-ui/ui/widgets/datepicker.js');
 
 if(window.jQuery){
     $(document).ready(function(){
