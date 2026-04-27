@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\TaxonomyVocabularyEnum;
 use App\Http\Requests\ResourceStepOneRequest;
+use App\Http\Requests\UpdateResourceFilterOptionsRequest;
 use App\Mail\NewComment;
 use App\Models\DownloadCount;
 use App\Models\Resource;
@@ -141,6 +142,7 @@ class ResourceController extends Controller
     {
         // setting the search session empty
         DDLClearSession();
+        $language = $request['language'] ?? null;
         $this->pageView($request, 'Resource List');
 
         $resource = new Resource;
@@ -168,7 +170,7 @@ class ResourceController extends Controller
             if ($request->filled('subjectAreaChild')) {
                 $subjectAreaChildIds = $everything['subjectAreaChild'];
                 $parentIdsfromChildren = (new Resource)
-                    ->resourceAttributesList('taxonomy_term_data', 8)  // 8 being subject areas
+                    ->resourceAttributesList('taxonomy_term_data', 8, $language)  // 8 being subject areas
                     ->whereIn('id', $subjectAreaChildIds)
                     ->pluck('parent')
                     ->toArray();
@@ -205,19 +207,60 @@ class ResourceController extends Controller
         $literacyLevels = $resourceObject
             ->resourceAttributesList('taxonomy_term_data', 13)
             ->where('parent', 0); // 13 being resource literacy levels
+        $languages = $this->getLanguages();
 
-        return view('resources.resources_filter', compact('parentSubjects', 'resourceTypes', 'literacyLevels'));
+        return view('resources.resources_filter', compact('parentSubjects', 'languages', 'resourceTypes', 'literacyLevels'));
     }
 
     public function getSubjectChildren(Request $request): array
     {
         $subjectIds = explode(',', $request->input('IDs'));
+        $language = $request->input('language');
 
         return (new Resource)
-            ->resourceAttributesList('taxonomy_term_data', 8)  // 8 being subject areas
+            ->resourceAttributesList('taxonomy_term_data', 8, $language)  // 8 being subject areas
             ->whereIn('parent', $subjectIds)
             ->pluck('id', 'name')
             ->toArray();
+    }
+
+    public function updateFilterOptions(UpdateResourceFilterOptionsRequest $request)
+    {
+        try {
+            $language = $request->input('language');
+
+            $subjectAreas = (new Resource)
+                ->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceSubject->value, $language)
+                ->where('parent', 0)
+                ->pluck('id', 'name')
+                ->toArray();
+
+            $resourceTypes = (new Resource)
+                ->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceType->value, $language)
+                ->where('parent', 0)
+                ->pluck('id', 'name')
+                ->toArray();
+
+            $literacyLevels = (new Resource)
+                ->resourceAttributesList('taxonomy_term_data', TaxonomyVocabularyEnum::ResourceLevels->value, $language)
+                ->where('parent', 0)
+                ->pluck('id', 'name')
+                ->toArray();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('Filter options updated successfully.'),
+                'subjectAreas' => $subjectAreas,
+                'resourceTypes' => $resourceTypes,
+                'literacyLevels' => $literacyLevels,
+            ]);
+
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => __('Something went wrong while updating filter options.')
+            ], 500);
+        }
     }
 
     /**
