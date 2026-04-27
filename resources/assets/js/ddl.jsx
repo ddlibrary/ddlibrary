@@ -3,6 +3,7 @@ import './bootstrap.js';
 import 'jquery-ui/dist/jquery-ui';
 import Cookies from 'js-cookie';
 import 'bootstrap/dist/js/bootstrap.bundle';
+import lazysizes from 'lazysizes';
 import axios from "axios";
 
 window.Cookies = Cookies;
