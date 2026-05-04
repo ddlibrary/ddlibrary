@@ -76,86 +76,11 @@
 @endsection
 @push('scripts')
     <script>
-        function getSubjectChildren() {
-            const language = document.querySelector('#language').value;
-            let selected_values = selectSubjectAreaParent.selectedOptions;
-            selected_values = Array.from(selected_values).map(({ value }) => value);
-            $("#selectSubjectAreaChild option").remove();
-
-            $.ajax({
-                type: 'GET',
-                url: `filter/subject?IDs=${selected_values}&language=${language}`,
-                success: function(res) {
-                    let option = document.createElement('option');
-                    option.value = "";
-                    selectSubjectAreaChild.append(option)
-                    if (res) {
-                        $.each(res, function(name, id) {
-                            let option = document.createElement('option');
-                            option.innerHTML = name;
-                            option.value = id;
-                            selectSubjectAreaChild.append(option)
-                        });
-                    }
-                }
-            });
-        }
-
-        function getFilterOptions() {
-            const language = document.querySelector('#language').value;
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            toggleLoading(true)
-            $.ajax({
-                type: 'POST',
-                url: "{{ route('filter.update-options') }}",
-                dataType: 'json',
-                data: { _token: csrfToken, language },
-                success: function (res) {
-                    const subjectAreaParent = document.getElementById('selectSubjectAreaParent');
-                    const resourceType = document.getElementById('selectResourceType');
-                    const literacyLevel = document.getElementById('selectLiteracyLevel');
-                    
-                    document.getElementById('selectSubjectAreaChild').innerHTML ='';
-                    subjectAreaParent.innerHTML = '';
-                    resourceType.innerHTML = '';
-                    literacyLevel.innerHTML = '';
-
-                    appendOptions(subjectAreaParent, res.subjectAreas);
-                    appendOptions(resourceType, res.resourceTypes);
-                    appendOptions(literacyLevel, res.literacyLevels);
-                },
-                error: function() {
-                    alert("@lang('Failed to load filter options. Please try again.')");
-                },
-                complete: function() {
-                    toggleLoading(false);
-                    
-                }
-            });
-        }
-
-        function appendOptions(selectElement, optionsMap) {
-            if (!optionsMap) return;
-
-            for (const optionName in optionsMap) {
-                const optionId = optionsMap[optionName];
-                selectElement.append(new Option(optionName, optionId));
-            }
-        }
-
-        function toggleLoading(isLoading) {
-            const btn = document.querySelector('input[type="submit"]');
-            const container = document.querySelector('#advanced-filter-container');
-            
-            if (isLoading) {
-                btn.disabled = true;
-                btn.value = "@lang('Loading, please wait')";
-                container.style.opacity = '0.6';
-            } else {
-                btn.disabled = false;
-                btn.value = "@lang('Apply filters')";
-                container.style.opacity = '1';
-            }
-        }
+        window.resourceFilterConfig = {
+            updateOptionsUrl: "{{ route('filter.update-options') }}",
+            failedMsg: "@lang('Failed to load filter options. Please try again.')",
+            loadingText: "@lang('Loading, please wait')",
+            applyText: "@lang('Apply filters')",
+        };
     </script>
 @endpush

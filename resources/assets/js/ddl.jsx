@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import lazysizes from 'lazysizes';
 import axios from "axios";
+import './modules/resource_filter.jsx';
 
 window.Cookies = Cookies;
 window.$ = window.jQuery = $;
